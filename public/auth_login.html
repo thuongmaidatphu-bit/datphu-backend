@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Nhập & Phân Quyền | Hệ Sinh Thái Đất Phú</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-red: #D7262D;
+      --brand-navy: #1E2260;
+      --brand-dark: #12153a;
+      --brand-gold: #F5A623;
+      --brand-blue: #0284c7;
+      --bg-page: #f4f6fa;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --success: #10b981;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+    body {
+      background: linear-gradient(135deg, #0e1138 0%, #1e2260 50%, #2a1532 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 520px;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      position: relative;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header-banner {
+      background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-dark) 100%);
+      color: white;
+      padding: 28px 24px 20px;
+      text-align: center;
+      position: relative;
+    }
+    .header-banner::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand-red), var(--brand-gold));
+    }
+    .logo-badge {
+      width: 68px;
+      height: 68px;
+      border-radius: 16px;
+      background: white;
+      padding: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .logo-badge img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .header-banner h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .header-banner p {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Tabs */
+    .auth-tabs {
+      display: flex;
+      background: #f1f5f9;
+      padding: 6px;
+      border-radius: 14px;
+      margin: 18px 24px 0;
+      gap: 4px;
+    }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 10px 6px;
+      border: none;
+      background: transparent;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .auth-tab-btn.active {
+      background: white;
+      color: var(--brand-navy);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .auth-tab-btn i { font-size: 14px; }
+    .auth-tab-btn.active i { color: var(--brand-red); }
+
+    .tab-content {
+      padding: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-wrapper i.prefix-icon {
+      position: absolute;
+      left: 14px;
+      color: #94a3b8;
+      font-size: 15px;
+    }
+    .input-field {
+      width: 100%;
+      padding: 12px 14px 12px 42px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.2s;
+    }
+    .input-field:focus {
+      border-color: var(--brand-navy);
+      box-shadow: 0 0 0 3px rgba(30, 34, 96, 0.12);
+    }
+
+    /* Role Selector Pills */
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .role-pill {
+      border: 1.5px solid var(--border-color);
+      padding: 10px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #475569;
+      transition: all 0.2s;
+      background: #fafafa;
+      text-align: center;
+    }
+    .role-pill:hover {
+      background: #f1f5f9;
+    }
+    .role-pill.selected {
+      border-color: var(--brand-red);
+      background: #fff1f2;
+      color: var(--brand-red);
+    }
+    .role-pill i { font-size: 16px; }
+
+    /* Action Buttons */
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--brand-red) 0%, #b81c22 100%);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 10px 20px rgba(215, 38, 45, 0.25);
+      transition: all 0.2s;
+      margin-top: 18px;
+    }
+    .btn-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(215, 38, 45, 0.35);
+    }
+    .btn-submit:active {
+      transform: translateY(1px);
+    }
+
+    .btn-quick-auth {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #0068FF 0%, #0050c8 100%);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 20px rgba(0, 104, 255, 0.25);
+      transition: all 0.2s;
+    }
+    .btn-quick-auth:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(0, 104, 255, 0.35);
+    }
+
+    /* OTP Inputs */
+    .otp-inputs {
+      display: flex;
+      gap: 8px;
+      justify-content: space-between;
+      margin: 14px 0;
+    }
+    .otp-input {
+      width: 48px;
+      height: 52px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 800;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .otp-input:focus {
+      border-color: var(--brand-red);
+      box-shadow: 0 0 0 3px rgba(215, 38, 45, 0.15);
+    }
+
+    /* Alert and notifications */
+    .alert-banner {
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .alert-info {
+      background: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+    .alert-success {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    .alert-error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    /* Demo Quick Fill Cards */
+    .quick-test-section {
+      background: #f8fafc;
+      border-top: 1px solid var(--border-color);
+      padding: 16px 24px;
+    }
+    .quick-test-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .quick-accounts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .quick-acc-btn {
+      background: white;
+      border: 1px solid var(--border-color);
+      padding: 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .quick-acc-btn:hover {
+      border-color: var(--brand-navy);
+      background: #eff6ff;
+      color: var(--brand-navy);
+    }
+    .quick-acc-btn span {
+      display: block;
+      font-size: 9px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    /* Logged In State Panel */
+    .logged-in-panel {
+      padding: 24px;
+      text-align: center;
+      display: none;
+    }
+    .user-avatar-wrap {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-navy), var(--brand-red));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      margin-bottom: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    .role-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 8px 0 14px;
+    }
+    .role-badge.master_admin { background: #fee2e2; color: #dc2626; }
+    .role-badge.merchant { background: #e0e7ff; color: #4338ca; }
+    .role-badge.worker { background: #fef3c7; color: #d97706; }
+    .role-badge.customer { background: #dcfce7; color: #15803d; }
+
+    .nav-shortcuts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .nav-btn {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      background: white;
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      border-color: var(--brand-navy);
+      background: #f8fafc;
+      transform: translateY(-2px);
+    }
+    .nav-btn i { font-size: 20px; }
+
+    .rbac-guide {
+      margin-top: 20px;
+      max-width: 520px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 16px 20px;
+      color: white;
+      font-size: 12px;
+    }
+    .rbac-guide h4 {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--brand-gold);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .rbac-roles-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .rbac-item {
+      background: rgba(0, 0, 0, 0.25);
+      padding: 8px 10px;
+      border-radius: 10px;
+      line-height: 1.4;
+    }
+    .rbac-item b { color: #f8fafc; font-size: 12px; display: block; }
+    .rbac-item span { color: #94a3b8; font-size: 11px; }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <!-- Header -->
+    <div class="header-banner">
+      <div class="logo-badge">
+        <img src="datphu_logo.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" alt="Đất Phú Logo">
+      </div>
+      <h1>CÔNG NGHỆ ĐẤT PHÚ</h1>
+      <p>Cổng Xác Thực Đa Kênh & Phân Quyền Hệ Thống (RBAC)</p>
+    </div>
+
+    <!-- Logged in State Container -->
+    <div id="loggedInPanel" class="logged-in-panel">
+      <div class="user-avatar-wrap">
+        <i class="fa-solid fa-user-check"></i>
+      </div>
+      <h2 id="dispFullName" style="font-size: 18px; font-weight: 800;">Nguyễn Quốc Khánh</h2>
+      <p id="dispIdentifier" style="font-size: 13px; color: #64748b; font-weight: 600;">admin@datphu.vn</p>
+      <div id="dispRoleBadge" class="role-badge master_admin">CHỦ SÀN (MASTER ADMIN)</div>
+
+      <div style="background: #f8fafc; border-radius: 12px; padding: 12px; border: 1px dashed #cbd5e1; font-size: 11px; text-align: left; margin: 10px 0;">
+        <div style="color: #64748b; font-weight: 700; margin-bottom: 4px;">JWT TOKEN ACTIVE (Bearer):</div>
+        <div id="dispToken" style="font-family: monospace; word-break: break-all; color: #1e293b; max-height: 48px; overflow-y: auto;">...</div>
+      </div>
+
+      <div style="font-size: 12px; font-weight: 800; color: #475569; margin-top: 14px; text-align: left;">
+        TRUY CẬP NHANH THEO VAI TRÒ:
+      </div>
+      <div class="nav-shortcuts" id="roleShortcuts">
+        <a href="datphu_platform_owner.html" id="adminShortcutBtn" class="nav-btn" style="color: #dc2626; display: none;">
+          <i class="fa-solid fa-crown"></i>
+          <span>Chủ Sàn Quản Trị</span>
+        </a>
+        <a href="vi_an_sinh_app.html" class="nav-btn" style="color: #4338ca;">
+          <i class="fa-solid fa-cash-register"></i>
+          <span>Ví An Sinh POS</span>
+        </a>
+        <a href="datphu_nearby_hub.html" class="nav-btn" style="color: #d97706;">
+          <i class="fa-solid fa-person-digging"></i>
+          <span>Tìm Thợ Quanh Đây</span>
+        </a>
+        <a href="datphu_map_3d.html" class="nav-btn" style="color: #0284c7;">
+          <i class="fa-solid fa-cube"></i>
+          <span>Bản Đồ 3D Twin</span>
+        </a>
+      </div>
+
+      <button onclick="handleLogout()" class="btn-submit" style="background: #f1f5f9; color: #475569; box-shadow: none; margin-top: 18px;">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng Xuất Khỏi Hệ Thống
+      </button>
+    </div>
+
+    <!-- Login Container -->
+    <div id="authFormWrapper">
+      <!-- Tabs Selector -->
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" onclick="switchTab('phone')">
+          <i class="fa-solid fa-mobile-screen"></i> SĐT / OTP
+        </button>
+        <button class="auth-tab-btn" onclick="switchTab('email')">
+          <i class="fa-solid fa-envelope"></i> Email / Mật khẩu
+        </button>
+        <button class="auth-tab-btn" onclick="switchTab('quick_test')">
+          <i class="fa-solid fa-comment-dots" style="color:#0068FF;"></i> Thử Nghiệm Nhanh
+        </button>
+      </div>
+
+      <!-- Tab 1: PHONE OTP -->
+      <div id="tab-phone" class="tab-content">
+        <div id="otpStepPhone">
+          <div class="form-group">
+            <label class="form-label">Số Điện Thoại Đăng Ký / Đăng Nhập</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-phone prefix-icon"></i>
+              <input type="tel" id="inputPhone" class="input-field" placeholder="Ví dụ: 0977478899" value="0977478899">
+            </div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 4px;">
+              * Hỗ trợ tất cả nhà mạng Viettel, VinaPhone, MobiFone tại Phú Yên & Đắk Lắk.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Chọn Vai Trò Tham Gia Hệ Sinh Thái</label>
+            <div class="role-grid">
+              <div class="role-pill selected" onclick="selectRole(this, 'merchant')">
+                <i class="fa-solid fa-store"></i>
+                <span>Chủ Quán / Hometel</span>
+              </div>
+              <div class="role-pill" onclick="selectRole(this, 'worker')">
+                <i class="fa-solid fa-wrench"></i>
+                <span>Thợ 6K Nghề</span>
+              </div>
+              <div class="role-pill" onclick="selectRole(this, 'customer')">
+                <i class="fa-solid fa-user"></i>
+                <span>Khách Hàng</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-submit" onclick="submitSendOtp()">
+            <i class="fa-solid fa-paper-plane"></i> GỬI MÃ XÁC THỰC OTP
+          </button>
+        </div>
+
+        <!-- Step 2: Enter OTP -->
+        <div id="otpStepVerify" style="display: none;">
+          <div class="alert-banner alert-info" id="otpNotice">
+            <i class="fa-solid fa-circle-info"></i>
+            <div>Mã OTP 6 số đã được gửi tới SĐT: <b id="otpTargetPhone">0977478899</b></div>
+          </div>
+
+          <label class="form-label" style="text-align: center; margin-bottom: 8px;">Nhập 6 Số Mã Xác Thực</label>
+          <div class="otp-inputs">
+            <input type="text" maxlength="1" class="otp-input" id="otp-1" oninput="moveOtp(1)">
+            <input type="text" maxlength="1" class="otp-input" id="otp-2" oninput="moveOtp(2)">
+            <input type="text" maxlength="1" class="otp-input" id="otp-3" oninput="moveOtp(3)">
+            <input type="text" maxlength="1" class="otp-input" id="otp-4" oninput="moveOtp(4)">
+            <input type="text" maxlength="1" class="otp-input" id="otp-5" oninput="moveOtp(5)">
+            <input type="text" maxlength="1" class="otp-input" id="otp-6" oninput="moveOtp(6)">
+          </div>
+
+          <button class="btn-submit" onclick="submitVerifyOtp()">
+            <i class="fa-solid fa-lock-open"></i> XÁC MINH VÀ ĐĂNG NHẬP
+          </button>
+
+          <div style="text-align: center; margin-top: 14px;">
+            <button onclick="backToPhoneStep()" style="border: none; background: transparent; color: #64748b; font-size: 12px; font-weight: 700; cursor: pointer;">
+              <i class="fa-solid fa-arrow-left"></i> Đổi số điện thoại khác
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: EMAIL / PASSWORD -->
+      <div id="tab-email" class="tab-content" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <span style="font-size: 13px; font-weight: 800; color: #1e293b;" id="emailModeTitle">ĐĂNG NHẬP BẰNG EMAIL</span>
+          <a href="javascript:void(0)" onclick="toggleEmailMode()" id="emailModeToggleBtn" style="font-size: 12px; font-weight: 700; color: var(--brand-red); text-decoration: none;">Chưa có tài khoản? Đăng ký</a>
+        </div>
+
+        <div class="form-group" id="fullNameGroup" style="display: none;">
+          <label class="form-label">Họ và Tên Đầy Đủ</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-signature prefix-icon"></i>
+            <input type="text" id="inputFullName" class="input-field" placeholder="Nguyễn Văn A">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Địa Chỉ Email</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope prefix-icon"></i>
+            <input type="email" id="inputEmail" class="input-field" placeholder="nhapemail@gmail.com" value="thanhgiang@gmail.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Mật Khẩu</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-key prefix-icon"></i>
+            <input type="password" id="inputPassword" class="input-field" placeholder="Nhập mật khẩu" value="123456">
+          </div>
+        </div>
+
+        <div class="form-group" id="emailRoleGroup" style="display: none;">
+          <label class="form-label">Chọn Vai Trò Tham Gia</label>
+          <div class="role-grid">
+            <div class="role-pill selected" onclick="selectEmailRole(this, 'merchant')">
+              <i class="fa-solid fa-store"></i>
+              <span>Chủ Quán / Hometel</span>
+            </div>
+            <div class="role-pill" onclick="selectEmailRole(this, 'worker')">
+              <i class="fa-solid fa-wrench"></i>
+              <span>Thợ 6K Nghề</span>
+            </div>
+            <div class="role-pill" onclick="selectEmailRole(this, 'customer')">
+              <i class="fa-solid fa-user"></i>
+              <span>Khách Hàng</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-submit" id="btnEmailAction" onclick="submitEmailAction()">
+          <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP NGAY
+        </button>
+      </div>
+
+      <!-- Tab 3: QUICK TEST LOGIN -->
+      <div id="tab-quick_test" class="tab-content" style="display: none;">
+        <div style="text-align: center; padding: 8px 0 16px;">
+          <div style="width: 54px; height: 54px; border-radius: 14px; background: #e0f2fe; color: var(--brand-blue); display: inline-flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 8px;">
+            <i class="fa-solid fa-comment-dots"></i>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 800; color: #1e293b;">Đăng Nhập Thử Nghiệm Nhanh 1-Chạm</h3>
+          <p style="font-size: 12px; color: #64748b; margin-top: 4px;">Chọn nhanh vai trò mẫu (Chủ Quán, Thợ 6K, Cư Dân) để kiểm tra các phân quyền trên hệ thống Đất Phú.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Chọn Tài Khoản Xác Thực Nhanh</label>
+          <select id="selectQuickMock" class="input-field" style="padding-left: 14px;">
+            <option value="thanhgiang_hometel">Chủ Quán Đất Phú Hometel (86 Lê Duẩn - 0977478899)</option>
+            <option value="chutung_tho6k">Chú Tùng Thợ Điện Nước 6K (0912345678)</option>
+            <option value="custom_user">Khách Hàng / Cư Dân Tuy Hòa Thân Thiết</option>
+          </select>
+        </div>
+
+        <button class="btn-quick-auth" onclick="submitQuickTestLogin()">
+          <i class="fa-solid fa-shield-check"></i> XÁC THỰC VÀO BẢNG ĐIỀU KHIỂN
+        </button>
+      </div>
+
+      <!-- Quick Test Accounts Bar -->
+      <div class="quick-test-section">
+        <div class="quick-test-title">
+          <span>Tài Khoản Trải Nghiệm Mẫu:</span>
+          <i class="fa-solid fa-bolt" style="color: var(--brand-gold);"></i>
+        </div>
+        <div class="quick-accounts">
+          <button class="quick-acc-btn" onclick="quickFill('thanhgiang@gmail.com', '123456', 'merchant')">
+            🏪 Đất Phú
+            <span>Chủ Hometel / POS</span>
+          </button>
+          <button class="quick-acc-btn" onclick="quickFill('chutung.diennuoc@gmail.com', '123456', 'worker')">
+            🔧 Thợ 6K Tùng
+            <span>Điện Nước</span>
+          </button>
+          <button class="quick-acc-btn" onclick="quickFill('khachhang@datphu.vn', '123456', 'customer')">
+            👤 Khách Hàng
+            <span>Cư Dân Tuy Hòa</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RBAC Definition Card -->
+  <div class="rbac-guide">
+    <h4><i class="fa-solid fa-users"></i> VAI TRÒ THAM GIA HỆ SINH THÁI ĐẤT PHÚ</h4>
+    <div class="rbac-roles-list" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="rbac-item">
+        <b>🏪 Chủ Quán / Homestay</b>
+        <span>Bán hàng POS, tạo VietQR tự động, xuất HĐĐT Máy tính tiền NĐ 123, xem báo cáo ngày.</span>
+      </div>
+      <div class="rbac-item">
+        <b>🔧 Thợ 6K Kỹ Thuật</b>
+        <span>Nhận việc quanh đây theo GPS 1-5km, cập nhật trạng thái làm việc, tích lũy công & thu nhập.</span>
+      </div>
+      <div class="rbac-item">
+        <b>👤 Khách Hàng / Dân</b>
+        <span>Tra cứu hóa đơn điện tử, tích lũy điểm an sinh, tìm thợ & gọi đồ ăn/quán quanh đây.</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = window.location.origin;
+    let currentTab = 'phone';
+    let selectedPhoneRole = 'merchant';
+    let selectedEmailRole = 'merchant';
+    let isEmailRegisterMode = false;
+    let lastGeneratedOtp = null;
+
+    // Kiểm tra phiên đăng nhập sẵn có
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedUser = localStorage.getItem('datphu_user');
+      const savedToken = localStorage.getItem('datphu_auth_token');
+      if (savedUser && savedToken) {
+        try {
+          renderLoggedIn(JSON.parse(savedUser), savedToken);
+        } catch(e) {}
+      }
+    });
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+
+      if (tab === 'phone') {
+        document.querySelector('.auth-tab-btn:nth-child(1)').classList.add('active');
+        document.getElementById('tab-phone').style.display = 'block';
+      } else if (tab === 'email') {
+        document.querySelector('.auth-tab-btn:nth-child(2)').classList.add('active');
+        document.getElementById('tab-email').style.display = 'block';
+      } else if (tab === 'quick_test') {
+        document.querySelector('.auth-tab-btn:nth-child(3)').classList.add('active');
+        document.getElementById('tab-quick_test').style.display = 'block';
+      }
+    }
+
+    function selectRole(element, role) {
+      document.querySelectorAll('#tab-phone .role-pill').forEach(p => p.classList.remove('selected'));
+      element.classList.add('selected');
+      selectedPhoneRole = role;
+    }
+
+    function selectEmailRole(element, role) {
+      document.querySelectorAll('#emailRoleGroup .role-pill').forEach(p => p.classList.remove('selected'));
+      element.classList.add('selected');
+      selectedEmailRole = role;
+    }
+
+    function toggleEmailMode() {
+      isEmailRegisterMode = !isEmailRegisterMode;
+      const title = document.getElementById('emailModeTitle');
+      const toggleBtn = document.getElementById('emailModeToggleBtn');
+      const btnAction = document.getElementById('btnEmailAction');
+      const nameGroup = document.getElementById('fullNameGroup');
+      const roleGroup = document.getElementById('emailRoleGroup');
+
+      if (isEmailRegisterMode) {
+        title.innerText = 'ĐĂNG KÝ TÀI KHOẢN MỚI';
+        toggleBtn.innerText = 'Đã có tài khoản? Đăng nhập';
+        btnAction.innerHTML = '<i class="fa-solid fa-user-plus"></i> ĐĂNG KÝ TÀI KHOẢN';
+        nameGroup.style.display = 'block';
+        roleGroup.style.display = 'block';
+      } else {
+        title.innerText = 'ĐĂNG NHẬP BẰNG EMAIL';
+        toggleBtn.innerText = 'Chưa có tài khoản? Đăng ký';
+        btnAction.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP NGAY';
+        nameGroup.style.display = 'none';
+        roleGroup.style.display = 'none';
+      }
+    }
+
+    // OTP Handlers
+    async function submitSendOtp() {
+      const phone = document.getElementById('inputPhone').value.trim();
+      if (!phone) {
+        alert('Vui lòng nhập số điện thoại');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/send-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone })
+        });
+        const data = await res.json();
+        if (data.success) {
+          lastGeneratedOtp = data.devOtp;
+          document.getElementById('otpTargetPhone').innerText = phone;
+          document.getElementById('otpStepPhone').style.display = 'none';
+          document.getElementById('otpStepVerify').style.display = 'block';
+
+          // Tự động điền mã OTP trong chế độ dev/test để tiện kiểm thử
+          if (data.devOtp) {
+            const otpArr = data.devOtp.split('');
+            for (let i = 1; i <= 6; i++) {
+              document.getElementById(`otp-${i}`).value = otpArr[i - 1] || '';
+            }
+          }
+        } else {
+          alert('Lỗi gửi OTP: ' + (data.error || 'Vui lòng thử lại'));
+        }
+      } catch (err) {
+        alert('Không thể kết nối Backend Server: ' + err.message);
+      }
+    }
+
+    function moveOtp(index) {
+      const cur = document.getElementById(`otp-${index}`);
+      if (cur.value.length === 1 && index < 6) {
+        document.getElementById(`otp-${index + 1}`).focus();
+      }
+    }
+
+    function backToPhoneStep() {
+      document.getElementById('otpStepPhone').style.display = 'block';
+      document.getElementById('otpStepVerify').style.display = 'none';
+    }
+
+    async function submitVerifyOtp() {
+      const phone = document.getElementById('inputPhone').value.trim();
+      let otpCode = '';
+      for (let i = 1; i <= 6; i++) {
+        otpCode += document.getElementById(`otp-${i}`).value;
+      }
+
+      if (otpCode.length !== 6) {
+        alert('Vui lòng nhập đủ 6 chữ số OTP');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, otp: otpCode, role: selectedPhoneRole })
+        });
+        const data = await res.json();
+        if (data.success) {
+          saveSession(data.user, data.token);
+          renderLoggedIn(data.user, data.token);
+        } else {
+          alert('Xác minh OTP thất bại: ' + (data.error || 'Mã không đúng'));
+        }
+      } catch (err) {
+        alert('Lỗi xác minh: ' + err.message);
+      }
+    }
+
+    // Email Handlers
+    async function submitEmailAction() {
+      const email = document.getElementById('inputEmail').value.trim();
+      const password = document.getElementById('inputPassword').value;
+
+      if (!email || !password) {
+        alert('Vui lòng nhập đủ Email và Mật khẩu');
+        return;
+      }
+
+      if (isEmailRegisterMode) {
+        const fullName = document.getElementById('inputFullName').value.trim() || 'Thành Viên Đất Phú';
+        try {
+          const res = await fetch(`${API_BASE}/api/auth/register-email`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, fullName, role: selectedEmailRole })
+          });
+          const data = await res.json();
+          if (data.success) {
+            saveSession(data.user, data.token);
+            renderLoggedIn(data.user, data.token);
+          } else {
+            alert('Đăng ký không thành công: ' + (data.error || 'Email đã tồn tại'));
+          }
+        } catch (e) {
+          alert('Lỗi đăng ký: ' + e.message);
+        }
+      } else {
+        try {
+          const res = await fetch(`${API_BASE}/api/auth/login-email`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          const data = await res.json();
+          if (data.success) {
+            saveSession(data.user, data.token);
+            renderLoggedIn(data.user, data.token);
+          } else {
+            alert('Đăng nhập thất bại: ' + (data.error || 'Email hoặc mật khẩu không chính xác'));
+          }
+        } catch (e) {
+          alert('Lỗi đăng nhập: ' + e.message);
+        }
+      }
+    }
+
+    // Quick Test Handlers
+    async function submitQuickTestLogin() {
+      const mockType = document.getElementById('selectQuickMock').value;
+      let payload = {};
+
+      if (mockType === 'khanh_master') {
+        payload = { quickAuthId: 'demo_khanh_master', quickAuthName: 'Nguyễn Quốc Khánh', quickAuthPhone: '0901234567', role: 'master_admin' };
+      } else if (mockType === 'thanhgiang_hometel') {
+        payload = { quickAuthId: 'demo_thanhgiang_86leduan', quickAuthName: 'Chủ Quán Đất Phú', quickAuthPhone: '0977478899', role: 'merchant' };
+      } else if (mockType === 'chutung_tho6k') {
+        payload = { quickAuthId: 'demo_chutung_6k', quickAuthName: 'Chú Nguyễn Văn Tùng', quickAuthPhone: '0912345678', role: 'worker' };
+      } else {
+        payload = { quickAuthId: 'user_' + Date.now().toString().slice(-4), quickAuthName: 'Khách Hàng Tuy Hòa', quickAuthPhone: '0988112233', role: 'customer' };
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/quick-test`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          saveSession(data.user, data.token);
+          renderLoggedIn(data.user, data.token);
+        } else {
+          alert('Lỗi đăng nhập: ' + (data.error || 'Không hợp lệ'));
+        }
+      } catch (e) {
+        alert('Lỗi kết nối: ' + e.message);
+      }
+    }
+
+    // Quick Fill Helper
+    function quickFill(email, pass, role) {
+      switchTab('email');
+      if (isEmailRegisterMode) toggleEmailMode();
+      document.getElementById('inputEmail').value = email;
+      document.getElementById('inputPassword').value = pass;
+    }
+
+    function saveSession(user, token) {
+      localStorage.setItem('datphu_user', JSON.stringify(user));
+      localStorage.setItem('datphu_auth_token', token);
+    }
+
+    function renderLoggedIn(user, token) {
+      document.getElementById('authFormWrapper').style.display = 'none';
+      document.getElementById('loggedInPanel').style.display = 'block';
+
+      document.getElementById('dispFullName').innerText = user.fullName || user.phone || 'Thành Viên Đất Phú';
+      document.getElementById('dispIdentifier').innerText = user.email || user.phone || user.id;
+      document.getElementById('dispToken').innerText = token || 'jwt-bearer-token-active';
+
+      const badge = document.getElementById('dispRoleBadge');
+      badge.className = 'role-badge ' + (user.role || 'customer');
+      const roleNames = {
+        master_admin: '👑 CHỦ SÀN (NỘI BỘ)',
+        merchant: '🏪 CHỦ QUÁN / HOMETEL',
+        worker: '🔧 THỢ 6K AN SINH',
+        customer: '👤 KHÁCH HÀNG'
+      };
+      badge.innerText = roleNames[user.role] || user.role.toUpperCase();
+
+      // Chỉ hiển thị shortcut Chủ Sàn nếu tài khoản thực sự có quyền master_admin nội bộ
+      const adminBtn = document.getElementById('adminShortcutBtn');
+      if (adminBtn) {
+        adminBtn.style.display = (user.role === 'master_admin') ? 'flex' : 'none';
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('datphu_user');
+      localStorage.removeItem('datphu_auth_token');
+      document.getElementById('loggedInPanel').style.display = 'none';
+      document.getElementById('authFormWrapper').style.display = 'block';
+      backToPhoneStep();
+    }
+  </script>
+</body>
+</html>

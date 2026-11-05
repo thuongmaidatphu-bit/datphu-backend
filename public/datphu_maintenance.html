@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cấu Hình Nâng Cấp & Bảo Trì | Hệ Sinh Thái Đất Phú</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Montserrat', sans-serif; }
+    .switch-checkbox:checked + .switch-label {
+      background-color: #D7262D;
+    }
+    .switch-checkbox:checked + .switch-label .switch-ball {
+      transform: translateX(24px);
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+
+  <!-- TOP ENTERPRISE BAR -->
+  <header class="bg-[#12153a] border-b border-slate-700/80 px-4 py-3 flex flex-wrap items-center justify-between text-xs gap-2">
+    <div class="flex items-center space-x-3">
+      <div class="h-8 w-8 bg-white rounded-lg p-0.5 flex items-center justify-center">
+        <img src="datphu_logo.jpg" alt="Logo" class="h-7 w-auto object-contain">
+      </div>
+      <div>
+        <div class="font-bold text-white uppercase tracking-wider text-sm flex items-center gap-2">
+          <span>TRUNG TÂM ĐIỀU HÀNH BẢO TRÌ & NÂNG CẤP ĐẤT PHÚ</span>
+          <span class="bg-red-600/30 text-red-400 text-[10px] px-2 py-0.5 rounded-full border border-red-500/40 font-bold">DEVINFRA GUARD</span>
+        </div>
+        <p class="text-slate-400 text-[11px]">CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ (MST: 4401020233) • 21/146 Ngô Gia Tự, TP. Tuy Hòa</p>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <a href="index.html" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold transition flex items-center gap-1.5 border border-slate-700">
+        <i class="fa-solid fa-house"></i>
+        <span>Về Trang Chủ Hệ Sinh Thái</span>
+      </a>
+      <a href="datphu_platform_owner.html" class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold transition flex items-center gap-1.5 shadow">
+        <i class="fa-solid fa-crown"></i>
+        <span>Sàn Chủ Quản</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN BODY -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 space-y-6">
+
+    <!-- HERO STATUS BANNER -->
+    <div id="statusBanner" class="p-5 rounded-2xl border transition-all duration-300 flex flex-col md:flex-row items-center justify-between gap-4 bg-emerald-950/40 border-emerald-500/40 text-emerald-200">
+      <div class="flex items-center space-x-4">
+        <div id="statusIconWrap" class="w-14 h-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-3xl text-emerald-400">
+          <i class="fa-solid fa-circle-check animate-pulse"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-black uppercase tracking-wider text-emerald-400">TRẠNG THÁI TOÀN SÀN HIỆN TẠI:</span>
+            <span id="badgeGlobalStatus" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-500 text-slate-950">HOẠT ĐỘNG 100%</span>
+          </div>
+          <h2 id="titleGlobalStatus" class="text-lg md:text-xl font-black text-white mt-0.5">Tất cả các dịch vụ Đất Phú Chợ Phiên đang phục vụ ổn định</h2>
+          <p id="descGlobalStatus" class="text-xs text-slate-300 mt-0.5">Không có gián đoạn nào trên mạng lưới Ví An Sinh POS, Thợ 6K và Cổng Ngân Hàng Napas247.</p>
+        </div>
+      </div>
+
+      <!-- MASTER KILL SWITCH -->
+      <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700 flex items-center space-x-3 flex-shrink-0">
+        <span class="text-xs font-bold text-slate-300">CHẾ ĐỘ BẢO TRÌ TỔNG:</span>
+        <div class="relative inline-block w-14 h-8 select-none">
+          <input type="checkbox" id="toggleGlobalMaintenance" onchange="toggleMasterMaintenance(this.checked)" class="switch-checkbox absolute opacity-0 w-0 h-0">
+          <label for="toggleGlobalMaintenance" class="switch-label block overflow-hidden h-8 rounded-full bg-slate-700 cursor-pointer transition-colors duration-200 p-1">
+            <span class="switch-ball block w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-200"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-COL DASHBOARD: HEALTH, MODULE TOGGLES, OTA UPGRADE -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- COL 1: SYSTEM HEALTH CHECK -->
+      <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-heart-pulse text-red-500 text-lg"></i>
+            <h3 class="font-black text-sm uppercase text-slate-100">Sức Khỏe Hệ Thống</h3>
+          </div>
+          <button onclick="refreshHealth()" class="text-xs text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-rotate"></i>
+          </button>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="text-slate-400">Phiên Bản Core:</span>
+            <span id="dispVersion" class="font-bold text-amber-400">v2.4.0 (Build 20261103)</span>
+          </div>
+          <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="text-slate-400">Thời Gian Hoạt Động (Uptime):</span>
+            <span id="dispUptime" class="font-bold text-emerald-400">...</span>
+          </div>
+          <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="text-slate-400">Bộ Nhớ RAM Máy Chủ:</span>
+            <span id="dispMemory" class="font-bold text-blue-400">... MB</span>
+          </div>
+          <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="text-slate-400">CSDL Supabase Cloud:</span>
+            <span class="font-bold text-emerald-400 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              PostgreSQL 15 Live
+            </span>
+          </div>
+          <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="text-slate-400">Kênh Realtime SSE:</span>
+            <span class="font-bold text-emerald-400">Đang Phát &lt; 2s</span>
+          </div>
+          <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="text-slate-400">Cổng VietQR Napas247:</span>
+            <span class="font-bold text-emerald-400">Sẵn Sàng</span>
+          </div>
+        </div>
+
+        <div class="p-3 bg-blue-950/40 border border-blue-800/40 rounded-xl text-blue-200 text-xs">
+          <i class="fa-solid fa-circle-info mr-1 text-blue-400"></i>
+          Hệ sinh thái tự động kiểm tra nhịp tim (Heartbeat ping) mỗi 10 giây qua kênh SSE.
+        </div>
+      </div>
+
+      <!-- COL 2: PHÂN HỆ ĐỘC LẬP (MODULE-LEVEL TOGGLES) -->
+      <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-cubes-stacked text-amber-500 text-lg"></i>
+            <h3 class="font-black text-sm uppercase text-slate-100">Bảo Trì Từng Phân Hệ</h3>
+          </div>
+          <span class="text-[11px] text-slate-400">5 Phân Hệ</span>
+        </div>
+
+        <div class="space-y-3" id="modulesListContainer">
+          <!-- POS -->
+          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                <span>🛒 Ví An Sinh POS</span>
+              </div>
+              <span class="text-[10px] text-slate-400">Thu ngân, HĐĐT MTT, in Bluetooth</span>
+            </div>
+            <button onclick="toggleSingleModule('pos')" id="btnMod-pos" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-600/30 text-emerald-300 border border-emerald-500/40">
+              Hoạt Động
+            </button>
+          </div>
+
+          <!-- NEARBY 6K -->
+          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                <span>🔧 Gọi Thợ 6K Quanh Đây</span>
+              </div>
+              <span class="text-[10px] text-slate-400">Radar PostGIS, điều phối 15-20P</span>
+            </div>
+            <button onclick="toggleSingleModule('nearby')" id="btnMod-nearby" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-600/30 text-emerald-300 border border-emerald-500/40">
+              Hoạt Động
+            </button>
+          </div>
+
+          <!-- MAP 3D -->
+          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                <span>🌐 Bản Đồ Số 3D Twin</span>
+              </div>
+              <span class="text-[10px] text-slate-400">Three.js, Tháp Nghinh Phong, Google Map</span>
+            </div>
+            <button onclick="toggleSingleModule('map3d')" id="btnMod-map3d" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-600/30 text-emerald-300 border border-emerald-500/40">
+              Hoạt Động
+            </button>
+          </div>
+
+          <!-- SWARM AI -->
+          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                <span>🤖 Trợ Lý Swarm AI</span>
+              </div>
+              <span class="text-[10px] text-slate-400">Tự động nhận diện ý định & đặt việc</span>
+            </div>
+            <button onclick="toggleSingleModule('ai')" id="btnMod-ai" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-600/30 text-emerald-300 border border-emerald-500/40">
+              Hoạt Động
+            </button>
+          </div>
+
+          <!-- BANK WEBHOOK -->
+          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                <span>⚡ Cổng Webhook Napas247</span>
+              </div>
+              <span class="text-[10px] text-slate-400">Lắng nghe biến động số dư ngân hàng</span>
+            </div>
+            <button onclick="toggleSingleModule('bankWebhook')" id="btnMod-bankWebhook" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-600/30 text-emerald-300 border border-emerald-500/40">
+              Hoạt Động
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- COL 3: KÍCH HOẠT NÂNG CẤP HỆ THỐNG OTA PUSH -->
+      <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-cloud-arrow-up text-blue-500 text-lg"></i>
+            <h3 class="font-black text-sm uppercase text-slate-100">Phát Lệnh Nâng Cấp OTA</h3>
+          </div>
+          <span class="text-[11px] text-emerald-400 font-bold">SSE Broadcast</span>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">Mã Phiên Bản Nâng Cấp Tiếp Theo</label>
+            <input type="text" id="inputNewVersion" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold outline-none focus:border-red-500" value="v2.5.0">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">Tiêu Đề Bản Cập Nhật</label>
+            <input type="text" id="inputUpgradeTitle" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold outline-none focus:border-red-500" value="Tối Ưu Hóa Radar Thợ 6K & Đồng Bộ Đất Phú Chợ Phiên">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">Nội Dung Bản Vá (Tách bằng dấu phẩy)</label>
+            <textarea id="inputUpgradeChanges" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500">Giảm độ trễ phát cuốc thợ xuống 1.2s, Tự động làm mới cache PWA, Cập nhật Hotline Phú Yên 097 999 1898</textarea>
+          </div>
+
+          <button onclick="triggerSystemUpgrade()" class="w-full py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>PHÁT LỆNH NÂNG CẤP TOÀN MẠNG LƯỚI</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPGRADE HISTORY & CHANGELOG -->
+    <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-clock-rotate-left text-slate-400 text-lg"></i>
+          <h3 class="font-black text-sm uppercase text-slate-100">Nhật Ký Nâng Cấp & Lịch Sử Phiên Bản (Changelog)</h3>
+        </div>
+        <span class="text-xs text-slate-400">Đất Phú Automated Log</span>
+      </div>
+
+      <div id="changelogList" class="space-y-2.5 text-xs">
+        <!-- Dynamic logs -->
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const API_BASE = window.location.origin;
+    let currentConfig = null;
+
+    async function loadStatus() {
+      try {
+        const res = await fetch(`${API_BASE}/api/system/status`);
+        const data = await res.json();
+        if (data.success) {
+          currentConfig = data;
+          renderUI(data);
+        }
+      } catch (e) {
+        console.error("Lỗi nạp trạng thái:", e);
+      }
+    }
+
+    function renderUI(data) {
+      const isMaint = data.maintenance.globalActive;
+      document.getElementById('toggleGlobalMaintenance').checked = isMaint;
+
+      const banner = document.getElementById('statusBanner');
+      const badge = document.getElementById('badgeGlobalStatus');
+      const title = document.getElementById('titleGlobalStatus');
+      const desc = document.getElementById('descGlobalStatus');
+      const iconWrap = document.getElementById('statusIconWrap');
+
+      if (isMaint) {
+        banner.className = 'p-5 rounded-2xl border transition-all duration-300 flex flex-col md:flex-row items-center justify-between gap-4 bg-red-950/60 border-red-500/50 text-red-200';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-black bg-red-600 text-white animate-pulse';
+        badge.innerText = 'ĐANG BẢO TRÌ TOÀN SÀN';
+        title.innerText = data.maintenance.title || 'Hệ Thống Đang Nâng Cấp Định Kỳ';
+        desc.innerText = data.maintenance.message || 'Hệ thống đang được bảo trì.';
+        iconWrap.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-red-400 animate-bounce"></i>';
+      } else {
+        banner.className = 'p-5 rounded-2xl border transition-all duration-300 flex flex-col md:flex-row items-center justify-between gap-4 bg-emerald-950/40 border-emerald-500/40 text-emerald-200';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-500 text-slate-950';
+        badge.innerText = 'HOẠT ĐỘNG 100%';
+        title.innerText = 'Tất cả các dịch vụ Đất Phú Chợ Phiên đang phục vụ ổn định';
+        desc.innerText = 'Không có gián đoạn nào trên mạng lưới Ví An Sinh POS, Thợ 6K và Cổng Ngân Hàng Napas247.';
+        iconWrap.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400 animate-pulse"></i>';
+      }
+
+      // Health metrics
+      document.getElementById('dispVersion').innerText = `${data.system.version} (Build ${data.system.buildNumber})`;
+      document.getElementById('dispUptime').innerText = data.health.uptimeFormatted;
+      document.getElementById('dispMemory').innerText = `${data.health.memoryUsageMB} MB`;
+
+      // Modules buttons
+      const mods = data.maintenance.modules || {};
+      for (const [key, mod] of Object.entries(mods)) {
+        const btn = document.getElementById(`btnMod-${key}`);
+        if (btn) {
+          if (mod.underMaintenance) {
+            btn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-red-600/40 text-red-300 border border-red-500/40';
+            btn.innerText = 'Bảo Trì';
+          } else {
+            btn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-600/30 text-emerald-300 border border-emerald-500/40';
+            btn.innerText = 'Hoạt Động';
+          }
+        }
+      }
+
+      // Changelog
+      const changelog = data.maintenance.upgradeHistory || [
+        { version: data.system.version, title: 'Bản cập nhật Đất Phú Chợ Phiên', date: data.system.lastUpgrade, changes: ['Bảo mật ẩn vai trò Quản trị sàn', 'Cấu hình bảo trì & nâng cấp hệ sinh thái'] }
+      ];
+      renderChangelog(changelog);
+    }
+
+    function renderChangelog(history) {
+      const container = document.getElementById('changelogList');
+      container.innerHTML = history.map(item => `
+        <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-xl space-y-1">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-white text-xs">${item.version} - ${item.title}</span>
+            <span class="text-[10px] text-slate-400">${new Date(item.date).toLocaleString('vi-VN')}</span>
+          </div>
+          <ul class="list-disc list-inside text-[11px] text-slate-300 space-y-0.5">
+            ${(item.changes || []).map(c => `<li>${c}</li>`).join('')}
+          </ul>
+        </div>
+      `).join('');
+    }
+
+    async function toggleMasterMaintenance(isChecked) {
+      try {
+        const res = await fetch(`${API_BASE}/api/system/maintenance`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            globalActive: isChecked,
+            message: isChecked 
+              ? "Hệ thống đang tiến hành nâng cấp hạ tầng đám mây Supabase và tối ưu radar điều phối thợ Tuy Hòa. Quý khách cần hỗ trợ tức thì vui lòng liên hệ Hotline: 097 999 1898."
+              : "Hệ sinh thái Đất Phú Chợ Phiên đã hoàn tất bảo trì và đang hoạt động bình thường."
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          loadStatus();
+          alert(isChecked ? "ĐÃ KÍCH HOẠT CHẾ ĐỘ BẢO TRÌ TOÀN SÀN!" : "ĐÃ TẮT BẢO TRÌ - HỆ THỐNG TRỞ LẠI BÌNH THƯỜNG!");
+        }
+      } catch (e) {
+        alert("Lỗi cập nhật: " + e.message);
+      }
+    }
+
+    async function toggleSingleModule(modKey) {
+      if (!currentConfig) return;
+      const cur = currentConfig.maintenance.modules[modKey] || {};
+      const newStatus = !cur.underMaintenance;
+
+      const patch = {
+        [modKey]: { ...cur, underMaintenance: newStatus }
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/api/system/maintenance`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ modules: patch })
+        });
+        const data = await res.json();
+        if (data.success) {
+          loadStatus();
+        }
+      } catch (e) {
+        alert("Lỗi: " + e.message);
+      }
+    }
+
+    async function triggerSystemUpgrade() {
+      const newVersion = document.getElementById('inputNewVersion').value.trim();
+      const title = document.getElementById('inputUpgradeTitle').value.trim();
+      const rawChanges = document.getElementById('inputUpgradeChanges').value.trim();
+      const changes = rawChanges.split(',').map(s => s.trim()).filter(Boolean);
+
+      if (!newVersion || !title) {
+        alert("Vui lòng nhập phiên bản và tiêu đề nâng cấp");
+        return;
+      }
+
+      if (!confirm(`Xác nhận phát lệnh nâng cấp phiên bản ${newVersion} tới toàn bộ thiết bị?`)) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/system/upgrade`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ newVersion, title, changes })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(`Thành công! ${data.message}`);
+          loadStatus();
+        }
+      } catch (e) {
+        alert("Lỗi nâng cấp: " + e.message);
+      }
+    }
+
+    function refreshHealth() {
+      loadStatus();
+    }
+
+    // Khởi chạy ban đầu
+    loadStatus();
+    setInterval(loadStatus, 10000);
+  </script>
+</body>
+</html>

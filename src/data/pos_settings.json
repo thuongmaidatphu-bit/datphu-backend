@@ -1,0 +1,86 @@
+{
+  "business": {
+    "companyName": "CÔNG TY CỔ PHẦN ĐẤT PHÚ CORE",
+    "brandName": "Đất Phú Hub & Cafe ENTERPRISE",
+    "branchName": "Chi nhánh 86 Lê Duẩn, TP. Tuy Hòa",
+    "taxCode": "4401020233",
+    "address": "86 Lê Duẩn, Phường 7, TP. Tuy Hòa, Tỉnh Phú Yên",
+    "hotline": "0912.888.xxx",
+    "email": "lienhe@datphucore.vn",
+    "cqtAuthority": "Chi cục Thuế TP. Tuy Hòa"
+  },
+  "printer": {
+    "enabled": true,
+    "deviceName": "POS-58 PT-210 (Quầy Thu Ngân)",
+    "paperSize": "58mm",
+    "autoPrintOnPayment": true,
+    "headerTitle": "ĐẤT PHÚ CORE - VÍ AN SINH",
+    "subTitle": "Đất Phú Hub & Cafe",
+    "address": "86 Lê Duẩn, Phường 7, TP. Tuy Hòa, Phú Yên",
+    "hotline": "0912.888.xxx",
+    "kitchenPrinter": {
+      "enabled": true,
+      "deviceName": "Kitchen Bar Printer LAN/Bluetooth",
+      "paperSize": "80mm",
+      "autoSplitFoodDrink": true
+    },
+    "cashDrawerRj11": {
+      "enabled": true,
+      "autoOpenOnCash": true
+    }
+  },
+  "vietqr": {
+    "enabled": true,
+    "bankId": "970436",
+    "bankName": "Vietcombank (VCB DigiBiz)",
+    "accountNumber": "1038899889",
+    "accountHolder": "CONG TY CP DAT PHU CORE",
+    "branch": "Chi nhánh Phú Yên",
+    "napasAutoConfirm": true,
+    "webhookSecret": "DP_SEC_2026_N8N",
+    "webhookEndpoint": "http://localhost:5000/api/pos/payments/bank-webhook",
+    "cardMposEnabled": true
+  },
+  "einvoice": {
+    "enabled": true,
+    "provider": "viettel_sinvoice",
+    "taxCode": "4401020233",
+    "templateSymbol": "1C26MDP",
+    "series": "C26MDP",
+    "companyName": "CÔNG TY CỔ PHẦN ĐẤT PHÚ CORE",
+    "taxAuthority": "Chi cục Thuế TP. Tuy Hòa",
+    "hsmMode": "cloud_hsm_auto",
+    "username": "4401020233_sinvoice",
+    "apiPassword": "••••••••••••",
+    "defaultVatRate": 8,
+    "n8nWebhookUrl": "https://n8n.datphucore.vn/webhook/issue-invoice",
+    "autoSendZns": true,
+    "autoSendEmail": true
+  },
+  "inventoryBOM": {
+    "multiInventorySyncEnabled": true,
+    "preCheckoutValidation": true,
+    "rawMaterialsTracking": true,
+    "retailTracking": true,
+    "lowStockThreshold": 10,
+    "autoGeneratePO": true,
+    "supplierAlerts": true
+  },
+  "pricingRules": {
+    "wholesaleEnabled": true,
+    "wholesaleMinQty": 5,
+    "happyHourEnabled": true,
+    "happyHourTime": "07:00 - 09:00",
+    "happyHourDiscount": 15,
+    "holidaySurchargeEnabled": false,
+    "holidaySurchargePercent": 10
+  },
+  "shiftPolicy": {
+    "requireCashCountZReport": true,
+    "maxDiscrepancyAllowed": 20000,
+    "notifyTelegramEOD": true,
+    "notifyZaloEOD": true,
+    "telegramChatId": "-100234567890",
+    "zaloOaWebhook": "https://n8n.datphucore.vn/webhook/zalo-eod-report"
+  }
+}

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Đất Phú OCOP Mart • Bán Lẻ Đặc Sản & Gian Hàng Sỉ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased select-none h-screen flex flex-col overflow-hidden">
+
+  <!-- TOP BAR OCOP MART -->
+  <header class="h-14 px-3 sm:px-4 bg-white border-b border-slate-200 flex items-center justify-between shadow-sm flex-shrink-0 z-30">
+    <div class="flex items-center space-x-3">
+      <a href="index.html" class="flex items-center space-x-2 text-slate-500 hover:text-[#1E2260] transition" title="Về Cổng Đất Phú Chợ Phiên">
+        <div class="h-8 w-8 bg-slate-100 rounded-lg flex items-center justify-center border border-slate-200">
+          <i class="fa-solid fa-arrow-left text-xs"></i>
+        </div>
+      </a>
+      <div class="flex items-center space-x-2">
+        <span class="text-xl">🛍️</span>
+        <div>
+          <div class="flex items-center space-x-1.5">
+            <h1 class="font-black text-sm sm:text-base text-[#1E2260] tracking-wide">ĐẤT PHÚ OCOP MART</h1>
+            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200">BÁN LẺ & GIÁ SỈ ĐẶC SẢN</span>
+          </div>
+          <div class="text-[10px] text-slate-500">Kiot quà lưu niệm du lịch & chuỗi nông sản HTX</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Navigation to Other Modules -->
+    <div class="flex items-center space-x-2">
+      <a href="fnb_pos.html" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center gap-1.5 border border-slate-200">
+        <span>☕</span> <span class="hidden sm:inline">Quán Cafe</span>
+      </a>
+      <a href="room_pms.html" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center gap-1.5 border border-slate-200">
+        <span>🏠</span> <span class="hidden sm:inline">Phòng Nghỉ</span>
+      </a>
+      <button onclick="focusSearch()" class="px-3 py-1.5 rounded-lg bg-[#1E2260] text-white font-bold text-xs shadow transition flex items-center gap-1.5">
+        <i class="fa-solid fa-barcode"></i> <span class="hidden md:inline">Quét Mã Vạch</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN OCOP LAYOUT -->
+  <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
+    
+    <!-- LEFT PANEL: CATALOG SẢN PHẨM & TÌM KIẾM NHANH -->
+    <section class="flex-1 flex flex-col border-r border-slate-200 bg-slate-50 overflow-hidden">
+      
+      <!-- Thanh Tìm Kiếm & Danh Mục -->
+      <div class="p-2.5 bg-white border-b border-slate-200 space-y-2">
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+          <input type="text" id="ocopSearchInput" placeholder="Tìm theo tên đặc sản hoặc quét mã vạch Barcode (F2)..." class="w-full pl-8 pr-3 py-1.5 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#1E2260]">
+        </div>
+
+        <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar">
+          <button onclick="filterCat('all')" class="cat-btn active px-3 py-1 rounded-full text-xs font-black bg-[#1E2260] text-white">Tất Cả</button>
+          <button onclick="filterCat('bo')" class="cat-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">🥩 Bò Một Nắng</button>
+          <button onclick="filterCat('seafood')" class="cat-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">🐟 Thủy Hải Sản</button>
+          <button onclick="filterCat('htx')" class="cat-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">🌾 Nông Sản HTX</button>
+          <button onclick="filterCat('souvenir')" class="cat-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">🎁 Quà Du Lịch</button>
+        </div>
+      </div>
+
+      <!-- Banner Ưu Đãi Giá Sỉ Tự Động -->
+      <div class="px-3 py-1.5 bg-emerald-50 border-b border-emerald-100 flex items-center justify-between text-[11px] text-emerald-800 font-semibold">
+        <span>🏷️ Chính sách tự động: Mua từ <b>5 Hộp/Sản phẩm</b> trở lên tự động áp dụng <b>Giá Sỉ Đại Lý</b></span>
+        <span class="text-xs">⚡ Tiết kiệm đến 15%</span>
+      </div>
+
+      <!-- Lưới Sản Phẩm OCOP -->
+      <div class="flex-1 p-3 overflow-y-auto no-scrollbar">
+        <div id="ocopProductsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          <!-- Render Javascript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL: GIỎ HÀNG BÁN LẺ & THANH TOÁN -->
+    <aside class="w-full md:w-[380px] lg:w-[400px] bg-white flex flex-col flex-shrink-0 shadow-lg border-t md:border-t-0 md:border-l border-slate-200 z-20">
+      
+      <!-- Header Giỏ Hàng -->
+      <div class="p-3 bg-slate-900 text-white flex items-center justify-between">
+        <div>
+          <div class="text-[10px] text-slate-400 font-bold uppercase">GIỎ HÀNG KHÁCH MUA</div>
+          <div class="font-black text-sm text-amber-400" id="cartSummaryCount">0 Sản phẩm</div>
+        </div>
+        <button onclick="clearCart()" class="px-2 py-1 bg-red-600/80 hover:bg-red-600 text-white rounded text-xs font-bold transition">
+          Xóa Hết
+        </button>
+      </div>
+
+      <!-- Danh Sách Sản Phẩm Mua -->
+      <div class="flex-1 p-3 overflow-y-auto no-scrollbar space-y-2 bg-slate-50" id="cartItemsList">
+        <!-- Render Javascript -->
+      </div>
+
+      <!-- Footer Tính Tiền & Thanh Toán -->
+      <div class="p-3 bg-white border-t border-slate-200 space-y-2.5 shadow-lg">
+        
+        <!-- Thông tin khách hàng & Tích điểm Ví An Sinh -->
+        <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+          <div class="flex justify-between items-center text-[10px] text-slate-500 font-bold">
+            <span>KHÁCH HÀNG / TÍCH ĐIỂM VÍ AN SINH:</span>
+            <span class="text-emerald-600">Tích lũy 1%</span>
+          </div>
+          <input type="tel" id="customerPhone" placeholder="Nhập SĐT khách hàng (tùy chọn)..." class="w-full px-2.5 py-1 text-xs border border-slate-300 rounded-lg focus:outline-none">
+        </div>
+
+        <div class="flex justify-between items-baseline pt-1">
+          <span class="text-xs font-bold text-slate-500">TỔNG THANH TOÁN:</span>
+          <span class="text-xl font-black text-[#D7262D]" id="cartTotalText">0 đ</span>
+        </div>
+
+        <!-- Nút Thanh Toán -->
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="checkoutCash()" class="py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl text-xs shadow transition flex items-center justify-center gap-1.5 active:scale-95">
+            <i class="fa-solid fa-money-bill-wave"></i>
+            <span>Tiền Mặt</span>
+          </button>
+          <button onclick="checkoutVietQR()" class="py-3 bg-[#D7262D] hover:bg-[#B91C22] text-white font-black rounded-xl text-xs shadow transition flex items-center justify-center gap-1.5 active:scale-95">
+            <i class="fa-solid fa-qrcode"></i>
+            <span>Quét VietQR</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- MODAL: VIETQR THANH TOÁN -->
+  <div id="vietqrModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-slate-200 text-center animate-in zoom-in-95">
+      <div class="p-3 bg-[#1E2260] text-white flex items-center justify-between">
+        <h3 class="font-black text-sm">THANH TOÁN VIETQR NAPAS 247</h3>
+        <button onclick="closeModal('vietqrModal')" class="text-white hover:text-red-200 text-lg font-bold">&times;</button>
+      </div>
+      <div class="p-5 space-y-3">
+        <div class="w-56 h-56 mx-auto bg-slate-100 rounded-xl border border-slate-300 flex items-center justify-center p-2 shadow-inner">
+          <img id="qrImage" src="" alt="VietQR Đất Phú" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <div class="text-xs text-slate-500 font-bold">Số tiền thanh toán:</div>
+          <div class="text-2xl font-black text-[#D7262D]" id="qrModalAmount">0 đ</div>
+        </div>
+        <div class="text-[11px] text-slate-500">Mã đơn hàng: <b id="qrModalOrderCode" class="text-slate-800">DP-OCOP-001</b></div>
+        <button onclick="finishCheckout('VietQR')" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow transition active:scale-95">
+          ✓ Xác Nhận Đã Nhận Tiền & In Hóa Đơn
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-[#1E2260] text-white px-4 py-2.5 rounded-2xl shadow-xl flex items-center space-x-2 text-xs font-bold border border-blue-400">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Thao tác thành công!</span>
+  </div>
+
+  <!-- JAVASCRIPT OCOP MART -->
+  <script>
+    // DỮ LIỆU ĐẶC SẢN OCOP ĐẤT PHÚ
+    let OCOP_PRODUCTS = [
+      {
+        id: "OCOP-01",
+        name: "Bò Một Nắng Krông Pa (Hộp 500g)",
+        cat: "bo",
+        unit: "Hộp 500g",
+        retailPrice: 185000,
+        wholesalePrice: 170000,
+        minWholesaleQty: 5,
+        stock: 45,
+        img: "🥩",
+        badge: "⭐ OCOP 4 Sao"
+      },
+      {
+        id: "OCOP-02",
+        name: "Bò Một Nắng Thượng Hạng (Hộp 1Kg)",
+        cat: "bo",
+        unit: "Hộp 1Kg",
+        retailPrice: 360000,
+        wholesalePrice: 335000,
+        minWholesaleQty: 5,
+        stock: 28,
+        img: "🥩",
+        badge: "⭐ OCOP 4 Sao"
+      },
+      {
+        id: "OCOP-03",
+        name: "Nước Mắm Gành Đỏ Truyền Thống (Chai 500ml)",
+        cat: "seafood",
+        unit: "Chai 500ml",
+        retailPrice: 65000,
+        wholesalePrice: 55000,
+        minWholesaleQty: 6,
+        stock: 120,
+        img: "🐟",
+        badge: "Làng Nghề Truyền Thống"
+      },
+      {
+        id: "OCOP-04",
+        name: "Mực Một Nắng Tuy Hòa (Gói 1Kg)",
+        cat: "seafood",
+        unit: "Gói 1Kg",
+        retailPrice: 320000,
+        wholesalePrice: 295000,
+        minWholesaleQty: 5,
+        stock: 18,
+        img: "🦑",
+        badge: "Đặc Sản Biển"
+      },
+      {
+        id: "OCOP-05",
+        name: "Hạt Điều Rang Củi Sông Hinh (Hộp 500g)",
+        cat: "htx",
+        unit: "Hộp 500g",
+        retailPrice: 125000,
+        wholesalePrice: 110000,
+        minWholesaleQty: 5,
+        stock: 64,
+        img: "🥜",
+        badge: "HTX Sông Hinh"
+      },
+      {
+        id: "OCOP-06",
+        name: "Mật Ong Rừng Tây Hòa (Chai 750ml)",
+        cat: "htx",
+        unit: "Chai 750ml",
+        retailPrice: 210000,
+        wholesalePrice: 190000,
+        minWholesaleQty: 3,
+        stock: 35,
+        img: "🍯",
+        badge: "Tự Nhiên 100%"
+      },
+      {
+        id: "OCOP-07",
+        name: "Bánh Tráng Hòa Đa Nhúng (Xấp 50 cái)",
+        cat: "htx",
+        unit: "Xấp 50 cái",
+        retailPrice: 45000,
+        wholesalePrice: 38000,
+        minWholesaleQty: 10,
+        stock: 80,
+        img: "🫓",
+        badge: "Đặc Sản Phú Yên"
+      },
+      {
+        id: "OCOP-08",
+        name: "Muối Kiến Vàng Krông Pa (Hũ 200g)",
+        cat: "bo",
+        unit: "Hũ 200g",
+        retailPrice: 35000,
+        wholesalePrice: 28000,
+        minWholesaleQty: 5,
+        stock: 150,
+        img: "🐜",
+        badge: "Gia Vị Độc Bản"
+      }
+    ];
+
+    let CART = [];
+    let currentCat = 'all';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts();
+      renderCart();
+
+      // Gõ tìm kiếm tức thời
+      document.getElementById('ocopSearchInput').addEventListener('input', (e) => {
+        renderProducts(e.target.value.toLowerCase().trim());
+      });
+    });
+
+    function filterCat(cat) {
+      currentCat = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.className = "cat-btn px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200";
+      });
+      event.target.className = "cat-btn active px-3 py-1 rounded-full text-xs font-black bg-[#1E2260] text-white";
+      renderProducts();
+    }
+
+    function renderProducts(searchQuery = '') {
+      const grid = document.getElementById('ocopProductsGrid');
+      let list = currentCat === 'all' ? OCOP_PRODUCTS : OCOP_PRODUCTS.filter(p => p.cat === currentCat);
+
+      if (searchQuery) {
+        list = list.filter(p => p.name.toLowerCase().includes(searchQuery));
+      }
+
+      if (list.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400 text-xs">Không tìm thấy sản phẩm phù hợp</div>`;
+        return;
+      }
+
+      grid.innerHTML = list.map(p => `
+        <div onclick="addToCart('${p.id}')" class="p-3 bg-white rounded-2xl border border-slate-200 hover:border-amber-400 shadow-2xs hover:shadow-md transition cursor-pointer flex flex-col justify-between h-48 active:scale-95">
+          <div>
+            <div class="flex items-start justify-between">
+              <span class="text-3xl">${p.img}</span>
+              <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-50 text-amber-800 border border-amber-200">${p.badge}</span>
+            </div>
+            <h4 class="font-bold text-xs text-slate-900 mt-2 leading-tight line-clamp-2">${p.name}</h4>
+            <div class="text-[10px] text-slate-400 mt-0.5">${p.unit} • Còn: ${p.stock}</div>
+          </div>
+
+          <div class="pt-2 border-t border-slate-100">
+            <div class="flex items-baseline justify-between">
+              <span class="text-xs font-black text-[#D7262D]">${p.retailPrice.toLocaleString('vi-VN')} đ</span>
+              <span class="text-[9px] text-emerald-700 font-bold">Sỉ: ${p.wholesalePrice.toLocaleString('vi-VN')} đ</span>
+            </div>
+            <button class="w-full mt-1.5 py-1 bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-700 font-bold rounded-lg text-[10px] transition">
+              ＋ Thêm Vào Giỏ
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(prodId) {
+      const prod = OCOP_PRODUCTS.find(p => p.id === prodId);
+      if (!prod) return;
+
+      const item = CART.find(i => i.id === prod.id);
+      if (item) {
+        item.qty += 1;
+      } else {
+        CART.push({
+          id: prod.id,
+          name: prod.name,
+          unit: prod.unit,
+          retailPrice: prod.retailPrice,
+          wholesalePrice: prod.wholesalePrice,
+          minWholesaleQty: prod.minWholesaleQty,
+          qty: 1
+        });
+      }
+
+      renderCart();
+      showToast(`Đã thêm 1 ${prod.unit} ${prod.name}!`);
+    }
+
+    function changeCartQty(index, delta) {
+      if (!CART[index]) return;
+      CART[index].qty += delta;
+      if (CART[index].qty <= 0) {
+        CART.splice(index, 1);
+      }
+      renderCart();
+    }
+
+    function clearCart() {
+      CART = [];
+      renderCart();
+      showToast("Đã xóa sạch giỏ hàng!");
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItemsList');
+      const countEl = document.getElementById('cartSummaryCount');
+      const totalEl = document.getElementById('cartTotalText');
+
+      const totalItems = CART.reduce((s, i) => s + i.qty, 0);
+      countEl.innerText = `${totalItems} Sản phẩm`;
+
+      if (CART.length === 0) {
+        container.innerHTML = `
+          <div class="py-16 text-center text-slate-400">
+            <span class="text-4xl block mb-2 opacity-50">🛍️</span>
+            <div class="font-bold text-xs">Giỏ hàng đặc sản đang trống</div>
+            <div class="text-[10px]">Chạm sản phẩm bên trái hoặc quét mã vạch</div>
+          </div>
+        `;
+        totalEl.innerText = "0 đ";
+        return;
+      }
+
+      let grandTotal = 0;
+
+      container.innerHTML = CART.map((item, idx) => {
+        // Tự động kiểm tra giá sỉ
+        const isWholesale = item.qty >= item.minWholesaleQty;
+        const currentPrice = isWholesale ? item.wholesalePrice : item.retailPrice;
+        const lineTotal = currentPrice * item.qty;
+        grandTotal += lineTotal;
+
+        return `
+          <div class="p-2.5 bg-white rounded-xl border ${isWholesale ? 'border-emerald-300 ring-1 ring-emerald-200' : 'border-slate-200'} shadow-2xs space-y-1">
+            <div class="flex items-start justify-between">
+              <div>
+                <div class="font-bold text-xs text-slate-900">${item.name}</div>
+                <div class="text-[10px] text-slate-500">${item.unit}</div>
+              </div>
+              ${isWholesale ? '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800">🏷️ Giá Sỉ</span>' : ''}
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+              <div class="flex items-center space-x-1 bg-slate-100 rounded-lg p-0.5">
+                <button onclick="changeCartQty(${idx}, -1)" class="w-5 h-5 bg-white rounded font-bold text-xs text-slate-700 hover:bg-slate-200">-</button>
+                <span class="px-1 text-xs font-black text-slate-800">${item.qty}</span>
+                <button onclick="changeCartQty(${idx}, 1)" class="w-5 h-5 bg-white rounded font-bold text-xs text-slate-700 hover:bg-slate-200">+</button>
+              </div>
+
+              <div class="text-right">
+                <div class="text-xs font-black text-slate-900">${lineTotal.toLocaleString('vi-VN')} đ</div>
+                <div class="text-[9px] text-slate-400">${currentPrice.toLocaleString('vi-VN')} đ / sp</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      totalEl.innerText = grandTotal.toLocaleString('vi-VN') + " đ";
+    }
+
+    function checkoutCash() {
+      if (CART.length === 0) {
+        alert("Giỏ hàng đang trống!");
+        return;
+      }
+      const grandTotal = calculateGrandTotal();
+      if (confirm(`Xác nhận thu tiền mặt ${grandTotal.toLocaleString('vi-VN')} đ?`)) {
+        finishCheckout('Tiền Mặt');
+      }
+    }
+
+    function checkoutVietQR() {
+      if (CART.length === 0) {
+        alert("Giỏ hàng đang trống!");
+        return;
+      }
+      const grandTotal = calculateGrandTotal();
+      const orderCode = "OCOP" + Date.now().toString().slice(-4);
+      const qrUrl = `https://img.vietqr.io/image/970422-0912888999-compact2.png?amount=${grandTotal}&addInfo=DATPHU%20${orderCode}&accountName=DAT%20PHU%20TECHNOLOGY`;
+
+      document.getElementById('qrImage').src = qrUrl;
+      document.getElementById('qrModalAmount').innerText = grandTotal.toLocaleString('vi-VN') + " đ";
+      document.getElementById('qrModalOrderCode').innerText = orderCode;
+      document.getElementById('vietqrModal').classList.remove('hidden');
+    }
+
+    function finishCheckout(method) {
+      const grandTotal = calculateGrandTotal();
+      closeModal('vietqrModal');
+      showToast(`Đã thanh toán thành công ${grandTotal.toLocaleString('vi-VN')} đ qua ${method}! In hóa đơn bán lẻ.`);
+      clearCart();
+    }
+
+    function calculateGrandTotal() {
+      return CART.reduce((sum, item) => {
+        const p = item.qty >= item.minWholesaleQty ? item.wholesalePrice : item.retailPrice;
+        return sum + (p * item.qty);
+      }, 0);
+    }
+
+    function focusSearch() {
+      const inp = document.getElementById('ocopSearchInput');
+      inp.focus();
+      showToast("Sẵn sàng quét mã vạch hoặc nhập tìm kiếm!");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function showToast(msg, icon = "✓") {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+  </script>
+</body>
+</html>

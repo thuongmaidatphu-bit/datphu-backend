@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tìm Thợ & Cửa Hàng Quanh Đây - Đất Phú</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .tap-highlight-transparent { -webkit-tap-highlight-color: transparent; }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 0.4; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .pulse-ring { animation: pulse-ring 2.5s infinite ease-in-out; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased select-none font-sans h-screen flex flex-col max-w-lg mx-auto shadow-2xl overflow-hidden border-x border-[var(--border)]">
+
+  <!-- TOP HEADER: LOGO ĐẤT PHÚ & ĐỊNH VỊ VỊ TRÍ HIỆN TẠI -->
+  <header class="p-3.5 bg-white dark:bg-[var(--card)] border-b border-[var(--border)] flex items-center justify-between shadow-sm flex-shrink-0 z-30">
+    <div class="flex items-center space-x-2.5">
+      <!-- Logo Đất Phú chính thức -->
+      <a href="index.html" title="Về Cổng Hệ Sinh Thái Đất Phú Chợ Phiên" class="h-9 flex items-center bg-white px-2 py-0.5 rounded-lg border border-slate-200 shadow-sm hover:opacity-90 transition">
+        <img src="datphu_logo.jpg" alt="Logo Đất Phú" class="h-7 w-auto object-contain">
+      </a>
+      <div>
+        <div class="flex items-center space-x-1">
+          <span class="font-black text-sm text-[#1E2260]">TÌM QUANH ĐÂY</span>
+          <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-red-100 text-[#D7262D]">TUY HÒA</span>
+        </div>
+        <!-- Vị trí GPS hiện tại -->
+        <div class="flex items-center space-x-1 text-xs text-[#1E2260] font-semibold cursor-pointer hover:underline" onclick="simulateGpsRefresh()">
+          <span>📍</span>
+          <span id="currentLocText">Đường Lê Duẩn, Phường 7</span>
+          <span class="text-[10px] text-[var(--muted-foreground)]">▼</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nút Lọc Bán Kính, Trợ Lý AI & Bản Đồ 3D -->
+    <div class="flex items-center space-x-1.5">
+      <a href="auth_login.html" class="p-1.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center space-x-1 border border-slate-300 shadow-sm" title="Đăng nhập tài khoản">
+        <span>👤</span>
+      </a>
+      <a href="datphu_map_3d.html" class="p-1.5 px-2.5 rounded-xl bg-[#1E2260] text-white text-xs font-black flex items-center space-x-1 shadow transition hover:bg-blue-900" title="Mở bản đồ 3D Tuy Hòa">
+        <span>🌐</span>
+        <span class="hidden sm:inline">Bản Đồ 3D</span>
+      </a>
+      <a href="datphu_ai_assistant.html" class="p-1.5 px-2 rounded-xl bg-gradient-to-r from-red-600 to-blue-700 text-white text-xs font-black flex items-center space-x-1 shadow transition">
+        <span>🤖</span>
+        <span class="hidden sm:inline">Hỏi AI</span>
+      </a>
+      <div class="flex items-center space-x-1 bg-[var(--content)] p-1 rounded-xl border border-[var(--border)] text-xs font-bold">
+        <button onclick="setRadius(1)" id="radBtn-1" class="px-2 py-1 rounded-lg bg-[#1E2260] text-white transition">1km</button>
+        <button onclick="setRadius(3)" id="radBtn-3" class="px-2 py-1 rounded-lg text-[var(--muted-foreground)] transition">3km</button>
+        <button onclick="setRadius(5)" id="radBtn-5" class="px-2 py-1 rounded-lg text-[var(--muted-foreground)] transition">5km</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SEARCH BAR TÌM KIẾM NHANH -->
+  <div class="p-3 bg-[var(--content)] border-b border-[var(--border)] flex items-center space-x-2 flex-shrink-0">
+    <div class="flex-1 relative">
+      <span class="absolute left-3 top-2.5 text-sm text-[var(--muted-foreground)]">🔍</span>
+      <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Tìm thợ điện nước, tủ đông, tiệm cafe, hometel..." class="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-[var(--card)] border border-[var(--border)] focus:outline-none focus:border-[#1E2260] text-[var(--foreground)]">
+    </div>
+    <button onclick="openSosModal()" class="px-3 py-2 bg-[#D7262D] hover:bg-[#B91C22] text-white font-bold rounded-xl text-xs flex items-center space-x-1 shadow-md active:scale-95 transition">
+      <span>🚨</span>
+      <span class="hidden sm:inline">Cứu Hộ</span>
+    </button>
+  </div>
+
+  <!-- TAB CHUYỂN ĐỔI: "THỢ SỬA CHỮA" VS "CỬA HÀNG ĐỐI TÁC" -->
+  <div class="flex border-b border-[var(--border)] bg-white dark:bg-[var(--card)] flex-shrink-0">
+    <button onclick="switchView('workers')" id="tab-workers" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-[#1E2260] text-[#1E2260] flex items-center justify-center space-x-1.5 transition">
+      <span>🔧</span>
+      <span>Thợ Kỹ Thuật (18)</span>
+    </button>
+    <button onclick="switchView('stores')" id="tab-stores" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-[var(--muted-foreground)] flex items-center justify-center space-x-1.5 transition">
+      <span>🏪</span>
+      <span>Cửa Hàng & Quán (34)</span>
+    </button>
+  </div>
+
+  <!-- RADAR MINI BÁO CÁO MẬT ĐỘ QUANH ĐÂY -->
+  <div class="px-4 py-2 bg-blue-50/70 border-b border-blue-100 flex items-center justify-between text-xs text-[#1E2260] flex-shrink-0">
+    <div class="flex items-center space-x-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      <span id="radarText">Đang có <b>18 thợ trực tuyến</b> trong bán kính 1km quanh Tuy Hòa</span>
+    </div>
+    <span class="text-[11px] font-bold text-[#D7262D]">✓ Đất Phú Bảo Chứng</span>
+  </div>
+
+  <!-- NỘI DUNG CUỘN CHÍNH -->
+  <main class="flex-1 p-3 overflow-y-auto space-y-3 no-scrollbar" id="mainContainer">
+    <!-- Render Javascript -->
+  </main>
+
+  <!-- MODAL ĐẶT THỢ ĐIỀU PHỐI (DISPATCH) -->
+  <div id="bookingModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in">
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-t-3xl sm:rounded-3xl w-full max-w-sm p-5 shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto">
+      
+      <div class="flex justify-between items-center mb-3">
+        <div class="flex items-center space-x-2">
+          <span class="text-xl" id="modalWorkerIcon">🔧</span>
+          <div>
+            <h3 class="font-bold text-sm text-[var(--foreground)]" id="modalWorkerName">Tên Thợ</h3>
+            <p class="text-[11px] text-emerald-600 font-semibold" id="modalWorkerStatus">Đang rảnh • Cách bạn 450m</p>
+          </div>
+        </div>
+        <button onclick="closeModal('bookingModal')" class="text-[var(--muted-foreground)] hover:text-[#D7262D] font-bold text-lg">✕</button>
+      </div>
+
+      <div class="p-3 bg-[var(--content)] rounded-2xl border border-[var(--border)] mb-3 space-y-2 text-xs">
+        <div class="flex justify-between text-[var(--muted-foreground)]">
+          <span>Chuyên môn:</span>
+          <b class="text-[var(--foreground)]" id="modalWorkerSkill">Điện Nước & Máy Bơm</b>
+        </div>
+        <div class="flex justify-between text-[var(--muted-foreground)]">
+          <span>Phí kiểm tra tận nơi:</span>
+          <b class="text-[#D7262D] font-black" id="modalWorkerFee">Miễn phí / 30.000 đ</b>
+        </div>
+        <div class="flex justify-between text-[var(--muted-foreground)]">
+          <span>Thời gian có mặt dự kiến:</span>
+          <b class="text-[#1E2260] font-bold">15 - 20 phút</b>
+        </div>
+      </div>
+
+      <!-- Mô tả sự cố nhanh -->
+      <label class="text-xs font-semibold text-[var(--muted-foreground)] mb-1">Mô tả nhanh sự cố của bạn:</label>
+      <div class="grid grid-cols-2 gap-1.5 mb-3 text-xs">
+        <button onclick="selectIssue(this, 'Chập điện / Nhảy aptomat')" class="issue-btn p-2 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:border-[#1E2260] text-left">⚡ Chập điện / Nhảy át</button>
+        <button onclick="selectIssue(this, 'Bồn nước tràn / Tắc cống')" class="issue-btn p-2 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:border-[#1E2260] text-left">💧 Nước tắc / Tràn bồn</button>
+        <button onclick="selectIssue(this, 'Tủ đông / Tủ mát không lạnh')" class="issue-btn p-2 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:border-[#1E2260] text-left">❄️ Tủ đông mất lạnh</button>
+        <button onclick="selectIssue(this, 'Mạng WiFi quán rớt')" class="issue-btn p-2 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:border-[#1E2260] text-left">📶 WiFi sảnh rớt mạng</button>
+      </div>
+
+      <!-- Số điện thoại người gọi -->
+      <label class="text-xs font-semibold text-[var(--muted-foreground)] mb-1">Số điện thoại liên hệ của bạn:</label>
+      <input type="tel" value="0987.xxx.xxx" class="p-2.5 rounded-xl border border-[var(--border)] bg-[var(--card)] text-xs font-bold mb-4 focus:outline-none focus:border-[#1E2260]">
+
+      <button onclick="confirmBooking()" class="w-full py-3.5 bg-[#D7262D] hover:bg-[#B91C22] text-white font-bold rounded-xl text-sm shadow-md active:scale-95 transition">
+        🚀 XÁC NHẬN ĐIỀU PHỐI THỢ NGAY
+      </button>
+    </div>
+  </div>
+
+  <!-- TOAST THÔNG BÁO -->
+  <div id="toast" class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-[#1E2260] text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-2 text-xs font-bold border border-blue-400 transition-all">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Đã điều phối thợ thành công!</span>
+  </div>
+
+  <script>
+    // DỮ LIỆU THỰC TẾ: THỢ KỸ THUẬT QUANH ĐÂY (TUY HÒA, PHÚ YÊN)
+    const WORKERS = [
+      {
+        id: 1,
+        name: "Chú Hùng - Điện Nước Tuy Hòa",
+        skill: "Điện Dân Dụng & Máy Bơm Nước",
+        rating: 4.9,
+        reviews: 142,
+        dist: 450, // mét
+        area: "Đường Hùng Vương (Cách 450m)",
+        status: "available",
+        phone: "0913.456.789",
+        price: "Từ 50.000 đ",
+        avatar: "👨‍🔧",
+        badges: ["Đất Phú Certified", "Có mặt 15p"]
+      },
+      {
+        id: 2,
+        name: "Anh Tuấn - Điện Lạnh Tủ Đông",
+        skill: "Sửa Tủ Mát, Tủ Đông, Máy Lạnh Quán",
+        rating: 4.95,
+        reviews: 98,
+        dist: 800,
+        area: "Đường Trần Hưng Đạo (Cách 800m)",
+        status: "available",
+        phone: "0905.123.456",
+        price: "Từ 100.000 đ",
+        avatar: "❄️",
+        badges: ["Chuyên Quán Cafe", "Bảo hành 3 tháng"]
+      },
+      {
+        id: 3,
+        name: "Khánh IT - Mạng & Camera Đất Phú",
+        skill: "WiFi Sảnh Hometel, Camera An Ninh, Máy POS",
+        rating: 5.0,
+        reviews: 215,
+        dist: 650,
+        area: "Khu Đô Thị Hùng Vương (Cách 650m)",
+        status: "available",
+        phone: "0977.888.999",
+        price: "Từ 80.000 đ",
+        avatar: "💻",
+        badges: ["Kỹ sư Đất Phú Core", "Hỗ trợ 24/7"]
+      },
+      {
+        id: 4,
+        name: "Thợ Sửa Khóa & Cửa Cuốn Minh Phát",
+        skill: "Khóa Vân Tay, Cửa Cuốn, Cửa Kính Sảnh",
+        rating: 4.8,
+        reviews: 76,
+        dist: 1200,
+        area: "Đường Nguyễn Huệ (Cách 1.2km)",
+        status: "busy",
+        phone: "0935.222.333",
+        price: "Từ 70.000 đ",
+        avatar: "🔑",
+        badges: ["Cứu hộ 24/24"]
+      },
+      {
+        id: 5,
+        name: "Bác Sáu - Cơ Khí & Bồn Nước Inox",
+        skill: "Hàn Bồn Nước, Khung Sắt, Mái Che Quán",
+        rating: 4.85,
+        reviews: 64,
+        dist: 1500,
+        area: "Phường 9, Tuy Hòa (Cách 1.5km)",
+        status: "available",
+        phone: "0982.555.666",
+        price: "Khảo sát miễn phí",
+        avatar: "🛠️",
+        badges: ["Thợ lành nghề 15 năm"]
+      }
+    ];
+
+    // DỮ LIỆU CỬA HÀNG & ĐỐI TÁC VÍ AN SINH
+    const STORES = [
+      {
+        id: 101,
+        name: "Đất Phú Hometel & Cà Phê",
+        type: "Hometel Lưu Trú & Cà Phê Sảnh",
+        address: "Lô HT17 - 86 Lê Duẩn, Phường 7, Tuy Hòa",
+        dist: 120, // mét
+        rating: 4.9,
+        status: "open",
+        phone: "0977.47.88.99",
+        tag: "Chấp nhận Ví An Sinh Napas247",
+        icon: "🏨"
+      },
+      {
+        id: 102,
+        name: "Cửa Hàng Thiết Bị Điện Nước Hòa Bình",
+        type: "Vật Tư Điện Nước, Ống Nhựa, Aptomat",
+        address: "142 Trần Hưng Đạo, Tuy Hòa",
+        dist: 550,
+        rating: 4.8,
+        status: "open",
+        phone: "0257.3822.111",
+        tag: "Giao vật tư tận quán trong 20p",
+        icon: "🔌"
+      },
+      {
+        id: 103,
+        name: "Đặc Sản Phú Yên - Bò Một Nắng Sông Hinh",
+        type: "Quà Tặng, Muối Kiến Vàng, Mắt Cá Ngừ",
+        address: "26 Nguyễn Huệ, Phường 5, Tuy Hòa",
+        dist: 750,
+        rating: 4.95,
+        status: "open",
+        phone: "0914.777.888",
+        tag: "OCOP 4 Sao • Chiết khấu Hometel",
+        icon: "🥩"
+      },
+      {
+        id: 104,
+        name: "Tiệm Tạp Hóa & Nước Giải Khát Cô Lan",
+        type: "Bách Hóa, Nước Đóng Chai, Đồ Tiêu Dùng",
+        address: "Góc Hùng Vương - Nguyễn Hữu Thọ",
+        dist: 350,
+        rating: 4.7,
+        status: "open",
+        phone: "0989.112.233",
+        tag: "Bán lẻ giá sỉ cho quán",
+        icon: "🏪"
+      }
+    ];
+
+    let currentView = 'workers'; // 'workers' | 'stores'
+    let currentRadius = 1; // 1km
+
+    function renderList() {
+      const container = document.getElementById('mainContainer');
+      const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+
+      if (currentView === 'workers') {
+        const filtered = WORKERS.filter(w => {
+          const matchRadius = (w.dist / 1000) <= currentRadius;
+          const matchKey = w.name.toLowerCase().includes(keyword) || w.skill.toLowerCase().includes(keyword);
+          return matchRadius && matchKey;
+        });
+
+        if (filtered.length === 0) {
+          container.innerHTML = `<div class="p-8 text-center text-xs text-[var(--muted-foreground)]">Không tìm thấy thợ phù hợp trong bán kính ${currentRadius}km. Hãy thử tăng bán kính lên 3km hoặc 5km.</div>`;
+          return;
+        }
+
+        container.innerHTML = filtered.map(w => `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5 shadow-sm hover:border-[#1E2260] transition flex flex-col space-y-2.5">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center space-x-2.5">
+                <div class="w-11 h-11 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-2xl shadow-sm">
+                  ${w.avatar}
+                </div>
+                <div>
+                  <div class="flex items-center space-x-1.5">
+                    <h3 class="font-bold text-xs text-[var(--foreground)]">${w.name}</h3>
+                    <span class="text-[10px] text-amber-500 font-bold">★ ${w.rating}</span>
+                  </div>
+                  <p class="text-[11px] font-semibold text-[#1E2260]">${w.skill}</p>
+                  <p class="text-[10px] text-[var(--muted-foreground)]">📍 ${w.area}</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${w.status === 'available' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'}">
+                ${w.status === 'available' ? '● Đang Rảnh' : 'Đang Bận'}
+              </span>
+            </div>
+
+            <!-- Badges -->
+            <div class="flex flex-wrap gap-1">
+              ${w.badges.map(b => `<span class="text-[9px] font-semibold bg-[var(--content)] border border-[var(--border)] px-1.5 py-0.5 rounded text-[var(--muted-foreground)]">${b}</span>`).join('')}
+            </div>
+
+            <!-- Actions -->
+            <div class="pt-2 border-t border-[var(--border)] flex items-center justify-between">
+              <div>
+                <span class="text-[10px] text-[var(--muted-foreground)]">Giá tham khảo:</span>
+                <span class="text-xs font-black text-[#D7262D] ml-1">${w.price}</span>
+              </div>
+              <div class="flex items-center space-x-1.5">
+                <a href="tel:${w.phone}" class="px-3 py-1.5 rounded-xl border border-blue-200 bg-blue-50 text-[#1E2260] font-bold text-xs flex items-center space-x-1 hover:bg-blue-100 transition">
+                  <span>📞</span>
+                  <span>Gọi Ngay</span>
+                </a>
+                <button onclick="openBookingModal(${w.id})" class="px-3.5 py-1.5 rounded-xl bg-[#1E2260] hover:bg-[#151846] text-white font-bold text-xs shadow transition">
+                  Đặt Lịch Điều Phối
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+      } else {
+        // Cửa hàng & Đối tác
+        const filtered = STORES.filter(s => {
+          const matchRadius = (s.dist / 1000) <= currentRadius;
+          const matchKey = s.name.toLowerCase().includes(keyword) || s.type.toLowerCase().includes(keyword);
+          return matchRadius && matchKey;
+        });
+
+        if (filtered.length === 0) {
+          container.innerHTML = `<div class="p-8 text-center text-xs text-[var(--muted-foreground)]">Không tìm thấy cửa hàng phù hợp trong bán kính ${currentRadius}km.</div>`;
+          return;
+        }
+
+        container.innerHTML = filtered.map(s => `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5 shadow-sm hover:border-[#1E2260] transition flex flex-col space-y-2">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center space-x-2.5">
+                <div class="w-11 h-11 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-2xl shadow-sm">
+                  ${s.icon}
+                </div>
+                <div>
+                  <h3 class="font-bold text-xs text-[var(--foreground)]">${s.name}</h3>
+                  <p class="text-[11px] font-semibold text-[#D7262D]">${s.type}</p>
+                  <p class="text-[10px] text-[var(--muted-foreground)]">📍 ${s.address} (${s.dist}m)</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#1E2260] border border-blue-200">
+                ★ ${s.rating}
+              </span>
+            </div>
+
+            <div class="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-200 flex items-center space-x-1">
+              <span>💳</span>
+              <span>${s.tag}</span>
+            </div>
+
+            <div class="pt-2 border-t border-[var(--border)] flex items-center justify-between">
+              <span class="text-[10px] text-[var(--muted-foreground)]">Mở cửa: 06:30 - 22:00</span>
+              <div class="flex items-center space-x-1.5">
+                <a href="tel:${s.phone}" class="px-3 py-1.5 rounded-xl border border-[var(--border)] font-bold text-xs hover:bg-[var(--content)] transition">
+                  Gọi Quán
+                </a>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s.address)}" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow hover:bg-emerald-700 transition flex items-center space-x-1">
+                  <span>🧭</span>
+                  <span>Chỉ Đường Google Maps</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function switchView(view) {
+      currentView = view;
+      const tabWorkers = document.getElementById('tab-workers');
+      const tabStores = document.getElementById('tab-stores');
+      const radar = document.getElementById('radarText');
+
+      if (view === 'workers') {
+        tabWorkers.className = "flex-1 py-2.5 text-xs font-bold border-b-2 border-[#1E2260] text-[#1E2260] flex items-center justify-center space-x-1.5 transition";
+        tabStores.className = "flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-[var(--muted-foreground)] flex items-center justify-center space-x-1.5 transition";
+        radar.innerHTML = `Đang có <b>18 thợ trực tuyến</b> trong bán kính ${currentRadius}km quanh Tuy Hòa`;
+      } else {
+        tabStores.className = "flex-1 py-2.5 text-xs font-bold border-b-2 border-[#1E2260] text-[#1E2260] flex items-center justify-center space-x-1.5 transition";
+        tabWorkers.className = "flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-[var(--muted-foreground)] flex items-center justify-center space-x-1.5 transition";
+        radar.innerHTML = `Đang có <b>34 cửa hàng & đối tác Ví An Sinh</b> quanh bạn`;
+      }
+      renderList();
+    }
+
+    function setRadius(r) {
+      currentRadius = r;
+      [1, 3, 5].forEach(val => {
+        const btn = document.getElementById(`radBtn-${val}`);
+        if (val === r) {
+          btn.className = "px-2 py-1 rounded-lg bg-[#1E2260] text-white transition";
+        } else {
+          btn.className = "px-2 py-1 rounded-lg text-[var(--muted-foreground)] transition";
+        }
+      });
+      renderList();
+    }
+
+    function handleSearch() {
+      renderList();
+    }
+
+    let activeWorker = null;
+    function openBookingModal(workerId) {
+      activeWorker = WORKERS.find(w => w.id === workerId);
+      if (!activeWorker) return;
+
+      document.getElementById('modalWorkerName').innerText = activeWorker.name;
+      document.getElementById('modalWorkerIcon').innerText = activeWorker.avatar;
+      document.getElementById('modalWorkerSkill').innerText = activeWorker.skill;
+      document.getElementById('modalWorkerFee').innerText = activeWorker.price;
+      document.getElementById('modalWorkerStatus').innerText = `Đang rảnh • Cách bạn ${activeWorker.dist}m`;
+
+      document.getElementById('bookingModal').classList.remove('hidden');
+    }
+
+    function selectIssue(btn, issueText) {
+      document.querySelectorAll('.issue-btn').forEach(b => {
+        b.classList.remove('border-[#1E2260]', 'bg-blue-50', 'text-[#1E2260]', 'font-bold');
+      });
+      btn.classList.add('border-[#1E2260]', 'bg-blue-50', 'text-[#1E2260]', 'font-bold');
+    }
+
+    function confirmBooking() {
+      closeModal('bookingModal');
+      showToast(`Đã gửi yêu cầu điều phối tới ${activeWorker ? activeWorker.name : 'thợ'}! Thợ sẽ gọi xác nhận trong 2 phút.`, "🚀");
+    }
+
+    function openSosModal() {
+      showToast("Đang kích hoạt tổng đài cứu hộ khẩn cấp Đất Phú: 0987.xxx.xxx...", "🚨");
+    }
+
+    function simulateGpsRefresh() {
+      showToast("Đang cập nhật vị trí GPS chính xác của bạn...", "📍");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function showToast(msg, icon = "✓") {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+
+    // Chạy mặc định
+    renderList();
+  </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Báo Cáo Doanh Thu - Ví An Sinh Đất Phú</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased font-sans p-4 md:p-6 max-w-5xl mx-auto min-h-screen flex flex-col">
+
+  <!-- TOP HEADER BRAND: VÍ AN SINH -->
+  <header class="flex items-center justify-between pb-4 border-b border-[var(--border)] mb-5">
+    <div class="flex items-center space-x-3">
+      <!-- Logo Đất Phú Gốc -->
+      <div class="h-10 flex items-center bg-white px-2 py-1 rounded-xl border border-slate-200 shadow-sm">
+        <img src="datphu_logo.jpg" alt="Logo Đất Phú" class="h-8 w-auto object-contain">
+      </div>
+      <div>
+        <div class="flex items-center space-x-1.5">
+          <span class="font-black text-base text-[#1E2260]">VÍ AN SINH</span>
+          <span class="text-xs font-bold text-[var(--muted-foreground)]">• Báo Cáo Doanh Thu Ngày</span>
+          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-[#1E2260] border border-blue-200">REALTIME</span>
+        </div>
+        <p class="text-xs text-[var(--muted-foreground)]">Hộ KD: Cà Phê Tuy Hòa • Dữ liệu hôm nay (3/11/2026)</p>
+      </div>
+    </div>
+
+    <!-- Cụm thao tác Tải Báo Cáo Excel/PDF, Bluetooth & In -->
+    <div class="flex items-center space-x-2">
+      <button onclick="downloadExcelReport()" class="px-3 py-1.5 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-800 text-xs font-bold flex items-center space-x-1 hover:bg-emerald-100 transition shadow-sm">
+        <span>📊</span>
+        <span>Xuất Excel (.xlsx)</span>
+      </button>
+      <button onclick="downloadPdfReport()" class="px-3 py-1.5 rounded-xl border border-red-300 bg-red-50 text-red-800 text-xs font-bold flex items-center space-x-1 hover:bg-red-100 transition shadow-sm">
+        <span>📄</span>
+        <span>Xuất PDF</span>
+      </button>
+      <button onclick="testBluetoothConnect()" id="btnBtStatus" class="px-3 py-1.5 rounded-xl border border-blue-200 bg-blue-50 text-[#1E2260] text-xs font-bold flex items-center space-x-1 hover:bg-blue-100 transition">
+        <span>🖨️</span>
+        <span id="btText">Máy In 58mm</span>
+      </button>
+      <button onclick="printDailySummary()" class="px-3.5 py-1.5 rounded-xl bg-[#1E2260] hover:bg-[#151846] text-white text-xs font-bold shadow transition flex items-center space-x-1">
+        <span>🖨️</span>
+        <span>In Bill</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 3 CARD CHỈ SỐ DOANH THU CỐT LÕI -->
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-3.5 mb-6">
+    <!-- 1. Tổng doanh thu -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm relative overflow-hidden">
+      <div class="flex justify-between items-center text-xs text-[var(--muted-foreground)] font-semibold">
+        <span>TỔNG THU HÔM NAY (VÍ AN SINH)</span>
+        <span class="px-2 py-0.5 rounded-md bg-red-100 text-[#D7262D] font-bold">48 đơn</span>
+      </div>
+      <div class="text-3xl font-black text-[#D7262D] mt-2 tracking-tight">1.825.000 đ</div>
+      <div class="text-xs text-[var(--muted-foreground)] mt-2 flex items-center space-x-1">
+        <span class="text-emerald-600 font-bold">↑ +14%</span>
+        <span>so với trung bình tuần trước</span>
+      </div>
+      <div class="absolute right-0 bottom-0 translate-x-2 translate-y-2 opacity-5 text-[#D7262D] text-7xl font-black pointer-events-none">₫</div>
+    </div>
+
+    <!-- 2. Doanh thu Tiền mặt -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm">
+      <div class="flex justify-between items-center text-xs text-[var(--muted-foreground)] font-semibold">
+        <span>TIỀN MẶT TẠI KÉT</span>
+        <span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-bold">34%</span>
+      </div>
+      <div class="text-2xl font-black text-slate-800 mt-2">620.000 đ</div>
+      <div class="text-xs text-[var(--muted-foreground)] mt-2">16 lượt giao dịch trực tiếp</div>
+    </div>
+
+    <!-- 3. Chuyển khoản QR Napas247 -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm">
+      <div class="flex justify-between items-center text-xs text-[var(--muted-foreground)] font-semibold">
+        <span>CHUYỂN KHOẢN VIETQR</span>
+        <span class="px-2 py-0.5 rounded-md bg-blue-100 text-blue-800 font-bold">66%</span>
+      </div>
+      <div class="text-2xl font-black text-blue-700 mt-2">1.205.000 đ</div>
+      <div class="text-xs text-[var(--muted-foreground)] mt-2">32 lượt quét mã không tiền mặt</div>
+    </div>
+  </section>
+
+  <!-- BẢNG ĐỐI SOÁT & CHI TIẾT ĐƠN HÀNG -->
+  <section class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+    <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+      <h3 class="font-black text-sm uppercase text-slate-800">Chi Tiết Giao Dịch Trong Ngày</h3>
+      <span class="text-xs text-slate-500">Đã chốt sổ: 48 hóa đơn</span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs">
+        <thead class="bg-slate-50 text-slate-500 font-bold">
+          <tr>
+            <th class="p-3">Mã Hóa Đơn</th>
+            <th class="p-3">Thời Gian</th>
+            <th class="p-3">Món / Dịch Vụ</th>
+            <th class="p-3">Hình Thức</th>
+            <th class="p-3">Số Tiền</th>
+            <th class="p-3">Trạng Thái</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 text-slate-700">
+          <tr>
+            <td class="p-3 font-bold text-slate-900">AS1005</td>
+            <td class="p-3">16:45:20</td>
+            <td class="p-3">Bò Một Nắng Sông Hinh (x2)</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">VietQR</span></td>
+            <td class="p-3 font-bold text-slate-900">560.000đ</td>
+            <td class="p-3 text-emerald-600 font-bold">✓ Thành Công</td>
+          </tr>
+          <tr>
+            <td class="p-3 font-bold text-slate-900">AS1004</td>
+            <td class="p-3">15:20:12</td>
+            <td class="p-3">Cà phê sữa đá + Bò Một Nắng</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">Tiền Mặt</span></td>
+            <td class="p-3 font-bold text-slate-900">300.000đ</td>
+            <td class="p-3 text-emerald-600 font-bold">✓ Thành Công</td>
+          </tr>
+          <tr>
+            <td class="p-3 font-bold text-slate-900">AS1003</td>
+            <td class="p-3">14:10:05</td>
+            <td class="p-3">Cà phê sữa đá Tuy Hòa (x2)</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">VietQR</span></td>
+            <td class="p-3 font-bold text-slate-900">40.000đ</td>
+            <td class="p-3 text-emerald-600 font-bold">✓ Thành Công</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="hidden fixed bottom-6 right-6 bg-slate-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xl flex items-center space-x-2 z-50">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Thao tác thành công</span>
+  </div>
+
+  <script>
+    let isConnected = false;
+
+    function downloadExcelReport() {
+      showToast("Đang tạo và tải file Excel báo cáo doanh thu...", "📊");
+      fetch('/api/export/excel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          report_date: new Date().toISOString().split('T')[0],
+          total_orders: 48,
+          total_revenue: 1825000,
+          cash_revenue: 620000,
+          qr_revenue: 1205000
+        })
+      })
+      .then(res => res.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `BaoCaoDoanhThu_${new Date().toISOString().split('T')[0]}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        showToast("Đã tải xong file Excel!", "✓");
+      })
+      .catch(err => alert("Lỗi tải file Excel: " + err.message));
+    }
+
+    function downloadPdfReport() {
+      showToast("Đang tạo và tải file PDF báo cáo doanh thu...", "📄");
+      fetch('/api/export/pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          report_date: new Date().toISOString().split('T')[0],
+          total_orders: 48,
+          total_revenue: 1825000,
+          cash_revenue: 620000,
+          qr_revenue: 1205000
+        })
+      })
+      .then(res => res.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `BaoCaoDoanhThu_${new Date().toISOString().split('T')[0]}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        showToast("Đã tải xong file PDF!", "✓");
+      })
+      .catch(err => alert("Lỗi tải file PDF: " + err.message));
+    }
+
+    function testBluetoothConnect() {
+      const btn = document.getElementById('btnBtStatus');
+      const text = document.getElementById('btText');
+
+      if (!isConnected) {
+        text.innerText = "Đang quét Bluetooth...";
+        setTimeout(() => {
+          isConnected = true;
+          text.innerText = "Đã kết nối PT-210 (58mm)";
+          btn.className = "px-3 py-1.5 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-700 text-xs font-bold flex items-center space-x-1 transition";
+          showToast("Đã ghép đôi máy in nhiệt PT-210 qua Web Bluetooth!", "✓");
+        }, 800);
+      } else {
+        isConnected = false;
+        text.innerText = "Máy In 58mm";
+        btn.className = "px-3 py-1.5 rounded-xl border border-blue-200 bg-blue-50 text-[#1E2260] text-xs font-bold flex items-center space-x-1 hover:bg-blue-100 transition";
+        showToast("Đã ngắt kết nối máy in Bluetooth", "ℹ️");
+      }
+    }
+
+    function printDailySummary() {
+      if (!isConnected) {
+        showToast("Vui lòng kết nối máy in 58mm trước!", "⚠️");
+        return;
+      }
+      showToast("Đang in Báo cáo Tổng kết Ví An Sinh ra máy in 58mm...", "🖨️");
+    }
+
+    function showToast(msg, icon = "✓") {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 2600);
+    }
+  </script>
+</body>
+</html>

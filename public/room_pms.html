@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Đất Phú Stay PMS • Quản Lý Buồng Phòng & Lưu Trú</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased select-none h-screen flex flex-col overflow-hidden">
+
+  <!-- TOP BAR STAY PMS -->
+  <header class="h-14 px-3 sm:px-4 bg-white border-b border-slate-200 flex items-center justify-between shadow-sm flex-shrink-0 z-30">
+    <div class="flex items-center space-x-3">
+      <a href="index.html" class="flex items-center space-x-2 text-slate-500 hover:text-[#1E2260] transition" title="Về Cổng Đất Phú Chợ Phiên">
+        <div class="h-8 w-8 bg-slate-100 rounded-lg flex items-center justify-center border border-slate-200">
+          <i class="fa-solid fa-arrow-left text-xs"></i>
+        </div>
+      </a>
+      <div class="flex items-center space-x-2">
+        <span class="text-xl">🏠</span>
+        <div>
+          <div class="flex items-center space-x-1.5">
+            <h1 class="font-black text-sm sm:text-base text-[#1E2260] tracking-wide">ĐẤT PHÚ STAY PMS</h1>
+            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200">CHUYÊN BUỒNG PHÒNG LƯU TRÚ</span>
+          </div>
+          <div class="text-[10px] text-slate-500">Quản lý check-in/out, tính tiền giờ/đêm & folio phòng</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Navigation to Other Modules -->
+    <div class="flex items-center space-x-2">
+      <a href="fnb_pos.html" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center gap-1.5 border border-slate-200">
+        <span>☕</span> <span class="hidden sm:inline">Quán Cafe</span>
+      </a>
+      <a href="ocop_mart.html" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center gap-1.5 border border-slate-200">
+        <span>🛍️</span> <span class="hidden sm:inline">OCOP Mart</span>
+      </a>
+      <button onclick="openCheckInModal()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition flex items-center gap-1.5 active:scale-95">
+        <span>＋</span> <span>Nhận Phòng Mới</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- SUB BAR: BỘ LỌC TÌNH TRẠNG PHÒNG -->
+  <div class="p-2 sm:p-3 bg-white border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 shadow-xs">
+    <div class="flex items-center space-x-1 sm:space-x-1.5 overflow-x-auto no-scrollbar">
+      <button onclick="filterRooms('all')" id="rf-all" class="rf-btn active px-3 py-1.5 rounded-lg text-xs font-black bg-[#1E2260] text-white">Tất Cả (8 Phòng)</button>
+      <button onclick="filterRooms('occupied')" id="rf-occupied" class="rf-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">🔴 Đang Ở (<span id="countOccupied">4</span>)</button>
+      <button onclick="filterRooms('available')" id="rf-available" class="rf-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">🟢 Phòng Trống (<span id="countAvailable">3</span>)</button>
+      <button onclick="filterRooms('dirty')" id="rf-dirty" class="rf-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">🟡 Chờ Dọn (<span id="countDirty">1</span>)</button>
+    </div>
+
+    <!-- Tóm tắt doanh thu phòng hôm nay -->
+    <div class="hidden sm:flex items-center space-x-3 text-xs">
+      <div class="text-slate-500">Công suất: <b class="text-emerald-700">50%</b></div>
+      <div class="text-slate-500">Doanh thu tạm tính: <b class="text-[#D7262D]">1.400.000 đ</b></div>
+    </div>
+  </div>
+
+  <!-- MAIN ROOMS GRID -->
+  <main class="flex-1 p-3 sm:p-4 overflow-y-auto no-scrollbar">
+    <div id="roomsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
+      <!-- Render Javascript -->
+    </div>
+  </main>
+
+  <!-- MODAL: CHECK-IN NHẬN PHÒNG MỚI -->
+  <div id="checkInModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-200 animate-in zoom-in-95">
+      <div class="p-3 bg-gradient-to-r from-[#1E2260] to-blue-900 text-white flex items-center justify-between">
+        <h3 class="font-black text-sm">CHECK-IN NHẬN PHÒNG LƯU TRÚ</h3>
+        <button onclick="closeModal('checkInModal')" class="text-white hover:text-red-200 text-lg font-bold">&times;</button>
+      </div>
+      <div class="p-4 space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Chọn Buồng Phòng Trống <span class="text-red-500">*</span></label>
+          <select id="ciRoomSelect" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold">
+            <!-- Render Rooms Available -->
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Họ Tên Khách Hàng <span class="text-red-500">*</span></label>
+            <input type="text" id="ciGuestName" placeholder="VD: Nguyễn Văn A" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-semibold">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Số Điện Thoại</label>
+            <input type="tel" id="ciGuestPhone" placeholder="0912.xxx.xxx" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-semibold">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Hình Thức Thuê</label>
+            <select id="ciRentalType" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-semibold">
+              <option value="night">🌙 Qua Đêm (350.000 đ/đêm)</option>
+              <option value="hour">⏱️ Theo Giờ (120.000 đ/2h)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Tiền Cọc (VND)</label>
+            <input type="number" id="ciDeposit" value="0" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold text-emerald-700">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Số CCCD / Hộ Chiếu (Khai báo tạm trú):</label>
+          <input type="text" id="ciIdCard" placeholder="12 chữ số CCCD gắn chip" class="w-full px-3 py-2 border border-slate-300 rounded-xl font-semibold">
+        </div>
+
+        <div class="pt-2 flex space-x-2">
+          <button onclick="submitCheckIn()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition active:scale-95">
+            ✓ Hoàn Tất Check-In & Giao Khóa
+          </button>
+          <button onclick="closeModal('checkInModal')" class="px-4 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs transition">
+            Hủy
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CHECK-OUT TRẢ PHÒNG & XUẤT HÓA ĐƠN TỔNG HỢP (FOLIO) -->
+  <div id="checkOutModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-200 animate-in zoom-in-95">
+      <div class="p-3 bg-gradient-to-r from-red-600 to-[#1E2260] text-white flex items-center justify-between">
+        <h3 class="font-black text-sm">QUYẾT TOÁN & TRẢ PHÒNG (CHECK-OUT)</h3>
+        <button onclick="closeModal('checkOutModal')" class="text-white hover:text-red-200 text-lg font-bold">&times;</button>
+      </div>
+
+      <div class="p-4 space-y-3 text-xs">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+          <div>
+            <div class="font-black text-base text-[#1E2260]" id="coRoomTitle">Phòng 101</div>
+            <div class="text-[11px] text-slate-500" id="coGuestInfo">Khách: Anh Hải (0912.xxx)</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold" id="coRentalTypeBadge">Qua đêm (1 đêm)</span>
+        </div>
+
+        <!-- Bảng kê chi phí hợp nhất (Folio) -->
+        <div class="space-y-1.5 bg-slate-50 p-3 rounded-xl border border-slate-200" id="coBillDetails">
+          <!-- Render Javascript -->
+        </div>
+
+        <div class="p-2.5 bg-red-50 rounded-xl border border-red-200 flex justify-between items-center">
+          <span class="font-bold text-slate-700">TỔNG THANH TOÁN:</span>
+          <span class="font-black text-lg text-[#D7262D]" id="coTotalAmount">0 đ</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 pt-2">
+          <button onclick="completeCheckOut('Tiền Mặt')" class="py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition active:scale-95 flex items-center justify-center gap-1">
+            <i class="fa-solid fa-money-bill-wave"></i> Thu Tiền Mặt
+          </button>
+          <button onclick="completeCheckOut('VietQR')" class="py-3 bg-[#1E2260] hover:bg-[#151846] text-white font-bold rounded-xl text-xs transition active:scale-95 flex items-center justify-center gap-1">
+            <i class="fa-solid fa-qrcode"></i> Quét VietQR
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-[#1E2260] text-white px-4 py-2.5 rounded-2xl shadow-xl flex items-center space-x-2 text-xs font-bold border border-blue-400">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Thao tác thành công!</span>
+  </div>
+
+  <!-- JAVASCRIPT ROOM PMS -->
+  <script>
+    // DỮ LIỆU 8 BUỒNG PHÒNG
+    let ROOMS = [
+      { 
+        id: "R-101", name: "Phòng 101", floor: "Tầng 1", type: "Đơn", status: "occupied", 
+        guest: "Anh Hải", phone: "0912.888.111", rentalType: "night", nights: 1, 
+        roomPrice: 350000, 
+        folioItems: [
+          { name: "Tiền phòng đêm 03/11", price: 350000 },
+          { name: "Cafe Đất Phú (Ghi nợ Bàn 02)", price: 65000 },
+          { name: "Nước suối Aquafina (Minibar)", price: 15000 }
+        ]
+      },
+      { 
+        id: "R-102", name: "Phòng 102", floor: "Tầng 1", type: "Đôi", status: "occupied", 
+        guest: "Chị Mai", phone: "0988.222.333", rentalType: "hour", hours: 2, 
+        roomPrice: 120000,
+        folioItems: [
+          { name: "Tiền phòng nghỉ 2 giờ", price: 120000 },
+          { name: "2 Lon Nước Yến (Minibar)", price: 40000 }
+        ]
+      },
+      { 
+        id: "R-103", name: "Phòng 103", floor: "Tầng 1", type: "Đơn", status: "available", 
+        guest: "", phone: "", rentalType: "night", roomPrice: 350000, folioItems: [] 
+      },
+      { 
+        id: "R-104", name: "Phòng 104", floor: "Tầng 1", type: "Gia đình", status: "dirty", 
+        guest: "", phone: "", rentalType: "night", roomPrice: 500000, folioItems: [] 
+      },
+      { 
+        id: "R-201", name: "Phòng 201", floor: "Tầng 2", type: "Đơn VIP", status: "occupied", 
+        guest: "Gia đình anh Tuấn", phone: "0903.444.555", rentalType: "night", nights: 2, 
+        roomPrice: 400000,
+        folioItems: [
+          { name: "Tiền phòng đêm (2 đêm)", price: 800000 },
+          { name: "1 Hộp Bò Một Nắng OCOP", price: 185000 },
+          { name: "Thêm nệm phụ (Extra Bed)", price: 100000 }
+        ]
+      },
+      { 
+        id: "R-202", name: "Phòng 202", floor: "Tầng 2", type: "Đơn", status: "occupied", 
+        guest: "Khách đoàn DL", phone: "0918.777.888", rentalType: "night", nights: 1, 
+        roomPrice: 350000,
+        folioItems: [
+          { name: "Tiền phòng 1 đêm", price: 350000 },
+          { name: "Ăn sáng Bánh Canh Hẹ", price: 70000 }
+        ]
+      },
+      { 
+        id: "R-203", name: "Phòng 203", floor: "Tầng 2", type: "Đôi", status: "available", 
+        guest: "", phone: "", rentalType: "night", roomPrice: 400000, folioItems: [] 
+      },
+      { 
+        id: "R-204", name: "Phòng 204", floor: "Tầng 2", type: "Đơn", status: "available", 
+        guest: "", phone: "", rentalType: "night", roomPrice: 350000, folioItems: [] 
+      }
+    ];
+
+    let currentFilter = 'all';
+    let selectedRoomForCheckout = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderRoomsGrid();
+    });
+
+    function filterRooms(status) {
+      currentFilter = status;
+      document.querySelectorAll('.rf-btn').forEach(b => {
+        b.className = "rf-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200";
+      });
+      document.getElementById('rf-' + status).className = "rf-btn px-3 py-1.5 rounded-lg text-xs font-black bg-[#1E2260] text-white";
+      renderRoomsGrid();
+    }
+
+    function renderRoomsGrid() {
+      const grid = document.getElementById('roomsGrid');
+      const list = currentFilter === 'all' ? ROOMS : ROOMS.filter(r => r.status === currentFilter);
+
+      // Update counters
+      document.getElementById('countOccupied').innerText = ROOMS.filter(r => r.status === 'occupied').length;
+      document.getElementById('countAvailable').innerText = ROOMS.filter(r => r.status === 'available').length;
+      document.getElementById('countDirty').innerText = ROOMS.filter(r => r.status === 'dirty').length;
+
+      grid.innerHTML = list.map(r => {
+        const isOccupied = r.status === 'occupied';
+        const isDirty = r.status === 'dirty';
+        const isAvailable = r.status === 'available';
+
+        let badge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">🟢 Phòng Trống</span>';
+        let borderColor = 'border-emerald-300 bg-white';
+        if (isOccupied) {
+          badge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-800">🔴 Đang Ở</span>';
+          borderColor = 'border-red-300 bg-red-50/30';
+        } else if (isDirty) {
+          badge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">🟡 Chờ Dọn</span>';
+          borderColor = 'border-amber-300 bg-amber-50/30';
+        }
+
+        const totalFolio = r.folioItems.reduce((s, it) => s + it.price, 0);
+
+        return `
+          <div class="p-3.5 rounded-2xl border ${borderColor} shadow-xs hover:shadow-md transition flex flex-col justify-between h-56">
+            <div>
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="font-black text-sm text-[#1E2260]">${r.name}</h3>
+                  <div class="text-[10px] text-slate-500">${r.floor} • Loại ${r.type}</div>
+                </div>
+                ${badge}
+              </div>
+
+              <!-- Nội dung khách -->
+              <div class="mt-2.5 space-y-1">
+                ${isOccupied ? `
+                  <div class="text-xs font-bold text-slate-800">Khách: ${r.guest}</div>
+                  <div class="text-[10px] text-slate-500">ĐT: ${r.phone} • Thuê: ${r.rentalType === 'night' ? 'Qua đêm' : 'Theo giờ'}</div>
+                  <div class="p-2 bg-white rounded-xl border border-slate-200 text-[11px] mt-1 space-y-0.5">
+                    <div class="text-[10px] text-slate-400 font-bold uppercase">Chi phí tích lũy (${r.folioItems.length} khoản):</div>
+                    <div class="font-black text-[#D7262D] text-xs">${totalFolio.toLocaleString('vi-VN')} đ</div>
+                  </div>
+                ` : isDirty ? `
+                  <div class="py-5 text-center text-amber-700">
+                    <span class="text-3xl block mb-1">🧹</span>
+                    <span class="text-xs font-bold">Phòng bẩn cần dọn dẹp</span>
+                  </div>
+                ` : `
+                  <div class="py-5 text-center text-slate-400">
+                    <span class="text-3xl block mb-1 opacity-50">🛏️</span>
+                    <span class="text-xs font-bold">Sẵn sàng đón khách</span>
+                    <div class="text-[10px]">${r.roomPrice.toLocaleString('vi-VN')} đ/đêm</div>
+                  </div>
+                `}
+              </div>
+            </div>
+
+            <!-- Nút Thao Tác Phù Hợp Trạng Thái -->
+            <div class="pt-2 border-t border-slate-100 flex gap-2">
+              ${isOccupied ? `
+                <button onclick="addFolioService('${r.id}')" class="flex-1 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold text-[10px] transition">
+                  ＋ Dịch Vụ
+                </button>
+                <button onclick="openCheckOut('${r.id}')" class="flex-1 py-1.5 bg-[#D7262D] hover:bg-[#B91C22] text-white rounded-lg font-bold text-[10px] shadow-xs transition">
+                  Trả Phòng
+                </button>
+              ` : isDirty ? `
+                <button onclick="markRoomCleaned('${r.id}')" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-xs transition">
+                  ✓ Đã Dọn Xong (Chuyển Trống)
+                </button>
+              ` : `
+                <button onclick="openCheckInModal('${r.id}')" class="w-full py-2 bg-[#1E2260] hover:bg-[#151846] text-white rounded-lg font-bold text-xs transition">
+                  ＋ Nhận Phòng
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openCheckInModal(defaultRoomId = null) {
+      const select = document.getElementById('ciRoomSelect');
+      const availableRooms = ROOMS.filter(r => r.status === 'available');
+
+      if (availableRooms.length === 0) {
+        alert("Hiện tại không có phòng trống để check-in!");
+        return;
+      }
+
+      select.innerHTML = availableRooms.map(r => `
+        <option value="${r.id}" ${r.id === defaultRoomId ? 'selected' : ''}>${r.name} (${r.floor} - ${r.type} - ${r.roomPrice.toLocaleString('vi-VN')} đ/đêm)</option>
+      `).join('');
+
+      document.getElementById('checkInModal').classList.remove('hidden');
+    }
+
+    function submitCheckIn() {
+      const roomId = document.getElementById('ciRoomSelect').value;
+      const guestName = document.getElementById('ciGuestName').value.trim();
+      const phone = document.getElementById('ciGuestPhone').value.trim();
+      const rentalType = document.getElementById('ciRentalType').value;
+      const idCard = document.getElementById('ciIdCard').value.trim();
+
+      if (!guestName) {
+        alert("Vui lòng nhập tên khách hàng!");
+        return;
+      }
+
+      const room = ROOMS.find(r => r.id === roomId);
+      if (!room) return;
+
+      room.status = 'occupied';
+      room.guest = guestName;
+      room.phone = phone || 'Chưa cung cấp';
+      room.rentalType = rentalType;
+      room.folioItems = [
+        { name: rentalType === 'night' ? 'Tiền phòng 1 đêm' : 'Tiền phòng nghỉ 2h đầu', price: rentalType === 'night' ? room.roomPrice : 120000 }
+      ];
+
+      closeModal('checkInModal');
+      renderRoomsGrid();
+      showToast(`Đã nhận phòng thành công cho khách ${guestName} tại ${room.name}!`);
+    }
+
+    function addFolioService(roomId) {
+      const room = ROOMS.find(r => r.id === roomId);
+      const svcName = prompt("Nhập tên dịch vụ/minibar thêm vào phòng " + room.name + ":", "Nước ngọt / giặt ủi");
+      if (!svcName) return;
+      const priceStr = prompt("Nhập số tiền (VND):", "20000");
+      const price = parseInt(priceStr) || 0;
+
+      room.folioItems.push({ name: svcName, price });
+      renderRoomsGrid();
+      showToast(`Đã thêm ${svcName} (${price.toLocaleString('vi-VN')} đ) vào ${room.name}!`);
+    }
+
+    function openCheckOut(roomId) {
+      selectedRoomForCheckout = ROOMS.find(r => r.id === roomId);
+      if (!selectedRoomForCheckout) return;
+
+      const r = selectedRoomForCheckout;
+      document.getElementById('coRoomTitle').innerText = r.name;
+      document.getElementById('coGuestInfo').innerText = `Khách: ${r.guest} • SĐT: ${r.phone}`;
+      document.getElementById('coRentalTypeBadge').innerText = r.rentalType === 'night' ? 'Thuê qua đêm' : 'Thuê theo giờ';
+
+      const billContainer = document.getElementById('coBillDetails');
+      billContainer.innerHTML = r.folioItems.map(it => `
+        <div class="flex justify-between items-center text-slate-700">
+          <span>• ${it.name}</span>
+          <span class="font-bold">${it.price.toLocaleString('vi-VN')} đ</span>
+        </div>
+      `).join('');
+
+      const total = r.folioItems.reduce((s, it) => s + it.price, 0);
+      document.getElementById('coTotalAmount').innerText = total.toLocaleString('vi-VN') + " đ";
+
+      document.getElementById('checkOutModal').classList.remove('hidden');
+    }
+
+    function completeCheckOut(method) {
+      if (!selectedRoomForCheckout) return;
+      const r = selectedRoomForCheckout;
+      const total = r.folioItems.reduce((s, it) => s + it.price, 0);
+
+      r.status = 'dirty';
+      r.guest = '';
+      r.phone = '';
+      r.folioItems = [];
+
+      closeModal('checkOutModal');
+      renderRoomsGrid();
+      showToast(`Đã quyết toán ${total.toLocaleString('vi-VN')} đ qua ${method}! Phòng chuyển sang trạng thái chờ dọn.`, "🧹");
+    }
+
+    function markRoomCleaned(roomId) {
+      const room = ROOMS.find(r => r.id === roomId);
+      if (!room) return;
+      room.status = 'available';
+      renderRoomsGrid();
+      showToast(`${room.name} đã được dọn sạch, sẵn sàng đón khách mới!`, "✨");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function showToast(msg, icon = "✓") {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+  </script>
+</body>
+</html>

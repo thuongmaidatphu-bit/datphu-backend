@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Gọi Thợ Tuy Hòa • Tìm Cửa Hàng Quanh Đây | Hệ Sinh Thái Đất Phú Chợ Phiên</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Montserrat', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .brand-red { color: #D7262D; }
+    .bg-brand-red { background-color: #D7262D; }
+    .brand-navy { color: #1E2260; }
+    .bg-brand-navy { background-color: #1E2260; }
+  </style>
+</head>
+<body class="bg-[#f8fafc] text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- ======================================================================== -->
+  <!-- 1. TOP ENTERPRISE BAR: THÔNG TIN PHÁP LÝ & TRẠNG THÁI CLOUD -->
+  <!-- ======================================================================== -->
+  <aside class="bg-[#12153a] text-slate-200 text-xs px-3 sm:px-6 py-2 flex flex-wrap items-center justify-between border-b border-slate-700/80 gap-2">
+    <div class="flex items-center space-x-2 truncate">
+      <i class="fa-solid fa-landmark text-amber-400"></i>
+      <span class="font-bold text-white uppercase tracking-wider">CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ (MST: 4401020233)</span>
+      <span class="text-slate-400 hidden lg:inline">• Trụ sở: Số 21/146 Ngô Gia Tự, TP. Tuy Hòa</span>
+    </div>
+
+    <div class="flex items-center space-x-2 flex-wrap text-[11px]">
+      <button onclick="openGalleryModal()" class="px-2.5 py-1 rounded bg-blue-900/60 hover:bg-blue-800 text-blue-200 font-bold transition flex items-center gap-1 border border-blue-700/50">
+        <i class="fa-solid fa-camera text-rose-400"></i>
+        <span>Ảnh Thực Tế Phú Yên</span>
+      </button>
+
+      <a href="auth_login.html" class="px-2.5 py-1 rounded bg-blue-700 hover:bg-blue-600 text-white font-bold transition flex items-center gap-1 shadow-sm">
+        <i class="fa-solid fa-user-shield"></i>
+        <span>Đăng Ký / Đăng Nhập Thợ</span>
+      </a>
+
+      <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-700/60 font-bold hidden sm:inline-flex items-center gap-1">
+        <i class="fa-solid fa-bolt text-yellow-400"></i> Có Mặt 15-20P
+      </span>
+
+      <span class="px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-700/60 font-bold hidden md:inline-flex items-center gap-1">
+        <i class="fa-solid fa-location-dot text-amber-400"></i> Radar Tuy Hòa Live
+      </span>
+
+      <span class="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-700/60 font-bold flex items-center gap-1">
+        <i class="fa-solid fa-cloud text-cyan-400"></i> Supabase Live
+      </span>
+    </div>
+  </aside>
+
+  <!-- ======================================================================== -->
+  <!-- 2. PWA INSTALL BANNER (ĐẤT PHÚ CHỢ PHIÊN WEB APP) -->
+  <!-- ======================================================================== -->
+  <div id="pwaBanner" class="bg-gradient-to-r from-blue-900 via-indigo-900 to-blue-950 text-white px-3 sm:px-6 py-2.5 flex items-center justify-between text-xs shadow-md border-b border-blue-800/40">
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 rounded-full bg-white p-0.5 shadow flex-shrink-0 flex items-center justify-center">
+        <img src="datphu_logo.jpg" alt="Logo Đất Phú" class="h-6 w-auto object-contain">
+      </div>
+      <div>
+        <div class="font-bold text-white sm:text-sm">Cài đặt Web App Gọi Thợ Tuy Hòa</div>
+        <p class="text-blue-200 text-[11px]">Dùng nhanh 1–chạm từ màn hình chính, tra cứu 24/7 không cần mở trình duyệt</p>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <button onclick="promptInstallPwa()" class="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs transition flex items-center gap-1 shadow">
+        <i class="fa-solid fa-download"></i>
+        <span>Cài Ngay</span>
+      </button>
+      <button onclick="document.getElementById('pwaBanner').style.display='none'" class="text-blue-300 hover:text-white p-1">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ======================================================================== -->
+  <!-- 3. REALTIME MAINTENANCE BANNER (TỰ ĐỘNG BẬT KHI CÓ LỆNH BẢO TRÌ TỪ SERVER) -->
+  <!-- ======================================================================== -->
+  <div id="maintenanceAlertBar" style="display: none;" class="bg-red-600 text-white px-4 py-2.5 text-xs font-bold flex items-center justify-between shadow-lg animate-pulse">
+    <div class="flex items-center space-x-2">
+      <i class="fa-solid fa-triangle-exclamation text-base text-yellow-300"></i>
+      <span id="maintenanceAlertText">HỆ THỐNG ĐANG BẢO TRÌ NÂNG CẤP ĐỊNH KỲ. QUÝ KHÁCH CẦN CỨU HỘ VUI LÒNG GỌI HOTLINE 097 999 1898</span>
+    </div>
+    <a href="tel:0979991898" class="px-2.5 py-1 bg-white text-red-700 rounded-md font-black hover:bg-yellow-100 transition">
+      GỌI NGAY
+    </a>
+  </div>
+
+  <!-- ======================================================================== -->
+  <!-- 4. MAIN ECOSYSTEM APP HEADER: HOTLINE CỨU HỘ & NÚT ĐIỀU HÀNH -->
+  <!-- ======================================================================== -->
+  <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand & Title -->
+      <div class="flex items-center space-x-3">
+        <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl shadow-md">
+          <i class="fa-solid fa-wrench"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-black text-lg sm:text-xl text-[#1E2260] tracking-tight">GỌI THỢ TUY HÒA</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-red-600 text-white shadow-sm">CỨU HỘ 24/7</span>
+          </div>
+          <p class="text-xs font-semibold text-slate-500">TÌM CỬA HÀNG QUANH ĐÂY • CÓ MẶT 15P</p>
+        </div>
+      </div>
+
+      <!-- Hotline Box -->
+      <div class="hidden xl:flex flex-col items-center border-x border-slate-200 px-5">
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Hotline Cứu Hộ Phú Yên</span>
+        <div class="font-black text-lg text-red-600 tracking-wider">
+          097 999 1898 <span class="text-slate-300">•</span> 0944 971 257
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center space-x-2">
+        <a href="tel:0979991898" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-[#D7262D] text-white font-extrabold text-xs sm:text-sm shadow-md hover:opacity-95 transition flex items-center gap-2">
+          <i class="fa-solid fa-phone-volume animate-pulse"></i>
+          <span>Gọi Thợ Ngay</span>
+        </a>
+
+        <a href="datphu_nearby_hub.html" class="px-3.5 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#1E2260] font-bold text-xs transition border border-blue-200 flex items-center gap-1.5">
+          <i class="fa-solid fa-store text-blue-600"></i>
+          <span>Tiệm Quanh Đây</span>
+        </a>
+
+        <a href="datphu_maintenance.html" title="Trung tâm Cấu hình Nâng cấp & Bảo trì" class="px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition border border-slate-300 flex items-center gap-1">
+          <i class="fa-solid fa-sliders text-slate-600"></i>
+          <span class="hidden sm:inline">Bảo Trì</span>
+        </a>
+
+        <button onclick="openGalleryModal()" class="px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition border border-slate-300 flex items-center gap-1">
+          <i class="fa-regular fa-images"></i>
+          <span>Ảnh (15)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ======================================================================== -->
+    <!-- SUPER APP ECOSYSTEM NAVIGATION SWITCHER (THANH CHUYỂN PHÂN HỆ HỆ SINH THÁI) -->
+    <!-- ======================================================================== -->
+    <nav class="bg-slate-100/90 border-t border-slate-200/80 px-4 py-2 overflow-x-auto no-scrollbar">
+      <div class="max-w-7xl mx-auto flex items-center space-x-2 text-xs font-bold">
+        <a href="fnb_pos.html" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm flex items-center gap-1.5 flex-shrink-0 transition active:scale-95">
+          <span>☕</span>
+          <span>1. Đất Phú F&B (Cafe / Bàn)</span>
+        </a>
+
+        <a href="room_pms.html" class="px-3.5 py-1.5 rounded-lg bg-blue-700 hover:bg-blue-800 text-white shadow-sm flex items-center gap-1.5 flex-shrink-0 transition active:scale-95">
+          <span>🏠</span>
+          <span>2. Đất Phú Stay (Phòng Nghỉ)</span>
+        </a>
+
+        <a href="ocop_mart.html" class="px-3.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white shadow-sm flex items-center gap-1.5 flex-shrink-0 transition active:scale-95">
+          <span>🛍️</span>
+          <span>3. Đất Phú OCOP Mart (Đặc Sản)</span>
+        </a>
+
+        <a href="index.html" class="px-3.5 py-1.5 rounded-lg bg-[#1E2260] text-white shadow-sm flex items-center gap-1.5 flex-shrink-0">
+          <i class="fa-solid fa-wrench text-amber-400"></i>
+          <span>Gọi Thợ & Cửa Hàng (Hub)</span>
+        </a>
+
+        <a href="datphu_monthly_pnl.html" class="px-3.5 py-1.5 rounded-lg bg-white hover:bg-slate-200 text-slate-700 border border-slate-300 transition flex items-center gap-1.5 flex-shrink-0 font-bold text-emerald-800">
+          <i class="fa-solid fa-calculator text-emerald-600"></i>
+          <span>Bảng Tính P&L Lợi Nhuận</span>
+        </a>
+
+        <a href="auth_login.html" class="px-3.5 py-1.5 rounded-lg bg-white hover:bg-slate-200 text-slate-700 border border-slate-300 transition flex items-center gap-1.5 flex-shrink-0">
+          <i class="fa-solid fa-user-check text-blue-700"></i>
+          <span>Tài Khoản</span>
+        </a>
+
+        <a href="datphu_maintenance.html" class="px-3.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 transition flex items-center gap-1.5 flex-shrink-0 ml-auto">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Bảo Trì</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ======================================================================== -->
+  <!-- 5. MAIN HERO: TÌM THỢ & RADAR POSTGIS LIVE FEED -->
+  <!-- ======================================================================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
+
+    <!-- 3 ỨNG DỤNG CHUYÊN BIỆT ĐẤT PHÚ (LAUNCHPAD THEO NGÀNH NGHỀ) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- 1. F&B POS -->
+      <a href="fnb_pos.html" class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-800 text-white shadow-lg hover:shadow-xl hover:-translate-y-1 transition duration-200 flex items-center justify-between group">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-lg">☕</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-white/20 uppercase tracking-wide">F&B POS</span>
+          </div>
+          <h3 class="font-black text-base sm:text-lg mt-2 group-hover:text-amber-200 transition">Đất Phú F&B (Quán Cafe)</h3>
+          <p class="text-emerald-100 text-xs mt-1">Sơ đồ 10 bàn, định lượng đồ uống, báo bếp/bar & in bill</p>
+        </div>
+        <div class="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-xl group-hover:translate-x-1 transition">
+          <i class="fa-solid fa-arrow-right"></i>
+        </div>
+      </a>
+
+      <!-- 2. STAY PMS -->
+      <a href="room_pms.html" class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-[#1E2260] to-indigo-900 text-white shadow-lg hover:shadow-xl hover:-translate-y-1 transition duration-200 flex items-center justify-between group">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-lg">🏠</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-white/20 uppercase tracking-wide">STAY PMS</span>
+          </div>
+          <h3 class="font-black text-base sm:text-lg mt-2 group-hover:text-amber-200 transition">Đất Phú Stay (Phòng Nghỉ)</h3>
+          <p class="text-blue-200 text-xs mt-1">Quản lý 8 buồng phòng, check-in giờ/đêm, folio ghi nợ</p>
+        </div>
+        <div class="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-xl group-hover:translate-x-1 transition">
+          <i class="fa-solid fa-arrow-right"></i>
+        </div>
+      </a>
+
+      <!-- 3. OCOP MART -->
+      <a href="ocop_mart.html" class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-600 to-rose-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-1 transition duration-200 flex items-center justify-between group">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-lg">🛍️</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-white/20 uppercase tracking-wide">OCOP MART</span>
+          </div>
+          <h3 class="font-black text-base sm:text-lg mt-2 group-hover:text-amber-200 transition">Đất Phú OCOP (Đặc Sản Sỉ)</h3>
+          <p class="text-amber-100 text-xs mt-1">Bán lẻ đặc sản, quét mã vạch, tự động áp biểu giá sỉ</p>
+        </div>
+        <div class="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-xl group-hover:translate-x-1 transition">
+          <i class="fa-solid fa-arrow-right"></i>
+        </div>
+      </a>
+    </div>
+
+    <!-- 3 GIAO DIỆN PHÂN QUYỀN VAI TRÒ CHUẨN KIOTVIET (BỒI BÀN - THU NGÂN - CHỦ QUÁN) -->
+    <div class="p-3 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-2 text-xs">
+      <div class="flex items-center space-x-2 font-bold text-slate-700">
+        <i class="fa-solid fa-users-gear text-indigo-600 text-sm"></i>
+        <span>CHỌN MÀN HÌNH THEO VAI TRÒ NHÂN SỰ:</span>
+      </div>
+      <div class="flex items-center space-x-2 flex-wrap">
+        <a href="waiter_order.html" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold border border-emerald-200 transition flex items-center gap-1.5 active:scale-95">
+          <span>🏃</span> <span>1. App Bồi Bàn (Order Di Động)</span>
+        </a>
+        <a href="cashier_pos.html" class="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold border border-indigo-200 transition flex items-center gap-1.5 active:scale-95">
+          <span>💳</span> <span>2. Màn Hình Thu Ngân (Máy POS)</span>
+        </a>
+        <a href="owner_dashboard.html" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold border border-purple-200 transition flex items-center gap-1.5 active:scale-95">
+          <span>👑</span> <span>3. App Chủ Quán (Giám Sát 24/7)</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- HERO SEARCH CARD -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-xl relative overflow-hidden">
+      <div class="max-w-3xl space-y-4">
+        <!-- Live Radar Tag -->
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span>Radar Quét Thợ Tự Động (PostGIS & Supabase Live)</span>
+        </div>
+
+        <!-- Big Title -->
+        <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
+          Gọi Thợ Tuy Hòa <br class="hidden sm:inline">
+          <span class="text-red-600">Tìm Cửa Hàng Quanh Đây</span> • Có Mặt Sau 15 Phút
+        </h1>
+
+        <!-- Search Input with Big Button -->
+        <div class="pt-2">
+          <div class="flex items-center bg-white border-2 border-blue-500 rounded-2xl p-1.5 shadow-lg focus-within:ring-4 focus-within:ring-blue-100 transition">
+            <i class="fa-solid fa-magnifying-glass text-blue-500 text-lg ml-3 mr-2"></i>
+            <input type="text" id="serviceSearchInput" placeholder="Bạn gặp sự cố gì? (VD: máy lạnh không mát, rò nước, chập điện, hỏng xe...)" class="w-full text-xs sm:text-sm font-semibold outline-none text-slate-800 placeholder-slate-400 bg-transparent">
+            <button onclick="handleQuickSearch()" class="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow transition flex-shrink-0">
+              Tìm Nhanh
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Search Tags -->
+        <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+          <span class="font-bold text-slate-500 text-[11px]">Tìm nhanh:</span>
+          <button onclick="fillSearch('Sửa máy lạnh')" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold border border-blue-200 transition">
+            ❄️ Sửa máy lạnh
+          </button>
+          <button onclick="fillSearch('Chập điện / Rò nước')" class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold border border-amber-200 transition">
+            ⚡ Chập điện / Rò nước
+          </button>
+          <button onclick="fillSearch('Cứu hộ xe máy')" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold border border-emerald-200 transition">
+            🏍️ Cứu hộ xe máy
+          </button>
+          <button onclick="fillSearch('Mở khóa cửa')" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 font-bold border border-purple-200 transition">
+            🔑 Mở khóa cửa
+          </button>
+        </div>
+
+        <!-- Guarantee Text -->
+        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed pt-2">
+          Không lo thợ chặt chém, không lo thợ làm ẩu! Hệ sinh thái Đất Phú Chợ Phiên kết nối <b>đội ngũ thợ tay nghề cao tại Tuy Hòa & Phú Yên</b>, chụp ảnh Geostamp tọa độ GPS và <b>chỉ giải ngân khi khách hài lòng đọc mã OTP 4 số</b>!
+        </p>
+
+        <!-- 4 Pillar Badges (15-20P, K3, K5, K6) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-center sm:text-left">
+            <div class="text-red-600 font-black text-sm flex items-center justify-center sm:justify-start gap-1">
+              <i class="fa-regular fa-clock"></i> 15 – 20P
+            </div>
+            <span class="text-[11px] font-semibold text-slate-500">Có mặt tận nhà</span>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-center sm:text-left">
+            <div class="text-blue-700 font-black text-sm flex items-center justify-center sm:justify-start gap-1">
+              <i class="fa-solid fa-tag"></i> Khóa Giá K3
+            </div>
+            <span class="text-[11px] font-semibold text-slate-500">Không phát sinh</span>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-center sm:text-left">
+            <div class="text-amber-600 font-black text-sm flex items-center justify-center sm:justify-start gap-1">
+              <i class="fa-solid fa-key"></i> OTP K5
+            </div>
+            <span class="text-[11px] font-semibold text-slate-500">Nghiệm thu mới trả</span>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-center sm:text-left">
+            <div class="text-emerald-700 font-black text-sm flex items-center justify-center sm:justify-start gap-1">
+              <i class="fa-solid fa-shield-heart"></i> Bảo Hành K6
+            </div>
+            <span class="text-[11px] font-semibold text-slate-500">Bảo hành QR 6T</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================== -->
+    <!-- 6. LIVE WORKERS & NEARBY MERCHANTS IN TUY HÒA -->
+    <!-- ======================================================================== -->
+    <div class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+            <span>ĐỘI NGŨ THỢ 6K & ĐỊA ĐIỂM QUANH ĐÂY SẴN SÀNG</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          </h2>
+          <p class="text-xs text-slate-500">Định vị GPS thực tế tại Tuy Hòa, Phú Yên</p>
+        </div>
+        <a href="datphu_nearby_hub.html" class="text-xs font-bold text-blue-600 hover:underline">
+          Xem tất cả trên bản đồ &rarr;
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="workersGrid">
+        <!-- Card 1 -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-blue-100 text-blue-800">ĐIỆN NƯỚC</span>
+            <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+              <i class="fa-solid fa-circle text-[8px] animate-ping"></i> 1.2km
+            </span>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-sm text-slate-900">Chú Nguyễn Văn Tùng</h3>
+            <p class="text-[11px] text-slate-500">Sửa chập điện, rò ống nước âm tường</p>
+          </div>
+          <div class="text-xs font-bold text-slate-700 flex items-center justify-between pt-1 border-t border-slate-100">
+            <span>Công chuẩn: 150.000đ</span>
+            <a href="tel:0912345678" class="px-3 py-1 rounded-lg bg-red-600 text-white font-extrabold hover:bg-red-700 transition">
+              Gọi Ngay
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-cyan-100 text-cyan-800">ĐIỆN LẠNH</span>
+            <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+              <i class="fa-solid fa-circle text-[8px] animate-ping"></i> 2.4km
+            </span>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-sm text-slate-900">Anh Trần Hoàng Nam</h3>
+            <p class="text-[11px] text-slate-500">Vệ sinh máy lạnh, nạp gas, sửa tủ đông</p>
+          </div>
+          <div class="text-xs font-bold text-slate-700 flex items-center justify-between pt-1 border-t border-slate-100">
+            <span>Công chuẩn: 180.000đ</span>
+            <a href="tel:0979991898" class="px-3 py-1 rounded-lg bg-red-600 text-white font-extrabold hover:bg-red-700 transition">
+              Gọi Ngay
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-amber-100 text-amber-900">CỨU HỘ XE & KHÓA</span>
+            <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+              <i class="fa-solid fa-circle text-[8px] animate-ping"></i> 0.8km
+            </span>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-sm text-slate-900">Anh Lê Văn Hùng</h3>
+            <p class="text-[11px] text-slate-500">Vá xe lưu động, kích bình, mở khóa nhà</p>
+          </div>
+          <div class="text-xs font-bold text-slate-700 flex items-center justify-between pt-1 border-t border-slate-100">
+            <span>Công chuẩn: 100.000đ</span>
+            <a href="tel:0944971257" class="px-3 py-1 rounded-lg bg-red-600 text-white font-extrabold hover:bg-red-700 transition">
+              Gọi Ngay
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 4: Đất Phú Hometel -->
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-50/60 rounded-2xl p-4 border border-blue-200 shadow-sm hover:shadow-md transition space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-blue-700 text-white">HOMETEL & CAFE</span>
+            <span class="text-xs font-bold text-blue-700 flex items-center gap-1">
+              📍 86 Lê Duẩn
+            </span>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-sm text-slate-900">Điểm Dịch Vụ Đất Phú</h3>
+            <p class="text-[11px] text-slate-500">Cà phê, Buồng phòng & Đặc sản OCOP</p>
+          </div>
+          <div class="text-xs font-bold text-slate-700 flex items-center justify-between pt-1 border-t border-blue-100">
+            <span>F&B POS: Hoạt động</span>
+            <a href="fnb_pos.html" class="px-3 py-1 rounded-lg bg-emerald-600 text-white font-extrabold hover:bg-emerald-700 transition">
+              Mở F&B POS
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ======================================================================== -->
+  <!-- 7. FOOTER CHÍNH THỨC CỦA DOANH NGHIỆP -->
+  <!-- ======================================================================== -->
+  <footer class="bg-[#12153a] text-slate-300 text-xs border-t border-slate-800 mt-10">
+    <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="space-y-2">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-lg bg-white p-0.5 flex items-center justify-center">
+            <img src="datphu_logo.jpg" alt="Logo" class="h-6 w-auto object-contain">
+          </div>
+          <span class="font-extrabold text-white text-sm">CÔNG NGHỆ ĐẤT PHÚ</span>
+        </div>
+        <p class="text-[11px] text-slate-400">
+          Nền tảng số hóa an sinh & điều phối dịch vụ kỹ thuật Một Trạm (Đất Phú Chợ Phiên) hàng đầu tại Tuy Hòa, Phú Yên và Đắk Lắk.
+        </p>
+      </div>
+
+      <div class="space-y-1 text-[11px]">
+        <div class="font-bold text-white text-xs mb-1">CƠ SỞ PHÁP LÝ & ĐỊA CHỈ:</div>
+        <p>• MST: <b>4401020233</b> - Sở KH&ĐT Phú Yên cấp</p>
+        <p>• Trụ sở: Số 21/146 Ngô Gia Tự, TP. Tuy Hòa, Phú Yên</p>
+        <p>• Điểm dịch vụ mẫu: 86 Lê Duẩn (Đất Phú Hometel)</p>
+      </div>
+
+      <div class="space-y-1 text-[11px]">
+        <div class="font-bold text-white text-xs mb-1">ĐƯỜNG DÂY NÓNG 24/7:</div>
+        <p class="text-amber-400 font-bold text-sm">097 999 1898 • 0944 971 257</p>
+        <p class="text-slate-400">Thời gian phản hồi kỹ thuật: Dưới 15 phút</p>
+        <div class="pt-2">
+          <a href="datphu_maintenance.html" class="text-slate-400 hover:text-white underline text-[10px]">
+            ⚙️ Quản lý trạng thái & Nâng cấp hệ thống (DevInfra)
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-800/80 px-4 py-3 text-center text-[10px] text-slate-500">
+      © 2026 CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ. Tất cả quyền được bảo lưu. Nền tảng công nghệ đám mây Supabase PostgreSQL.
+    </div>
+  </footer>
+
+  <!-- MODAL ẢNH THỰC TẾ PHÚ YÊN -->
+  <div id="galleryModal" style="display: none;" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-black text-slate-900 text-base">HÌNH ẢNH THỰC TẾ TUY HÒA & ĐẤT PHÚ</h3>
+        <button onclick="closeGalleryModal()" class="text-slate-400 hover:text-slate-700 text-lg">✕</button>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="rounded-xl overflow-hidden border p-2 bg-slate-50">
+          <div class="h-32 bg-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-400 text-xs text-center p-2">
+            Tháp Nghinh Phong Tuy Hòa
+          </div>
+          <span class="text-xs font-bold block mt-1 text-slate-700">Tháp Nghinh Phong (Tọa độ 3D)</span>
+        </div>
+        <div class="rounded-xl overflow-hidden border p-2 bg-slate-50">
+          <div class="h-32 bg-slate-200 rounded-lg flex items-center justify-center font-bold text-slate-400 text-xs text-center p-2">
+            Đất Phú Hometel - 86 Lê Duẩn
+          </div>
+          <span class="text-xs font-bold block mt-1 text-slate-700">Điểm Dịch Vụ Mẫu 86 Lê Duẩn</span>
+        </div>
+      </div>
+      <button onclick="closeGalleryModal()" class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs">
+        Đóng Thư Viện Ảnh
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = window.location.origin;
+
+    function handleQuickSearch() {
+      const q = document.getElementById('serviceSearchInput').value.trim();
+      window.location.href = `datphu_nearby_hub.html?q=${encodeURIComponent(q)}`;
+    }
+
+    function fillSearch(text) {
+      document.getElementById('serviceSearchInput').value = text;
+      handleQuickSearch();
+    }
+
+    function openGalleryModal() {
+      document.getElementById('galleryModal').style.display = 'flex';
+    }
+
+    function closeGalleryModal() {
+      document.getElementById('galleryModal').style.display = 'none';
+    }
+
+    function promptInstallPwa() {
+      alert("Để cài đặt Gọi Thợ Tuy Hòa:\n- Trên Android / Chrome: Bấm nút ⋮ (Menu) -> Chọn 'Thêm vào Màn hình chính' (Install App)\n- Trên iPhone / Safari: Bấm nút Chia sẻ (Share) -> Chọn 'Thêm vào MH chính' (Add to Home Screen)");
+    }
+
+    // Lắng nghe trạng thái bảo trì & nâng cấp qua SSE Realtime
+    function initRealtime() {
+      const evtSource = new EventSource(`${API_BASE}/api/realtime`);
+      
+      evtSource.addEventListener('MAINTENANCE_EVENT', (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          const bar = document.getElementById('maintenanceAlertBar');
+          if (data.globalActive) {
+            document.getElementById('maintenanceAlertText').innerText = data.message || "HỆ THỐNG ĐANG BẢO TRÌ NÂNG CẤP ĐỊNH KỲ. QUÝ KHÁCH CẦN HỖ TRỢ VUI LÒNG GỌI 097 999 1898.";
+            bar.style.display = 'flex';
+          } else {
+            bar.style.display = 'none';
+          }
+        } catch (err) {}
+      });
+
+      evtSource.addEventListener('UPGRADE_EVENT', (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          alert(`HỆ THỐNG ĐÃ NÂNG CẤP PHIÊN BẢN MỚI: ${data.version}\n${data.title}\nTrang sẽ tự động làm mới bộ nhớ đệm.`);
+          window.location.reload();
+        } catch (err) {}
+      });
+    }
+
+    // Kiểm tra trạng thái hệ thống khi vừa tải trang
+    async function checkSystemStatus() {
+      try {
+        const res = await fetch(`${API_BASE}/api/system/status`);
+        const data = await res.json();
+        if (data.success && data.maintenance && data.maintenance.globalActive) {
+          const bar = document.getElementById('maintenanceAlertBar');
+          document.getElementById('maintenanceAlertText').innerText = data.maintenance.message || "HỆ THỐNG ĐANG BẢO TRÌ NÂNG CẤP ĐỊNH KỲ.";
+          bar.style.display = 'flex';
+        }
+      } catch (e) {}
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      checkSystemStatus();
+      initRealtime();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Đất Phú Waiter • App Bồi Bàn Order Di Động</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased select-none h-screen flex flex-col justify-between max-w-md mx-auto shadow-2xl overflow-hidden border-x border-slate-300">
+
+  <!-- TOP APP BAR BỒI BÀN -->
+  <header class="h-14 px-3 bg-[#1E2260] text-white flex items-center justify-between shadow-md flex-shrink-0 z-30">
+    <div class="flex items-center space-x-2">
+      <a href="index.html" class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-xs hover:bg-white/20 transition">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
+      <div>
+        <div class="flex items-center space-x-1.5">
+          <span class="font-black text-sm tracking-wide">ĐẤT PHÚ WAITER</span>
+          <span class="px-1.5 py-0.2 rounded bg-amber-400 text-slate-950 font-black text-[9px]">ORDER</span>
+        </div>
+        <div class="text-[10px] text-blue-200">Bồi bàn: Thảo Vy • Ca Chiều</div>
+      </div>
+    </div>
+
+    <!-- Nút Chọn Bàn Đang Phục Vụ -->
+    <button onclick="toggleTableDrawer()" class="px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-black text-xs shadow-sm flex items-center gap-1.5 active:scale-95 transition">
+      <span>🪑</span>
+      <span id="headerTableLabel">Bàn 02</span>
+      <i class="fa-solid fa-chevron-down text-[10px]"></i>
+    </button>
+  </header>
+
+  <!-- DANH MỤC MÓN NHANH (HORIZONTAL SCROLL) -->
+  <div class="bg-white border-b border-slate-200 p-2 flex items-center space-x-2 overflow-x-auto no-scrollbar flex-shrink-0">
+    <button onclick="filterCategory('all')" class="cat-chip active px-3.5 py-1.5 rounded-full text-xs font-black bg-[#1E2260] text-white whitespace-nowrap shadow-xs">Tất Cả</button>
+    <button onclick="filterCategory('coffee')" class="cat-chip px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 whitespace-nowrap">☕ Cà Phê</button>
+    <button onclick="filterCategory('tea')" class="cat-chip px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 whitespace-nowrap">🧋 Trà / Sinh Tố</button>
+    <button onclick="filterCategory('breakfast')" class="cat-chip px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 whitespace-nowrap">🥖 Ăn Sáng</button>
+    <button onclick="filterCategory('snack')" class="cat-chip px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 whitespace-nowrap">🥜 Khai Vị</button>
+  </div>
+
+  <!-- DANH SÁCH MÓN ĂN / ĐỒ UỐNG (TOUCH FRIENDLY) -->
+  <main class="flex-1 p-2.5 overflow-y-auto no-scrollbar space-y-2" id="waiterMenuContainer">
+    <!-- Render Javascript -->
+  </main>
+
+  <!-- BOTTOM FLOATING ACTION BAR: TỔNG KẾT & BÁO BẾP -->
+  <footer class="p-3 bg-white border-t border-slate-200 shadow-xl flex-shrink-0 z-30">
+    <div class="flex items-center justify-between mb-2">
+      <div class="flex items-center space-x-2">
+        <button onclick="toggleCartDrawer()" class="w-9 h-9 rounded-xl bg-slate-100 text-[#1E2260] font-black text-sm flex items-center justify-center relative active:scale-95 transition">
+          🛒
+          <span id="badgeCartCount" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#D7262D] text-white text-[9px] font-black flex items-center justify-center">0</span>
+        </button>
+        <div>
+          <div class="text-[10px] text-slate-500 font-bold uppercase">ĐANG GỌI MÓN CHO: <b id="cartTableTarget" class="text-slate-800">BÀN 02</b></div>
+          <div class="text-base font-black text-[#D7262D]" id="cartTotalPrice">0 đ</div>
+        </div>
+      </div>
+
+      <button onclick="openCustomNoteModal()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition flex items-center gap-1">
+        <i class="fa-solid fa-pen text-[10px]"></i> Ghi Chú
+      </button>
+    </div>
+
+    <!-- NÚT TO 1 CHẠM: BÁO BẾP / BAR -->
+    <button onclick="submitOrderToKitchen()" class="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-black text-sm rounded-2xl shadow-lg active:scale-95 transition flex items-center justify-center gap-2">
+      <i class="fa-solid fa-bell-concierge text-base animate-bounce"></i>
+      <span>BÁO BẾP / QUẦY BAR NGAY</span>
+    </button>
+  </footer>
+
+  <!-- DRAWER: SƠ ĐỒ CHỌN BÀN NHANH -->
+  <div id="tableDrawer" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex flex-col justify-end">
+    <div class="bg-white rounded-t-3xl max-w-md mx-auto w-full p-4 max-h-[80vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom duration-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+        <div>
+          <h3 class="font-black text-sm text-[#1E2260]">CHỌN BÀN ĐANG PHỤC VỤ</h3>
+          <p class="text-[10px] text-slate-500">Chạm vào bàn để mở đơn hoặc chuyển bàn</p>
+        </div>
+        <button onclick="toggleTableDrawer()" class="text-slate-400 hover:text-slate-700 text-xl font-bold p-1">&times;</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto no-scrollbar py-3 grid grid-cols-3 gap-2.5" id="waiterTablesList">
+        <!-- Render Javascript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- DRAWER: CHI TIẾT GIỎ MÓN HIỆN TẠI CỦA BÀN -->
+  <div id="cartDrawer" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex flex-col justify-end">
+    <div class="bg-white rounded-t-3xl max-w-md mx-auto w-full p-4 max-h-[75vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom duration-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+        <div>
+          <h3 class="font-black text-sm text-[#1E2260]">DANH SÁCH MÓN ĐÃ CHỌN</h3>
+          <p class="text-[10px] text-slate-500">Kiểm tra số lượng trước khi gửi xuống quầy bar</p>
+        </div>
+        <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-700 text-xl font-bold p-1">&times;</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto no-scrollbar py-3 space-y-2" id="cartItemsList">
+        <!-- Render Javascript -->
+      </div>
+
+      <div class="pt-3 border-t border-slate-200">
+        <button onclick="toggleCartDrawer()" class="w-full py-2.5 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">
+          Tiếp Tục Gọi Món
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CHỌN ĐÁ / ĐƯỜNG / TOPPING CHO MÓN -->
+  <div id="modifierModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-4 shadow-2xl space-y-3 animate-in zoom-in-95">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+        <div>
+          <h4 class="font-black text-xs text-[#1E2260]" id="modItemTitle">Cà phê sữa</h4>
+          <span class="text-[10px] text-[#D7262D] font-bold" id="modItemPrice">22.000 đ</span>
+        </div>
+        <button onclick="closeModal('modifierModal')" class="text-slate-400 text-lg font-bold">&times;</button>
+      </div>
+
+      <!-- Đá -->
+      <div>
+        <label class="block text-[11px] font-bold text-slate-700 mb-1">Mức Đá:</label>
+        <div class="grid grid-cols-4 gap-1.5" id="iceOptions">
+          <button onclick="selectOption('ice', '100%')" class="opt-btn opt-ice active py-1.5 rounded-lg border text-[11px] font-bold bg-[#1E2260] text-white">100% Đá</button>
+          <button onclick="selectOption('ice', '70%')" class="opt-btn opt-ice py-1.5 rounded-lg border text-[11px] font-bold bg-slate-50 text-slate-700">70% Đá</button>
+          <button onclick="selectOption('ice', '30%')" class="opt-btn opt-ice py-1.5 rounded-lg border text-[11px] font-bold bg-slate-50 text-slate-700">Ít Đá</button>
+          <button onclick="selectOption('ice', 'hot')" class="opt-btn opt-ice py-1.5 rounded-lg border text-[11px] font-bold bg-slate-50 text-slate-700">Nóng 🔥</button>
+        </div>
+      </div>
+
+      <!-- Đường -->
+      <div>
+        <label class="block text-[11px] font-bold text-slate-700 mb-1">Mức Đường / Ngọt:</label>
+        <div class="grid grid-cols-4 gap-1.5" id="sugarOptions">
+          <button onclick="selectOption('sugar', '100%')" class="opt-btn opt-sugar active py-1.5 rounded-lg border text-[11px] font-bold bg-[#1E2260] text-white">Bình thường</button>
+          <button onclick="selectOption('sugar', '70%')" class="opt-btn opt-sugar py-1.5 rounded-lg border text-[11px] font-bold bg-slate-50 text-slate-700">70% Đường</button>
+          <button onclick="selectOption('sugar', '30%')" class="opt-btn opt-sugar py-1.5 rounded-lg border text-[11px] font-bold bg-slate-50 text-slate-700">Ít Ngọt</button>
+          <button onclick="selectOption('sugar', '0%')" class="opt-btn opt-sugar py-1.5 rounded-lg border text-[11px] font-bold bg-slate-50 text-slate-700">Không Đường</button>
+        </div>
+      </div>
+
+      <!-- Ghi Chú Riêng -->
+      <div>
+        <label class="block text-[11px] font-bold text-slate-700 mb-1">Ghi chú đặc biệt cho Barista:</label>
+        <input type="text" id="modNoteInput" placeholder="VD: Thêm sữa đặc, đậm cà phê..." class="w-full px-2.5 py-1.5 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none">
+      </div>
+
+      <button onclick="confirmAddWithModifier()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow transition active:scale-95">
+        ✓ Xác Nhận Thêm Vào Bàn
+      </button>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-[#1E2260] text-white px-4 py-2.5 rounded-2xl shadow-xl flex items-center space-x-2 text-xs font-bold border border-blue-400">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Thao tác thành công!</span>
+  </div>
+
+  <!-- JAVASCRIPT BỒI BÀN APP -->
+  <script>
+    const TABLES = [
+      { id: "T-01", name: "Bàn 01", area: "Sân Vườn", status: "empty" },
+      { id: "T-02", name: "Bàn 02", area: "Sân Vườn", status: "occupied" },
+      { id: "T-03", name: "Bàn 03", area: "Sân Vườn", status: "occupied" },
+      { id: "T-04", name: "Bàn 04", area: "Sân Vườn", status: "empty" },
+      { id: "T-05", name: "Bàn 05", area: "Máy Lạnh", status: "empty" },
+      { id: "T-06", name: "Bàn 06", area: "Máy Lạnh", status: "occupied" },
+      { id: "T-07", name: "Bàn 07", area: "Máy Lạnh", status: "empty" },
+      { id: "T-08", name: "Bàn 08", area: "Sân Thượng", status: "empty" },
+      { id: "T-09", name: "Bàn 09", area: "Sân Thượng", status: "occupied" },
+      { id: "T-10", name: "Mang Về", area: "Quầy", status: "empty" }
+    ];
+
+    const MENU = [
+      { id: "M-01", name: "Cà phê Đất Phú (Phin)", cat: "coffee", price: 20000, img: "☕", isHotCold: true },
+      { id: "M-02", name: "Cà phê Sữa Đá", cat: "coffee", price: 22000, img: "🥛", isHotCold: true },
+      { id: "M-03", name: "Bạc xỉu ba tầng Tuy Hòa", cat: "coffee", price: 25000, img: "🥤", isHotCold: true },
+      { id: "M-04", name: "Cà phê Muối Béo", cat: "coffee", price: 28000, img: "🧂", isHotCold: false },
+      { id: "M-05", name: "Trà Đào Cam Sả", cat: "tea", price: 28000, img: "🍑", isHotCold: false },
+      { id: "M-06", name: "Trà Vải Hoa Hồng", cat: "tea", price: 30000, img: "🌹", isHotCold: false },
+      { id: "M-07", name: "Nước Ép Cam Tươi Sành", cat: "tea", price: 32000, img: "🍊", isHotCold: false },
+      { id: "M-08", name: "Sinh Tố Bơ Sáp Tây Hòa", cat: "tea", price: 35000, img: "🥑", isHotCold: false },
+      { id: "M-09", name: "Bánh Mì Chả Cá Nóng", cat: "breakfast", price: 20000, img: "🥖", isHotCold: false },
+      { id: "M-10", name: "Bánh Canh Hẹ Sông Cầu", cat: "breakfast", price: 35000, img: "🍜", isHotCold: false },
+      { id: "M-11", name: "Hạt Điều Rang Củi (Dĩa)", cat: "snack", price: 25000, img: "🥜", isHotCold: false },
+      { id: "M-12", name: "Bò Một Nắng Nướng Xé (Dĩa)", cat: "snack", price: 85000, img: "🥩", isHotCold: false }
+    ];
+
+    let currentTable = "T-02";
+    let currentCat = "all";
+    let CART = [
+      { id: "M-02", name: "Cà phê Sữa Đá", price: 22000, qty: 2, options: "100% Đá, Ít Ngọt" },
+      { id: "M-09", name: "Bánh Mì Chả Cá Nóng", price: 20000, qty: 1, options: "Nhiều ớt" }
+    ];
+
+    let selectedModifierItem = null;
+    let chosenIce = "100%";
+    let chosenSugar = "100%";
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTablesList();
+      renderMenu();
+      updateCartDisplay();
+    });
+
+    function filterCategory(cat) {
+      currentCat = cat;
+      document.querySelectorAll('.cat-chip').forEach(b => {
+        b.className = "cat-chip px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 whitespace-nowrap";
+      });
+      event.target.className = "cat-chip active px-3.5 py-1.5 rounded-full text-xs font-black bg-[#1E2260] text-white whitespace-nowrap shadow-xs";
+      renderMenu();
+    }
+
+    function renderMenu() {
+      const container = document.getElementById('waiterMenuContainer');
+      const list = currentCat === 'all' ? MENU : MENU.filter(m => m.cat === currentCat);
+
+      container.innerHTML = list.map(item => `
+        <div class="p-2.5 bg-white rounded-2xl border border-slate-200 shadow-2xs flex items-center justify-between active:bg-slate-50 transition">
+          <div class="flex items-center space-x-3">
+            <span class="text-3xl p-1 bg-slate-50 rounded-xl">${item.img}</span>
+            <div>
+              <div class="font-bold text-xs text-slate-800">${item.name}</div>
+              <div class="font-black text-xs text-[#D7262D]">${item.price.toLocaleString('vi-VN')} đ</div>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-1.5">
+            ${item.isHotCold ? `
+              <button onclick="openModifierModal('${item.id}')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] font-bold">
+                Tùy chọn
+              </button>
+            ` : ''}
+            <button onclick="quickAddItem('${item.id}')" class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center shadow-xs active:scale-90 transition">
+              ＋
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderTablesList() {
+      const list = document.getElementById('waiterTablesList');
+      list.innerHTML = TABLES.map(t => {
+        const isOccupied = t.status === 'occupied';
+        const isCurrent = t.id === currentTable;
+        const bg = isCurrent ? 'bg-[#1E2260] text-white ring-2 ring-amber-400' : isOccupied ? 'bg-red-50 text-red-800 border-red-300' : 'bg-slate-50 text-slate-700 border-slate-200';
+
+        return `
+          <button onclick="switchTable('${t.id}')" class="p-2.5 rounded-2xl border ${bg} text-center transition active:scale-95 shadow-2xs">
+            <div class="font-black text-xs">${t.name}</div>
+            <div class="text-[9px] opacity-75">${t.area}</div>
+            <span class="inline-block mt-1 px-1 py-0.2 rounded text-[8px] font-bold ${isCurrent ? 'bg-amber-400 text-slate-950' : isOccupied ? 'bg-red-100 text-red-700' : 'bg-slate-200 text-slate-600'}">
+              ${isOccupied ? 'Có khách' : 'Trống'}
+            </span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function switchTable(id) {
+      currentTable = id;
+      const t = TABLES.find(x => x.id === id);
+      document.getElementById('headerTableLabel').innerText = t.name;
+      document.getElementById('cartTableTarget').innerText = `${t.name.toUpperCase()} (${t.area})`;
+      toggleTableDrawer();
+      renderTablesList();
+      showToast(`Đã chuyển sang phục vụ ${t.name}!`);
+    }
+
+    function quickAddItem(id) {
+      const item = MENU.find(m => m.id === id);
+      if (!item) return;
+
+      const existing = CART.find(c => c.id === item.id && !c.options);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        CART.push({ id: item.id, name: item.name, price: item.price, qty: 1, options: "" });
+      }
+
+      updateCartDisplay();
+      showToast(`Đã thêm 1x ${item.name}!`);
+    }
+
+    function openModifierModal(id) {
+      selectedModifierItem = MENU.find(m => m.id === id);
+      if (!selectedModifierItem) return;
+
+      document.getElementById('modItemTitle').innerText = selectedModifierItem.name;
+      document.getElementById('modItemPrice').innerText = selectedModifierItem.price.toLocaleString('vi-VN') + " đ";
+      document.getElementById('modNoteInput').value = "";
+      document.getElementById('modifierModal').classList.remove('hidden');
+    }
+
+    function selectOption(type, val) {
+      if (type === 'ice') {
+        chosenIce = val;
+        document.querySelectorAll('.opt-ice').forEach(b => b.className = "opt-btn opt-ice py-1.5 rounded-lg border text-[11px] font-bold bg-slate-50 text-slate-700");
+      } else {
+        chosenSugar = val;
+        document.querySelectorAll('.opt-sugar').forEach(b => b.className = "opt-btn opt-sugar py-1.5 rounded-lg border text-[11px] font-bold bg-slate-50 text-slate-700");
+      }
+      event.target.className = "opt-btn active py-1.5 rounded-lg border text-[11px] font-bold bg-[#1E2260] text-white";
+    }
+
+    function confirmAddWithModifier() {
+      if (!selectedModifierItem) return;
+      const note = document.getElementById('modNoteInput').value.trim();
+      const opts = `Đá: ${chosenIce}, Đường: ${chosenSugar}${note ? ' (' + note + ')' : ''}`;
+
+      CART.push({
+        id: selectedModifierItem.id,
+        name: selectedModifierItem.name,
+        price: selectedModifierItem.price,
+        qty: 1,
+        options: opts
+      });
+
+      closeModal('modifierModal');
+      updateCartDisplay();
+      showToast(`Đã thêm ${selectedModifierItem.name} (${opts})!`);
+    }
+
+    function updateCartDisplay() {
+      const count = CART.reduce((s, it) => s + it.qty, 0);
+      const total = CART.reduce((s, it) => s + (it.price * it.qty), 0);
+
+      document.getElementById('badgeCartCount').innerText = count;
+      document.getElementById('cartTotalPrice').innerText = total.toLocaleString('vi-VN') + " đ";
+
+      const list = document.getElementById('cartItemsList');
+      if (CART.length === 0) {
+        list.innerHTML = `<div class="py-8 text-center text-slate-400 text-xs">Chưa có món nào được chọn</div>`;
+        return;
+      }
+
+      list.innerHTML = CART.map((it, idx) => `
+        <div class="p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+          <div>
+            <div class="font-bold text-xs text-slate-800">${it.name}</div>
+            ${it.options ? `<div class="text-[10px] text-indigo-600 font-medium">${it.options}</div>` : ''}
+            <div class="text-[10px] text-slate-500">${it.price.toLocaleString('vi-VN')} đ</div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="changeQty(${idx}, -1)" class="w-6 h-6 bg-white rounded font-bold text-xs border">-</button>
+            <span class="font-black text-xs">${it.qty}</span>
+            <button onclick="changeQty(${idx}, 1)" class="w-6 h-6 bg-white rounded font-bold text-xs border">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function changeQty(index, delta) {
+      if (!CART[index]) return;
+      CART[index].qty += delta;
+      if (CART[index].qty <= 0) CART.splice(index, 1);
+      updateCartDisplay();
+    }
+
+    function submitOrderToKitchen() {
+      if (CART.length === 0) {
+        alert("Vui lòng chọn món trước khi báo bếp!");
+        return;
+      }
+
+      const t = TABLES.find(x => x.id === currentTable);
+      t.status = 'occupied';
+      renderTablesList();
+
+      // Âm thanh báo bếp
+      playChime();
+      alert(`🔔 ĐÃ GỬI LỆNH XUỐNG BẾP / QUẦY BAR CHO ${t.name.toUpperCase()}!\n- Số lượng: ${CART.reduce((s,i)=>s+i.qty,0)} món\n- Tổng tiền: ${CART.reduce((s,i)=>s+(i.price*i.qty),0).toLocaleString('vi-VN')} đ`);
+      showToast(`Đã gửi order ${t.name} xuống Quầy Bar & Bếp!`, "🔔");
+    }
+
+    function playChime() {
+      try {
+        const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+        audio.play();
+      } catch (e) {}
+    }
+
+    function toggleTableDrawer() {
+      const d = document.getElementById('tableDrawer');
+      d.classList.toggle('hidden');
+    }
+
+    function toggleCartDrawer() {
+      const d = document.getElementById('cartDrawer');
+      d.classList.toggle('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function showToast(msg, icon = "✓") {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 2500);
+    }
+  </script>
+</body>
+</html>

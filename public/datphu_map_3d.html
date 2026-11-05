@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Bản Đồ 3D Thành Phố Tuy Hòa - Đất Phú Core</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .tap-highlight-transparent { -webkit-tap-highlight-color: transparent; }
+    canvas { touch-action: none; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased select-none font-sans h-screen flex flex-col overflow-hidden">
+
+  <!-- TOP HEADER ĐẤT PHÚ 3D CAO CẤP -->
+  <header class="h-14 px-4 bg-slate-900/95 backdrop-blur border-b border-slate-800 flex items-center justify-between z-30 flex-shrink-0">
+    <div class="flex items-center space-x-3">
+      <div class="h-9 flex items-center bg-white px-2 py-0.5 rounded-lg border border-slate-200 shadow-sm">
+        <img src="datphu_logo.jpg" alt="Logo Đất Phú" class="h-7 w-auto object-contain">
+      </div>
+      <div>
+        <div class="flex items-center space-x-1.5">
+          <span class="font-black text-sm tracking-wide text-white">BẢN ĐỒ 3D TP. TUY HÒA</span>
+          <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">KIẾN TRÚC THẬT</span>
+        </div>
+        <p class="text-[10px] text-slate-400">Tháp Nghinh Phong • Đường Lê Duẩn • Hometel & Thợ 6K</p>
+      </div>
+    </div>
+
+    <!-- Nút điều khiển, Google Maps & Góc nhìn -->
+    <div class="flex items-center space-x-2">
+      <button onclick="toggleGoogleMapModal()" class="px-2.5 py-1 rounded-xl bg-emerald-950 border border-emerald-600/60 text-emerald-300 text-xs font-bold hover:bg-emerald-900 transition flex items-center space-x-1 shadow">
+        <span>🗺️</span>
+        <span class="hidden sm:inline">Google Maps Thật</span>
+      </button>
+      <button onclick="toggleDayNight()" id="themeBtn" class="px-2.5 py-1 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold flex items-center space-x-1 hover:bg-slate-700 transition">
+        <span id="themeIcon">☀️</span>
+        <span class="hidden sm:inline" id="themeText">Ban Ngày</span>
+      </button>
+      <button onclick="focusOn('thanhgiang')" class="px-2.5 py-1 rounded-xl bg-red-950 border border-red-700/60 text-red-300 text-xs font-bold hover:bg-red-900 transition">
+        🏨 Đất Phú Hometel
+      </button>
+      <button onclick="focusOn('nghinhphong')" class="px-2.5 py-1 rounded-xl bg-blue-950 border border-blue-700/60 text-blue-300 text-xs font-bold hover:bg-blue-900 transition">
+        🌊 Tháp Nghinh Phong
+      </button>
+      <a href="index.html" class="px-3 py-1 rounded-xl bg-red-600 text-white text-xs font-bold hover:bg-red-700 transition flex items-center space-x-1 shadow">
+        <span>🏠</span>
+        <span>Hệ Sinh Thái</span>
+      </a>
+      <a href="datphu_nearby_hub.html" class="px-3 py-1 rounded-xl bg-[#1E2260] text-white text-xs font-bold border border-blue-600 hover:bg-blue-900 transition">
+        Hub Thợ
+      </a>
+    </div>
+  </header>
+
+  <!-- KHU VỰC CANVAS 3D TRỰC QUAN SẮC NÉT -->
+  <div class="flex-1 relative overflow-hidden bg-slate-950" id="canvasContainer">
+    <canvas id="map3dCanvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+
+    <!-- BẢNG CHỈ DẪN NỔI (HUD MINH HỌA ĐỊA DANH) -->
+    <div class="absolute top-3 left-3 bg-slate-900/85 backdrop-blur-md border border-slate-800 p-3 rounded-2xl text-[11px] space-y-1.5 shadow-2xl pointer-events-none max-w-xs">
+      <div class="font-bold text-blue-400 flex items-center space-x-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+        <span class="text-xs">Phối Cảnh Đô Thị Ven Biển Tuy Hòa</span>
+      </div>
+      <div class="text-slate-300 flex items-center space-x-1">
+        <span>🌊</span>
+        <span><b>Bên phải:</b> Bờ biển Tuy Hòa & Tháp Nghinh Phong</span>
+      </div>
+      <div class="text-slate-300 flex items-center space-x-1">
+        <span>🛣️</span>
+        <span><b>Đại lộ Lê Duẩn:</b> Tuyến Hometel, Khách sạn & Cafe sảnh</span>
+      </div>
+      <div class="text-slate-300 flex items-center space-x-1">
+        <span>🔧</span>
+        <span><b>Xe thợ 6K:</b> Đang di chuyển & phát sóng radar trực tiếp</span>
+      </div>
+      <div class="text-slate-400 text-[10px] pt-1 border-t border-slate-800">
+        🖱️ <b>Kéo để xoay 360°</b> • 🔍 <b>Cuộn để phóng to</b> • 📍 <b>Chạm tòa nhà để xem</b>
+      </div>
+    </div>
+
+    <!-- CARD THÔNG TIN CHI TIẾT TÒA NHÀ / CÔNG TRÌNH -->
+    <div id="infoCard" class="hidden absolute bottom-5 left-1/2 -translate-x-1/2 w-[92%] max-w-sm bg-slate-900/95 backdrop-blur-md border-2 border-blue-500 p-4 rounded-3xl shadow-2xl z-30 animate-in fade-in slide-in-from-bottom-5">
+      <div class="flex items-start justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-14 h-14 rounded-2xl bg-blue-950 border border-blue-500/40 flex items-center justify-center text-3xl shadow-inner flex-shrink-0" id="cardIcon">
+            🏨
+          </div>
+          <div>
+            <div class="flex items-center space-x-1.5">
+              <h3 class="font-bold text-sm text-white" id="cardTitle">Đất Phú Hometel</h3>
+              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" id="cardBadge">Đang Hoạt Động</span>
+            </div>
+            <p class="text-xs text-blue-300 font-semibold" id="cardSub">Lô HT17 - 86 Lê Duẩn, Tuy Hòa</p>
+            <p class="text-[10px] text-slate-300 mt-0.5" id="cardDesc">Mô hình Hometel + Quầy cà phê sảnh tiếp tân</p>
+          </div>
+        </div>
+        <button onclick="closeInfoCard()" class="text-slate-400 hover:text-white font-bold text-lg p-1">✕</button>
+      </div>
+
+      <div class="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+        <div>
+          <span class="text-[10px] text-slate-400">Khoảng cách:</span>
+          <span class="font-bold text-emerald-400 ml-1" id="cardDist">120m</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <a href="#" id="cardCallBtn" class="px-2.5 py-1.5 rounded-xl border border-slate-700 bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition">
+            📞 Gọi
+          </a>
+          <button onclick="openGoogleMapsDirections()" class="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition flex items-center space-x-1" title="Chỉ đường qua Google Maps">
+            <span>🧭</span>
+            <span>Google Maps</span>
+          </button>
+          <button onclick="actionFromCard()" id="cardActionBtn" class="px-3.5 py-1.5 rounded-xl bg-[#D7262D] hover:bg-red-700 text-white font-bold text-xs shadow-md transition">
+            🚀 Mở Quầy POS
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL NHÚNG BẢN ĐỒ GOOGLE MAPS VỆ TINH TRỰC TIẾP -->
+    <div id="googleMapsModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-6 animate-in fade-in">
+      <div class="bg-slate-900 border border-slate-700 rounded-3xl w-full max-w-4xl h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+        
+        <!-- Header Modal Google Maps -->
+        <div class="p-3.5 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
+          <div class="flex items-center space-x-2.5">
+            <span class="text-xl">🗺️</span>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="font-bold text-sm text-white">Google Maps Trực Tuyến - Tuy Hòa, Phú Yên</h3>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">Live GPS</span>
+              </div>
+              <p class="text-[11px] text-slate-400">Tọa độ: 13.0954° N, 109.3082° E • Kết nối định vị toàn cầu</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <a href="https://www.google.com/maps/search/L%C3%AA+Du%E1%BA%A9n,+Tuy+H%C3%B2a,+Ph%C3%BA+Y%C3%AAn" target="_blank" class="px-3 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition flex items-center space-x-1">
+              <span>↗</span>
+              <span class="hidden sm:inline">Mở App Google Maps</span>
+            </a>
+            <button onclick="toggleGoogleMapModal()" class="w-8 h-8 rounded-full bg-slate-700 text-slate-300 hover:text-white font-bold flex items-center justify-center">✕</button>
+          </div>
+        </div>
+
+        <!-- Iframe Bản đồ Google Maps Vệ Tinh / Đường Phố Tuy Hòa -->
+        <div class="flex-1 w-full h-full relative bg-slate-950">
+          <iframe 
+            id="gmapIframe"
+            class="w-full h-full border-0" 
+            loading="lazy" 
+            allowfullscreen 
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://maps.google.com/maps?q=13.0954,109.3082&hl=vi&z=15&output=embed">
+          </iframe>
+        </div>
+
+        <!-- Footer Modal: Chỉ đường nhanh tới các điểm trọng yếu -->
+        <div class="p-3 bg-slate-800/80 border-t border-slate-700 flex items-center justify-between text-xs overflow-x-auto no-scrollbar space-x-2">
+          <span class="text-slate-400 whitespace-nowrap">Chỉ đường nhanh:</span>
+          <div class="flex space-x-2">
+            <button onclick="setGMapLocation(13.0954, 109.3182, 'Tháp Nghinh Phong')" class="px-3 py-1 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold whitespace-nowrap">🌊 Tháp Nghinh Phong</button>
+            <button onclick="setGMapLocation(13.0910, 109.3080, 'Đất Phú Hometel 86 Lê Duẩn')" class="px-3 py-1 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold whitespace-nowrap">🏨 Đất Phú Hometel</button>
+            <button onclick="setGMapLocation(13.0880, 109.3020, 'Trần Hưng Đạo Tuy Hòa')" class="px-3 py-1 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold whitespace-nowrap">🛍️ Phố Trần Hưng Đạo</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: 3D ENGINE KIẾN TRÚC THỰC TẾ TUY HÒA -->
+  <script>
+    const canvas = document.getElementById('map3dCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let isNight = false; // Mặc định ban ngày trong xanh biển Tuy Hòa
+    let time = 0;
+
+    // Camera 3D
+    let camera = {
+      angle: 35 * Math.PI / 180,
+      pitch: 52 * Math.PI / 180,
+      zoom: 1.25,
+      panX: -40,
+      panY: 20
+    };
+
+    function resize() {
+      width = canvas.parentElement.clientWidth;
+      height = canvas.parentElement.clientHeight;
+      canvas.width = width * window.devicePixelRatio;
+      canvas.height = height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Phép chiếu 3D sang 2D Screen
+    function project(x, y, z) {
+      const cosA = Math.cos(camera.angle);
+      const sinA = Math.sin(camera.angle);
+      const rx = x * cosA - y * sinA;
+      const ry = x * sinA + y * cosA;
+
+      const cosP = Math.cos(camera.pitch);
+      const sinP = Math.sin(camera.pitch);
+      const px = rx;
+      const py = ry * cosP - z * sinP;
+      const pz = ry * sinP + z * cosP;
+
+      return {
+        x: (width / 2) + camera.panX + px * camera.zoom,
+        y: (height / 2) + camera.panY + py * camera.zoom,
+        depth: pz
+      };
+    }
+
+    // ========================================================================
+    // BỘ VẼ ĐẶC TẢ CÁC CÔNG TRÌNH KIẾN TRÚC THẬT CỦA TUY HÒA
+    // ========================================================================
+
+    // 1. Vẽ Biển Đông & Bờ Cát Tuy Hòa
+    function drawOceanAndBeach() {
+      // Mặt biển gợn sóng
+      const seaColor = isNight ? '#082f49' : '#0284c7';
+      const waveColor = isNight ? 'rgba(56, 189, 248, 0.2)' : 'rgba(255, 255, 255, 0.4)';
+
+      ctx.save();
+      // Bờ biển phía Đông (trục X > 140)
+      const pSea1 = project(140, -400, 0);
+      const pSea2 = project(400, -400, 0);
+      const pSea3 = project(400, 400, 0);
+      const pSea4 = project(140, 400, 0);
+
+      ctx.fillStyle = seaColor;
+      ctx.beginPath();
+      ctx.moveTo(pSea1.x, pSea1.y);
+      ctx.lineTo(pSea2.x, pSea2.y);
+      ctx.lineTo(pSea3.x, pSea3.y);
+      ctx.lineTo(pSea4.x, pSea4.y);
+      ctx.closePath();
+      ctx.fill();
+
+      // Sóng biển vỗ bờ hoạt họa
+      ctx.strokeStyle = waveColor;
+      ctx.lineWidth = 2;
+      for (let w = -350; w <= 350; w += 60) {
+        const waveOffset = Math.sin((time * 0.04) + w * 0.05) * 8;
+        const wp1 = project(145 + waveOffset, w, 0);
+        const wp2 = project(175 + waveOffset, w + 40, 0);
+        ctx.beginPath();
+        ctx.moveTo(wp1.x, wp1.y);
+        ctx.lineTo(wp2.x, wp2.y);
+        ctx.stroke();
+      }
+
+      // Dải bãi cát vàng Tuy Hòa (giữa X = 110 và 140)
+      const sandColor = isNight ? '#451a03' : '#fef08a';
+      const pSand1 = project(110, -400, 0);
+      const pSand2 = project(140, -400, 0);
+      const pSand3 = project(140, 400, 0);
+      const pSand4 = project(110, 400, 0);
+
+      ctx.fillStyle = sandColor;
+      ctx.beginPath();
+      ctx.moveTo(pSand1.x, pSand1.y);
+      ctx.lineTo(pSand2.x, pSand2.y);
+      ctx.lineTo(pSand3.x, pSand3.y);
+      ctx.lineTo(pSand4.x, pSand4.y);
+      ctx.closePath();
+      ctx.fill();
+
+      // Dải công viên hàng dừa đường Độc Lập (X = 90 đến 110)
+      const parkColor = isNight ? '#064e3b' : '#16a34a';
+      const pPark1 = project(90, -400, 0);
+      const pPark2 = project(110, -400, 0);
+      const pPark3 = project(110, 400, 0);
+      const pPark4 = project(90, 400, 0);
+
+      ctx.fillStyle = parkColor;
+      ctx.beginPath();
+      ctx.moveTo(pPark1.x, pPark1.y);
+      ctx.lineTo(pPark2.x, pPark2.y);
+      ctx.lineTo(pPark3.x, pPark3.y);
+      ctx.lineTo(pPark4.x, pPark4.y);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // 2. Vẽ Đường Nhựa & Vạch Kẻ Đường Đại Lộ Lê Duẩn
+    function drawAvenues() {
+      ctx.save();
+      const asphaltColor = isNight ? '#1e293b' : '#334155';
+      const stripeColor = isNight ? '#fbbf24' : '#ffffff';
+
+      // Tuyến Độc Lập ven biển (X = 75 đến 90)
+      drawRoadSegment(75, 90, asphaltColor, stripeColor);
+
+      // Đại lộ LÊ DUẨN sầm uất (X = 15 đến 45)
+      drawRoadSegment(15, 45, asphaltColor, stripeColor, "ĐƯỜNG LÊ DUẨN (TUYẾN HOMETEL & CAFE)");
+
+      // Đại lộ HÙNG VƯƠNG trục chính (X = -80 đến -50)
+      drawRoadSegment(-80, -50, asphaltColor, stripeColor, "ĐẠI LỘ HÙNG VƯƠNG");
+
+      // Đường giao cắt: NGUYỄN HỮU THỌ & NGUYỄN HUỆ
+      drawCrossStreet(-180, -150, asphaltColor, stripeColor);
+      drawCrossStreet(40, 70, asphaltColor, stripeColor);
+
+      ctx.restore();
+    }
+
+    function drawRoadSegment(x1, x2, roadColor, stripeColor, roadName) {
+      const p1 = project(x1, -400, 0);
+      const p2 = project(x2, -400, 0);
+      const p3 = project(x2, 400, 0);
+      const p4 = project(x1, 400, 0);
+
+      ctx.fillStyle = roadColor;
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.lineTo(p3.x, p3.y);
+      ctx.lineTo(p4.x, p4.y);
+      ctx.closePath();
+      ctx.fill();
+
+      // Vạch đứt tim đường
+      ctx.strokeStyle = stripeColor;
+      ctx.lineWidth = 1.5;
+      const midX = (x1 + x2) / 2;
+      for (let y = -380; y <= 380; y += 35) {
+        const s1 = project(midX, y, 0);
+        const s2 = project(midX, y + 18, 0);
+        ctx.beginPath();
+        ctx.moveTo(s1.x, s1.y);
+        ctx.lineTo(s2.x, s2.y);
+        ctx.stroke();
+      }
+    }
+
+    function drawCrossStreet(y1, y2, roadColor, stripeColor) {
+      const p1 = project(-300, y1, 0);
+      const p2 = project(75, y1, 0);
+      const p3 = project(75, y2, 0);
+      const p4 = project(-300, y2, 0);
+
+      ctx.fillStyle = roadColor;
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.lineTo(p3.x, p3.y);
+      ctx.lineTo(p4.x, p4.y);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // 3. DỰNG MÔ HÌNH 3D: THÁP NGHINH PHONG (Biểu tượng Tuy Hòa)
+    // Cấu trúc 2 cột tháp đôi đá bazan vươn cao với khe gió đặc trưng
+    function drawNghinhPhongTower(x, y) {
+      const baseRadius = 45;
+      const towerHeight = 110;
+
+      // Quảng trường tròn lát đá hoa cương Nghinh Phong
+      ctx.save();
+      ctx.fillStyle = isNight ? '#1e293b' : '#cbd5e1';
+      ctx.beginPath();
+      const segments = 24;
+      for (let i = 0; i <= segments; i++) {
+        const theta = (i / segments) * Math.PI * 2;
+        const px = x + Math.cos(theta) * baseRadius;
+        const py = y + Math.sin(theta) * baseRadius;
+        const pt = project(px, py, 0);
+        if (i === 0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Cột tháp 1 (Phía Bắc - Đại diện cho Lạc Long Quân)
+      drawStoneColumn(x - 9, y, 14, 16, towerHeight, '#475569', '#38bdf8');
+      // Cột tháp 2 (Phía Nam - Đại diện cho Âu Cơ)
+      drawStoneColumn(x + 9, y, 14, 16, towerHeight * 0.9, '#334155', '#0284c7');
+
+      // Điểm ghim nổi
+      const topPt = project(x, y, towerHeight + 20);
+      drawPinMarker(topPt, "🌊 Tháp Nghinh Phong", "#0284c7", "Biểu tượng Tuy Hòa");
+      ctx.restore();
+    }
+
+    function drawStoneColumn(x, y, w, d, h, color, lightColor) {
+      const hw = w / 2;
+      const hd = d / 2;
+      // Vẽ nhiều thớt đá bazan xếp chồng lên nhau
+      const layers = 6;
+      const layerH = h / layers;
+
+      for (let l = 0; l < layers; l++) {
+        const curZ = l * layerH;
+        const taper = 1 - (l * 0.08); // Thon dần lên đỉnh
+        const tw = hw * taper;
+        const td = hd * taper;
+
+        const p1 = project(x - tw, y - td, curZ);
+        const p2 = project(x + tw, y - td, curZ);
+        const p3 = project(x + tw, y + td, curZ);
+        const p4 = project(x - tw, y + td, curZ);
+
+        const p5 = project(x - tw, y - td, curZ + layerH);
+        const p6 = project(x + tw, y - td, curZ + layerH);
+        const p7 = project(x + tw, y + td, curZ + layerH);
+        const p8 = project(x - tw, y + td, curZ + layerH);
+
+        // Mặt trước
+        ctx.fillStyle = l % 2 === 0 ? color : '#1e293b';
+        ctx.beginPath();
+        ctx.moveTo(p4.x, p4.y); ctx.lineTo(p3.x, p3.y); ctx.lineTo(p7.x, p7.y); ctx.lineTo(p8.x, p8.y);
+        ctx.closePath(); ctx.fill();
+
+        // Mặt bên
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.moveTo(p2.x, p2.y); ctx.lineTo(p3.x, p3.y); ctx.lineTo(p7.x, p7.y); ctx.lineTo(p6.x, p6.y);
+        ctx.closePath(); ctx.fill();
+
+        // Mặt nóc
+        ctx.fillStyle = lightColor;
+        ctx.beginPath();
+        ctx.moveTo(p5.x, p5.y); ctx.lineTo(p6.x, p6.y); ctx.lineTo(p7.x, p7.y); ctx.lineTo(p8.x, p8.y);
+        ctx.closePath(); ctx.fill();
+      }
+    }
+
+    // 4. DỰNG MÔ HÌNH 3D: Đất Phú Hub & Cafe (86 Lê Duẩn)
+    // Tòa nhà 4 tầng hiện đại, ban công kính, biển hiệu vàng nổi bật
+    function drawThanhGiangHometel(x, y) {
+      const w = 42;
+      const d = 36;
+      const floorH = 15;
+      const floors = 4;
+
+      ctx.save();
+      // Vẽ từng tầng với ban công kính & cửa sổ
+      for (let f = 0; f < floors; f++) {
+        const curZ = f * floorH;
+        const p1 = project(x - w/2, y - d/2, curZ);
+        const p2 = project(x + w/2, y - d/2, curZ);
+        const p3 = project(x + w/2, y + d/2, curZ);
+        const p4 = project(x - w/2, y + d/2, curZ);
+
+        const p5 = project(x - w/2, y - d/2, curZ + floorH);
+        const p6 = project(x + w/2, y - d/2, curZ + floorH);
+        const p7 = project(x + w/2, y + d/2, curZ + floorH);
+        const p8 = project(x - w/2, y + d/2, curZ + floorH);
+
+        // Tường tòa nhà màu kem hiện đại
+        ctx.fillStyle = f === 0 ? '#1e293b' : (isNight ? '#334155' : '#f8fafc');
+        ctx.beginPath();
+        ctx.moveTo(p4.x, p4.y); ctx.lineTo(p3.x, p3.y); ctx.lineTo(p7.x, p7.y); ctx.lineTo(p8.x, p8.y);
+        ctx.closePath(); ctx.fill();
+
+        // Mặt hông
+        ctx.fillStyle = isNight ? '#0f172a' : '#cbd5e1';
+        ctx.beginPath();
+        ctx.moveTo(p2.x, p2.y); ctx.lineTo(p3.x, p3.y); ctx.lineTo(p7.x, p7.y); ctx.lineTo(p6.x, p6.y);
+        ctx.closePath(); ctx.fill();
+
+        // Ban công kính tầng 2, 3, 4 (Xanh ngọc phản quang)
+        if (f > 0) {
+          const bp1 = project(x - w/2 + 4, y + d/2 + 2, curZ + 2);
+          const bp2 = project(x + w/2 - 4, y + d/2 + 2, curZ + 2);
+          const bp3 = project(x + w/2 - 4, y + d/2 + 2, curZ + 7);
+          const bp4 = project(x - w/2 + 4, y + d/2 + 2, curZ + 7);
+
+          ctx.fillStyle = 'rgba(56, 189, 248, 0.7)';
+          ctx.beginPath();
+          ctx.moveTo(bp1.x, bp1.y); ctx.lineTo(bp2.x, bp2.y); ctx.lineTo(bp3.x, bp3.y); ctx.lineTo(bp4.x, bp4.y);
+          ctx.closePath(); ctx.fill();
+        }
+
+        // Tầng trệt: Biển hiệu "Đất Phú HOMETEL - Ở ĐÂY CÓ BÁN CÀ PHÊ"
+        if (f === 0) {
+          const sp1 = project(x - w/2 + 2, y + d/2 + 1, curZ + 11);
+          const sp2 = project(x + w/2 - 2, y + d/2 + 1, curZ + 11);
+          const sp3 = project(x + w/2 - 2, y + d/2 + 1, curZ + 15);
+          const sp4 = project(x - w/2 + 2, y + d/2 + 1, curZ + 15);
+
+          ctx.fillStyle = '#b45309'; // Khung biển hiệu màu gỗ sang trọng
+          ctx.beginPath();
+          ctx.moveTo(sp1.x, sp1.y); ctx.lineTo(sp2.x, sp2.y); ctx.lineTo(sp3.x, sp3.y); ctx.lineTo(sp4.x, sp4.y);
+          ctx.closePath(); ctx.fill();
+        }
+      }
+
+      // Nóc hometel
+      const topZ = floors * floorH;
+      const tp1 = project(x - w/2, y - d/2, topZ);
+      const tp2 = project(x + w/2, y - d/2, topZ);
+      const tp3 = project(x + w/2, y + d/2, topZ);
+      const tp4 = project(x - w/2, y + d/2, topZ);
+      ctx.fillStyle = '#D7262D'; // Nóc đỏ Đất Phú
+      ctx.beginPath();
+      ctx.moveTo(tp1.x, tp1.y); ctx.lineTo(tp2.x, tp2.y); ctx.lineTo(tp3.x, tp3.y); ctx.lineTo(tp4.x, tp4.y);
+      ctx.closePath(); ctx.fill();
+
+      // Ghim Marker Đỏ Thương Hiệu
+      const markerPos = project(x, y, topZ + 18);
+      drawPinMarker(markerPos, "🏨 Đất Phú Hometel", "#D7262D", "86 Lê Duẩn • Có Bán Cafe", "thanhgiang");
+
+      ctx.restore();
+    }
+
+    // 5. VẼ THỢ KỸ THUẬT 6K DI CHUYỂN BẰNG XE MÁY TRÊN ĐƯỜNG
+    function drawMovingWorker(baseX, baseY, offsetAngle, name, color, icon, workerId) {
+      // Quỹ đạo xe máy di chuyển dọc tuyến đường
+      const moveY = baseY + Math.sin(time * 0.03 + offsetAngle) * 90;
+      const x = baseX;
+      const y = moveY;
+
+      ctx.save();
+      // Vòng tròn radar xung quanh xe thợ
+      const pulse = (time * 1.5) % 45;
+      const r1 = project(x - pulse, y, 0);
+      const r2 = project(x + pulse, y, 0);
+      const radiusScreen = Math.abs(r2.x - r1.x) / 2;
+
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = Math.max(0, 1 - (pulse / 45));
+      ctx.beginPath();
+      const ptCenter = project(x, y, 0);
+      ctx.arc(ptCenter.x, ptCenter.y, radiusScreen, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.globalAlpha = 1.0;
+
+      // Khối xe máy & thùng đồ nghề 6K phía sau
+      const bikePt = project(x, y, 6);
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(bikePt.x, bikePt.y, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Thùng đồ nghề màu thương hiệu
+      const boxPt = project(x, y, 14);
+      ctx.fillStyle = color;
+      ctx.fillRect(boxPt.x - 5, boxPt.y - 5, 10, 10);
+
+      // Marker Thợ
+      const markerPos = project(x, y, 32);
+      drawPinMarker(markerPos, `${icon} ${name}`, color, "Đang di chuyển trên đường", workerId);
+
+      ctx.restore();
+    }
+
+    // 6. HÀM VẼ GHIM ĐỊNH VỊ NỔI BẬT (3D PIN MARKER)
+    const interactivePins = [];
+
+    function drawPinMarker(screenPt, title, color, subtitle, id) {
+      ctx.save();
+      // Chân ghim
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(screenPt.x, screenPt.y + 12);
+      ctx.lineTo(screenPt.x, screenPt.y);
+      ctx.stroke();
+
+      // Nút badge ghim
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.arc(screenPt.x, screenPt.y, 8, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Hộp chữ nổi
+      ctx.font = 'bold 11px sans-serif';
+      const textWidth = ctx.measureText(title).width;
+      const boxW = textWidth + 14;
+      const boxH = 20;
+      const boxX = screenPt.x - boxW / 2;
+      const boxY = screenPt.y - 24;
+
+      ctx.fillStyle = isNight ? 'rgba(15, 23, 42, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(boxX, boxY, boxW, boxH, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = isNight ? '#ffffff' : '#0f172a';
+      ctx.shadowBlur = 0;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(title, screenPt.x, boxY + boxH / 2);
+
+      ctx.restore();
+
+      if (id) {
+        interactivePins.push({
+          id,
+          title,
+          subtitle,
+          x: screenPt.x,
+          y: screenPt.y - 12,
+          radius: 20
+        });
+      }
+    }
+
+    // ========================================================================
+    // MAIN RENDER LOOP
+    // ========================================================================
+    function render() {
+      time++;
+      interactivePins.length = 0;
+
+      // Nền Trời
+      ctx.fillStyle = isNight ? '#020617' : '#e2e8f0';
+      ctx.fillRect(0, 0, width, height);
+
+      // 1. Biển & Bãi Cát
+      drawOceanAndBeach();
+
+      // 2. Đại Lộ Lê Duẩn & Hùng Vương
+      drawAvenues();
+
+      // 3. Công Trình Tháp Nghinh Phong
+      drawNghinhPhongTower(180, -120);
+
+      // 4. Đất Phú Hometel (86 Lê Duẩn)
+      drawThanhGiangHometel(2, -20);
+
+      // 5. Thợ Điện Nước Chú Tùng 6K trên đường Lê Duẩn
+      drawMovingWorker(30, -50, 0, "Chú Tùng 6K", "#10b981", "⚡", "chutung");
+
+      // 6. Thợ Điện Lạnh Anh Hưng 6K trên đại lộ Hùng Vương
+      drawMovingWorker(-65, 80, 2, "Anh Hưng Tủ Đông", "#3b82f6", "❄️", "anhhung");
+
+      requestAnimationFrame(render);
+    }
+
+    // Tương tác xoay & kéo bản đồ
+    let isDragging = false;
+    let startX, startY;
+
+    canvas.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      camera.angle += dx * 0.005;
+      camera.pitch = Math.max(0.35, Math.min(1.35, camera.pitch + dy * 0.003));
+
+      startX = e.clientX;
+      startY = e.clientY;
+    });
+
+    window.addEventListener('pointerup', () => isDragging = false);
+
+    // Zoom bánh xe chuột
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+      camera.zoom = Math.max(0.7, Math.min(2.8, camera.zoom * zoomFactor));
+    }, { passive: false });
+
+    // Bấm chọn địa điểm trên bản đồ 3D
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
+
+      let hit = null;
+      interactivePins.forEach(p => {
+        const d = Math.hypot(p.x - cx, p.y - cy);
+        if (d < p.radius + 15) hit = p;
+      });
+
+      if (hit) {
+        showDetailCard(hit.id);
+      }
+    });
+
+    function showDetailCard(id) {
+      const card = document.getElementById('infoCard');
+      const title = document.getElementById('cardTitle');
+      const sub = document.getElementById('cardSub');
+      const desc = document.getElementById('cardDesc');
+      const icon = document.getElementById('cardIcon');
+      const dist = document.getElementById('cardDist');
+      const actBtn = document.getElementById('cardActionBtn');
+
+      if (id === 'thanhgiang') {
+        title.innerText = "Đất Phú Hub & Cafe";
+        sub.innerText = "Lô HT17 - 86 Lê Duẩn, P.7, Tuy Hòa";
+        desc.innerText = "Mô hình Hometel lưu trú + Cà phê sảnh • Dùng Ví An Sinh Napas247";
+        icon.innerText = "🏨";
+        dist.innerText = "120m";
+        actBtn.innerText = "🛒 Mở Quầy Bán Hàng";
+        actBtn.onclick = () => window.location.href = "vi_an_sinh_app.html";
+      } else if (id === 'chutung') {
+        title.innerText = "Chú Nguyễn Văn Tùng (Điện Nước 6K)";
+        sub.innerText = "Đang di chuyển trên đường Lê Duẩn";
+        desc.innerText = "Sửa chập điện âm tường, máy bơm tăng áp, thay aptomat Panasonic";
+        icon.innerText = "⚡";
+        dist.innerText = "350m";
+        actBtn.innerText = "🚀 Điều Phối 6K";
+        actBtn.onclick = () => alert("Đã gửi yêu cầu tới Chú Tùng! Chú sẽ gọi lại sau 2 phút.");
+      } else if (id === 'anhhung') {
+        title.innerText = "Trần Quốc Hưng (Điện Lạnh Tủ Đông)";
+        sub.innerText = "Đang di chuyển trên đại lộ Hùng Vương";
+        desc.innerText = "Sửa tủ mát quán cafe, tủ đông bảo quản sữa, bơm gas máy lạnh";
+        icon.innerText = "❄️";
+        dist.innerText = "700m";
+        actBtn.innerText = "🚀 Bấm Đặt Lịch";
+        actBtn.onclick = () => alert("Đã gửi yêu cầu tới Anh Hưng!");
+      }
+      card.classList.remove('hidden');
+    }
+
+    function closeInfoCard() {
+      document.getElementById('infoCard').classList.add('hidden');
+    }
+
+    function focusOn(target) {
+      if (target === 'thanhgiang') {
+        camera.panX = -10;
+        camera.panY = 15;
+        camera.zoom = 1.6;
+        showDetailCard('thanhgiang');
+      } else if (target === 'nghinhphong') {
+        camera.panX = -120;
+        camera.panY = 60;
+        camera.zoom = 1.5;
+        closeInfoCard();
+      }
+    }
+
+    function toggleDayNight() {
+      isNight = !isNight;
+      document.getElementById('themeIcon').innerText = isNight ? '🌙' : '☀️';
+      document.getElementById('themeText').innerText = isNight ? 'Ban Đêm (Neon)' : 'Ban Ngày';
+    }
+
+    // TÍCH HỢP GOOGLE MAPS
+    function toggleGoogleMapModal() {
+      const modal = document.getElementById('googleMapsModal');
+      modal.classList.toggle('hidden');
+    }
+
+    function setGMapLocation(lat, lng, query) {
+      const iframe = document.getElementById('gmapIframe');
+      iframe.src = `https://maps.google.com/maps?q=${lat},${lng}&hl=vi&z=16&output=embed`;
+    }
+
+    function openGoogleMapsDirections() {
+      if (!selectedNode) {
+        window.open('https://www.google.com/maps/dir/?api=1&destination=86+L%C3%AA+Du%E1%BA%A9n,+Tuy+H%C3%B2a,+Ph%C3%BA+Y%C3%AAn', '_blank');
+        return;
+      }
+      const dest = encodeURIComponent(selectedNode.address || selectedNode.name);
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${dest}`, '_blank');
+    }
+
+    requestAnimationFrame(render);
+  </script>
+</body>
+</html>

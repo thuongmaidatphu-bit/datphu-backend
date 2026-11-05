@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Đất Phú Owner • Giám Sát & Điều Hành Quán Từ Xa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 antialiased select-none min-h-screen flex flex-col max-w-lg mx-auto shadow-2xl border-x border-slate-800">
+
+  <!-- TOP BAR CHỦ QUÁN -->
+  <header class="h-16 px-4 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 flex items-center justify-between sticky top-0 z-30">
+    <div class="flex items-center space-x-3">
+      <a href="index.html" class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/20 transition">
+        <i class="fa-solid fa-arrow-left text-sm"></i>
+      </a>
+      <div>
+        <div class="flex items-center space-x-2">
+          <h1 class="font-black text-sm tracking-wide text-white">ĐẤT PHÚ OWNER</h1>
+          <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">LIVE 24/7</span>
+        </div>
+        <div class="text-[10px] text-slate-400">Giám sát từ xa • Điểm Tuy Hòa, Phú Yên</div>
+      </div>
+    </div>
+
+    <button onclick="refreshData()" class="w-9 h-9 rounded-xl bg-blue-600/30 hover:bg-blue-600/50 text-blue-400 border border-blue-500/40 flex items-center justify-center text-xs active:scale-95 transition" title="Làm mới dữ liệu">
+      <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i>
+    </button>
+  </header>
+
+  <!-- MAIN DASHBOARD CONTENT -->
+  <main class="flex-1 p-4 space-y-4 overflow-y-auto no-scrollbar">
+
+    <!-- HERO METRIC: DOANH THU HÔM NAY -->
+    <div class="p-5 rounded-3xl bg-gradient-to-br from-[#1E2260] via-indigo-900 to-purple-950 border border-indigo-500/30 shadow-xl relative overflow-hidden">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold text-indigo-300 uppercase tracking-wider">TỔNG DOANH THU HÔM NAY</span>
+        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-400/20 text-emerald-300 border border-emerald-400/30">▲ +18.5% so hôm qua</span>
+      </div>
+      <div class="text-3xl font-black text-white mt-2 tracking-tight">8.450.000 đ</div>
+
+      <!-- Dòng Tiền Tách Bạch (Két vs Ngân Hàng) -->
+      <div class="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-white/10">
+        <div class="p-2.5 rounded-2xl bg-white/5 border border-white/10">
+          <div class="text-[10px] text-slate-400 font-bold flex items-center gap-1">
+            <i class="fa-solid fa-vault text-amber-400"></i> TIỀN MẶT TRONG KÉT
+          </div>
+          <div class="text-sm font-black text-amber-300 mt-0.5">3.250.000 đ</div>
+        </div>
+        <div class="p-2.5 rounded-2xl bg-white/5 border border-white/10">
+          <div class="text-[10px] text-slate-400 font-bold flex items-center gap-1">
+            <i class="fa-solid fa-qrcode text-cyan-400"></i> VIETQR VỀ TÀI KHOẢN
+          </div>
+          <div class="text-sm font-black text-cyan-300 mt-0.5">5.200.000 đ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TÌNH TRẠNG CƠ SỞ TRỰC TIẾP (BÀN & BUỒNG PHÒNG) -->
+    <div class="grid grid-cols-2 gap-3">
+      <!-- Bàn Cafe -->
+      <div class="p-4 rounded-3xl bg-slate-800/90 border border-slate-700/80 shadow-md">
+        <div class="flex items-center justify-between">
+          <span class="text-xl">☕</span>
+          <span class="text-[10px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">60% Công suất</span>
+        </div>
+        <div class="text-xl font-black text-white mt-2">6 / 10 Bàn</div>
+        <p class="text-[10px] text-slate-400 mt-0.5">Đang có khách ngồi dùng</p>
+      </div>
+
+      <!-- Buồng Phòng Stay -->
+      <div class="p-4 rounded-3xl bg-slate-800/90 border border-slate-700/80 shadow-md">
+        <div class="flex items-center justify-between">
+          <span class="text-xl">🏠</span>
+          <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full">50% Lấp đầy</span>
+        </div>
+        <div class="text-xl font-black text-white mt-2">4 / 8 Phòng</div>
+        <p class="text-[10px] text-slate-400 mt-0.5">Khách đang lưu trú qua đêm</p>
+      </div>
+    </div>
+
+    <!-- CƠ CẤU DOANH THU 3 MẢNG (F&B vs PHÒNG vs OCOP) -->
+    <div class="p-4 rounded-3xl bg-slate-800/90 border border-slate-700/80 shadow-md space-y-3">
+      <div class="flex items-center justify-between">
+        <h3 class="font-bold text-xs text-slate-200">CƠ CẤU DOANH THU THEO PHÂN HỆ</h3>
+        <span class="text-[10px] text-slate-400">Ước tính lãi gộp: <b class="text-emerald-400">67.2%</b></span>
+      </div>
+
+      <!-- Progress Bar Segment -->
+      <div class="h-3 w-full rounded-full bg-slate-700 flex overflow-hidden">
+        <div class="bg-emerald-500 h-full" style="width: 42%;" title="F&B: 42%"></div>
+        <div class="bg-blue-500 h-full" style="width: 38%;" title="Lưu Trú: 38%"></div>
+        <div class="bg-amber-500 h-full" style="width: 20%;" title="OCOP: 20%"></div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 text-center text-xs">
+        <div class="p-2 rounded-xl bg-slate-700/40">
+          <div class="text-[10px] text-emerald-400 font-bold">☕ F&B (42%)</div>
+          <div class="font-black text-white text-xs mt-0.5">3.550k</div>
+        </div>
+        <div class="p-2 rounded-xl bg-slate-700/40">
+          <div class="text-[10px] text-blue-400 font-bold">🏠 Lưu Trú (38%)</div>
+          <div class="font-black text-white text-xs mt-0.5">3.200k</div>
+        </div>
+        <div class="p-2 rounded-xl bg-slate-700/40">
+          <div class="text-[10px] text-amber-400 font-bold">🛍️ OCOP (20%)</div>
+          <div class="font-black text-white text-xs mt-0.5">1.700k</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CẢNH BÁO TỒN KHO & THIẾT BỊ THỜI GIAN THỰC -->
+    <div class="p-4 rounded-3xl bg-slate-800/90 border border-slate-700/80 shadow-md space-y-2.5">
+      <div class="flex items-center space-x-2 text-xs font-bold text-amber-400">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>CẢNH BÁO THÔNG MINH CỦA QUÁN</span>
+      </div>
+
+      <!-- Alert 1: Hết kho cafe -->
+      <div class="p-3 rounded-2xl bg-red-950/40 border border-red-800/50 flex items-start space-x-2.5 text-xs">
+        <span class="text-base text-red-400">🥛</span>
+        <div class="flex-1">
+          <div class="font-bold text-red-200">Sữa đặc Phương Nam còn 2 lon</div>
+          <p class="text-[10px] text-red-300/80">Dưới định mức tồn tối thiểu (5 lon). Cần nhập thêm cho ca sáng mai.</p>
+        </div>
+        <button onclick="alert('Đã gửi thông báo đặt hàng nhà cung ứng!')" class="px-2 py-1 rounded-lg bg-red-800/80 hover:bg-red-700 text-white text-[10px] font-bold">
+          Đặt Hàng
+        </button>
+      </div>
+
+      <!-- Alert 2: Kho OCOP -->
+      <div class="p-3 rounded-2xl bg-amber-950/40 border border-amber-800/50 flex items-start space-x-2.5 text-xs">
+        <span class="text-base text-amber-400">🥩</span>
+        <div class="flex-1">
+          <div class="font-bold text-amber-200">Bò một nắng Krông Pa còn 4 hộp</div>
+          <p class="text-[10px] text-amber-300/80">Dự báo cuối tuần khách du lịch tăng đột biến, đề xuất nhập thêm 20 hộp.</p>
+        </div>
+      </div>
+
+      <!-- Alert 3: Thợ 6K Bảo trì thành công -->
+      <div class="p-3 rounded-2xl bg-emerald-950/40 border border-emerald-800/50 flex items-start space-x-2.5 text-xs">
+        <span class="text-base text-emerald-400">🛠️</span>
+        <div class="flex-1">
+          <div class="font-bold text-emerald-200">Bảo trì Máy Làm Đá: Hoàn tất</div>
+          <p class="text-[10px] text-emerald-300/80">Thợ 6K Trần Quốc Hùng đã kiểm tra gas và vệ sinh lưới lọc lúc 14:15.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DANH SÁCH ĐƠN HÀNG MỚI NHẤT REAL-TIME -->
+    <div class="p-4 rounded-3xl bg-slate-800/90 border border-slate-700/80 shadow-md space-y-2">
+      <div class="flex items-center justify-between text-xs font-bold text-slate-300">
+        <span>GIAO DỊCH VỪA PHÁT SINH</span>
+        <span class="text-[10px] text-blue-400">Cập nhật tự động</span>
+      </div>
+
+      <div class="space-y-1.5" id="recentOrdersList">
+        <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-700/40 flex items-center justify-between text-xs">
+          <div>
+            <div class="font-bold text-slate-100">Bàn 03 • Trà đào & Bánh canh hẹ</div>
+            <div class="text-[10px] text-slate-400">16:45 • Thu ngân An • Quét VietQR</div>
+          </div>
+          <span class="font-black text-emerald-400">+154.000 đ</span>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-700/40 flex items-center justify-between text-xs">
+          <div>
+            <div class="font-bold text-slate-100">Phòng 102 • Check-in 2 giờ</div>
+            <div class="text-[10px] text-slate-400">16:10 • Lễ tân • Tiền mặt</div>
+          </div>
+          <span class="font-black text-emerald-400">+120.000 đ</span>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-700/40 flex items-center justify-between text-xs">
+          <div>
+            <div class="font-bold text-slate-100">Khách du lịch • 2 Hộp Bò Một Nắng</div>
+            <div class="text-[10px] text-slate-400">15:30 • Quầy OCOP • Quét VietQR</div>
+          </div>
+          <span class="font-black text-emerald-400">+370.000 đ</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- JAVASCRIPT REFRESH & SIMULATION -->
+  <script>
+    function refreshData() {
+      const icon = document.getElementById('refreshIcon');
+      icon.classList.add('animate-spin');
+      setTimeout(() => {
+        icon.classList.remove('animate-spin');
+        alert("✓ Dữ liệu giám sát thời gian thực đã được cập nhật mới nhất!");
+      }, 600);
+    }
+  </script>
+</body>
+</html>

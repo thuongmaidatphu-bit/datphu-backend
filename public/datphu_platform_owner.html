@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tổng Quản Trị Chủ Sàn - Đất Phú Core</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .tap-highlight-transparent { -webkit-tap-highlight-color: transparent; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased select-none font-sans h-screen flex flex-col overflow-hidden">
+
+  <!-- TOP HEADER TỔNG QUẢN TRỊ CHỦ SÀN -->
+  <header class="h-14 px-4 bg-white dark:bg-[var(--card)] border-b border-[var(--border)] flex items-center justify-between shadow-sm flex-shrink-0 z-30">
+    <div class="flex items-center space-x-3">
+      <!-- Logo Đất Phú chính thức -->
+      <div class="h-9 flex items-center bg-white px-2 py-0.5 rounded-lg border border-slate-200 shadow-sm">
+        <img src="datphu_logo.jpg" alt="Logo Đất Phú" class="h-7 w-auto object-contain">
+      </div>
+      <div>
+        <div class="flex items-center space-x-1.5">
+          <span class="font-black text-base text-[#1E2260]">ĐẤT PHÚ CORE</span>
+          <span class="text-[10px] font-black px-2 py-0.5 rounded bg-red-100 text-[#D7262D] border border-red-200 uppercase">Master Admin</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted-foreground)]">Trung Tâm Điều Hành Bầy Đàn AI • Tuy Hòa, Phú Yên</p>
+      </div>
+    </div>
+
+    <!-- Thanh chuyển tab phân hệ Chủ Sàn -->
+    <nav class="hidden lg:flex items-center space-x-1 bg-[var(--content)] p-1 rounded-xl border border-[var(--border)]">
+      <button onclick="switchTab('overview')" id="tabBtn-overview" class="admin-tab active px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#1E2260] text-white shadow-sm transition">
+        🌐 Tổng Quan Toàn Sàn
+      </button>
+      <button onclick="switchTab('merchants')" id="tabBtn-merchants" class="admin-tab px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition">
+        🏪 Hộ Kinh Doanh (142)
+      </button>
+      <button onclick="switchTab('dispatch')" id="tabBtn-dispatch" class="admin-tab px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center space-x-1">
+        <span>🔧 Điều Phối Thợ (68)</span>
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      </button>
+      <button onclick="switchTab('apikeys')" id="tabBtn-apikeys" class="admin-tab px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center space-x-1">
+        <span>🔑 API Keys</span>
+      </button>
+      <a href="datphu_maintenance.html" class="admin-tab px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)] hover:text-red-600 transition flex items-center space-x-1" title="Cấu hình Nâng cấp & Bảo trì">
+        <span>🛡️ DevInfra & Bảo Trì</span>
+      </a>
+    </nav>
+
+    <!-- Trạng thái hệ thống thời gian thực & Admin User -->
+    <div class="flex items-center space-x-3">
+      <div class="hidden sm:flex items-center space-x-1.5 text-xs text-emerald-700 font-semibold bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+        <span>Supabase DB: 99.98%</span>
+      </div>
+      <a href="auth_login.html" title="Đổi tài khoản hoặc đăng xuất" class="flex items-center space-x-2 pl-2 border-l border-[var(--border)] hover:opacity-80 transition cursor-pointer">
+        <div class="w-8 h-8 rounded-full bg-[#1E2260] text-white flex items-center justify-center font-bold text-xs shadow">
+          Sếp
+        </div>
+        <div class="hidden md:block text-left">
+          <div class="text-xs font-bold leading-tight">Khánh / Thy Admin</div>
+          <div class="text-[10px] text-[#D7262D] font-semibold">Chủ Quản Sàn 🔑</div>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <!-- BODY CONTENT: CÁC PHÂN HỆ QUẢN TRỊ CHỦ SÀN -->
+  <main class="flex-1 overflow-y-auto p-4 md:p-6 no-scrollbar max-w-7xl mx-auto w-full space-y-6">
+
+    <!-- ========================================== -->
+    <!-- PHÂN HỆ 1: TỔNG QUAN TOÀN SÀN (OVERVIEW)   -->
+    <!-- ========================================== -->
+    <div id="section-overview" class="space-y-6">
+      
+      <!-- 4 THẺ CHỈ SỐ HUYẾT MẠCH (KEY METRICS) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        
+        <!-- Metric 1: Tổng GMV giao dịch toàn sàn hôm nay -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm relative overflow-hidden">
+          <div class="flex justify-between items-center text-xs text-[var(--muted-foreground)] font-semibold">
+            <span>TỔNG DÒNG TIỀN GMV HÔM NAY</span>
+            <span class="px-2 py-0.5 rounded bg-blue-50 text-[#1E2260] font-bold">142 điểm bán</span>
+          </div>
+          <div class="text-3xl font-black text-[#1E2260] mt-2 tracking-tight">84.650.000 đ</div>
+          <div class="text-[11px] text-[var(--muted-foreground)] mt-2 flex items-center justify-between">
+            <span>Napas247: <b class="text-[#1E2260]">74%</b></span>
+            <span>Tiền mặt: <b class="text-[#D7262D]">26%</b></span>
+          </div>
+          <div class="absolute right-0 bottom-0 translate-x-3 translate-y-3 opacity-5 text-[#1E2260] text-8xl font-black pointer-events-none">₫</div>
+        </div>
+
+        <!-- Metric 2: Doanh thu thực thu của Sàn Đất Phú -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm relative overflow-hidden">
+          <div class="flex justify-between items-center text-xs text-[var(--muted-foreground)] font-semibold">
+            <span>DOANH THU SÀN ĐẤT PHÚ</span>
+            <span class="px-2 py-0.5 rounded bg-red-100 text-[#D7262D] font-bold">Hôm nay</span>
+          </div>
+          <div class="text-3xl font-black text-[#D7262D] mt-2 tracking-tight">4.230.000 đ</div>
+          <div class="text-[11px] text-[var(--muted-foreground)] mt-2">
+            Thuê bao SaaS + Phí điều phối thợ + HĐĐT
+          </div>
+        </div>
+
+        <!-- Metric 3: Mạng lưới thợ kỹ thuật hoạt động -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm">
+          <div class="flex justify-between items-center text-xs text-[var(--muted-foreground)] font-semibold">
+            <span>THỢ KỸ THUẬT ĐANG TRỰC</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 font-bold">28 online</span>
+          </div>
+          <div class="text-3xl font-black text-[var(--foreground)] mt-2 tracking-tight">36 / 68 ca</div>
+          <div class="text-[11px] text-emerald-600 font-semibold mt-2 flex items-center space-x-1">
+            <span>✓ Đã hoàn tất 32 ca cứu hộ tại Tuy Hòa</span>
+          </div>
+        </div>
+
+        <!-- Metric 4: Tình trạng Hóa Đơn Điện Tử Cục Thuế -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm">
+          <div class="flex justify-between items-center text-xs text-[var(--muted-foreground)] font-semibold">
+            <span>HĐĐT MÁY TÍNH TIỀN ĐÃ KÝ</span>
+            <span class="px-2 py-0.5 rounded bg-blue-100 text-[#1E2260] font-bold">Thông tư 78</span>
+          </div>
+          <div class="text-3xl font-black text-[#1E2260] mt-2 tracking-tight">1.428 HĐ</div>
+          <div class="text-[11px] text-[var(--muted-foreground)] mt-2 flex items-center justify-between">
+            <span>Đồng bộ Cục Thuế Phú Yên</span>
+            <span class="text-emerald-600 font-bold">100% khớp</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- HÀNG 2: BẢN ĐỒ ĐIỀU PHỐI REALTIME & FEED GIAO DỊCH DÒNG TIỀN -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- Cột Trái (7 phần): Bảng Theo Dõi Điều Phối Thợ Trực Tiếp (Live Dispatch Feed) -->
+        <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm flex flex-col">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="font-bold text-sm text-[var(--foreground)] flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#D7262D] animate-ping"></span>
+                <span>Ca Điều Phối Thợ Cứu Hộ Thời Gian Thực (Live Dispatch)</span>
+              </h3>
+              <p class="text-xs text-[var(--muted-foreground)]">Theo dõi tiến độ thợ xử lý sự cố cho các quán & hometel</p>
+            </div>
+            <button onclick="showToast('Đang quét làm mới danh sách điều phối...', '🔄')" class="text-xs text-[#1E2260] font-bold hover:underline">Làm mới</button>
+          </div>
+
+          <!-- Danh sách ca điều phối -->
+          <div class="space-y-2.5 flex-1 overflow-y-auto no-scrollbar">
+            
+            <div class="p-3 bg-[var(--content)] border border-emerald-500/30 rounded-xl flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <span class="text-2xl p-1.5 bg-emerald-50 text-emerald-700 rounded-xl">⚡</span>
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <span class="font-bold text-xs">Đất Phú Hometel (86 Lê Duẩn)</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Đang Sửa</span>
+                  </div>
+                  <p class="text-[11px] text-[var(--muted-foreground)]">Sự cố: Chập aptomat tầng 2 • Thợ: <b>Chú Hùng Điện Nước</b></p>
+                  <p class="text-[10px] text-emerald-600 font-medium">Đã có mặt lúc 07:15 • Dự kiến xong 07:45</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs font-black text-[#D7262D]">150.000 đ</span>
+                <div class="text-[10px] text-[var(--muted-foreground)]">Phí sàn: 15.000 đ</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-[var(--content)] border border-blue-500/30 rounded-xl flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <span class="text-2xl p-1.5 bg-blue-50 text-[#1E2260] rounded-xl">❄️</span>
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <span class="font-bold text-xs">Cà Phê Sông Đà (Trần Hưng Đạo)</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800">Thợ Đang Đến</span>
+                  </div>
+                  <p class="text-[11px] text-[var(--muted-foreground)]">Sự cố: Tủ mát bảo quản sữa mất lạnh • Thợ: <b>Anh Tuấn Điện Lạnh</b></p>
+                  <p class="text-[10px] text-blue-600 font-medium">Cách điểm 400m • Khoảng 8 phút nữa tới</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs font-black text-[#D7262D]">250.000 đ</span>
+                <div class="text-[10px] text-[var(--muted-foreground)]">Phí sàn: 25.000 đ</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-[var(--content)] border border-[var(--border)] rounded-xl flex items-center justify-between opacity-85">
+              <div class="flex items-center space-x-3">
+                <span class="text-2xl p-1.5 bg-gray-100 text-gray-700 rounded-xl">📶</span>
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <span class="font-bold text-xs">Tiệm Bánh Su Kem Tuy Hòa</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-gray-200 text-gray-800">Hoàn Thành ✓</span>
+                  </div>
+                  <p class="text-[11px] text-[var(--muted-foreground)]">Khắc phục rớt mạng WiFi quầy POS • Kỹ sư: <b>Khánh IT Đất Phú</b></p>
+                  <p class="text-[10px] text-gray-500">Đã chốt đơn & xuất hóa đơn điện tử tự động</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs font-black text-[#1E2260]">80.000 đ</span>
+                <div class="text-[10px] text-emerald-600 font-bold">Đã thu phí sàn</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Cột Phải (5 phần): Giám Sát Cổng Napas247 & Webhook Ngân Hàng -->
+        <div class="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-sm text-[var(--foreground)] flex items-center space-x-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#1E2260]"></span>
+                <span>Cổng Thanh Toán Napas247 & Webhook</span>
+              </h3>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Hoạt Động Tốt</span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div class="p-3 bg-[var(--content)] rounded-xl border border-[var(--border)] flex justify-between items-center">
+                <span>Độ trễ nhận diện tiền về (Latency):</span>
+                <span class="font-black text-emerald-600">1.18 giây</span>
+              </div>
+              <div class="p-3 bg-[var(--content)] rounded-xl border border-[var(--border)] flex justify-between items-center">
+                <span>Tỷ lệ giao dịch khớp tự động:</span>
+                <span class="font-black text-[#1E2260]">99.4% (3.842 / 3.865 đơn)</span>
+              </div>
+              <div class="p-3 bg-[var(--content)] rounded-xl border border-[var(--border)] flex justify-between items-center">
+                <span>Đơn treo cần đối soát thủ công:</span>
+                <span class="font-bold text-[#D7262D]">0 đơn</span>
+              </div>
+            </div>
+
+            <!-- Tỷ lệ phân bổ ngân hàng chuyển khoản của khách -->
+            <div class="mt-4 pt-3 border-t border-[var(--border)]">
+              <div class="text-[11px] font-bold text-[var(--muted-foreground)] mb-2">Top ngân hàng khách quét VietQR:</div>
+              <div class="space-y-1.5 text-xs">
+                <div>
+                  <div class="flex justify-between text-[11px]">
+                    <span>MBBank (Quân Đội)</span>
+                    <span class="font-bold">42%</span>
+                  </div>
+                  <div class="h-2 bg-gray-100 rounded-full overflow-hidden mt-0.5">
+                    <div class="h-full bg-blue-600 rounded-full" style="width: 42%;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-[11px]">
+                    <span>Vietcombank</span>
+                    <span class="font-bold">31%</span>
+                  </div>
+                  <div class="h-2 bg-gray-100 rounded-full overflow-hidden mt-0.5">
+                    <div class="h-full bg-emerald-600 rounded-full" style="width: 31%;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-[11px]">
+                    <span>BIDV & Khác</span>
+                    <span class="font-bold">27%</span>
+                  </div>
+                  <div class="h-2 bg-gray-100 rounded-full overflow-hidden mt-0.5">
+                    <div class="h-full bg-[#1E2260] rounded-full" style="width: 27%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-[#1E2260] flex items-center justify-between">
+            <span>Tự động cân bằng tải Webhook SePay & Casso</span>
+            <span class="font-bold text-emerald-600">Active</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PHÂN HỆ 2: QUẢN LÝ HỘ KINH DOANH (MERCHANTS) -->
+    <!-- ========================================== -->
+    <div id="section-merchants" class="hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-bold text-base">Danh Sách 142 Hộ Kinh Doanh & Điểm Bán Ví An Sinh</h2>
+          <p class="text-xs text-[var(--muted-foreground)]">Quản lý kích hoạt bản quyền, hóa đơn điện tử và hạn ngạch</p>
+        </div>
+        <button onclick="showToast('Mở form thêm hộ kinh doanh mới...', '➕')" class="px-3.5 py-2 rounded-xl bg-[#1E2260] text-white font-bold text-xs shadow hover:bg-[#151846] transition">
+          ＋ Kích Hoạt Điểm Bán Mới
+        </button>
+      </div>
+
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-sm">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-[var(--content)] border-b border-[var(--border)] text-[var(--muted-foreground)] font-bold">
+              <th class="p-3.5">Tên Cửa Hàng / Hộ KD</th>
+              <th class="p-3.5">Mô Hình</th>
+              <th class="p-3.5">Địa Chỉ Tuy Hòa</th>
+              <th class="p-3.5">Gói Dịch Vụ</th>
+              <th class="p-3.5">GMV Hôm Nay</th>
+              <th class="p-3.5">Trạng Thái HĐĐT</th>
+              <th class="p-3.5 text-right">Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[var(--border)]">
+            <tr class="hover:bg-[var(--content)]/50 transition">
+              <td class="p-3.5 font-bold text-[var(--foreground)]">Đất Phú Hometel</td>
+              <td class="p-3.5 text-[#1E2260] font-semibold">Hometel + Cà Phê</td>
+              <td class="p-3.5 text-[var(--muted-foreground)]">86 Lê Duẩn, P.7</td>
+              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-purple-100 text-purple-800 font-bold">Gói Pro (199k/th)</span></td>
+              <td class="p-3.5 font-black text-[#1E2260]">2.450.000 đ</td>
+              <td class="p-3.5 text-emerald-600 font-bold">✓ Cục Thuế PY</td>
+              <td class="p-3.5 text-right"><button class="text-blue-700 font-bold hover:underline">Chi Tiết</button></td>
+            </tr>
+            <tr class="hover:bg-[var(--content)]/50 transition">
+              <td class="p-3.5 font-bold text-[var(--foreground)]">Cà Phê Sữa Đá Tuy Hòa</td>
+              <td class="p-3.5 text-[#1E2260] font-semibold">Quán Cà Phê Ăn Sáng</td>
+              <td class="p-3.5 text-[var(--muted-foreground)]">124 Hùng Vương</td>
+              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">Starter (99k/th)</span></td>
+              <td class="p-3.5 font-black text-[#1E2260]">1.825.000 đ</td>
+              <td class="p-3.5 text-emerald-600 font-bold">✓ Tự động gom</td>
+              <td class="p-3.5 text-right"><button class="text-blue-700 font-bold hover:underline">Chi Tiết</button></td>
+            </tr>
+            <tr class="hover:bg-[var(--content)]/50 transition">
+              <td class="p-3.5 font-bold text-[var(--foreground)]">Tiệm Tạp Hóa Cô Lan</td>
+              <td class="p-3.5 text-[#1E2260] font-semibold">Bán Lẻ Bách Hóa</td>
+              <td class="p-3.5 text-[var(--muted-foreground)]">Chợ Tuy Hòa, P.1</td>
+              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">All-in-One Thuế</span></td>
+              <td class="p-3.5 font-black text-[#1E2260]">3.640.000 đ</td>
+              <td class="p-3.5 text-emerald-600 font-bold">✓ Có Chữ Ký HSM</td>
+              <td class="p-3.5 text-right"><button class="text-blue-700 font-bold hover:underline">Chi Tiết</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PHÂN HỆ 3: ĐIỀU PHỐI THỢ TOÀN DIỆN (DISPATCH)-->
+    <!-- ========================================== -->
+    <div id="section-dispatch" class="hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-bold text-base">Tổng Kho Thợ Kỹ Thuật Đất Phú (68 Thợ)</h2>
+          <p class="text-xs text-[var(--muted-foreground)]">Giám sát vị trí GPS, đánh giá sao và kiểm soát hoa hồng sàn 10%</p>
+        </div>
+        <button onclick="showToast('Mở form duyệt hồ sơ thợ kỹ thuật mới...', '👨‍🔧')" class="px-3.5 py-2 rounded-xl bg-[#D7262D] text-white font-bold text-xs shadow hover:bg-[#B91C22] transition">
+          ＋ Duyệt Thợ Mới Đăng Ký
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+        <div class="p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs">Chú Hùng (Điện Nước)</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">Đang Có Ca</span>
+          </div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">Đã xử lý: <b>142 ca</b> • Đánh giá: <b class="text-amber-500">★ 4.9</b></div>
+          <div class="text-xs font-bold text-[#1E2260]">Thu nhập hôm nay: 850.000 đ (Trích sàn: 85.000 đ)</div>
+        </div>
+
+        <div class="p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs">Anh Tuấn (Điện Lạnh Tủ Đông)</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800">Đang Di Chuyển</span>
+          </div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">Đã xử lý: <b>98 ca</b> • Đánh giá: <b class="text-amber-500">★ 4.95</b></div>
+          <div class="text-xs font-bold text-[#1E2260]">Thu nhập hôm nay: 620.000 đ (Trích sàn: 62.000 đ)</div>
+        </div>
+
+        <div class="p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs">Khánh IT (Mạng & Camera)</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">Sẵn Sàng</span>
+          </div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">Đã xử lý: <b>215 ca</b> • Đánh giá: <b class="text-amber-500">★ 5.0</b></div>
+          <div class="text-xs font-bold text-[#1E2260]">Thu nhập hôm nay: 450.000 đ (Trích sàn: 45.000 đ)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PHÂN HỆ 4: DEVINFRA GUARD (GIÁM SÁT KỸ THUẬT)-->
+    <!-- ========================================== -->
+    <div id="section-devinfra" class="hidden space-y-4">
+      <div>
+        <h2 class="font-bold text-base">DevInfra & 4 Cổng Chính Đám Mây (Supabase Cloud)</h2>
+        <p class="text-xs text-[var(--muted-foreground)]">Toàn bộ dữ liệu được đồng bộ và bảo vệ 24/7 trên cụm máy chủ đám mây Supabase Enterprise</p>
+      </div>
+
+      <!-- 4 CỔNG CHÍNH ĐÁM MÂY (SUPABASE CLOUD GATES) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        
+        <!-- Cổng 1: Database -->
+        <div class="p-4 bg-[var(--card)] border-2 border-emerald-500/40 rounded-2xl shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-2xl">🗄️</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">CỔNG 1: DATABASE</span>
+          </div>
+          <div class="font-bold text-xs text-[var(--foreground)]">PostgreSQL 15 Cloud</div>
+          <p class="text-[10px] text-[var(--muted-foreground)]">Lưu trữ đơn hàng, dòng tiền Napas247, thợ 6K và báo cáo thuế.</p>
+          <div class="text-[11px] font-bold text-emerald-600">✓ 7 Bảng Nghiệp Vụ Active</div>
+        </div>
+
+        <!-- Cổng 2: Authentication -->
+        <div class="p-4 bg-[var(--card)] border-2 border-blue-500/40 rounded-2xl shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-2xl">🔐</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">CỔNG 2: AUTH</span>
+          </div>
+          <div class="font-bold text-xs text-[var(--foreground)]">Supabase GoTrue (RBAC)</div>
+          <p class="text-[10px] text-[var(--muted-foreground)]">Xác thực JWT token, phân quyền 4 vai trò: Chủ sàn, Chủ quán, Thợ, Khách.</p>
+          <div class="text-[11px] font-bold text-blue-700">✓ RLS Policy Đa Tầng</div>
+        </div>
+
+        <!-- Cổng 3: Storage -->
+        <div class="p-4 bg-[var(--card)] border-2 border-purple-500/40 rounded-2xl shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-2xl">📦</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">CỔNG 3: STORAGE</span>
+          </div>
+          <div class="font-bold text-xs text-[var(--foreground)]">S3 Object Storage (CDN)</div>
+          <p class="text-[10px] text-[var(--muted-foreground)]">Lưu trữ ảnh món, ảnh hiện trường sửa chữa 6K và chứng từ HĐĐT PDF.</p>
+          <div class="text-[11px] font-bold text-purple-700">✓ 4 Buckets Cloud Sẵn Sàng</div>
+        </div>
+
+        <!-- Cổng 4: Realtime -->
+        <div class="p-4 bg-[var(--card)] border-2 border-red-500/40 rounded-2xl shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-2xl">⚡</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-[#D7262D]">CỔNG 4: REALTIME</span>
+          </div>
+          <div class="font-bold text-xs text-[var(--foreground)]">Postgres CDC & WebSocket</div>
+          <p class="text-[10px] text-[var(--muted-foreground)]">Bắn sự kiện tiền về Ting Ting dưới 2s và điều phối thợ tức thời.</p>
+          <div class="text-[11px] font-bold text-[#D7262D]">✓ 18ms Latency Siêu Tốc</div>
+        </div>
+
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+        <!-- Supabase DB Quota -->
+        <div class="p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-sm space-y-2">
+          <div class="flex justify-between items-center text-xs font-bold">
+            <span>Dung Lượng Supabase DB</span>
+            <span class="text-emerald-600">32% / 500MB (Free Tier)</span>
+          </div>
+          <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-emerald-500 rounded-full" style="width: 32%;"></div>
+          </div>
+          <p class="text-[10px] text-[var(--muted-foreground)]">Tối ưu Index & partition theo tháng, chưa chạm ngưỡng nâng cấp gói trả phí.</p>
+        </div>
+
+        <!-- Cloudflare Edge & Cache -->
+        <div class="p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-sm space-y-2">
+          <div class="flex justify-between items-center text-xs font-bold">
+            <span>Băng Thông Cloudflare Edge</span>
+            <span class="text-[#1E2260]">12.4 GB / Unlimited</span>
+          </div>
+          <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-blue-600 rounded-full" style="width: 15%;"></div>
+          </div>
+          <p class="text-[10px] text-[var(--muted-foreground)]">Cache Hit Ratio đạt 94.2% cho tài nguyên tĩnh PWA.</p>
+        </div>
+
+        <!-- API Rate Limits & Error Rate -->
+        <div class="p-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-sm space-y-2">
+          <div class="flex justify-between items-center text-xs font-bold">
+            <span>Tỷ Lệ Lỗi API (Error Rate)</span>
+            <span class="text-emerald-600">0.02% (< 1%)</span>
+          </div>
+          <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-emerald-500 rounded-full" style="width: 2%;"></div>
+          </div>
+          <p class="text-[10px] text-[var(--muted-foreground)]">Telegram Bot cảnh báo tự động: Không có lỗi bất thường trong 24h qua.</p>
+        </div>
+      </div>
+
+      <!-- Log Cảnh Báo Telegram Mẫu -->
+      <div class="p-4 bg-slate-900 text-slate-100 rounded-2xl font-mono text-xs space-y-1.5 shadow-inner">
+        <div class="text-slate-400 font-bold pb-1 border-b border-slate-700 flex justify-between items-center">
+          <span>TELEGRAM ALERT LOG (BẦY ĐÀN AI)</span>
+          <span class="text-emerald-400 text-[10px]">● Live Stream</span>
+        </div>
+        <div>[07:15:02] <span class="text-emerald-400">INFO</span> [Dispatch]: Điều phối thành công Chú Hùng tới Đất Phú Hometel.</div>
+        <div>[07:22:18] <span class="text-blue-400">PAYMENT</span>: Nhận 20.000đ từ Vietcombank cho đơn AS-1043 tại Cafe Sữa Đá Tuy Hòa.</div>
+        <div>[07:30:00] <span class="text-purple-400">EINVOICE</span>: Khởi tạo thành công 12 hóa đơn máy tính tiền gửi Cục Thuế Phú Yên.</div>
+        <div>[07:45:00] <span class="text-emerald-400">HEALTH</span>: Health check toàn bộ 4 app vệ tinh: OK (Status 200).</div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PHÂN HỆ 5: QUẢN LÝ API KEYS HỆ SINH THÁI   -->
+    <!-- ========================================== -->
+    <div id="section-apikeys" class="hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-bold text-base">Hệ Thống Quản Lý API Keys & Khóa Bí Mật Đất Phú Core</h2>
+          <p class="text-xs text-[var(--muted-foreground)]">Cấp quyền truy cập cho POS Hộ Kinh Doanh, Thợ 6K, Webhook Ngân Hàng và HĐĐT</p>
+        </div>
+        <button onclick="openCreateKeyModal()" class="px-3.5 py-2 rounded-xl bg-[#1E2260] text-white font-bold text-xs shadow hover:bg-[#151846] transition flex items-center space-x-1">
+          <span>＋</span>
+          <span>Tạo API Key Mới</span>
+        </button>
+      </div>
+
+      <!-- Bảng danh sách API Keys -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-sm">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-[var(--content)] border-b border-[var(--border)] text-[var(--muted-foreground)] font-bold">
+              <th class="p-3.5">Tên Định Danh / Đơn Vị</th>
+              <th class="p-3.5">Loại Khóa (Role)</th>
+              <th class="p-3.5">Khóa Bí Mật (Masked)</th>
+              <th class="p-3.5">Quyền Hạn (Scopes)</th>
+              <th class="p-3.5">Rate Limit</th>
+              <th class="p-3.5">Trạng Thái</th>
+              <th class="p-3.5 text-right">Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[var(--border)]" id="apiKeysTableBody">
+            <tr class="hover:bg-[var(--content)]/50 transition">
+              <td class="p-3.5 font-bold text-[var(--foreground)]">Chủ Sàn Đất Phú Core (Master Key)</td>
+              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-red-100 text-[#D7262D] font-bold">master_admin</span></td>
+              <td class="p-3.5 font-mono text-[11px] text-[#1E2260] font-bold">dp_master_live_9a7b...4c2e</td>
+              <td class="p-3.5 text-[var(--muted-foreground)]">all (Toàn quyền)</td>
+              <td class="p-3.5 font-semibold">10,000 RPM</td>
+              <td class="p-3.5 text-emerald-600 font-bold">● Active</td>
+              <td class="p-3.5 text-right space-x-1.5">
+                <button onclick="copyKeyText('dp_master_live_9a7b8c3d2e1f4a5b6c7d8e9f0a1b2c3d')" class="text-blue-700 font-bold hover:underline">Sao chép</button>
+              </td>
+            </tr>
+            <tr class="hover:bg-[var(--content)]/50 transition">
+              <td class="p-3.5 font-bold text-[var(--foreground)]">Đất Phú Hometel (Ví An Sinh POS)</td>
+              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">merchant</span></td>
+              <td class="p-3.5 font-mono text-[11px] text-[#1E2260] font-bold">dp_merchant_live_8821...912a</td>
+              <td class="p-3.5 text-[var(--muted-foreground)]">pos:orders, tax:einvoice</td>
+              <td class="p-3.5 font-semibold">600 RPM</td>
+              <td class="p-3.5 text-emerald-600 font-bold">● Active</td>
+              <td class="p-3.5 text-right space-x-1.5">
+                <button onclick="copyKeyText('dp_merchant_live_8821fa39c281b947c6a9e102f912a')" class="text-blue-700 font-bold hover:underline">Sao chép</button>
+              </td>
+            </tr>
+            <tr class="hover:bg-[var(--content)]/50 transition">
+              <td class="p-3.5 font-bold text-[var(--foreground)]">Cổng Ngân Hàng Napas247 (SePay / Casso)</td>
+              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">webhook</span></td>
+              <td class="p-3.5 font-mono text-[11px] text-[#1E2260] font-bold">dp_whsec_5f12...3e8b</td>
+              <td class="p-3.5 text-[var(--muted-foreground)]">webhook:bank_ipn</td>
+              <td class="p-3.5 font-semibold">3,000 RPM</td>
+              <td class="p-3.5 text-emerald-600 font-bold">● Active</td>
+              <td class="p-3.5 text-right space-x-1.5">
+                <button onclick="copyKeyText('dp_whsec_5f12e847c92a10b3d4f82a912e3e8b')" class="text-blue-700 font-bold hover:underline">Sao chép</button>
+              </td>
+            </tr>
+            <tr class="hover:bg-[var(--content)]/50 transition">
+              <td class="p-3.5 font-bold text-[var(--foreground)]">Mạng Lưới Thợ 6K (Dispatch API)</td>
+              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold">worker</span></td>
+              <td class="p-3.5 font-mono text-[11px] text-[#1E2260] font-bold">dp_worker_live_12b4...88ef</td>
+              <td class="p-3.5 text-[var(--muted-foreground)]">dispatch:accept, dispatch:update</td>
+              <td class="p-3.5 font-semibold">300 RPM</td>
+              <td class="p-3.5 text-emerald-600 font-bold">● Active</td>
+              <td class="p-3.5 text-right space-x-1.5">
+                <button onclick="copyKeyText('dp_worker_live_12b4a59c78d10e3f2b4c88ef')" class="text-blue-700 font-bold hover:underline">Sao chép</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MODAL TẠO API KEY MỚI -->
+    <div id="createKeyModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-3xl w-full max-w-md p-5 shadow-2xl flex flex-col space-y-3.5 animate-in fade-in">
+        <div class="flex justify-between items-center border-b border-[var(--border)] pb-2.5">
+          <h3 class="font-bold text-sm text-[var(--foreground)]">Khởi Tạo API Key Mới</h3>
+          <button onclick="closeModal('createKeyModal')" class="text-[var(--muted-foreground)] hover:text-[#D7262D] font-bold text-lg">✕</button>
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-[var(--muted-foreground)] block mb-1">Tên Đơn Vị / Điểm Bán / Tích Hợp:</label>
+          <input type="text" id="newKeyName" placeholder="VD: Cà phê Tuy Hòa Chi Nhánh 2..." class="w-full p-2.5 rounded-xl border border-[var(--border)] bg-[var(--content)] text-xs font-semibold focus:outline-none focus:border-[#1E2260]">
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-[var(--muted-foreground)] block mb-1">Vai Trò (Role):</label>
+          <select id="newKeyRole" class="w-full p-2.5 rounded-xl border border-[var(--border)] bg-[var(--content)] text-xs font-semibold focus:outline-none focus:border-[#1E2260]">
+            <option value="merchant">Hộ Kinh Doanh / Điểm Bán (Ví An Sinh POS)</option>
+            <option value="worker">Thợ Kỹ Thuật 6K (Dispatch API)</option>
+            <option value="webhook">Webhook Ngân Hàng (SePay/Casso IPN)</option>
+            <option value="einvoice">Hóa Đơn Điện Tử (VNPT Invoice Bridge)</option>
+            <option value="master_admin">Quản Trị Chủ Sàn (Toàn quyền)</option>
+          </select>
+        </div>
+
+        <!-- Hộp hiển thị Key vừa tạo -->
+        <div id="newKeyResultBox" class="hidden p-3 bg-emerald-50 border border-emerald-200 rounded-xl space-y-1">
+          <div class="text-[11px] font-bold text-emerald-800">✓ KHÓA BÍ MẬT CỦA BẠN (Chỉ hiển thị 1 lần):</div>
+          <div class="p-2 bg-white rounded border border-emerald-300 font-mono text-xs font-black text-[#1E2260] break-all select-all" id="newKeyResultVal">
+            ...
+          </div>
+          <button onclick="copyNewGeneratedKey()" class="text-xs font-bold text-blue-700 hover:underline pt-1 block">📋 Bấm để sao chép khóa</button>
+        </div>
+
+        <div class="pt-2 flex justify-end space-x-2">
+          <button onclick="closeModal('createKeyModal')" class="px-3.5 py-2 rounded-xl border border-[var(--border)] font-semibold text-xs">Đóng</button>
+          <button onclick="submitGenerateKey()" id="btnGenKey" class="px-4 py-2 rounded-xl bg-[#1E2260] text-white font-bold text-xs shadow hover:bg-[#151846] transition">
+            Sinh Khóa API
+          </button>
+        </div>
+      </div>
+    </div>
+
+  <!-- TOAST THÔNG BÁO -->
+  <div id="toast" class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-[#1E2260] text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-2 text-xs font-bold border border-blue-400 transition-all">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Thao tác quản trị thành công!</span>
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      ['overview', 'merchants', 'dispatch', 'apikeys', 'devinfra'].forEach(t => {
+        const sec = document.getElementById(`section-${t}`);
+        if (sec) sec.classList.add('hidden');
+        const btn = document.getElementById(`tabBtn-${t}`);
+        if (btn) {
+          btn.className = "admin-tab px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition";
+        }
+      });
+
+      const activeSec = document.getElementById(`section-${tabId}`);
+      if (activeSec) activeSec.classList.remove('hidden');
+
+      const activeBtn = document.getElementById(`tabBtn-${tabId}`);
+      if (activeBtn) {
+        activeBtn.className = "admin-tab active px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#1E2260] text-white shadow-sm transition";
+      }
+    }
+
+    function openCreateKeyModal() {
+      document.getElementById('newKeyName').value = '';
+      document.getElementById('newKeyResultBox').classList.add('hidden');
+      document.getElementById('createKeyModal').classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    let lastCreatedKey = '';
+    function submitGenerateKey() {
+      const name = document.getElementById('newKeyName').value.trim();
+      const role = document.getElementById('newKeyRole').value;
+      if (!name) {
+        alert('Vui lòng nhập tên định danh điểm bán/tích hợp!');
+        return;
+      }
+
+      const prefixes = {
+        merchant: 'dp_merchant_live_',
+        worker: 'dp_worker_live_',
+        webhook: 'dp_whsec_',
+        einvoice: 'dp_einvoice_key_',
+        master_admin: 'dp_master_live_'
+      };
+
+      const rand = Array.from(crypto.getRandomValues(new Uint8Array(20))).map(b => b.toString(16).padStart(2, '0')).join('');
+      lastCreatedKey = `${prefixes[role] || 'dp_key_'}${rand}`;
+
+      document.getElementById('newKeyResultVal').innerText = lastCreatedKey;
+      document.getElementById('newKeyResultBox').classList.remove('hidden');
+
+      // Thêm dòng mới vào bảng
+      const tbody = document.getElementById('apiKeysTableBody');
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-[var(--content)]/50 transition bg-emerald-50/30';
+      tr.innerHTML = `
+        <td class="p-3.5 font-bold text-[var(--foreground)]">${name}</td>
+        <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">${role}</span></td>
+        <td class="p-3.5 font-mono text-[11px] text-[#1E2260] font-bold">${lastCreatedKey.slice(0, 15)}...${lastCreatedKey.slice(-4)}</td>
+        <td class="p-3.5 text-[var(--muted-foreground)]">auto:authorized</td>
+        <td class="p-3.5 font-semibold">600 RPM</td>
+        <td class="p-3.5 text-emerald-600 font-bold">● Active</td>
+        <td class="p-3.5 text-right space-x-1.5">
+          <button onclick="copyKeyText('${lastCreatedKey}')" class="text-blue-700 font-bold hover:underline">Sao chép</button>
+        </td>
+      `;
+      tbody.prepend(tr);
+
+      showToast(`Đã khởi tạo API Key thành công cho ${name}!`, '🔑');
+    }
+
+    function copyKeyText(text) {
+      navigator.clipboard.writeText(text);
+      showToast('Đã sao chép API Key vào khay nhớ tạm (Clipboard)!', '📋');
+    }
+
+    function copyNewGeneratedKey() {
+      if (lastCreatedKey) copyKeyText(lastCreatedKey);
+    }
+
+    function showToast(msg, icon = "✓") {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 2800);
+    }
+  </script>
+</body>
+</html>

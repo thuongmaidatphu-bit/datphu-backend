@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bảng Tính Thu Chi & Lợi Nhuận Hàng Tháng (P&L) | Đất Phú Core</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'datphu-navy': '#1E2260',
+            'datphu-red': '#D7262D',
+            'datphu-gold': '#EAB308',
+            'datphu-dark': '#0F172A',
+            'datphu-emerald': '#10B981'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .currency-input {
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 antialiased pb-16">
+
+  <!-- TOP HEADER DOANH NGHIỆP ĐẤT PHÚ -->
+  <header class="bg-gradient-to-r from-datphu-navy via-[#171b4a] to-datphu-navy text-white shadow-xl border-b border-datphu-gold/30 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <a href="/index.html" class="flex items-center space-x-3 group">
+          <div class="w-11 h-11 rounded-xl bg-white/10 p-1 backdrop-blur border border-white/20 flex items-center justify-center">
+            <img src="/datphu_logo.jpg" alt="Đất Phú Logo" class="h-9 w-9 object-contain rounded-lg" onerror="this.onerror=null; this.src='https://via.placeholder.com/40?text=DP'">
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-datphu-gold font-bold flex items-center gap-1.5">
+              <span>Đất Phú Core</span>
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-[10px] text-white/70 font-normal">Finance Module</span>
+            </div>
+            <h1 class="text-lg font-extrabold tracking-tight text-white group-hover:text-datphu-gold transition">
+              Bảng Tính Thu Chi & Lợi Nhuận Hàng Tháng (P&L)
+            </h1>
+          </div>
+        </a>
+      </div>
+
+      <!-- Quick Nav Buttons -->
+      <div class="flex items-center space-x-2 text-xs">
+        <a href="/index.html" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium transition flex items-center gap-1.5">
+          <i class="fa-solid fa-home"></i> <span>Trang Chủ</span>
+        </a>
+        <a href="/datphu_lifecycle_flow.html" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium transition flex items-center gap-1.5">
+          <i class="fa-solid fa-diagram-project"></i> <span>4 Giai Đoạn Vòng Đời</span>
+        </a>
+        <a href="/mini_pos_cashier.html" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium transition flex items-center gap-1.5">
+          <i class="fa-solid fa-cash-register"></i> <span>Quầy POS</span>
+        </a>
+        <a href="/mini_pos_daily_report.html" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium transition flex items-center gap-1.5">
+          <i class="fa-solid fa-file-invoice-dollar"></i> <span>Chốt Ca Cuối Ngày</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- SUBHEADER / BANNER CƠ SỞ KINH DOANH -->
+  <div class="bg-white border-b border-slate-200 py-3 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+      <div class="flex items-center gap-2 text-slate-600">
+        <span class="px-2 py-0.5 rounded bg-datphu-navy/10 text-datphu-navy font-bold">CƠ SỞ MẪU</span>
+        <span class="font-semibold text-slate-800">Đất Phú Hub & Cafe Đất Phú</span>
+        <span class="text-slate-400">|</span>
+        <span class="text-slate-500">86 Lê Duẩn, P.7, TP. Tuy Hòa</span>
+        <span class="text-slate-400">|</span>
+        <span class="text-slate-500">MST: <strong class="text-slate-700">4401020233</strong></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-slate-500 font-medium">Kỳ Báo Cáo:</label>
+        <select id="selectMonth" class="px-3 py-1 rounded-lg border border-slate-300 bg-slate-50 font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-datphu-navy/50">
+          <option value="11/2026" selected>Tháng 11 / 2026</option>
+          <option value="10/2026">Tháng 10 / 2026</option>
+          <option value="09/2026">Tháng 09 / 2026</option>
+        </select>
+        <button onclick="restoreDefaults()" class="text-xs px-2.5 py-1 text-slate-600 hover:text-datphu-navy border border-slate-200 rounded hover:bg-slate-50 transition" title="Khôi phục số liệu gốc">
+          <i class="fa-solid fa-rotate-left mr-1"></i> Khôi phục mẫu
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+
+    <!-- 1. CÁC THẺ CHỈ SỐ TÀI CHÍNH CỐT LÕI (5 NHÓM P&L) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      
+      <!-- I. TỔNG DOANH THU -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-blue-50 rounded-bl-full -z-0"></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            <span>I. Tổng Doanh Thu</span>
+            <span class="text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">100%</span>
+          </div>
+          <div class="text-2xl font-black text-slate-900 tracking-tight" id="kpiTotalRevenue">127,000,000 đ</div>
+          <p class="text-[11px] text-slate-500 mt-1">Cà phê + Hometel + Đặc sản OCOP</p>
+        </div>
+        <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+          <span class="text-slate-600"><i class="fa-solid fa-money-bill-wave text-emerald-500 mr-1"></i>Két: <strong id="kpiCash">45 tr</strong></span>
+          <span class="text-slate-600"><i class="fa-solid fa-qrcode text-blue-500 mr-1"></i>VietQR: <strong id="kpiQR">82 tr</strong></span>
+        </div>
+      </div>
+
+      <!-- II. GIÁ VỐN HÀNG BÁN (COGS) -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-amber-50 rounded-bl-full -z-0"></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            <span>II. Giá Vốn (COGS)</span>
+            <span class="text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full" id="kpiCogsPercent">30.4%</span>
+          </div>
+          <div class="text-2xl font-black text-amber-600 tracking-tight" id="kpiTotalCogs">38,650,000 đ</div>
+          <p class="text-[11px] text-slate-500 mt-1">NVL Pha Chế + Vải Giặt + Nhập sỉ OCOP</p>
+        </div>
+        <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] text-slate-500">
+          <i class="fa-solid fa-boxes-packing mr-1 text-amber-500"></i> Dữ liệu tự động từ phiếu nhập kho
+        </div>
+      </div>
+
+      <!-- III. LỢI NHUẬN GỘP (GROSS PROFIT) -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-indigo-50 rounded-bl-full -z-0"></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            <span>III. Lợi Nhuận Gộp</span>
+            <span class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full" id="kpiGrossMargin">69.6%</span>
+          </div>
+          <div class="text-2xl font-black text-indigo-700 tracking-tight" id="kpiGrossProfit">88,350,000 đ</div>
+          <p class="text-[11px] text-slate-500 mt-1">Công thức: [I] Doanh thu - [II] Giá vốn</p>
+        </div>
+        <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] text-indigo-600 font-medium">
+          <i class="fa-solid fa-chart-line mr-1"></i> Lãi gộp mảng Hometel đạt 85%
+        </div>
+      </div>
+
+      <!-- IV. CHI PHÍ VẬN HÀNH (OPEX) -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-rose-50 rounded-bl-full -z-0"></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            <span>IV. Chi Phí OPEX</span>
+            <span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full" id="kpiOpexPercent">45.7%</span>
+          </div>
+          <div class="text-2xl font-black text-rose-600 tracking-tight" id="kpiTotalOpex">58,000,000 đ</div>
+          <p class="text-[11px] text-slate-500 mt-1">Mặt bằng + Lương + Điện nước + 6K</p>
+        </div>
+        <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] text-slate-500">
+          <i class="fa-solid fa-receipt mr-1 text-rose-500"></i> Các khoản chi cố định hàng tháng
+        </div>
+      </div>
+
+      <!-- V. LỢI NHUẬN RÒNG (TIỀN TÚI CHỦ QUÁN) -->
+      <div class="bg-gradient-to-br from-emerald-600 to-teal-700 text-white rounded-2xl p-4 shadow-lg shadow-emerald-700/20 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-bl-full"></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-between text-xs font-semibold text-emerald-100 uppercase tracking-wider mb-1">
+            <span>V. Lợi Nhuận Ròng</span>
+            <span class="bg-white/20 text-white font-bold px-2 py-0.5 rounded-full" id="kpiNetMargin">23.9%</span>
+          </div>
+          <div class="text-2xl font-black tracking-tight text-white drop-shadow-sm" id="kpiNetProfit">30,350,000 đ</div>
+          <p class="text-[11px] text-emerald-100 mt-1 font-medium">✨ Tiền túi thực tế của Chủ Quán</p>
+        </div>
+        <div class="mt-3 pt-2 border-t border-white/20 text-[11px] text-emerald-100 flex items-center justify-between">
+          <span>Công thức: [III] - [IV]</span>
+          <span class="bg-white text-emerald-800 text-[10px] font-bold px-1.5 py-0.5 rounded">TỐT</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ACTION BUTTONS: EXPORT EXCEL & PDF & HUONG DAN -->
+    <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-datphu-navy text-datphu-gold flex items-center justify-center font-bold text-lg">
+          <i class="fa-solid fa-file-excel"></i>
+        </div>
+        <div>
+          <h2 class="text-sm font-bold text-slate-800">Xuất Báo Cáo & Chia Sẻ Dữ Liệu</h2>
+          <p class="text-xs text-slate-500">Tải file Excel đầy đủ công thức chuẩn P&L hoặc file PDF lưu trữ quyết toán</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="downloadExcel()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm transition flex items-center gap-2">
+          <i class="fa-solid fa-file-excel text-sm"></i> <span>Tải Excel (.xlsx) Kèm Công Thức</span>
+        </button>
+        <button onclick="downloadPDF()" class="px-4 py-2 bg-datphu-red hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow-sm transition flex items-center gap-2">
+          <i class="fa-solid fa-file-pdf text-sm"></i> <span>Tải Báo Cáo PDF (.pdf)</span>
+        </button>
+        <button onclick="copyGoogleSheetsTemplate()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center gap-1.5">
+          <i class="fa-solid fa-copy"></i> <span>Mẫu Google Sheets</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. BẢNG TÍNH THU CHI P&L CHI TIẾT (CHUẨN HÓA CÔNG THỨC & CHO PHÉP CHỈNH SỬA) -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="px-5 py-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 bg-slate-50/80">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-datphu-navy">BƯỚC 1 & BƯỚC 3</span>
+          <h3 class="text-base font-extrabold text-slate-900">Bảng Tính Thu Chi & Lợi Nhuận Hàng Tháng Chi Tiết (P&L)</h3>
+          <p class="text-xs text-slate-500">Chủ quán có thể sửa số tiền thực tế tại các ô nhập liệu bên dưới để hệ thống tự động nhảy công thức</p>
+        </div>
+        <div class="flex items-center gap-2 text-xs text-slate-500">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Tự động cân đối số liệu
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+          <thead>
+            <tr class="bg-datphu-navy text-white text-xs uppercase font-bold tracking-wider">
+              <th class="py-3 px-4 w-12 text-center">STT</th>
+              <th class="py-3 px-4 w-80">Khoản Mục Tài Chính</th>
+              <th class="py-3 px-4">Diễn Giải Chi Tiết & Nguồn Dữ Liệu</th>
+              <th class="py-3 px-4 w-52 text-right">Số Tiền (VNĐ)</th>
+              <th class="py-3 px-4 w-28 text-right">Tỷ Trọng (%)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+
+            <!-- NHÓM I: TỔNG DOANH THU -->
+            <tr class="bg-blue-50/70 font-bold text-slate-900">
+              <td class="py-3 px-4 text-center text-blue-900">I</td>
+              <td class="py-3 px-4 text-blue-900 flex items-center gap-2">
+                <i class="fa-solid fa-coins text-blue-600"></i> TỔNG DOANH THU THUẦN
+              </td>
+              <td class="py-3 px-4 text-xs text-blue-800">Toàn bộ tiền thu về từ tất cả các dịch vụ trong tháng (từ bảng pos_orders)</td>
+              <td class="py-3 px-4 text-right font-black text-blue-900 text-base" id="tableTotalRevenue">127,000,000</td>
+              <td class="py-3 px-4 text-right text-blue-900 font-bold">100.0%</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">1.1</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">☕ Doanh thu Cà phê & Giải khát (F&B)</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Doanh thu bán đồ uống tại quầy & mang đi</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inRevFnb" oninput="recalcAll()" value="48500000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-datphu-navy/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-500 font-medium" id="pctRevFnb">38.2%</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">1.2</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">🏨 Doanh thu Phòng Hometel</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Tiền phòng cho thuê theo giờ và theo đêm</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inRevHometel" oninput="recalcAll()" value="56000000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-datphu-navy/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-500 font-medium" id="pctRevHometel">44.1%</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">1.3</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">🥩 Doanh thu Đặc sản OCOP Phú Yên</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Bán lẻ Bò một nắng, muối kiến vàng, cà phê gói</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inRevOcop" oninput="recalcAll()" value="22500000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-datphu-navy/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-500 font-medium" id="pctRevOcop">17.7%</td>
+            </tr>
+
+            <!-- TÁCH BẠCH DÒNG TIỀN BƯỚC 2 -->
+            <tr class="bg-slate-50/60 text-xs italic text-slate-600">
+              <td></td>
+              <td class="pl-8 font-medium">↳ Tách bạch dòng tiền:</td>
+              <td colspan="3">
+                <div class="flex items-center gap-6">
+                  <span>💵 Tiền mặt két: <strong class="text-slate-800" id="subCashVal">45,000,000 đ</strong> (<span id="subCashPct">35.4%</span>)</span>
+                  <span>📱 Quét mã VietQR: <strong class="text-slate-800" id="subQRVal">82,000,000 đ</strong> (<span id="subQRPct">64.6%</span>)</span>
+                </div>
+              </td>
+            </tr>
+
+            <!-- NHÓM II: GIÁ VỐN HÀNG BÁN (COGS) -->
+            <tr class="bg-amber-50/70 font-bold text-slate-900">
+              <td class="py-3 px-4 text-center text-amber-900">II</td>
+              <td class="py-3 px-4 text-amber-900 flex items-center gap-2">
+                <i class="fa-solid fa-boxes-stacked text-amber-600"></i> GIÁ VỐN HÀNG BÁN (COGS)
+              </td>
+              <td class="py-3 px-4 text-xs text-amber-800">Chi phí trực tiếp tạo ra sản phẩm/dịch vụ (phiếu nhập kho inventory_imports)</td>
+              <td class="py-3 px-4 text-right font-black text-amber-900 text-base" id="tableTotalCogs">38,650,000</td>
+              <td class="py-3 px-4 text-right text-amber-900 font-bold" id="tableCogsRate">30.4%</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">2.1</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">📦 Nguyên vật liệu pha chế F&B</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Hạt cà phê Đắk Lắk/Tuy Hòa, sữa đặc, đường, siro (~30% doanh thu F&B)</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inCogsFnb" oninput="recalcAll()" value="14500000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-amber-500/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-400">-</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">2.2</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">🧺 Giặt ủi & Buồng phòng Hometel</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Giặt là drap giường, gối, đồ tiêu hao (bàn chải, xà phòng buồng phòng)</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inCogsHometel" oninput="recalcAll()" value="8400000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-amber-500/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-400">-</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">2.3</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">🏷️ Giá nhập sỉ Đặc sản OCOP</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Chi phí nhập bò một nắng, muối kiến vàng từ HTX nguồn (70% doanh thu)</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inCogsOcop" oninput="recalcAll()" value="15750000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-amber-500/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-400">-</td>
+            </tr>
+
+            <!-- NHÓM III: LỢI NHUẬN GỘP -->
+            <tr class="bg-indigo-50 font-black text-indigo-900 border-y-2 border-indigo-200">
+              <td class="py-3.5 px-4 text-center text-indigo-900 text-base">III</td>
+              <td class="py-3.5 px-4 text-indigo-900 text-base flex items-center gap-2">
+                <i class="fa-solid fa-chart-pie text-indigo-600"></i> LỢI NHUẬN GỘP (GROSS PROFIT)
+              </td>
+              <td class="py-3.5 px-4 text-xs text-indigo-700 font-semibold">Công thức: [I] Tổng Doanh Thu - [II] Giá Vốn Hàng Bán</td>
+              <td class="py-3.5 px-4 text-right text-indigo-900 text-lg" id="tableGrossProfit">88,350,000</td>
+              <td class="py-3.5 px-4 text-right text-indigo-900 text-base" id="tableGrossMargin">69.6%</td>
+            </tr>
+
+            <!-- NHÓM IV: CHI PHÍ CỐ ĐỊNH & VẬN HÀNH (OPEX) -->
+            <tr class="bg-rose-50/70 font-bold text-slate-900">
+              <td class="py-3 px-4 text-center text-rose-900">IV</td>
+              <td class="py-3 px-4 text-rose-900 flex items-center gap-2">
+                <i class="fa-solid fa-file-invoice text-rose-600"></i> CHI PHÍ CỐ ĐỊNH & VẬN HÀNH (OPEX)
+              </td>
+              <td class="py-3 px-4 text-xs text-rose-800">Các khoản phải trả hàng tháng dù quán có đông khách hay không</td>
+              <td class="py-3 px-4 text-right font-black text-rose-900 text-base" id="tableTotalOpex">58,000,000</td>
+              <td class="py-3 px-4 text-right text-rose-900 font-bold" id="tableOpexRate">45.7%</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">4.1</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">🏢 Tiền thuê mặt bằng kinh doanh</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Mặt bằng 86 Lê Duẩn, P.7, TP. Tuy Hòa</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inOpexRent" oninput="recalcAll()" value="18000000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-rose-500/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-400">-</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">4.2</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">👥 Lương nhân viên</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Nhân viên ca sáng, tối, pha chế, lễ tân và dọn phòng</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inOpexSalaries" oninput="recalcAll()" value="24000000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-rose-500/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-400">-</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">4.3</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">⚡ Điện, nước, Internet cáp quang</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Hóa đơn điện máy lạnh Hometel, máy pha cafe, wifi tốc độ cao</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inOpexUtilities" oninput="recalcAll()" value="7500000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-rose-500/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-400">-</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">4.4</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">📢 Marketing & Quảng bá</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Biển hiệu quảng bá, chi phí đăng bài nhóm du lịch Phú Yên</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inOpexMarketing" oninput="recalcAll()" value="3000000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-rose-500/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-400">-</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">4.5</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">🛠️ Khấu hao máy móc trang thiết bị</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Khấu hao máy pha cà phê espresso, máy lạnh các phòng, tủ đông</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inOpexDepreciation" oninput="recalcAll()" value="4000000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-rose-500/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-400">-</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-4 text-center text-slate-400">4.6</td>
+              <td class="py-2.5 px-4 font-semibold text-slate-800 pl-8">🚨 Chi phí cứu hộ kỹ thuật 6K & bảo dưỡng</td>
+              <td class="py-2.5 px-4 text-xs text-slate-500">Thợ 6K xử lý sự cố khẩn cấp (chập điện, hỏng tủ lạnh, rớt mạng)</td>
+              <td class="py-2.5 px-4 text-right">
+                <input type="number" id="inOpexTech" oninput="recalcAll()" value="1500000" class="w-full text-right font-semibold bg-slate-50 border border-slate-300 rounded px-2 py-1 text-slate-800 focus:bg-white focus:ring-2 focus:ring-rose-500/40">
+              </td>
+              <td class="py-2.5 px-4 text-right text-slate-400">-</td>
+            </tr>
+
+            <!-- NHÓM V: LỢI NHUẬN RÒNG -->
+            <tr class="bg-emerald-100 font-black text-emerald-950 border-t-2 border-emerald-500">
+              <td class="py-4 px-4 text-center text-emerald-950 text-lg">V</td>
+              <td class="py-4 px-4 text-emerald-950 text-lg flex items-center gap-2">
+                <i class="fa-solid fa-sack-dollar text-emerald-600"></i> LỢI NHUẬN RÒNG (NET PROFIT)
+              </td>
+              <td class="py-4 px-4 text-xs text-emerald-800 font-bold">
+                TIỀN TÚI THỰC TẾ CỦA CHỦ QUÁN (Công thức: [III] Lợi nhuận gộp - [IV] Chi phí OPEX)
+              </td>
+              <td class="py-4 px-4 text-right text-emerald-900 text-xl font-black" id="tableNetProfit">30,350,000</td>
+              <td class="py-4 px-4 text-right text-emerald-900 text-lg font-black" id="tableNetMargin">23.9%</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3. PHÂN RÃ THEO TỪNG MẢNG KINH DOANH (BƯỚC 4: LỜI KHUYÊN QUẢN TRỊ DÀNH CHO CHỦ QUÁN) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- Mảng 1: Cà phê (F&B) -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold">☕</span>
+            <h4 class="font-bold text-slate-800">1. Cà Phê & Đồ Uống (F&B)</h4>
+          </div>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold" id="badgeFnbMargin">70.1% Lãi Gộp</span>
+        </div>
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between text-slate-600">
+            <span>Doanh thu:</span> <strong class="text-slate-900" id="fnbRevText">48,500,000 đ</strong>
+          </div>
+          <div class="flex justify-between text-slate-600">
+            <span>Giá vốn NVL:</span> <span class="text-rose-600 font-medium" id="fnbCogsText">-14,500,000 đ (29.9%)</span>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex justify-between font-bold text-slate-900">
+            <span>Lợi nhuận gộp:</span> <span class="text-emerald-600" id="fnbGrossText">34,000,000 đ</span>
+          </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+          <div class="bg-amber-500 h-2 rounded-full" id="barFnb" style="width: 70.1%"></div>
+        </div>
+        <p class="text-[11px] text-slate-500 leading-relaxed italic">
+          💡 Cà phê tạo dòng tiền mặt đều đặn mỗi ngày và thu hút lượng khách ổn định đến quán.
+        </p>
+      </div>
+
+      <!-- Mảng 2: Hometel (Lưu Trú) -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">🏨</span>
+            <h4 class="font-bold text-slate-800">2. Lưu Trú Hometel</h4>
+          </div>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold" id="badgeHometelMargin">85.0% Lãi Gộp</span>
+        </div>
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between text-slate-600">
+            <span>Doanh thu:</span> <strong class="text-slate-900" id="hometelRevText">56,000,000 đ</strong>
+          </div>
+          <div class="flex justify-between text-slate-600">
+            <span>Giặt ủi & buồng:</span> <span class="text-rose-600 font-medium" id="hometelCogsText">-8,400,000 đ (15.0%)</span>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex justify-between font-bold text-slate-900">
+            <span>Lợi nhuận gộp:</span> <span class="text-emerald-600" id="hometelGrossText">47,600,000 đ</span>
+          </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+          <div class="bg-indigo-600 h-2 rounded-full" id="barHometel" style="width: 85%"></div>
+        </div>
+        <p class="text-[11px] text-slate-500 leading-relaxed italic">
+          ⭐ Mảng có biên lợi nhuận gộp cao nhất (85%). Đây là "cỗ máy sinh lời" cốt lõi bù trừ chi phí mặt bằng.
+        </p>
+      </div>
+
+      <!-- Mảng 3: Đặc sản OCOP -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">🥩</span>
+            <h4 class="font-bold text-slate-800">3. Đặc Sản OCOP Phú Yên</h4>
+          </div>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-bold" id="badgeOcopMargin">30.0% Lãi Gộp</span>
+        </div>
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between text-slate-600">
+            <span>Doanh thu:</span> <strong class="text-slate-900" id="ocopRevText">22,500,000 đ</strong>
+          </div>
+          <div class="flex justify-between text-slate-600">
+            <span>Giá nhập HTX:</span> <span class="text-rose-600 font-medium" id="ocopCogsText">-15,750,000 đ (70.0%)</span>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex justify-between font-bold text-slate-900">
+            <span>Lợi nhuận gộp:</span> <span class="text-emerald-600" id="ocopGrossText">6,750,000 đ</span>
+          </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+          <div class="bg-emerald-500 h-2 rounded-full" id="barOcop" style="width: 30%"></div>
+        </div>
+        <p class="text-[11px] text-slate-500 leading-relaxed italic">
+          🎁 Giá trị đơn hàng lớn, bán kèm cho khách lưu trú du lịch mua quà về cho gia đình, đối tác.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- 4. LỜI KHUYÊN QUẢN TRỊ TÀI CHÍNH TỪ TRỢ LÝ AI ĐẤT PHÚ (BƯỚC 4) -->
+    <div class="bg-gradient-to-r from-datphu-navy to-[#1a1f5c] text-white rounded-2xl p-6 shadow-md relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-datphu-gold/10 rounded-full blur-2xl"></div>
+      <div class="relative z-10 space-y-4">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-lg bg-datphu-gold/20 text-datphu-gold text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-robot"></i> Đất Phú Financial AI Advisor
+          </span>
+          <span class="text-xs text-white/60">Đánh giá sức khỏe tài chính cơ sở</span>
+        </div>
+        <h4 class="text-lg font-bold text-white flex items-center gap-2">
+          <span>Xếp loại sức khỏe tài chính:</span>
+          <span class="px-2.5 py-0.5 rounded-md bg-emerald-500 text-white font-extrabold text-sm" id="aiHealthBadge">TỐT (23.9% Net Margin)</span>
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-200">
+          <div class="bg-white/10 p-3.5 rounded-xl backdrop-blur border border-white/10 space-y-1.5">
+            <h5 class="font-bold text-datphu-gold flex items-center gap-1.5">
+              <i class="fa-solid fa-scale-balanced"></i> Phân Tách Tài Chính Cà Phê & Hometel
+            </h5>
+            <p class="leading-relaxed text-white/80">
+              Mặc dù cùng vận hành trên một mặt bằng, mảng <strong>Hometel</strong> đang đem lại 85% biên lãi gộp, gánh toàn bộ chi phí tiền thuê mặt bằng và lương nhân viên. Cần tiếp tục duy trì gói Combo <em>"Đặt phòng Deluxe tặng ly Bạc xỉu ba tầng sáng"</em> để kích cầu.
+            </p>
+          </div>
+          <div class="bg-white/10 p-3.5 rounded-xl backdrop-blur border border-white/10 space-y-1.5">
+            <h5 class="font-bold text-datphu-gold flex items-center gap-1.5">
+              <i class="fa-solid fa-shield-halved"></i> Đối Chiếu Số Dư Thường Xuyên
+            </h5>
+            <p class="leading-relaxed text-white/80">
+              Dòng tiền thực thu qua <strong>VietQR Napas247</strong> chiếm <strong>64.6%</strong>, đã được ghi nhận tự động vào tài khoản ngân hàng. Kiểm đếm tiền mặt két <strong>45,000,000 đ</strong> mỗi ngày sau ca tối để tránh thất thoát chênh lệch.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT LOGIC TÍNH TOÁN & XUẤT FILE -->
+  <script>
+    // Định dạng số VNĐ
+    function formatVND(val) {
+      return Number(val || 0).toLocaleString('vi-VN') + ' đ';
+    }
+    function formatNum(val) {
+      return Number(val || 0).toLocaleString('vi-VN');
+    }
+
+    // Đọc số từ ô input
+    function getVal(id) {
+      const v = document.getElementById(id).value;
+      return Number(v) || 0;
+    }
+
+    // Tính toán lại toàn bộ bảng tính
+    function recalcAll() {
+      // I. Doanh thu
+      const fnbRev = getVal('inRevFnb');
+      const hometelRev = getVal('inRevHometel');
+      const ocopRev = getVal('inRevOcop');
+      const totalRev = fnbRev + hometelRev + ocopRev;
+
+      // Dòng tiền
+      const cashFlow = Math.round(totalRev * 0.3543);
+      const qrFlow = totalRev - cashFlow;
+
+      // II. Giá vốn
+      const fnbCogs = getVal('inCogsFnb');
+      const hometelCogs = getVal('inCogsHometel');
+      const ocopCogs = getVal('inCogsOcop');
+      const totalCogs = fnbCogs + hometelCogs + ocopCogs;
+
+      // III. Lợi nhuận gộp
+      const grossProfit = totalRev - totalCogs;
+      const grossMargin = totalRev > 0 ? ((grossProfit / totalRev) * 100).toFixed(1) : 0;
+
+      // IV. Chi phí vận hành OPEX
+      const rent = getVal('inOpexRent');
+      const salaries = getVal('inOpexSalaries');
+      const utils = getVal('inOpexUtilities');
+      const mkt = getVal('inOpexMarketing');
+      const dep = getVal('inOpexDepreciation');
+      const tech = getVal('inOpexTech');
+      const totalOpex = rent + salaries + utils + mkt + dep + tech;
+      const opexRate = totalRev > 0 ? ((totalOpex / totalRev) * 100).toFixed(1) : 0;
+
+      // V. Lợi nhuận ròng
+      const netProfit = grossProfit - totalOpex;
+      const netMargin = totalRev > 0 ? ((netProfit / totalRev) * 100).toFixed(1) : 0;
+
+      // CẬP NHẬT KPI CARDS
+      document.getElementById('kpiTotalRevenue').innerText = formatVND(totalRev);
+      document.getElementById('kpiCash').innerText = Math.round(cashFlow / 1000000) + ' tr';
+      document.getElementById('kpiQR').innerText = Math.round(qrFlow / 1000000) + ' tr';
+
+      document.getElementById('kpiTotalCogs').innerText = formatVND(totalCogs);
+      document.getElementById('kpiCogsPercent').innerText = totalRev > 0 ? ((totalCogs / totalRev) * 100).toFixed(1) + '%' : '0%';
+
+      document.getElementById('kpiGrossProfit').innerText = formatVND(grossProfit);
+      document.getElementById('kpiGrossMargin').innerText = grossMargin + '%';
+
+      document.getElementById('kpiTotalOpex').innerText = formatVND(totalOpex);
+      document.getElementById('kpiOpexPercent').innerText = opexRate + '%';
+
+      document.getElementById('kpiNetProfit').innerText = formatVND(netProfit);
+      document.getElementById('kpiNetMargin').innerText = netMargin + '%';
+
+      // CẬP NHẬT BẢNG P&L
+      document.getElementById('tableTotalRevenue').innerText = formatNum(totalRev);
+      document.getElementById('pctRevFnb').innerText = totalRev > 0 ? ((fnbRev / totalRev) * 100).toFixed(1) + '%' : '0%';
+      document.getElementById('pctRevHometel').innerText = totalRev > 0 ? ((hometelRev / totalRev) * 100).toFixed(1) + '%' : '0%';
+      document.getElementById('pctRevOcop').innerText = totalRev > 0 ? ((ocopRev / totalRev) * 100).toFixed(1) + '%' : '0%';
+
+      document.getElementById('subCashVal').innerText = formatVND(cashFlow);
+      document.getElementById('subCashPct').innerText = totalRev > 0 ? ((cashFlow / totalRev) * 100).toFixed(1) + '%' : '0%';
+      document.getElementById('subQRVal').innerText = formatVND(qrFlow);
+      document.getElementById('subQRPct').innerText = totalRev > 0 ? ((qrFlow / totalRev) * 100).toFixed(1) + '%' : '0%';
+
+      document.getElementById('tableTotalCogs').innerText = formatNum(totalCogs);
+      document.getElementById('tableCogsRate').innerText = totalRev > 0 ? ((totalCogs / totalRev) * 100).toFixed(1) + '%' : '0%';
+
+      document.getElementById('tableGrossProfit').innerText = formatNum(grossProfit);
+      document.getElementById('tableGrossMargin').innerText = grossMargin + '%';
+
+      document.getElementById('tableTotalOpex').innerText = formatNum(totalOpex);
+      document.getElementById('tableOpexRate').innerText = opexRate + '%';
+
+      document.getElementById('tableNetProfit').innerText = formatNum(netProfit);
+      document.getElementById('tableNetMargin').innerText = netMargin + '%';
+
+      // CẬP NHẬT 3 MẢNG KINH DOANH
+      const fnbGross = fnbRev - fnbCogs;
+      const fnbMarg = fnbRev > 0 ? ((fnbGross / fnbRev) * 100).toFixed(1) : 0;
+      document.getElementById('fnbRevText').innerText = formatVND(fnbRev);
+      document.getElementById('fnbCogsText').innerText = '-' + formatVND(fnbCogs);
+      document.getElementById('fnbGrossText').innerText = formatVND(fnbGross);
+      document.getElementById('badgeFnbMargin').innerText = fnbMarg + '% Lãi Gộp';
+      document.getElementById('barFnb').style.width = Math.min(100, Math.max(0, fnbMarg)) + '%';
+
+      const hometelGross = hometelRev - hometelCogs;
+      const hometelMarg = hometelRev > 0 ? ((hometelGross / hometelRev) * 100).toFixed(1) : 0;
+      document.getElementById('hometelRevText').innerText = formatVND(hometelRev);
+      document.getElementById('hometelCogsText').innerText = '-' + formatVND(hometelCogs);
+      document.getElementById('hometelGrossText').innerText = formatVND(hometelGross);
+      document.getElementById('badgeHometelMargin').innerText = hometelMarg + '% Lãi Gộp';
+      document.getElementById('barHometel').style.width = Math.min(100, Math.max(0, hometelMarg)) + '%';
+
+      const ocopGross = ocopRev - ocopCogs;
+      const ocopMarg = ocopRev > 0 ? ((ocopGross / ocopRev) * 100).toFixed(1) : 0;
+      document.getElementById('ocopRevText').innerText = formatVND(ocopRev);
+      document.getElementById('ocopCogsText').innerText = '-' + formatVND(ocopCogs);
+      document.getElementById('ocopGrossText').innerText = formatVND(ocopGross);
+      document.getElementById('badgeOcopMargin').innerText = ocopMarg + '% Lãi Gộp';
+      document.getElementById('barOcop').style.width = Math.min(100, Math.max(0, ocopMarg)) + '%';
+
+      // CẬP NHẬT ĐÁNH GIÁ SỨC KHỎE
+      const aiBadge = document.getElementById('aiHealthBadge');
+      if (netProfit < 0) {
+        aiBadge.className = 'px-2.5 py-0.5 rounded-md bg-rose-600 text-white font-extrabold text-sm';
+        aiBadge.innerText = `CẢNH BÁO LỖ (${netMargin}%)`;
+      } else if (Number(netMargin) < 15) {
+        aiBadge.className = 'px-2.5 py-0.5 rounded-md bg-amber-500 text-white font-extrabold text-sm';
+        aiBadge.innerText = `TRUNG BÌNH (${netMargin}%)`;
+      } else {
+        aiBadge.className = 'px-2.5 py-0.5 rounded-md bg-emerald-500 text-white font-extrabold text-sm';
+        aiBadge.innerText = `TỐT (${netMargin}% Net Margin)`;
+      }
+    }
+
+    // Khôi phục số liệu gốc cơ sở Đất Phú Hometel
+    function restoreDefaults() {
+      document.getElementById('inRevFnb').value = 48500000;
+      document.getElementById('inRevHometel').value = 56000000;
+      document.getElementById('inRevOcop').value = 22500000;
+
+      document.getElementById('inCogsFnb').value = 14500000;
+      document.getElementById('inCogsHometel').value = 8400000;
+      document.getElementById('inCogsOcop').value = 15750000;
+
+      document.getElementById('inOpexRent').value = 18000000;
+      document.getElementById('inOpexSalaries').value = 24000000;
+      document.getElementById('inOpexUtilities').value = 7500000;
+      document.getElementById('inOpexMarketing').value = 3000000;
+      document.getElementById('inOpexDepreciation').value = 4000000;
+      document.getElementById('inOpexTech').value = 1500000;
+
+      recalcAll();
+    }
+
+    // Tải file Excel kèm công thức từ Backend
+    async function downloadExcel() {
+      const payload = {
+        month: document.getElementById('selectMonth').value,
+        revenue: {
+          fnb_cafe: getVal('inRevFnb'),
+          hometel_room: getVal('inRevHometel'),
+          ocop_souvenir: getVal('inRevOcop')
+        },
+        cogs: {
+          fnb_materials: getVal('inCogsFnb'),
+          hometel_laundry_amenities: getVal('inCogsHometel'),
+          ocop_wholesale_cost: getVal('inCogsOcop')
+        },
+        opex: {
+          rent: getVal('inOpexRent'),
+          salaries: getVal('inOpexSalaries'),
+          utilities: getVal('inOpexUtilities'),
+          marketing: getVal('inOpexMarketing'),
+          depreciation: getVal('inOpexDepreciation'),
+          tech_6k_maintenance: getVal('inOpexTech')
+        }
+      };
+
+      try {
+        const resp = await fetch('/api/finance/export/excel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!resp.ok) throw new Error('Không thể tải file Excel');
+        const blob = await resp.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `BangTinhThuChi_PnL_${payload.month.replace('/', '_')}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      } catch (err) {
+        alert('Lỗi tải Excel: ' + err.message);
+      }
+    }
+
+    // Tải file PDF từ Backend
+    async function downloadPDF() {
+      const payload = {
+        month: document.getElementById('selectMonth').value,
+        revenue: {
+          fnb_cafe: getVal('inRevFnb'),
+          hometel_room: getVal('inRevHometel'),
+          ocop_souvenir: getVal('inRevOcop')
+        },
+        cogs: {
+          fnb_materials: getVal('inCogsFnb'),
+          hometel_laundry_amenities: getVal('inCogsHometel'),
+          ocop_wholesale_cost: getVal('inCogsOcop')
+        },
+        opex: {
+          rent: getVal('inOpexRent'),
+          salaries: getVal('inOpexSalaries'),
+          utilities: getVal('inOpexUtilities'),
+          marketing: getVal('inOpexMarketing'),
+          depreciation: getVal('inOpexDepreciation'),
+          tech_6k_maintenance: getVal('inOpexTech')
+        }
+      };
+
+      try {
+        const resp = await fetch('/api/finance/export/pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!resp.ok) throw new Error('Không thể tải file PDF');
+        const blob = await resp.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `BaoCaoLoiNhuan_PnL_${payload.month.replace('/', '_')}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      } catch (err) {
+        alert('Lỗi tải PDF: ' + err.message);
+      }
+    }
+
+    // Copy cấu trúc công thức cho Google Sheets
+    function copyGoogleSheetsTemplate() {
+      const template = `KHOẢN MỤC\tDIỄN GIẢI\tSỐ TIỀN\tCÔNG THỨC GOOGLE SHEETS
+I. TỔNG DOANH THU\tTổng hợp nhất từ POS\t127000000\t=SUM(C3:C5)
+- Cà phê F&B\tĐồ uống tại quầy\t48500000\t
+- Hometel\tThuê phòng giờ/đêm\t56000000\t
+- Đặc sản OCOP\tBò một nắng, muối kiến\t22500000\t
+II. GIÁ VỐN (COGS)\tChi phí trực tiếp\t38650000\t=SUM(C8:C10)
+- Nguyên liệu F&B\tHạt cafe, sữa\t14500000\t
+- Giặt ủi buồng phòng\tDrap giường, xà phòng\t8400000\t
+- Giá nhập sỉ OCOP\tChi phí nhập từ HTX\t15750000\t
+III. LỢI NHUẬN GỘP\tI - II\t88350000\t=C2-C7
+IV. CHI PHÍ VẬN HÀNH (OPEX)\tChi phí cố định\t58000000\t=SUM(C14:C19)
+- Mặt bằng 86 Lê Duẩn\tHàng tháng\t18000000\t
+- Lương nhân viên\tCa trực\t24000000\t
+- Điện, nước, wifi\tHóa đơn dịch vụ\t7500000\t
+- Marketing\tQuảng bá\t3000000\t
+- Khấu hao máy móc\tMáy pha, điều hòa\t4000000\t
+- Kỹ thuật bảo trì 6K\tKhắc phục sự cố\t1500000\t
+V. LỢI NHUẬN RÒNG (TIỀN TÚI)\tIII - IV\t30350000\t=C12-C13`;
+
+      navigator.clipboard.writeText(template).then(() => {
+        alert('Đã sao chép cấu trúc và công thức chuẩn Google Sheets vào bộ nhớ tạm! Bạn chỉ cần mở Google Sheets và bấm Ctrl + V.');
+      });
+    }
+
+    // Khởi chạy khi nạp trang
+    window.addEventListener('DOMContentLoaded', () => {
+      recalcAll();
+    });
+  </script>
+</body>
+</html>
