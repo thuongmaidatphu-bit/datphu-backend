@@ -861,29 +861,126 @@
 
       <!-- TAB 1: MINI POS BÁN HÀNG 1 CHẠM -->
       <div v-if="merchantTab === 'pos'" class="space-y-3">
-        <div class="flex items-center justify-between text-xs font-black text-slate-700 px-1">
+        <!-- THANH TIÊU ĐỀ & NÚT THAO TÁC QUẢN TRỊ (PHƯƠNG ÁN 3) -->
+        <div class="flex items-center justify-between text-xs font-black text-slate-700 px-1 pt-0.5">
           <div class="flex items-center gap-1.5">
-            <span>MENU MÓN / SẢN PHẨM:</span>
-            <span class="text-[9px] bg-slate-200 text-slate-700 px-1.5 py-0.2 rounded-md font-bold">{{ currentMerchantStore.products.length }} món</span>
+            <span class="uppercase tracking-tight text-slate-900">MENU MÓN & QUẢN TRỊ KHO:</span>
+            <span class="text-[10px] bg-slate-200 text-slate-800 px-2 py-0.5 rounded-lg font-black">{{ currentMerchantStore.products.length }} món</span>
           </div>
-          <!-- Nút Đăng Thêm Món Mới Hiện Ngay Trang Chủ -->
           <button 
             @click="showAddProductModal = true"
-            class="text-[10px] bg-datphu-red hover:bg-datphu-redHover text-white font-black px-2.5 py-1 rounded-xl shadow-sm flex items-center gap-1 transition-all active:scale-95">
+            class="text-[10px] bg-datphu-red hover:bg-datphu-redHover text-white font-black px-2.5 py-1.5 rounded-xl shadow-xs flex items-center gap-1 transition-all active:scale-95">
             <i class="fa-solid fa-plus-circle"></i>
-            <span>Đăng Món Lên Trang Chủ</span>
+            <span>+ Đăng Món Mới</span>
           </button>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
+        <!-- BỘ LỌC TRẠNG THÁI NHANH (TẤT CẢ / ĐANG BÁN / TẠM HẾT) -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 text-[11px] font-bold no-scrollbar">
           <button 
-            v-for="item in currentMerchantStore.products" 
-            :key="item.id"
-            @click="addPosItem(item)"
-            class="bg-white border border-slate-200 rounded-2xl p-3 text-left hover:border-datphu-red shadow-sm flex flex-col justify-between h-20 active:scale-95 transition-all">
-            <div class="text-xs font-black text-slate-900 leading-snug line-clamp-2">{{ item.name }}</div>
-            <span class="text-xs font-black text-datphu-red">{{ formatCurrency(item.price) }}</span>
+            @click="posProductFilter = 'all'"
+            :class="posProductFilter === 'all' ? 'bg-slate-900 text-white shadow-xs' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'"
+            class="px-2.5 py-1 rounded-xl whitespace-nowrap transition-all">
+            Tất Cả ({{ currentMerchantStore.products.length }})
           </button>
+          <button 
+            @click="posProductFilter = 'available'"
+            :class="posProductFilter === 'available' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'"
+            class="px-2.5 py-1 rounded-xl whitespace-nowrap transition-all flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            <span>Đang Bán</span>
+          </button>
+          <button 
+            @click="posProductFilter = 'sold_out'"
+            :class="posProductFilter === 'sold_out' ? 'bg-rose-600 text-white shadow-xs' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'"
+            class="px-2.5 py-1 rounded-xl whitespace-nowrap transition-all flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+            <span>Tạm Hết</span>
+          </button>
+        </div>
+
+        <!-- DANH SÁCH THẺ SẢN PHẨM PHƯƠNG ÁN 3 (THẺ KÈM NÚT QUẢN TRỊ TẠI CHỖ) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div 
+            v-for="item in filteredPosProducts" 
+            :key="item.id"
+            @click="!item.isSoldOut && addPosItem(item)"
+            :class="[
+              item.isSoldOut ? 'opacity-70 bg-slate-50 border-dashed border-slate-300' : 'bg-white border-slate-200 hover:border-datphu-red shadow-sm',
+              getPosItemQty(item.id) > 0 ? 'ring-2 ring-datphu-red border-datphu-red bg-rose-50/20' : ''
+            ]"
+            class="relative border rounded-2xl p-2.5 flex items-start gap-2.5 cursor-pointer transition-all active:scale-[0.98] select-none group">
+            
+            <!-- BADGE SỐ LƯỢNG TRONG BILL Ở GÓC TRÊN TRÁI -->
+            <div 
+              v-if="getPosItemQty(item.id) > 0" 
+              class="absolute -top-1.5 -left-1.5 bg-datphu-red text-white text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center shadow-md animate-bounce ring-2 ring-white z-10">
+              x{{ getPosItemQty(item.id) }}
+            </div>
+
+            <!-- ẢNH THUMBNAIL SẢN PHẨM (1:1 BO TRÒN) -->
+            <div class="relative w-16 h-16 sm:w-18 sm:h-18 rounded-xl overflow-hidden shrink-0 bg-slate-100 border border-slate-200 shadow-xs">
+              <img 
+                :src="item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=300&q=80'" 
+                :alt="item.name" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              
+              <!-- Tag Tạm Hết đè lên ảnh -->
+              <div v-if="item.isSoldOut" class="absolute inset-0 bg-black/60 backdrop-blur-[1px] flex items-center justify-center">
+                <span class="text-[9px] font-black text-white bg-rose-600 px-1.5 py-0.5 rounded uppercase tracking-wider">Tạm Hết</span>
+              </div>
+            </div>
+
+            <!-- THÔNG TIN SẢN PHẨM -->
+            <div class="flex-1 min-w-0 flex flex-col justify-between self-stretch py-0.5">
+              <div>
+                <h4 class="text-xs font-black text-slate-900 leading-snug line-clamp-1" :title="item.name">
+                  {{ item.name }}
+                </h4>
+                <p class="text-[10px] text-slate-500 line-clamp-1 mt-0.5 leading-tight">
+                  {{ item.desc || 'Chất lượng cao • Uy tín Đất Phú' }}
+                </p>
+              </div>
+
+              <!-- DÒNG GIÁ & CÁC NÚT QUẢN TRỊ TẠI CHỖ (OPTION 3) -->
+              <div class="pt-1.5 flex items-center justify-between border-t border-slate-100 mt-1">
+                <!-- Giá tiền niêm yết -->
+                <div class="flex items-baseline gap-1">
+                  <span class="text-xs sm:text-sm font-black text-datphu-red">{{ formatCurrency(item.price) }}</span>
+                </div>
+
+                <!-- CÁC NÚT THAO TÁC QUẢN TRỊ TẠI CHỖ (OPTION 3) -->
+                <div class="flex items-center gap-1" @click.stop>
+                  <!-- 1. Nút Bật/Tắt Còn Hàng / Tạm Hết -->
+                  <button 
+                    @click="toggleProductStatus(item, $event)"
+                    :title="item.isSoldOut ? 'Bấm để mở bán lại' : 'Bấm để báo tạm hết hôm nay'"
+                    :class="item.isSoldOut ? 'bg-rose-100 text-rose-700 hover:bg-rose-200' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'"
+                    class="px-1.5 py-0.5 rounded-lg text-[9px] font-bold flex items-center gap-1 transition-all">
+                    <span class="w-1.5 h-1.5 rounded-full" :class="item.isSoldOut ? 'bg-rose-500' : 'bg-emerald-500'"></span>
+                    <span>{{ item.isSoldOut ? 'Tạm Hết' : 'Đang Bán' }}</span>
+                  </button>
+
+                  <!-- 2. Nút Sửa Món Nhanh -->
+                  <button 
+                    @click="openEditProductModal(item, $event)"
+                    title="Sửa tên, giá, ảnh món này"
+                    class="w-6 h-6 rounded-lg bg-slate-100 hover:bg-blue-100 text-slate-600 hover:text-blue-700 flex items-center justify-center text-[10px] transition-all">
+                    <i class="fa-solid fa-pen"></i>
+                  </button>
+
+                  <!-- 3. Nút Thêm vào Bill (+ 1 chạm) -->
+                  <button 
+                    v-if="!item.isSoldOut"
+                    @click="addPosItem(item)"
+                    title="Thêm 1 phần vào hóa đơn"
+                    class="w-6 h-6 rounded-lg bg-datphu-red hover:bg-datphu-redHover text-white flex items-center justify-center text-[10px] font-black shadow-xs transition-all active:scale-90">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Hóa Đơn Quầy Đang Chọn -->
@@ -7780,6 +7877,79 @@
         <button @click="showMerchantLoginModal = false" class="bg-slate-100 text-slate-700 font-bold px-3 py-1.5 rounded-xl text-xs">
           Đóng
         </button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- ======================== MODAL: SỬA NHANH MÓN / SẢN PHẨM (OPTION 3) ======================== -->
+  <div v-if="showEditProductModal && editingProduct" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+    <div class="bg-white w-full max-w-sm rounded-3xl p-5 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b pb-2.5">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-sm">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </div>
+          <div>
+            <h3 class="text-xs font-black text-slate-900 uppercase">Chỉnh Sửa Món / Sản Phẩm</h3>
+            <p class="text-[9px] text-slate-400">Cập nhật giá, ảnh và thông tin bán hàng trực tiếp</p>
+          </div>
+        </div>
+        <button @click="showEditProductModal = false" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Tên Sản Phẩm / Món Ăn (*):</label>
+          <input v-model="editingProduct.name" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Giá Bán Quầy (VNĐ) (*):</label>
+            <input v-model.number="editingProduct.price" type="number" step="1000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-black text-datphu-red focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Trạng Thái Bán Hàng:</label>
+            <select v-model="editingProduct.isSoldOut" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+              <option :value="false">🟢 Đang Mở Bán</option>
+              <option :value="true">🔴 Tạm Hết Hôm Nay</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Mô Tả Dịch Vụ / Thời Gian:</label>
+          <input v-model="editingProduct.desc" type="text" placeholder="VD: Màu bền bóng 4 tuần • ⏱ 30 phút" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-700 mb-0.5">Đường Dẫn Ảnh Minh Họa (URL):</label>
+          <div class="flex items-center gap-2">
+            <input v-model="editingProduct.image" type="text" placeholder="https://..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+            <img v-if="editingProduct.image" :src="editingProduct.image" class="w-8 h-8 rounded-xl object-cover border border-slate-200 shrink-0">
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t flex items-center justify-between gap-2">
+        <button 
+          @click="deleteMerchantProduct(editingProduct.id, $event)"
+          class="text-xs font-bold text-rose-600 hover:text-rose-700 flex items-center gap-1">
+          <i class="fa-solid fa-trash-can"></i>
+          <span>Xóa món</span>
+        </button>
+
+        <div class="flex items-center gap-2">
+          <button @click="showEditProductModal = false" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-xl text-xs">
+            Hủy
+          </button>
+          <button @click="saveEditedProduct" class="bg-blue-600 hover:bg-blue-700 text-white font-black px-4 py-1.5 rounded-xl text-xs shadow-md transition-all active:scale-95">
+            Lưu Thay Đổi
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -14871,6 +15041,10 @@
         merchantLoginForm: { phone: '', otp: '', otpSent: false },
         merchantSessionToken: null,
         posCurrentBill: [],
+        // Option 3: Quản trị sản phẩm & kho hàng tại chỗ
+        posProductFilter: 'all', // 'all', 'available', 'sold_out'
+        showEditProductModal: false,
+        editingProduct: null,
         posShiftRevenue: 850000,
         posOrdersCount: 19,
         posLastReceipt: null,
@@ -17340,6 +17514,16 @@
         return subtotal;
       },
       posTotalAmount() { return this.posCurrentBill.reduce((s, i) => s + (i.price * i.qty), 0); },
+      filteredPosProducts() {
+        if (!this.currentMerchantStore || !this.currentMerchantStore.products) return [];
+        if (this.posProductFilter === 'available') {
+          return this.currentMerchantStore.products.filter(p => !p.isSoldOut);
+        }
+        if (this.posProductFilter === 'sold_out') {
+          return this.currentMerchantStore.products.filter(p => p.isSoldOut);
+        }
+        return this.currentMerchantStore.products;
+      },
       filteredNearbyWorkers() {
         if (this.selectedWorkerSpecialty === 'all') {
           return this.nearbyWorkersList;
@@ -21005,7 +21189,75 @@ Hotline hỗ trợ: 0979 991 898`);
         this.currentStore = null;
       },
 
+      getPosItemQty(itemId) {
+        if (!this.posCurrentBill) return 0;
+        const found = this.posCurrentBill.find(i => i.id === itemId);
+        return found ? found.qty : 0;
+      },
+
+      toggleProductStatus(item, event) {
+        if (event) event.stopPropagation();
+        item.isSoldOut = !item.isSoldOut;
+        const statusText = item.isSoldOut ? 'Tạm Hết Hôm Nay' : 'Đang Mở Bán';
+        const storeIdx = this.stores.findIndex(s => s.id === this.currentMerchantStore.id);
+        if (storeIdx !== -1) {
+          this.stores[storeIdx].products = [...this.currentMerchantStore.products];
+        }
+        alert(`Đã chuyển món "${item.name}" sang trạng thái: ${statusText}`);
+      },
+
+      openEditProductModal(item, event) {
+        if (event) event.stopPropagation();
+        this.editingProduct = JSON.parse(JSON.stringify(item));
+        if (typeof this.editingProduct.isSoldOut === 'undefined') {
+          this.editingProduct.isSoldOut = false;
+        }
+        this.showEditProductModal = true;
+      },
+
+      saveEditedProduct() {
+        if (!this.editingProduct || !this.editingProduct.id) return;
+        if (!this.editingProduct.name || !this.editingProduct.price) {
+          alert('Vui lòng điền tên món và giá bán hợp lệ!');
+          return;
+        }
+        const idx = this.currentMerchantStore.products.findIndex(p => p.id === this.editingProduct.id);
+        if (idx !== -1) {
+          this.currentMerchantStore.products[idx] = { ...this.editingProduct };
+          const storeIdx = this.stores.findIndex(s => s.id === this.currentMerchantStore.id);
+          if (storeIdx !== -1) {
+            this.stores[storeIdx].products = [...this.currentMerchantStore.products];
+          }
+          alert(`✅ Đã lưu cập nhật món "${this.editingProduct.name}" thành công!`);
+        }
+        this.showEditProductModal = false;
+        this.editingProduct = null;
+      },
+
+      deleteMerchantProduct(itemId, event) {
+        if (event) event.stopPropagation();
+        const item = this.currentMerchantStore.products.find(p => p.id === itemId);
+        if (!item) return;
+        if (confirm(`Bạn có chắc chắn muốn xóa món "${item.name}" khỏi thực đơn quán không?`)) {
+          this.currentMerchantStore.products = this.currentMerchantStore.products.filter(p => p.id !== itemId);
+          const storeIdx = this.stores.findIndex(s => s.id === this.currentMerchantStore.id);
+          if (storeIdx !== -1) {
+            this.stores[storeIdx].products = [...this.currentMerchantStore.products];
+          }
+          this.posCurrentBill = this.posCurrentBill.filter(b => b.id !== itemId);
+          if (this.showEditProductModal) {
+            this.showEditProductModal = false;
+            this.editingProduct = null;
+          }
+          alert(`Đã xóa món "${item.name}" khỏi quầy.`);
+        }
+      },
+
       addPosItem(item) {
+        if (item.isSoldOut) {
+          alert(`Món "${item.name}" hiện đang TẠM HẾT hôm nay. Bấm nút trạng thái để mở bán lại nếu muốn lên đơn!`);
+          return;
+        }
         const exist = this.posCurrentBill.find(i => i.id === item.id);
         if (exist) exist.qty += 1;
         else this.posCurrentBill.push({ ...item, qty: 1 });
