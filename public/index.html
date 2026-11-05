@@ -4988,23 +4988,55 @@
             </div>
           </div>
 
-          <!-- Ghi Chú Đăng Ký Quầy Thợ Tinh Gọn 1 Dòng -->
-          <div class="relative z-10 pt-2 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-slate-400">
-            <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">
-                🛠️
+          <!-- KHỐI KÊU GỌI & ĐĂNG KÝ QUẦY THỢ SỐ K6 (NÂNG CẤP ĐẲNG CẤP, NỔI BẬT) -->
+          <div class="relative z-10 mt-3 pt-3 border-t border-slate-800/80">
+            <div class="bg-gradient-to-r from-slate-900 via-amber-950/40 to-slate-900 border-2 border-amber-500/40 hover:border-amber-400 p-3.5 sm:p-4 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-3.5 transition-all">
+              
+              <div class="flex items-start sm:items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 text-slate-950 flex items-center justify-center text-xl font-black shadow-lg flex-shrink-0 animate-bounce">
+                  🛠️
+                </div>
+                <div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="bg-amber-400 text-slate-950 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                      CỔNG ĐỐI TÁC THỢ
+                    </span>
+                    <span class="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                      ✓ 0% Chiết Khấu • Giữ 100% Tiền Công
+                    </span>
+                  </div>
+                  <h4 class="text-xs sm:text-sm font-black text-white mt-1">
+                    Bạn là Thợ Kỹ Thuật tại Phú Yên? Nhận cuốc sửa chữa gần nhà ngay!
+                  </h4>
+                  <p class="text-[10px] sm:text-[11px] text-slate-300 mt-0.5 flex items-center gap-2 flex-wrap">
+                    <span>⚡ Bán kính nổ cuốc 3km</span>
+                    <span class="text-slate-600">•</span>
+                    <span>🏷️ Cấp quầy số & link tiệm riêng</span>
+                    <span class="text-slate-600">•</span>
+                    <span>🛡️ Bảo trợ thương hiệu Đất Phú</span>
+                  </p>
+                </div>
               </div>
-              <div>
-                <div class="text-slate-300 font-bold">Thợ kỹ thuật Phú Yên muốn nhận cuốc?</div>
+
+              <div class="flex items-center gap-2 self-stretch sm:self-auto flex-shrink-0">
+                <button 
+                  type="button"
+                  @click="showTierPackagesModal = true; tierPackageType = 'worker'" 
+                  class="flex-1 sm:flex-none text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 font-bold px-3 py-2.5 rounded-2xl text-[11px] border border-slate-700 transition-all flex items-center justify-center gap-1.5 active:scale-95">
+                  <i class="fa-solid fa-file-invoice-dollar text-amber-400 text-xs"></i>
+                  <span>Xem Quyền Lợi K6</span>
+                </button>
+
+                <button 
+                  type="button"
+                  @click="navigateToWorkerRegistration" 
+                  class="flex-1 sm:flex-none bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black px-4 py-2.5 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20 active:scale-95 transition-all">
+                  <i class="fa-solid fa-circle-plus text-xs"></i>
+                  <span>Đăng Ký Mở Quầy Nhận Cuốc ➔</span>
+                </button>
               </div>
-            </div>
-            <button 
-              type="button"
-              @click="navigateToWorkerRegistration" 
-              class="text-amber-400 hover:text-amber-300 font-bold hover:underline flex items-center gap-1">
-              <span>Đăng ký mở quầy số nhận cuốc ➔</span>
-            </button>
-          </div>
+
+            </div></div>
 
         </div>
 
@@ -11614,60 +11646,114 @@
     </div>
   </div>
 
-  <!-- ======================== MODAL: ĐĂNG KÝ GIA NHẬP ĐỘI THỢ 6K (WORKER REGISTRATION) ======================== -->
-  <div v-if="showRegisterWorkerModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-    <div class="bg-white w-full max-w-sm rounded-3xl p-5 space-y-3.5 shadow-2xl max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b pb-2">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-xs">
-            <i class="fa-solid fa-id-card"></i>
+  <!-- ======================== MODAL: ĐĂNG KÝ GIA NHẬP ĐỘI THỢ 6K (WORKER REGISTRATION NÂNG CẤP) ======================== -->
+  <div v-if="showRegisterWorkerModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
+    <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xl max-h-[92vh] overflow-y-auto border border-slate-200">
+      
+      <!-- Header Modal -->
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 text-slate-950 flex items-center justify-center text-lg font-black shadow-md">
+            <i class="fa-solid fa-helmet-safety"></i>
           </div>
           <div>
-            <h3 class="text-xs font-black text-slate-900 uppercase">Gia Nhập Đội Thợ 6K Đất Phú</h3>
-            <p class="text-[9px] text-slate-400">Ứng trực kỹ thuật sửa chữa gia đình Tuy Hòa</p>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[9px] bg-amber-100 text-amber-900 font-black px-2 py-0.2 rounded uppercase">Đối Tác Kỹ Thuật</span>
+              <span class="text-[9px] text-emerald-700 bg-emerald-50 px-2 py-0.2 rounded font-bold border border-emerald-200">0% Chiết Khấu</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-black text-slate-900 uppercase">Đăng Ký Mở Quầy Thợ Số K6 Đất Phú</h3>
           </div>
         </div>
-        <button @click="showRegisterWorkerModal = false" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">
-          <i class="fa-solid fa-xmark"></i>
+        <button @click="showRegisterWorkerModal = false" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-xs transition-colors">
+          <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
 
-      <div class="space-y-2 text-xs">
-        <div>
-          <label class="block text-[10px] font-bold text-slate-500 mb-0.5">Họ và Tên Thợ Kỹ Thuật:</label>
-          <input v-model="newWorkerForm.name" type="text" placeholder="VD: Nguyễn Văn Nam" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500/20 focus:outline-none">
+      <!-- Banner Quyền Lợi Thợ K6 -->
+      <div class="bg-gradient-to-r from-slate-900 to-slate-950 text-white p-3 rounded-2xl border border-amber-500/30 grid grid-cols-3 gap-2 text-center text-xs">
+        <div class="p-1">
+          <div class="text-amber-400 font-black text-sm">100%</div>
+          <div class="text-[9px] text-slate-300 mt-0.5">Tiền công về túi</div>
         </div>
-        <div>
-          <label class="block text-[10px] font-bold text-slate-500 mb-0.5">Chuyên Môn Sửa Chữa:</label>
-          <select v-model="newWorkerForm.specialty" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500/20 focus:outline-none">
-            <option value="Điện Nước Dân Dụng">Điện Nước Dân Dụng (Ống nước, CB điện)</option>
-            <option value="Điện Lạnh & Máy Giặt">Điện Lạnh (Điều hòa, tủ lạnh, máy giặt)</option>
-            <option value="Khóa & Cửa Sắt">Sửa Khóa, Cửa Cuốn, Cửa Nhôm Kính</option>
-            <option value="Thông Cầu Nghẹt">Thông Tắc Bồn Cầu, Chậu Rửa</option>
-          </select>
+        <div class="p-1 border-x border-slate-800">
+          <div class="text-emerald-400 font-black text-sm">3KM</div>
+          <div class="text-[9px] text-slate-300 mt-0.5">Radar nổ cuốc gần</div>
         </div>
-        <div>
-          <label class="block text-[10px] font-bold text-slate-500 mb-0.5">Khu Vực Thường Trực Tại Tuy Hòa:</label>
-          <input v-model="newWorkerForm.address" type="text" placeholder="VD: Phường 5 hoặc Xã Bình Ngọc" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500/20 focus:outline-none">
+        <div class="p-1">
+          <div class="text-cyan-400 font-black text-sm">HĐ Số</div>
+          <div class="text-[9px] text-slate-300 mt-0.5">Bảng hiệu & Link tiệm</div>
         </div>
+      </div>
+
+      <!-- Form Nhập Thông Tin Thợ -->
+      <div class="space-y-3 text-xs">
         <div>
-          <label class="block text-[10px] font-bold text-slate-500 mb-0.5">Số Điện Thoại Nhận Cuốc:</label>
-          <input v-model="newWorkerForm.phone" type="tel" placeholder="09xx xxx xxx" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500/20 focus:outline-none">
+          <label class="block text-[11px] font-black text-slate-700 mb-1">
+            <i class="fa-solid fa-user text-amber-600 mr-1"></i> Họ và Tên Thợ / Trưởng Nhóm:
+          </label>
+          <input 
+            v-model="newWorkerForm.name" 
+            type="text" 
+            placeholder="VD: Chú Tùng hoặc Anh Nam Khóa" 
+            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all">
         </div>
 
-        <!-- LỰA CHỌN GÓI THUÊ GIAN HÀNG SỐ -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-black text-slate-700 mb-1">
+              <i class="fa-solid fa-phone text-emerald-600 mr-1"></i> Số Điện Thoại Nhận Cuốc:
+            </label>
+            <input 
+              v-model="newWorkerForm.phone" 
+              type="tel" 
+              placeholder="VD: 0979 991 898" 
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-mono font-bold text-slate-800 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-black text-slate-700 mb-1">
+              <i class="fa-solid fa-screwdriver-wrench text-blue-600 mr-1"></i> Chuyên Môn Kỹ Thuật:
+            </label>
+            <select 
+              v-model="newWorkerForm.specialty" 
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all">
+              <option value="Điện Nước Dân Dụng">⚡ Điện Nước Dân Dụng 6K</option>
+              <option value="Điện Lạnh & Máy Giặt">❄️ Điện Lạnh, Điều Hòa, Máy Giặt</option>
+              <option value="Khóa & Cửa Cuốn">🔑 Cứu Hộ Mở Khóa & Cửa Cuốn 24/7</option>
+              <option value="Cứu Hộ Xe Máy">🛵 Vá Vỏ Xe Máy & Kích Bình Ắc Quy</option>
+              <option value="Camera & Mạng Wifi">📷 Camera An Ninh & Mạng Wifi</option>
+              <option value="Thông Tắc Bồn Cầu">🪠 Thông Tắc Bồn Cầu & Ống Thoát</option>
+              <option value="Nhôm Kính Thạch Cao">🏗️ Nhôm Kính, Thạch Cao & Sơn Sửa</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-black text-slate-700 mb-1">
+            <i class="fa-solid fa-location-dot text-red-500 mr-1"></i> Khu Vực Ứng Trực Thường Xuyên Tại Tuy Hòa / Phú Yên:
+          </label>
+          <input 
+            v-model="newWorkerForm.address" 
+            type="text" 
+            placeholder="VD: 142 Trần Hưng Đạo, P. 4 hoặc Xã Bình Ngọc, TP. Tuy Hòa" 
+            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all">
+        </div>
+
+        <!-- LỰA CHỌN GÓI THUÊ QUẦY SỐ -->
         <div class="space-y-1.5 pt-1">
-          <label class="block text-[10px] font-black text-slate-700 uppercase">Chọn Gói Thuê Gian Hàng Số:</label>
+          <label class="block text-[11px] font-black text-slate-700 uppercase">
+            <i class="fa-solid fa-store text-amber-600 mr-1"></i> Chọn Gói Quầy Số K6 Ban Đầu:
+          </label>
           <div class="grid grid-cols-2 gap-2 text-xs">
             <div 
               @click="newWorkerForm.plan = 'trial'"
-              :class="newWorkerForm.plan === 'trial' ? 'border-amber-500 bg-amber-50/80 ring-2 ring-amber-500/20' : 'border-slate-200 bg-white'"
+              :class="newWorkerForm.plan === 'trial' || !newWorkerForm.plan ? 'border-amber-500 bg-amber-50/80 ring-2 ring-amber-500/20' : 'border-slate-200 bg-white'"
               class="p-2.5 rounded-2xl border cursor-pointer transition-all space-y-1">
               <div class="flex items-center justify-between">
-                <span class="text-[10px] font-black text-slate-800">DÙNG THỬ</span>
-                <span class="text-[9px] font-bold text-slate-500">0 đ</span>
+                <span class="text-[10px] font-black text-slate-900">DÙNG THỬ 0Đ</span>
+                <span class="text-[9px] font-bold text-emerald-600 bg-emerald-100 px-1.5 py-0.2 rounded">Miễn Phí</span>
               </div>
-              <p class="text-[9px] text-slate-500 leading-tight">14 ngày trải nghiệm • Giới hạn 5 biên lai</p>
+              <p class="text-[10px] text-slate-500 leading-tight">Cấp ngay mã HĐ điện tử • Trực tiếp lên Trang Chủ • Bán kính 3km</p>
             </div>
 
             <div 
@@ -11675,78 +11761,50 @@
               :class="newWorkerForm.plan === 'pro' ? 'border-amber-500 bg-amber-50/80 ring-2 ring-amber-500/20' : 'border-slate-200 bg-white'"
               class="p-2.5 rounded-2xl border cursor-pointer transition-all space-y-1 relative overflow-hidden">
               <div class="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-[7px] px-1.5 py-0.2 rounded-bl-lg uppercase">
-                Phổ Biến
+                Khuyên Dùng
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-[10px] font-black text-amber-900">PRO BOOTH</span>
-                <span class="text-[10px] font-black text-datphu-red">150k/tháng</span>
+                <span class="text-[10px] font-black text-amber-950">QUẦY PRO MASTER</span>
+                <span class="text-[10px] font-black text-datphu-red font-mono">80k/tháng</span>
               </div>
-              <p class="text-[9px] text-slate-600 leading-tight">Link riêng ?tiem= • Hiện SĐT • Full 6 Tools</p>
+              <p class="text-[10px] text-slate-600 leading-tight">Huy hiệu Top 3 Đề Xuất • Bán kính 10km • Sổ doanh thu chi tiết</p>
             </div>
           </div>
         </div>
 
-        <!-- KHỐI THANH TOÁN VIETQR KHI CHỌN GÓI PRO -->
-        <div v-if="newWorkerForm.plan === 'pro'" class="bg-gradient-to-br from-slate-900 via-datphu-navy to-slate-950 text-white p-3.5 rounded-2xl space-y-2 border border-amber-500/40 animate-fadeIn">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-1.5">
-              <i class="fa-solid fa-qrcode text-amber-400 text-xs"></i>
-              <span class="text-[10px] font-black text-amber-300 uppercase">Thanh Toán Phí Thuê Quầy Pro</span>
-            </div>
-            <span class="text-[9px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold font-mono">150.000 đ/tháng</span>
+        <!-- QUY ƯỚC & CAM KẾT VÀNG K6 -->
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 space-y-2">
+          <div class="text-[11px] font-black text-amber-950 uppercase flex items-center gap-1.5">
+            <i class="fa-solid fa-shield-halved text-amber-600"></i>
+            <span>3 Cam Kết Đạo Đức Nghề Nghiệp Thợ Đất Phú:</span>
           </div>
+          <ul class="text-[10px] text-amber-900 space-y-1 pl-4 list-disc font-medium">
+            <li><strong>1. Ứng trực tốc hành:</strong> Có mặt sau 15-20 phút khi nhận cuộc gọi từ gia chủ Tuy Hòa.</li>
+            <li><strong>2. Minh bạch tiền công:</strong> Báo đúng giá niêm yết chuẩn K6 trước khi sửa, không vẽ việc phát sinh.</li>
+            <li><strong>3. Trách nhiệm uy tín:</strong> Bảo hành kỹ thuật tại chỗ 30 ngày, nghiệm thu xong mới thu tiền.</li>
+          </ul>
           
-          <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 text-[10px] space-y-1">
-            <div class="flex justify-between">
-              <span class="text-slate-400">Ngân hàng thụ hưởng:</span>
-              <span class="font-bold text-white">BIDV - CN Phú Yên</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-slate-400">Số tài khoản:</span>
-              <span class="font-mono font-bold text-amber-300">0979 991 898</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-slate-400">Chủ tài khoản:</span>
-              <span class="font-bold text-white uppercase">SAN TMDT DAT PHU</span>
-            </div>
-            <div class="flex justify-between pt-1 border-t border-slate-800">
-              <span class="text-slate-400">Nội dung chuyển khoản:</span>
-              <span class="font-mono font-black text-emerald-400">THUETIEM {{ newWorkerForm.phone || '09xx' }}</span>
-            </div>
-          </div>
-
-          <div class="text-[9px] text-amber-200/90 flex items-center gap-1 italic">
-            <i class="fa-solid fa-shield-heart text-amber-400"></i>
-            <span>Cam kết: Hoàn 100% tiền nếu 30 ngày không có cuốc gọi nào!</span>
-          </div>
-        </div>
-
-        <!-- QUY ƯỚC & CAM KẾT VÀNG 6K CỦA THỢ -->
-        <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-2.5 space-y-1.5">
-          <div class="text-[10px] font-black text-amber-900 uppercase flex items-center gap-1">
-            <i class="fa-solid fa-handshake text-amber-600"></i>
-            Cam Kết Vàng Đội Thợ 6K Đất Phú:
-          </div>
-          <div class="text-[9px] text-amber-950 space-y-0.5 pl-3 list-disc">
-            <p>1. Có mặt tại nhà khách sau tối đa 15-20 phút kể từ khi nhận cuốc trên Radar.</p>
-            <p>2. Thu tiền công theo đúng giá niêm yết sàn (không vẽ việc, không chặt chém).</p>
-            <p>3. Bảo hành trách nhiệm kỹ thuật tại chỗ cho bà con trong 30 ngày.</p>
-          </div>
-          <label class="flex items-center gap-2 pt-1 border-t border-amber-200 cursor-pointer">
-            <input type="checkbox" v-model="newWorkerForm.agreedTerms" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500">
-            <span class="text-[10px] font-black text-slate-900 leading-tight">
-              Tôi cam kết tuân thủ quy tắc ứng xử và đạo đức nghề nghiệp Thợ 6K Đất Phú.
+          <label class="flex items-start gap-2 pt-2 border-t border-amber-200/80 cursor-pointer">
+            <input type="checkbox" v-model="newWorkerForm.agreedTerms" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 mt-0.5 flex-shrink-0">
+            <span class="text-[10px] font-black text-slate-900 leading-snug">
+              Tôi đồng ý các điều khoản và cam kết phục vụ trung thực, tận tâm cho cư dân Phú Yên.
             </span>
           </label>
         </div>
       </div>
 
-      <button 
-        @click="submitRegisterWorker"
-        :disabled="!newWorkerForm.name || !newWorkerForm.phone || !newWorkerForm.agreedTerms"
-        class="w-full bg-amber-500 hover:bg-amber-600 disabled:opacity-40 disabled:cursor-not-allowed text-slate-950 font-black py-2.5 rounded-xl text-xs shadow-floating transition-all">
-        Gửi Hồ Sơ Gia Nhập Đội Thợ 6K
-      </button>
+      <!-- Nút Ký Hợp Đồng & Kích Hoạt Quầy Số -->
+      <div class="pt-2">
+        <button 
+          type="button"
+          @click="submitRegisterWorker"
+          :disabled="!newWorkerForm.name || !newWorkerForm.phone || !newWorkerForm.agreedTerms"
+          class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500 hover:from-amber-400 hover:to-orange-400 disabled:opacity-40 disabled:cursor-not-allowed text-slate-950 font-black py-3 rounded-2xl text-xs sm:text-sm shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-file-signature text-sm"></i>
+          <span>Ký Hợp Đồng Điện Tử & Kích Hoạt Quầy Số Ngay ➔</span>
+        </button>
+      </div>
+
     </div>
   </div>
 
