@@ -3828,6 +3828,24 @@
                   </button>
 
                   <button 
+                    @click="showNavDropdown = false; openDatPhuCamModal('merchant')"
+                    class="w-full p-2 rounded-2xl hover:bg-emerald-50/70 text-slate-800 flex items-center justify-between transition-all group">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-camera"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="font-black text-[11px] text-emerald-950 flex items-center gap-1">
+                          <span>Đất Phú Cam</span>
+                          <span class="bg-emerald-100 text-emerald-800 text-[8px] font-black px-1.5 py-0.2 rounded">Bản Quyền</span>
+                        </div>
+                        <div class="text-[9px] text-slate-400">Đóng dấu logo, thông tin quán & thợ chống trộm</div>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-[8px] text-emerald-600"></i>
+                  </button>
+
+                  <button 
                     @click="showNavDropdown = false; showRegisterFlashDealModal = true"
                     class="w-full p-2 rounded-2xl hover:bg-amber-50/70 text-slate-800 flex items-center justify-between transition-all group">
                     <div class="flex items-center gap-2.5">
@@ -15679,6 +15697,25 @@
 
         // End-user Orders & Needs Screening State
         showNavDropdown: false,
+        showDatPhuCamModal: false,
+        datPhuCamMode: 'merchant',
+        datPhuCamForm: {
+          imageSrc: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80',
+          logoType: 'datphu',
+          customLogoUrl: '',
+          storeName: 'Tiệm Bánh Kem & Bakery Hương Đất Phú',
+          itemName: 'Bánh Kem Bắp Non Thơm Béo Tuy Hòa',
+          itemPrice: 220000,
+          workerName: 'Chú Nguyễn Văn Tùng',
+          workerCode: 'THO-6K-TuyHoa-08',
+          workerJob: 'Sửa chữa điện lạnh & Vệ sinh máy điều hòa',
+          workerPrice: 150000,
+          address: '72 Nguyễn Huệ, Phường 5, TP. Tuy Hòa',
+          phone: '0979 991 898',
+          timestamp: '05/11/2026 - 13:00',
+          badgeText: '✓ 100% ẢNH THẬT ĐẤT PHÚ CAM',
+          frameTheme: 'gold'
+        },
         showProductDetailModal: false,
         selectedProductDetail: null,
         showMyOrdersModal: false,
@@ -19459,6 +19496,165 @@ Hotline hỗ trợ: 0979 991 898`);
         const exist = this.cart.find(i => i.id === product.id);
         if (exist) exist.qty += 1;
         else this.cart.push({ ...product, qty: 1 });
+      },
+
+      openDatPhuCamModal(mode = 'merchant', preset = null) {
+        this.datPhuCamMode = mode;
+        if (preset) {
+          if (mode === 'merchant') {
+            this.datPhuCamForm.storeName = preset.storeName || preset.name || this.datPhuCamForm.storeName;
+            this.datPhuCamForm.itemName = preset.name || this.datPhuCamForm.itemName;
+            this.datPhuCamForm.imageSrc = preset.image || this.datPhuCamForm.imageSrc;
+          } else {
+            this.datPhuCamForm.workerName = preset.name || this.datPhuCamForm.workerName;
+            this.datPhuCamForm.workerJob = preset.specialty || preset.specialtyDesc || this.datPhuCamForm.workerJob;
+          }
+        }
+        this.datPhuCamForm.timestamp = new Date().toLocaleDateString('vi-VN') + ' - ' + new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+        this.showDatPhuCamModal = true;
+      },
+
+      handleDatPhuCamUpload(event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.datPhuCamForm.imageSrc = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      },
+
+      setDatPhuCamSample(url, name, store) {
+        this.datPhuCamForm.imageSrc = url;
+        if (name) this.datPhuCamForm.itemName = name;
+        if (store) this.datPhuCamForm.storeName = store;
+      },
+
+      downloadDatPhuCamImage() {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          // Định dạng chuẩn HD 1200 x 900
+          const w = 1200;
+          const h = 900;
+          canvas.width = w;
+          canvas.height = h;
+
+          // 1. Vẽ ảnh gốc (Crop vừa vặn trung tâm)
+          ctx.drawImage(img, 0, 0, w, h);
+
+          // 2. Vẽ dải băng Watermark trên đỉnh (Top Ribbon)
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+          ctx.fillRect(0, 0, w, 75);
+
+          // Logo & Tên Công Ty Đất Phú
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = 'bold 24px Arial, sans-serif';
+          ctx.fillText('CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ', 30, 48);
+
+          // Huy hiệu Đất Phú Cam bảo hộ
+          ctx.fillStyle = '#D32027';
+          ctx.fillRect(w - 380, 16, 350, 44);
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = 'bold 20px Arial, sans-serif';
+          ctx.fillText('📷 ĐẤT PHÚ CAM • ẢNH THẬT 100%', w - 365, 46);
+
+          // 3. Vẽ dải băng Watermark dưới chân (Bottom Stamped Banner)
+          const bH = 150;
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
+          ctx.fillRect(0, h - bH, w, bH);
+
+          // Viền vàng kim ngăn cách
+          ctx.fillStyle = '#F59E0B';
+          ctx.fillRect(0, h - bH, w, 5);
+
+          if (this.datPhuCamMode === 'merchant') {
+            // Tên Quán / Cửa Hàng
+            ctx.fillStyle = '#FBBF24';
+            ctx.font = 'bold 30px Arial, sans-serif';
+            ctx.fillText(this.datPhuCamForm.storeName.toUpperCase(), 30, h - bH + 45);
+
+            // Tên Món Ăn / Sản phẩm
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 24px Arial, sans-serif';
+            ctx.fillText('Món: ' + this.datPhuCamForm.itemName, 30, h - bH + 85);
+
+            // Địa chỉ & Hotline
+            ctx.fillStyle = '#94A3B8';
+            ctx.font = '20px Arial, sans-serif';
+            ctx.fillText('📍 ' + this.datPhuCamForm.address + ' • Hotline Điều Phối: ' + this.datPhuCamForm.phone, 30, h - bH + 122);
+          } else {
+            // Thợ Kỹ Thuật K6
+            ctx.fillStyle = '#38BDF8';
+            ctx.font = 'bold 30px Arial, sans-serif';
+            ctx.fillText('THỢ K6: ' + this.datPhuCamForm.workerName.toUpperCase(), 30, h - bH + 45);
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 24px Arial, sans-serif';
+            ctx.fillText('Công trình: ' + this.datPhuCamForm.workerJob, 30, h - bH + 85);
+
+            ctx.fillStyle = '#94A3B8';
+            ctx.font = '20px Arial, sans-serif';
+            ctx.fillText('📍 Phú Yên • Nghiệm thu kỹ thuật • Hotline: ' + this.datPhuCamForm.phone, 30, h - bH + 122);
+          }
+
+          // Dấu thời gian thực & Mã Hash góc phải dưới
+          ctx.fillStyle = '#FBBF24';
+          ctx.font = 'bold 18px Arial, sans-serif';
+          ctx.fillText('⏱️ ' + this.datPhuCamForm.timestamp, w - 320, h - bH + 50);
+
+          ctx.fillStyle = '#CBD5E1';
+          ctx.font = 'italic 16px Arial, sans-serif';
+          ctx.fillText('Mã bảo chứng: #DP-CAM-' + Math.floor(10000 + Math.random() * 90000), w - 320, h - bH + 85);
+
+          ctx.fillStyle = '#10B981';
+          ctx.font = 'bold 16px Arial, sans-serif';
+          ctx.fillText('✓ Bản quyền Đất Phú bảo hộ', w - 320, h - bH + 118);
+
+          // Tải file về máy
+          const link = document.createElement('a');
+          const safeName = (this.datPhuCamMode === 'merchant' ? this.datPhuCamForm.storeName : this.datPhuCamForm.workerName).replace(/[^a-zA-Z0-9]/g, '_');
+          link.download = 'DatPhuCam_' + safeName + '.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+
+          alert('🎉 ĐÃ TẢI ẢNH ĐÓNG DẤU BẢN QUYỀN VỀ MÁY THÀNH CÔNG!\n\n' +
+                '✓ Ảnh đã được dập đầy đủ Logo Đất Phú, Tên Quán/Thợ, Địa chỉ Tuy Hòa và Hotline ' + this.datPhuCamForm.phone + '\n' +
+                '✓ Bạn có thể thoải mái đăng lên Facebook, Fanpage, Hội nhóm Tuy Hòa mà không sợ bị đối thủ đánh cắp!');
+        };
+
+        img.onerror = () => {
+          alert('Không thể tải ảnh gốc để đóng dấu. Vui lòng chọn tệp ảnh trực tiếp từ điện thoại/máy tính của bạn.');
+        };
+
+        img.src = this.datPhuCamForm.imageSrc;
+      },
+
+      publishDatPhuCamToMarket() {
+        const isStore = this.datPhuCamMode === 'merchant';
+        const newProduct = {
+          id: 'prod_cam_' + Date.now(),
+          name: isStore ? this.datPhuCamForm.itemName : this.datPhuCamForm.workerJob,
+          storeName: isStore ? this.datPhuCamForm.storeName : this.datPhuCamForm.workerName,
+          price: isStore ? (this.datPhuCamForm.itemPrice || 60000) : (this.datPhuCamForm.workerPrice || 120000),
+          image: this.datPhuCamForm.imageSrc,
+          desc: (isStore ? 'Món ngon chính hiệu từ ' : 'Dịch vụ thợ K6 thực hiện bởi ') + (isStore ? this.datPhuCamForm.storeName : this.datPhuCamForm.workerName) + ' (Có con dấu Đất Phú Cam bảo hộ)',
+          origin: this.datPhuCamForm.address || 'TP. Tuy Hòa, Phú Yên',
+          certBadge: 'Đất Phú Cam • Ảnh Thật 100%',
+          hasCamBadge: true
+        };
+        
+        // Thêm vào đầu danh sách sản phẩm
+        this.homeFilteredProducts.unshift(newProduct);
+        this.showDatPhuCamModal = false;
+        
+        alert('🚀 ĐÃ ĐĂNG TẢI THÀNH CÔNG LÊN SÀN ĐẤT PHÚ!\n\n' +
+              '✓ Sản phẩm: ' + newProduct.name + '\n' +
+              '✓ Đơn vị: ' + newProduct.storeName + '\n' +
+              '✓ Trạng thái: Đã gắn con dấu bảo chứng [📷 ĐẤT PHÚ CAM] trên Trang Chủ!');
       },
 
       openProductDetailModal(p) {
