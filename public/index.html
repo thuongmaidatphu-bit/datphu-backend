@@ -109,110 +109,84 @@
 
 <div id="app" class="w-full min-h-screen bg-slate-50 relative flex flex-col justify-between">
 
-  <!-- ======================== THANH THÔNG TIN CHẠY MARQUEE ĐỊA PHƯƠNG ======================== -->
-  <div class="bg-gradient-to-r from-datphu-navy via-slate-900 to-datphu-red text-white text-[10px] py-1 px-4 overflow-hidden border-b border-white/10 z-50">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
+  <!-- ======================== THANH ĐIỀU PHỐI VÀ TIN NÓNG TINH GỌN (UNIFIED TOPBAR) ======================== -->
+  <div class="bg-slate-950 text-white text-[10px] px-3 sm:px-4 py-1.5 border-b border-slate-800 font-bold z-50 sticky top-0 shadow-md">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      <!-- Vế Trái: Tin Nóng Tinh Gọn (Marquee) -->
       <div class="flex items-center gap-2 flex-1 overflow-hidden whitespace-nowrap">
-        <span class="bg-datphu-gold text-slate-950 px-2 py-0.5 rounded font-black text-[9px] uppercase tracking-wider flex-shrink-0 animate-pulse">
-          ⚡ TIN NÓNG TUY HÒA
+        <span class="bg-datphu-gold text-slate-950 px-1.5 py-0.5 rounded font-black text-[9px] uppercase tracking-wider flex-shrink-0 animate-pulse flex items-center gap-1">
+          <i class="fa-solid fa-bolt text-red-600"></i> TIN NÓNG
         </span>
-        <div class="inline-block animate-marquee font-bold text-amber-200">
-          💅 Tiệm Nail & Spa đặt lịch giữ chỗ • 🎂 Đặt bánh kem sinh nhật giao 30p • 🍵 Tiệm Trà Sữa chọn đường đá theo ý • Thợ kỹ thuật 6K trực chiến 24/7!
+        <div class="inline-block animate-marquee font-bold text-amber-200 text-[10px]">
+          💅 Tiệm Nail & Spa đặt lịch giữ chỗ • 🎂 Đặt bánh kem sinh nhật giao 30p • 🍵 Tiệm Trà Sữa chọn đường đá theo ý • 🛠️ Thợ kỹ thuật K6 trực chiến 24/7!
         </div>
       </div>
-      <a href="tel:0979991898" class="text-[9px] text-white/90 hover:text-amber-300 font-mono hidden md:inline ml-4 transition-colors"><i class="fa-solid fa-phone mr-1 text-amber-400"></i>Hotline Kỹ Thuật & Đặt Lịch: 0979 991 898</a>
-    </div>
-  </div>
 
-  <!-- ======================== THANH ĐIỀU HƯỚNG 4 PHÂN TẦNG ======================== -->
-  <div class="bg-slate-950 text-white text-[10px] px-4 py-1.5 border-b border-slate-800 font-bold z-50 sticky top-0 shadow-md">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-1.5 flex-wrap">
-        <span class="text-amber-400 hidden sm:inline font-black tracking-wider"><i class="fa-solid fa-layer-group text-[8px] mr-1"></i>SINH THÁI AN SINH ĐA TẦNG:</span>
-        <button 
-          @click="switchTier('consumer')" 
-          class="px-2.5 py-1 rounded-lg transition-all font-black flex items-center gap-1"
-          :class="activeTier === 'consumer' ? 'bg-datphu-red text-white shadow-sm' : 'text-slate-400 hover:text-white'">
-          <i class="fa-solid fa-house text-[9px]"></i> Trang Chủ
-        </button>
-        
-        <button 
-          @click="switchTier('worker')" 
-          class="px-2.5 py-1 rounded-lg transition-all font-black flex items-center gap-1"
-          :class="activeTier === 'worker' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'">
-          <i class="fa-solid fa-screwdriver-wrench text-[9px]"></i> Cổng Thợ 6K
-        </button>
-        <button 
-          @click="switchTier('merchant')" 
-          class="px-2.5 py-1 rounded-lg transition-all font-black flex items-center gap-1"
-          :class="activeTier === 'merchant' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'">
-          <i class="fa-solid fa-store text-[9px]"></i> Mở Quán / POS
-        </button>
-        <!-- Nút Chủ Sàn chỉ hiển thị khi đã đăng nhập thành công qua kênh bí mật -->
-        <button 
-          v-if="activeTier === 'master'"
-          @click="activeTier = 'consumer'" 
-          class="px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 font-black bg-purple-600 text-white animate-pulse">
-          <i class="fa-solid fa-crown text-[9px]"></i> Chủ Sàn (Đang Mở) • [Thoát]
-        </button>
-      </div>
+      <!-- Vế Phải: Hotline • Chọn Vùng • Trực Tuyến • Master Menu (nếu mở) -->
+      <div class="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+        <a href="tel:0979991898" class="text-[10px] text-amber-300 hover:text-white font-mono hidden md:flex items-center gap-1 transition-colors">
+          <i class="fa-solid fa-phone text-amber-400"></i>
+          <span>0979 991 898</span>
+        </a>
 
-      <!-- NÚT CHỌN VÙNG KINH TẾ MỞ RỘNG PHÚ YÊN (PHASE 4) -->
-      <div class="flex items-center gap-2">
+        <!-- Nút Chọn Vùng Phú Yên -->
         <button 
           type="button"
           @click="showRegionExpandModal = true"
-          class="bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/30 px-2.5 py-1 rounded-lg text-[9px] font-black flex items-center gap-1.5 shadow-2xs transition-all">
+          class="bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/30 px-2.5 py-1 rounded-lg text-[9px] font-black flex items-center gap-1 shadow-2xs transition-all"
+          title="Chọn vùng kinh tế phục vụ tại Phú Yên">
           <i class="fa-solid fa-map-location-dot text-amber-400"></i>
           <span>{{ phuYenRegions.find(r => r.id === selectedPhuYenRegion)?.name || 'TP. Tuy Hòa' }}</span>
           <i class="fa-solid fa-chevron-down text-[7px] text-slate-400"></i>
         </button>
 
-        <!-- CÁC NÚT BẢO MẬT BAN GIÁM ĐỐC - CHỈ HIỂN THỊ KHI ĐĂNG NHẬP CHỦ SÀN -->
-        <template v-if="activeTier === 'master'">
-          <button 
-            type="button"
-            @click="openLeanReportModal('daily')"
-            class="bg-rose-600 hover:bg-rose-500 text-white border border-rose-400 px-2.5 py-1 rounded-lg text-[9px] font-black flex items-center gap-1.5 shadow-sm transition-all animate-pulse"
-            title="Trung tâm chỉ huy quản trị & báo cáo 1 màn hình cho Giám đốc">
-            <i class="fa-solid fa-gauge-high text-white"></i>
-            <span>Chỉ Huy</span>
-          </button>
-
-          <button 
-            type="button"
-            @click="openProjectTrackerModal('all')"
-            class="bg-purple-600 hover:bg-purple-500 text-white border border-purple-400 px-2.5 py-1 rounded-lg text-[9px] font-black flex items-center gap-1.5 shadow-sm transition-all"
-            title="Bảng theo dõi tiến độ dự án Đất Phú (WBS & Milestones)">
-            <i class="fa-solid fa-bars-progress text-purple-200"></i>
-            <span>Tiến Độ</span>
-          </button>
-
-          <button 
-            type="button"
-            @click="openSopModal('worker')"
-            class="bg-blue-600 hover:bg-blue-500 text-white border border-blue-400 px-2.5 py-1 rounded-lg text-[9px] font-black flex items-center gap-1.5 shadow-sm transition-all"
-            title="Sổ tay quy trình vận hành chuẩn SOP Đất Phú">
-            <i class="fa-solid fa-clipboard-check text-blue-200"></i>
-            <span>Chuẩn SOP</span>
-          </button>
-        </template>
-
-        <!-- NÚT CHẾ ĐỘ NGOẠI TUYẾN PWA (OFFLINE LOCAL-FIRST) -->
+        <!-- Trực Tuyến / Ngoại Tuyến PWA -->
         <button 
           type="button"
           @click="toggleOfflineMode"
           :class="isOfflineMode ? 'bg-orange-500 text-slate-950 font-black animate-pulse' : 'bg-emerald-950/70 text-emerald-300 border border-emerald-500/30'"
-          class="px-2 py-1 rounded-lg text-[9px] font-bold flex items-center gap-1 shadow-2xs transition-all"
-          :title="isOfflineMode ? 'Nhấn để đồng bộ dữ liệu lên máy chủ' : 'Chế độ ngoại tuyến PWA tự động khi mất mạng'">
+          class="px-2 py-1 rounded-lg text-[9px] font-bold hidden sm:flex items-center gap-1 shadow-2xs transition-all">
           <span class="w-1.5 h-1.5 rounded-full" :class="isOfflineMode ? 'bg-slate-950' : 'bg-emerald-400 animate-ping'"></span>
-          <span>{{ isOfflineMode ? 'Ngoại Tuyến PWA (' + offlineSyncQueue.length + ' Chờ)' : 'Trực Tuyến (Online)' }}</span>
+          <span>{{ isOfflineMode ? 'PWA (' + offlineSyncQueue.length + ' Chờ)' : 'Trực Tuyến' }}</span>
         </button>
 
-<!-- ĐÃ GỠ NÚT PHÁP LÝ TMĐT 2026 THEO YÊU CẦU -->
-        <div class="hidden lg:flex items-center gap-1.5 cursor-pointer select-none" @click="handleSecretCloudClick" title="Hệ thống Tuy Hòa Realtime Cloud">
-          <span class="text-[8px] text-slate-400 font-mono">Cloud K6</span>
-        </div>
+        <!-- Nút Quay lại Chợ Khách nếu đang ở Cổng Thợ hoặc Cổng Quán -->
+        <button 
+          v-if="activeTier !== 'consumer'"
+          @click="switchTier('consumer')" 
+          class="px-2.5 py-1 rounded-lg transition-all font-black flex items-center gap-1 bg-datphu-red text-white shadow-sm text-[9px]">
+          <i class="fa-solid fa-house"></i> Về Chợ
+        </button>
+
+        <!-- Nút Ban Giám Đốc Bí Mật (Chỉ hiện khi mở khóa PIN Master 7878) -->
+        <template v-if="activeTier === 'master'">
+          <button 
+            type="button"
+            @click="openLeanReportModal('daily')"
+            class="bg-rose-600 hover:bg-rose-500 text-white border border-rose-400 px-2.5 py-1 rounded-lg text-[9px] font-black flex items-center gap-1 shadow-sm transition-all animate-pulse">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Chỉ Huy</span>
+          </button>
+          <button 
+            type="button"
+            @click="openProjectTrackerModal('all')"
+            class="bg-purple-600 hover:bg-purple-500 text-white border border-purple-400 px-2.5 py-1 rounded-lg text-[9px] font-black flex items-center gap-1 shadow-sm transition-all">
+            <i class="fa-solid fa-bars-progress"></i>
+            <span>Tiến Độ</span>
+          </button>
+          <button 
+            type="button"
+            @click="openSopModal('worker')"
+            class="bg-blue-600 hover:bg-blue-500 text-white border border-blue-400 px-2.5 py-1 rounded-lg text-[9px] font-black flex items-center gap-1 shadow-sm transition-all">
+            <i class="fa-solid fa-clipboard-check"></i>
+            <span>SOP</span>
+          </button>
+          <button 
+            @click="activeTier = 'consumer'" 
+            class="px-2.5 py-1 rounded-lg flex items-center gap-1 font-black bg-slate-800 text-slate-300 hover:text-white text-[9px]">
+            <i class="fa-solid fa-xmark"></i> Thoát
+          </button>
+        </template>
       </div>
     </div>
   </div>
@@ -3668,33 +3642,7 @@
   <!-- TẦNG 4: NGƯỜI DÙNG CUỐI / CƯ DÂN (CONSUMER & BUYER APP)                  -->
   <!-- ========================================================================= -->
   <main v-if="activeTier === 'consumer'" class="flex-1 animate-fadeIn">
-    <!-- BANNER MỞ RỘNG ĐỊA BÀN 5 VÙNG KINH TẾ PHÚ YÊN (PHASE 4) -->
-    <div class="bg-gradient-to-r from-slate-950 via-datphu-navy to-slate-950 text-white py-2 px-4 border-b border-amber-500/20 text-xs">
-      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-        <div class="flex items-center gap-2">
-          <span class="bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-[8px] px-1.5 py-0.2 rounded uppercase">
-            Mạng Lưới Phú Yên
-          </span>
-          <span class="text-[10px] text-slate-300">
-            Đang phục vụ tại: <strong class="text-amber-300">{{ phuYenRegions.find(r => r.id === selectedPhuYenRegion)?.name }}</strong>
-            <span class="text-slate-400 text-[9px] hidden md:inline ml-1">• {{ phuYenRegions.find(r => r.id === selectedPhuYenRegion)?.focus }}</span>
-          </span>
-        </div>
 
-        <div class="flex items-center gap-2 text-[10px]">
-          <span class="text-emerald-400 font-bold font-mono">
-            {{ phuYenRegions.find(r => r.id === selectedPhuYenRegion)?.activeWorkers }} Thợ Trực Chiến
-          </span>
-          <span>•</span>
-          <button 
-            type="button" 
-            @click="showRegionExpandModal = true" 
-            class="text-amber-300 hover:text-white underline font-bold transition-colors">
-            Đổi Vùng (Đông Hòa, Sông Cầu, Tây Hòa, Tuy An) ➔
-          </button>
-        </div>
-      </div>
-    </div>
     
     <!-- HEADER ĐẤT PHÚ CHỢ PHIÊN TOÀN MÀN HÌNH -->
     <div class="bg-white/95 backdrop-blur-md border-b border-slate-100 sticky top-[29px] z-40 shadow-sm">
@@ -3713,9 +3661,20 @@
               </div>
             </div>
 
-            <!-- Nút thao tác nhanh trên Mobile -->
+            <!-- Nút thao tác nhanh trên Mobile: Tinh gọn -->
             <div class="flex items-center gap-1.5 md:hidden">
-              <!-- Nút Tài Khoản / Đăng Nhập Cư Dân Mobile -->
+              <!-- Nút Tiện Ích Mobile -->
+              <button 
+                type="button"
+                @click="showNavDropdown = !showNavDropdown" 
+                class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-2.5 py-1.5 rounded-xl text-xs font-black flex items-center justify-center gap-1 shadow-sm relative border border-slate-200"
+                title="Menu Tiện Ích">
+                <i class="fa-solid fa-bars-staggered text-datphu-navy text-xs"></i>
+                <span class="text-[10px]">Menu</span>
+                <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold absolute -top-1 -right-1">{{ activeOrdersCount }}</span>
+              </button>
+
+              <!-- Nút Tài Khoản Mobile -->
               <button 
                 @click="showCustomerAuthModal = true" 
                 class="px-2 py-1.5 rounded-xl text-xs font-black flex items-center gap-1 shadow-sm transition-all"
@@ -3724,16 +3683,12 @@
                 <span class="text-[10px] font-bold" v-if="isCustomerLoggedIn">{{ currentCustomerUser.name.split(' ').slice(-1)[0] }}</span>
               </button>
 
-              <button @click="showMyOrdersModal = true" class="bg-slate-100 text-slate-800 px-2 py-1.5 rounded-xl text-xs font-black flex items-center gap-1 shadow-sm relative">
-                <i class="fa-solid fa-clock-rotate-left text-slate-600"></i>
-                <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold absolute -top-1 -right-1">{{ activeOrdersCount }}</span>
-              </button>
-              <button @click="showVoucherModal = true" class="bg-amber-100 text-amber-900 px-2 py-1.5 rounded-xl text-xs font-black flex items-center gap-1 shadow-sm">
-                <i class="fa-solid fa-ticket text-amber-600"></i>
-                <span class="bg-datphu-red text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span>
-              </button>
-              <button @click="scrollToRepairHub" class="bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 px-2.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1 shadow-sm" title="Kỹ Thuật & Sửa Chữa Gia Đình">
-                <i class="fa-solid fa-bolt animate-bounce text-red-600"></i>
+              <!-- Nút Giỏ Hàng Mobile nếu có -->
+              <button 
+                v-if="cartTotalItems > 0" 
+                @click="showCheckoutModal = true" 
+                class="bg-datphu-red text-white p-2 rounded-xl text-xs font-black flex items-center justify-center shadow-floating">
+                <i class="fa-solid fa-bag-shopping"></i>
               </button>
             </div>
           </div>
@@ -3751,24 +3706,161 @@
                 <i class="fa-solid fa-xmark"></i>
               </button>
             </div>
-            <button 
-              @click="showTriageModal = true"
-              class="bg-datphu-navy hover:bg-slate-800 text-amber-300 font-black px-3 py-2 rounded-2xl text-[11px] flex items-center gap-1 flex-shrink-0 shadow-sm transition-all active:scale-95"
-              title="Trợ lý sàng lọc nhu cầu 1 chạm">
-              <i class="fa-solid fa-sliders"></i>
-              <span class="hidden lg:inline">Lọc Nhu Cầu</span>
-            </button>
+
           </div>
 
-          <!-- Nút thao tác trên Desktop -->
+          <!-- Nút thao tác trên Desktop: Tinh Gọn với Menu Tiện Ích Kéo Thả -->
           <div class="hidden md:flex items-center gap-2">
+            <!-- NÚT MENU TIỆN ÍCH KÉO THẢ TẬP TRUNG -->
+            <div class="relative">
+              <button 
+                type="button"
+                @click="showNavDropdown = !showNavDropdown" 
+                class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shadow-sm active:scale-95 transition-all border border-slate-200"
+                title="Mở bảng menu tiện ích & dịch vụ Đất Phú">
+                <i class="fa-solid fa-bars-staggered text-datphu-navy text-xs"></i>
+                <span>Tiện Ích</span>
+                <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{{ activeOrdersCount }}</span>
+                <i class="fa-solid fa-chevron-down text-[8px] text-slate-400 transition-transform" :class="{'rotate-180': showNavDropdown}"></i>
+              </button>
+
+              <!-- BACKDROP ĐỂ ĐÓNG MENU KHI CLICK RA NGOÀI -->
+              <div v-if="showNavDropdown" @click="showNavDropdown = false" class="fixed inset-0 z-40 bg-transparent"></div>
+
+              <!-- NỘI DUNG DROPDOWN MENU KÉO THẢ (CARD MENU TINH GỌN) -->
+              <div 
+                v-if="showNavDropdown" 
+                class="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white rounded-3xl shadow-2xl border border-slate-100 p-3 z-50 animate-fadeIn space-y-2 text-xs">
+                
+                <div class="flex items-center justify-between pb-2 border-b border-slate-100 px-1">
+                  <div class="flex items-center gap-2">
+                    <img src="logo_datphu.jpg" class="w-6 h-6 object-contain">
+                    <span class="font-black text-slate-900 text-[11px] uppercase tracking-wide">Menu Tiện Ích Đất Phú</span>
+                  </div>
+                  <button @click="showNavDropdown = false" class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center text-[10px]">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+
+                <!-- PHÂN HỆ CƯ DÂN & KHÁCH HÀNG -->
+                <div class="space-y-1">
+                  <div class="text-[9px] font-black uppercase text-slate-400 px-2 tracking-wider">Cư Dân & Khách Hàng</div>
+                  
+                  <button 
+                    @click="showNavDropdown = false; showMyOrdersModal = true"
+                    class="w-full p-2 rounded-2xl hover:bg-slate-50 text-slate-800 flex items-center justify-between transition-all group">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-7 h-7 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="font-black text-[11px] text-slate-900">Tiến Độ Đơn Của Tôi</div>
+                        <div class="text-[9px] text-slate-400">Theo dõi 4 bước & Đánh giá nhận xu</div>
+                      </div>
+                    </div>
+                    <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[9px] font-black px-1.5 py-0.2 rounded-full">{{ activeOrdersCount }}</span>
+                    <i v-else class="fa-solid fa-chevron-right text-[8px] text-slate-300"></i>
+                  </button>
+
+                  <button 
+                    @click="showNavDropdown = false; showVoucherModal = true"
+                    class="w-full p-2 rounded-2xl hover:bg-amber-50/70 text-slate-800 flex items-center justify-between transition-all group">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-7 h-7 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-ticket"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="font-black text-[11px] text-slate-900">Ví Voucher Khuyến Mãi</div>
+                        <div class="text-[9px] text-slate-400">Mã FREESHIP & Giảm giá Đất Phú</div>
+                      </div>
+                    </div>
+                    <span class="bg-amber-100 text-amber-900 text-[9px] font-black px-1.5 py-0.2 rounded-full border border-amber-300">2 Mã</span>
+                  </button>
+
+                  <button 
+                    @click="showNavDropdown = false; showTriageModal = true"
+                    class="w-full p-2 rounded-2xl hover:bg-slate-50 text-slate-800 flex items-center justify-between transition-all group">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-7 h-7 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-sliders"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="font-black text-[11px] text-slate-900">Bộ Lọc Nhu Cầu 1 Chạm</div>
+                        <div class="text-[9px] text-slate-400">Tìm món ngon & Thợ cấp tốc</div>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-300"></i>
+                  </button>
+                </div>
+
+                <!-- PHÂN HỆ ĐỐI TÁC, QUÁN & THỢ -->
+                <div class="space-y-1 pt-1.5 border-t border-slate-100">
+                  <div class="text-[9px] font-black uppercase text-slate-400 px-2 tracking-wider">Cổng Dành Cho Đối Tác</div>
+
+                  <button 
+                    @click="showNavDropdown = false; switchTier('worker')"
+                    class="w-full p-2 rounded-2xl hover:bg-blue-50/70 text-slate-800 flex items-center justify-between transition-all group">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="font-black text-[11px] text-slate-900">Cổng Thợ Kỹ Thuật 6K</div>
+                        <div class="text-[9px] text-slate-400">Bảng điều phối cuốc việc, vật tư K6</div>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-[8px] text-blue-600"></i>
+                  </button>
+
+                  <button 
+                    @click="showNavDropdown = false; switchTier('merchant')"
+                    class="w-full p-2 rounded-2xl hover:bg-rose-50/70 text-slate-800 flex items-center justify-between transition-all group">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-7 h-7 rounded-xl bg-datphu-red text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-store"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="font-black text-[11px] text-slate-900">Cổng Chủ Quán & Máy POS</div>
+                        <div class="text-[9px] text-slate-400">In hóa đơn K80, quản lý thực đơn</div>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-[8px] text-datphu-red"></i>
+                  </button>
+
+                  <button 
+                    @click="showNavDropdown = false; showRegisterFlashDealModal = true"
+                    class="w-full p-2 rounded-2xl hover:bg-amber-50/70 text-slate-800 flex items-center justify-between transition-all group">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-amber-500 to-red-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-bolt"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="font-black text-[11px] text-amber-900">Đăng Ký Bán Giờ Vàng</div>
+                        <div class="text-[9px] text-slate-400">Xả hàng tồn tươi sống, kích cầu</div>
+                      </div>
+                    </div>
+                    <span class="bg-red-100 text-red-700 text-[8px] font-black px-1.5 py-0.2 rounded uppercase">Hot</span>
+                  </button>
+                </div>
+
+                <!-- TỔNG ĐÀI HỖ TRỢ -->
+                <div class="pt-1.5 border-t border-slate-100 text-center">
+                  <a href="tel:0979991898" class="text-[10px] text-slate-500 hover:text-datphu-red font-mono flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-headset text-datphu-navy"></i>
+                    <span>Tổng đài hỗ trợ: <strong>0979 991 898</strong></span>
+                  </a>
+                </div>
+
+              </div>
+            </div>
+
             <!-- Nút Đăng Nhập / Tài Khoản Thành Viên Cư Dân Desktop -->
             <button 
               v-if="!isCustomerLoggedIn"
               @click="showCustomerAuthModal = true" 
               class="bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 px-3 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
               <i class="fa-solid fa-user-check text-blue-600"></i>
-              <span>Đăng Nhập / Đăng Ký</span>
+              <span>Đăng Nhập</span>
             </button>
             <button 
               v-else
@@ -3785,19 +3877,7 @@
               </div>
             </button>
 
-            <button @click="showMyOrdersModal = true" class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shadow-sm active:scale-95 transition-all relative">
-              <i class="fa-solid fa-clock-rotate-left text-slate-600"></i>
-              <span>Đơn Của Tôi</span>
-              <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[9px] px-1.5 py-0.2 rounded-full font-bold animate-pulse">{{ activeOrdersCount }}</span>
-            </button>
-            <button @click="showVoucherModal = true" class="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 px-2.5 sm:px-3 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shadow-sm active:scale-95 transition-all flex-shrink-0" title="Ví Voucher">
-              <i class="fa-solid fa-ticket text-amber-600"></i>
-              <span class="hidden xl:inline">Ví Voucher</span>
-              <span v-if="isCustomerLoggedIn" class="bg-datphu-red text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span>
-            </button>
-
-
-
+            <!-- Nút Giỏ Hàng (chỉ hiện khi có món trong giỏ) -->
             <button v-if="cartTotalItems > 0" @click="showCheckoutModal = true" class="bg-datphu-red hover:bg-datphu-redHover text-white px-3 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shadow-floating active:scale-95 transition-all">
               <i class="fa-solid fa-bag-shopping"></i>
               <span>Giỏ ({{ cartTotalItems }})</span>
@@ -3822,10 +3902,7 @@
               <span>#{{ chip.tag }}</span>
             </button>
           </div>
-          <div class="hidden md:flex items-center gap-1 text-[10px] text-slate-400 flex-shrink-0 font-medium">
-            <i class="fa-solid fa-shield-halved text-emerald-500"></i>
-            <span>Dịch vụ & Món ngon Tuy Hòa</span>
-          </div>
+          
         </div>
 
       </div>
@@ -15463,6 +15540,7 @@
         tierPackageType: 'worker',
 
         // End-user Orders & Needs Screening State
+        showNavDropdown: false,
         showMyOrdersModal: false,
         showTriageModal: false,
         showQuickCustomOrderModal: false,
