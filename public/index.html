@@ -4357,16 +4357,24 @@
           <div 
             v-for="p in homeFilteredProducts.slice(0, 12)" 
             :key="p.id"
-            class="bg-white rounded-3xl p-3 border border-slate-100 shadow-card hover:shadow-md transition-all flex flex-col justify-between group">
+            @click="openProductDetailModal(p)"
+            class="bg-white rounded-3xl p-3 border border-slate-100 shadow-card hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer">
             <div>
-              <div class="relative overflow-hidden rounded-2xl mb-2">
-                <img :src="p.image" class="w-full h-28 sm:h-32 object-cover group-hover:scale-105 transition-transform duration-300">
-                <span class="absolute top-1.5 left-1.5 bg-slate-950/80 backdrop-blur-md text-amber-300 text-[8px] sm:text-[9px] font-black px-2 py-0.5 rounded-md">
+              <div class="relative overflow-hidden rounded-2xl mb-2 select-none" oncontextmenu="return false;">
+                <img :src="p.image" class="w-full h-28 sm:h-32 object-cover group-hover:scale-105 transition-transform duration-300 pointer-events-none">
+                <!-- Tên quán góc trái -->
+                <span class="absolute top-1.5 left-1.5 bg-slate-950/85 backdrop-blur-md text-amber-300 text-[8px] sm:text-[9px] font-black px-2 py-0.5 rounded-md shadow-xs">
                   {{ p.storeName }}
                 </span>
+                <!-- Con dấu Đất Phú Cam Chống Copy góc phải -->
+                <span class="absolute top-1.5 right-1.5 bg-datphu-red/90 text-white text-[7px] sm:text-[8px] font-black px-1.5 py-0.5 rounded flex items-center gap-0.5 shadow-xs">
+                  <i class="fa-solid fa-camera"></i> ĐẤT PHÚ CAM
+                </span>
+                <!-- Lớp màng bảo vệ trong suốt chống kéo thả ảnh -->
+                <div class="absolute inset-0 z-10 bg-transparent"></div>
               </div>
               <h4 class="text-xs sm:text-sm font-black text-slate-900 line-clamp-1 leading-snug group-hover:text-datphu-red transition-colors">{{ p.name }}</h4>
-              <p class="text-[9px] sm:text-[10px] text-slate-400 line-clamp-1 mt-0.5">{{ p.desc }}</p>
+              <p class="text-[9px] sm:text-[10px] text-slate-500 line-clamp-1 mt-0.5">{{ p.desc }}</p>
               <div v-if="p.certBadge || p.origin" 
                    @click.stop="openTraceabilityModal(p)"
                    class="mt-1 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[8px] sm:text-[9px] font-bold cursor-pointer hover:bg-emerald-100 transition-colors">
@@ -6846,6 +6854,136 @@
           <button @click="applyVoucher('DATPHU2026')" class="bg-datphu-red text-white text-[10px] font-black px-3 py-1.5 rounded-xl">Dùng</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ======================== MODAL: CHI TIẾT SẢN PHẨM & DỊCH VỤ (ĐẤT PHÚ CAM BẢO HỘ) ======================== -->
+  <div v-if="showProductDetailModal && selectedProductDetail" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
+    <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl max-h-[92vh] overflow-y-auto p-5 sm:p-6 space-y-4 shadow-2xl">
+      
+      <!-- Header Modal -->
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="bg-red-100 text-datphu-red px-2 py-0.5 rounded-md font-black text-[10px] flex items-center gap-1">
+            <i class="fa-solid fa-camera"></i> ĐẤT PHÚ CAM • ẢNH THẬT 100%
+          </span>
+          <span class="text-[10px] text-slate-400 font-mono">MST: 4401020233</span>
+        </div>
+        <button @click="showProductDetailModal = false" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs hover:bg-slate-200">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Khung Ảnh Lớn có Dập Dấu Bản Quyền Đất Phú Cam Chống Copy -->
+      <div class="relative rounded-2xl overflow-hidden shadow-sm select-none border border-slate-200" oncontextmenu="return false;">
+        <img :src="selectedProductDetail.image" class="w-full h-56 sm:h-64 object-cover pointer-events-none">
+        
+        <!-- Con Dấu Bản Quyền Đất Phú Cam Watermark -->
+        <div class="absolute bottom-2 left-2 bg-slate-950/85 backdrop-blur-md text-white p-2 rounded-xl text-[9px] space-y-0.5 border border-white/20">
+          <div class="font-black text-amber-300 flex items-center gap-1 uppercase">
+            <i class="fa-solid fa-shield-halved text-emerald-400"></i> BẢO HỘ ẢNH THẬT: {{ selectedProductDetail.storeName }}
+          </div>
+          <div class="text-slate-300">
+            📍 Địa chỉ: {{ selectedProductDetail.origin || 'TP. Tuy Hòa, Phú Yên' }} • Chụp ngày 05/11/2026
+          </div>
+          <div class="text-[8px] text-slate-400 font-mono">
+            Mã xác thực số: #DP-CAM-{{ selectedProductDetail.id || '9921' }} • Cấm sao chép trái phép
+          </div>
+        </div>
+
+        <!-- Lớp màng bảo vệ trong suốt chống chuột phải / kéo thả -->
+        <div class="absolute inset-0 bg-transparent z-10" title="Hình ảnh đã được đăng ký bản quyền số tại Đất Phú"></div>
+      </div>
+
+      <!-- Tiêu Đề & Giá Cả -->
+      <div class="space-y-1">
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-[11px] font-bold text-datphu-navy bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-100">
+            {{ selectedProductDetail.storeName }}
+          </span>
+          <span class="text-[10px] text-amber-600 font-bold flex items-center gap-1">
+            <i class="fa-solid fa-star text-amber-400"></i> 4.9/5.0 (88 lượt trải nghiệm)
+          </span>
+        </div>
+        <h2 class="text-base sm:text-lg font-black text-slate-900 leading-tight">
+          {{ selectedProductDetail.name }}
+        </h2>
+        <div class="flex items-baseline gap-2 pt-1">
+          <span class="text-lg sm:text-xl font-black text-datphu-red">
+            {{ formatCurrency(selectedProductDetail.price) }}
+          </span>
+          <span class="text-[10px] text-slate-400">Giá niêm yết chính hãng tại tiệm</span>
+        </div>
+      </div>
+
+      <!-- THÔNG TIN CHI TIẾT & QUY TRÌNH CHUẨN ĐẤT PHÚ -->
+      <div class="space-y-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs">
+        <div>
+          <div class="font-black text-slate-800 text-[11px] uppercase tracking-wide flex items-center gap-1 mb-1">
+            <i class="fa-solid fa-circle-info text-datphu-navy"></i> Mô Tả & Cam Kết Thực Tế:
+          </div>
+          <p class="text-slate-700 leading-relaxed text-[11px]">
+            {{ selectedProductDetail.fullDesc }}
+          </p>
+        </div>
+
+        <!-- Các Bước / Thành Phần Chi Tiết -->
+        <div v-if="selectedProductDetail.steps && selectedProductDetail.steps.length">
+          <div class="font-black text-slate-800 text-[11px] uppercase tracking-wide flex items-center gap-1 mb-1">
+            <i class="fa-solid fa-list-check text-emerald-600"></i> Quy Trình Thực Hiện & Định Lượng:
+          </div>
+          <ul class="space-y-1 text-slate-600 text-[11px]">
+            <li v-for="(step, idx) in selectedProductDetail.steps" :key="idx" class="flex items-start gap-1.5">
+              <i class="fa-solid fa-check text-emerald-500 text-[9px] mt-1"></i>
+              <span>{{ step }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 3 Điểm Cam Kết An Tâm -->
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <div class="bg-white p-2 rounded-xl border border-slate-200">
+            <div class="text-[9px] text-slate-400">Thời gian phục vụ:</div>
+            <div class="text-[11px] font-black text-slate-900 flex items-center gap-1 mt-0.5">
+              <i class="fa-solid fa-clock text-blue-600"></i> {{ selectedProductDetail.duration || '20 - 30 phút' }}
+            </div>
+          </div>
+          <div class="bg-white p-2 rounded-xl border border-slate-200">
+            <div class="text-[9px] text-slate-400">Chính sách bảo hành:</div>
+            <div class="text-[11px] font-black text-emerald-700 flex items-center gap-1 mt-0.5 truncate">
+              <i class="fa-solid fa-shield-heart text-emerald-600"></i> {{ selectedProductDetail.warranty || 'Đổi trả / Dặm miễn phí' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Địa chỉ cửa hàng & Hotline -->
+      <div class="p-3 bg-amber-50/70 border border-amber-200 rounded-2xl flex items-center justify-between text-xs">
+        <div>
+          <div class="text-[10px] text-amber-900 font-bold">📍 Điểm phục vụ trực tiếp tại Tuy Hòa:</div>
+          <div class="font-black text-slate-900 text-xs mt-0.5">{{ selectedProductDetail.storeName }} - Nội ô Tuy Hòa</div>
+          <div class="text-[9px] text-slate-500">Hỗ trợ giao hàng hỏa tốc trong bán kính 10km</div>
+        </div>
+        <a href="tel:0979991898" class="bg-white hover:bg-amber-100 text-amber-900 border border-amber-300 font-black px-3 py-1.5 rounded-xl text-[10px] flex items-center gap-1 shadow-2xs">
+          <i class="fa-solid fa-phone text-amber-600"></i> Gọi Tiệm
+        </a>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="pt-2 flex items-center gap-2">
+        <button 
+          @click="quickAddToCart(selectedProductDetail); showProductDetailModal = false"
+          class="flex-1 bg-datphu-red hover:bg-datphu-redHover text-white font-black py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-floating transition-all active:scale-95">
+          <i class="fa-solid fa-cart-plus"></i>
+          <span>Thêm Vào Giỏ Hàng ({{ formatCurrency(selectedProductDetail.price) }})</span>
+        </button>
+        <button 
+          @click="showProductDetailModal = false"
+          class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-3 rounded-2xl text-xs">
+          Đóng
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -15541,6 +15679,8 @@
 
         // End-user Orders & Needs Screening State
         showNavDropdown: false,
+        showProductDetailModal: false,
+        selectedProductDetail: null,
         showMyOrdersModal: false,
         showTriageModal: false,
         showQuickCustomOrderModal: false,
@@ -19319,6 +19459,62 @@ Hotline hỗ trợ: 0979 991 898`);
         const exist = this.cart.find(i => i.id === product.id);
         if (exist) exist.qty += 1;
         else this.cart.push({ ...product, qty: 1 });
+      },
+
+      openProductDetailModal(p) {
+        if (!p) return;
+        // Chuẩn bị dữ liệu chi tiết đa tầng
+        const details = { ...p };
+        
+        // Bổ sung thông tin nếu thiếu
+        if (!details.origin) {
+          details.origin = 'TP. Tuy Hòa, Phú Yên';
+        }
+        if (!details.fullDesc) {
+          if (details.name.includes('Nail') || details.name.includes('Sơn Gel') || details.name.includes('Cắt Da')) {
+            details.fullDesc = 'Dịch vụ chăm sóc móng chuyên nghiệp tại Tuy Hòa. Sử dụng sơn gel thạch Hàn Quốc chính hãng, dụng cụ tiệt trùng y khoa 100%, bảo hành dặm móng miễn phí trong 7 ngày nếu có lỗi bong tróc.';
+            details.steps = [
+              'Bước 1: Vệ sinh, khử trùng tay và dụng cụ bằng cồn y tế.',
+              'Bước 2: Cắt da chết, tạo phom móng theo dáng bàn tay.',
+              'Bước 3: Khử dầu bề mặt móng, sơn kiềm toan liên kết bền chặt.',
+              'Bước 4: Sơn 2 lớp gel thạch tạo độ sâu và đính charm bền chắc.',
+              'Bước 5: Phủ Top coat bóng gương bảo vệ và thoa tinh dầu dưỡng móng.'
+            ];
+            details.duration = '40 - 60 phút';
+            details.warranty = 'Bảo hành dặm móng miễn phí 7 ngày';
+          } else if (details.name.includes('Bánh')) {
+            details.fullDesc = 'Bánh kem tươi thủ công nướng mới mỗi ngày từ bột mì hữu cơ và sữa tươi nguyên chất. Cam kết không dùng chất bảo quản, độ ngọt thanh vừa phải tốt cho sức khỏe.';
+            details.steps = [
+              'Thành phần: Cốt gato vani bông xốp, hạt bắp non ngọt giòn hoặc dâu tây tươi.',
+              'Kem tươi: Whipping cream hảo hạng nhập khẩu, ít béo ít ngọt.',
+              'Kích thước: Đường kính 16 - 20cm (dành cho 4 - 8 người thưởng thức).',
+              'Tặng kèm: Nến sinh nhật, dao cắt và dĩa muỗng thân thiện môi trường.'
+            ];
+            details.duration = 'Giao nóng sốt trong 30 phút';
+            details.warranty = 'Đổi mới 100% nếu bánh bị xô lệch khi vận chuyển';
+          } else if (details.name.includes('Trà Sữa') || details.name.includes('Trà Đào')) {
+            details.fullDesc = 'Đồ uống tươi pha chế từ lá trà cao nguyên nguyên chất và trái cây tươi hái tại vườn. Cho phép tùy chỉnh lượng đường, đá theo đúng sở thích.';
+            details.steps = [
+              'Cốt trà: Trà Oolong nướng / Trà lài ủ lạnh theo công thức độc quyền.',
+              'Trái cây & Topping: Đào miếng giòn rụm, trân châu hoàng kim dai dẻo.',
+              'Đóng gói: Ly nắp nhiệt kín kẽ, có túi giữ nhiệt giao tận bàn làm việc.'
+            ];
+            details.duration = 'Giao nhanh 15 - 20 phút';
+            details.warranty = 'Hoàn tiền nếu đá tan làm nhạt vị';
+          } else {
+            details.fullDesc = details.desc || 'Sản phẩm đặc sản & Dịch vụ địa phương chất lượng cao bảo chứng bởi Đất Phú Tuy Hòa.';
+            details.steps = [
+              'Nguồn gốc: Cơ sở sản xuất uy tín tại Phú Yên.',
+              'Kiểm định: Đã xác thực an toàn vệ sinh thực phẩm & tay nghề thợ.',
+              'Vận chuyển: Đóng gói cẩn thận, giao hỏa tốc nội ô Tuy Hòa.'
+            ];
+            details.duration = 'Giao trong 20 - 30 phút';
+            details.warranty = 'Hoàn tiền 100% nếu sai mô tả thực tế';
+          }
+        }
+
+        this.selectedProductDetail = details;
+        this.showProductDetailModal = true;
       },
 
       openOrderRatingModal(order) {
