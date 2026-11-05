@@ -3796,20 +3796,19 @@
             </div>
           </div>
 
-          <!-- Ô Tìm Kiếm Rộng Rãi Luôn Đủ Không Gian -->
-          <div class="flex-1 min-w-[260px] sm:min-w-[320px] max-w-2xl relative flex items-center gap-1.5">
-            <div class="relative flex-1 min-w-0">
-              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-              <input 
-                v-model="searchKeyword" 
-                type="text" 
-                placeholder="🔍 Tìm cơm gà, trà sữa, thợ điện nước, thợ khóa, OCOP..."
-                class="w-full bg-slate-100/90 rounded-2xl pl-9 pr-8 py-2 text-xs text-slate-800 placeholder:text-slate-400 font-bold focus:outline-none focus:bg-white focus:ring-2 focus:ring-datphu-red/20 transition-all border border-transparent focus:border-red-200">
-              <button v-if="searchKeyword" @click="searchKeyword = ''" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
-                <i class="fa-solid fa-xmark"></i>
+          <!-- NÚT TÌM KIẾM TINH GỌN TRÊN HEADER (KHI CUỘN HOẶC TRUY CẬP NHANH) -->
+          <div class="flex items-center gap-2">
+            <div class="relative">
+              <button 
+                type="button"
+                @click="focusMainSearch()"
+                class="flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-slate-100/90 hover:bg-slate-200/90 text-slate-600 hover:text-slate-900 text-xs font-bold border border-slate-200/80 transition-all active:scale-95 group shadow-2xs"
+                title="Tìm kiếm sản phẩm, dịch vụ Tuy Hòa">
+                <i class="fa-solid fa-magnifying-glass text-slate-400 group-hover:text-datphu-red text-xs transition-colors"></i>
+                <span class="hidden sm:inline text-slate-500 font-medium">Tìm món ngon, thợ...</span>
+                <span v-if="searchKeyword" class="text-[9px] bg-red-100 text-datphu-red px-1.5 py-0.2 rounded font-bold truncate max-w-[80px]">{{ searchKeyword }}</span>
               </button>
             </div>
-
           </div>
 
           <!-- Nút thao tác trên Desktop: Tinh Gọn với Menu Tiện Ích Kéo Thả -->
@@ -4007,30 +4006,63 @@
 
         </div>
 
-        <!-- DẢI HASHTAG GỢI Ý TÌM KIẾM NHANH DÀNH CHO CƯ DÂN & DU KHÁCH TUY HÒA -->
-        <div class="border-t border-slate-100/80 py-1.5 flex items-center justify-between gap-2 overflow-hidden text-xs">
-          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 flex-1 min-w-0">
-            <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider flex-shrink-0 flex items-center gap-1">
-              <i class="fa-solid fa-fire text-amber-500"></i> Tìm nhanh:
-            </span>
-            <button 
-              v-for="chip in trendingSearchChips" 
-              :key="chip.tag"
-              @click="applyQuickSearch(chip.keyword)"
-              class="flex-shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold border transition-all active:scale-95 flex items-center gap-1 shadow-2xs"
-              :class="searchKeyword.toLowerCase().includes(chip.keyword.toLowerCase()) ? 'bg-datphu-navy text-amber-300 border-datphu-navy' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'">
-              <span>{{ chip.icon }}</span>
-              <span>#{{ chip.tag }}</span>
-            </button>
-          </div>
-          
-        </div>
+
 
       </div>
     </div>
 
     <!-- VIEW 4.1: TRANG CHỦ CHỢ CHÍNH (NẾU CHƯA CHỌN NGÀNH HÀNG CỤ THỂ) -->
     <div v-if="selectedCatId === 'all'" class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 space-y-6">
+
+      <!-- ========================================================================= -->
+      <!-- THANH TÌM KIẾM TRUNG TÂM & XU HƯỚNG BẢN ĐỊA (CENTRAL SEARCH DISCOVERY DOCK)-->
+      <!-- ========================================================================= -->
+      <div id="central-search-dock" class="bg-white rounded-3xl p-3.5 sm:p-4 border border-slate-200/90 shadow-card space-y-2.5 transition-all">
+        <!-- Khung Tìm Kiếm Rộng Rãi, Thoáng Đãng, Đẹp Mắt -->
+        <div class="relative flex items-center">
+          <div class="absolute left-4 top-1/2 -translate-y-1/2 text-datphu-red text-base pointer-events-none">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <input 
+            id="main-search-input"
+            v-model="searchKeyword" 
+            type="text" 
+            placeholder="🔍 Bạn đang cần tìm gì ở Tuy Hòa? Cơm gà, trà sữa, thợ điện nước, bánh kem, nông sản OCOP..."
+            class="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white rounded-2xl pl-11 pr-24 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 font-bold focus:outline-none focus:ring-2 focus:ring-datphu-red/20 focus:border-red-300 transition-all border border-slate-200 shadow-inner">
+          
+          <!-- Nút Xóa Từ Khóa -->
+          <button 
+            v-if="searchKeyword" 
+            @click="searchKeyword = ''" 
+            class="absolute right-16 sm:right-20 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs px-2 py-1">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+          <!-- Nút Tìm Kiếm Nổi Bật -->
+          <button 
+            type="button"
+            class="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-datphu-red to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-black px-3.5 sm:px-4 py-2 rounded-xl text-xs shadow-sm flex items-center gap-1.5 active:scale-95 transition-all">
+            <span>Tìm</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Dải Hashtag Gợi Ý Tìm Nhanh Tuy Hòa -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 text-xs">
+          <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider flex-shrink-0 flex items-center gap-1">
+            <i class="fa-solid fa-fire text-amber-500"></i> Xu hướng tìm kiếm:
+          </span>
+          <button 
+            v-for="chip in trendingSearchChips" 
+            :key="chip.tag"
+            @click="applyQuickSearch(chip.keyword)"
+            class="flex-shrink-0 px-2.5 py-1 rounded-xl text-[10px] font-bold border transition-all active:scale-95 flex items-center gap-1 shadow-2xs"
+            :class="searchKeyword.toLowerCase().includes(chip.keyword.toLowerCase()) ? 'bg-datphu-navy text-amber-300 border-datphu-navy shadow-sm' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'">
+            <span>{{ chip.icon }}</span>
+            <span>#{{ chip.tag }}</span>
+          </button>
+        </div>
+      </div>
       <!-- ========================================================================= -->
       <!-- THANH CHUYỂN ĐỔI 2 KHÔNG GIAN: CHỢ PHIÊN CỬA HÀNG & TRẠM THỢ KỸ THUẬT   -->
       <!-- ========================================================================= -->
@@ -19689,6 +19721,25 @@ Hotline hỗ trợ: 0979 991 898`);
         this.showVoucherModal = true;
       },
 
+      focusMainSearch() {
+        if (this.selectedCatId !== 'all') {
+          this.selectedCatId = 'all';
+        }
+        if (this.activeTier !== 'consumer') {
+          this.activeTier = 'consumer';
+        }
+        this.$nextTick(() => {
+          const input = document.getElementById('main-search-input');
+          if (input) {
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => {
+              input.focus();
+            }, 350);
+          } else {
+            window.scrollTo({ top: 100, behavior: 'smooth' });
+          }
+        });
+      },
       applyQuickSearch(keyword) {
         this.searchKeyword = keyword;
         if (this.activeTier !== 'consumer') {
