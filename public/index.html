@@ -3796,20 +3796,7 @@
             </div>
           </div>
 
-          <!-- NÚT TÌM KIẾM TINH GỌN TRÊN HEADER (KHI CUỘN HOẶC TRUY CẬP NHANH) -->
-          <div class="flex items-center gap-2">
-            <div class="relative">
-              <button 
-                type="button"
-                @click="focusMainSearch()"
-                class="flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-slate-100/90 hover:bg-slate-200/90 text-slate-600 hover:text-slate-900 text-xs font-bold border border-slate-200/80 transition-all active:scale-95 group shadow-2xs"
-                title="Tìm kiếm sản phẩm, dịch vụ Tuy Hòa">
-                <i class="fa-solid fa-magnifying-glass text-slate-400 group-hover:text-datphu-red text-xs transition-colors"></i>
-                <span class="hidden sm:inline text-slate-500 font-medium">Tìm món ngon, thợ...</span>
-                <span v-if="searchKeyword" class="text-[9px] bg-red-100 text-datphu-red px-1.5 py-0.2 rounded font-bold truncate max-w-[80px]">{{ searchKeyword }}</span>
-              </button>
-            </div>
-          </div>
+
 
           <!-- Nút thao tác trên Desktop: Tinh Gọn với Menu Tiện Ích Kéo Thả -->
           <div class="hidden md:flex items-center gap-2">
@@ -3829,25 +3816,85 @@
               <!-- BACKDROP ĐỂ ĐÓNG MENU KHI CLICK RA NGOÀI -->
               <div v-if="showNavDropdown" @click="showNavDropdown = false" class="fixed inset-0 z-40 bg-transparent"></div>
 
-              <!-- NỘI DUNG DROPDOWN MENU KÉO THẢ (CARD MENU TINH GỌN) -->
+              <!-- NỘI DUNG DROPDOWN MENU KÉO THẢ (TRỢ LÝ & TIỆN ÍCH ĐẤT PHÚ) -->
               <div 
                 v-if="showNavDropdown" 
-                class="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white rounded-3xl shadow-2xl border border-slate-100 p-3 z-50 animate-fadeIn space-y-2 text-xs">
+                class="absolute right-0 top-full mt-2 w-80 sm:w-88 bg-white rounded-3xl shadow-2xl border border-slate-100 p-3.5 z-50 animate-fadeIn space-y-2.5 text-xs max-h-[85vh] overflow-y-auto custom-scrollbar">
                 
+                <!-- HEADER MENU TIỆN ÍCH -->
                 <div class="flex items-center justify-between pb-2 border-b border-slate-100 px-1">
                   <div class="flex items-center gap-2">
-                    <img src="logo_datphu.jpg" class="w-6 h-6 object-contain">
-                    <span class="font-black text-slate-900 text-[11px] uppercase tracking-wide">Menu Tiện Ích Đất Phú</span>
+                    <img src="logo_datphu.jpg" class="w-6 h-6 object-contain rounded-md shadow-2xs">
+                    <div>
+                      <span class="font-black text-slate-900 text-xs uppercase tracking-wide">Trợ Lý & Tiện Ích</span>
+                      <p class="text-[9px] text-slate-400">Siêu ứng dụng thương mại & dịch vụ Tuy Hòa</p>
+                    </div>
                   </div>
                   <button @click="showNavDropdown = false" class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center text-[10px]">
                     <i class="fa-solid fa-xmark"></i>
                   </button>
                 </div>
 
-                <!-- PHÂN HỆ CƯ DÂN & KHÁCH HÀNG -->
+                <!-- KHUNG TÌM KIẾM NHANH TRONG MENU TIỆN ÍCH -->
+                <div class="relative px-0.5">
+                  <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+                  <input 
+                    v-model="searchKeyword" 
+                    type="text" 
+                    @keyup.enter="showNavDropdown = false; focusMainSearch()"
+                    placeholder="🔍 Tìm món ngon, dịch vụ, thợ..."
+                    class="w-full bg-slate-100 hover:bg-slate-200/70 focus:bg-white rounded-2xl pl-9 pr-8 py-2 text-xs text-slate-800 placeholder:text-slate-400 font-bold focus:outline-none focus:ring-2 focus:ring-datphu-red/20 transition-all border border-slate-200 focus:border-red-300">
+                  <button v-if="searchKeyword" @click="searchKeyword = ''" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+
+                <!-- PHÂN HỆ CƯ DÂN & ĐẶT NHANH -->
                 <div class="space-y-1">
-                  <div class="text-[9px] font-black uppercase text-slate-400 px-2 tracking-wider">Cư Dân & Khách Hàng</div>
+                  <div class="text-[9px] font-black uppercase text-slate-400 px-2 tracking-wider flex items-center justify-between">
+                    <span>Nhu Cầu & Dịch Vụ Cư Dân</span>
+                    <span class="text-datphu-red text-[8px] font-bold">1 Chạm</span>
+                  </div>
+
+                  <!-- 1. Lên Đơn Tự Do / Gõ Nhu Cầu -->
+                  <button 
+                    @click="showNavDropdown = false; openQuickCustomOrder()"
+                    class="w-full p-2 rounded-2xl hover:bg-red-50 text-slate-800 flex items-center justify-between transition-all group border border-transparent hover:border-red-200">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-datphu-red to-orange-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform shadow-xs">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="font-black text-[11px] text-slate-900 group-hover:text-datphu-red transition-colors flex items-center gap-1">
+                          <span>Lên Đơn Tự Do / Nhu Cầu</span>
+                          <span class="bg-red-100 text-datphu-red text-[7.5px] font-black px-1.5 py-0.2 rounded uppercase">Nhanh</span>
+                        </div>
+                        <div class="text-[9px] text-slate-400">Kết nối thợ & quán theo yêu cầu riêng</div>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-datphu-red"></i>
+                  </button>
+
+                  <!-- 2. Khám Phá Món Ngon Xứ Nẫu -->
+                  <button 
+                    @click="showNavDropdown = false; selectedCatId = 'cat_fnb'; window.scrollTo({ top: 300, behavior: 'smooth' })"
+                    class="w-full p-2 rounded-2xl hover:bg-amber-50 text-slate-800 flex items-center justify-between transition-all group border border-transparent hover:border-amber-200">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform shadow-xs">
+                        <i class="fa-solid fa-utensils"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="font-black text-[11px] text-slate-900 group-hover:text-amber-800 transition-colors flex items-center gap-1">
+                          <span>Khám Phá Món Ngon Xứ Nẫu</span>
+                          <span class="bg-amber-100 text-amber-800 text-[7.5px] font-black px-1.5 py-0.2 rounded uppercase">HOT</span>
+                        </div>
+                        <div class="text-[9px] text-slate-400">Cơm gà, bánh canh, phở bò Tuy Hòa</div>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-amber-800"></i>
+                  </button>
                   
+                  <!-- 3. Tiến Độ Đơn Của Tôi -->
                   <button 
                     @click="showNavDropdown = false; showMyOrdersModal = true"
                     class="w-full p-2 rounded-2xl hover:bg-slate-50 text-slate-800 flex items-center justify-between transition-all group">
@@ -4155,24 +4202,7 @@
               <strong>Thanh toán VietQR trực tiếp • Nghiệm thu hài lòng mới trả tiền • Bảo hành 30-90 ngày.</strong>
             </p>
 
-            <!-- Hàng nút kêu gọi hành động nhanh (CTA) - Tinh Gọn 2 Nút Trọng Tâm -->
-            <div class="flex items-center gap-3 flex-wrap pt-1">
-              <button 
-                type="button"
-                @click="openQuickCustomOrder()"
-                class="bg-gradient-to-r from-datphu-red via-rose-600 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white font-black px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm shadow-floating active:scale-95 transition-all flex items-center gap-2 border border-white/20">
-                <i class="fa-solid fa-pen-to-square text-amber-300 text-sm"></i>
-                <span>+ Lên Đơn Tự Do / Gõ Nhu Cầu</span>
-              </button>
 
-              <button 
-                type="button"
-                @click="selectedCatId = 'cat_fnb'"
-                class="bg-white/10 hover:bg-white/20 text-white font-black px-4 py-2.5 rounded-2xl text-xs sm:text-sm border border-white/20 active:scale-95 transition-all flex items-center gap-2 backdrop-blur-sm">
-                <span class="text-base">🍜</span>
-                <span>Khám Phá Món Ngon Xứ Nẫu</span>
-              </button>
-            </div>
           </div>
 
           <!-- Thanh Cam Kết Kín Kẽ OS - Minh Bạch Dòng Tiền & Pháp Lý -->
