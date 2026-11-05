@@ -747,12 +747,21 @@
         </div>
       </div>
 
-      <div class="space-y-2 pt-2">
+      <div class="space-y-2.5 pt-2">
+        <!-- ⚡ NÚT 1: ĐĂNG NHẬP NHANH 1-CHẠM (VÀO THẲNG BẢNG ĐIỀU KHIỂN POS) -->
+        <button 
+          @click="loginQuick"
+          class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black py-3.5 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition-all active:scale-95 border border-emerald-400/40">
+          <i class="fa-solid fa-bolt text-amber-300 text-sm animate-pulse"></i>
+          <span>⚡ Đăng Nhập Nhanh 1-Chạm (Vào Thẳng POS Quán)</span>
+        </button>
+
+        <!-- 📲 NÚT 2: ĐĂNG NHẬP SỐ ĐIỆN THOẠI & MÃ OTP -->
         <button 
           @click="showMerchantLoginModal = true"
           class="w-full bg-[#0068FF] hover:bg-[#0052cc] text-white font-black py-3 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-md transition-all active:scale-95">
-          <i class="fa-solid fa-phone text-emerald-400 text-sm"></i>
-          <span>Đăng Nhập SĐT Chủ Quán</span>
+          <i class="fa-solid fa-phone text-emerald-300 text-sm"></i>
+          <span>Đăng Nhập SĐT Chủ Quán & Nhập OTP (7878)</span>
         </button>
 
         <button 
@@ -14857,6 +14866,9 @@
 
         // POS & Merchant State
         isMerchantLoggedIn: false, // Mặc định khóa bảo mật như Facebook, cần đăng nhập mới thấy quán
+        showMerchantLoginModal: false,
+        showRegisterStoreModal: false,
+        merchantLoginForm: { phone: '', otp: '', otpSent: false },
         merchantSessionToken: null,
         posCurrentBill: [],
         posShiftRevenue: 850000,
