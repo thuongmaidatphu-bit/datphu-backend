@@ -4848,103 +4848,115 @@
             </div>
 
             <!-- Lưới 3 Thợ Trực Chiến Nổi Bật -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
               <div 
                 v-for="w in nearbyWorkersList.slice(0, 3)" 
                 :key="w.id"
-                class="bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-3 flex flex-col justify-between transition-all group hover:bg-slate-900">
+                class="bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border border-slate-800 hover:border-amber-400/80 rounded-3xl p-3.5 flex flex-col justify-between transition-all duration-300 group hover:shadow-xl hover:shadow-amber-500/10 hover:-translate-y-0.5">
                 
                 <div>
-                  <div class="flex items-start justify-between gap-2">
+                  <!-- Header Card: Avatar Bảng Hiệu + Tên + HĐ Quầy Số -->
+                  <div class="flex items-start justify-between gap-2.5">
                     <div 
                       @click="openWorkerPublicBooth(w)" 
-                      class="flex items-center gap-2.5 cursor-pointer hover:opacity-95 transition-opacity"
+                      class="flex items-center gap-3 cursor-pointer hover:opacity-95 transition-opacity min-w-0 flex-1"
                       title="Nhấn để vào gian hàng thợ">
                       <div class="relative flex-shrink-0">
-                        <img :src="w.avatar" class="w-12 h-12 rounded-xl object-cover border-2 border-amber-500/60 shadow-sm">
-                        <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-slate-900" title="Đang trực tuyến"></span>
+                        <img :src="w.avatar" class="w-13 h-13 rounded-2xl object-cover border-2 border-amber-400 shadow-md group-hover:scale-105 transition-transform">
+                        <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-slate-950" title="Đang trực tuyến"></span>
                       </div>
                       <div class="min-w-0 flex-1">
-                        <div class="flex items-center gap-1.5">
+                        <div class="flex items-center gap-1.5 flex-wrap">
                           <span class="text-xs font-black text-white group-hover:text-amber-300 transition-colors truncate">{{ w.name }}</span>
-                          <i class="fa-solid fa-circle-check text-emerald-400 text-[10px]" title="Đã thẩm định chuẩn K6"></i>
+                          <i class="fa-solid fa-circle-check text-emerald-400 text-[11px]" title="Thợ Đất Phú chuẩn K6 xác thực"></i>
                         </div>
-                        <div class="text-[10px] text-amber-400 font-bold truncate">{{ w.title }}</div>
-                        <div class="text-[9px] text-slate-400 flex items-center gap-1.5 mt-0.5 truncate">
-                          <i class="fa-solid fa-location-dot text-red-400 text-[8px]"></i>
+                        <div class="text-[11px] text-amber-400 font-extrabold truncate mt-0.5">{{ w.title }}</div>
+                        <div class="text-[9px] text-slate-400 flex items-center gap-1 mt-0.5 truncate">
+                          <i class="fa-solid fa-location-dot text-rose-400 text-[9px] flex-shrink-0"></i>
                           <span class="truncate">{{ w.address }}</span>
                         </div>
                       </div>
                     </div>
+
+                    <!-- Nút Xem Tiệm Đậm Chất Gian Hàng -->
+                    <button 
+                      type="button"
+                      @click="openWorkerPublicBooth(w)"
+                      class="flex-shrink-0 text-[10px] bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 text-amber-300 font-extrabold px-2.5 py-1 rounded-xl border border-amber-500/40 flex items-center gap-1 active:scale-95 transition-all shadow-sm">
+                      <i class="fa-solid fa-store text-[9px]"></i>
+                      <span>Xem Tiệm</span>
+                    </button>
                   </div>
 
-                  <!-- Thẻ Hợp Đồng Thuê Quầy Số & Uy Tín -->
-                  <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[9px]">
-                    <span class="font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20 font-bold">
+                  <!-- Thẻ Thông Số Bảng Hiệu: Hợp Đồng Số + Khoảng Cách + Đánh Giá -->
+                  <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px]">
+                    <span class="font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-lg border border-emerald-500/25 font-bold tracking-tight">
                       {{ w.contractCode || 'HĐ-THO-K6' }}
                     </span>
-                    <div class="flex items-center gap-2 text-slate-400">
-                      <span>Cách {{ w.distance }}</span>
-                      <span>•</span>
-                      <span class="text-amber-300 font-bold">★ {{ w.rating }}</span>
-                      <span>•</span>
-                      <span>{{ w.jobsCompleted }} cuốc</span>
+                    <div class="flex items-center gap-2 text-slate-300 font-medium">
+                      <span class="text-cyan-300 font-bold"><i class="fa-solid fa-person-walking mr-0.5"></i>{{ w.distance }}</span>
+                      <span class="text-slate-600">•</span>
+                      <span class="text-amber-300 font-black">★ {{ w.rating }}</span>
+                      <span class="text-slate-600">•</span>
+                      <span class="text-slate-400 font-mono">{{ w.jobsCompleted }} cuốc</span>
                     </div>
                   </div>
 
-                  <!-- BỘ LỌC & ĐIỂM UY TÍN NHỊ PHÂN (BINARY TRUST SCORE) -->
-                  <div class="mt-2 flex items-center justify-between text-[9px] bg-emerald-950/40 border border-emerald-500/30 px-2 py-1 rounded-xl">
-                    <div class="flex items-center gap-1.5 text-emerald-300 font-bold">
-                      <i class="fa-solid fa-shield-check text-emerald-400 text-[10px]"></i>
-                      <span>Uy Tín Nhị Phân:</span>
+                  <!-- Bộ Lọc Điểm Tín Nhiệm Nhị Phân K6 & Thời Gian Có Mặt -->
+                  <div class="mt-2 flex items-center justify-between text-[10px] bg-slate-950/70 border border-slate-800 px-2.5 py-1.5 rounded-xl">
+                    <div class="flex items-center gap-1.5 text-emerald-400 font-bold">
+                      <i class="fa-solid fa-shield-check text-xs"></i>
+                      <span>Uy Tín 100%:</span>
+                      <span class="text-[9px] font-mono text-emerald-300 bg-emerald-500/20 px-1.5 py-0.2 rounded font-bold">Bit 1</span>
                     </div>
-                    <div class="flex items-center gap-1">
-                      <span class="font-mono font-black text-amber-300">100%</span>
-                      <span class="text-[8px] text-emerald-400 font-mono font-bold bg-emerald-500/20 px-1 py-0.2 rounded">({{ w.jobsCompleted || 12 }}/{{ w.jobsCompleted || 12 }} Bit 1)</span>
+                    <div class="flex items-center gap-1 text-cyan-300 font-bold text-[9px]">
+                      <i class="fa-solid fa-bolt text-amber-400"></i>
+                      <span>{{ w.timeEstimate || '15 phút có mặt' }}</span>
                     </div>
+                  </div>
+
+                  <!-- Gói Giá Điển Hình Tại Gian Hàng -->
+                  <div v-if="w.packages && w.packages.length" class="mt-2 pt-1.5 border-t border-slate-800/60 flex items-center justify-between text-[10px] text-slate-300">
+                    <span class="text-slate-400 truncate max-w-[170px]"><i class="fa-solid fa-tag text-amber-500/80 mr-1 text-[9px]"></i>{{ w.packages[0].name }}</span>
+                    <span class="font-mono font-black text-amber-400">{{ formatCurrency(w.packages[0].price) }}</span>
                   </div>
                 </div>
 
-                <!-- Dòng Số Điện Thoại Thợ Trực Tiếp Hiển Thị Rõ Ràng -->
-                <div class="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] bg-slate-950/60 p-2 rounded-xl">
-                  <div class="flex items-center gap-1.5 text-slate-300">
-                    <i class="fa-solid fa-phone-volume text-emerald-400 text-xs animate-pulse"></i>
-                    <span class="text-[10px] text-slate-400">SĐT Thợ:</span>
-                    <a :href="'tel:' + (w.phone || '0979991898')" class="font-mono font-black text-emerald-400 hover:underline">
-                      {{ w.phone || '0979 991 898' }}
+                <!-- Chân Card: SĐT Thợ Rõ Ràng & Các Nút Thao Tác Nhanh -->
+                <div class="mt-3 pt-2.5 border-t border-slate-800/80 space-y-2">
+                  <div class="flex items-center justify-between text-[11px] bg-slate-950/80 px-2.5 py-1.5 rounded-xl border border-slate-800">
+                    <div class="flex items-center gap-1.5 text-slate-300">
+                      <i class="fa-solid fa-phone-volume text-emerald-400 text-xs animate-pulse"></i>
+                      <span class="text-[10px] text-slate-400">SĐT Thợ:</span>
+                      <a :href="'tel:' + (w.phone || '0979991898')" class="font-mono font-black text-emerald-400 hover:underline">
+                        {{ w.phone || '0979 991 898' }}
+                      </a>
+                    </div>
+                    <span class="text-[9px] text-slate-400 font-bold">GSM Trực Tiếp</span>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-1.5">
+                    <button 
+                      @click="openServiceTicket({ title: w.title, tag: w.specialtyName, specialty: w.specialty }, 'urgent')" 
+                      class="flex-1 bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black py-2 px-2 rounded-xl text-[10px] shadow-sm active:scale-95 transition-all text-center flex items-center justify-center gap-1.5">
+                      <i class="fa-solid fa-file-pen text-[9px]"></i>
+                      <span>Đặt Thợ</span>
+                    </button>
+
+                    <a 
+                      :href="'tel:' + (w.phone || '0979991898')" 
+                      class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 font-black px-3 py-2 rounded-xl text-[10px] border border-emerald-500/40 flex items-center gap-1 active:scale-95 transition-colors">
+                      <i class="fa-solid fa-phone"></i>
+                      <span>Gọi</span>
+                    </a>
+
+                    <a 
+                      :href="'sms:' + (w.phone || '0979991898') + '?body=Can%20sua%20chua%20gap%20tai%20Tuy%20Hoa%20cho%20tho%20' + encodeURIComponent(w.name)" 
+                      class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 font-bold px-2.5 py-2 rounded-xl text-[10px] border border-blue-500/30 flex items-center gap-1 active:scale-95 transition-colors">
+                      <i class="fa-solid fa-comment-sms"></i>
+                      <span>SMS</span>
                     </a>
                   </div>
-                  <button 
-                    type="button"
-                    @click="openWorkerPublicBooth(w)"
-                    class="text-[10px] bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold px-2 py-0.5 rounded-lg border border-amber-500/30 flex items-center gap-1 transition-all">
-                    <i class="fa-solid fa-store text-[9px]"></i>
-                    <span>Xem Tiệm</span>
-                  </button>
-                </div>
-
-                <!-- Nút Thao Tác Với Thợ Cụ Thể -->
-                <div class="mt-2.5 pt-2 border-t border-slate-800 flex items-center justify-between gap-1.5 flex-wrap">
-                  <button 
-                    @click="openServiceTicket({ title: w.title, tag: w.specialtyName, specialty: w.specialty }, 'urgent')" 
-                    class="flex-1 min-w-[90px] bg-slate-800 hover:bg-slate-700 text-white font-black py-1.5 px-2 rounded-xl text-[10px] shadow-sm active:scale-95 transition-all text-center flex items-center justify-center gap-1 border border-slate-700">
-                    <i class="fa-solid fa-file-pen text-[9px] text-amber-400"></i>
-                    <span>Tạo Phiếu Đặt</span>
-                  </button>
-
-                  <a 
-                    :href="'tel:' + (w.phone || '0979991898')" 
-                    class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 font-bold px-2.5 py-1.5 rounded-xl text-[10px] border border-emerald-500/40 flex items-center gap-1 active:scale-95 transition-colors">
-                    <i class="fa-solid fa-phone"></i>
-                    <span>Gọi</span>
-                  </a>
-
-                  <a 
-                    :href="'sms:' + (w.phone || '0979991898') + '?body=Can%20sua%20chua%20gap%20tai%20Tuy%20Hoa%20cho%20tho%20' + encodeURIComponent(w.name)" 
-                    class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 font-bold px-2 py-1.5 rounded-xl text-[10px] border border-blue-500/30 flex items-center gap-1 active:scale-95 transition-colors">
-                    <i class="fa-solid fa-comment-sms"></i>
-                    <span>SMS</span>
-                  </a>
                 </div>
 
               </div>
@@ -6567,190 +6579,311 @@
     <!-- ========================================================================= -->
   <!-- MODAL: XEM TRƯỚC GIAN HÀNG THỢ SỐ CÔNG KHAI (DÀNH CHO CƯ DÂN ĐẶT TRỰC TIẾP) -->
   <!-- ========================================================================= -->
-  <div v-if="showWorkerPublicBoothModal && selectedPublicWorker" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
-    <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[92vh] overflow-y-auto p-5 sm:p-6 space-y-4 shadow-2xl relative">
-      <button @click="showWorkerPublicBoothModal = false" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-xs z-10">
-        <i class="fa-solid fa-xmark"></i>
+  <div v-if="showWorkerPublicBoothModal && selectedPublicWorker" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
+    <div class="bg-slate-50 w-full max-w-2xl rounded-t-3xl sm:rounded-3xl max-h-[92vh] overflow-y-auto shadow-2xl relative border border-slate-200">
+      
+      <!-- Nút đóng tròn nổi trên góc -->
+      <button 
+        @click="showWorkerPublicBoothModal = false" 
+        class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center text-xs z-20 backdrop-blur-sm transition-all shadow-md active:scale-90">
+        <i class="fa-solid fa-xmark text-sm"></i>
       </button>
 
-      <!-- BẢNG HIỆU SỐ BÀI BẢN CỦA QUẦY THỢ ĐẤT PHÚ (KHÁCH XEM) -->
+      <!-- PHẦN 1: BẢNG HIỆU GIAN HÀNG SỐ BÀI BẢN (CHUYÊN NGHIỆP, RÕ DANH TÍNH) -->
       <div 
-        class="rounded-3xl p-5 text-white shadow-xl relative overflow-hidden transition-all duration-300 border border-amber-400/40"
+        class="p-5 sm:p-6 text-white shadow-xl relative overflow-hidden transition-all duration-300"
         :class="{
-          'bg-gradient-to-r from-amber-500 via-orange-500 to-red-600': selectedPublicWorker.themeColor === 'amber-red' || !selectedPublicWorker.themeColor,
-          'bg-gradient-to-r from-slate-900 via-blue-900 to-slate-950': selectedPublicWorker.themeColor === 'navy-blue',
-          'bg-gradient-to-r from-emerald-700 via-teal-800 to-slate-900': selectedPublicWorker.themeColor === 'emerald-teal',
-          'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-950': selectedPublicWorker.themeColor === 'slate-dark'
+          'bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950': !selectedPublicWorker.themeColor || selectedPublicWorker.themeColor === 'amber-red',
+          'bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900': selectedPublicWorker.themeColor === 'navy-blue',
+          'bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900': selectedPublicWorker.themeColor === 'emerald-teal',
+          'bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950': selectedPublicWorker.themeColor === 'slate-dark'
         }"
-        :style="selectedPublicWorker.cover ? { backgroundImage: 'linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), url(' + selectedPublicWorker.cover + ')', backgroundSize: 'cover', backgroundPosition: 'center' } : {}">
+        :style="selectedPublicWorker.cover ? { backgroundImage: 'linear-gradient(rgba(10, 15, 30, 0.82), rgba(10, 15, 30, 0.92)), url(' + selectedPublicWorker.cover + ')', backgroundSize: 'cover', backgroundPosition: 'center' } : {}">
         
-        <div class="relative z-10 space-y-3">
-          <div class="flex items-start gap-3.5">
+        <!-- Hiệu ứng viền phát sáng nhẹ -->
+        <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 space-y-3.5">
+          <!-- Hàng tiêu đề nhận diện quầy thợ -->
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-[9px] bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1">
+              <i class="fa-solid fa-store"></i>
+              <span>GIAN HÀNG THỢ SỐ K6</span>
+            </span>
+            <span class="text-[9px] font-mono text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full font-bold border border-emerald-500/30">
+              {{ selectedPublicWorker.contractCode || 'HĐ-THO-DP01' }}
+            </span>
+            <span class="text-[9px] text-cyan-300 bg-cyan-500/20 px-2 py-0.5 rounded-full font-bold border border-cyan-500/30">
+              ● Đang Trực Chiến Bán Kính 3KM
+            </span>
+          </div>
+
+          <!-- Thông tin chính của Thợ -->
+          <div class="flex items-start gap-4">
             <div class="relative flex-shrink-0">
-              <img :src="selectedPublicWorker.avatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-amber-300 shadow-md">
-              <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white bg-emerald-400"></span>
+              <img :src="selectedPublicWorker.avatar" class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl object-cover border-3 border-amber-400 shadow-xl">
+              <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-slate-950 bg-emerald-400 flex items-center justify-center text-[10px] text-slate-950 font-black" title="Đang trực tuyến">✓</span>
             </div>
 
             <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-1.5 flex-wrap">
-                <span class="text-[9px] bg-slate-950/80 text-amber-300 font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
-                  QUẦY THỢ SỐ K6
-                </span>
-                <span class="text-[9px] font-mono text-emerald-300 bg-white/20 px-2 py-0.5 rounded-md font-bold">
-                  {{ selectedPublicWorker.contractCode || 'HĐ-THO-DP01' }}
-                </span>
-              </div>
-
-              <h3 class="text-base sm:text-xl font-black text-white uppercase mt-1 flex items-center gap-1.5 leading-tight">
+              <h2 class="text-lg sm:text-2xl font-black text-white uppercase flex items-center gap-2 leading-tight">
                 <span>{{ selectedPublicWorker.name }}</span>
-                <i class="fa-solid fa-circle-check text-emerald-400 text-xs" title="Thợ Đất Phú Đã Xác Thực"></i>
-              </h3>
+                <i class="fa-solid fa-certificate text-amber-400 text-sm" title="Thợ Đất Phú Đã Xác Thực & Cam Kết Niêm Yết"></i>
+              </h2>
 
-              <p class="text-xs text-amber-200 mt-0.5 flex items-center gap-1.5 flex-wrap">
-                <span><i class="fa-solid fa-wrench mr-1"></i>{{ selectedPublicWorker.specialty || selectedPublicWorker.title }}</span>
-                <span>•</span>
-                <span><i class="fa-solid fa-location-dot mr-1"></i>{{ selectedPublicWorker.area || selectedPublicWorker.address }}</span>
+              <p class="text-xs sm:text-sm text-amber-300 font-extrabold mt-0.5 flex items-center gap-1.5 flex-wrap">
+                <span><i class="fa-solid fa-screwdriver-wrench mr-1"></i>{{ selectedPublicWorker.specialty || selectedPublicWorker.title }}</span>
               </p>
 
-              <div class="mt-1 text-[11px] text-slate-200 italic line-clamp-2">
+              <p class="text-[11px] text-slate-300 flex items-center gap-1.5 mt-0.5">
+                <i class="fa-solid fa-location-dot text-rose-400 text-xs"></i>
+                <span>{{ selectedPublicWorker.area || selectedPublicWorker.address || 'TP. Tuy Hòa, Phú Yên' }}</span>
+              </p>
+
+              <div class="mt-1.5 text-xs text-amber-100/90 italic line-clamp-2 bg-white/10 px-2.5 py-1.5 rounded-xl border border-white/15">
                 "{{ selectedPublicWorker.slogan || 'Tận tâm - Đúng giá - Có mặt sau 15 phút tại Tuy Hòa' }}"
               </div>
-
-              <!-- HỘP SỐ ĐIỆN THOẠI THỢ TRỰC TIẾP TRONG BẢNG HIỆU -->
-              <div class="mt-2.5 pt-2 border-t border-white/20 flex items-center gap-2 flex-wrap">
-                <a 
-                  :href="'tel:' + (selectedPublicWorker.phone || '0979991898')" 
-                  class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-xl shadow-lg transition-all active:scale-95">
-                  <i class="fa-solid fa-phone-volume text-sm animate-pulse"></i>
-                  <span>SĐT Thợ Trực Tiếp: <strong class="font-mono text-sm underline">{{ selectedPublicWorker.phone || '0979 991 898' }}</strong></span>
-                </a>
-
-                <button 
-                  type="button"
-                  @click="copyBoothLink(selectedPublicWorker)"
-                  class="inline-flex items-center gap-1.5 bg-white/20 hover:bg-white/30 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-xl border border-white/30 transition-all active:scale-95">
-                  <i class="fa-solid fa-share-nodes"></i>
-                  <span>Chia Sẻ Link Tiệm</span>
-                </button>
-              </div>
             </div>
           </div>
 
-          <!-- Dải 4 Cam Kết Tín Nhiệm K6 -->
-          <div class="pt-3 border-t border-white/20 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] text-center">
-            <div class="bg-white/10 backdrop-blur-sm p-1.5 rounded-xl">
-              <div class="text-slate-300 text-[8px] uppercase">Đánh Giá</div>
-              <div class="font-black text-amber-300">★ {{ selectedPublicWorker.rating || '4.98' }} / 5.0</div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm p-1.5 rounded-xl">
-              <div class="text-slate-300 text-[8px] uppercase">Kinh Nghiệm</div>
-              <div class="font-black text-white">{{ selectedPublicWorker.experience || '12 Năm Nghề' }}</div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm p-1.5 rounded-xl">
-              <div class="text-slate-300 text-[8px] uppercase">Bảo Hành</div>
-              <div class="font-black text-emerald-300">30 Ngày Tận Nơi</div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm p-1.5 rounded-xl">
-              <div class="text-slate-300 text-[8px] uppercase">Trạng Thái</div>
-              <div class="font-black text-emerald-400">● Đang Trực Chiến</div>
-            </div>
-          </div>
-        </div>
-      </div>
+          <!-- Thanh Gọi Thợ Trực Tiếp & Chia Sẻ Quầy -->
+          <div class="pt-2 border-t border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <a 
+              :href="'tel:' + (selectedPublicWorker.phone || '0979991898')" 
+              class="inline-flex items-center gap-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs sm:text-sm px-4 py-2 rounded-2xl shadow-lg transition-all active:scale-95">
+              <i class="fa-solid fa-phone-volume text-sm animate-pulse"></i>
+              <span>Hotline Thợ: <strong class="font-mono text-sm sm:text-base underline">{{ selectedPublicWorker.phone || '0979 991 898' }}</strong></span>
+            </a>
 
-      <!-- Khối Giới Thiệu Bản Thân & Đồ Nghề Kỹ Thuật -->
-      <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs space-y-1">
-        <div class="font-black text-slate-900 uppercase text-[10px] flex items-center gap-1.5 text-amber-700">
-          <i class="fa-solid fa-shield-halved"></i>
-          <span>Cam Kết Đạo Đức Nghề Nghiệp & Trang Bị K6</span>
-        </div>
-        <p class="text-slate-600 text-[11px] leading-relaxed">
-          {{ selectedPublicWorker.bio || 'Chuyên xử lý chập điện âm tường, sự cố máy bơm, rò rỉ đường ống nước chịu nhiệt PPR, thay CB an toàn PCCC, nghiệm thu bàn giao xong mới thu tiền. Cam kết 100% không vẽ bệnh chặt chém bà con Tuy Hòa.' }}
-        </p>
-      </div>
+            <div class="flex items-center gap-2">
+              <a 
+                :href="'sms:' + (selectedPublicWorker.phone || '0979991898') + '?body=Can%20dat%20dich%20vu%20sua%20chua%20tai%20Tuy%20Hoa%20cho%20tho%20' + encodeURIComponent(selectedPublicWorker.name)"
+                class="bg-blue-600/40 hover:bg-blue-600/60 text-blue-200 font-bold text-xs px-3 py-2 rounded-xl border border-blue-400/40 transition-all active:scale-95 flex items-center gap-1.5">
+                <i class="fa-solid fa-comment-sms"></i>
+                <span>Nhắn Tin SMS</span>
+              </a>
 
-      <!-- BẢNG GIÁ DỊCH VỤ & HÀNG HÓA NIÊM YẾT ĐẦY ĐỦ CÓ ẢNH VÀ VIDEO -->
-      <div class="space-y-2.5">
-        <div class="flex items-center justify-between">
-          <h4 class="text-xs font-black text-slate-900 uppercase flex items-center gap-1.5">
-            <i class="fa-solid fa-list-check text-amber-600"></i>
-            <span>Dịch Vụ & Vật Tư Niêm Yết Tại Quầy ({{ (selectedPublicWorker.packages || []).length }})</span>
-          </h4>
-          <span class="text-[9px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-bold border border-emerald-200">
-            ✓ Giá Công Khai Chuẩn K6
-          </span>
-        </div>
-
-        <div class="space-y-2 max-h-[35vh] overflow-y-auto pr-1">
-          <div 
-            v-for="pkg in (selectedPublicWorker.packages || workerServices)" 
-            :key="pkg.id || pkg.name"
-            class="bg-white hover:bg-amber-50/40 p-3 rounded-2xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 transition-all shadow-2xs">
-            
-            <div class="flex items-start gap-2.5">
-              <img :src="pkg.image || 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=300&q=80'" class="w-14 h-14 rounded-xl object-cover border border-slate-100 flex-shrink-0">
-              <div>
-                <div class="flex items-center gap-1 mb-0.5">
-                  <span class="text-[8px] font-black uppercase px-1.5 py-0.2 rounded" :class="pkg.itemType === 'product' ? 'bg-blue-100 text-blue-900' : 'bg-amber-100 text-amber-900'">
-                    {{ pkg.itemType === 'product' ? 'Vật Tư' : 'Dịch Vụ' }}
-                  </span>
-                  <span class="text-[9px] text-slate-400 font-bold" v-if="pkg.warranty">• {{ pkg.warranty }}</span>
-                </div>
-                <div class="text-xs font-black text-slate-900 leading-snug">{{ pkg.name }}</div>
-                <div class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">{{ pkg.desc }}</div>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between sm:justify-end gap-2 pt-1 sm:pt-0 border-t sm:border-t-0 border-slate-100">
-              <span class="text-xs font-black text-datphu-red font-mono">{{ formatCurrency(pkg.price) }}</span>
               <button 
-                @click="showWorkerPublicBoothModal = false; openServiceTicket({ title: pkg.name, tag: selectedPublicWorker.specialtyName || selectedPublicWorker.specialty }, 'urgent')"
-                class="bg-datphu-red hover:bg-red-700 text-white font-black px-3 py-1.5 rounded-xl text-[10px] active:scale-95 transition-all shadow-xs flex items-center gap-1">
-                <span>Đặt Món Này</span>
-                <i class="fa-solid fa-chevron-right text-[8px]"></i>
+                type="button"
+                @click="copyBoothLink(selectedPublicWorker)"
+                class="bg-white/15 hover:bg-white/25 text-white font-bold text-xs px-3 py-2 rounded-xl border border-white/30 transition-all active:scale-95 flex items-center gap-1.5">
+                <i class="fa-solid fa-share-nodes"></i>
+                <span>Chia Sẻ Tiệm</span>
               </button>
             </div>
-
           </div>
+
+          <!-- 4 Chỉ Số Tín Nhiệm Vàng Của Quầy Thợ K6 -->
+          <div class="pt-2.5 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+            <div class="bg-black/30 backdrop-blur-sm p-2 rounded-2xl border border-white/10">
+              <div class="text-slate-400 text-[9px] uppercase font-bold">Đánh Giá</div>
+              <div class="font-black text-amber-300 text-sm">★ {{ selectedPublicWorker.rating || '4.98' }} / 5.0</div>
+            </div>
+            <div class="bg-black/30 backdrop-blur-sm p-2 rounded-2xl border border-white/10">
+              <div class="text-slate-400 text-[9px] uppercase font-bold">Kinh Nghiệm</div>
+              <div class="font-black text-white text-sm">{{ selectedPublicWorker.experience || '12 Năm Nghề' }}</div>
+            </div>
+            <div class="bg-black/30 backdrop-blur-sm p-2 rounded-2xl border border-white/10">
+              <div class="text-slate-400 text-[9px] uppercase font-bold">Bảo Hành</div>
+              <div class="font-black text-emerald-300 text-sm">30 Ngày Tận Nhà</div>
+            </div>
+            <div class="bg-black/30 backdrop-blur-sm p-2 rounded-2xl border border-white/10">
+              <div class="text-slate-400 text-[9px] uppercase font-bold">Số Cuốc Hoàn Tất</div>
+              <div class="font-black text-cyan-300 font-mono text-sm">{{ selectedPublicWorker.jobsCompleted || 156 }}+ Cuốc</div>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <!-- NHẬN XÉT TỪ CƯ DÂN TUY HÒA THỰC TẾ -->
-      <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5 text-xs">
-        <div class="font-black text-slate-800 text-[10px] uppercase flex items-center justify-between">
-          <span>Nhận Xét Từ Bà Con Tuy Hòa (3 Đánh Giá Gần Nhất):</span>
-          <span class="text-amber-500 font-bold">★ 5.0 Tuyệt Đối</span>
-        </div>
+      <!-- THANH ĐIỀU HƯỚNG TAB GIAN HÀNG THỢ (DỊCH VỤ - LÝ LỊCH/ĐỒ NGHỀ - ĐÁNH GIÁ) -->
+      <div class="bg-white border-b border-slate-200 px-4 sm:px-6 pt-2 sticky top-0 z-10 flex items-center gap-2">
+        <button 
+          type="button"
+          @click="selectedPublicWorkerTab = 'services'"
+          :class="selectedPublicWorkerTab === 'services' ? 'border-b-2 border-datphu-red text-datphu-red font-black' : 'text-slate-500 hover:text-slate-900 font-bold'"
+          class="pb-2.5 px-3 text-xs flex items-center gap-1.5 transition-all">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Bảng Giá Niêm Yết ({{ (selectedPublicWorker.packages || workerServices).length }})</span>
+        </button>
 
-        <div class="space-y-1 text-[11px] text-slate-600">
-          <div class="bg-white p-2 rounded-xl border border-slate-100">
-            <span class="font-bold text-slate-900">Anh Minh (Phường 2):</span> "Chú Tùng tới rất nhanh, dùng đồng hồ vạn năng đo đúng chỗ chập, tính đúng 90k như giá niêm yết."
-          </div>
-          <div class="bg-white p-2 rounded-xl border border-slate-100">
-            <span class="font-bold text-slate-900">Chị Lan (Phường 4):</span> "Thay vòi sen và van tổng gọn gàng, thợ có dán tem bảo hành 30 ngày nên cả nhà rất an tâm."
-          </div>
-        </div>
+        <button 
+          type="button"
+          @click="selectedPublicWorkerTab = 'profile'"
+          :class="selectedPublicWorkerTab === 'profile' ? 'border-b-2 border-datphu-red text-datphu-red font-black' : 'text-slate-500 hover:text-slate-900 font-bold'"
+          class="pb-2.5 px-3 text-xs flex items-center gap-1.5 transition-all">
+          <i class="fa-solid fa-id-card-clip"></i>
+          <span>Hồ Sơ & Cam Kết K6</span>
+        </button>
+
+        <button 
+          type="button"
+          @click="selectedPublicWorkerTab = 'reviews'"
+          :class="selectedPublicWorkerTab === 'reviews' ? 'border-b-2 border-datphu-red text-datphu-red font-black' : 'text-slate-500 hover:text-slate-900 font-bold'"
+          class="pb-2.5 px-3 text-xs flex items-center gap-1.5 transition-all">
+          <i class="fa-solid fa-star text-amber-400"></i>
+          <span>Nhận Xét Cư Dân</span>
+        </button>
       </div>
 
-      <!-- BĂNG GỌI HOTLINE & ĐẶT LỊCH HẸN -->
-      <div class="bg-slate-950 text-white p-3 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
+      <!-- NỘI DUNG CHÍNH THEO TAB -->
+      <div class="p-4 sm:p-6 space-y-4">
+        
+        <!-- TAB 1: BẢNG GIÁ DỊCH VỤ VÀ VẬT TƯ NIÊM YẾT TẠI GIAN HÀNG -->
+        <div v-if="selectedPublicWorkerTab === 'services'" class="space-y-3 animate-fadeIn">
+          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-start gap-2.5 text-xs text-amber-900">
+            <i class="fa-solid fa-shield-halved text-amber-600 text-sm mt-0.5"></i>
+            <div>
+              <span class="font-black">Cam Kết Minh Bạch Tiền Công Chuẩn K6:</span>
+              <p class="text-[11px] text-amber-800 mt-0.5 leading-relaxed">
+                Thợ báo đúng giá niêm yết trước khi làm. Nghiệm thu hoàn tất gia chủ mới quét VietQR trả tiền, hoàn toàn không lo bị chặt chém phát sinh vô lý.
+              </p>
+            </div>
+          </div>
+
+          <div class="space-y-2.5">
+            <div 
+              v-for="pkg in (selectedPublicWorker.packages || workerServices)" 
+              :key="pkg.id || pkg.name"
+              class="bg-white hover:bg-slate-50/80 p-3.5 rounded-2xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all shadow-xs hover:border-amber-400">
+              
+              <div class="flex items-start gap-3">
+                <img :src="pkg.image || 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=300&q=80'" class="w-16 h-16 rounded-2xl object-cover border border-slate-200 flex-shrink-0 shadow-2xs">
+                <div>
+                  <div class="flex items-center gap-1.5 mb-1">
+                    <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md" :class="pkg.itemType === 'product' ? 'bg-blue-100 text-blue-900 border border-blue-200' : 'bg-amber-100 text-amber-900 border border-amber-200'">
+                      {{ pkg.itemType === 'product' ? 'Vật Tư' : 'Dịch Vụ' }}
+                    </span>
+                    <span class="text-[10px] text-slate-500 font-bold" v-if="pkg.warranty"><i class="fa-solid fa-certificate text-emerald-600 mr-0.5"></i>{{ pkg.warranty }}</span>
+                    <span class="text-[10px] text-slate-500 font-bold" v-if="pkg.leadTime"><i class="fa-solid fa-bolt text-amber-500 mr-0.5"></i>{{ pkg.leadTime }}</span>
+                  </div>
+                  <h4 class="text-xs sm:text-sm font-black text-slate-900 leading-snug">{{ pkg.name }}</h4>
+                  <p class="text-[11px] text-slate-600 line-clamp-2 mt-1">{{ pkg.desc }}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 flex-shrink-0">
+                <div class="text-left sm:text-right">
+                  <div class="text-[9px] text-slate-400 font-bold uppercase">Giá Niêm Yết:</div>
+                  <div class="text-sm sm:text-base font-black text-datphu-red font-mono">{{ formatCurrency(pkg.price) }}</div>
+                </div>
+                <button 
+                  type="button"
+                  @click="showWorkerPublicBoothModal = false; openServiceTicket({ title: pkg.name, tag: selectedPublicWorker.specialtyName || selectedPublicWorker.specialty, price: pkg.price }, 'urgent')"
+                  class="bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black px-4 py-2 rounded-xl text-xs active:scale-95 transition-all shadow-sm flex items-center gap-1.5">
+                  <i class="fa-solid fa-bolt text-[10px]"></i>
+                  <span>Đặt Món Này</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: HỒ SƠ & CAM KẾT ĐẠO ĐỨC NGHỀ K6 -->
+        <div v-if="selectedPublicWorkerTab === 'profile'" class="space-y-3.5 animate-fadeIn">
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-2.5">
+            <h4 class="text-xs font-black text-slate-900 uppercase flex items-center gap-1.5 text-amber-700">
+              <i class="fa-solid fa-address-card"></i>
+              <span>Giới Thiệu Tay Nghề & Chuyên Môn</span>
+            </h4>
+            <p class="text-xs text-slate-700 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+              {{ selectedPublicWorker.bio || 'Chuyên xử lý chập điện âm tường, sự cố máy bơm, rò rỉ đường ống nước chịu nhiệt PPR, thay CB an toàn PCCC, nghiệm thu bàn giao xong mới thu tiền. Cam kết 100% không vẽ bệnh chặt chém bà con Tuy Hòa.' }}
+            </p>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-2">
+            <h4 class="text-xs font-black text-slate-900 uppercase flex items-center gap-1.5 text-emerald-700">
+              <i class="fa-solid fa-shield-check"></i>
+              <span>4 Tiêu Chuẩn Vàng Của Thợ Đất Phú</span>
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div class="bg-emerald-50/70 p-2.5 rounded-xl border border-emerald-200/80">
+                <div class="font-black text-emerald-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-circle-check text-emerald-600"></i> Đúng Giá Niêm Yết
+                </div>
+                <div class="text-[11px] text-slate-600 mt-0.5">Tuyệt đối không kỳ kèo giá cả, không nâng khống vật tư.</div>
+              </div>
+              <div class="bg-blue-50/70 p-2.5 rounded-xl border border-blue-200/80">
+                <div class="font-black text-blue-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-clock text-blue-600"></i> Có Mặt Trong 15 Phút
+                </div>
+                <div class="text-[11px] text-slate-600 mt-0.5">Ứng trực tận nơi nội thành Tuy Hòa và lân cận 3km.</div>
+              </div>
+              <div class="bg-amber-50/70 p-2.5 rounded-xl border border-amber-200/80">
+                <div class="font-black text-amber-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-screwdriver-wrench text-amber-600"></i> Nghiệm Thu Mới Trả Tiền
+                </div>
+                <div class="text-[11px] text-slate-600 mt-0.5">Gia chủ hài lòng kiểm tra thiết bị hoạt động mới thanh toán.</div>
+              </div>
+              <div class="bg-purple-50/70 p-2.5 rounded-xl border border-purple-200/80">
+                <div class="font-black text-purple-900 flex items-center gap-1.5">
+                  <i class="fa-solid fa-award text-purple-600"></i> Bảo Hành 30 Ngày
+                </div>
+                <div class="text-[11px] text-slate-600 mt-0.5">Dán tem bảo hành kỹ thuật, hỗ trợ kiểm tra lại miễn phí.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: NHẬN XÉT CƯ DÂN THỰC TẾ -->
+        <div v-if="selectedPublicWorkerTab === 'reviews'" class="space-y-3 animate-fadeIn">
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <span class="text-xs font-black text-slate-900 uppercase">Đánh Giá Từ Cư Dân Tuy Hòa:</span>
+              <span class="text-amber-500 font-black text-xs">★ 5.0 Tuyệt Đối ({{ selectedPublicWorker.jobsCompleted || 156 }} lượt)</span>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-black text-slate-900">Bác Thành (78 Nguyễn Huệ, P. 5):</span>
+                  <span class="text-amber-400 text-xs">★★★★★</span>
+                </div>
+                <p class="text-slate-600 text-[11px] leading-relaxed">
+                  "Thợ tới rất đúng hẹn, mang đồ nghề đầy đủ có đồng hồ đo điện an toàn. Tính đúng tiền công niêm yết không vẽ vời."
+                </p>
+              </div>
+
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-black text-slate-900">Chị Thu Thảo (Trần Hưng Đạo, P. 4):</span>
+                  <span class="text-amber-400 text-xs">★★★★★</span>
+                </div>
+                <p class="text-slate-600 text-[11px] leading-relaxed">
+                  "Xử lý vòi sen rò rỉ và thay van khóa rất sạch sẽ, có dán tem bảo hành 30 ngày đàng hoàng."
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER STICKY: GỌI THỢ NGAY & ĐẶT LỊCH HẸN -->
+      <div class="bg-slate-950 text-white p-3.5 sm:p-4 rounded-b-3xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 sticky bottom-0 z-20 border-t border-slate-800">
         <div>
-          <div class="text-[9px] text-slate-400">Số điện thoại liên hệ thợ trực tiếp:</div>
-          <a :href="'tel:' + (selectedPublicWorker.phone || '0979991898')" class="font-black text-emerald-400 font-mono text-base hover:underline flex items-center gap-1.5">
-            <i class="fa-solid fa-phone text-sm animate-pulse"></i>
+          <div class="text-[9px] text-slate-400 font-bold uppercase">Tổng đài kết nối thợ trực tiếp:</div>
+          <a :href="'tel:' + (selectedPublicWorker.phone || '0979991898')" class="font-black text-emerald-400 font-mono text-base sm:text-lg hover:underline flex items-center gap-1.5">
+            <i class="fa-solid fa-phone-volume text-sm animate-pulse"></i>
             <span>{{ selectedPublicWorker.phone || '0979 991 898' }}</span>
           </a>
         </div>
+
         <div class="flex items-center gap-2">
           <button 
+            type="button"
             @click="showWorkerPublicBoothModal = false; openServiceTicket(null, 'appointment')"
-            class="bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-3 py-2 rounded-xl text-xs active:scale-95 transition-all border border-slate-700 flex items-center gap-1">
+            class="bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-3.5 py-2.5 rounded-xl text-xs active:scale-95 transition-all border border-slate-700 flex items-center gap-1.5">
             <i class="fa-solid fa-calendar-check"></i>
-            <span>Đặt Lịch Hẹn</span>
+            <span>Đặt Lịch Hẹn Trước</span>
           </button>
-          <a :href="'tel:' + (selectedPublicWorker.phone || '0979991898')" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-md active:scale-95 transition-all">
+          
+          <a 
+            :href="'tel:' + (selectedPublicWorker.phone || '0979991898')" 
+            class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 shadow-lg active:scale-95 transition-all">
             <i class="fa-solid fa-phone"></i>
-            <span>Gọi Thợ Ngay</span>
+            <span>Gọi Thợ Tới Liền (15p)</span>
           </a>
         </div>
       </div>
@@ -14549,6 +14682,7 @@
         showWorkerStandeeModal: false,
         showWorkerPublicBoothModal: false,
         selectedPublicWorker: null,
+        selectedPublicWorkerTab: 'services',
         currentWorkerBooth: {
           boothNumber: 'Gian Số 06 - Dãy Kỹ Thuật Đất Phú',
           contractCode: 'HĐ-THO-DP01',
@@ -19372,6 +19506,7 @@ Hotline hỗ trợ: 0979 991 898`);
           contractCode: target.contractCode || 'HĐ-THO-DP01',
           packages: (target.packages && target.packages.length) ? target.packages : this.workerServices
         };
+        this.selectedPublicWorkerTab = 'services';
         this.showWorkerPublicBoothModal = true;
       },
 
