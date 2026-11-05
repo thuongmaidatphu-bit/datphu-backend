@@ -14088,74 +14088,130 @@
         </button>
       </div>
 
-      <!-- GÓI QUẦY THỢ K6 -->
-      <div v-if="tierPackageType === 'worker'" class="space-y-3">
+      <!-- GÓI QUẦY THỢ K6 (NÂNG CẤP CHUẨN MA TRẬN 3 LEVEL & TỶ LỆ VÀNG 10%) -->
+      <div v-if="tierPackageType === 'worker'" class="space-y-3.5">
+        
+        <!-- Dải thông điệp Ma Trận Lợi Nhuận Công Khai -->
+        <div class="bg-gradient-to-r from-slate-900 to-slate-950 text-white p-3 rounded-2xl border border-amber-500/30 flex items-center justify-between gap-2 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-sm">
+              <i class="fa-solid fa-handshake-simple"></i>
+            </span>
+            <div>
+              <div class="font-black text-amber-300 text-[11px] uppercase">Ma Trận Chia Sẻ Lợi Nhuận Bền Vững K6</div>
+              <p class="text-[9px] text-slate-300">Việc lẻ thu nhẹ 10% • Công trình lớn thu 5-8% • Cửa tiệm hưởng chiết khấu vật tư</p>
+            </div>
+          </div>
+          <span class="text-[9px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-1 rounded-lg font-mono font-bold hidden sm:inline">
+            Hotline: 0979 991 898
+          </span>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <!-- Gói Khởi Động -->
-          <div class="border border-slate-200 rounded-2xl p-3.5 space-y-2 bg-slate-50/50 flex flex-col justify-between">
+          
+          <!-- LEVEL 1: THỢ TỰ DO CÁ NHÂN -->
+          <div class="border border-slate-200 rounded-2xl p-3.5 space-y-2.5 bg-slate-50/60 flex flex-col justify-between hover:border-emerald-500 transition-all">
             <div class="space-y-1.5">
-              <span class="text-[9px] bg-slate-200 text-slate-700 font-bold px-2 py-0.5 rounded-full">Thợ Tự Do Mới</span>
-              <h4 class="text-xs font-black text-slate-900">Gói Khởi Động</h4>
-              <div class="text-lg font-black text-slate-800">40.000đ<span class="text-[10px] font-normal text-slate-500">/tháng</span></div>
-              <ul class="text-[10px] text-slate-600 space-y-1 pt-1 border-t border-slate-200">
-                <li><i class="fa-solid fa-check text-emerald-500 mr-1"></i>Nhận đơn nội ô bán kính 3km</li>
-                <li><i class="fa-solid fa-check text-emerald-500 mr-1"></i>Hồ sơ thợ hiển thị chuẩn sàn</li>
-                <li><i class="fa-solid fa-check text-emerald-500 mr-1"></i>Chiết khấu doanh thu: <strong>0%</strong></li>
+              <div class="flex items-center justify-between">
+                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-black px-2 py-0.5 rounded-full uppercase">
+                  LEVEL 1: THỢ TỰ DO
+                </span>
+                <span class="text-[9px] text-slate-500 font-bold">1 Người</span>
+              </div>
+              <h4 class="text-xs font-black text-slate-900">Quầy Thợ Cá Nhân</h4>
+              <div class="flex items-baseline gap-1">
+                <span class="text-lg font-black text-slate-800">50.000đ</span>
+                <span class="text-[10px] text-slate-500 font-normal">/tháng</span>
+              </div>
+              <ul class="text-[10px] text-slate-600 space-y-1.5 pt-1.5 border-t border-slate-200">
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Bán kính nhận cuốc 1 - 2km quanh xóm</span></li>
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Phí hoa hồng việc lẻ: <strong>10% / cuốc</strong></span></li>
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Số điện thoại hiển thị gọi trực tiếp GSM</span></li>
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Có chế độ: <strong>Chỉ nhận tại tiệm</strong></span></li>
               </ul>
             </div>
             <button 
               type="button"
-              @click="selectTierPackage({ name: 'Quầy Thợ Khởi Động', priceText: '40.000đ/tháng', features: ['Bán kính 3km', 'Hồ sơ chuẩn sàn', '0% chiết khấu'] })"
-              class="w-full mt-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold py-1.5 rounded-xl text-[10px] transition-all">
-              Đăng Ký Gói Này
+              @click="selectTierPackage({ name: 'Level 1 - Quầy Thợ Tự Do', priceText: '50.000đ/tháng (Hoa hồng 10%)', features: ['Bán kính 2km', '10% việc lẻ', 'Hiện SĐT gọi trực tiếp'] })"
+              class="w-full mt-2 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-bold py-2 rounded-xl text-[10px] transition-all active:scale-95">
+              Đăng Ký Level 1
             </button>
           </div>
 
-          <!-- Gói K6 Chuyên Nghiệp (Khuyên Dùng) -->
-          <div class="border-2 border-amber-500 rounded-2xl p-3.5 space-y-2 bg-amber-50/40 relative shadow-sm flex flex-col justify-between">
-            <span class="absolute -top-2.5 right-3 bg-amber-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full shadow-xs">
-              ⭐ ĐỀ XUẤT NHẤT
+          <!-- LEVEL 2: ĐỘI NHÓM THỢ CƠ ĐỘNG -->
+          <div class="border-2 border-amber-500 rounded-2xl p-3.5 space-y-2.5 bg-amber-50/40 relative shadow-sm flex flex-col justify-between">
+            <span class="absolute -top-2.5 right-3 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 text-[8px] font-black px-2 py-0.5 rounded-full shadow-xs uppercase tracking-wider">
+              ⭐ ĐỘI CƠ ĐỘNG 24/7
             </span>
             <div class="space-y-1.5">
-              <span class="text-[9px] bg-amber-200 text-amber-900 font-bold px-2 py-0.5 rounded-full">Chuẩn Nghề K6</span>
-              <h4 class="text-xs font-black text-amber-950">Chuyên Nghiệp K6</h4>
-              <div class="text-lg font-black text-amber-600">80.000đ<span class="text-[10px] font-normal text-slate-500">/tháng</span></div>
-              <ul class="text-[10px] text-slate-700 space-y-1 pt-1 border-t border-amber-200">
-                <li><i class="fa-solid fa-check text-emerald-600 mr-1"></i>Huy hiệu xác thực <strong>K6 Uy Tín</strong></li>
-                <li><i class="fa-solid fa-check text-emerald-600 mr-1"></i>Top 3 đề xuất khi khách tìm thợ</li>
-                <li><i class="fa-solid fa-check text-emerald-600 mr-1"></i>Bán kính phủ sóng 10km</li>
-                <li><i class="fa-solid fa-check text-emerald-600 mr-1"></i>Hỗ trợ mua BHYT 100k/năm</li>
+              <div class="flex items-center justify-between">
+                <span class="text-[9px] bg-amber-200 text-amber-950 font-black px-2 py-0.5 rounded-full uppercase">
+                  LEVEL 2: ĐỘI NHÓM
+                </span>
+                <span class="text-[9px] text-amber-800 font-bold">3 - 5 Thợ</span>
+              </div>
+              <h4 class="text-xs font-black text-amber-950">Đội Thợ Cơ Động</h4>
+              <div class="flex items-baseline gap-1">
+                <span class="text-lg font-black text-amber-600">150.000đ</span>
+                <span class="text-[10px] text-slate-500 font-normal">/tháng</span>
+              </div>
+              <ul class="text-[10px] text-slate-700 space-y-1.5 pt-1.5 border-t border-amber-200">
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Bán kính phủ sóng <strong>3km - 10km</strong></span></li>
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Phí hoa hồng đơn: <strong>8% - 10%</strong></span></li>
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Ưu tiên nổ cuốc khẩn cấp đêm ngày</span></li>
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Chia việc nội bộ cho anh em trong đội</span></li>
               </ul>
             </div>
             <button 
               type="button"
-              @click="selectTierPackage({ name: 'Quầy Thợ Chuyên Nghiệp K6', priceText: '80.000đ/tháng', features: ['Huy hiệu K6', 'Top đề xuất', 'Bán kính 10km', 'Hỗ trợ BHYT'] })"
-              class="w-full mt-2 bg-amber-500 hover:bg-amber-600 text-white font-black py-1.5 rounded-xl text-[10px] shadow-sm transition-all">
-              Kích Hoạt Gói K6
+              @click="selectTierPackage({ name: 'Level 2 - Đội Nhóm Thợ Cơ Động', priceText: '150.000đ/tháng (Hoa hồng 8-10%)', features: ['Bán kính 10km', '8-10% cuốc', 'Ưu tiên nổ cuốc 24/7'] })"
+              class="w-full mt-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black py-2 rounded-xl text-[10px] shadow-sm transition-all active:scale-95">
+              Kích Hoạt Gói Level 2
             </button>
           </div>
 
-          <!-- Gói VIP Master -->
-          <div class="border border-datphu-navy rounded-2xl p-3.5 space-y-2 bg-blue-50/30 flex flex-col justify-between">
+          <!-- LEVEL 3: CHỦ TIỆM & TỔNG THẦU CÔNG TRÌNH -->
+          <div class="border-2 border-rose-500 rounded-2xl p-3.5 space-y-2.5 bg-rose-50/40 relative shadow-sm flex flex-col justify-between">
+            <span class="absolute -top-2.5 right-3 bg-gradient-to-r from-rose-600 to-red-600 text-white text-[8px] font-black px-2 py-0.5 rounded-full shadow-xs uppercase tracking-wider animate-pulse">
+              🏆 TỔNG THẦU CÔNG TRÌNH
+            </span>
             <div class="space-y-1.5">
-              <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">Cao Cấp Toàn Sàn</span>
-              <h4 class="text-xs font-black text-datphu-navy">VIP Master Đất Phú</h4>
-              <div class="text-lg font-black text-datphu-navy">150.000đ<span class="text-[10px] font-normal text-slate-500">/tháng</span></div>
-              <ul class="text-[10px] text-slate-600 space-y-1 pt-1 border-t border-blue-200">
-                <li><i class="fa-solid fa-check text-emerald-500 mr-1"></i>Ghim Vị Trí #1 Toàn Thành Phố</li>
-                <li><i class="fa-solid fa-check text-emerald-500 mr-1"></i>Tổng đài 0979 991 898 điều phối ưu tiên</li>
-                <li><i class="fa-solid fa-check text-emerald-500 mr-1"></i>Cấp Thẻ Nghề Cứng & Áo Nhận Diện</li>
-                <li><i class="fa-solid fa-check text-emerald-500 mr-1"></i>Trợ cấp Quỹ Tương Trợ 100%</li>
+              <div class="flex items-center justify-between">
+                <span class="text-[9px] bg-rose-200 text-rose-950 font-black px-2 py-0.5 rounded-full uppercase">
+                  LEVEL 3: CHỦ TIỆM & THẦU
+                </span>
+                <span class="text-[9px] text-rose-700 font-bold">5 - 15 Thợ + Tiệm</span>
+              </div>
+              <h4 class="text-xs font-black text-rose-950">Chủ Tiệm & Thầu K6</h4>
+              <div class="flex items-baseline gap-1">
+                <span class="text-lg font-black text-rose-700">350.000đ</span>
+                <span class="text-[10px] text-slate-500 font-normal">/tháng</span>
+              </div>
+              <ul class="text-[10px] text-slate-700 space-y-1.5 pt-1.5 border-t border-rose-200">
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Toàn TP. Tuy Hòa & Liên huyện Phú Yên</span></li>
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Ăn chia công trình lớn: <strong>95% Thầu - 5% Sàn</strong></span></li>
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span><strong>Lợi nhuận kép:</strong> Xuất kho vật tư tiệm cho gia chủ</span></li>
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Hợp đồng pháp lý Escrow bảo lãnh thanh toán</span></li>
               </ul>
             </div>
             <button 
               type="button"
-              @click="selectTierPackage({ name: 'Quầy Thợ VIP Master', priceText: '150.000đ/tháng', features: ['Top 1 Tuy Hòa', 'Tổng đài điều phối', 'Thẻ nghề + Áo', 'Bảo hiểm trọn gói'] })"
-              class="w-full mt-2 bg-datphu-navy hover:bg-slate-800 text-white font-black py-1.5 rounded-xl text-[10px] transition-all">
-              Đăng Ký VIP Master
+              @click="selectTierPackage({ name: 'Level 3 - Chủ Tiệm & Thầu Công Trình', priceText: '350.000đ/tháng + 5% Công trình', features: ['Toàn tỉnh Phú Yên', 'Ăn chia 95/5 công trình', 'Bán kèm kho vật tư tiệm'] })"
+              class="w-full mt-2 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black py-2 rounded-xl text-[10px] shadow-sm transition-all active:scale-95">
+              Đăng Ký Level 3 (Chủ Tiệm)
             </button>
           </div>
+
         </div>
+
+        <!-- Lưu ý minh bạch về cơ chế ăn chia 10% -->
+        <div class="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-[10px] text-slate-600 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-info text-blue-500 text-xs"></i>
+            <span><strong>Chính sách 10% minh bạch:</strong> Thợ nhận tiền trực tiếp từ khách, thanh toán phí kết nối 10% theo chu kỳ hoặc tự động cấn trừ. Không giữ vốn của thợ.</span>
+          </div>
+        </div>
+
       </div>
 
       <!-- GÓI GIAN HÀNG QUÁN ĂN / SHOP POS -->
