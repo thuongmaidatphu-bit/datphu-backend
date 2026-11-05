@@ -5029,7 +5029,7 @@
 
                 <button 
                   type="button"
-                  @click="navigateToWorkerRegistration" 
+                  @click="navigateToWorkerRegistration(); showRegisterWorkerModal = true" 
                   class="flex-1 sm:flex-none bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black px-4 py-2.5 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20 active:scale-95 transition-all">
                   <i class="fa-solid fa-circle-plus text-xs"></i>
                   <span>Đăng Ký Mở Quầy Nhận Cuốc ➔</span>
@@ -19892,6 +19892,10 @@ Hotline hỗ trợ: 0979 991 898`);
       applyVoucher(code) {
         alert(`Đã áp dụng mã Voucher "${code}" thành công vào đơn hàng tiếp theo!`);
         this.showVoucherModal = false;
+      },
+
+      navigateToWorkerRegistration() {
+        this.showRegisterWorkerModal = true;
       },
 
       navigateToCategory(catId) {
