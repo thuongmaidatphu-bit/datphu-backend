@@ -3679,22 +3679,23 @@
                 <!-- BACKDROP ĐỂ ĐÓNG DROPDOWN KHI CLICK RA NGOÀI -->
                 <div v-if="showCategoryDropdown" @click="showCategoryDropdown = false" class="fixed inset-0 z-40 bg-slate-900/10 backdrop-blur-[0.5px]"></div>
 
-                <!-- BẢNG DROPDOWN MENU 9 NGÀNH HÀNG TINH GỌN (3 CỘT) -->
+                <!-- BẢNG DROPDOWN MENU 9 NGÀNH HÀNG: DANH SÁCH DỌC TỪ TRÊN XUỐNG -->
                 <div 
                   v-if="showCategoryDropdown" 
-                  class="absolute left-0 top-full mt-2 w-76 sm:w-92 bg-white rounded-3xl shadow-2xl border border-slate-100 p-3 z-50 animate-fadeIn space-y-2.5">
+                  class="absolute left-0 top-full mt-2 w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-100 p-3.5 z-50 animate-fadeIn space-y-2">
                   
+                  <!-- Tiêu đề Header của Dropdown -->
                   <div class="flex items-center justify-between pb-2 border-b border-slate-100 px-1">
                     <div class="flex items-center gap-2">
-                      <div class="w-6 h-6 rounded-lg bg-red-50 text-datphu-red flex items-center justify-center text-xs">
+                      <div class="w-7 h-7 rounded-xl bg-red-100 text-datphu-red flex items-center justify-center text-xs shadow-2xs">
                         <i class="fa-solid fa-compass"></i>
                       </div>
                       <div>
                         <div class="font-black text-slate-900 text-xs uppercase tracking-wide flex items-center gap-1.5">
-                          <span>Ngành Hàng Chợ Phiên</span>
-                          <span class="text-[8px] bg-red-100 text-datphu-red px-1.5 py-0.2 rounded-full font-bold">9 Ngành</span>
+                          <span>Danh Mục Ngành Hàng</span>
+                          <span class="text-[8px] bg-red-100 text-datphu-red px-1.5 py-0.2 rounded-full font-bold">9 Nhóm</span>
                         </div>
-                        <div class="text-[9px] text-slate-400">Chọn ngành hàng để lọc món ngon & dịch vụ nhanh</div>
+                        <div class="text-[9px] text-slate-400">Khám phá món ngon & dịch vụ đặc sắc Tuy Hòa</div>
                       </div>
                     </div>
                     <button @click="showCategoryDropdown = false" class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center text-[10px]">
@@ -3702,38 +3703,48 @@
                     </button>
                   </div>
 
-                  <!-- LƯỚI 9 NGÀNH HÀNG 3 CỘT -->
-                  <div class="grid grid-cols-3 gap-2">
-                    <div 
+                  <!-- DANH SÁCH 9 NGÀNH HÀNG SẮP XẾP TỪ TRÊN XUỐNG DƯỚI (VERTICAL LIST) -->
+                  <div class="space-y-1 max-h-[380px] sm:max-h-[420px] overflow-y-auto pr-0.5 custom-scrollbar">
+                    <button 
                       v-for="item in navMenuItems" 
                       :key="'logo_drop_' + item.id"
+                      type="button"
                       @click="handleNavClick(item); showCategoryDropdown = false;"
-                      class="flex flex-col items-center text-center cursor-pointer group active:scale-95 transition-all relative p-2 rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-100">
+                      class="w-full flex items-center justify-between p-2 rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-200/70 transition-all group text-left active:scale-[0.99]">
                       
-                      <!-- Badge nhỏ gọn -->
-                      <span 
-                        v-if="item.badge" 
-                        class="absolute top-1 right-1 text-[7px] font-black px-1.5 py-0.2 rounded-full shadow-2xs pointer-events-none"
-                        :class="item.badgeClass || 'bg-datphu-red text-white'">
-                        {{ item.badge }}
-                      </span>
+                      <div class="flex items-center gap-3 min-w-0">
+                        <!-- Icon Box chuẩn FontAwesome vector, sắc nét tuyệt đối, không lo lỗi font emoji -->
+                        <div 
+                          class="w-9 h-9 rounded-xl flex items-center justify-center text-sm flex-shrink-0 shadow-2xs group-hover:scale-110 transition-transform"
+                          :class="item.bg">
+                          <i :class="item.faIcon || 'fa-solid fa-store'" class="text-sm"></i>
+                        </div>
 
-                      <!-- Icon Box -->
-                      <div 
-                        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-2xs mb-1 group-hover:scale-105 transition-transform"
-                        :class="item.bg">
-                        <i v-if="item.faIcon" :class="item.faIcon" class="text-base"></i>
-                        <span v-else>{{ item.icon }}</span>
+                        <!-- Tên & Mô tả Ngành Hàng -->
+                        <div class="min-w-0 flex-1">
+                          <div class="flex items-center gap-1.5">
+                            <span class="text-xs font-black text-slate-800 group-hover:text-datphu-red transition-colors">
+                              {{ item.name }}
+                            </span>
+                            <!-- Badge nếu có -->
+                            <span 
+                              v-if="item.badge" 
+                              class="text-[7.5px] font-black px-1.5 py-0.2 rounded-full shadow-2xs"
+                              :class="item.badgeClass || 'bg-datphu-red text-white'">
+                              {{ item.badge }}
+                            </span>
+                          </div>
+                          <p class="text-[10px] text-slate-400 font-medium truncate">
+                            {{ item.sub }}
+                          </p>
+                        </div>
                       </div>
 
-                      <!-- Tiêu đề & phụ đề -->
-                      <span class="text-[10px] font-black text-slate-800 leading-tight group-hover:text-datphu-red transition-colors truncate w-full">
-                        {{ item.name }}
-                      </span>
-                      <span class="text-[8px] text-slate-400 mt-0.5 leading-none truncate w-full">
-                        {{ item.sub }}
-                      </span>
-                    </div>
+                      <!-- Mũi tên chỉ thị chuyển tiếp -->
+                      <div class="flex items-center text-slate-300 group-hover:text-datphu-red group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-2">
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                      </div>
+                    </button>
                   </div>
 
                   <!-- FOOTER DROPDOWN MENU -->
@@ -16402,24 +16413,26 @@
           }
         ],
 
-        // 10 Phân Hệ Menu Điều Hướng Tổng Hợp Chợ Phiên (Gom gọn, trực quan, thẩm mỹ cao)
+        // 10 Phân Hệ Menu Điều Hướng Tổng Hợp Chợ Phiên (Sắp xếp từ trên xuống, FontAwesome vector sắc nét)
         navMenuItems: [
           { 
             id: 'cat_fnb', 
-            name: 'Ẩm Thực', 
-            sub: 'Cơm Gà, Phở', 
+            name: 'Ẩm Thực Tuy Hòa', 
+            sub: 'Cơm gà, bánh canh hẹ, phở bò đặc sản', 
             icon: '🍜', 
-            bg: 'bg-rose-50 text-rose-600 border border-rose-100', 
+            faIcon: 'fa-solid fa-utensils',
+            bg: 'bg-rose-50 text-rose-600 border border-rose-200', 
             badge: 'HOT', 
             badgeClass: 'bg-red-500 text-white', 
             action: 'category' 
           },
           { 
             id: 'svc_milktea', 
-            name: 'Trà Sữa', 
-            sub: 'Đường & Đá', 
+            name: 'Trà Sữa & Đồ Uống', 
+            sub: 'Cà phê rang xay, trà hoa quả tươi mát', 
             icon: '🧋', 
-            bg: 'bg-teal-50 text-teal-600 border border-teal-100', 
+            faIcon: 'fa-solid fa-mug-hot',
+            bg: 'bg-teal-50 text-teal-600 border border-teal-200', 
             badge: 'K6', 
             badgeClass: 'bg-teal-500 text-white', 
             action: 'filter', 
@@ -16427,40 +16440,44 @@
           },
           { 
             id: 'cat_farm', 
-            name: 'Nông Sản', 
-            sub: 'VietGAP Vườn', 
+            name: 'Nông Sản & OCOP', 
+            sub: 'Rau củ hữu cơ, trái cây chuẩn VietGAP', 
             icon: '🥑', 
-            bg: 'bg-emerald-50 text-emerald-600 border border-emerald-100', 
+            faIcon: 'fa-solid fa-seedling',
+            bg: 'bg-emerald-50 text-emerald-600 border border-emerald-200', 
             badge: 'OCOP', 
             badgeClass: 'bg-emerald-600 text-white', 
             action: 'category' 
           },
           { 
             id: 'cat_dry', 
-            name: 'Đặc Sản Khô', 
-            sub: 'Bò 1 Nắng', 
+            name: 'Đặc Sản Phú Yên', 
+            sub: 'Bò một nắng, muối kiến vàng, hải sản khô', 
             icon: '🥩', 
-            bg: 'bg-amber-50 text-amber-700 border border-amber-100', 
+            faIcon: 'fa-solid fa-fire-flame-curved',
+            bg: 'bg-amber-50 text-amber-700 border border-amber-200', 
             badge: 'DATE', 
             badgeClass: 'bg-amber-600 text-white', 
             action: 'category' 
           },
           { 
             id: 'cat_craft', 
-            name: 'Nail & Spa', 
-            sub: 'Móng Xinh', 
+            name: 'Nail & Chăm Sóc Spa', 
+            sub: 'Làm móng xinh, gội đầu dưỡng sinh', 
             icon: '💅', 
-            bg: 'bg-pink-50 text-pink-600 border border-pink-100', 
+            faIcon: 'fa-solid fa-spa',
+            bg: 'bg-pink-50 text-pink-600 border border-pink-200', 
             badge: 'TIỆM', 
             badgeClass: 'bg-pink-500 text-white', 
             action: 'category' 
           },
           { 
             id: 'svc_cake', 
-            name: 'Bánh Kem', 
-            sub: 'Sinh Nhật', 
+            name: 'Bánh Kem & Sinh Nhật', 
+            sub: 'Bánh kem bắp, bánh nướng thơm trong ngày', 
             icon: '🎂', 
-            bg: 'bg-rose-50 text-rose-500 border border-rose-100', 
+            faIcon: 'fa-solid fa-cake-candles',
+            bg: 'bg-rose-50 text-rose-500 border border-rose-200', 
             badge: 'MỚI', 
             badgeClass: 'bg-rose-500 text-white', 
             action: 'filter', 
@@ -16468,20 +16485,22 @@
           },
           { 
             id: 'cat_stay', 
-            name: 'Homestay', 
-            sub: 'Biển & Thuê Xe', 
+            name: 'Homestay & Khách Sạn', 
+            sub: 'Gần biển Tuy Hòa, dịch vụ thuê xe máy', 
             icon: '🏡', 
-            bg: 'bg-blue-50 text-blue-600 border border-blue-100', 
+            faIcon: 'fa-solid fa-hotel',
+            bg: 'bg-blue-50 text-blue-600 border border-blue-200', 
             badge: 'VIEW', 
             badgeClass: 'bg-blue-600 text-white', 
             action: 'category' 
           },
           { 
             id: 'svc_laundry', 
-            name: 'Dịch Vụ', 
-            sub: 'Giặt Sấy Tiện', 
+            name: 'Giặt Sấy & Tiện Ích', 
+            sub: 'Giặt hấp lấy liền, giao nhận tận nơi', 
             icon: '🧺', 
-            bg: 'bg-cyan-50 text-cyan-700 border border-cyan-100', 
+            faIcon: 'fa-solid fa-shirt',
+            bg: 'bg-cyan-50 text-cyan-700 border border-cyan-200', 
             badge: 'NHANH', 
             badgeClass: 'bg-cyan-600 text-white', 
             action: 'filter', 
@@ -16489,9 +16508,10 @@
           },
           { 
             id: 'all_catalog', 
-            name: 'Tất Cả', 
-            sub: 'Gian Hàng', 
+            name: 'Tất Cả Ngành Hàng', 
+            sub: 'Khám phá trọn bộ 100% gian hàng K6', 
             icon: '🗂️', 
+            faIcon: 'fa-solid fa-border-all',
             bg: 'bg-slate-100 text-slate-700 border border-slate-200', 
             badge: '100%', 
             badgeClass: 'bg-slate-700 text-white', 
