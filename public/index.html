@@ -3769,26 +3769,214 @@
                 </div>
               </div>
 
-              <!-- NÚT HỢP NHẤT: DANH MỤC & TIỆN ÍCH ĐẤT PHÚ (CHUẨN PHƯƠNG ÁN 1B) -->
-              <div class="relative">
-                <button 
-                  type="button"
-                  @click="showUnifiedMenu = !showUnifiedMenu" 
-                  class="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-gradient-to-r from-red-50 to-amber-50 hover:from-red-100 hover:to-amber-100 text-slate-800 hover:text-datphu-red text-xs font-black border border-red-200/80 active:scale-95 transition-all shadow-xs group"
-                  title="Mở toàn bộ danh mục 9 ngành hàng & tiện ích dịch vụ Tuy Hòa">
-                  <i class="fa-solid fa-bars-staggered text-datphu-red text-xs group-hover:rotate-12 transition-transform"></i>
-                  <span class="font-black text-slate-800 group-hover:text-datphu-red text-xs">Danh Mục & Tiện Ích</span>
-                  <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold animate-pulse">{{ activeOrdersCount }}</span>
-                  <i class="fa-solid fa-chevron-down text-[8px] text-slate-400 group-hover:text-datphu-red transition-transform duration-200" :class="{'rotate-180': showUnifiedMenu}"></i>
-                </button>
+            </div>
 
-                <!-- BACKDROP ĐỂ ĐÓNG DROPDOWN KHI CLICK RA NGOÀI -->
+            <!-- Nút thao tác nhanh trên Mobile: Tinh gọn -->
+            <div class="flex items-center gap-1.5 md:hidden">
+              <!-- Nút Tiện Ích Mobile -->
+              <button 
+                type="button"
+                @click="showUnifiedMenu = !showUnifiedMenu" 
+                class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-2.5 py-1.5 rounded-xl text-xs font-black flex items-center justify-center gap-1 shadow-sm relative border border-slate-200"
+                title="Menu Tiện Ích">
+                <i class="fa-solid fa-bars-staggered text-datphu-navy text-xs"></i>
+                <span class="text-[10px]">Menu</span>
+                <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold absolute -top-1 -right-1">{{ activeOrdersCount }}</span>
+              </button>
+
+              <!-- Nút Tài Khoản Mobile -->
+              <button 
+                @click="showCustomerAuthModal = true" 
+                class="px-2 py-1.5 rounded-xl text-xs font-black flex items-center gap-1 shadow-sm transition-all"
+                :class="isCustomerLoggedIn ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-blue-100 text-blue-900'">
+                <i class="fa-solid fa-user-circle text-sm" :class="isCustomerLoggedIn ? 'text-emerald-600' : 'text-blue-600'"></i>
+                <span class="text-[10px] font-bold" v-if="isCustomerLoggedIn">{{ currentCustomerUser.name.split(' ').slice(-1)[0] }}</span>
+              </button>
+
+              <!-- Nút Giỏ Hàng Mobile nếu có -->
+              <button 
+                v-if="cartTotalItems > 0" 
+                @click="showCheckoutModal = true" 
+                class="bg-datphu-red text-white p-2 rounded-xl text-xs font-black flex items-center justify-center shadow-floating">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+            </div>
+          </div>
+
+
+
+          <!-- Nút thao tác trên Desktop: Tinh Gọn Tối Đa với Tài Khoản & Giỏ Hàng -->
+          <div class="hidden md:flex items-center gap-2">
+            <!-- Nút Đăng Nhập / Tài Khoản Thành Viên Cư Dân Desktop -->
+            <button 
+              v-if="!isCustomerLoggedIn"
+              @click="showCustomerAuthModal = true" 
+              class="bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 px-3 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
+              <i class="fa-solid fa-user-check text-blue-600"></i>
+              <span>Đăng Nhập</span>
+            </button>
+            <button 
+              v-else
+              @click="showCustomerAuthModal = true" 
+              class="bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center gap-2 shadow-sm active:scale-95 transition-all">
+              <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-black shadow-xs">
+                {{ currentCustomerUser.name.charAt(0) }}
+              </div>
+              <div class="text-left leading-tight">
+                <div class="text-[11px] font-black truncate max-w-[90px]">{{ currentCustomerUser.name }}</div>
+                <div class="text-[9px] text-emerald-700 font-bold flex items-center gap-1">
+                  <i class="fa-solid fa-coins text-amber-500"></i>{{ currentCustomerUser.points }} Xu
+                </div>
+              </div>
+            </button>
+
+            <!-- Nút Giỏ Hàng (chỉ hiện khi có món trong giỏ) -->
+            <button v-if="cartTotalItems > 0" @click="showCheckoutModal = true" class="bg-datphu-red hover:bg-datphu-redHover text-white px-3 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shadow-floating active:scale-95 transition-all">
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span>Giỏ ({{ cartTotalItems }})</span>
+            </button>
+          </div>
+
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <!-- VIEW 4.1: TRANG CHỦ CHỢ CHÍNH (NẾU CHƯA CHỌN NGÀNH HÀNG CỤ THỂ) -->
+    <div v-if="selectedCatId === 'all'" class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 space-y-6">
+
+      <!-- ========================================================================= -->
+      <!-- THANH TÌM KIẾM TRUNG TÂM & XU HƯỚNG BẢN ĐỊA (CENTRAL SEARCH DISCOVERY DOCK)-->
+      <!-- ========================================================================= -->
+      <div id="central-search-dock" class="bg-white rounded-3xl p-3.5 sm:p-4 border border-slate-200/90 shadow-card space-y-2.5 transition-all">
+        <!-- Khung Tìm Kiếm Rộng Rãi, Thoáng Đãng, Đẹp Mắt -->
+        <div class="relative flex items-center">
+          <div class="absolute left-4 top-1/2 -translate-y-1/2 text-datphu-red text-base pointer-events-none">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <input 
+            id="main-search-input"
+            v-model="searchKeyword" 
+            type="text" 
+            placeholder="🔍 Bạn đang cần tìm gì ở Tuy Hòa? Cơm gà, trà sữa, thợ điện nước, bánh kem, nông sản OCOP..."
+            class="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white rounded-2xl pl-11 pr-24 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 font-bold focus:outline-none focus:ring-2 focus:ring-datphu-red/20 focus:border-red-300 transition-all border border-slate-200 shadow-inner">
+          
+          <!-- Nút Xóa Từ Khóa -->
+          <button 
+            v-if="searchKeyword" 
+            @click="searchKeyword = ''" 
+            class="absolute right-16 sm:right-20 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs px-2 py-1">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+          <!-- Nút Tìm Kiếm Nổi Bật -->
+          <button 
+            type="button"
+            class="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-datphu-red to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-black px-3.5 sm:px-4 py-2 rounded-xl text-xs shadow-sm flex items-center gap-1.5 active:scale-95 transition-all">
+            <span>Tìm</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Dải Hashtag Gợi Ý Tìm Nhanh Tuy Hòa -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 text-xs">
+          <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider flex-shrink-0 flex items-center gap-1">
+            <i class="fa-solid fa-fire text-amber-500"></i> Xu hướng tìm kiếm:
+          </span>
+          <button 
+            v-for="chip in trendingSearchChips" 
+            :key="chip.tag"
+            @click="applyQuickSearch(chip.keyword)"
+            class="flex-shrink-0 px-2.5 py-1 rounded-xl text-[10px] font-bold border transition-all active:scale-95 flex items-center gap-1 shadow-2xs"
+            :class="searchKeyword.toLowerCase().includes(chip.keyword.toLowerCase()) ? 'bg-datphu-navy text-amber-300 border-datphu-navy shadow-sm' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'">
+            <span>{{ chip.icon }}</span>
+            <span>#{{ chip.tag }}</span>
+          </button>
+        </div>
+      </div>
+      <!-- ========================================================================= -->
+      <!-- THANH CHUYỂN ĐỔI 2 KHÔNG GIAN: CHỢ PHIÊN CỬA HÀNG & TRẠM THỢ KỸ THUẬT   -->
+      <!-- ========================================================================= -->
+      <div class="bg-gradient-to-r from-slate-200/90 via-slate-100 to-slate-200/90 p-1.5 sm:p-2 rounded-3xl flex items-center gap-2 border border-slate-300/80 shadow-card">
+        <!-- Tab 1: Chợ Phiên & Cửa Hàng (Tông Đỏ Đất Phú & Trắng Ấm Cúng) -->
+        <button 
+          type="button"
+          @click="consumerSpace = 'market'"
+          class="flex-1 py-2.5 sm:py-3.5 px-3 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-98 relative overflow-hidden"
+          :class="consumerSpace === 'market' ? 'bg-white text-datphu-red shadow-md border-2 border-datphu-red/30' : 'text-slate-600 hover:text-slate-950 hover:bg-white/50'">
+          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-base sm:text-lg shadow-2xs"
+               :class="consumerSpace === 'market' ? 'bg-red-50 text-datphu-red' : 'bg-slate-200/60 text-slate-600'">
+            🍜
+          </div>
+          <div class="text-left leading-tight">
+            <div class="flex items-center gap-1.5">
+              <span>ĐẤT PHÚ CHỢ PHIÊN</span>
+              <span v-if="consumerSpace === 'market'" class="w-2 h-2 rounded-full bg-datphu-red animate-ping hidden md:inline-block"></span>
+            </div>
+            <div class="text-[9px] font-bold text-slate-400 hidden sm:block">Ẩm thực • Món ngon • Nông sản OCOP</div>
+          </div>
+          <span class="text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full font-black uppercase ml-1 hidden lg:inline" 
+                :class="consumerSpace === 'market' ? 'bg-datphu-red text-white shadow-2xs' : 'bg-slate-200 text-slate-600'">
+            9 Phân Hệ
+          </span>
+        </button>
+
+        <!-- Tab 2: Trạm Thợ Kỹ Thuật (Tông Xanh Navy & Công Nghệ Bản Địa) -->
+        <button 
+          type="button"
+          @click="consumerSpace = 'worker'"
+          class="flex-1 py-2.5 sm:py-3.5 px-3 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-98 relative overflow-hidden"
+          :class="consumerSpace === 'worker' ? 'bg-gradient-to-r from-datphu-navy via-blue-900 to-indigo-950 text-white shadow-xl border-2 border-blue-500/60 ring-2 ring-blue-500/20' : 'text-slate-600 hover:text-slate-950 hover:bg-white/50'">
+          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-base sm:text-lg shadow-2xs"
+               :class="consumerSpace === 'worker' ? 'bg-blue-500/30 text-blue-300 border border-blue-400/40' : 'bg-slate-200/60 text-slate-600'">
+            🛠️
+          </div>
+          <div class="text-left leading-tight">
+            <div class="flex items-center gap-1.5">
+              <span :class="consumerSpace === 'worker' ? 'text-white' : ''">ĐẤT PHÚ TRẠM THỢ</span>
+              <span v-if="consumerSpace === 'worker'" class="w-2 h-2 rounded-full bg-cyan-400 animate-ping hidden md:inline-block"></span>
+            </div>
+            <div class="text-[9px] font-bold hidden sm:block" :class="consumerSpace === 'worker' ? 'text-blue-200' : 'text-slate-400'">
+              Điện, nước, lạnh, khóa có mặt 15p
+            </div>
+          </div>
+          <span class="text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full font-black uppercase ml-1"
+                :class="consumerSpace === 'worker' ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-sm animate-pulse' : 'bg-slate-200 text-slate-600'">
+            Cứu Hộ 24/7
+          </span>
+        </button>
+        <!-- NÚT 3: DANH MỤC & TIỆN ÍCH (KẾ BÊN NÚT TRẠM THỢ) -->
+        <div class="relative flex-1">
+          <button 
+            type="button"
+            @click="showUnifiedMenu = !showUnifiedMenu" 
+            class="w-full py-2.5 sm:py-3.5 px-3 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-98 relative overflow-hidden shadow-xs border"
+            :class="showUnifiedMenu ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xl border-2 border-amber-400 ring-2 ring-amber-400/20' : 'bg-white hover:bg-amber-50/70 text-slate-700 hover:text-slate-950 border-slate-200'">
+            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-base sm:text-lg shadow-2xs"
+                 :class="showUnifiedMenu ? 'bg-amber-600/40 text-amber-100' : 'bg-amber-100 text-amber-700'">
+              <i class="fa-solid fa-bars-staggered"></i>
+            </div>
+            <div class="text-left leading-tight">
+              <div class="flex items-center gap-1.5">
+                <span>DANH MỤC & TIỆN ÍCH</span>
+                <i class="fa-solid fa-chevron-down text-[8px] transition-transform duration-200" :class="{'rotate-180': showUnifiedMenu}"></i>
+              </div>
+              <div class="text-[9px] font-bold hidden sm:block" :class="showUnifiedMenu ? 'text-amber-100' : 'text-slate-400'">
+                9 Ngành Hàng & Phân Hệ
+              </div>
+            </div>
+            <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold animate-pulse ml-1">{{ activeOrdersCount }}</span>
+          </button>
+
+          <!-- BACKDROP ĐỂ ĐÓNG DROPDOWN KHI CLICK RA NGOÀI -->
                 <div v-if="showUnifiedMenu" @click="showUnifiedMenu = false" class="fixed inset-0 z-40 bg-slate-900/10 backdrop-blur-[0.5px]"></div>
 
                 <!-- BẢNG POPOVER HỢP NHẤT DUY NHẤT (W-84 SM:W-96) -->
                 <div 
                   v-if="showUnifiedMenu" 
-                  class="absolute left-0 top-full mt-2 w-84 sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-100 p-3.5 z-50 animate-fadeIn space-y-2.5 text-xs max-h-[85vh] overflow-y-auto custom-scrollbar">
+                  class="absolute right-0 top-full mt-2 w-84 sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-100 p-3.5 z-50 animate-fadeIn space-y-2.5 text-xs max-h-[85vh] overflow-y-auto custom-scrollbar">
                   
                   <!-- HEADER CỦA BẢNG ĐIỀU KHIỂN HỢP NHẤT -->
                   <div class="flex items-center justify-between pb-2 border-b border-slate-100 px-1">
@@ -4104,185 +4292,8 @@
                   </div>
 
                 </div>
-              </div>
-            </div>
-
-            <!-- Nút thao tác nhanh trên Mobile: Tinh gọn -->
-            <div class="flex items-center gap-1.5 md:hidden">
-              <!-- Nút Tiện Ích Mobile -->
-              <button 
-                type="button"
-                @click="showUnifiedMenu = !showUnifiedMenu" 
-                class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-2.5 py-1.5 rounded-xl text-xs font-black flex items-center justify-center gap-1 shadow-sm relative border border-slate-200"
-                title="Menu Tiện Ích">
-                <i class="fa-solid fa-bars-staggered text-datphu-navy text-xs"></i>
-                <span class="text-[10px]">Menu</span>
-                <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold absolute -top-1 -right-1">{{ activeOrdersCount }}</span>
-              </button>
-
-              <!-- Nút Tài Khoản Mobile -->
-              <button 
-                @click="showCustomerAuthModal = true" 
-                class="px-2 py-1.5 rounded-xl text-xs font-black flex items-center gap-1 shadow-sm transition-all"
-                :class="isCustomerLoggedIn ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-blue-100 text-blue-900'">
-                <i class="fa-solid fa-user-circle text-sm" :class="isCustomerLoggedIn ? 'text-emerald-600' : 'text-blue-600'"></i>
-                <span class="text-[10px] font-bold" v-if="isCustomerLoggedIn">{{ currentCustomerUser.name.split(' ').slice(-1)[0] }}</span>
-              </button>
-
-              <!-- Nút Giỏ Hàng Mobile nếu có -->
-              <button 
-                v-if="cartTotalItems > 0" 
-                @click="showCheckoutModal = true" 
-                class="bg-datphu-red text-white p-2 rounded-xl text-xs font-black flex items-center justify-center shadow-floating">
-                <i class="fa-solid fa-bag-shopping"></i>
-              </button>
-            </div>
-          </div>
-
-
-
-          <!-- Nút thao tác trên Desktop: Tinh Gọn Tối Đa với Tài Khoản & Giỏ Hàng -->
-          <div class="hidden md:flex items-center gap-2">
-            <!-- Nút Đăng Nhập / Tài Khoản Thành Viên Cư Dân Desktop -->
-            <button 
-              v-if="!isCustomerLoggedIn"
-              @click="showCustomerAuthModal = true" 
-              class="bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 px-3 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
-              <i class="fa-solid fa-user-check text-blue-600"></i>
-              <span>Đăng Nhập</span>
-            </button>
-            <button 
-              v-else
-              @click="showCustomerAuthModal = true" 
-              class="bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center gap-2 shadow-sm active:scale-95 transition-all">
-              <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-black shadow-xs">
-                {{ currentCustomerUser.name.charAt(0) }}
-              </div>
-              <div class="text-left leading-tight">
-                <div class="text-[11px] font-black truncate max-w-[90px]">{{ currentCustomerUser.name }}</div>
-                <div class="text-[9px] text-emerald-700 font-bold flex items-center gap-1">
-                  <i class="fa-solid fa-coins text-amber-500"></i>{{ currentCustomerUser.points }} Xu
-                </div>
-              </div>
-            </button>
-
-            <!-- Nút Giỏ Hàng (chỉ hiện khi có món trong giỏ) -->
-            <button v-if="cartTotalItems > 0" @click="showCheckoutModal = true" class="bg-datphu-red hover:bg-datphu-redHover text-white px-3 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shadow-floating active:scale-95 transition-all">
-              <i class="fa-solid fa-bag-shopping"></i>
-              <span>Giỏ ({{ cartTotalItems }})</span>
-            </button>
-          </div>
-
+              
         </div>
-
-
-
-      </div>
-    </div>
-
-    <!-- VIEW 4.1: TRANG CHỦ CHỢ CHÍNH (NẾU CHƯA CHỌN NGÀNH HÀNG CỤ THỂ) -->
-    <div v-if="selectedCatId === 'all'" class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 space-y-6">
-
-      <!-- ========================================================================= -->
-      <!-- THANH TÌM KIẾM TRUNG TÂM & XU HƯỚNG BẢN ĐỊA (CENTRAL SEARCH DISCOVERY DOCK)-->
-      <!-- ========================================================================= -->
-      <div id="central-search-dock" class="bg-white rounded-3xl p-3.5 sm:p-4 border border-slate-200/90 shadow-card space-y-2.5 transition-all">
-        <!-- Khung Tìm Kiếm Rộng Rãi, Thoáng Đãng, Đẹp Mắt -->
-        <div class="relative flex items-center">
-          <div class="absolute left-4 top-1/2 -translate-y-1/2 text-datphu-red text-base pointer-events-none">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </div>
-          <input 
-            id="main-search-input"
-            v-model="searchKeyword" 
-            type="text" 
-            placeholder="🔍 Bạn đang cần tìm gì ở Tuy Hòa? Cơm gà, trà sữa, thợ điện nước, bánh kem, nông sản OCOP..."
-            class="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white rounded-2xl pl-11 pr-24 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 font-bold focus:outline-none focus:ring-2 focus:ring-datphu-red/20 focus:border-red-300 transition-all border border-slate-200 shadow-inner">
-          
-          <!-- Nút Xóa Từ Khóa -->
-          <button 
-            v-if="searchKeyword" 
-            @click="searchKeyword = ''" 
-            class="absolute right-16 sm:right-20 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs px-2 py-1">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-
-          <!-- Nút Tìm Kiếm Nổi Bật -->
-          <button 
-            type="button"
-            class="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-datphu-red to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-black px-3.5 sm:px-4 py-2 rounded-xl text-xs shadow-sm flex items-center gap-1.5 active:scale-95 transition-all">
-            <span>Tìm</span>
-            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </button>
-        </div>
-
-        <!-- Dải Hashtag Gợi Ý Tìm Nhanh Tuy Hòa -->
-        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 text-xs">
-          <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider flex-shrink-0 flex items-center gap-1">
-            <i class="fa-solid fa-fire text-amber-500"></i> Xu hướng tìm kiếm:
-          </span>
-          <button 
-            v-for="chip in trendingSearchChips" 
-            :key="chip.tag"
-            @click="applyQuickSearch(chip.keyword)"
-            class="flex-shrink-0 px-2.5 py-1 rounded-xl text-[10px] font-bold border transition-all active:scale-95 flex items-center gap-1 shadow-2xs"
-            :class="searchKeyword.toLowerCase().includes(chip.keyword.toLowerCase()) ? 'bg-datphu-navy text-amber-300 border-datphu-navy shadow-sm' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'">
-            <span>{{ chip.icon }}</span>
-            <span>#{{ chip.tag }}</span>
-          </button>
-        </div>
-      </div>
-      <!-- ========================================================================= -->
-      <!-- THANH CHUYỂN ĐỔI 2 KHÔNG GIAN: CHỢ PHIÊN CỬA HÀNG & TRẠM THỢ KỸ THUẬT   -->
-      <!-- ========================================================================= -->
-      <div class="bg-gradient-to-r from-slate-200/90 via-slate-100 to-slate-200/90 p-1.5 sm:p-2 rounded-3xl flex items-center gap-2 border border-slate-300/80 shadow-card">
-        <!-- Tab 1: Chợ Phiên & Cửa Hàng (Tông Đỏ Đất Phú & Trắng Ấm Cúng) -->
-        <button 
-          type="button"
-          @click="consumerSpace = 'market'"
-          class="flex-1 py-2.5 sm:py-3.5 px-3 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-98 relative overflow-hidden"
-          :class="consumerSpace === 'market' ? 'bg-white text-datphu-red shadow-md border-2 border-datphu-red/30' : 'text-slate-600 hover:text-slate-950 hover:bg-white/50'">
-          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-base sm:text-lg shadow-2xs"
-               :class="consumerSpace === 'market' ? 'bg-red-50 text-datphu-red' : 'bg-slate-200/60 text-slate-600'">
-            🍜
-          </div>
-          <div class="text-left leading-tight">
-            <div class="flex items-center gap-1.5">
-              <span>ĐẤT PHÚ CHỢ PHIÊN</span>
-              <span v-if="consumerSpace === 'market'" class="w-2 h-2 rounded-full bg-datphu-red animate-ping hidden md:inline-block"></span>
-            </div>
-            <div class="text-[9px] font-bold text-slate-400 hidden sm:block">Ẩm thực • Món ngon • Nông sản OCOP</div>
-          </div>
-          <span class="text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full font-black uppercase ml-1 hidden lg:inline" 
-                :class="consumerSpace === 'market' ? 'bg-datphu-red text-white shadow-2xs' : 'bg-slate-200 text-slate-600'">
-            9 Phân Hệ
-          </span>
-        </button>
-
-        <!-- Tab 2: Trạm Thợ Kỹ Thuật (Tông Xanh Navy & Công Nghệ Bản Địa) -->
-        <button 
-          type="button"
-          @click="consumerSpace = 'worker'"
-          class="flex-1 py-2.5 sm:py-3.5 px-3 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-98 relative overflow-hidden"
-          :class="consumerSpace === 'worker' ? 'bg-gradient-to-r from-datphu-navy via-blue-900 to-indigo-950 text-white shadow-xl border-2 border-blue-500/60 ring-2 ring-blue-500/20' : 'text-slate-600 hover:text-slate-950 hover:bg-white/50'">
-          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-base sm:text-lg shadow-2xs"
-               :class="consumerSpace === 'worker' ? 'bg-blue-500/30 text-blue-300 border border-blue-400/40' : 'bg-slate-200/60 text-slate-600'">
-            🛠️
-          </div>
-          <div class="text-left leading-tight">
-            <div class="flex items-center gap-1.5">
-              <span :class="consumerSpace === 'worker' ? 'text-white' : ''">ĐẤT PHÚ TRẠM THỢ</span>
-              <span v-if="consumerSpace === 'worker'" class="w-2 h-2 rounded-full bg-cyan-400 animate-ping hidden md:inline-block"></span>
-            </div>
-            <div class="text-[9px] font-bold hidden sm:block" :class="consumerSpace === 'worker' ? 'text-blue-200' : 'text-slate-400'">
-              Điện, nước, lạnh, khóa có mặt 15p
-            </div>
-          </div>
-          <span class="text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full font-black uppercase ml-1"
-                :class="consumerSpace === 'worker' ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-sm animate-pulse' : 'bg-slate-200 text-slate-600'">
-            Cứu Hộ 24/7
-          </span>
-        </button>
       </div>
 
       <!-- ========================================================================= -->
