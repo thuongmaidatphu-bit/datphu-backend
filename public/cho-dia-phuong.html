@@ -4852,15 +4852,27 @@
               <div 
                 v-for="w in nearbyWorkersList.slice(0, 3)" 
                 :key="w.id"
-                class="bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border border-slate-800 hover:border-amber-400/80 rounded-3xl p-4 flex flex-col justify-between transition-all duration-300 group hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-1">
+                class="bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border border-slate-800 hover:border-amber-400/80 rounded-3xl p-4 flex flex-col justify-between transition-all duration-300 group hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-1 relative overflow-hidden">
                 
+                <!-- Dải ruy băng nhận diện Level thợ góc trên -->
+                <div class="absolute -top-1 -right-1 z-10">
+                  <span 
+                    class="text-[8px] font-black uppercase px-2.5 py-0.5 rounded-bl-xl border-l border-b shadow-sm flex items-center gap-1"
+                    :class="{
+                      'bg-emerald-500 text-slate-950 border-emerald-400': w.level === 'freelance' || !w.level,
+                      'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 border-amber-300 font-extrabold': w.level === 'team',
+                      'bg-gradient-to-r from-rose-600 to-red-600 text-white border-rose-400 font-black animate-pulse': w.level === 'contractor'
+                    }">
+                    <span v-if="w.level === 'freelance' || !w.level">🛠️ Thợ Tự Do</span>
+                    <span v-else-if="w.level === 'team'">⚡ Đội Cơ Động</span>
+                    <span v-else-if="w.level === 'contractor'">🏢 Chủ Tiệm & Thầu</span>
+                  </span>
+                </div>
+
                 <div>
                   <!-- HÀNG ĐẦU: BADGE QUẦY THỢ SỐ & SAO ĐÁNH GIÁ -->
-                  <div class="flex items-center justify-between pb-2.5 border-b border-slate-800/80 text-[10px]">
+                  <div class="flex items-center justify-between pb-2.5 border-b border-slate-800/80 text-[10px] pr-20">
                     <div class="flex items-center gap-1.5">
-                      <span class="bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black px-2 py-0.5 rounded-md uppercase tracking-wider text-[8px] shadow-xs">
-                        QUẦY SỐ K6
-                      </span>
                       <span class="font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20 font-bold">
                         {{ w.contractCode || 'HĐ-THO-DP01' }}
                       </span>
@@ -4892,11 +4904,12 @@
                           class="text-xs sm:text-sm font-black text-white group-hover:text-amber-300 transition-colors cursor-pointer truncate">
                           {{ w.name }}
                         </h4>
-                        <i class="fa-solid fa-circle-check text-emerald-400 text-[11px]" title="Thợ K6 Đã Xác Thực Danh Tính & Tay Nghề"></i>
+                        <i class="fa-solid fa-circle-check text-emerald-400 text-[11px]" title="Đã Xác Thực CCCD & Tay Nghề Chuẩn K6"></i>
                       </div>
 
                       <div class="text-[11px] text-amber-400 font-bold truncate mt-0.5">
-                        <i class="fa-solid fa-screwdriver-wrench text-[9px] mr-1 text-amber-500"></i>{{ w.title }}
+                        <i class="fa-solid mr-1" :class="w.level === 'contractor' ? 'fa-building text-rose-400' : (w.level === 'team' ? 'fa-users text-amber-400' : 'fa-screwdriver-wrench text-emerald-400')"></i>
+                        <span>{{ w.title }}</span>
                       </div>
 
                       <div class="text-[9px] text-slate-400 flex items-center gap-1 mt-0.5 truncate">
@@ -4908,25 +4921,25 @@
                     </div>
                   </div>
 
-                  <!-- 3 CAM KẾT VÀNG K6 -->
-                  <div class="mt-3 py-1.5 px-2 bg-slate-950/70 border border-slate-800/80 rounded-xl flex items-center justify-between text-[9px] text-slate-300">
-                    <span class="flex items-center gap-1 text-emerald-400 font-bold">
-                      <i class="fa-solid fa-bolt text-amber-400 text-[8px]"></i> Có mặt 15p
+                  <!-- NĂNG LỰC ĐỘI NGŨ / MÔ HÌNH THỢ K6 -->
+                  <div class="mt-2.5 py-1.5 px-2.5 rounded-xl flex items-center justify-between text-[9px]"
+                       :class="w.level === 'contractor' ? 'bg-rose-950/40 border border-rose-500/30 text-rose-200' : (w.level === 'team' ? 'bg-amber-950/40 border border-amber-500/30 text-amber-200' : 'bg-slate-950/70 border border-slate-800 text-slate-300')">
+                    <span class="font-bold flex items-center gap-1">
+                      <span v-if="w.level === 'contractor'"><i class="fa-solid fa-store mr-0.5 text-rose-400"></i> Có Cửa Hàng & Bán Vật Tư Sỉ</span>
+                      <span v-else-if="w.level === 'team'"><i class="fa-solid fa-people-group mr-0.5 text-amber-400"></i> {{ w.teamSize || 'Đội nhóm 3-5 thợ cơ động' }}</span>
+                      <span v-else><i class="fa-solid fa-user-check mr-0.5 text-emerald-400"></i> Thợ Lẻ Sửa Chữa Nhanh Quanh Xóm</span>
                     </span>
-                    <span class="text-slate-600">•</span>
-                    <span class="flex items-center gap-1 text-cyan-300 font-bold">
-                      <i class="fa-solid fa-tag text-[8px]"></i> Giá niêm yết
-                    </span>
-                    <span class="text-slate-600">•</span>
-                    <span class="flex items-center gap-1 text-amber-300 font-bold">
-                      <i class="fa-solid fa-shield-halved text-[8px]"></i> Bảo hành 30n
+                    <span class="font-mono text-cyan-300 font-bold">
+                      <span v-if="w.level === 'contractor'">Nhận Thầu Công Trình</span>
+                      <span v-else-if="w.level === 'team'">Cứu Hộ 24/7</span>
+                      <span v-else>15p Tới Liền</span>
                     </span>
                   </div>
 
                   <!-- DỊCH VỤ NIÊM YẾT TIÊU BIỂU CỦA QUẦY -->
-                  <div class="mt-2.5 p-2 bg-slate-950/90 rounded-xl border border-slate-800 space-y-1">
+                  <div class="mt-2 p-2 bg-slate-950/90 rounded-xl border border-slate-800 space-y-1">
                     <div class="text-[8px] uppercase tracking-wider text-slate-400 font-bold flex items-center justify-between">
-                      <span>Dịch Vụ Niêm Yết Tại Tiệm:</span>
+                      <span>{{ w.level === 'contractor' ? 'Hạng Mục Công Trình & Tiệm:' : 'Bảng Giá Niêm Yết Tiêu Biểu:' }}</span>
                       <span class="text-emerald-400 font-mono">Chuẩn K6</span>
                     </div>
 
@@ -4939,14 +4952,9 @@
                           • {{ pkg.name }}
                         </span>
                         <span class="font-mono font-black text-amber-400">
-                          {{ formatCurrency(pkg.price) }}
+                          {{ pkg.price === 0 ? 'Khảo Sát Miễn Phí' : formatCurrency(pkg.price) }}
                         </span>
                       </div>
-                    </div>
-
-                    <div v-else class="flex items-center justify-between text-[10px]">
-                      <span class="text-slate-300">• Tiền công kỹ thuật cơ bản:</span>
-                      <span class="font-mono font-black text-amber-400">Từ 50.000đ</span>
                     </div>
                   </div>
 
@@ -4954,13 +4962,13 @@
                   <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] bg-slate-950/60 p-2 rounded-xl">
                     <div class="flex items-center gap-1.5 text-slate-300">
                       <i class="fa-solid fa-phone-volume text-emerald-400 text-xs animate-pulse"></i>
-                      <span class="text-[10px] text-slate-400">SĐT Thợ:</span>
+                      <span class="text-[10px] text-slate-400">SĐT Liên Hệ:</span>
                       <a :href="'tel:' + (w.phone || '0979991898')" class="font-mono font-black text-emerald-400 hover:underline">
                         {{ w.phone || '0979 991 898' }}
                       </a>
                     </div>
                     <span class="text-[8px] text-emerald-300 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
-                      Nghiệm Thu Mới Trả Tiền
+                      {{ w.level === 'contractor' ? 'Hợp Đồng Pháp Lý' : 'Nghiệm Thu Mới Trả' }}
                     </span>
                   </div>
                 </div>
@@ -4972,7 +4980,7 @@
                     @click="openWorkerPublicBooth(w)"
                     class="bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black py-2.5 px-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all">
                     <i class="fa-solid fa-store text-[11px]"></i>
-                    <span>Xem Tiệm & Giá</span>
+                    <span>{{ w.level === 'contractor' ? 'Xem Tiệm & Kho' : 'Xem Tiệm & Giá' }}</span>
                   </button>
 
                   <button 
@@ -4980,7 +4988,7 @@
                     @click="openServiceTicket({ title: w.title, tag: w.specialtyName, specialty: w.specialty }, 'urgent')"
                     class="bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-black py-2.5 px-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all">
                     <i class="fa-solid fa-bolt text-amber-300 text-[10px]"></i>
-                    <span>Đặt Thợ 15p</span>
+                    <span>{{ w.level === 'contractor' ? 'Báo Giá Thầu' : 'Đặt Thợ 15p' }}</span>
                   </button>
                 </div>
 
@@ -11687,21 +11695,57 @@
 
       <!-- Form Nhập Thông Tin Thợ -->
       <div class="space-y-3 text-xs">
+        
+        <!-- BỘ CHỌN 3 CẤP BẬC (LEVELS) THỢ K6 MỚI -->
+        <div>
+          <label class="block text-[11px] font-black text-slate-800 uppercase mb-1">
+            <i class="fa-solid fa-layer-group text-amber-600 mr-1"></i> Bạn Đăng Ký Theo Cấp Bậc (Level) Nào?
+          </label>
+          <div class="grid grid-cols-3 gap-2">
+            <div 
+              @click="newWorkerForm.workerLevel = 'freelance'"
+              :class="newWorkerForm.workerLevel === 'freelance' || !newWorkerForm.workerLevel ? 'border-emerald-500 bg-emerald-50/80 ring-2 ring-emerald-500/30' : 'border-slate-200 bg-white'"
+              class="p-2.5 rounded-2xl border cursor-pointer transition-all text-center space-y-1">
+              <div class="text-emerald-700 font-black text-xs">🟢 LEVEL 1</div>
+              <div class="text-[11px] font-black text-slate-900 leading-tight">Thợ Tự Do</div>
+              <p class="text-[9px] text-slate-500 leading-tight">1 người • Sửa vặt quanh xóm</p>
+            </div>
+
+            <div 
+              @click="newWorkerForm.workerLevel = 'team'"
+              :class="newWorkerForm.workerLevel === 'team' ? 'border-amber-500 bg-amber-50/80 ring-2 ring-amber-500/30' : 'border-slate-200 bg-white'"
+              class="p-2.5 rounded-2xl border cursor-pointer transition-all text-center space-y-1">
+              <div class="text-amber-600 font-black text-xs">🟡 LEVEL 2</div>
+              <div class="text-[11px] font-black text-slate-900 leading-tight">Đội Nhóm Thợ</div>
+              <p class="text-[9px] text-slate-500 leading-tight">3-5 thợ • Cứu hộ cơ động</p>
+            </div>
+
+            <div 
+              @click="newWorkerForm.workerLevel = 'contractor'"
+              :class="newWorkerForm.workerLevel === 'contractor' ? 'border-rose-500 bg-rose-50/80 ring-2 ring-rose-500/30' : 'border-slate-200 bg-white'"
+              class="p-2.5 rounded-2xl border cursor-pointer transition-all text-center space-y-1 relative overflow-hidden">
+              <div class="text-rose-600 font-black text-xs">🔴 LEVEL 3</div>
+              <div class="text-[11px] font-black text-slate-900 leading-tight">Chủ Tiệm / Thầu</div>
+              <p class="text-[9px] text-slate-500 leading-tight">Có tiệm • Nhận công trình</p>
+            </div>
+          </div>
+        </div>
+
         <div>
           <label class="block text-[11px] font-black text-slate-700 mb-1">
-            <i class="fa-solid fa-user text-amber-600 mr-1"></i> Họ và Tên Thợ / Trưởng Nhóm:
+            <i class="fa-solid fa-user text-amber-600 mr-1"></i> Tên Thợ / Tên Tiệm / Tên Đội Kỹ Thuật:
           </label>
           <input 
             v-model="newWorkerForm.name" 
             type="text" 
-            placeholder="VD: Chú Tùng hoặc Anh Nam Khóa" 
+            :placeholder="newWorkerForm.workerLevel === 'contractor' ? 'VD: Cửa Hàng Điện Nước Hùng Phát hoặc Tiệm Cơ Điện Anh Hùng' : (newWorkerForm.workerLevel === 'team' ? 'VD: Đội Cứu Hộ Cơ Động Anh Vũ' : 'VD: Chú Tùng Điện Nước')" 
             class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all">
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-[11px] font-black text-slate-700 mb-1">
-              <i class="fa-solid fa-phone text-emerald-600 mr-1"></i> Số Điện Thoại Nhận Cuốc:
+              <i class="fa-solid fa-phone text-emerald-600 mr-1"></i> Số Điện Thoại Nhận Cuốc / Công Trình:
             </label>
             <input 
               v-model="newWorkerForm.phone" 
@@ -11712,30 +11756,30 @@
 
           <div>
             <label class="block text-[11px] font-black text-slate-700 mb-1">
-              <i class="fa-solid fa-screwdriver-wrench text-blue-600 mr-1"></i> Chuyên Môn Kỹ Thuật:
+              <i class="fa-solid fa-screwdriver-wrench text-blue-600 mr-1"></i> Lĩnh Vực / Chuyên Môn Chính:
             </label>
             <select 
               v-model="newWorkerForm.specialty" 
               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all">
-              <option value="Điện Nước Dân Dụng">⚡ Điện Nước Dân Dụng 6K</option>
-              <option value="Điện Lạnh & Máy Giặt">❄️ Điện Lạnh, Điều Hòa, Máy Giặt</option>
-              <option value="Khóa & Cửa Cuốn">🔑 Cứu Hộ Mở Khóa & Cửa Cuốn 24/7</option>
-              <option value="Cứu Hộ Xe Máy">🛵 Vá Vỏ Xe Máy & Kích Bình Ắc Quy</option>
-              <option value="Camera & Mạng Wifi">📷 Camera An Ninh & Mạng Wifi</option>
-              <option value="Thông Tắc Bồn Cầu">🪠 Thông Tắc Bồn Cầu & Ống Thoát</option>
-              <option value="Nhôm Kính Thạch Cao">🏗️ Nhôm Kính, Thạch Cao & Sơn Sửa</option>
+              <option value="Điện Nước Dân Dụng">⚡ Điện Nước Dân Dụng & Công Trình</option>
+              <option value="Điện Lạnh & Máy Giặt">❄️ Điện Lạnh, Điều Hòa, Tủ Lạnh</option>
+              <option value="Khóa & Cửa Cuốn">🔑 Mở Khóa, Cửa Cuốn, Cửa Nhôm</option>
+              <option value="Cứu Hộ Xe Máy">🛵 Vá Vỏ Xe Máy & Bình Ắc Quy Lưu Động</option>
+              <option value="Camera & Mạng Wifi">📷 Camera An Ninh & Mạng Nhà Xưởng</option>
+              <option value="Thông Tắc Bồn Cầu">🪠 Thông Tắc Vệ Sinh & Ống Thoát</option>
+              <option value="Nhôm Kính Thạch Cao">🏗️ Thi Công Nhôm Kính & Nội Thất Thạch Cao</option>
             </select>
           </div>
         </div>
 
         <div>
           <label class="block text-[11px] font-black text-slate-700 mb-1">
-            <i class="fa-solid fa-location-dot text-red-500 mr-1"></i> Khu Vực Ứng Trực Thường Xuyên Tại Tuy Hòa / Phú Yên:
+            <i class="fa-solid fa-location-dot text-red-500 mr-1"></i> Địa Chỉ Cửa Tiệm / Nơi Thường Trực Tại Tuy Hòa:
           </label>
           <input 
             v-model="newWorkerForm.address" 
             type="text" 
-            placeholder="VD: 142 Trần Hưng Đạo, P. 4 hoặc Xã Bình Ngọc, TP. Tuy Hòa" 
+            :placeholder="newWorkerForm.workerLevel === 'contractor' ? 'VD: 210 Nguyễn Huệ, Phường 5, Tuy Hòa (Địa chỉ cửa hàng mặt tiền)' : 'VD: 142 Trần Hưng Đạo, P. 4, Tuy Hòa'" 
             class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all">
         </div>
 
@@ -16278,6 +16322,7 @@
         showBookWorkerModal: false,
         selectedWorkerToBook: null,
         selectedWorkerSpecialty: 'all',
+        selectedWorkerLevel: 'all', // 'all', 'freelance', 'team', 'contractor'
         isRadarScanning: false,
         bookWorkerForm: {
           customerName: '',
@@ -16426,18 +16471,50 @@
         ],
         nearbyWorkersList: [
           {
+            id: 'w_3',
+            contractCode: 'HĐ-THO-DP03',
+            boothName: 'Cửa Hàng Điện Lạnh & Thiết Bị Gia Dụng Hùng Phát',
+            name: 'Anh Hùng Điện Lạnh (Chủ Tiệm)',
+            title: 'Chủ Tiệm Điện Lạnh & Nhận Thầu Công Trình',
+            level: 'contractor',
+            levelName: 'Chủ Tiệm & Nhận Công Trình',
+            levelBadgeClass: 'bg-rose-500 text-white border-rose-400',
+            specialty: 'dien_lanh',
+            specialtyName: 'Điện Lạnh & Công Trình',
+            icon: '🏢',
+            phone: '0935 112 233',
+            avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
+            distance: '1.1km',
+            timeEstimate: 'Cửa tiệm mở cửa 7h-19h',
+            address: '210 Nguyễn Huệ, P. 5, Tuy Hòa (Có Cửa Hàng Mặt Tiền)',
+            rating: 4.99,
+            jobsCompleted: 340,
+            teamSize: 'Đội ngũ 8 thợ cơ hữu',
+            status: 'online',
+            statusText: 'Đang mở cửa tiệm & trực công trình',
+            verified: true,
+            packages: [
+              { name: 'Khảo sát & Báo giá thi công công trình nhà phố', price: 0 },
+              { name: 'Vệ sinh & Nạp gas máy lạnh tại tiệm / tận nhà', price: 120000 },
+              { name: 'Lắp mới máy lạnh Inverter trọn gói vật tư', price: 350000 }
+            ]
+          },
+          {
             id: 'w_1',
             contractCode: 'HĐ-THO-DP01',
-            boothName: 'Quầy Kỹ Thuật 01',
+            boothName: 'Quầy Kỹ Thuật Điện Nước Dân Dụng 01',
             name: 'Chú Tùng',
             title: 'Thợ Điện Nước Dân Dụng 6K',
+            level: 'freelance',
+            levelName: 'Thợ Tự Do K6',
+            levelBadgeClass: 'bg-emerald-500 text-slate-950 border-emerald-400',
             specialty: 'dien_nuoc',
-            specialtyName: 'Điện Nước',
+            specialtyName: 'Điện Nước Dân Dụng',
             icon: '⚡',
             phone: '0979 991 898',
-            avatar: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=150&q=80',
+            avatar: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=300&q=80',
             distance: '350m',
-            timeEstimate: '5 phút tới nơi',
+            timeEstimate: '15 phút có mặt',
             address: '142 Trần Hưng Đạo, P. 4, Tuy Hòa',
             rating: 4.98,
             jobsCompleted: 156,
@@ -16445,21 +16522,52 @@
             statusText: 'Đang trực chiến sẵn sàng',
             verified: true,
             packages: [
-              { name: 'Thay van nước / vòi sen', price: 60000 },
-              { name: 'Khắc phục chập điện aptomat', price: 90000 }
+              { name: 'Thay van nước / vòi sen / đường ống', price: 60000 },
+              { name: 'Khắc phục chập điện aptomat sập nguồn', price: 90000 }
+            ]
+          },
+          {
+            id: 'w_5',
+            contractCode: 'HĐ-THO-DP05',
+            boothName: 'Đội Cơ Động Vá Xe & Ắc Quy 24/7',
+            name: 'Đội Cứu Hộ Anh Vũ',
+            title: 'Đội Nhóm Cứu Hộ Cơ Động 24/7',
+            level: 'team',
+            levelName: 'Đội Nhóm Thợ Cơ Động',
+            levelBadgeClass: 'bg-amber-400 text-slate-950 border-amber-300',
+            specialty: 'xe_may',
+            specialtyName: 'Cứu Hộ Xe Máy',
+            icon: '🛵',
+            phone: '0977 123 789',
+            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+            distance: '500m',
+            timeEstimate: '7 phút có mặt',
+            address: 'Ngã tư Hùng Vương - Trần Phú, Tuy Hòa',
+            rating: 4.98,
+            jobsCompleted: 245,
+            teamSize: 'Tổ cơ động 4 thành viên',
+            status: 'online',
+            statusText: 'Cứu hộ cơ động trực chiến 24/7',
+            verified: true,
+            packages: [
+              { name: 'Vá lốp không ruột tại chỗ đêm ngày', price: 40000 },
+              { name: 'Kích bình ắc quy xe máy hết điện tận nơi', price: 50000 }
             ]
           },
           {
             id: 'w_2',
             contractCode: 'HĐ-THO-DP02',
-            boothName: 'Quầy Sửa Khóa 02',
+            boothName: 'Quầy Sửa Khóa & Cửa Cuốn 02',
             name: 'Anh Nam Khóa',
             title: 'Cứu Hộ Mở Khóa & Cửa Cuốn 24/7',
+            level: 'freelance',
+            levelName: 'Thợ Tự Do K6',
+            levelBadgeClass: 'bg-emerald-500 text-slate-950 border-emerald-400',
             specialty: 'khoa_cuon',
-            specialtyName: 'Sửa Khóa',
+            specialtyName: 'Sửa Khóa & Cửa Cuốn',
             icon: '🔑',
-            phone: '0905334466',
-            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+            phone: '0905 334 466',
+            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
             distance: '650m',
             timeEstimate: '8 phút tới nơi',
             address: '88 Lê Lợi, P. 3, Tuy Hòa',
@@ -16469,104 +16577,36 @@
             statusText: 'Đang trực chiến',
             verified: true,
             packages: [
-              { name: 'Mở khóa cửa phòng / bấm', price: 50000 },
+              { name: 'Mở khóa cửa phòng / khóa bấm kẹt', price: 50000 },
               { name: 'Sửa kẹt cửa cuốn tận nhà', price: 120000 }
             ]
           },
           {
             id: 'w_4',
             contractCode: 'HĐ-THO-DP04',
-            boothName: 'Quầy Camera & Điện Thông Minh',
-            name: 'Anh Lê Minh Đức',
-            title: 'Kỹ Thuật Camera An Ninh & Mạng Wifi',
+            boothName: 'Đội Kỹ Thuật Camera An Ninh & Wifi Phú Yên',
+            name: 'Đội Kỹ Thuật Minh Đức',
+            title: 'Đội Lắp Đặt Camera An Ninh & Mạng Wifi',
+            level: 'team',
+            levelName: 'Đội Nhóm Thợ Cơ Động',
+            levelBadgeClass: 'bg-amber-400 text-slate-950 border-amber-300',
             specialty: 'camera_mang',
-            specialtyName: 'Camera & Mạng',
+            specialtyName: 'Camera & Mạng Wifi',
             icon: '📷',
             phone: '0913 889 911',
-            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
             distance: '750m',
             timeEstimate: '10 phút tới nơi',
             address: '45 Duy Tân, P. 5, Tuy Hòa',
             rating: 4.96,
             jobsCompleted: 132,
+            teamSize: 'Tổ kỹ thuật 3 người',
             status: 'online',
             statusText: 'Đang trực chiến',
             verified: true,
             packages: [
-              { name: 'Lắp đặt Camera Wifi gia đình', price: 150000 },
+              { name: 'Lắp đặt Camera Wifi gia đình trọn gói', price: 150000 },
               { name: 'Xử lý mất sóng Wifi & mạng chậm', price: 80000 }
-            ]
-          },
-          {
-            id: 'w_5',
-            contractCode: 'HĐ-THO-DP05',
-            boothName: 'Đội Cứu Hộ Vá Xe & Ắc Quy 24/7',
-            name: 'Anh Vũ Cứu Hộ',
-            title: 'Vá Vỏ Xe Máy & Kích Bình Ắc Quy Lưu Động',
-            specialty: 'xe_may',
-            specialtyName: 'Cứu Hộ Xe',
-            icon: '🛵',
-            phone: '0977 123 789',
-            avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
-            distance: '500m',
-            timeEstimate: '7 phút có mặt',
-            address: 'Ngã tư Hùng Vương - Trần Phú, Tuy Hòa',
-            rating: 4.98,
-            jobsCompleted: 245,
-            status: 'online',
-            statusText: 'Cứu hộ cơ động 24/7',
-            verified: true,
-            packages: [
-              { name: 'Vá lốp không ruột tại chỗ', price: 40000 },
-              { name: 'Kích bình ắc quy xe máy hết điện', price: 50000 }
-            ]
-          },
-          {
-            id: 'w_3',
-            contractCode: 'HĐ-THO-DP03',
-            boothName: 'Quầy Điện Lạnh 03',
-            name: 'Anh Hùng Điện Lạnh',
-            title: 'Bảo Dưỡng Máy Lạnh & Tủ Lạnh',
-            specialty: 'dien_lanh',
-            specialtyName: 'Điện Lạnh',
-            icon: '❄️',
-            phone: '0935112233',
-            avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
-            distance: '1.1km',
-            timeEstimate: '12 phút tới nơi',
-            address: '210 Nguyễn Huệ, P. 5, Tuy Hòa',
-            rating: 4.92,
-            jobsCompleted: 210,
-            status: 'online',
-            statusText: 'Sẵn sàng nhận máy',
-            verified: true,
-            packages: [
-              { name: 'Vệ sinh máy lạnh treo tường', price: 120000 },
-              { name: 'Nạp gas R32/R410 bổ sung', price: 150000 }
-            ]
-          },
-          {
-            id: 'w_4',
-            contractCode: 'HĐ-THO-DP04',
-            boothName: 'Quầy Xe Lưu Động 04',
-            name: 'Bác Sáu Xe Máy',
-            title: 'Vá Vỏ & Cứu Hộ Xe Máy Lưu Động',
-            specialty: 'xe_may',
-            specialtyName: 'Cứu Hộ Xe',
-            icon: '🛵',
-            phone: '0988776655',
-            avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80',
-            distance: '450m',
-            timeEstimate: '6 phút tới nơi',
-            address: '56 Hùng Vương, P. 7, Tuy Hòa',
-            rating: 4.96,
-            jobsCompleted: 85,
-            status: 'online',
-            statusText: 'Đang trực chiến',
-            verified: true,
-            packages: [
-              { name: 'Vá vỏ xe không ruột tận nơi', price: 40000 },
-              { name: 'Kích bình ắc quy / thay bugi', price: 50000 }
             ]
           }
         ],
@@ -19015,30 +19055,47 @@
 
       submitRegisterWorker() {
         const genContract = 'HĐ-THO-DP' + Math.floor(10 + Math.random() * 90);
+        const wLevel = this.newWorkerForm.workerLevel || 'freelance';
+        const levelNames = {
+          freelance: 'Thợ Tự Do K6',
+          team: 'Đội Nhóm Thợ Cơ Động',
+          contractor: 'Chủ Tiệm & Nhận Công Trình'
+        };
+        const levelIcons = {
+          freelance: '🛠️',
+          team: '⚡',
+          contractor: '🏢'
+        };
         const newWorkerObj = {
           id: 'w_' + Date.now(),
           contractCode: genContract,
-          boothName: 'Quầy Kỹ Thuật ' + this.newWorkerForm.name,
+          boothName: this.newWorkerForm.name,
           name: this.newWorkerForm.name,
-          title: 'Thợ ' + this.newWorkerForm.specialty + ' K6',
+          title: (wLevel === 'contractor' ? 'Chủ Tiệm & Thầu Công Trình ' : (wLevel === 'team' ? 'Đội Cơ Động ' : 'Thợ ')) + this.newWorkerForm.specialty,
+          level: wLevel,
+          levelName: levelNames[wLevel],
+          levelBadgeClass: wLevel === 'contractor' ? 'bg-rose-500 text-white' : (wLevel === 'team' ? 'bg-amber-400 text-slate-950' : 'bg-emerald-500 text-slate-950'),
           specialty: 'dien_nuoc',
           specialtyName: this.newWorkerForm.specialty,
-          icon: '🛠️',
+          icon: levelIcons[wLevel],
           phone: this.newWorkerForm.phone,
-          avatar: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=300&q=80',
+          avatar: wLevel === 'contractor' ? 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80' : 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=300&q=80',
           distance: '200m (Vừa gia nhập)',
-          timeEstimate: 'Có mặt ngay',
+          timeEstimate: wLevel === 'contractor' ? 'Cửa tiệm mở cửa cả ngày' : '15 phút có mặt',
           address: this.newWorkerForm.address || 'TP. Tuy Hòa',
           rating: 5.0,
           jobsCompleted: 1,
+          teamSize: wLevel === 'contractor' ? 'Cửa tiệm + Đội 5-10 thợ' : (wLevel === 'team' ? 'Đội 3-5 thợ cơ động' : '1 Thợ'),
           status: 'online',
           statusText: 'Đang trực chiến sẵn sàng',
           verified: true,
-          packages: [
-            { name: 'Kiểm tra kỹ thuật & Báo giá tại nhà', price: 50000 }
+          packages: wLevel === 'contractor' ? [
+            { name: 'Khảo sát & Báo giá thi công công trình trọn gói', price: 0 },
+            { name: 'Cung cấp vật tư & Nhân công kỹ thuật tại tiệm', price: 100000 }
+          ] : [
+            { name: 'Kiểm tra kỹ thuật & Sửa chữa tận nơi', price: 50000 }
           ]
         };
-        // Tự động đẩy thợ mới lên đầu danh sách để hiển thị ngay trên Trang Chủ
         this.nearbyWorkersList.unshift(newWorkerObj);
 
         this.currentWorker = {
