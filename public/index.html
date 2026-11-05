@@ -13072,6 +13072,173 @@
   </div>
 
 
+  <!-- ======================== MODAL: ĐÁNH GIÁ XÁC THỰC THEO MÃ ĐƠN HÀNG (VERIFIED ORDER REVIEW) ======================== -->
+  <div v-if="showOrderRatingModal && currentRatingOrder" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
+    <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[92vh] overflow-y-auto p-5 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h3 class="text-xs font-black text-slate-900 uppercase tracking-wide">Đánh Giá Xác Thực Theo Mã Đơn Hàng</h3>
+            <p class="text-[10px] text-emerald-700 font-bold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check"></i> Bảo chứng 100% người thật mua thật • Nhận +20 Xu
+            </p>
+          </div>
+        </div>
+        <button @click="showOrderRatingModal = false" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs hover:bg-slate-200">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Thẻ thông tin đơn hàng đã nghiệm thu -->
+      <div class="bg-gradient-to-br from-slate-50 to-blue-50/50 p-3.5 rounded-2xl border border-blue-200 space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span class="font-mono font-black text-blue-900 bg-blue-100 px-2 py-0.5 rounded text-[11px]">#{{ currentRatingOrder.id }}</span>
+            <span class="text-[10px] font-bold text-slate-600">{{ currentRatingOrder.type === 'fnb' ? 'Ăn Uống/Đặc Sản' : 'Cuốc Thợ K6' }}</span>
+          </div>
+          <span class="text-[10px] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <i class="fa-solid fa-circle-check"></i> Đã Giao Thành Công
+          </span>
+        </div>
+        <div class="text-xs font-black text-slate-900 flex items-center justify-between">
+          <span>{{ currentRatingOrder.partnerName }}</span>
+          <span class="text-datphu-red">{{ formatCurrency(currentRatingOrder.total) }}</span>
+        </div>
+        <div class="text-[11px] text-slate-600 font-mono bg-white p-2 rounded-xl border border-slate-200">
+          {{ orderRatingForm.itemsSummary }}
+        </div>
+      </div>
+
+      <!-- Chấm điểm sao tổng thể 1 - 5 sao -->
+      <div class="text-center py-3 bg-amber-50/60 rounded-2xl border border-amber-200 space-y-1">
+        <div class="text-[11px] font-bold text-slate-800">Mức độ hài lòng chung:</div>
+        <div class="flex items-center justify-center gap-2.5">
+          <button 
+            v-for="s in [1, 2, 3, 4, 5]" 
+            :key="s"
+            type="button"
+            @click="orderRatingForm.stars = s" 
+            class="text-3xl transition-transform active:scale-125 focus:outline-none"
+            :class="s <= orderRatingForm.stars ? 'text-amber-400' : 'text-slate-200'">
+            <i class="fa-solid fa-star"></i>
+          </button>
+        </div>
+        <div class="text-[11px] font-black text-amber-800">
+          {{ orderRatingForm.stars === 5 ? '⭐⭐⭐⭐⭐ Tuyệt vời! Rất hài lòng' : orderRatingForm.stars === 4 ? '⭐⭐⭐⭐ Hài lòng, dịch vụ tốt' : orderRatingForm.stars === 3 ? '⭐⭐⭐ Bình thường, tạm ổn' : '⭐/⭐⭐ Chưa hài lòng, cần cải thiện' }}
+        </div>
+      </div>
+
+      <!-- Chấm 3 Tiêu Chí Cụ Thể (Granular Criteria) -->
+      <div class="space-y-2 bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs">
+        <div class="font-bold text-[11px] text-slate-700">Đánh giá theo từng tiêu chí:</div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <!-- Tiêu chí 1: Mùi vị / Tay nghề -->
+          <div class="bg-white p-2 rounded-xl border border-slate-200 text-center space-y-1">
+            <div class="text-[10px] text-slate-500 font-medium">{{ currentRatingOrder.type === 'fnb' ? 'Hương vị món ăn' : 'Tay nghề kỹ thuật' }}</div>
+            <div class="flex justify-center gap-1 text-amber-400 text-xs">
+              <i v-for="c in [1,2,3,4,5]" :key="c" @click="orderRatingForm.criteriaFood = c" class="cursor-pointer" :class="c <= orderRatingForm.criteriaFood ? 'fa-solid fa-star' : 'fa-regular fa-star text-slate-300'"></i>
+            </div>
+            <div class="text-[9px] font-bold text-slate-700">{{ orderRatingForm.criteriaFood }}/5★</div>
+          </div>
+
+          <!-- Tiêu chí 2: Đóng gói / Giá cả -->
+          <div class="bg-white p-2 rounded-xl border border-slate-200 text-center space-y-1">
+            <div class="text-[10px] text-slate-500 font-medium">{{ currentRatingOrder.type === 'fnb' ? 'Vệ sinh đóng gói' : 'Báo giá minh bạch' }}</div>
+            <div class="flex justify-center gap-1 text-amber-400 text-xs">
+              <i v-for="c in [1,2,3,4,5]" :key="c" @click="orderRatingForm.criteriaPacking = c" class="cursor-pointer" :class="c <= orderRatingForm.criteriaPacking ? 'fa-solid fa-star' : 'fa-regular fa-star text-slate-300'"></i>
+            </div>
+            <div class="text-[9px] font-bold text-slate-700">{{ orderRatingForm.criteriaPacking }}/5★</div>
+          </div>
+
+          <!-- Tiêu chí 3: Tốc độ / Thái độ -->
+          <div class="bg-white p-2 rounded-xl border border-slate-200 text-center space-y-1">
+            <div class="text-[10px] text-slate-500 font-medium">{{ currentRatingOrder.type === 'fnb' ? 'Tốc độ giao hàng' : 'Thái độ phục vụ' }}</div>
+            <div class="flex justify-center gap-1 text-amber-400 text-xs">
+              <i v-for="c in [1,2,3,4,5]" :key="c" @click="orderRatingForm.criteriaDelivery = c" class="cursor-pointer" :class="c <= orderRatingForm.criteriaDelivery ? 'fa-solid fa-star' : 'fa-regular fa-star text-slate-300'"></i>
+            </div>
+            <div class="text-[9px] font-bold text-slate-700">{{ orderRatingForm.criteriaDelivery }}/5★</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Feedback Tags -->
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-bold text-slate-600 block">Chọn nhanh lời khen / góp ý:</label>
+        <div class="flex flex-wrap gap-1.5">
+          <button 
+            v-for="tag in (currentRatingOrder.type === 'fnb' ? ['Món nóng hổi thơm ngon', 'Chuẩn vị Xứ Nẫu', 'Đóng gói cẩn thận', 'Giao siêu nhanh < 20p', 'Đúng định lượng đầy đặn'] : ['Đến đúng giờ hẹn', 'Tay nghề giỏi 6K', 'Báo giá đúng niêm yết', 'Làm cẩn thận sạch sẽ', 'Thái độ lễ phép trung thực'])"
+            :key="tag"
+            type="button"
+            @click="addOrderRatingTag(tag)"
+            class="text-[10px] bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-900 border border-slate-200 px-2 py-1 rounded-xl transition-all">
+            + {{ tag }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Textarea Nhận xét chi tiết -->
+      <div class="space-y-1">
+        <label class="text-[10px] font-bold text-slate-700 block">Lời nhận xét chi tiết:</label>
+        <textarea 
+          v-model="orderRatingForm.comment" 
+          rows="2" 
+          placeholder="Chia sẻ cảm nhận thật để giúp quán hoàn thiện và bà con Tuy Hòa an tâm đặt..."
+          class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-xs focus:ring-1 focus:ring-amber-500 focus:outline-none"></textarea>
+      </div>
+
+      <!-- Đính kèm ảnh minh chứng (Tùy chọn) -->
+      <div class="space-y-1">
+        <label class="text-[10px] font-bold text-slate-700 block">Ảnh minh chứng thực tế (URL hoặc ảnh món):</label>
+        <div class="flex items-center gap-2">
+          <input 
+            type="text" 
+            v-model="orderRatingForm.photoUrl" 
+            placeholder="Dán link ảnh đĩa thức ăn / kết quả sửa chữa (tùy chọn)..."
+            class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-none">
+          <button 
+            type="button"
+            @click="orderRatingForm.photoUrl = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80'"
+            class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1.5 rounded-xl text-[10px] font-bold flex-shrink-0">
+            Dùng Ảnh Mẫu
+          </button>
+        </div>
+      </div>
+
+      <!-- Checkbox ẩn danh -->
+      <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" v-model="orderRatingForm.isAnonymous" class="w-4 h-4 rounded text-amber-500 focus:ring-amber-400">
+          <span class="text-[11px] font-bold text-slate-700">Đánh giá ẩn danh (Giấu tên cá nhân)</span>
+        </label>
+        <span class="text-[9px] text-slate-400">Hiện: {{ orderRatingForm.isAnonymous ? 'Khách hàng Tuy Hòa' : (customer.name || 'Tên của bạn') }}</span>
+      </div>
+
+      <!-- Box Phần Thưởng Xu -->
+      <div class="p-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-200 flex items-center justify-between text-xs">
+        <div class="flex items-center gap-2 text-emerald-900 font-bold">
+          <i class="fa-solid fa-gift text-emerald-600 text-lg"></i>
+          <div>
+            <div>Phần thưởng tri ân thành viên:</div>
+            <div class="text-[10px] text-emerald-700 font-normal">Đóng góp xây dựng Chợ Xứ Nẫu văn minh</div>
+          </div>
+        </div>
+        <span class="bg-datphu-red text-white text-xs font-black px-2.5 py-1 rounded-full shadow-xs">+20 Đất Phú Xu</span>
+      </div>
+
+      <!-- Nút Gửi Đánh Giá Xác Thực -->
+      <button 
+        type="button"
+        @click="submitOrderRating"
+        class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-black py-3 rounded-2xl text-xs shadow-md transition-all active:scale-95 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-paper-plane"></i>
+        <span>Gửi Đánh Giá Xác Thực Theo Đơn #{{ currentRatingOrder.id }}</span>
+      </button>
+    </div>
+  </div>
+
   <!-- ======================== MODAL: ĐÁNH GIÁ THỢ & NHẬN +10 XU ======================== -->
   <div v-if="showRatingModal && selectedWorkerToRate" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
     <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[90vh] overflow-y-auto p-5 space-y-4 shadow-2xl">
@@ -13369,13 +13536,95 @@
           </div>
           <div>
             <h3 class="text-xs font-black text-slate-900">Tiến Độ Đơn Hàng & Cuốc Thợ Của Tôi</h3>
-            <p class="text-[10px] text-slate-500">Minh bạch trạng thái • Hủy đơn linh hoạt • Hoàn Xu 100%</p>
+            <p class="text-[10px] text-slate-500">Minh bạch trạng thái • Đánh giá chuẩn xác theo Mã Đơn</p>
           </div>
         </div>
         <button @click="showMyOrdersModal = false" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs hover:bg-slate-200">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
+
+      <!-- THANH CHUYỂN TAB: TIẾN ĐỘ ĐƠN vs ĐÁNH GIÁ XÁC THỰC -->
+      <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-2xl text-xs font-bold">
+        <button 
+          type="button"
+          @click="myOrdersTab = 'orders'"
+          class="flex-1 py-2 rounded-xl transition-all flex items-center justify-center gap-1.5"
+          :class="myOrdersTab === 'orders' ? 'bg-white text-slate-900 shadow-sm font-black' : 'text-slate-500 hover:text-slate-800'">
+          <i class="fa-solid fa-list-check text-blue-600"></i>
+          <span>Tiến Độ Đơn Của Tôi ({{ myOrders.length }})</span>
+        </button>
+        <button 
+          type="button"
+          @click="myOrdersTab = 'reviews'"
+          class="flex-1 py-2 rounded-xl transition-all flex items-center justify-center gap-1.5"
+          :class="myOrdersTab === 'reviews' ? 'bg-white text-amber-900 shadow-sm font-black' : 'text-slate-500 hover:text-slate-800'">
+          <i class="fa-solid fa-shield-halved text-amber-500"></i>
+          <span>Nhật Ký Đánh Giá Thật ({{ verifiedReviewsList.length }})</span>
+        </button>
+      </div>
+
+      <!-- TAB 2: NHẬT KÝ ĐÁNH GIÁ XÁC THỰC THEO MÃ ĐƠN (VERIFIED REVIEWS FEED) -->
+      <div v-if="myOrdersTab === 'reviews'" class="space-y-3 overflow-y-auto max-h-[60vh] pr-1 animate-fadeIn">
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900 flex items-start gap-2.5">
+          <i class="fa-solid fa-shield-halved text-amber-600 text-base mt-0.5"></i>
+          <div>
+            <div class="font-black text-[11px] uppercase tracking-wide">Bảo Chứng Đánh Giá 100% Khách Thật - Mua Thật</div>
+            <div class="text-[10px] text-amber-800 mt-0.5 leading-relaxed">
+              Tất cả bình luận dưới đây đều được ràng buộc trực tiếp với <strong>Mã Đơn Hàng (Order ID)</strong> đã nghiệm thu thành công. Đất Phú cấm tuyệt đối tài khoản ảo, dìm hàng hoặc đánh giá khống.
+            </div>
+          </div>
+        </div>
+
+        <div v-for="rev in verifiedReviewsList" :key="rev.id" class="bg-white border border-slate-200 rounded-2xl p-3.5 space-y-2.5 shadow-xs">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-400 to-amber-600 text-white flex items-center justify-center text-xs font-black shadow-xs">
+                {{ rev.customerName.charAt(0) }}
+              </div>
+              <div>
+                <div class="text-xs font-black text-slate-900">{{ rev.customerName }}</div>
+                <div class="text-[9px] text-slate-400">{{ rev.createdAt }} • Đơn #{{ rev.orderId }}</div>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-100 text-emerald-800 flex items-center gap-1 border border-emerald-200">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i> {{ rev.verifiedBadge }}
+            </span>
+          </div>
+
+          <div class="space-y-1 text-xs">
+            <div class="flex items-center justify-between">
+              <div class="text-[11px] font-bold text-slate-700">
+                Đối tác: <span class="text-slate-900 font-black">{{ rev.partnerName }}</span>
+              </div>
+              <div class="flex items-center text-amber-400 text-xs">
+                <i v-for="s in rev.stars" :key="s" class="fa-solid fa-star"></i>
+                <span class="text-[11px] font-black text-amber-700 ml-1">({{ rev.stars }}.0)</span>
+              </div>
+            </div>
+            <div class="text-[10px] text-slate-500 bg-slate-50 p-2 rounded-xl border border-slate-100 font-mono">
+              <i class="fa-solid fa-receipt mr-1 text-slate-400"></i> {{ rev.itemsSummary }}
+            </div>
+            <p class="text-xs text-slate-800 italic pt-1 leading-relaxed">
+              "{{ rev.comment }}"
+            </p>
+            <div v-if="rev.photoUrl" class="pt-1">
+              <img :src="rev.photoUrl" class="w-20 h-20 object-cover rounded-xl border border-slate-200 shadow-xs">
+            </div>
+          </div>
+
+          <!-- Phản hồi chính thức của Chủ Shop / Thợ -->
+          <div v-if="rev.sellerReply" class="p-2.5 bg-blue-50/70 border border-blue-100 rounded-xl text-[10px] text-blue-900 space-y-1">
+            <div class="font-bold flex items-center gap-1 text-blue-800">
+              <i class="fa-solid fa-reply"></i> Phản hồi từ {{ rev.partnerName }}:
+            </div>
+            <p class="italic text-slate-700">"{{ rev.sellerReply }}"</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 1: DANH SÁCH ĐƠN HÀNG CỦA TÔI -->
+      <div v-if="myOrdersTab === 'orders'" class="space-y-3">
 
       <!-- Danh sách đơn hàng -->
       <div v-if="myOrders.length === 0" class="text-center py-8 px-4 space-y-3 bg-slate-50/70 rounded-2xl border border-dashed border-slate-200">
@@ -13528,17 +13777,37 @@
               </button>
 
               <!-- Nút Đánh Giá nếu đã hoàn thành -->
+              <!-- Nút Đã Nhận Hàng (chuyển sang COMPLETED) -->
               <button 
-                v-if="order.status === 'COMPLETED'"
-                @click="openRatingModal({ name: order.partnerName, specialty: 'Dịch vụ hoàn tất', rating: '5.0', completed: 1 })"
-                class="bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 px-3 py-1.5 rounded-xl font-black text-[10px] flex items-center gap-1 active:scale-95 transition-all">
-                <i class="fa-solid fa-star text-amber-500"></i> Đánh Giá (+10 Xu)
+                type="button"
+                v-if="order.status === 'DISPATCHING'"
+                @click="confirmOrderReceived(order)"
+                class="bg-emerald-600 hover:bg-emerald-700 text-white font-black px-3 py-1.5 rounded-xl text-[10px] flex items-center gap-1.5 shadow-xs transition-all active:scale-95 animate-pulse"
+                title="Bấm xác nhận khi đã nhận được thức ăn hoặc thợ đã làm xong">
+                <i class="fa-solid fa-circle-check"></i> <span>Đã Nhận Hàng</span>
               </button>
+
+              <!-- Nút Đánh Giá Gắn Mã Đơn Hàng nếu chưa đánh giá -->
+              <button 
+                type="button"
+                v-if="order.status === 'COMPLETED' && !order.isRated"
+                @click="openOrderRatingModal(order)"
+                class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white border border-amber-400 px-3 py-1.5 rounded-xl font-black text-[10px] flex items-center gap-1 active:scale-95 transition-all shadow-xs animate-pulse">
+                <i class="fa-solid fa-star text-amber-200"></i> <span>Đánh Giá Mã Đơn (+20 Xu)</span>
+              </button>
+
+              <!-- Huy hiệu Đã Đánh Giá -->
+              <span 
+                v-if="order.status === 'COMPLETED' && order.isRated"
+                class="bg-emerald-50 text-emerald-800 border border-emerald-300 px-2.5 py-1.5 rounded-xl font-black text-[10px] flex items-center gap-1">
+                <i class="fa-solid fa-circle-check text-emerald-600"></i> <span>Đã Đánh Giá ({{ order.ratingStars || 5 }}⭐)</span>
+              </span>
             </div>
           </div>
         </div>
       </div>
 
+      </div>
       <!-- Footer cam kết an tâm -->
       <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
         <span>Hotline giải quyết khiếu nại: <strong class="text-slate-700 font-mono">0979 991 898</strong></span>
@@ -15212,7 +15481,73 @@
           area: 'all',
           urgency: 'fast'
         },
+        myOrdersTab: 'orders',
+        showOrderRatingModal: false,
+        currentRatingOrder: null,
+        orderRatingForm: {
+          orderId: '',
+          orderType: 'fnb',
+          partnerName: '',
+          itemsSummary: '',
+          stars: 5,
+          criteriaFood: 5,
+          criteriaPacking: 5,
+          criteriaDelivery: 5,
+          comment: '',
+          photoUrl: '',
+          isAnonymous: false,
+          quickTags: []
+        },
+        verifiedReviewsList: [
+          {
+            id: 'REV-9901',
+            orderId: 'DP-ORD-8821',
+            orderType: 'fnb',
+            customerName: 'Nguyễn Hoàng L.',
+            partnerName: 'Cơm Gà Xứ Nẫu Tuy Hòa',
+            itemsSummary: '2x Cơm Gà Xé Đặc Biệt (90.000đ)',
+            stars: 5,
+            criteriaFood: 5,
+            criteriaPacking: 5,
+            criteriaDelivery: 5,
+            comment: 'Cơm vàng ươm dẻo thơm, thịt gà ta dai ngọt tự nhiên, nước mắm gừng chuẩn vị Phú Yên. Giao 15 phút còn nóng hổi!',
+            createdAt: 'Hôm nay',
+            verifiedBadge: '✓ 100% ĐÃ MUA HÀNG & GIAO THÀNH CÔNG',
+            photoUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80',
+            sellerReply: 'Cơm Gà Xứ Nẫu cảm ơn anh Long đã ủng hộ! Quán luôn chọn gà ta vườn Tuy An ngon nhất ạ.'
+          },
+          {
+            id: 'REV-9902',
+            orderId: '6K-REQ-4491',
+            orderType: 'service',
+            customerName: 'Trần Thị Thu T.',
+            partnerName: 'Chú Nguyễn Văn Tùng',
+            itemsSummary: 'Kiểm tra rò rỉ van nước & thay phao (80.000đ)',
+            stars: 5,
+            criteriaFood: 5,
+            criteriaPacking: 5,
+            criteriaDelivery: 5,
+            comment: 'Chú Tùng đến đúng giờ, mang đầy đủ đồ nghề K6, sửa nhanh và báo đúng giá 80k như trên ứng dụng, không vẽ vời phát sinh.',
+            createdAt: 'Hôm qua',
+            verifiedBadge: '✓ 100% ĐÃ NGHIỆM THU CUỐC THỢ K6',
+            photoUrl: '',
+            sellerReply: 'Cảm ơn cô Thảo! Chú bảo hành mối nối 3 tháng, có vấn đề gì cứ gọi chú nhé.'
+          }
+        ],
         myOrders: [
+          {
+            id: 'DP-ORD-7712',
+            type: 'fnb',
+            partnerName: 'Bò Một Nắng Diệp An',
+            partnerPhone: '0979991898',
+            items: [{ name: 'Bò Một Nắng Muối Kiến Vàng 500g', qty: 1, price: 290000 }],
+            total: 290000,
+            status: 'COMPLETED',
+            statusText: 'Giao hàng thành công',
+            createdAt: 'Hôm qua',
+            address: '18 Hùng Vương, TP. Tuy Hòa',
+            isRated: false
+          },
           {
             id: 'DP-ORD-8821',
             type: 'fnb',
@@ -18906,6 +19241,112 @@ Hotline hỗ trợ: 0979 991 898`);
         const exist = this.cart.find(i => i.id === product.id);
         if (exist) exist.qty += 1;
         else this.cart.push({ ...product, qty: 1 });
+      },
+
+      openOrderRatingModal(order) {
+        if (!order) return;
+        this.currentRatingOrder = order;
+        let itemsSummary = '';
+        if (order.type === 'fnb' && order.items && order.items.length) {
+          itemsSummary = order.items.map(it => it.qty + 'x ' + it.name).join(', ');
+        } else {
+          itemsSummary = order.issueDesc || 'Cuốc thợ kỹ thuật K6 tại nhà';
+        }
+
+        this.orderRatingForm = {
+          orderId: order.id,
+          orderType: order.type || 'fnb',
+          partnerName: order.partnerName,
+          itemsSummary: itemsSummary,
+          stars: 5,
+          criteriaFood: 5,
+          criteriaPacking: 5,
+          criteriaDelivery: 5,
+          comment: '',
+          photoUrl: '',
+          isAnonymous: false,
+          quickTags: []
+        };
+        this.showOrderRatingModal = true;
+      },
+
+      confirmOrderReceived(order) {
+        if (!order) return;
+        order.status = 'COMPLETED';
+        order.statusText = 'Giao hàng thành công';
+        order.completedAt = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + ' hôm nay';
+        
+        // Mở ngay modal đánh giá để nhận xu
+        this.openOrderRatingModal(order);
+      },
+
+      addOrderRatingTag(tag) {
+        if (!this.orderRatingForm.comment) {
+          this.orderRatingForm.comment = tag;
+        } else if (!this.orderRatingForm.comment.includes(tag)) {
+          this.orderRatingForm.comment += ', ' + tag;
+        }
+      },
+
+      submitOrderRating() {
+        if (!this.currentRatingOrder) return;
+        const order = this.currentRatingOrder;
+
+        if (!this.orderRatingForm.stars || this.orderRatingForm.stars < 1) {
+          alert('Vui lòng chọn số sao đánh giá (1 đến 5 sao)!');
+          return;
+        }
+
+        // Bộ lọc từ cấm tự động (Profanity Filter)
+        const forbiddenWords = ['lừa đảo', 'dm', 'đm', 'đmm', 'chó', 'khốn nạn', 'mất dạy', 'cút', 'bịp'];
+        const commentLower = (this.orderRatingForm.comment || '').toLowerCase();
+        for (const w of forbiddenWords) {
+          if (commentLower.includes(w)) {
+            alert('⚠️ Bình luận chứa từ ngữ không phù hợp chuẩn mực văn minh Đất Phú. Vui lòng điều chỉnh lại nhận xét mang tính xây dựng.');
+            return;
+          }
+        }
+
+        // Cập nhật trạng thái đơn hàng
+        order.isRated = true;
+        order.ratingStars = this.orderRatingForm.stars;
+        order.ratingComment = this.orderRatingForm.comment;
+
+        // Thêm vào danh sách verifiedReviewsList
+        const newReview = {
+          id: 'REV-' + Date.now().toString().slice(-6),
+          orderId: order.id,
+          orderType: order.type || 'fnb',
+          customerName: this.orderRatingForm.isAnonymous ? 'Khách hàng Tuy Hòa (Ẩn danh)' : (this.currentCustomerUser ? this.currentCustomerUser.name : (this.customer.name || 'Khách Hàng Đất Phú')),
+          partnerName: order.partnerName,
+          itemsSummary: this.orderRatingForm.itemsSummary,
+          stars: this.orderRatingForm.stars,
+          criteriaFood: this.orderRatingForm.criteriaFood,
+          criteriaPacking: this.orderRatingForm.criteriaPacking,
+          criteriaDelivery: this.orderRatingForm.criteriaDelivery,
+          comment: this.orderRatingForm.comment || (this.orderRatingForm.stars >= 4 ? 'Chất lượng rất tốt, phục vụ chu đáo đúng chuẩn Đất Phú!' : 'Dịch vụ tạm ổn, cần cải thiện thêm.'),
+          photoUrl: this.orderRatingForm.photoUrl,
+          createdAt: 'Vừa xong',
+          verifiedBadge: order.type === 'fnb' ? '✓ 100% ĐÃ MUA HÀNG & GIAO THÀNH CÔNG' : '✓ 100% ĐÃ NGHIỆM THU CUỐC THỢ K6',
+          sellerReply: null
+        };
+        this.verifiedReviewsList.unshift(newReview);
+
+        // Thưởng +20 Đất Phú Xu vào tài khoản
+        const bonusCoins = 20;
+        if (this.currentCustomerUser) {
+          this.currentCustomerUser.points = (this.currentCustomerUser.points || 0) + bonusCoins;
+        }
+
+        alert('🎉 ĐÃ GỬI ĐÁNH GIÁ XÁC THỰC THÀNH CÔNG!\n\n' +
+              '✓ Mã Đơn Hàng: #' + order.id + '\n' +
+              '✓ Đánh giá: ' + this.orderRatingForm.stars + '⭐\n' +
+              '✓ Đối tác: ' + order.partnerName + '\n\n' +
+              '🎁 Hệ thống đã cộng ngay +' + bonusCoins + ' ĐẤT PHÚ XU vào ví thành viên của bạn!');
+
+        this.showOrderRatingModal = false;
+        this.currentRatingOrder = null;
+        this.myOrdersTab = 'reviews';
       },
 
       openRatingModal(worker) {
