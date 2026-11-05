@@ -168,6 +168,16 @@
           <i class="fa-solid fa-chevron-down text-[7px] text-slate-400"></i>
         </button>
 
+        <!-- NÚT CHỈ HUY QUẢN TRỊ & BÁO CÁO TINH GỌN (LEAN COCKPIT) -->
+        <button 
+          type="button"
+          @click="openLeanReportModal('daily')"
+          class="bg-rose-900/60 hover:bg-rose-800 text-rose-200 border border-rose-500/40 px-2.5 py-1 rounded-lg text-[9px] font-black flex items-center gap-1.5 shadow-2xs transition-all"
+          title="Trung tâm chỉ huy quản trị & báo cáo 1 màn hình cho Giám đốc">
+          <i class="fa-solid fa-gauge-high text-rose-300"></i>
+          <span>Chỉ Huy</span>
+        </button>
+
         <!-- NÚT THEO DÕI TIẾN ĐỘ DỰ ÁN ĐẤT PHÚ -->
         <button 
           type="button"
@@ -242,6 +252,28 @@
           <div class="text-base font-black text-purple-300 mt-0.5">6 Mẫu</div>
         </div>
       </div>
+    </div>
+
+    <!-- BAN GIÁM ĐỐC: TRUNG TÂM CHỈ HUY QUẢN TRỊ & BÁO CÁO 1 MÀN HÌNH -->
+    <div class="bg-gradient-to-r from-rose-950 via-slate-900 to-indigo-950 p-4 rounded-3xl border border-rose-500/40 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-rose-600 to-red-700 text-white flex items-center justify-center text-lg font-black shadow-md flex-shrink-0">
+          <i class="fa-solid fa-gauge-high text-amber-300"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="text-xs font-black text-white uppercase tracking-wider">Hệ Thống Báo Cáo Quản Trị Tinh Gọn (Lean Cockpit)</h3>
+            <span class="bg-emerald-500/20 text-emerald-300 text-[9px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/40">30 Giây Nắm Toàn Bộ Cty</span>
+          </div>
+          <p class="text-[10px] text-rose-200 mt-0.5">Dòng tiền thực tế • 215 Đơn hàng hôm nay • CSAT: 4.92⭐ • Hotline Cứu Hộ 0979 991 898 trực 24/7</p>
+        </div>
+      </div>
+      <button 
+        @click="openLeanReportModal('daily')"
+        class="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-md transition-all flex-shrink-0">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Mở Báo Cáo Chỉ Huy Sếp</span>
+      </button>
     </div>
 
     <!-- BAN CHỈ ĐẠO: BẢNG TIẾN ĐỘ DỰ ÁN ĐẤT PHÚ -->
@@ -4968,6 +5000,7 @@
               <li><a href="#" @click.prevent="activeTier = 'merchant'" class="hover:text-white transition-colors">🏪 Đăng ký thuê quầy số & Mở quán</a></li>
               <li><a href="#" @click.prevent="activeTier = 'merchant'" class="hover:text-white transition-colors">🖨️ In bảng Mica Standee QR quầy</a></li>
               <li><a href="#" @click.prevent="navigateToWorkerRegistration" class="hover:text-white transition-colors">🛠️ Gia nhập Đội Thợ 6K Cơ Động</a></li>
+              <li><a href="#" @click.prevent="openLeanReportModal('daily')" class="hover:text-white text-rose-300 font-black transition-colors flex items-center gap-1">⚡ <span>Trung tâm chỉ huy & Báo cáo quản trị (Lean Cockpit)</span></a></li>
               <li><a href="#" @click.prevent="openProjectTrackerModal('all')" class="hover:text-white text-purple-300 font-black transition-colors flex items-center gap-1">📊 <span>Bảng theo dõi tiến độ dự án Đất Phú</span></a></li>
               <li><a href="#" @click.prevent="openSopModal('worker')" class="hover:text-white text-blue-300 font-black transition-colors flex items-center gap-1">📋 <span>Bộ quy trình vận hành chuẩn (SOP Đất Phú)</span></a></li>
               <li><a href="#" @click.prevent="openEcomRegulationsModal('decree85_regulations')" class="hover:text-white text-amber-300 font-bold transition-colors">📜 Quy chế hoạt động Đất Phú Chợ Phiên</a></li>
@@ -8737,6 +8770,362 @@
           class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-6 rounded-xl text-xs transition-all w-full sm:w-auto">
           Đã Hiểu & Đóng Hộp Thoại
         </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: TRUNG TÂM CHỈ HUY QUẢN TRỊ & BÁO CÁO TINH GỌN (LEAN COCKPIT 2026) -->
+  <!-- ========================================================================= -->
+  <div v-if="showLeanReportModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 animate-fadeIn">
+    <div class="bg-white w-full max-w-5xl rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xl max-h-[94vh] overflow-y-auto border border-slate-200">
+      
+      <!-- Tiêu đề Modal -->
+      <div class="flex items-center justify-between border-b pb-3.5">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-600 via-red-600 to-indigo-800 text-white flex items-center justify-center text-lg font-black shadow-lg">
+            <i class="fa-solid fa-gauge-high"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-black text-slate-900 text-base">TRUNG TÂM CHỈ HUY QUẢN TRỊ & BÁO CÁO TINH GỌN</h3>
+              <span class="bg-rose-100 text-rose-800 text-[10px] font-black px-2 py-0.5 rounded-full border border-rose-300">Lean Cockpit • 30 Giây</span>
+            </div>
+            <p class="text-[11px] text-slate-500">
+              CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ • MST: <b class="text-slate-800">4401020233</b> • Hotline Chỉ Huy: <b class="text-datphu-red">0979 991 898</b>
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button 
+            type="button" 
+            @click="exportLeanReportCsv"
+            class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 text-xs font-bold transition-all shadow-xs"
+            title="Xuất bảng báo cáo chỉ số ra file Excel / CSV">
+            <i class="fa-solid fa-file-excel text-emerald-600"></i>
+            <span>Xuất Excel</span>
+          </button>
+          <button 
+            type="button" 
+            @click="printSopGuide"
+            class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all shadow-xs"
+            title="In báo cáo chỉ huy A4">
+            <i class="fa-solid fa-print text-slate-600"></i>
+            <span>In A4</span>
+          </button>
+          <button 
+            type="button" 
+            @click="showLeanReportModal = false"
+            class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Khối 4 Chỉ Số Sinh Tồn Cốt Lõi (30 Giây CEO Nắm Trọn) -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-3">
+          <div class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Dòng Tiền Ròng Hôm Nay</div>
+          <div class="flex items-baseline gap-1 mt-1">
+            <span class="text-xl sm:text-2xl font-black text-emerald-900">+3.90M</span>
+            <span class="text-[10px] text-emerald-700 font-bold">VNĐ</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">VietQR: 84.25M • Phí thu: 4.75M</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-3">
+          <div class="text-[10px] text-blue-700 font-bold uppercase tracking-wider">Tổng Đơn Hàng Hôm Nay</div>
+          <div class="flex items-baseline gap-1 mt-1">
+            <span class="text-xl sm:text-2xl font-black text-blue-900">215</span>
+            <span class="text-[10px] text-blue-700 font-bold">Cuốc/Đơn</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">Chợ Phiên 142 • Thợ 28 • Express 45</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-3">
+          <div class="text-[10px] text-amber-800 font-bold uppercase tracking-wider">Chỉ Số Hài Lòng (CSAT)</div>
+          <div class="flex items-baseline gap-1 mt-1">
+            <span class="text-xl sm:text-2xl font-black text-amber-900">4.92</span>
+            <span class="text-[10px] text-amber-700 font-bold">/ 5.0 ⭐</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">98.4% Đánh giá 5 sao Tuy Hòa</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-rose-50 to-red-50 border border-rose-200 rounded-2xl p-3">
+          <div class="text-[10px] text-rose-800 font-bold uppercase tracking-wider">Hotline Cứu Hộ 24/7</div>
+          <div class="flex items-baseline gap-1 mt-1">
+            <span class="text-xl sm:text-2xl font-black text-rose-900">6 / 6 Ca</span>
+            <span class="text-[10px] text-emerald-600 font-bold">100%</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">Nhấc máy &le; 3 hồi • 0979 991 898</p>
+        </div>
+      </div>
+
+      <!-- Thanh chuyển Tab 4 Phân Hệ Báo Cáo -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 bg-slate-100 rounded-2xl text-xs font-bold">
+        <button 
+          type="button"
+          @click="leanReportActiveTab = 'daily'"
+          :class="leanReportActiveTab === 'daily' ? 'bg-white text-emerald-700 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'"
+          class="py-2.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 text-center">
+          <i class="fa-solid fa-heart-pulse text-emerald-600 text-xs"></i>
+          <span class="truncate">1. Chỉ Số Sinh Tồn</span>
+        </button>
+        <button 
+          type="button"
+          @click="leanReportActiveTab = 'accountability'"
+          :class="leanReportActiveTab === 'accountability' ? 'bg-white text-blue-700 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'"
+          class="py-2.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 text-center">
+          <i class="fa-solid fa-trophy text-blue-600 text-xs"></i>
+          <span class="truncate">2. Xếp Hạng & Nhân Sự</span>
+        </button>
+        <button 
+          type="button"
+          @click="leanReportActiveTab = 'pnl'"
+          :class="leanReportActiveTab === 'pnl' ? 'bg-white text-indigo-700 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'"
+          class="py-2.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 text-center">
+          <i class="fa-solid fa-file-invoice-dollar text-indigo-600 text-xs"></i>
+          <span class="truncate">3. Tài Chính P&L Tháng</span>
+        </button>
+        <button 
+          type="button"
+          @click="leanReportActiveTab = 'triage'"
+          :class="leanReportActiveTab === 'triage' ? 'bg-white text-rose-700 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'"
+          class="py-2.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 text-center">
+          <i class="fa-solid fa-triangle-exclamation text-rose-600 text-xs"></i>
+          <span class="truncate">4. Cảnh Báo & Xử Lý</span>
+        </button>
+      </div>
+
+      <!-- NỘI DUNG TAB 1: CHỈ SỐ SINH TỒN HÀNG NGÀY -->
+      <div v-if="leanReportActiveTab === 'daily'" class="space-y-3.5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          <!-- Bảng Dòng Tiền Hôm Nay -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+              <span class="font-black text-slate-900 flex items-center gap-1.5">
+                <i class="fa-solid fa-wallet text-emerald-600"></i> Bảng Dòng Tiền Thực Tế (Hôm Nay)
+              </span>
+              <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Tiền Tươi</span>
+            </div>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center text-slate-600">
+                <span>Dòng tiền khách quét VietQR:</span>
+                <b class="text-slate-900 font-mono">84.250.000 đ</b>
+              </div>
+              <div class="flex justify-between items-center text-emerald-700">
+                <span>Doanh thu phí dịch vụ Đất Phú thu:</span>
+                <b class="font-mono font-bold">+ 4.750.000 đ</b>
+              </div>
+              <div class="flex justify-between items-center text-red-600">
+                <span>Chi phí vận hành ngày (xăng, in ấn, trực ca):</span>
+                <b class="font-mono font-bold">- 850.000 đ</b>
+              </div>
+              <div class="pt-2 border-t flex justify-between items-center font-black text-sm">
+                <span class="text-slate-900">Dòng Tiền Ròng Công Ty Giữ Lại:</span>
+                <span class="text-emerald-700 font-mono">+ 3.900.000 đ</span>
+              </div>
+            </div>
+            <p class="text-[10px] text-slate-400 italic">* Tiền khách quét VietQR về thẳng tài khoản quán/thợ trong 3 giây. Đất Phú 0% giam vốn đối tác.</p>
+          </div>
+
+          <!-- Trạng Thái Lực Lượng Trực Chiến Thực Địa -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+              <span class="font-black text-slate-900 flex items-center gap-1.5">
+                <i class="fa-solid fa-users-gear text-blue-600"></i> Lực Lượng Trực Chiến Tuy Hòa
+              </span>
+              <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">Sẵn Sàng</span>
+            </div>
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-screwdriver-wrench text-blue-600"></i>
+                  <span>Thợ K6 Cơ Động Đang Bật Radar:</span>
+                </div>
+                <b class="text-blue-900 font-mono">18 / 20 Thợ</b>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-store text-datphu-red"></i>
+                  <span>Quán Ăn / Gian Hàng POS Đang Mở Quầy:</span>
+                </div>
+                <b class="text-datphu-red font-mono">29 / 30 Quán</b>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-motorcycle text-emerald-600"></i>
+                  <span>Tài Xế Express Đang Trực Lộ Trình:</span>
+                </div>
+                <b class="text-emerald-800 font-mono">9 / 10 Xe</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NỘI DUNG TAB 2: XẾP HẠNG & TRÁCH NHIỆM (AI LÀM TỐT, AI YẾU) -->
+      <div v-if="leanReportActiveTab === 'accountability'" class="space-y-3.5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          <!-- Top Thợ K6 -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+              <span class="font-black text-slate-900 flex items-center gap-1.5">
+                <i class="fa-solid fa-medal text-amber-500"></i> Top Thợ K6 Năng Suất Nhất
+              </span>
+              <span class="text-[10px] text-slate-500 font-bold">Xếp theo CSAT & Cuốc</span>
+            </div>
+            <div class="space-y-2">
+              <div v-for="(w, idx) in leanTopWorkers" :key="idx" class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                <div>
+                  <div class="font-black text-slate-900 flex items-center gap-1.5">
+                    <span class="w-4 h-4 rounded-full bg-blue-600 text-white text-[9px] flex items-center justify-center font-mono">{{ idx + 1 }}</span>
+                    <span>{{ w.name }}</span>
+                    <span class="text-[9px] font-bold text-amber-600 bg-amber-100 px-1.5 py-0.2 rounded">{{ w.rating }}⭐</span>
+                  </div>
+                  <div class="text-[10px] text-slate-500 mt-0.5">{{ w.skill }} • {{ w.jobs }} Cuốc hoàn thành</div>
+                </div>
+                <div class="text-right">
+                  <div class="font-mono font-bold text-emerald-700">{{ (w.revenue).toLocaleString('vi-VN') }} đ</div>
+                  <div class="text-[9px] text-emerald-600 font-bold">{{ w.status }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Quán POS -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+              <span class="font-black text-slate-900 flex items-center gap-1.5">
+                <i class="fa-solid fa-trophy text-datphu-red"></i> Top Quán Chợ Phiên POS Doanh Thu Cao
+              </span>
+              <span class="text-[10px] text-slate-500 font-bold">In bill K80 chuẩn</span>
+            </div>
+            <div class="space-y-2">
+              <div v-for="(s, idx) in leanTopStores" :key="idx" class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                <div>
+                  <div class="font-black text-slate-900 flex items-center gap-1.5">
+                    <span class="w-4 h-4 rounded-full bg-red-600 text-white text-[9px] flex items-center justify-center font-mono">{{ idx + 1 }}</span>
+                    <span>{{ s.name }}</span>
+                  </div>
+                  <div class="text-[10px] text-slate-500 mt-0.5">{{ s.orders }} đơn • Ra món: {{ s.prepTime }}</div>
+                </div>
+                <div class="text-right">
+                  <div class="font-mono font-bold text-datphu-red">{{ (s.posRevenue).toLocaleString('vi-VN') }} đ</div>
+                  <div class="text-[9px] text-slate-500">Bill TB: {{ (s.avgBill).toLocaleString('vi-VN') }} đ</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NỘI DUNG TAB 3: TÀI CHÍNH P&L THU NHỎ THÁNG -->
+      <div v-if="leanReportActiveTab === 'pnl'" class="space-y-3.5">
+        <div class="bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 text-white rounded-2xl p-4 border border-indigo-700 shadow-md">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-indigo-800/80 pb-3">
+            <div>
+              <div class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">Báo Cáo Kết Quả Kinh Doanh Tháng (P&L Flash)</div>
+              <h4 class="text-base font-black text-white mt-0.5">CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ (MST: 4401020233)</h4>
+            </div>
+            <div class="bg-white/10 px-3 py-1.5 rounded-xl text-center">
+              <div class="text-[9px] text-indigo-200">Biên Lợi Nhuận Ròng</div>
+              <div class="text-base font-black text-emerald-400">75.3%</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 text-xs">
+            <div class="bg-white/5 p-3 rounded-xl border border-white/10">
+              <div class="text-slate-400 text-[10px]">1. Doanh Thu Thuần (Phí Quầy & K6):</div>
+              <div class="text-lg font-black text-white font-mono mt-1">124.500.000 đ</div>
+              <div class="text-[9px] text-emerald-400 mt-0.5">30 Quán POS + 20 Thợ K6</div>
+            </div>
+            <div class="bg-white/5 p-3 rounded-xl border border-white/10">
+              <div class="text-slate-400 text-[10px]">2. Tổng Chi Phí (Biến Đổi & Cố Định):</div>
+              <div class="text-lg font-black text-rose-300 font-mono mt-1">30.700.000 đ</div>
+              <div class="text-[9px] text-slate-300 mt-0.5">Mica A5, Bill K80, Cloud Vercel</div>
+            </div>
+            <div class="bg-white/5 p-3 rounded-xl border border-white/10">
+              <div class="text-slate-400 text-[10px]">3. Lợi Nhuận Trước Thuế (EBITDA):</div>
+              <div class="text-lg font-black text-emerald-300 font-mono mt-1">+ 93.800.000 đ</div>
+              <div class="text-[9px] text-emerald-400 mt-0.5">Đã trích quỹ dự phòng rủi ro</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-stamp text-emerald-600 text-base"></i>
+            <div>
+              <b class="text-slate-900">Tuân thủ hóa đơn máy tính tiền Thông tư 89/2026/TT-BTC:</b>
+              <p class="text-[11px] text-slate-500">Đã đồng bộ 1,420 hóa đơn điện tử EasyInvoice / EasyCA về Cục Thuế Phú Yên.</p>
+            </div>
+          </div>
+          <span class="text-emerald-700 bg-emerald-100 font-black px-2.5 py-1 rounded-xl text-[10px] border border-emerald-300 flex-shrink-0">
+            Hợp Pháp 100%
+          </span>
+        </div>
+      </div>
+
+      <!-- NỘI DUNG TAB 4: CẢNH BÁO SỰ CỐ & NÚT THẮT (BẮT ĐÚNG LỖI) -->
+      <div v-if="leanReportActiveTab === 'triage'" class="space-y-3.5">
+        <div class="space-y-2">
+          <div v-for="b in leanBottlenecks" :key="b.code" class="p-3.5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5"
+            :class="b.status === 'blocked' ? 'bg-red-50 border-red-200' : 'bg-amber-50 border-amber-200'">
+            <div class="flex items-start gap-3">
+              <span class="px-2 py-0.5 rounded-lg font-mono text-[9px] font-black text-white flex-shrink-0 mt-0.5"
+                :class="b.status === 'blocked' ? 'bg-red-600' : 'bg-amber-600'">
+                {{ b.code }}
+              </span>
+              <div>
+                <div class="font-black text-xs text-slate-900">{{ b.type }}: {{ b.desc }}</div>
+                <div class="text-[11px] text-slate-600 mt-0.5 flex items-center gap-1">
+                  <i class="fa-solid fa-wrench text-slate-500"></i>
+                  <span>Xử lý: <b>{{ b.action }}</b></span>
+                </div>
+              </div>
+            </div>
+            <span class="text-[10px] font-black px-2.5 py-1 rounded-xl border flex-shrink-0"
+              :class="b.status === 'blocked' ? 'bg-red-100 text-red-800 border-red-300' : 'bg-emerald-100 text-emerald-800 border-emerald-300'">
+              {{ b.status === 'blocked' ? 'Đã Khóa Vĩnh Viễn' : 'Đã Giải Quyết Xong' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 text-white p-3.5 rounded-2xl border border-slate-800 text-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-headset text-datphu-red text-lg"></i>
+            <div>
+              <div class="font-black text-white">Đường Dây Nóng Khẩn Cấp Trực 24/7 Dân Sinh Tuy Hòa</div>
+              <p class="text-[10px] text-slate-400">Số Hotline duy nhất: 0979 991 898 • Giám đốc trực tiếp nhận cuộc gọi phản ánh chất lượng.</p>
+            </div>
+          </div>
+          <a href="tel:0979991898" class="bg-datphu-red hover:bg-red-700 text-white font-black px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-md transition-all flex-shrink-0">
+            <i class="fa-solid fa-phone"></i> 0979 991 898
+          </a>
+        </div>
+      </div>
+
+      <!-- Footer Modal Chỉ Huy -->
+      <div class="border-t pt-3 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
+        <div class="text-[11px] text-slate-500 text-center sm:text-left">
+          Hệ thống báo cáo tự động hóa thời gian thực • Dành riêng cho Ban Giám Đốc <b class="text-slate-800">CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ</b>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <button 
+            type="button" 
+            @click="exportLeanReportCsv"
+            class="sm:hidden flex-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold py-2 px-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 border border-emerald-300">
+            <i class="fa-solid fa-file-excel"></i> Xuất Excel
+          </button>
+          <button 
+            type="button" 
+            @click="showLeanReportModal = false"
+            class="flex-1 sm:flex-initial bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-6 rounded-xl text-xs transition-all">
+            Đã Nắm Tình Hình
+          </button>
+        </div>
       </div>
 
     </div>
@@ -13839,6 +14228,38 @@
         workerLoginForm: { phone: '', otp: '', otpSent: false },
         // === WORK EXCEL SPREADSHEETS (QUẢN LÝ CÔNG VIỆC & DỊCH VỤ DẠNG EXCEL) ===
       ordersViewMode: 'excel',
+      showLeanReportModal: false,
+      leanReportActiveTab: 'daily',
+      leanDailyMetrics: {
+        netCashIn: 3900000,
+        totalVietQrVolume: 84250000,
+        platformFeeCollected: 4750000,
+        operatingCostToday: 850000,
+        totalOrdersToday: 215,
+        choPhienOrders: 142,
+        workerJobs: 28,
+        expressTrips: 45,
+        rescueCallsHandled: 6,
+        rescueCallsTotal: 6,
+        csatScore: 4.92,
+        activeWorkersOnline: 18,
+        activeMerchantsOpen: 29,
+        activeDriversOnline: 9
+      },
+      leanTopWorkers: [
+        { name: 'Nguyễn Văn Tuấn', skill: 'Điện Lạnh & Máy Lạnh', jobs: 5, revenue: 1850000, rating: 5.0, status: 'Xuất sắc' },
+        { name: 'Trần Đình Trọng', skill: 'Sửa Khóa & Cửa Cuốn', jobs: 4, revenue: 1400000, rating: 4.9, status: 'Đúng giờ' },
+        { name: 'Lê Hoàng Nam', skill: 'Điện Nước Dân Dụng', jobs: 4, revenue: 1250000, rating: 4.8, status: 'Hoàn thành tốt' }
+      ],
+      leanTopStores: [
+        { name: 'Cơm Gà Tuy Hòa Cô Ba', orders: 48, avgBill: 85000, posRevenue: 4080000, prepTime: '11 phút' },
+        { name: 'Bánh Xèo Tôm Nhảy Núi Nhạn', orders: 36, avgBill: 65000, posRevenue: 2340000, prepTime: '13 phút' },
+        { name: 'Cafe Muối Đất Phú', orders: 52, avgBill: 32000, posRevenue: 1664000, prepTime: '6 phút' }
+      ],
+      leanBottlenecks: [
+        { code: 'WARN-01', type: 'Đến chậm', desc: 'Thợ K6 số hiệu #07 có 1 ca đến nhà khách chậm 24 phút do mưa to', action: 'Đã gọi nhắc nhở theo quy chế SOP', status: 'resolved' },
+        { code: 'ALERT-02', type: 'Bom đơn', desc: 'SĐT 09881122xx cố tình đặt 4 đơn ảo lúc 23h30', action: 'Lá chắn sổ đen đã tự động khóa vĩnh viễn', status: 'blocked' }
+      ],
       showProjectTrackerModal: false,
       projectTrackerActiveTab: 'all',
       projectTasks: [
@@ -15970,7 +16391,32 @@
         return this.calcEasyBooksTotalCashIn() - this.calcEasyBooksTotalCashOut();
       },
 
-      openProjectTrackerModal(tab) {
+      openLeanReportModal(tab) {
+      this.leanReportActiveTab = tab || 'daily';
+      this.showLeanReportModal = true;
+    },
+    exportLeanReportCsv() {
+      const headers = ['Phân Hệ', 'Chỉ Số / Đối Tác', 'Chi Tiết Nghiệp Vụ', 'Số Liệu Hôm Nay', 'Đơn Vị', 'Trạng Thái'];
+      const rows = [
+        ['Tài Chính', 'Dòng Tiền Ròng', 'Tiền mặt thực tế công ty giữ sau chi phí', this.leanDailyMetrics.netCashIn, 'VNĐ', 'Thặng dư'],
+        ['Tài Chính', 'Khách Thanh Toán VietQR', 'Dòng tiền tuần hoàn qua NAPAS 247', this.leanDailyMetrics.totalVietQrVolume, 'VNĐ', 'Về thẳng quán & thợ'],
+        ['Tài Chính', 'Phí Nền Tảng Đất Phú', 'Doanh thu phí dịch vụ công ty', this.leanDailyMetrics.platformFeeCollected, 'VNĐ', 'Đã thu'],
+        ['Vận Hành', 'Đơn Hàng Chợ Phiên POS', 'Món ngon & OCOP giao nhanh', this.leanDailyMetrics.choPhienOrders, 'Đơn', 'Giao thành công'],
+        ['Vận Hành', 'Cuốc Thợ K6 Cơ Động', 'Sửa chữa điện nước, khóa, máy lạnh', this.leanDailyMetrics.workerJobs, 'Cuốc', 'Có bảo hành K6'],
+        ['Vận Hành', 'Cuốc Đất Phú Express', 'Giao hàng nhanh & Mua hộ', this.leanDailyMetrics.expressTrips, 'Cuốc', '< 30 phút Tuy Hòa'],
+        ['Cứu Hộ', 'Hotline 0979 991 898', 'Tiếp nhận sự cố dân sinh 24/7', this.leanDailyMetrics.rescueCallsHandled + '/' + this.leanDailyMetrics.rescueCallsTotal, 'Ca', '100% Hoàn tất'],
+        ['Chất Lượng', 'Điểm Đánh Giá CSAT', 'Mức độ hài lòng của cư dân', this.leanDailyMetrics.csatScore, '/ 5.0 Sao', 'Rất tốt']
+      ];
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute('download', 'Bao_Cao_Quan_Tri_Dat_Phu_' + new Date().toISOString().slice(0, 10) + '.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    openProjectTrackerModal(tab) {
       this.projectTrackerActiveTab = tab || 'all';
       this.showProjectTrackerModal = true;
     },
