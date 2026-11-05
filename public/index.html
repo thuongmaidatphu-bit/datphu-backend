@@ -3893,6 +3893,24 @@
                     </div>
                     <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-amber-800"></i>
                   </button>
+                  <!-- 3. Tạo Phiếu Đặt Thợ K6 (15 Phút) - Gom từ trang thợ về Menu Tiện Ích -->
+                  <button 
+                    @click="showNavDropdown = false; openServiceTicket(null, 'urgent')"
+                    class="w-full p-2 rounded-2xl hover:bg-blue-50 text-slate-800 flex items-center justify-between transition-all group border border-transparent hover:border-blue-200">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform shadow-xs">
+                        <i class="fa-solid fa-wrench"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="font-black text-[11px] text-slate-900 group-hover:text-blue-800 transition-colors flex items-center gap-1">
+                          <span>Tạo Phiếu Đặt Thợ (15 Phút)</span>
+                          <span class="bg-blue-100 text-blue-800 text-[7.5px] font-black px-1.5 py-0.2 rounded uppercase">15P</span>
+                        </div>
+                        <div class="text-[9px] text-slate-400">Điện nước, khóa, camera, điện lạnh có mặt cấp tốc</div>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-blue-800"></i>
+                  </button>
                   
                   <!-- 3. Tiến Độ Đơn Của Tôi -->
                   <button 
@@ -4741,29 +4759,10 @@
               </p>
             </div>
 
-            <!-- Cụm Nút Hành Động Trực Tiếp (Hotline, Đặt Hẹn, Quay lại Chợ) -->
-            <div class="flex items-center gap-2 flex-shrink-0 flex-wrap">
-              <a 
-                href="tel:0979991898" 
-                class="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-black px-4 py-2.5 rounded-2xl text-xs sm:text-sm flex items-center gap-2 shadow-floating transition-all active:scale-95">
-                <i class="fa-solid fa-phone-volume animate-bounce"></i>
-                <span>GỌI CỨU HỘ: 0979 991 898</span>
-              </a>
-              <button 
-                type="button"
-                @click="openServiceTicket(null, 'urgent')" 
-                class="bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm flex items-center gap-1.5 shadow-md active:scale-95 transition-all">
-                <i class="fa-solid fa-file-pen"></i>
-                <span>Tạo Phiếu 15 Phút</span>
-              </button>
-              <button 
-                type="button"
-                @click="consumerSpace = 'market'"
-                class="bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-3 py-2.5 rounded-2xl text-xs border border-slate-700 flex items-center gap-1.5 transition-all active:scale-95"
-                title="Quay lại Chợ Phiên Mua Sắm">
-                <span class="text-sm">🍜</span>
-                <span class="hidden sm:inline">Sang Chợ Mua Sắm</span>
-              </button>
+            <!-- Huy hiệu trạng thái ứng trực K6 tinh gọn -->
+            <div class="hidden sm:flex items-center gap-2 bg-slate-900/90 border border-cyan-500/30 px-3.5 py-2 rounded-2xl text-xs text-cyan-300 shadow-inner flex-shrink-0">
+              <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+              <span class="font-bold">Đội Thợ Tuy Hòa Trực Chiến 24/7</span>
             </div>
           </div>
 
