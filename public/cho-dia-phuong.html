@@ -4930,7 +4930,7 @@
                           class="text-xs sm:text-sm font-black text-white group-hover:text-amber-300 transition-colors cursor-pointer truncate">
                           {{ w.name }}
                         </h4>
-                        <i class="fa-solid fa-circle-check text-emerald-400 text-[11px]" title="Đã Xác Thực CCCD & Tay Nghề Chuẩn K6"></i>
+                        <span class="text-[8px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.2 rounded font-black flex items-center gap-1" title="Chuyên viên Đất Phú đã đến tận nhà/cửa tiệm thẩm định quan hệ và tay nghề thực tế"><i class="fa-solid fa-shield-check text-emerald-400"></i> Đã Khảo Sát Tận Nơi</span>
                       </div>
 
                       <div class="text-[11px] text-amber-400 font-bold truncate mt-0.5">
@@ -11703,6 +11703,19 @@
         </button>
       </div>
 
+      <!-- Thông Báo Quy Trình Thẩm Định Khảo Sát Thực Địa -->
+      <div class="bg-blue-50 border border-blue-200 text-blue-950 p-2.5 rounded-2xl flex items-start gap-2.5 text-xs">
+        <span class="w-6 h-6 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
+          <i class="fa-solid fa-magnifying-glass-location"></i>
+        </span>
+        <div class="text-[11px] leading-tight space-y-0.5">
+          <span class="font-black text-blue-900 uppercase">Quy Trình Duyệt Quầy Nghiêm Ngặt K6:</span>
+          <p class="text-blue-800 text-[10px]">
+            Đất Phú <strong>không duyệt tài khoản tự động qua mạng</strong>. Sau khi nộp hồ sơ, chuyên viên địa bàn sẽ liên hệ và trực tiếp đến tận nhà / cửa tiệm khảo sát quan hệ lối xóm, kiểm tra đồ nghề trước khi kích hoạt quầy số.
+          </p>
+        </div>
+      </div>
+
       <!-- Banner Quyền Lợi Thợ K6 -->
       <div class="bg-gradient-to-r from-slate-900 to-slate-950 text-white p-3 rounded-2xl border border-amber-500/30 grid grid-cols-3 gap-2 text-center text-xs">
         <div class="p-1">
@@ -11871,7 +11884,7 @@
           :disabled="!newWorkerForm.name || !newWorkerForm.phone || !newWorkerForm.agreedTerms"
           class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500 hover:from-amber-400 hover:to-orange-400 disabled:opacity-40 disabled:cursor-not-allowed text-slate-950 font-black py-3 rounded-2xl text-xs sm:text-sm shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2">
           <i class="fa-solid fa-file-signature text-sm"></i>
-          <span>Ký Hợp Đồng Điện Tử & Kích Hoạt Quầy Số Ngay ➔</span>
+          <span>Nộp Hồ Sơ & Đặt Lịch Khảo Sát Thực Địa ➔</span>
         </button>
       </div>
 
@@ -19192,7 +19205,7 @@
         this.workerIsOnline = true;
         this.showRegisterWorkerModal = false;
         this.activeTier = 'consumer'; // Đưa người dùng về xem ngay vị trí quầy vừa xuất hiện trên Trang Chủ
-        alert(`🎉 CHÚC MỪNG BẠN!\nThợ "${this.newWorkerForm.name}" đã ký thành công Hợp Đồng Thuê Quầy Số [${genContract}].\nQuầy thợ của bạn đã được niêm yết trực tuyến ngay trên mục "KỸ THUẬT & SỬA CHỮA GIA ĐÌNH" tại Trang Chủ!`);
+        alert(`✅ ĐÃ TIẾP NHẬN HỒ SƠ QUẦY THỢ [${genContract}]!\n\nChào bạn "${this.newWorkerForm.name}", theo Quy Chuẩn Thẩm Định K6 của Đất Phú, trong vòng 24 giờ tới, chuyên viên địa bàn sẽ liên hệ qua SĐT ${this.newWorkerForm.phone} để trực tiếp đến cơ sở/nhà bạn khảo sát quan hệ địa phương, kiểm tra đồ nghề và hướng dẫn dán tem bảo hành trước khi chính thức mở quầy lên Radar công khai.`);
         this.newWorkerForm = { name: '', specialty: 'Điện Nước', phone: '', address: '', agreedTerms: false };
         this.scrollToRepairHub();
       },
