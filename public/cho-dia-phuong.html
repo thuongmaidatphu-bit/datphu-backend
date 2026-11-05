@@ -3978,58 +3978,120 @@
       
       <!-- ĐÃ GỠ KHỐI STORIES BẾP, TIỆM & VƯỜN THEO YÊU CẦU CHO GỌN GÀNG -->
 
-      <!-- SĂN DEAL GIỜ VÀNG (FLASH SALE CHỢ PHIÊN) -->
+      <!-- SĂN DEAL GIỜ VÀNG (FLASH SALE CHỢ PHIÊN CAO CẤP) -->
       <div>
         <div class="bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 rounded-3xl p-4 sm:p-5 text-white shadow-floating relative overflow-hidden">
-          <div class="flex items-center justify-between mb-3">
+          
+          <!-- Họa tiết tia sét chìm trang trí background -->
+          <div class="absolute -right-6 -bottom-6 text-white/10 text-9xl font-black pointer-events-none select-none">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+
+          <!-- Header Giờ Vàng & Đồng Hồ Đếm Ngược -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3.5 relative z-10">
             <div class="flex items-center gap-2">
-              <span class="text-xs sm:text-sm font-black uppercase tracking-wider bg-white text-datphu-red px-2.5 py-1 rounded-xl shadow-sm flex items-center gap-1">
-                <i class="fa-solid fa-bolt text-amber-500"></i> GIỜ VÀNG ĐẤT PHÚ
+              <span class="text-xs sm:text-sm font-black uppercase tracking-wider bg-white text-datphu-red px-3 py-1 rounded-xl shadow-md flex items-center gap-1.5">
+                <i class="fa-solid fa-bolt text-amber-500 animate-bounce"></i> GIỜ VÀNG ĐẤT PHÚ
               </span>
-              <span class="text-xs text-white/90 font-bold hidden sm:inline">Phiên Trưa Siêu Giảm Giá</span>
+              <span class="text-xs text-amber-200 font-bold hidden sm:inline flex items-center gap-1">
+                <i class="fa-solid fa-fire text-amber-400"></i> Phiên Trưa Siêu Giảm Giá
+              </span>
             </div>
 
-            <!-- Đồng Hồ Đếm Ngược -->
-            <div class="flex items-center gap-1.5 text-xs sm:text-sm font-mono font-black">
-              <span class="text-white/80 text-[10px] uppercase font-bold mr-1 hidden sm:inline">Kết thúc trong:</span>
-              <span class="bg-black/40 px-2 py-0.5 rounded-lg">{{ countdown.hours }}</span>:
-              <span class="bg-black/40 px-2 py-0.5 rounded-lg">{{ countdown.minutes }}</span>:
-              <span class="bg-black/40 px-2 py-0.5 rounded-lg">{{ countdown.seconds }}</span>
+            <!-- Đồng Hồ Đếm Ngược Kiểu Hộp Số Đẹp -->
+            <div class="flex items-center gap-1.5 text-xs font-mono font-black self-end sm:self-auto">
+              <span class="text-white/90 text-[10px] uppercase font-bold mr-1 flex items-center gap-1">
+                <i class="fa-regular fa-clock text-amber-300"></i> Kết thúc trong:
+              </span>
+              <span class="bg-black/50 backdrop-blur-xs text-amber-300 px-2 py-1 rounded-lg text-xs font-black shadow-inner border border-white/10">{{ countdown.hours }}</span>
+              <span class="text-amber-300">:</span>
+              <span class="bg-black/50 backdrop-blur-xs text-amber-300 px-2 py-1 rounded-lg text-xs font-black shadow-inner border border-white/10">{{ countdown.minutes }}</span>
+              <span class="text-amber-300">:</span>
+              <span class="bg-black/50 backdrop-blur-xs text-amber-300 px-2 py-1 rounded-lg text-xs font-black shadow-inner border border-white/10">{{ countdown.seconds }}</span>
             </div>
           </div>
 
-          <!-- Carousel Món Flash Sale (Responsive 2 to 4 cột) -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+          <!-- Thanh Chuyển 4 Khung Giờ Trong Ngày -->
+          <div class="grid grid-cols-4 gap-1.5 sm:gap-2 mb-3.5 bg-black/25 backdrop-blur-xs p-1 rounded-2xl relative z-10">
+            <button 
+              type="button"
+              @click="activeFlashSlot = '09:00'"
+              :class="activeFlashSlot === '09:00' ? 'bg-white text-slate-900 shadow-sm font-black' : 'text-white/70 hover:text-white'"
+              class="py-1.5 sm:py-2 px-1 rounded-xl transition-all text-center">
+              <div class="text-xs sm:text-sm font-mono font-black leading-tight">09:00</div>
+              <div class="text-[8px] sm:text-[9px] font-medium leading-tight">Đã kết thúc</div>
+            </button>
+            <button 
+              type="button"
+              @click="activeFlashSlot = '11:30'"
+              :class="activeFlashSlot === '11:30' ? 'bg-white text-slate-900 shadow-md font-black' : 'text-white/70 hover:text-white'"
+              class="py-1.5 sm:py-2 px-1 rounded-xl transition-all text-center relative">
+              <div class="text-xs sm:text-sm font-mono font-black text-datphu-red leading-tight flex items-center justify-center gap-1">
+                <i class="fa-solid fa-fire text-amber-500 text-[10px] animate-pulse"></i> 11:30
+              </div>
+              <div class="text-[8px] sm:text-[9px] font-black text-red-600 uppercase leading-tight">Đang Diễn Ra</div>
+            </button>
+            <button 
+              type="button"
+              @click="activeFlashSlot = '15:00'"
+              :class="activeFlashSlot === '15:00' ? 'bg-white text-slate-900 shadow-sm font-black' : 'text-white/70 hover:text-white'"
+              class="py-1.5 sm:py-2 px-1 rounded-xl transition-all text-center">
+              <div class="text-xs sm:text-sm font-mono font-black leading-tight">15:00</div>
+              <div class="text-[8px] sm:text-[9px] font-medium text-amber-200 leading-tight">Sắp diễn ra</div>
+            </button>
+            <button 
+              type="button"
+              @click="activeFlashSlot = '18:30'"
+              :class="activeFlashSlot === '18:30' ? 'bg-white text-slate-900 shadow-sm font-black' : 'text-white/70 hover:text-white'"
+              class="py-1.5 sm:py-2 px-1 rounded-xl transition-all text-center">
+              <div class="text-xs sm:text-sm font-mono font-black leading-tight">18:30</div>
+              <div class="text-[8px] sm:text-[9px] font-medium text-amber-200 leading-tight">Sắp diễn ra</div>
+            </button>
+          </div>
+
+          <!-- Lưới 4 Món Flash Sale Điền Kín 100% Khung Hình (Không Bị Trống) -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5 relative z-10">
             <div 
               v-for="deal in flashDeals" 
               :key="deal.id"
-              class="bg-white text-slate-900 rounded-2xl sm:rounded-3xl p-3 shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+              class="bg-white text-slate-900 rounded-2xl sm:rounded-3xl p-3 shadow-md flex flex-col justify-between hover:-translate-y-1 hover:shadow-xl transition-all border border-slate-100">
               <div>
-                <div class="relative">
-                  <img :src="deal.image" class="w-full h-24 sm:h-28 object-cover rounded-xl mb-2">
-                  <span class="absolute top-1.5 left-1.5 bg-datphu-red text-white text-[9px] font-black px-2 py-0.5 rounded-md shadow">
+                <div class="relative overflow-hidden rounded-xl sm:rounded-2xl mb-2">
+                  <img :src="deal.image" :alt="deal.name" class="w-full h-24 sm:h-32 object-cover rounded-xl sm:rounded-2xl hover:scale-105 transition-transform duration-300">
+                  <span class="absolute top-1.5 left-1.5 bg-gradient-to-r from-red-600 to-rose-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md shadow-sm">
                     -{{ deal.discountPercent }}%
                   </span>
+                  <span v-if="deal.badge" class="absolute top-1.5 right-1.5 bg-amber-400 text-slate-950 text-[8px] font-black px-1.5 py-0.5 rounded-md shadow-xs uppercase">
+                    {{ deal.badge }}
+                  </span>
                 </div>
-                <div class="text-[11px] sm:text-xs font-black text-slate-900 line-clamp-1 leading-snug">{{ deal.name }}</div>
-                <div class="flex items-center gap-1.5 mt-1">
+                <h4 class="text-[11px] sm:text-xs font-black text-slate-900 line-clamp-1 leading-snug" :title="deal.name">{{ deal.name }}</h4>
+                <div class="flex items-baseline gap-1.5 mt-1">
                   <span class="text-xs sm:text-sm font-black text-datphu-red">{{ formatCurrency(deal.salePrice) }}</span>
                   <span class="text-[9px] sm:text-[10px] text-slate-400 line-through">{{ formatCurrency(deal.originalPrice) }}</span>
                 </div>
               </div>
 
-              <!-- Thanh đo cháy hàng -->
-              <div class="mt-2.5">
-                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                  <div class="bg-gradient-to-r from-amber-500 to-red-600 h-2 rounded-full" :style="{ width: deal.soldPercent + '%' }"></div>
+              <!-- Thanh đo cháy hàng & Nút Săn Ngay -->
+              <div class="mt-2.5 space-y-1.5">
+                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden border border-slate-200/50">
+                  <div class="bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 h-2 rounded-full transition-all" :style="{ width: deal.soldPercent + '%' }"></div>
                 </div>
-                <div class="flex justify-between text-[9px] font-bold text-slate-500 mt-1">
-                  <span>Đã bán {{ deal.soldCount }}</span>
-                  <button @click="addDealToCart(deal)" class="text-datphu-red font-black uppercase hover:underline">Săn Ngay</button>
+                <div class="flex justify-between items-center text-[9px] font-bold text-slate-500">
+                  <span class="text-rose-600 flex items-center gap-0.5"><i class="fa-solid fa-fire text-[8px]"></i> Đã bán {{ deal.soldCount }}</span>
+                  <span class="text-slate-400 font-mono">{{ deal.soldPercent }}%</span>
                 </div>
+                <button 
+                  type="button"
+                  @click="addDealToCart(deal)" 
+                  class="w-full py-1.5 px-2 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-[11px] rounded-xl shadow-xs flex items-center justify-center gap-1 active:scale-95 transition-all">
+                  <i class="fa-solid fa-cart-plus text-[10px]"></i>
+                  <span>Săn Ngay</span>
+                </button>
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -14814,8 +14876,9 @@
             originalPrice: 45000,
             discountPercent: 35,
             soldCount: '18/20 suất',
-            soldPercent: 88,
-            image: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=300&q=80',
+            soldPercent: 90,
+            badge: 'SẮP CHÁY HÀNG',
+            image: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=400&q=80',
             storeId: 'st_1'
           },
           {
@@ -14825,11 +14888,43 @@
             originalPrice: 25000,
             discountPercent: 40,
             soldCount: '25/30 ly',
-            soldPercent: 82,
-            image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=300&q=80',
-            storeId: 'st_2'
+            soldPercent: 83,
+            badge: 'BÁN CHẠY NHẤT',
+            image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=400&q=80',
+            storeId: 'st_tea'
+          },
+          {
+            id: 'deal_3',
+            name: 'Bánh Xèo Tôm Nhảy Núi Nhạn',
+            salePrice: 25000,
+            originalPrice: 40000,
+            discountPercent: 38,
+            soldCount: '22/25 cái',
+            soldPercent: 88,
+            badge: 'ĐẶC SẢN NẪU',
+            image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80',
+            storeId: 'st_3'
+          },
+          {
+            id: 'deal_4',
+            name: 'Bò Một Nắng Muối Kiến (250g)',
+            salePrice: 129000,
+            originalPrice: 180000,
+            discountPercent: 28,
+            soldCount: '14/15 gói',
+            soldPercent: 93,
+            badge: 'OCOP 4 SAO',
+            image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80',
+            storeId: 'st_5'
           }
         ],
+        flashSaleSlots: [
+          { time: '09:00', label: 'Sáng', status: 'ended', title: 'Đã kết thúc' },
+          { time: '11:30', label: 'Trưa', status: 'active', title: 'Đang diễn ra' },
+          { time: '15:00', label: 'Xế chiều', status: 'upcoming', title: 'Sắp diễn ra' },
+          { time: '18:30', label: 'Tối', status: 'upcoming', title: 'Sắp diễn ra' }
+        ],
+        activeFlashSlot: '11:30',
 
         // Consumer State & Đa Dạng Hàng Hóa Dịch Vụ
         diverseMarketServices: [
