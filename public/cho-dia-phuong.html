@@ -3910,9 +3910,13 @@
           @click="consumerSpace = 'market'"
           class="flex-1 py-2.5 sm:py-3.5 px-2.5 sm:px-3 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-98 relative overflow-hidden"
           :class="consumerSpace === 'market' ? 'bg-white text-datphu-red shadow-md border-2 border-datphu-red/30 ring-2 ring-red-500/10' : 'text-slate-600 hover:text-slate-950 hover:bg-white/50'">
-          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-base sm:text-lg shadow-2xs shrink-0"
-               :class="consumerSpace === 'market' ? 'bg-red-50 text-datphu-red' : 'bg-slate-200/60 text-slate-600'">
-            🏪
+          <div class="relative w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shadow-2xs shrink-0 transition-transform"
+               :class="consumerSpace === 'market' ? 'bg-gradient-to-tr from-datphu-red to-rose-500 text-white shadow-md ring-2 ring-red-400/20' : 'bg-red-50 text-datphu-red border border-red-200/60'">
+            <i class="fa-solid fa-shop text-xs sm:text-sm"></i>
+            <span class="absolute -top-1 -right-1 flex h-2 w-2" v-if="consumerSpace === 'market'">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-400"></span>
+            </span>
           </div>
           <div class="text-left leading-tight min-w-0">
             <div class="flex items-center gap-1.5">
@@ -3933,9 +3937,13 @@
           @click="consumerSpace = 'worker'"
           class="flex-1 py-2.5 sm:py-3.5 px-2.5 sm:px-3 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-98 relative overflow-hidden"
           :class="consumerSpace === 'worker' ? 'bg-gradient-to-r from-datphu-navy via-blue-900 to-indigo-950 text-white shadow-xl border-2 border-blue-500/60 ring-2 ring-blue-500/20' : 'text-slate-600 hover:text-slate-950 hover:bg-white/50'">
-          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-base sm:text-lg shadow-2xs shrink-0"
-               :class="consumerSpace === 'worker' ? 'bg-blue-500/30 text-blue-300 border border-blue-400/40' : 'bg-slate-200/60 text-slate-600'">
-            🛠️
+          <div class="relative w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shadow-2xs shrink-0 transition-transform"
+               :class="consumerSpace === 'worker' ? 'bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-md ring-2 ring-blue-400/20' : 'bg-blue-50 text-blue-700 border border-blue-200/60'">
+            <i class="fa-solid fa-screwdriver-wrench text-xs sm:text-sm"></i>
+            <span class="absolute -top-1 -right-1 flex h-2 w-2" v-if="consumerSpace === 'worker'">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+            </span>
           </div>
           <div class="text-left leading-tight min-w-0">
             <div class="flex items-center gap-1.5">
