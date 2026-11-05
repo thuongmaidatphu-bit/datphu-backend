@@ -844,6 +844,14 @@
           <i class="fa-solid fa-qrcode text-xs"></i>
           <span>In Bảng QR</span>
         </button>
+
+        <button 
+          @click="openRegisterFlashDealModal"
+          class="bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white px-2.5 py-2 rounded-2xl text-[10px] font-black flex items-center gap-1 shadow-sm transition-all active:scale-95"
+          title="Đăng ký đưa món ăn của quán lên Giờ Vàng trang chủ">
+          <i class="fa-solid fa-bolt text-amber-300"></i>
+          <span>Bán Giờ Vàng</span>
+        </button>
       </div>
 
       <!-- TABS QUẢN TRỊ GIAN HÀNG -->
@@ -3989,13 +3997,22 @@
 
           <!-- Header Giờ Vàng & Đồng Hồ Đếm Ngược -->
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3.5 relative z-10">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
               <span class="text-xs sm:text-sm font-black uppercase tracking-wider bg-white text-datphu-red px-3 py-1 rounded-xl shadow-md flex items-center gap-1.5">
                 <i class="fa-solid fa-bolt text-amber-500 animate-bounce"></i> GIỜ VÀNG ĐẤT PHÚ
               </span>
               <span class="text-xs text-amber-200 font-bold hidden sm:inline flex items-center gap-1">
                 <i class="fa-solid fa-fire text-amber-400"></i> Phiên Trưa Siêu Giảm Giá
               </span>
+              <!-- NÚT ĐĂNG KÝ BÁN GIỜ VÀNG CHO TIỂU THƯƠNG -->
+              <button 
+                type="button"
+                @click="openRegisterFlashDealModal"
+                class="bg-white/20 hover:bg-white text-white hover:text-datphu-red text-[10px] font-black px-2.5 py-1 rounded-xl transition-all flex items-center gap-1 border border-white/30 backdrop-blur-xs shadow-xs"
+                title="Dành cho chủ quán: Đăng ký đưa món lên Giờ Vàng trang chủ">
+                <i class="fa-solid fa-plus-circle text-amber-300"></i>
+                <span>Quán Đăng Ký Bán Giờ Vàng</span>
+              </button>
             </div>
 
             <!-- Đồng Hồ Đếm Ngược Kiểu Hộp Số Đẹp -->
@@ -8813,6 +8830,211 @@
           @click="showEcomRegulationsModal = false"
           class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-6 rounded-xl text-xs transition-all w-full sm:w-auto">
           Đã Hiểu & Đóng Hộp Thoại
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: ĐĂNG KÝ ĐĂNG TẢI LÊN KHUNG GIỜ VÀNG TRANG CHỦ (FLASH SALE PORTAL) -->
+  <!-- ========================================================================= -->
+  <div v-if="showRegisterFlashDealModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 animate-fadeIn">
+    <div class="bg-white w-full max-w-2xl rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xl max-h-[94vh] overflow-y-auto border border-slate-200">
+      
+      <!-- Tiêu đề Modal -->
+      <div class="flex items-center justify-between border-b pb-3.5">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-red-600 via-rose-600 to-amber-500 text-white flex items-center justify-center text-lg font-black shadow-lg">
+            <i class="fa-solid fa-bolt text-amber-300"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-black text-slate-900 text-base">ĐĂNG KÝ ĐƯA MÓN LÊN KHUNG GIỜ VÀNG</h3>
+              <span class="bg-red-100 text-datphu-red text-[10px] font-black px-2 py-0.5 rounded-full border border-red-300">Trang Chủ Sàn</span>
+            </div>
+            <p class="text-[11px] text-slate-500">
+              Tiếp cận 15.000+ cư dân & du khách Tuy Hòa • 0% Phí chiết khấu sàn • Hotline: <b class="text-datphu-red">0979 991 898</b>
+            </p>
+          </div>
+        </div>
+        <button 
+          type="button" 
+          @click="showRegisterFlashDealModal = false"
+          class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Form Đăng Ký Deal Giờ Vàng -->
+      <div class="space-y-3.5 text-xs">
+        
+        <!-- Chọn Quán Bán Hàng -->
+        <div>
+          <label class="block font-black text-slate-800 mb-1">1. Quán Ăn / Gian Hàng Của Bạn:</label>
+          <select 
+            v-model="newFlashDealForm.storeId"
+            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:ring-1 focus:ring-datphu-red focus:outline-none">
+            <option v-for="s in stores" :key="s.id" :value="s.id">{{ s.name }} ({{ s.address }})</option>
+          </select>
+        </div>
+
+        <!-- Tên Món Ăn -->
+        <div>
+          <label class="block font-black text-slate-800 mb-1">2. Tên Món Ăn / Sản Phẩm Khuyến Mãi:</label>
+          <input 
+            type="text" 
+            v-model="newFlashDealForm.name"
+            placeholder="VD: Cơm Gà Xé Lá É, Cà Phê Muối Kem Béo, Bánh Xèo Tôm Nhảy..."
+            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:ring-1 focus:ring-datphu-red focus:outline-none">
+        </div>
+
+        <!-- Khung Giờ Muốn Mở Bán (4 Khung Giờ) -->
+        <div>
+          <label class="block font-black text-slate-800 mb-1">3. Khung Giờ Vàng Muốn Mở Bán:</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <label 
+              class="border rounded-xl p-2.5 cursor-pointer flex flex-col items-center justify-center text-center transition-all"
+              :class="newFlashDealForm.slotTime === '09:00' ? 'bg-red-50 border-datphu-red text-datphu-red font-black' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">
+              <input type="radio" value="09:00" v-model="newFlashDealForm.slotTime" class="hidden">
+              <span class="font-mono text-xs font-black">09:00 - 11:00</span>
+              <span class="text-[9px]">Phiên Sáng</span>
+            </label>
+            <label 
+              class="border rounded-xl p-2.5 cursor-pointer flex flex-col items-center justify-center text-center transition-all"
+              :class="newFlashDealForm.slotTime === '11:30' ? 'bg-red-50 border-datphu-red text-datphu-red font-black' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">
+              <input type="radio" value="11:30" v-model="newFlashDealForm.slotTime" class="hidden">
+              <span class="font-mono text-xs font-black text-rose-600">11:30 - 13:30</span>
+              <span class="text-[9px] font-bold text-red-600">Phiên Trưa (Hot)</span>
+            </label>
+            <label 
+              class="border rounded-xl p-2.5 cursor-pointer flex flex-col items-center justify-center text-center transition-all"
+              :class="newFlashDealForm.slotTime === '15:00' ? 'bg-red-50 border-datphu-red text-datphu-red font-black' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">
+              <input type="radio" value="15:00" v-model="newFlashDealForm.slotTime" class="hidden">
+              <span class="font-mono text-xs font-black">15:00 - 17:00</span>
+              <span class="text-[9px]">Phiên Xế Chiều</span>
+            </label>
+            <label 
+              class="border rounded-xl p-2.5 cursor-pointer flex flex-col items-center justify-center text-center transition-all"
+              :class="newFlashDealForm.slotTime === '18:30' ? 'bg-red-50 border-datphu-red text-datphu-red font-black' : 'border-slate-200 text-slate-600 hover:bg-slate-50'">
+              <input type="radio" value="18:30" v-model="newFlashDealForm.slotTime" class="hidden">
+              <span class="font-mono text-xs font-black">18:30 - 20:30</span>
+              <span class="text-[9px]">Phiên Tối</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Thiết Lập Giá Gốc & Giá Khuyến Mãi -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+          <div>
+            <label class="block font-bold text-slate-700 text-[11px] mb-1">Giá gốc niêm yết (đ):</label>
+            <input 
+              type="number" 
+              v-model.number="newFlashDealForm.originalPrice" 
+              placeholder="45000"
+              class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 font-mono font-bold text-slate-900 focus:ring-1 focus:ring-datphu-red focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-datphu-red text-[11px] mb-1">Giá Giờ Vàng ưu đãi (đ):</label>
+            <input 
+              type="number" 
+              v-model.number="newFlashDealForm.salePrice" 
+              placeholder="29000"
+              class="w-full bg-white border border-red-300 rounded-xl px-2.5 py-1.5 font-mono font-black text-datphu-red focus:ring-1 focus:ring-datphu-red focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 text-[11px] mb-1">Mức giảm tự tính:</label>
+            <div class="h-[34px] bg-red-100 rounded-xl flex items-center justify-center font-black text-datphu-red border border-red-300">
+              Giảm -{{ calcFlashDiscountPercent() }}%
+            </div>
+          </div>
+        </div>
+
+        <!-- Số Lượng Mở Bán & Huy Hiệu Kích Thích -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div>
+            <label class="block font-black text-slate-800 mb-1">4. Số Lượng Suất Mở Bán (Khan hiếm):</label>
+            <div class="flex items-center gap-2">
+              <input 
+                type="number" 
+                v-model.number="newFlashDealForm.totalSlots" 
+                min="5" 
+                max="100" 
+                class="w-24 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 font-mono font-bold text-slate-900 focus:ring-1 focus:ring-datphu-red focus:outline-none">
+              <span class="text-slate-500 text-[11px]">suất (Khuyến nghị 15 - 30 suất để cháy hàng nhanh)</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-black text-slate-800 mb-1">5. Huy Hiệu Nổi Bật (Badge):</label>
+            <select 
+              v-model="newFlashDealForm.badge"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 font-bold text-slate-800 focus:ring-1 focus:ring-datphu-red focus:outline-none">
+              <option value="SẮP CHÁY HÀNG">🔥 SẮP CHÁY HÀNG</option>
+              <option value="BÁN CHẠY NHẤT">⭐ BÁN CHẠY NHẤT</option>
+              <option value="ĐẶC SẢN NẪU">🌾 ĐẶC SẢN NẪU</option>
+              <option value="OCOP 4 SAO">🏅 OCOP 4 SAO</option>
+              <option value="MÓN MỚI RA LÒ">✨ MÓN MỚI RA LÒ</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Link Ảnh Món Ăn & Xem Trước (Preview) -->
+        <div>
+          <label class="block font-black text-slate-800 mb-1">6. Link Ảnh Món Ăn:</label>
+          <div class="flex items-center gap-2">
+            <input 
+              type="text" 
+              v-model="newFlashDealForm.image"
+              placeholder="https://..."
+              class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono text-slate-800 focus:ring-1 focus:ring-datphu-red focus:outline-none">
+            <img :src="newFlashDealForm.image" class="w-9 h-9 rounded-xl object-cover border border-slate-200 flex-shrink-0" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=200&q=80'">
+          </div>
+        </div>
+
+        <!-- Thẻ Xem Trước Hiển Thị (Live Preview Card) -->
+        <div class="bg-gradient-to-r from-red-500/10 to-amber-500/10 p-3 rounded-2xl border border-red-200">
+          <div class="text-[10px] font-black uppercase text-datphu-red mb-1.5 flex items-center gap-1">
+            <i class="fa-solid fa-eye"></i> Xem Trước Khi Hiển Thị Trên Trang Chủ:
+          </div>
+          <div class="bg-white max-w-xs mx-auto rounded-2xl p-2.5 border border-slate-200 shadow-sm flex items-center gap-2.5">
+            <img :src="newFlashDealForm.image" class="w-16 h-16 rounded-xl object-cover flex-shrink-0" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=200&q=80'">
+            <div class="flex-1 min-w-0">
+              <span class="bg-datphu-red text-white text-[8px] font-black px-1.5 py-0.2 rounded">-{{ calcFlashDiscountPercent() }}%</span>
+              <span class="bg-amber-400 text-slate-950 text-[8px] font-black px-1 py-0.2 rounded ml-1">{{ newFlashDealForm.badge }}</span>
+              <div class="font-black text-xs text-slate-900 truncate mt-0.5">{{ newFlashDealForm.name || 'Tên Món Ăn' }}</div>
+              <div class="flex items-baseline gap-1 mt-0.5">
+                <span class="font-black text-datphu-red text-xs">{{ formatCurrency(newFlashDealForm.salePrice || 0) }}</span>
+                <span class="text-[9px] text-slate-400 line-through">{{ formatCurrency(newFlashDealForm.originalPrice || 0) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cam Kết Chất Lượng & ATTP -->
+        <div class="flex items-center gap-2 pt-1">
+          <input type="checkbox" id="agreeFlashTerms" v-model="newFlashDealForm.agreeTerms" class="rounded text-datphu-red focus:ring-datphu-red">
+          <label for="agreeFlashTerms" class="text-[11px] text-slate-600 cursor-pointer select-none">
+            Cam kết món ăn chế biến chuẩn ATTP, đúng định lượng và giá niêm yết theo quy chế Chợ Phiên.
+          </label>
+        </div>
+
+      </div>
+
+      <!-- Footer Modal -->
+      <div class="border-t pt-3 flex items-center justify-between gap-2.5">
+        <button 
+          type="button" 
+          @click="showRegisterFlashDealModal = false"
+          class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl text-xs transition-all">
+          Hủy Bỏ
+        </button>
+        <button 
+          type="button" 
+          @click="submitRegisterFlashDeal"
+          class="bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black py-2.5 px-6 rounded-xl text-xs shadow-md flex items-center gap-1.5 active:scale-95 transition-all">
+          <i class="fa-solid fa-bolt text-amber-300"></i>
+          <span>Xác Nhận Đưa Món Lên Giờ Vàng Ngay</span>
         </button>
       </div>
 
@@ -14272,6 +14494,18 @@
         workerLoginForm: { phone: '', otp: '', otpSent: false },
         // === WORK EXCEL SPREADSHEETS (QUẢN LÝ CÔNG VIỆC & DỊCH VỤ DẠNG EXCEL) ===
       ordersViewMode: 'excel',
+      showRegisterFlashDealModal: false,
+      newFlashDealForm: {
+        storeId: 'st_1',
+        name: 'Cơm Gà Xé Lá É Cô Diệp',
+        originalPrice: 45000,
+        salePrice: 29000,
+        slotTime: '11:30',
+        totalSlots: 20,
+        badge: 'SẮP CHÁY HÀNG',
+        image: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=400&q=80',
+        agreeTerms: true
+      },
       showLeanReportModal: false,
       leanReportActiveTab: 'daily',
       leanDailyMetrics: {
@@ -16468,6 +16702,65 @@
         return this.calcEasyBooksTotalCashIn() - this.calcEasyBooksTotalCashOut();
       },
 
+      openRegisterFlashDealModal() {
+        if (this.currentMerchantStore) {
+          this.newFlashDealForm.storeId = this.currentMerchantStore.id;
+          if (this.currentMerchantStore.products && this.currentMerchantStore.products.length > 0) {
+            const p = this.currentMerchantStore.products[0];
+            this.newFlashDealForm.name = p.name;
+            this.newFlashDealForm.originalPrice = p.price;
+            this.newFlashDealForm.salePrice = Math.round(p.price * 0.7 / 1000) * 1000;
+            this.newFlashDealForm.image = p.image || this.newFlashDealForm.image;
+          }
+        }
+        this.showRegisterFlashDealModal = true;
+      },
+      calcFlashDiscountPercent() {
+        if (!this.newFlashDealForm.originalPrice || this.newFlashDealForm.originalPrice <= 0) return 0;
+        if (!this.newFlashDealForm.salePrice || this.newFlashDealForm.salePrice <= 0) return 0;
+        const discount = ((this.newFlashDealForm.originalPrice - this.newFlashDealForm.salePrice) / this.newFlashDealForm.originalPrice) * 100;
+        return Math.max(0, Math.round(discount));
+      },
+      submitRegisterFlashDeal() {
+        if (!this.newFlashDealForm.name.trim()) {
+          alert('Vui lòng nhập tên món ăn/sản phẩm đăng ký Giờ Vàng!');
+          return;
+        }
+        if (this.newFlashDealForm.salePrice >= this.newFlashDealForm.originalPrice) {
+          alert('Giá Giờ Vàng phải thấp hơn giá gốc niêm yết!');
+          return;
+        }
+        if (this.calcFlashDiscountPercent() < 15) {
+          alert('Theo quy chế Chợ Phiên, mức giảm giá Giờ Vàng tối thiểu là 15% để thu hút khách!');
+          return;
+        }
+        if (!this.newFlashDealForm.agreeTerms) {
+          alert('Vui lòng cam kết đảm bảo vệ sinh an toàn thực phẩm và đúng giá niêm yết!');
+          return;
+        }
+
+        const store = this.stores.find(s => s.id === this.newFlashDealForm.storeId) || this.stores[0];
+        const newDeal = {
+          id: 'deal_' + Date.now(),
+          name: this.newFlashDealForm.name.trim(),
+          salePrice: Number(this.newFlashDealForm.salePrice),
+          originalPrice: Number(this.newFlashDealForm.originalPrice),
+          discountPercent: this.calcFlashDiscountPercent(),
+          soldCount: '1/' + this.newFlashDealForm.totalSlots + ' suất',
+          soldPercent: 5,
+          badge: this.newFlashDealForm.badge,
+          image: this.newFlashDealForm.image,
+          storeId: store.id
+        };
+
+        this.flashDeals.unshift(newDeal);
+        if (this.flashDeals.length > 8) {
+          this.flashDeals.pop();
+        }
+
+        this.showRegisterFlashDealModal = false;
+        alert('🎉 ĐĂNG TẢI THÀNH CÔNG!\n\nMón: ' + newDeal.name + '\nQuán: ' + store.name + '\nGiá ưu đãi Giờ Vàng: ' + this.formatCurrency(newDeal.salePrice) + ' (-' + newDeal.discountPercent + '%)\n\nMón của bạn đã được đưa lên Khung Giờ Vàng Trang Chủ Đất Phú!');
+      },
       openLeanReportModal(tab) {
       if (this.activeTier !== 'master') {
         const pin = prompt('🔒 BẢO MẬT BAN GIÁM ĐỐC:\nVui lòng nhập mã PIN quản trị tối cao:');
