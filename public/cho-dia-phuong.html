@@ -3849,6 +3849,34 @@
                   </button>
                 </div>
 
+                <!-- TIẾN ĐỘ ĐƠN ĐANG CHẠY & GỌI / HỦY ĐƠN 1 CHẠM (GOM TỪ ICON TRỢ LÝ NỔI VỀ MENU TIỆN ÍCH) -->
+                <div v-if="latestActiveOrder" class="bg-amber-50 border border-amber-200 rounded-2xl p-2.5 flex items-center justify-between gap-2 shadow-2xs">
+                  <div class="min-w-0 flex-1 text-left">
+                    <div class="text-[9px] font-bold text-amber-800 flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+                      <span>Đơn đang xử lý: #{{ latestActiveOrder.id }}</span>
+                    </div>
+                    <div class="text-xs font-black text-slate-900 truncate">{{ latestActiveOrder.partnerName }}</div>
+                    <div class="text-[9px] text-amber-700 truncate">{{ latestActiveOrder.statusText }}</div>
+                  </div>
+                  <div class="flex items-center gap-1 flex-shrink-0">
+                    <a 
+                      :href="'tel:' + latestActiveOrder.partnerPhone" 
+                      class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center justify-center text-xs transition-colors" 
+                      title="Gọi đối tác">
+                      <i class="fa-solid fa-phone"></i>
+                    </a>
+                    <!-- ICON HỦY ĐƠN 1 CHẠM -->
+                    <button 
+                      type="button"
+                      @click="quickCancelOrder(latestActiveOrder)" 
+                      class="w-7 h-7 rounded-lg bg-rose-100 hover:bg-rose-600 text-rose-600 hover:text-white flex items-center justify-center text-xs transition-colors shadow-xs" 
+                      title="Hủy đơn nhanh 1 chạm">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+
                 <!-- PHÂN HỆ CƯ DÂN & ĐẶT NHANH -->
                 <div class="space-y-1">
                   <div class="text-[9px] font-black uppercase text-slate-400 px-2 tracking-wider flex items-center justify-between">
@@ -5258,127 +5286,7 @@
       </div>
     </footer>
 
-    <!-- ========================================================================= -->
-    <!-- 1 SINGLE MASTER FLOATING ICON (GỘP TẤT CẢ TIỆN ÍCH VÀO 1 ICON DUY NHẤT)      -->
-    <!-- ========================================================================= -->
-    <div class="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end pointer-events-auto">
-      
-      <!-- MENU TIỆN ÍCH BUNG RA KHI BẤM VÀO ICON DUY NHẤT NÀY -->
-      <div 
-        v-if="showFloatingHub"
-        class="bg-white/95 backdrop-blur-md text-slate-900 rounded-3xl p-3 shadow-2xl border-2 border-slate-200 w-72 mb-2.5 space-y-2 animate-slideUp">
-        
-        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-          <div class="flex items-center gap-2">
-            <div class="w-6 h-6 rounded-lg bg-datphu-red text-white flex items-center justify-center text-xs font-black">
-              <i class="fa-solid fa-bolt"></i>
-            </div>
-            <span class="text-xs font-black text-slate-900">Trợ Lý Tiện Ích Đất Phú</span>
-          </div>
-          <button 
-            type="button" 
-            @click="showFloatingHub = false" 
-            class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center text-[10px]">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-
-        <!-- 1. TIẾN ĐỘ ĐƠN ĐANG CHẠY & ICON HỦY ĐƠN 1 CHẠM -->
-        <div v-if="latestActiveOrder" class="bg-amber-50/80 border border-amber-200 rounded-2xl p-2.5 flex items-center justify-between gap-2">
-          <div class="min-w-0 flex-1 text-left">
-            <div class="text-[9px] font-bold text-amber-800 flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
-              Đơn đang xử lý: #{{ latestActiveOrder.id }}
-            </div>
-            <div class="text-xs font-black text-slate-900 truncate">{{ latestActiveOrder.partnerName }}</div>
-            <div class="text-[9px] text-amber-700 truncate">{{ latestActiveOrder.statusText }}</div>
-          </div>
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <a 
-              :href="'tel:' + latestActiveOrder.partnerPhone" 
-              class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs" 
-              title="Gọi đối tác">
-              <i class="fa-solid fa-phone"></i>
-            </a>
-            <!-- ICON HỦY ĐƠN 1 CHẠM NỔI BẬT -->
-            <button 
-              type="button"
-              @click="quickCancelOrder(latestActiveOrder)" 
-              class="w-7 h-7 rounded-lg bg-rose-100 hover:bg-rose-600 text-rose-600 hover:text-white flex items-center justify-center text-xs transition-colors shadow-xs" 
-              title="Hủy đơn nhanh 1 chạm">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- 2. CÁC NÚT THAO TÁC GỘP GỌN GÀNG -->
-        <div class="grid grid-cols-1 gap-1.5 text-xs font-bold">
-          <button 
-            type="button"
-            @click="showFloatingHub = false; openQuickCustomOrder()"
-            class="p-2.5 rounded-xl bg-gradient-to-r from-datphu-red to-rose-600 text-white flex items-center justify-between shadow-xs active:scale-95 transition-all">
-            <span class="flex items-center gap-2">
-              <i class="fa-solid fa-pen-to-square text-amber-300"></i>
-              <span>Lên Đơn Tự Do / Gõ Nhu Cầu</span>
-            </span>
-            <span class="text-[9px] bg-white/20 px-1.5 py-0.5 rounded font-bold">Linh Hoạt</span>
-          </button>
-
-          <button 
-            type="button"
-            @click="showFloatingHub = false; openServiceTicket(null, 'urgent')"
-            class="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-800 flex items-center justify-between border border-slate-200 transition-all">
-            <span class="flex items-center gap-2">
-              <i class="fa-solid fa-wrench text-amber-500"></i>
-              <span>Tạo Phiếu Gọi Thợ K6</span>
-            </span>
-            <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
-          </button>
-
-          <button 
-            type="button"
-            @click="showFloatingHub = false; showMyOrdersModal = true"
-            class="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-800 flex items-center justify-between border border-slate-200 transition-all">
-            <span class="flex items-center gap-2">
-              <i class="fa-solid fa-clock-rotate-left text-blue-600"></i>
-              <span>Quản Lý Đơn Của Tôi</span>
-            </span>
-            <span v-if="activeOrdersCount > 0" class="text-[9px] bg-datphu-red text-white px-1.5 py-0.2 rounded-full font-bold">{{ activeOrdersCount }}</span>
-            <i v-else class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
-          </button>
-
-          <a 
-            href="tel:0979991898"
-            class="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 flex items-center justify-between border border-emerald-200 transition-all">
-            <span class="flex items-center gap-2">
-              <i class="fa-solid fa-phone text-emerald-600"></i>
-              <span>Hotline 24/7: 0979 991 898</span>
-            </span>
-            <span class="text-[9px] bg-emerald-200 text-emerald-900 px-1.5 py-0.5 rounded font-bold">Gọi Miễn Phí</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- 1 ICON NỔI TRÒN MASTER DUY NHẤT (FLOATING ACTION BUTTON) -->
-      <button 
-        type="button"
-        @click="showFloatingHub = !showFloatingHub"
-        class="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-datphu-red via-rose-600 to-amber-500 text-white flex items-center justify-center text-xl shadow-2xl border-2 border-white hover:scale-105 active:scale-95 transition-all relative group"
-        title="Trợ lý tiện ích Đất Phú">
-        
-        <!-- Icon thay đổi giữa Sét và Xmark -->
-        <i :class="showFloatingHub ? 'fa-solid fa-xmark text-lg' : 'fa-solid fa-bolt text-lg'"></i>
-        
-        <!-- Badge đếm đơn hàng đang xử lý -->
-        <span 
-          v-if="activeOrdersCount > 0 && !showFloatingHub" 
-          class="absolute -top-1 -right-1 bg-datphu-red text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-pulse">
-          {{ activeOrdersCount }}
-        </span>
-      </button>
-
-    </div>
-
+    <!-- ĐÃ GOM ICON TRỢ LÝ TIỆN ÍCH NỔI VỀ HOÀN TOÀN MENU TIỆN ÍCH TRÊN HEADER -->
     <!-- Floating Cart Bar for Consumer (Responsive Full Screen) -->
     <div v-if="cartTotalItems > 0" class="fixed bottom-4 left-0 right-0 max-w-xl mx-auto px-4 z-40 animate-slideUp">
       <div class="bg-datphu-navy text-white rounded-3xl p-3 shadow-navy-float flex items-center justify-between border border-blue-900">
