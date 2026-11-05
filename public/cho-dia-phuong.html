@@ -3663,70 +3663,127 @@
                 </div>
               </div>
 
-              <!-- MENU KÉO THẢ NGÀNH HÀNG TÍCH HỢP LIỀN KỀ LOGO -->
+              <!-- NÚT HỢP NHẤT: DANH MỤC & TIỆN ÍCH ĐẤT PHÚ (CHUẨN PHƯƠNG ÁN 1B) -->
               <div class="relative">
                 <button 
                   type="button"
-                  @click="showCategoryDropdown = !showCategoryDropdown" 
-                  class="flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2 rounded-2xl bg-slate-100 hover:bg-red-50 text-slate-800 hover:text-datphu-red text-xs font-black border border-slate-200 hover:border-red-200 active:scale-95 transition-all shadow-xs group"
-                  title="Mở bảng 9 ngành hàng chợ phiên Đất Phú">
-                  <i class="fa-solid fa-compass text-datphu-red text-xs group-hover:rotate-45 transition-transform duration-300"></i>
-                  <span class="font-black text-slate-800 group-hover:text-datphu-red text-[11px] sm:text-xs">Ngành Hàng</span>
-                  <span class="text-[8px] sm:text-[9px] px-1 sm:px-1.5 py-0.2 bg-datphu-red text-white rounded-full font-bold">9</span>
-                  <i class="fa-solid fa-chevron-down text-[8px] text-slate-400 group-hover:text-datphu-red transition-transform duration-200" :class="{'rotate-180': showCategoryDropdown}"></i>
+                  @click="showUnifiedMenu = !showUnifiedMenu" 
+                  class="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-gradient-to-r from-red-50 to-amber-50 hover:from-red-100 hover:to-amber-100 text-slate-800 hover:text-datphu-red text-xs font-black border border-red-200/80 active:scale-95 transition-all shadow-xs group"
+                  title="Mở toàn bộ danh mục 9 ngành hàng & tiện ích dịch vụ Tuy Hòa">
+                  <i class="fa-solid fa-bars-staggered text-datphu-red text-xs group-hover:rotate-12 transition-transform"></i>
+                  <span class="font-black text-slate-800 group-hover:text-datphu-red text-xs">Danh Mục & Tiện Ích</span>
+                  <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold animate-pulse">{{ activeOrdersCount }}</span>
+                  <i class="fa-solid fa-chevron-down text-[8px] text-slate-400 group-hover:text-datphu-red transition-transform duration-200" :class="{'rotate-180': showUnifiedMenu}"></i>
                 </button>
 
                 <!-- BACKDROP ĐỂ ĐÓNG DROPDOWN KHI CLICK RA NGOÀI -->
-                <div v-if="showCategoryDropdown" @click="showCategoryDropdown = false" class="fixed inset-0 z-40 bg-slate-900/10 backdrop-blur-[0.5px]"></div>
+                <div v-if="showUnifiedMenu" @click="showUnifiedMenu = false" class="fixed inset-0 z-40 bg-slate-900/10 backdrop-blur-[0.5px]"></div>
 
-                <!-- BẢNG DROPDOWN MENU 9 NGÀNH HÀNG: DANH SÁCH DỌC TỪ TRÊN XUỐNG -->
+                <!-- BẢNG POPOVER HỢP NHẤT DUY NHẤT (W-84 SM:W-96) -->
                 <div 
-                  v-if="showCategoryDropdown" 
-                  class="absolute left-0 top-full mt-2 w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-100 p-3.5 z-50 animate-fadeIn space-y-2">
+                  v-if="showUnifiedMenu" 
+                  class="absolute left-0 top-full mt-2 w-84 sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-100 p-3.5 z-50 animate-fadeIn space-y-2.5 text-xs max-h-[85vh] overflow-y-auto custom-scrollbar">
                   
-                  <!-- Tiêu đề Header của Dropdown -->
+                  <!-- HEADER CỦA BẢNG ĐIỀU KHIỂN HỢP NHẤT -->
                   <div class="flex items-center justify-between pb-2 border-b border-slate-100 px-1">
                     <div class="flex items-center gap-2">
-                      <div class="w-7 h-7 rounded-xl bg-red-100 text-datphu-red flex items-center justify-center text-xs shadow-2xs">
-                        <i class="fa-solid fa-compass"></i>
-                      </div>
+                      <img src="logo_datphu.jpg" class="w-6 h-6 object-contain rounded-md shadow-2xs">
                       <div>
                         <div class="font-black text-slate-900 text-xs uppercase tracking-wide flex items-center gap-1.5">
-                          <span>Danh Mục Ngành Hàng</span>
-                          <span class="text-[8px] bg-red-100 text-datphu-red px-1.5 py-0.2 rounded-full font-bold">9 Nhóm</span>
+                          <span>Đất Phú Super App</span>
+                          <span class="text-[8px] bg-red-100 text-datphu-red px-1.5 py-0.2 rounded-full font-bold">Tuy Hòa</span>
                         </div>
-                        <div class="text-[9px] text-slate-400">Khám phá món ngon & dịch vụ đặc sắc Tuy Hòa</div>
+                        <p class="text-[9px] text-slate-400">Danh mục 9 ngành hàng & Hệ thống tiện ích số</p>
                       </div>
                     </div>
-                    <button @click="showCategoryDropdown = false" class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center text-[10px]">
+                    <button @click="showUnifiedMenu = false" class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center text-[10px]">
                       <i class="fa-solid fa-xmark"></i>
                     </button>
                   </div>
 
-                  <!-- DANH SÁCH 9 NGÀNH HÀNG SẮP XẾP TỪ TRÊN XUỐNG DƯỚI (VERTICAL LIST) -->
-                  <div class="space-y-1 max-h-[380px] sm:max-h-[420px] overflow-y-auto pr-0.5 custom-scrollbar">
+                  <!-- TRỢ LÝ TÌM KIẾM NHANH TÍCH HỢP -->
+                  <div class="relative px-0.5">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+                    <input 
+                      v-model="searchKeyword" 
+                      type="text" 
+                      @keyup.enter="showUnifiedMenu = false; focusMainSearch()"
+                      placeholder="🔍 Tìm món ngon, ngành hàng, thợ..."
+                      class="w-full bg-slate-100 hover:bg-slate-200/70 focus:bg-white rounded-2xl pl-9 pr-8 py-2 text-xs text-slate-800 placeholder:text-slate-400 font-bold focus:outline-none focus:ring-2 focus:ring-datphu-red/20 transition-all border border-slate-200 focus:border-red-300">
+                    <button v-if="searchKeyword" @click="searchKeyword = ''" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
+
+                  <!-- TIẾN ĐỘ ĐƠN ĐANG CHẠY REALTIME (NẾU CÓ) -->
+                  <div v-if="latestActiveOrder" class="bg-amber-50 border border-amber-200 rounded-2xl p-2.5 flex items-center justify-between gap-2 shadow-2xs">
+                    <div class="min-w-0 flex-1 text-left">
+                      <div class="text-[9px] font-bold text-amber-800 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span>Đơn đang xử lý: #{{ latestActiveOrder.id }}</span>
+                      </div>
+                      <div class="text-xs font-black text-slate-900 truncate">{{ latestActiveOrder.partnerName }}</div>
+                      <div class="text-[9px] text-amber-700 truncate">{{ latestActiveOrder.statusText }}</div>
+                    </div>
+                    <div class="flex items-center gap-1 flex-shrink-0">
+                      <a 
+                        :href="'tel:' + latestActiveOrder.partnerPhone" 
+                        class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center justify-center text-xs transition-colors" 
+                        title="Gọi đối tác">
+                        <i class="fa-solid fa-phone"></i>
+                      </a>
+                      <button 
+                        type="button"
+                        @click="quickCancelOrder(latestActiveOrder)" 
+                        class="w-7 h-7 rounded-lg bg-rose-100 hover:bg-rose-600 text-rose-600 hover:text-white flex items-center justify-center text-xs transition-colors shadow-xs" 
+                        title="Hủy đơn nhanh 1 chạm">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- THANH 2 TAB ĐIỀU HƯỚNG KHOA HỌC: [ 🧭 9 NGÀNH HÀNG ] <-> [ 🛠️ TIỆN ÍCH DỊCH VỤ ] -->
+                  <div class="bg-slate-100 p-1 rounded-2xl flex items-center gap-1 font-bold text-xs">
+                    <button 
+                      type="button"
+                      @click="unifiedMenuTab = 'categories'"
+                      class="flex-1 py-1.5 px-2 rounded-xl flex items-center justify-center gap-1.5 transition-all text-xs"
+                      :class="unifiedMenuTab === 'categories' ? 'bg-white text-datphu-red shadow-xs font-black' : 'text-slate-600 hover:text-slate-900'">
+                      <i class="fa-solid fa-compass text-xs"></i>
+                      <span>9 Ngành Hàng</span>
+                    </button>
+                    <button 
+                      type="button"
+                      @click="unifiedMenuTab = 'services'"
+                      class="flex-1 py-1.5 px-2 rounded-xl flex items-center justify-center gap-1.5 transition-all text-xs"
+                      :class="unifiedMenuTab === 'services' ? 'bg-white text-datphu-navy shadow-xs font-black' : 'text-slate-600 hover:text-slate-900'">
+                      <i class="fa-solid fa-sliders text-xs"></i>
+                      <span>Tiện Ích & Đặt Thợ</span>
+                      <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[8px] px-1 py-0.2 rounded-full font-bold">{{ activeOrdersCount }}</span>
+                    </button>
+                  </div>
+
+                  <!-- TAB 1: DANH SÁCH DỌC 9 NGÀNH HÀNG (SẮP XẾP TỪ TRÊN XUỐNG DƯỚI) -->
+                  <div v-if="unifiedMenuTab === 'categories'" class="space-y-1 max-h-[380px] overflow-y-auto pr-0.5 custom-scrollbar animate-fadeIn">
                     <button 
                       v-for="item in navMenuItems" 
-                      :key="'logo_drop_' + item.id"
+                      :key="'unified_cat_' + item.id"
                       type="button"
-                      @click="handleNavClick(item); showCategoryDropdown = false;"
+                      @click="handleNavClick(item); showUnifiedMenu = false;"
                       class="w-full flex items-center justify-between p-2 rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-200/70 transition-all group text-left active:scale-[0.99]">
                       
                       <div class="flex items-center gap-3 min-w-0">
-                        <!-- Icon Box chuẩn FontAwesome vector, sắc nét tuyệt đối, không lo lỗi font emoji -->
                         <div 
                           class="w-9 h-9 rounded-xl flex items-center justify-center text-sm flex-shrink-0 shadow-2xs group-hover:scale-110 transition-transform"
                           :class="item.bg">
                           <i :class="item.faIcon || 'fa-solid fa-store'" class="text-sm"></i>
                         </div>
 
-                        <!-- Tên & Mô tả Ngành Hàng -->
                         <div class="min-w-0 flex-1">
                           <div class="flex items-center gap-1.5">
                             <span class="text-xs font-black text-slate-800 group-hover:text-datphu-red transition-colors">
                               {{ item.name }}
                             </span>
-                            <!-- Badge nếu có -->
                             <span 
                               v-if="item.badge" 
                               class="text-[7.5px] font-black px-1.5 py-0.2 rounded-full shadow-2xs"
@@ -3740,22 +3797,202 @@
                         </div>
                       </div>
 
-                      <!-- Mũi tên chỉ thị chuyển tiếp -->
-                      <div class="flex items-center text-slate-300 group-hover:text-datphu-red group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-2">
-                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                      </div>
+                      <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 group-hover:text-datphu-red group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-2"></i>
                     </button>
+                  </div>
+
+                  <!-- TAB 2: TIỆN ÍCH DỊCH VỤ CƯ DÂN & CỔNG ĐỐI TÁC -->
+                  <div v-else class="space-y-2 max-h-[380px] overflow-y-auto pr-0.5 custom-scrollbar animate-fadeIn">
+                    <!-- PHÂN HỆ CƯ DÂN -->
+                    <div class="space-y-1">
+                      <div class="text-[9px] font-black uppercase text-slate-400 px-2 tracking-wider">Dịch Vụ Cư Dân & Đặt Nhanh</div>
+
+                      <!-- 1. Lên Đơn Tự Do / Gõ Nhu Cầu -->
+                      <button 
+                        @click="showUnifiedMenu = false; openQuickCustomOrder()"
+                        class="w-full p-2 rounded-2xl hover:bg-red-50 text-slate-800 flex items-center justify-between transition-all group border border-transparent hover:border-red-200">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-datphu-red to-orange-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform shadow-xs">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                          </div>
+                          <div class="text-left">
+                            <div class="font-black text-[11px] text-slate-900 group-hover:text-datphu-red transition-colors flex items-center gap-1">
+                              <span>Lên Đơn Tự Do / Nhu Cầu</span>
+                              <span class="bg-red-100 text-datphu-red text-[7.5px] font-black px-1.5 py-0.2 rounded uppercase">Nhanh</span>
+                            </div>
+                            <div class="text-[9px] text-slate-400">Kết nối thợ & quán theo yêu cầu riêng</div>
+                          </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-datphu-red"></i>
+                      </button>
+
+                      <!-- 2. Tạo Phiếu Đặt Thợ K6 (15 Phút) -->
+                      <button 
+                        @click="showUnifiedMenu = false; openServiceTicket(null, 'urgent')"
+                        class="w-full p-2 rounded-2xl hover:bg-blue-50 text-slate-800 flex items-center justify-between transition-all group border border-transparent hover:border-blue-200">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform shadow-xs">
+                            <i class="fa-solid fa-wrench"></i>
+                          </div>
+                          <div class="text-left">
+                            <div class="font-black text-[11px] text-slate-900 group-hover:text-blue-800 transition-colors flex items-center gap-1">
+                              <span>Tạo Phiếu Đặt Thợ (15 Phút)</span>
+                              <span class="bg-blue-100 text-blue-800 text-[7.5px] font-black px-1.5 py-0.2 rounded uppercase">15P</span>
+                            </div>
+                            <div class="text-[9px] text-slate-400">Điện nước, khóa, camera, điện lạnh có mặt cấp tốc</div>
+                          </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-blue-800"></i>
+                      </button>
+
+                      <!-- 3. Khám Phá Món Ngon Xứ Nẫu -->
+                      <button 
+                        @click="showUnifiedMenu = false; selectedCatId = 'cat_fnb'; window.scrollTo({ top: 300, behavior: 'smooth' })"
+                        class="w-full p-2 rounded-2xl hover:bg-amber-50 text-slate-800 flex items-center justify-between transition-all group border border-transparent hover:border-amber-200">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform shadow-xs">
+                            <i class="fa-solid fa-utensils"></i>
+                          </div>
+                          <div class="text-left">
+                            <div class="font-black text-[11px] text-slate-900 group-hover:text-amber-800 transition-colors flex items-center gap-1">
+                              <span>Khám Phá Món Ngon Xứ Nẫu</span>
+                              <span class="bg-amber-100 text-amber-800 text-[7.5px] font-black px-1.5 py-0.2 rounded uppercase">HOT</span>
+                            </div>
+                            <div class="text-[9px] text-slate-400">Cơm gà, bánh canh, phở bò Tuy Hòa</div>
+                          </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-amber-800"></i>
+                      </button>
+                      
+                      <!-- 4. Tiến Độ Đơn Của Tôi -->
+                      <button 
+                        @click="showUnifiedMenu = false; showMyOrdersModal = true"
+                        class="w-full p-2 rounded-2xl hover:bg-slate-50 text-slate-800 flex items-center justify-between transition-all group">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-7 h-7 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                          </div>
+                          <div class="text-left">
+                            <div class="font-black text-[11px] text-slate-900">Tiến Độ Đơn Của Tôi</div>
+                            <div class="text-[9px] text-slate-400">Theo dõi 4 bước & Đánh giá nhận xu</div>
+                          </div>
+                        </div>
+                        <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[9px] font-black px-1.5 py-0.2 rounded-full">{{ activeOrdersCount }}</span>
+                        <i v-else class="fa-solid fa-chevron-right text-[8px] text-slate-300"></i>
+                      </button>
+
+                      <!-- 5. Ví Voucher Khuyến Mãi -->
+                      <button 
+                        @click="showUnifiedMenu = false; showVoucherModal = true"
+                        class="w-full p-2 rounded-2xl hover:bg-amber-50/70 text-slate-800 flex items-center justify-between transition-all group">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-7 h-7 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-ticket"></i>
+                          </div>
+                          <div class="text-left">
+                            <div class="font-black text-[11px] text-slate-900">Ví Voucher Khuyến Mãi</div>
+                            <div class="text-[9px] text-slate-400">Mã FREESHIP & Giảm giá Đất Phú</div>
+                          </div>
+                        </div>
+                        <span class="bg-amber-100 text-amber-900 text-[9px] font-black px-1.5 py-0.2 rounded-full border border-amber-300">2 Mã</span>
+                      </button>
+
+                      <!-- 6. Bộ Lọc Nhu Cầu 1 Chạm -->
+                      <button 
+                        @click="showUnifiedMenu = false; showTriageModal = true"
+                        class="w-full p-2 rounded-2xl hover:bg-slate-50 text-slate-800 flex items-center justify-between transition-all group">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-7 h-7 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-sliders"></i>
+                          </div>
+                          <div class="text-left">
+                            <div class="font-black text-[11px] text-slate-900">Bộ Lọc Nhu Cầu 1 Chạm</div>
+                            <div class="text-[9px] text-slate-400">Tìm món ngon & Thợ cấp tốc</div>
+                          </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-[8px] text-slate-300"></i>
+                      </button>
+                    </div>
+
+                    <!-- PHÂN HỆ ĐỐI TÁC, QUÁN & THỢ -->
+                    <div class="space-y-1 pt-1.5 border-t border-slate-100">
+                      <div class="text-[9px] font-black uppercase text-slate-400 px-2 tracking-wider">Cổng Dành Cho Đối Tác</div>
+
+                      <button 
+                        @click="showUnifiedMenu = false; switchTier('worker')"
+                        class="w-full p-2 rounded-2xl hover:bg-blue-50/70 text-slate-800 flex items-center justify-between transition-all group">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                          </div>
+                          <div class="text-left">
+                            <div class="font-black text-[11px] text-slate-900">Cổng Thợ Kỹ Thuật 6K</div>
+                            <div class="text-[9px] text-slate-400">Bảng điều phối cuốc việc, vật tư K6</div>
+                          </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-[8px] text-blue-600"></i>
+                      </button>
+
+                      <button 
+                        @click="showUnifiedMenu = false; switchTier('merchant')"
+                        class="w-full p-2 rounded-2xl hover:bg-rose-50/70 text-slate-800 flex items-center justify-between transition-all group">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-7 h-7 rounded-xl bg-datphu-red text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-store"></i>
+                          </div>
+                          <div class="text-left">
+                            <div class="font-black text-[11px] text-slate-900">Cổng Chủ Quán & Máy POS</div>
+                            <div class="text-[9px] text-slate-400">In hóa đơn K80, quản lý thực đơn</div>
+                          </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-[8px] text-datphu-red"></i>
+                      </button>
+
+                      <button 
+                        @click="showUnifiedMenu = false; openDatPhuCamModal('merchant')"
+                        class="w-full p-2 rounded-2xl hover:bg-emerald-50/70 text-slate-800 flex items-center justify-between transition-all group">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-camera"></i>
+                          </div>
+                          <div class="text-left">
+                            <div class="font-black text-[11px] text-emerald-950 flex items-center gap-1">
+                              <span>Đất Phú Cam</span>
+                              <span class="bg-emerald-100 text-emerald-800 text-[8px] font-black px-1.5 py-0.2 rounded">Bản Quyền</span>
+                            </div>
+                            <div class="text-[9px] text-slate-400">Đóng dấu logo, thông tin quán & thợ chống trộm</div>
+                          </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-[8px] text-emerald-600"></i>
+                      </button>
+
+                      <button 
+                        @click="showUnifiedMenu = false; showRegisterFlashDealModal = true"
+                        class="w-full p-2 rounded-2xl hover:bg-amber-50/70 text-slate-800 flex items-center justify-between transition-all group">
+                        <div class="flex items-center gap-2.5">
+                          <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-amber-500 to-red-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bolt"></i>
+                          </div>
+                          <div class="text-left">
+                            <div class="font-black text-[11px] text-amber-900">Đăng Ký Bán Giờ Vàng</div>
+                            <div class="text-[9px] text-slate-400">Xả hàng tồn tươi sống, kích cầu</div>
+                          </div>
+                        </div>
+                        <span class="bg-red-100 text-red-700 text-[8px] font-black px-1.5 py-0.2 rounded uppercase">Hot</span>
+                      </button>
+                    </div>
                   </div>
 
                   <!-- FOOTER DROPDOWN MENU -->
                   <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] px-1 text-slate-500 font-bold">
-                    <span class="flex items-center gap-1 text-[9px] text-emerald-600">
-                      <i class="fa-solid fa-shield-halved"></i> Bảo hộ bản quyền Đất Phú
-                    </span>
+                    <a href="tel:0979991898" class="flex items-center gap-1.5 text-slate-500 hover:text-datphu-red">
+                      <i class="fa-solid fa-phone text-emerald-600"></i>
+                      <span>Hotline: 0979 991 898</span>
+                    </a>
                     <button 
-                      @click="showCategoryDropdown = false; searchKeyword = ''; navigateToCategory('all')" 
+                      @click="showUnifiedMenu = false; searchKeyword = ''; navigateToCategory('all')" 
                       class="text-datphu-red hover:underline text-[10px] font-black flex items-center gap-1">
-                      <span>Xem Tất Cả</span>
+                      <span>Tất Cả Gian Hàng</span>
                       <i class="fa-solid fa-arrow-right text-[8px]"></i>
                     </button>
                   </div>
@@ -3769,7 +4006,7 @@
               <!-- Nút Tiện Ích Mobile -->
               <button 
                 type="button"
-                @click="showNavDropdown = !showNavDropdown" 
+                @click="showUnifiedMenu = !showUnifiedMenu" 
                 class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-2.5 py-1.5 rounded-xl text-xs font-black flex items-center justify-center gap-1 shadow-sm relative border border-slate-200"
                 title="Menu Tiện Ích">
                 <i class="fa-solid fa-bars-staggered text-datphu-navy text-xs"></i>
@@ -3798,275 +4035,8 @@
 
 
 
-          <!-- Nút thao tác trên Desktop: Tinh Gọn với Menu Tiện Ích Kéo Thả -->
+          <!-- Nút thao tác trên Desktop: Tinh Gọn Tối Đa với Tài Khoản & Giỏ Hàng -->
           <div class="hidden md:flex items-center gap-2">
-            <!-- NÚT MENU TIỆN ÍCH KÉO THẢ TẬP TRUNG -->
-            <div class="relative">
-              <button 
-                type="button"
-                @click="showNavDropdown = !showNavDropdown" 
-                class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shadow-sm active:scale-95 transition-all border border-slate-200"
-                title="Mở bảng menu tiện ích & dịch vụ Đất Phú">
-                <i class="fa-solid fa-bars-staggered text-datphu-navy text-xs"></i>
-                <span>Tiện Ích</span>
-                <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{{ activeOrdersCount }}</span>
-                <i class="fa-solid fa-chevron-down text-[8px] text-slate-400 transition-transform" :class="{'rotate-180': showNavDropdown}"></i>
-              </button>
-
-              <!-- BACKDROP ĐỂ ĐÓNG MENU KHI CLICK RA NGOÀI -->
-              <div v-if="showNavDropdown" @click="showNavDropdown = false" class="fixed inset-0 z-40 bg-transparent"></div>
-
-              <!-- NỘI DUNG DROPDOWN MENU KÉO THẢ (TRỢ LÝ & TIỆN ÍCH ĐẤT PHÚ) -->
-              <div 
-                v-if="showNavDropdown" 
-                class="absolute right-0 top-full mt-2 w-80 sm:w-88 bg-white rounded-3xl shadow-2xl border border-slate-100 p-3.5 z-50 animate-fadeIn space-y-2.5 text-xs max-h-[85vh] overflow-y-auto custom-scrollbar">
-                
-                <!-- HEADER MENU TIỆN ÍCH -->
-                <div class="flex items-center justify-between pb-2 border-b border-slate-100 px-1">
-                  <div class="flex items-center gap-2">
-                    <img src="logo_datphu.jpg" class="w-6 h-6 object-contain rounded-md shadow-2xs">
-                    <div>
-                      <span class="font-black text-slate-900 text-xs uppercase tracking-wide">Trợ Lý & Tiện Ích</span>
-                      <p class="text-[9px] text-slate-400">Siêu ứng dụng thương mại & dịch vụ Tuy Hòa</p>
-                    </div>
-                  </div>
-                  <button @click="showNavDropdown = false" class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center text-[10px]">
-                    <i class="fa-solid fa-xmark"></i>
-                  </button>
-                </div>
-
-                <!-- KHUNG TÌM KIẾM NHANH TRONG MENU TIỆN ÍCH -->
-                <div class="relative px-0.5">
-                  <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
-                  <input 
-                    v-model="searchKeyword" 
-                    type="text" 
-                    @keyup.enter="showNavDropdown = false; focusMainSearch()"
-                    placeholder="🔍 Tìm món ngon, dịch vụ, thợ..."
-                    class="w-full bg-slate-100 hover:bg-slate-200/70 focus:bg-white rounded-2xl pl-9 pr-8 py-2 text-xs text-slate-800 placeholder:text-slate-400 font-bold focus:outline-none focus:ring-2 focus:ring-datphu-red/20 transition-all border border-slate-200 focus:border-red-300">
-                  <button v-if="searchKeyword" @click="searchKeyword = ''" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
-                    <i class="fa-solid fa-xmark"></i>
-                  </button>
-                </div>
-
-                <!-- TIẾN ĐỘ ĐƠN ĐANG CHẠY & GỌI / HỦY ĐƠN 1 CHẠM (GOM TỪ ICON TRỢ LÝ NỔI VỀ MENU TIỆN ÍCH) -->
-                <div v-if="latestActiveOrder" class="bg-amber-50 border border-amber-200 rounded-2xl p-2.5 flex items-center justify-between gap-2 shadow-2xs">
-                  <div class="min-w-0 flex-1 text-left">
-                    <div class="text-[9px] font-bold text-amber-800 flex items-center gap-1">
-                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
-                      <span>Đơn đang xử lý: #{{ latestActiveOrder.id }}</span>
-                    </div>
-                    <div class="text-xs font-black text-slate-900 truncate">{{ latestActiveOrder.partnerName }}</div>
-                    <div class="text-[9px] text-amber-700 truncate">{{ latestActiveOrder.statusText }}</div>
-                  </div>
-                  <div class="flex items-center gap-1 flex-shrink-0">
-                    <a 
-                      :href="'tel:' + latestActiveOrder.partnerPhone" 
-                      class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center justify-center text-xs transition-colors" 
-                      title="Gọi đối tác">
-                      <i class="fa-solid fa-phone"></i>
-                    </a>
-                    <!-- ICON HỦY ĐƠN 1 CHẠM -->
-                    <button 
-                      type="button"
-                      @click="quickCancelOrder(latestActiveOrder)" 
-                      class="w-7 h-7 rounded-lg bg-rose-100 hover:bg-rose-600 text-rose-600 hover:text-white flex items-center justify-center text-xs transition-colors shadow-xs" 
-                      title="Hủy đơn nhanh 1 chạm">
-                      <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                  </div>
-                </div>
-
-                <!-- PHÂN HỆ CƯ DÂN & ĐẶT NHANH -->
-                <div class="space-y-1">
-                  <div class="text-[9px] font-black uppercase text-slate-400 px-2 tracking-wider flex items-center justify-between">
-                    <span>Nhu Cầu & Dịch Vụ Cư Dân</span>
-                    <span class="text-datphu-red text-[8px] font-bold">1 Chạm</span>
-                  </div>
-
-                  <!-- 1. Lên Đơn Tự Do / Gõ Nhu Cầu -->
-                  <button 
-                    @click="showNavDropdown = false; openQuickCustomOrder()"
-                    class="w-full p-2 rounded-2xl hover:bg-red-50 text-slate-800 flex items-center justify-between transition-all group border border-transparent hover:border-red-200">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-datphu-red to-orange-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform shadow-xs">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                      </div>
-                      <div class="text-left">
-                        <div class="font-black text-[11px] text-slate-900 group-hover:text-datphu-red transition-colors flex items-center gap-1">
-                          <span>Lên Đơn Tự Do / Nhu Cầu</span>
-                          <span class="bg-red-100 text-datphu-red text-[7.5px] font-black px-1.5 py-0.2 rounded uppercase">Nhanh</span>
-                        </div>
-                        <div class="text-[9px] text-slate-400">Kết nối thợ & quán theo yêu cầu riêng</div>
-                      </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-datphu-red"></i>
-                  </button>
-
-                  <!-- 2. Khám Phá Món Ngon Xứ Nẫu -->
-                  <button 
-                    @click="showNavDropdown = false; selectedCatId = 'cat_fnb'; window.scrollTo({ top: 300, behavior: 'smooth' })"
-                    class="w-full p-2 rounded-2xl hover:bg-amber-50 text-slate-800 flex items-center justify-between transition-all group border border-transparent hover:border-amber-200">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform shadow-xs">
-                        <i class="fa-solid fa-utensils"></i>
-                      </div>
-                      <div class="text-left">
-                        <div class="font-black text-[11px] text-slate-900 group-hover:text-amber-800 transition-colors flex items-center gap-1">
-                          <span>Khám Phá Món Ngon Xứ Nẫu</span>
-                          <span class="bg-amber-100 text-amber-800 text-[7.5px] font-black px-1.5 py-0.2 rounded uppercase">HOT</span>
-                        </div>
-                        <div class="text-[9px] text-slate-400">Cơm gà, bánh canh, phở bò Tuy Hòa</div>
-                      </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-amber-800"></i>
-                  </button>
-                  <!-- 3. Tạo Phiếu Đặt Thợ K6 (15 Phút) - Gom từ trang thợ về Menu Tiện Ích -->
-                  <button 
-                    @click="showNavDropdown = false; openServiceTicket(null, 'urgent')"
-                    class="w-full p-2 rounded-2xl hover:bg-blue-50 text-slate-800 flex items-center justify-between transition-all group border border-transparent hover:border-blue-200">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform shadow-xs">
-                        <i class="fa-solid fa-wrench"></i>
-                      </div>
-                      <div class="text-left">
-                        <div class="font-black text-[11px] text-slate-900 group-hover:text-blue-800 transition-colors flex items-center gap-1">
-                          <span>Tạo Phiếu Đặt Thợ (15 Phút)</span>
-                          <span class="bg-blue-100 text-blue-800 text-[7.5px] font-black px-1.5 py-0.2 rounded uppercase">15P</span>
-                        </div>
-                        <div class="text-[9px] text-slate-400">Điện nước, khóa, camera, điện lạnh có mặt cấp tốc</div>
-                      </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-blue-800"></i>
-                  </button>
-                  
-                  <!-- 3. Tiến Độ Đơn Của Tôi -->
-                  <button 
-                    @click="showNavDropdown = false; showMyOrdersModal = true"
-                    class="w-full p-2 rounded-2xl hover:bg-slate-50 text-slate-800 flex items-center justify-between transition-all group">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-clock-rotate-left"></i>
-                      </div>
-                      <div class="text-left">
-                        <div class="font-black text-[11px] text-slate-900">Tiến Độ Đơn Của Tôi</div>
-                        <div class="text-[9px] text-slate-400">Theo dõi 4 bước & Đánh giá nhận xu</div>
-                      </div>
-                    </div>
-                    <span v-if="activeOrdersCount > 0" class="bg-datphu-red text-white text-[9px] font-black px-1.5 py-0.2 rounded-full">{{ activeOrdersCount }}</span>
-                    <i v-else class="fa-solid fa-chevron-right text-[8px] text-slate-300"></i>
-                  </button>
-
-                  <button 
-                    @click="showNavDropdown = false; showVoucherModal = true"
-                    class="w-full p-2 rounded-2xl hover:bg-amber-50/70 text-slate-800 flex items-center justify-between transition-all group">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-ticket"></i>
-                      </div>
-                      <div class="text-left">
-                        <div class="font-black text-[11px] text-slate-900">Ví Voucher Khuyến Mãi</div>
-                        <div class="text-[9px] text-slate-400">Mã FREESHIP & Giảm giá Đất Phú</div>
-                      </div>
-                    </div>
-                    <span class="bg-amber-100 text-amber-900 text-[9px] font-black px-1.5 py-0.2 rounded-full border border-amber-300">2 Mã</span>
-                  </button>
-
-                  <button 
-                    @click="showNavDropdown = false; showTriageModal = true"
-                    class="w-full p-2 rounded-2xl hover:bg-slate-50 text-slate-800 flex items-center justify-between transition-all group">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-sliders"></i>
-                      </div>
-                      <div class="text-left">
-                        <div class="font-black text-[11px] text-slate-900">Bộ Lọc Nhu Cầu 1 Chạm</div>
-                        <div class="text-[9px] text-slate-400">Tìm món ngon & Thợ cấp tốc</div>
-                      </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-300"></i>
-                  </button>
-                </div>
-
-                <!-- PHÂN HỆ ĐỐI TÁC, QUÁN & THỢ -->
-                <div class="space-y-1 pt-1.5 border-t border-slate-100">
-                  <div class="text-[9px] font-black uppercase text-slate-400 px-2 tracking-wider">Cổng Dành Cho Đối Tác</div>
-
-                  <button 
-                    @click="showNavDropdown = false; switchTier('worker')"
-                    class="w-full p-2 rounded-2xl hover:bg-blue-50/70 text-slate-800 flex items-center justify-between transition-all group">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-screwdriver-wrench"></i>
-                      </div>
-                      <div class="text-left">
-                        <div class="font-black text-[11px] text-slate-900">Cổng Thợ Kỹ Thuật 6K</div>
-                        <div class="text-[9px] text-slate-400">Bảng điều phối cuốc việc, vật tư K6</div>
-                      </div>
-                    </div>
-                    <i class="fa-solid fa-arrow-right text-[8px] text-blue-600"></i>
-                  </button>
-
-                  <button 
-                    @click="showNavDropdown = false; switchTier('merchant')"
-                    class="w-full p-2 rounded-2xl hover:bg-rose-50/70 text-slate-800 flex items-center justify-between transition-all group">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-xl bg-datphu-red text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-store"></i>
-                      </div>
-                      <div class="text-left">
-                        <div class="font-black text-[11px] text-slate-900">Cổng Chủ Quán & Máy POS</div>
-                        <div class="text-[9px] text-slate-400">In hóa đơn K80, quản lý thực đơn</div>
-                      </div>
-                    </div>
-                    <i class="fa-solid fa-arrow-right text-[8px] text-datphu-red"></i>
-                  </button>
-
-                  <button 
-                    @click="showNavDropdown = false; openDatPhuCamModal('merchant')"
-                    class="w-full p-2 rounded-2xl hover:bg-emerald-50/70 text-slate-800 flex items-center justify-between transition-all group">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-camera"></i>
-                      </div>
-                      <div class="text-left">
-                        <div class="font-black text-[11px] text-emerald-950 flex items-center gap-1">
-                          <span>Đất Phú Cam</span>
-                          <span class="bg-emerald-100 text-emerald-800 text-[8px] font-black px-1.5 py-0.2 rounded">Bản Quyền</span>
-                        </div>
-                        <div class="text-[9px] text-slate-400">Đóng dấu logo, thông tin quán & thợ chống trộm</div>
-                      </div>
-                    </div>
-                    <i class="fa-solid fa-arrow-right text-[8px] text-emerald-600"></i>
-                  </button>
-
-                  <button 
-                    @click="showNavDropdown = false; showRegisterFlashDealModal = true"
-                    class="w-full p-2 rounded-2xl hover:bg-amber-50/70 text-slate-800 flex items-center justify-between transition-all group">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-xl bg-gradient-to-r from-amber-500 to-red-500 text-white flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-bolt"></i>
-                      </div>
-                      <div class="text-left">
-                        <div class="font-black text-[11px] text-amber-900">Đăng Ký Bán Giờ Vàng</div>
-                        <div class="text-[9px] text-slate-400">Xả hàng tồn tươi sống, kích cầu</div>
-                      </div>
-                    </div>
-                    <span class="bg-red-100 text-red-700 text-[8px] font-black px-1.5 py-0.2 rounded uppercase">Hot</span>
-                  </button>
-                </div>
-
-                <!-- TỔNG ĐÀI HỖ TRỢ -->
-                <div class="pt-1.5 border-t border-slate-100 text-center">
-                  <a href="tel:0979991898" class="text-[10px] text-slate-500 hover:text-datphu-red font-mono flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-headset text-datphu-navy"></i>
-                    <span>Tổng đài hỗ trợ: <strong>0979 991 898</strong></span>
-                  </a>
-                </div>
-
-              </div>
-            </div>
-
             <!-- Nút Đăng Nhập / Tài Khoản Thành Viên Cư Dân Desktop -->
             <button 
               v-if="!isCustomerLoggedIn"
@@ -15951,6 +15921,8 @@
         // End-user Orders & Needs Screening State
         showNavDropdown: false,
         showCategoryDropdown: false,
+        showUnifiedMenu: false,
+        unifiedMenuTab: 'categories', // 'categories' or 'services'
         showDatPhuCamModal: false,
         datPhuCamCategory: 'fnb', // 'fnb', 'beauty', 'worker', 'farm', 'used'
         datPhuCamFilter: 'none', // 'none', 'warm', 'bright', 'sharp'
