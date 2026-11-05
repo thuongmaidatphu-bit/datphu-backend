@@ -243,7 +243,7 @@
             <h3 class="text-xs font-black text-white uppercase tracking-wider">Hệ Thống Báo Cáo Quản Trị Tinh Gọn (Lean Cockpit)</h3>
             <span class="bg-emerald-500/20 text-emerald-300 text-[9px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/40">30 Giây Nắm Toàn Bộ Cty</span>
           </div>
-          <p class="text-[10px] text-rose-200 mt-0.5">Dòng tiền thực tế • 215 Đơn hàng hôm nay • CSAT: 4.92⭐ • Hotline Cứu Hộ 0979 991 898 trực 24/7</p>
+          <p class="text-[10px] text-rose-200 mt-0.5">Dòng tiền thực tế • 215 Đơn hàng hôm nay • CSAT: 4.92⭐ • Hotline Hỗ Trợ 0979 991 898 trực 24/7</p>
         </div>
       </div>
       <button 
@@ -1775,7 +1775,7 @@
                 href="tel:0979991898" 
                 class="text-amber-300 hover:text-white font-mono font-bold text-[11px] flex items-center gap-1.5 transition-colors">
                 <i class="fa-solid fa-phone-volume text-emerald-400"></i>
-                <span>Hotline Cứu Hộ Thợ: 0979 991 898</span>
+                <span>Hotline Hỗ Trợ Thợ: 0979 991 898</span>
               </a>
             </div>
 
@@ -3529,7 +3529,7 @@
               </select>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-400 mb-1">Bán Kính Quét Cứu Hộ:</label>
+              <label class="block text-[10px] font-bold text-slate-400 mb-1">Bán Kính Quét Thợ:</label>
               <div class="grid grid-cols-3 gap-1.5 font-bold text-[10px]">
                 <button 
                   type="button"
@@ -3596,7 +3596,7 @@
           <!-- 3 Nút Bắn Cuốc Khẩn Cấp Bán Kính 2KM -->
           <div class="space-y-1.5 pt-2 border-t border-slate-800">
             <span class="text-[10px] font-black uppercase text-slate-300 block">
-              <i class="fa-solid fa-bolt text-amber-400 mr-1"></i> Bắn Cuốc Cứu Hộ Khẩn Cấp Bán Kính 2KM (Tự Động Tìm Thợ Gần Nhất):
+              <i class="fa-solid fa-bolt text-amber-400 mr-1"></i> Bắn Cuốc Sửa Chữa Nhanh Bán Kính 2KM (Tự Động Tìm Thợ Gần Nhất):
             </span>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <button 
@@ -3604,21 +3604,21 @@
                 @click="triggerEmergencyDispatch('cb_fire')"
                 class="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold p-2 rounded-xl text-[10px] flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all">
                 <i class="fa-solid fa-fire-flame-curved"></i>
-                <span>Cứu Hộ Cháy CB / Điện</span>
+                <span>Sửa Cháy CB / Mất Điện</span>
               </button>
               <button 
                 type="button"
                 @click="triggerEmergencyDispatch('pipe_burst')"
                 class="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold p-2 rounded-xl text-[10px] flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all">
                 <i class="fa-solid fa-water"></i>
-                <span>Cứu Hộ Vỡ Ống Nước</span>
+                <span>Sửa Vỡ Ống Nước / Rò Rỉ</span>
               </button>
               <button 
                 type="button"
                 @click="triggerEmergencyDispatch('lock_stuck')"
                 class="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold p-2 rounded-xl text-[10px] flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all">
                 <i class="fa-solid fa-key"></i>
-                <span>Cứu Hộ Kẹt Khóa / Cửa</span>
+                <span>Mở Khóa Kẹt / Sửa Cửa</span>
               </button>
             </div>
           </div>
@@ -3951,12 +3951,12 @@
               <span v-if="consumerSpace === 'worker'" class="w-2 h-2 rounded-full bg-cyan-400 animate-ping hidden md:inline-block shrink-0"></span>
             </div>
             <div class="text-[9px] font-bold hidden sm:block truncate" :class="consumerSpace === 'worker' ? 'text-blue-200' : 'text-slate-400'">
-              Điện, nước, khóa có mặt 15p
+              Điện, nước, khóa đến tận nhà
             </div>
           </div>
           <span class="text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full font-black uppercase ml-1 shrink-0"
                 :class="consumerSpace === 'worker' ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-sm animate-pulse' : 'bg-slate-200 text-slate-600'">
-            Cứu Hộ 24/7
+            Sửa Chữa Tận Nhà
           </span>
         </button>
         <!-- NÚT 3: DANH MỤC & TIỆN ÍCH (KẾ BÊN NÚT TRẠM THỢ) -->
@@ -4132,7 +4132,7 @@
                         <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-datphu-red"></i>
                       </button>
 
-                      <!-- 2. Tạo Phiếu Đặt Thợ K6 (15 Phút) -->
+                      <!-- 2. Tạo Phiếu Đặt Thợ K6 (Theo Hẹn) -->
                       <button 
                         @click="showUnifiedMenu = false; openServiceTicket(null, 'urgent')"
                         class="w-full p-2 rounded-2xl hover:bg-blue-50 text-slate-800 flex items-center justify-between transition-all group border border-transparent hover:border-blue-200">
@@ -4142,10 +4142,10 @@
                           </div>
                           <div class="text-left">
                             <div class="font-black text-[11px] text-slate-900 group-hover:text-blue-800 transition-colors flex items-center gap-1">
-                              <span>Tạo Phiếu Đặt Thợ (15 Phút)</span>
-                              <span class="bg-blue-100 text-blue-800 text-[7.5px] font-black px-1.5 py-0.2 rounded uppercase">15P</span>
+                              <span>Tạo Phiếu Đặt Thợ (Tận Nơi)</span>
+                              <span class="bg-blue-100 text-blue-800 text-[7.5px] font-black px-1.5 py-0.2 rounded uppercase">THEO HẸN</span>
                             </div>
-                            <div class="text-[9px] text-slate-400">Điện nước, khóa, camera, điện lạnh có mặt cấp tốc</div>
+                            <div class="text-[9px] text-slate-400">Điện nước, khóa, camera, điện lạnh phục vụ tận nhà</div>
                           </div>
                         </div>
                         <i class="fa-solid fa-chevron-right text-[8px] text-slate-300 group-hover:text-blue-800"></i>
@@ -4730,7 +4730,7 @@
               <span class="text-amber-400 text-xs">★★★★★</span>
             </div>
             <p class="text-[11px] text-slate-300 italic leading-relaxed">
-              "Tối qua nhà bị nhảy aptomat liên tục, bấm gọi qua radar Đất Phú 15 phút sau Chú Tùng tới kiểm tra đo tải cẩn thận, lấy đúng 90k giá niêm yết, nghiệm thu xong mới lấy tiền."
+              "Tối qua nhà bị nhảy aptomat liên tục, bấm gọi qua radar Đất Phú Chú Tùng tới đúng giờ hẹn kiểm tra đo tải cẩn thận, lấy đúng 90k giá niêm yết, nghiệm thu xong mới lấy tiền."
             </p>
           </div>
 
@@ -4758,7 +4758,7 @@
       </div>
 
       <!-- ========================================================================= -->
-      <!-- KHÔNG GIAN 2: TRẠM THỢ KỸ THUẬT & CỨU HỘ 24/7 (CHUẨN HÓA THEO VUA THỢ)    -->
+      <!-- KHÔNG GIAN 2: TRẠM THỢ KỸ THUẬT & SỬA CHỮA DÂN SINH (CHUẨN HÓA THEO VUA THỢ)    -->
       <!-- ========================================================================= -->
       <div v-else class="space-y-6 animate-fadeIn">
 
@@ -4798,7 +4798,7 @@
                 <span class="text-white/90 text-[10px] uppercase font-bold mr-1 flex items-center gap-1">
                   <i class="fa-solid fa-circle-dot text-emerald-300 animate-ping"></i> Trực chiến:
                 </span>
-                <span class="bg-black/40 backdrop-blur-xs text-cyan-300 px-2.5 py-1 rounded-lg text-xs font-black shadow-inner border border-white/10">15 PHÚT TỚI NƠI</span>
+                <span class="bg-black/40 backdrop-blur-xs text-cyan-300 px-2.5 py-1 rounded-lg text-xs font-black shadow-inner border border-white/10">CÓ MẶT THEO HẸN</span>
               </div>
             </div>
 
@@ -4836,7 +4836,7 @@
                 :class="activeWorkerSkillTab === 'khoa' ? 'bg-white text-slate-900 shadow-md font-black' : 'text-white/70 hover:text-white'"
                 class="py-1.5 sm:py-2 px-1 rounded-xl transition-all text-center">
                 <div class="text-xs sm:text-sm font-black leading-tight">🔑 Khóa & Xe</div>
-                <div class="text-[8px] sm:text-[9px] font-medium leading-tight">Mở khóa • Cứu hộ</div>
+                <div class="text-[8px] sm:text-[9px] font-medium leading-tight">Mở khóa • Sửa xe</div>
               </button>
             </div>
 
@@ -4893,7 +4893,7 @@
                     @click="openServiceTicket({ title: skill.title, tag: skill.categoryName, specialty: skill.category, basePrice: skill.price }, 'urgent')" 
                     class="w-full py-1.5 px-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-[11px] rounded-xl shadow-xs flex items-center justify-center gap-1 active:scale-95 transition-all">
                     <i class="fa-solid fa-bolt text-amber-300 text-[10px]"></i>
-                    <span>⚡ Đặt Thợ (15P Có Mặt)</span>
+                    <span>⚡ Đặt Thợ (Đến Tận Nhà)</span>
                   </button>
                 </div>
               </div>
@@ -5330,7 +5330,7 @@
               <span class="font-black text-base tracking-tight text-white">TIỆN ÍCH DÂN SINH BẢN ĐỊA</span>
             </div>
             <p class="text-xs text-slate-400 leading-relaxed mb-3">
-              Hạ tầng kết nối tiện ích dân sinh bản địa Tuy Hòa - Phú Yên: Đất Phú Chợ Phiên (Ẩm thực & OCOP), Đất Phú Trạm Thợ (Cứu hộ 24/7), Đất Phú Express (Giao hàng) và Đất Phú POS.
+              Hạ tầng kết nối tiện ích dân sinh bản địa Tuy Hòa - Phú Yên: Đất Phú Chợ Phiên (Ẩm thực & OCOP), Đất Phú Trạm Thợ (Sửa chữa dân sinh), Đất Phú Express (Giao hàng) và Đất Phú POS.
             </p>
             <div class="text-xs text-slate-300 space-y-1">
               <div class="flex items-center gap-2">
@@ -5339,7 +5339,7 @@
               </div>
               <div class="flex items-center gap-2">
                 <i class="fa-solid fa-phone text-emerald-400"></i>
-                <span>Hotline Cứu Hộ & Đặt Lịch: 0979 991 898 (24/7)</span>
+                <span>Hotline Đặt Thợ & Hỗ Trợ: 0979 991 898 (24/7)</span>
               </div>
             </div>
           </div>
@@ -5950,7 +5950,7 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- MODAL: RADAR TÌM THỢ QUANH ĐÂY (BÁN KÍNH 3KM • CỨU HỘ 24/7)            -->
+  <!-- MODAL: RADAR TÌM THỢ QUANH ĐÂY (BÁN KÍNH 3KM • SỬA CHỮA TẬN NƠI)            -->
   <!-- ========================================================================= -->
   <div v-if="showNearbyWorkersModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
     <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[92vh] overflow-y-auto p-4 sm:p-5 space-y-3.5 shadow-2xl">
@@ -6047,7 +6047,7 @@
           @click="selectedWorkerSpecialty = 'xe_may'"
           :class="selectedWorkerSpecialty === 'xe_may' ? 'bg-amber-500 text-slate-950 font-black shadow-sm' : 'bg-slate-100 text-slate-600'"
           class="flex-shrink-0 px-2.5 py-1 rounded-xl text-[10px] transition-all flex items-center gap-1">
-          <span>🛵 Cứu Hộ Xe</span>
+          <span>🛵 Sửa Xe Máy</span>
         </button>
       </div>
 
@@ -6088,14 +6088,14 @@
 
           <!-- Bảng Giá Niêm Yết 6K Tiêu Biểu -->
           <div class="bg-slate-50 rounded-xl p-2 text-[10px] space-y-1 border border-slate-100">
-            <div class="text-[9px] font-bold text-slate-400 uppercase">Gói cứu hộ niêm yết chuẩn 6K:</div>
+            <div class="text-[9px] font-bold text-slate-400 uppercase">Gói dịch vụ niêm yết chuẩn 6K:</div>
             <div v-for="(pkg, idx) in w.packages" :key="idx" class="flex items-center justify-between">
               <span class="text-slate-700">• {{ pkg.name }}</span>
               <span class="font-black text-datphu-red">{{ formatCurrency(pkg.price) }}</span>
             </div>
           </div>
 
-          <!-- 3 Nút Thao Tác Cứu Hộ / Đặt Thợ -->
+          <!-- 3 Nút Thao Tác Đặt Thợ / Sửa Chữa -->
           <div class="grid grid-cols-3 gap-1.5 pt-0.5">
             <a 
               :href="'tel:' + w.phone"
@@ -6792,7 +6792,7 @@
               </p>
 
               <div class="mt-1.5 text-xs text-amber-100/90 italic line-clamp-2 bg-white/10 px-2.5 py-1.5 rounded-xl border border-white/15">
-                "{{ selectedPublicWorker.slogan || 'Tận tâm - Đúng giá - Có mặt sau 15 phút tại Tuy Hòa' }}"
+                "{{ selectedPublicWorker.slogan || 'Tận tâm - Đúng giá - Phục vụ tận nơi tại Tuy Hòa' }}"
               </div>
             </div>
           </div>
@@ -6957,9 +6957,9 @@
               </div>
               <div class="bg-blue-50/70 p-2.5 rounded-xl border border-blue-200/80">
                 <div class="font-black text-blue-900 flex items-center gap-1.5">
-                  <i class="fa-solid fa-clock text-blue-600"></i> Có Mặt Trong 15 Phút
+                  <i class="fa-solid fa-clock text-blue-600"></i> Có Mặt Đúng Giờ Hẹn
                 </div>
-                <div class="text-[11px] text-slate-600 mt-0.5">Ứng trực tận nơi nội thành Tuy Hòa và lân cận 3km.</div>
+                <div class="text-[11px] text-slate-600 mt-0.5">Phục vụ tận nơi nội thành Tuy Hòa và khu vực lân cận.</div>
               </div>
               <div class="bg-amber-50/70 p-2.5 rounded-xl border border-amber-200/80">
                 <div class="font-black text-amber-900 flex items-center gap-1.5">
@@ -7034,7 +7034,7 @@
             :href="'tel:' + (selectedPublicWorker.phone || '0979991898')" 
             class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 shadow-lg active:scale-95 transition-all">
             <i class="fa-solid fa-phone"></i>
-            <span>Gọi Thợ Tới Liền (15p)</span>
+            <span>Gọi Thợ Trực Tiếp</span>
           </a>
         </div>
       </div>
@@ -8787,7 +8787,7 @@
             href="tel:0979991898" 
             class="text-amber-300 hover:text-white font-mono font-bold text-[11px] flex items-center gap-1.5 transition-colors">
             <i class="fa-solid fa-phone-volume text-emerald-400"></i>
-            <span>Cứu Hộ: 0979 991 898</span>
+            <span>Hỗ Trợ: 0979 991 898</span>
           </a>
 
           <button 
@@ -9932,7 +9932,7 @@
         </div>
 
         <div class="bg-gradient-to-br from-rose-50 to-red-50 border border-rose-200 rounded-2xl p-3">
-          <div class="text-[10px] text-rose-800 font-bold uppercase tracking-wider">Hotline Cứu Hộ 24/7</div>
+          <div class="text-[10px] text-rose-800 font-bold uppercase tracking-wider">Hotline Hỗ Trợ 24/7</div>
           <div class="flex items-baseline gap-1 mt-1">
             <span class="text-xl sm:text-2xl font-black text-rose-900">6 / 6 Ca</span>
             <span class="text-[10px] text-emerald-600 font-bold">100%</span>
@@ -10517,7 +10517,7 @@
           :class="sopActiveTab === 'hotline' ? 'bg-white text-amber-700 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'"
           class="py-2.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 text-center">
           <i class="fa-solid fa-headset text-amber-600 text-xs"></i>
-          <span class="truncate">4. Cứu Hộ 24/7</span>
+          <span class="truncate">4. Sửa Chữa Tận Nhà</span>
         </button>
       </div>
 
@@ -10876,16 +10876,16 @@
         </div>
       </div>
 
-      <!-- NỘI DUNG TAB 4: SOP CỨU HỘ & XỬ LÝ KHẨN CẤP 24/7 (HOTLINE: 0979 991 898) -->
+      <!-- NỘI DUNG TAB 4: SOP TIẾP NHẬN & XỬ LÝ SỰ CỐ DÂN SINH 24/7 (HOTLINE: 0979 991 898) -->
       <div v-if="sopActiveTab === 'hotline'" class="space-y-4">
         <!-- Banner Hotline 24/7 -->
         <div class="bg-gradient-to-r from-amber-900 via-amber-800 to-yellow-950 text-white rounded-2xl p-4 shadow-sm border border-amber-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <div class="flex items-center gap-2 mb-1">
-              <span class="bg-datphu-red text-white font-black text-[10px] px-2 py-0.5 rounded uppercase">Trực Ban Cứu Hộ Tuy Hòa</span>
-              <span class="text-xs font-bold text-amber-200">Kênh Cứu Hộ & Giải Quyết Khiếu Nại</span>
+              <span class="bg-datphu-red text-white font-black text-[10px] px-2 py-0.5 rounded uppercase">Trực Ban Kỹ Thuật Dân Sinh Tuy Hòa</span>
+              <span class="text-xs font-bold text-amber-200">Kênh Tiếp Nhận Sự Cố & Khiếu Nại</span>
             </div>
-            <h4 class="text-sm font-black text-white">ĐƯỜNG DÂY NÓNG CỨU HỘ SỰ CỐ DÂN SINH 24/7</h4>
+            <h4 class="text-sm font-black text-white">ĐƯỜNG DÂY NÓNG HỖ TRỢ SỰ CỐ DÂN SINH 24/7</h4>
             <p class="text-[11px] text-amber-200 mt-0.5">Nhấc máy &le; 3 hồi • Phân luồng khẩn cấp • Điều xe/thợ gần nhất • Giám sát đến khi an toàn</p>
           </div>
           <div class="bg-white/10 backdrop-blur-xs px-4 py-2.5 rounded-2xl border border-amber-400 text-center flex-shrink-0 self-stretch sm:self-auto">
@@ -10897,7 +10897,7 @@
           </div>
         </div>
 
-        <!-- 4 Tình huống cứu hộ khẩn cấp -->
+        <!-- 4 Tình huống xử lý sự cố cấp bách -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
           <!-- TH 1: Cháy chập điện, rò rỉ nước -->
           <div class="bg-red-50 border border-red-200 rounded-2xl p-3.5 space-y-2">
@@ -10909,7 +10909,7 @@
               Hướng dẫn chủ nhà ngắt ngay cầu dao tổng / khóa van nguồn nước. Điều ngay 01 thợ K6 trực đêm trong bán kính 3km mang đèn pin, đồng hồ đo, aptomat thay thế.
             </p>
             <div class="text-[10px] bg-white p-2 rounded-xl text-red-800 font-bold border border-red-100 flex items-center gap-1.5">
-              <i class="fa-solid fa-clock"></i> Thời gian điều thợ: 5 - 15 phút
+              <i class="fa-solid fa-clock"></i> Thời gian điều thợ: Tiếp nhận & hẹn giờ ngay
             </div>
           </div>
 
@@ -10917,7 +10917,7 @@
           <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3.5 space-y-2">
             <div class="flex items-center gap-2 font-black text-blue-900">
               <i class="fa-solid fa-motorcycle text-blue-600 text-base"></i>
-              <span>2. Cứu Hộ Xe Máy & Lốp Đường Trường</span>
+              <span>2. Sửa Xe Máy & Vá Vỏ Lưu Động</span>
             </div>
             <p class="text-[11px] text-slate-700 leading-relaxed">
               Xác định vị trí người dân (khu vực QL1A, ven biển Tuy Hòa hoặc đường tối). Điều thợ vá vỏ cơ động mang theo bơm điện, ruột xe, bình ắc quy dự phòng.
@@ -10931,7 +10931,7 @@
           <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 space-y-2">
             <div class="flex items-center gap-2 font-black text-amber-900">
               <i class="fa-solid fa-key text-amber-600 text-base"></i>
-              <span>3. Cứu Hộ Khóa Nhà & Cửa Cuốn Kẹt</span>
+              <span>3. Mở Khóa Nhà & Sửa Cửa Cuốn Kẹt</span>
             </div>
             <p class="text-[11px] text-slate-700 leading-relaxed">
               Yêu cầu xuất trình giấy tờ tùy thân hoặc có tổ trưởng/hàng xóm xác nhận trước khi mở khóa tránh rủi ro an ninh. Thợ kỹ thuật mở khóa không phá hủy ổ nếu có thể.
@@ -10956,15 +10956,15 @@
           </div>
         </div>
 
-        <!-- Quy trình ghi nhận nhật ký cuộc gọi cứu hộ -->
+        <!-- Quy trình ghi nhận nhật ký cuộc gọi hỗ trợ -->
         <div class="bg-slate-900 text-white p-3.5 rounded-2xl border border-slate-800 text-xs flex flex-col sm:flex-row items-center justify-between gap-3">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center justify-center text-sm flex-shrink-0">
               <i class="fa-solid fa-server"></i>
             </div>
             <div>
-              <div class="font-black text-white text-xs">Hệ Thống Ghi Nhận Lịch Sử Cứu Hộ Tự Động</div>
-              <p class="text-[11px] text-slate-400">100% cuộc gọi cứu hộ và tin nhắn SMS được mã hóa lưu trữ, phục vụ giám sát chất lượng và bảo hành K6.</p>
+              <div class="font-black text-white text-xs">Hệ Thống Ghi Nhận Lịch Sử Sự Cố Tự Động</div>
+              <p class="text-[11px] text-slate-400">100% cuộc gọi hỗ trợ sự cố và tin nhắn SMS được mã hóa lưu trữ, phục vụ giám sát chất lượng và bảo hành K6.</p>
             </div>
           </div>
           <a href="tel:0979991898" class="bg-datphu-red hover:bg-red-700 text-white font-black px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-md transition-all flex-shrink-0">
@@ -11428,7 +11428,7 @@
       </div>
 
       <div class="text-center pt-1 text-[10px] text-slate-400 italic">
-        Sàn Đất Phú bảo đảm đơn giá niêm yết và thời gian cứu hộ khẩn cấp đồng nhất trên toàn tỉnh!
+        Sàn Đất Phú bảo đảm đơn giá niêm yết và chất lượng phục vụ đồng nhất trên toàn tỉnh!
       </div>
     </div>
   </div>
@@ -11610,7 +11610,7 @@
     </div>
   </div>
 
-  <!-- ======================== MODAL: BẮN CUỐC CỨU HỘ KHẨN CẤP 2KM THÀNH CÔNG ======================== -->
+  <!-- ======================== MODAL: BẮN CUỐC SỬA CHỮA NHANH 2KM THÀNH CÔNG ======================== -->
   <div v-if="showEmergencyDispatchModal && emergencyDispatchedWorker" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
     <div class="bg-white w-full max-w-sm rounded-3xl p-5 space-y-4 shadow-2xl text-center">
       <div class="w-14 h-14 rounded-full bg-red-100 text-datphu-red mx-auto flex items-center justify-center text-2xl shadow-inner animate-bounce">
@@ -11619,12 +11619,12 @@
       <div>
         <span class="text-[9px] bg-red-100 text-red-800 font-bold px-2 py-0.5 rounded-full uppercase">Đã Điều Phối Thợ Khẩn Cấp</span>
         <h3 class="text-xs sm:text-sm font-black text-slate-900 mt-1 uppercase">{{ emergencyDispatchedWorker.title }}</h3>
-        <p class="text-[10px] text-slate-500">Thợ gần nhất trong bán kính 2km đã nhận lệnh ứng cứu!</p>
+        <p class="text-[10px] text-slate-500">Thợ gần nhất trong khu vực đã tiếp nhận yêu cầu!</p>
       </div>
 
       <div class="bg-slate-950 text-white p-3.5 rounded-2xl border border-slate-800 text-left space-y-2 text-xs">
         <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
-          <span class="text-slate-400 text-[10px]">Thợ phụ trách cứu hộ:</span>
+          <span class="text-slate-400 text-[10px]">Thợ tiếp nhận xử lý:</span>
           <span class="font-black text-amber-300">{{ emergencyDispatchedWorker.workerName }}</span>
         </div>
         <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
@@ -11889,7 +11889,7 @@
               class="p-2.5 rounded-2xl border cursor-pointer transition-all text-center space-y-1">
               <div class="text-amber-600 font-black text-xs">🟡 LEVEL 2</div>
               <div class="text-[11px] font-black text-slate-900 leading-tight">Đội Nhóm Thợ</div>
-              <p class="text-[9px] text-slate-500 leading-tight">3-5 thợ • Cứu hộ cơ động</p>
+              <p class="text-[9px] text-slate-500 leading-tight">3-5 thợ • Đội thợ cơ động</p>
             </div>
 
             <div 
@@ -11910,7 +11910,7 @@
           <input 
             v-model="newWorkerForm.name" 
             type="text" 
-            :placeholder="newWorkerForm.workerLevel === 'contractor' ? 'VD: Cửa Hàng Điện Nước Hùng Phát hoặc Tiệm Cơ Điện Anh Hùng' : (newWorkerForm.workerLevel === 'team' ? 'VD: Đội Cứu Hộ Cơ Động Anh Vũ' : 'VD: Chú Tùng Điện Nước')" 
+            :placeholder="newWorkerForm.workerLevel === 'contractor' ? 'VD: Cửa Hàng Điện Nước Hùng Phát hoặc Tiệm Cơ Điện Anh Hùng' : (newWorkerForm.workerLevel === 'team' ? 'VD: Đội Sửa Xe Cơ Động Anh Vũ' : 'VD: Chú Tùng Điện Nước')" 
             class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all">
         </div>
 
@@ -11936,7 +11936,7 @@
               <option value="Điện Nước Dân Dụng">⚡ Điện Nước Dân Dụng & Công Trình</option>
               <option value="Điện Lạnh & Máy Giặt">❄️ Điện Lạnh, Điều Hòa, Tủ Lạnh</option>
               <option value="Khóa & Cửa Cuốn">🔑 Mở Khóa, Cửa Cuốn, Cửa Nhôm</option>
-              <option value="Cứu Hộ Xe Máy">🛵 Vá Vỏ Xe Máy & Bình Ắc Quy Lưu Động</option>
+              <option value="Sửa Xe Máy Lưu Động">🛵 Vá Vỏ Xe Máy & Bình Ắc Quy Lưu Động</option>
               <option value="Camera & Mạng Wifi">📷 Camera An Ninh & Mạng Nhà Xưởng</option>
               <option value="Thông Tắc Bồn Cầu">🪠 Thông Tắc Vệ Sinh & Ống Thoát</option>
               <option value="Nhôm Kính Thạch Cao">🏗️ Thi Công Nhôm Kính & Nội Thất Thạch Cao</option>
@@ -12791,7 +12791,7 @@
             <input 
               v-model="editWorkerProfileForm.slogan" 
               type="text" 
-              placeholder="VD: Tận tâm - Đúng giá - Có mặt sau 15 phút tại Tuy Hòa" 
+              placeholder="VD: Tận tâm - Đúng giá - Phục vụ tận nơi tại Tuy Hòa" 
               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20">
           </div>
 
@@ -14329,7 +14329,7 @@
               </div>
               <ul class="text-[10px] text-slate-700 space-y-1.5 pt-1.5 border-t border-amber-200">
                 <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Bán kính phủ sóng <strong>3km - 10km</strong></span></li>
-                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Ưu tiên điều phối các ca cứu hộ kỹ thuật khẩn cấp</span></li>
+                <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Ưu tiên điều phối các ca sự cố kỹ thuật cấp bách</span></li>
                 <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Ưu tiên nổ cuốc khẩn cấp đêm ngày</span></li>
                 <li class="flex items-start gap-1"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>Chia việc nội bộ cho anh em trong đội</span></li>
               </ul>
@@ -14788,7 +14788,7 @@
             v-for="cat in [
               { id: 'fnb', label: '🍗 Cơm Gà / Bún Cá / Đồ Ăn', icon: 'fa-utensils' },
               { id: 'drink', label: '🧋 Trà Sữa / Cà Phê Đá', icon: 'fa-mug-hot' },
-              { id: 'electric', label: '⚡ Cứu Hộ Điện Nước 24/7', icon: 'fa-bolt' },
+              { id: 'electric', label: '⚡ Sửa Điện Nước Tận Nhà', icon: 'fa-bolt' },
               { id: 'lock', label: '🔑 Mở Khóa / Cửa Cuốn', icon: 'fa-key' },
               { id: 'cool', label: '❄️ Sửa Máy Lạnh / Giặt Sấy', icon: 'fa-snowflake' },
               { id: 'bhyt', label: '🏥 Đổi Điểm Mua Thẻ BHYT', icon: 'fa-shield-heart' }
@@ -15043,7 +15043,7 @@
             rating: 4.98,
             jobsCount: 156,
             badge: 'Bảo Hành 30N',
-            timeEstimate: '15 phút có mặt',
+            timeEstimate: 'Có mặt theo hẹn',
             desc: 'Đo tải kiểm tra rò điện âm tường, xử lý an toàn chống cháy nổ'
           },
           {
@@ -15060,7 +15060,7 @@
             rating: 4.99,
             jobsCount: 340,
             badge: 'Thợ Lành Nghề',
-            timeEstimate: 'Có mặt 20 phút',
+            timeEstimate: 'Có mặt theo hẹn',
             desc: 'Bơm áp lực làm sạch dàn nóng lạnh, nạp gas R32/R410 chính hãng'
           },
           {
@@ -15077,12 +15077,12 @@
             rating: 4.97,
             jobsCount: 198,
             badge: 'Giá Niêm Yết',
-            timeEstimate: '15 phút có mặt',
+            timeEstimate: 'Có mặt theo hẹn',
             desc: 'Hàn ống nhiệt PPR, thay van vòi rò rỉ, thông tắc đường ống nước'
           },
           {
             id: 'sk_4',
-            title: 'Cứu Hộ Mở Khóa Cửa & Khóa Xe 24/7',
+            title: 'Mở Khóa Cửa & Sửa Khóa Xe Tận Nhà',
             category: 'khoa',
             categoryName: 'Sửa Khóa Cấp Tốc',
             image: 'https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=400&q=80',
@@ -15093,8 +15093,8 @@
             originalPrice: 80000,
             rating: 4.95,
             jobsCount: 98,
-            badge: 'Cứu Hộ 24/7',
-            timeEstimate: '8 phút tới nơi',
+            badge: 'Phục Vụ Tận Nơi',
+            timeEstimate: 'Có mặt theo hẹn',
             desc: 'Mở khóa cửa nhà, cửa cuốn, ổ khóa xe máy không làm hỏng ổ'
           }
         ],
@@ -15364,7 +15364,7 @@
           area: 'P. 7 & Lê Lợi, TP. Tuy Hòa',
           avatar: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=300&q=80',
           cover: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1200&q=80',
-          slogan: 'Tận tâm - Đúng giá - Có mặt sau 15 phút tại Tuy Hòa',
+          slogan: 'Tận tâm - Đúng giá - Phục vụ tận nơi tại Tuy Hòa',
           experience: '12 Năm Kinh Nghiệm',
           bio: 'Chuyên xử lý chập điện âm tường, sự cố máy bơm, rò rỉ đường ống nước chịu nhiệt PPR, thay CB an toàn PCCC, nghiệm thu bàn giao xong mới thu tiền. Cam kết 100% không vẽ bệnh chặt chém bà con Tuy Hòa.',
           themeColor: 'amber-red',
@@ -15839,12 +15839,12 @@
         { code: 'WBS-TC-04', stream: 'tech', title: 'Sổ kế toán EasyBooks & 5 File Excel', desc: 'Hệ thống kế toán đơn giản hóa, nhật ký thu chi tiền mặt và công nợ', pic: 'Tech Team', phase: 'Phase 2', progress: 100, status: 'done', deliverable: 'Bộ 5 file Excel quản trị dịch vụ thợ' },
         { code: 'WBS-TC-05', stream: 'tech', title: 'Đóng gói Backend GitHub & Vercel', desc: 'Kho mã nguồn thuongmaidatphu-bit/datphu-backend, serverless handler', pic: 'Tech Team', phase: 'Phase 2', progress: 100, status: 'done', deliverable: 'Triển khai Edge Serverless CDN' },
         { code: 'WBS-TC-06', stream: 'tech', title: 'Giao diện tương tác Sổ tay SOP 4 phân hệ', desc: 'Modal hướng dẫn 4 tab, nút in A4 dán tường, checklist 6 vật phẩm', pic: 'Tech Team', phase: 'Phase 2', progress: 100, status: 'done', deliverable: 'Sổ tay SOP vận hành tương tác trực tiếp' },
-        { code: 'WBS-TC-07', stream: 'tech', title: 'Đồng bộ Realtime WebSockets & Push Alert', desc: 'Bắn tín hiệu nổ cuốc khẩn cấp cho thợ gần nhất theo tọa độ radar', pic: 'Tech Team', phase: 'Phase 3', progress: 75, status: 'running', deliverable: 'Chuông báo cứu hộ thời gian thực' },
+        { code: 'WBS-TC-07', stream: 'tech', title: 'Đồng bộ Realtime WebSockets & Push Alert', desc: 'Bắn tín hiệu nổ cuốc khẩn cấp cho thợ gần nhất theo tọa độ radar', pic: 'Tech Team', phase: 'Phase 3', progress: 75, status: 'running', deliverable: 'Chuông báo điều phối thợ thời gian thực' },
 
         { code: 'WBS-OP-01', stream: 'worker', title: 'Tiêu chuẩn tay nghề Thợ K6 Tuy Hòa', desc: 'Khung kiểm soát chất lượng 5 bước, bảng niêm yết giá công minh bạch', pic: 'Ops Lead', phase: 'Phase 1', progress: 100, status: 'done', deliverable: 'Bộ quy chuẩn tay nghề Thợ K6' },
         { code: 'WBS-OP-02', stream: 'worker', title: 'Thiết kế thẻ định danh hành nghề QR', desc: 'Thẻ nhân viên có mã QR chống mạo danh, tra cứu lịch sử và tay nghề', pic: 'Design Team', phase: 'Phase 2', progress: 100, status: 'done', deliverable: 'Mẫu thẻ đeo ngực có mã QR định danh' },
         { code: 'WBS-OP-03', stream: 'worker', title: 'Tuyển mộ & Thẩm định 20 Thợ nòng cốt', desc: 'Xác minh CCCD, ký cam kết giá minh bạch, kiểm tra tay nghề thực địa', pic: 'Ops Team', phase: 'Phase 3', progress: 90, status: 'running', deliverable: '20 Thợ điện, nước, máy lạnh Tuy Hòa' },
-        { code: 'WBS-OP-04', stream: 'worker', title: 'Thiết lập trực ban Cứu Hộ Dân Sinh 24/7', desc: 'Đấu nối đường dây nóng 0979 991 898, phân ca trực đêm Tuy Hòa', pic: 'Ops Team', phase: 'Phase 3', progress: 100, status: 'done', deliverable: 'Đường dây nóng 0979 991 898 trực 24/7' },
+        { code: 'WBS-OP-04', stream: 'worker', title: 'Thiết lập trực ban Hỗ Trợ Dân Sinh 24/7', desc: 'Đấu nối đường dây nóng 0979 991 898, phân ca trực đêm Tuy Hòa', pic: 'Ops Team', phase: 'Phase 3', progress: 100, status: 'done', deliverable: 'Đường dây nóng 0979 991 898 trực 24/7' },
         { code: 'WBS-OP-05', stream: 'worker', title: 'Cấp phát trang bị (Áo thợ, Túi đồ nghề)', desc: '20 Bộ đồng phục Đất Phú, găng tay cách điện, đồng hồ đo điện áp', pic: 'Ops / Admin', phase: 'Phase 3', progress: 70, status: 'running', deliverable: 'Trang phục & dụng cụ an toàn lao động' },
         { code: 'WBS-OP-06', stream: 'worker', title: 'Mở rộng mạng lưới Sông Cầu, Đông Hòa', desc: 'Khảo sát thợ sửa chữa, tiệm xe máy tại TX. Sông Cầu và TX. Đông Hòa', pic: 'Ops Team', phase: 'Phase 4', progress: 20, status: 'upcoming', deliverable: 'Mạng lưới thợ vệ tinh liên huyện' },
 
@@ -16638,7 +16638,7 @@
           bookingType: 'immediate'
         },
 
-        // Dịch Vụ Cứu Hộ & Sửa Chữa Chuẩn K6 (Hiển thị nổi bật Trang Chủ)
+        // Dịch Vụ Sửa Chữa Dân Sinh Chuẩn K6 (Hiển thị nổi bật Trang Chủ)
         hotlinePhone: '0979991898',
         hotlineDisplay: '0979 991 898',
 
@@ -16682,7 +16682,7 @@
           {
             id: 'sos_khoa',
             title: 'Kẹt Khóa / Mở Cửa Khẩn Cấp',
-            desc: 'Cứu hộ kẹt chìa trong ổ, mất chìa khóa phòng, xử lý kẹt cửa cuốn 24/7',
+            desc: 'Mở kẹt chìa trong ổ, xử lý mất chìa khóa phòng, sửa kẹt cửa cuốn tận nhà',
             price: 60000,
             icon: '🔑',
             time: 'Hỗ trợ tận nơi',
@@ -16819,7 +16819,7 @@
             phone: '0979 991 898',
             avatar: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=300&q=80',
             distance: '350m',
-            timeEstimate: '15 phút có mặt',
+            timeEstimate: 'Có mặt theo hẹn',
             address: '142 Trần Hưng Đạo, P. 4, Tuy Hòa',
             rating: 4.98,
             jobsCompleted: 156,
@@ -16835,24 +16835,24 @@
             id: 'w_5',
             contractCode: 'HĐ-THO-DP05',
             boothName: 'Đội Cơ Động Vá Xe & Ắc Quy 24/7',
-            name: 'Đội Cứu Hộ Anh Vũ',
-            title: 'Đội Nhóm Cứu Hộ Cơ Động 24/7',
+            name: 'Đội Sửa Xe Cơ Động Anh Vũ',
+            title: 'Đội Nhóm Sửa Xe Cơ Động Tận Nơi',
             level: 'team',
             levelName: 'Đội Nhóm Thợ Cơ Động',
             levelBadgeClass: 'bg-amber-400 text-slate-950 border-amber-300',
             specialty: 'xe_may',
-            specialtyName: 'Cứu Hộ Xe Máy',
+            specialtyName: 'Sửa Xe Máy Lưu Động',
             icon: '🛵',
             phone: '0977 123 789',
             avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
             distance: '500m',
-            timeEstimate: '7 phút có mặt',
+            timeEstimate: 'Có mặt theo hẹn',
             address: 'Ngã tư Hùng Vương - Trần Phú, Tuy Hòa',
             rating: 4.98,
             jobsCompleted: 245,
             teamSize: 'Tổ cơ động 4 thành viên',
             status: 'online',
-            statusText: 'Cứu hộ cơ động trực chiến 24/7',
+            statusText: 'Thợ lưu động sẵn sàng theo hẹn',
             verified: true,
             packages: [
               { name: 'Vá Lốp Xe Máy Không Ruột Tận Nơi', price: 40000, image: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=300&q=80' },
@@ -16864,7 +16864,7 @@
             contractCode: 'HĐ-THO-DP02',
             boothName: 'Quầy Sửa Khóa & Cửa Cuốn 02',
             name: 'Anh Nam Khóa',
-            title: 'Cứu Hộ Mở Khóa & Cửa Cuốn 24/7',
+            title: 'Mở Khóa Tận Nhà & Sửa Cửa Cuốn',
             level: 'freelance',
             levelName: 'Thợ Tự Do K6',
             levelBadgeClass: 'bg-emerald-500 text-slate-950 border-emerald-400',
@@ -16874,7 +16874,7 @@
             phone: '0905 334 466',
             avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
             distance: '650m',
-            timeEstimate: '8 phút tới nơi',
+            timeEstimate: 'Có mặt theo hẹn',
             address: '88 Lê Lợi, P. 3, Tuy Hòa',
             rating: 4.95,
             jobsCompleted: 98,
@@ -16901,7 +16901,7 @@
             phone: '0913 889 911',
             avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
             distance: '750m',
-            timeEstimate: '10 phút tới nơi',
+            timeEstimate: 'Có mặt theo hẹn',
             address: '45 Duy Tân, P. 5, Tuy Hòa',
             rating: 4.96,
             jobsCompleted: 132,
@@ -17246,7 +17246,7 @@
           // 9. DỊCH VỤ THUÊ XE MÁY GA TUY HÒA
           {
             id: 'st_xemay',
-            name: 'Thuê Xe Máy Du Lịch & Cứu Hộ Ga Tuy Hòa',
+            name: 'Thuê Xe Máy Du Lịch & Hỗ Trợ Ga Tuy Hòa',
             desc: 'Xe đời mới bảo dưỡng kỹ, giao xe tận khách sạn / ga xe lửa trong 15 phút kèm 2 nón bảo hiểm',
             category: 'cat_service',
             templateType: 'Dịch Vụ Du Lịch',
@@ -17728,7 +17728,7 @@
           address: this.bookWorkerForm.customerAddress
         });
 
-        alert(`📡 ĐIỀU PHỐI CỨU HỘ THÀNH CÔNG! (Mã: #${dispatchCode})\n\n• Thợ tiếp nhận: ${this.selectedWorkerToBook.name} (${this.selectedWorkerToBook.phone})\n• Dự kiến có mặt: ${this.selectedWorkerToBook.timeEstimate}\n• Địa chỉ cứu hộ: ${this.bookWorkerForm.customerAddress}\n\nĐã cập nhật vào [Đơn Của Tôi]. Thợ đang mang đồ nghề di chuyển ngay!`);
+        alert(`📡 ĐIỀU PHỐI THỢ THÀNH CÔNG! (Mã: #${dispatchCode})\n\n• Thợ tiếp nhận: ${this.selectedWorkerToBook.name} (${this.selectedWorkerToBook.phone})\n• Dự kiến có mặt: ${this.selectedWorkerToBook.timeEstimate}\n• Địa chỉ sửa chữa: ${this.bookWorkerForm.customerAddress}\n\nĐã cập nhật vào [Đơn Của Tôi]. Thợ đang mang đồ nghề di chuyển ngay!`);
         this.showBookWorkerModal = false;
         this.bookWorkerForm = { customerName: '', customerPhone: '', customerAddress: '', issueDesc: '', bookingType: 'immediate' };
       },
@@ -18195,7 +18195,7 @@
         ['Vận Hành', 'Đơn Hàng Chợ Phiên POS', 'Món ngon & OCOP giao nhanh', this.leanDailyMetrics.choPhienOrders, 'Đơn', 'Giao thành công'],
         ['Vận Hành', 'Cuốc Thợ K6 Cơ Động', 'Sửa chữa điện nước, khóa, máy lạnh', this.leanDailyMetrics.workerJobs, 'Cuốc', 'Có bảo hành K6'],
         ['Vận Hành', 'Cuốc Đất Phú Express', 'Giao hàng nhanh & Mua hộ', this.leanDailyMetrics.expressTrips, 'Cuốc', '< 30 phút Tuy Hòa'],
-        ['Cứu Hộ', 'Hotline 0979 991 898', 'Tiếp nhận sự cố dân sinh 24/7', this.leanDailyMetrics.rescueCallsHandled + '/' + this.leanDailyMetrics.rescueCallsTotal, 'Ca', '100% Hoàn tất'],
+        ['Hỗ Trợ Kỹ Thuật', 'Hotline 0979 991 898', 'Tiếp nhận sự cố dân sinh 24/7', this.leanDailyMetrics.rescueCallsHandled + '/' + this.leanDailyMetrics.rescueCallsTotal, 'Ca', '100% Hoàn tất'],
         ['Chất Lượng', 'Điểm Đánh Giá CSAT', 'Mức độ hài lòng của cư dân', this.leanDailyMetrics.csatScore, '/ 5.0 Sao', 'Rất tốt']
       ];
       const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
@@ -18552,7 +18552,7 @@
         serviceName: job.serviceName,
         issueDesc: job.issueDesc,
         scheduleType: 'urgent',
-        timeText: '⚡ Đã Nhận Cuốc • Có Mặt Sau 15 Phút',
+        timeText: '⚡ Đã Nhận Cuốc • Có Mặt Theo Hẹn',
         distance: job.distance,
         status: 'accepted',
         priceEstimate: job.priceEstimate,
@@ -18567,7 +18567,7 @@
         '• Khách hàng: ' + job.customerName + ' (' + job.customerPhone + ')\n' +
         '• Địa chỉ: ' + job.customerAddress + '\n' +
         '• Tiền công: ' + Number(job.priceEstimate).toLocaleString('vi-VN') + 'đ\n\n' +
-        'Hãy bấm gọi điện cho khách ngay để xác nhận 15 phút có mặt tại Tuy Hòa!');
+        'Hãy bấm gọi điện cho khách ngay để xác nhận lịch hẹn có mặt tại Tuy Hòa!');
     },
     rejectIncomingJob() {
       this.stopWorkerRingtone();
@@ -19266,7 +19266,7 @@
           'pipe_burst': '🌊 VỠ ỐNG NƯỚC CHÍNH TRÀN NHÀ (P.4 Tuy Hòa)',
           'lock_stuck': '🔐 KẸT CỬA CUỐN / KHÓA NHÀ KHÔNG VÀO ĐƯỢC (P.3)'
         };
-        const title = typeNames[type] || '🚨 SỰ CỐ CỨU HỘ KHẨN CẤP';
+        const title = typeNames[type] || '🚨 SỰ CỐ KỸ THUẬT CẤP BÁCH';
         const assignedWorker = this.nearbyWorkersList[0] || { name: 'Chú Tùng', phone: '0979 991 898', specialty: 'Điện Nước' };
         
         this.emergencyDispatchedWorker = {
@@ -19275,9 +19275,9 @@
           workerPhone: assignedWorker.phone,
           specialty: assignedWorker.specialtyName || assignedWorker.title,
           distance: '0.8km',
-          eta: '6 - 8 phút',
+          eta: 'Liên hệ hẹn giờ ngay',
           address: 'KDC Hùng Vương, Phường 7, TP. Tuy Hòa',
-          status: 'Đang phóng xe đến hiện trường'
+          status: 'Đã nhận đơn & liên hệ xác nhận hẹn'
         };
         this.showEmergencyDispatchModal = true;
       },
@@ -19410,7 +19410,7 @@
           phone: this.newWorkerForm.phone,
           avatar: wLevel === 'contractor' ? 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80' : 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=300&q=80',
           distance: '200m (Vừa gia nhập)',
-          timeEstimate: wLevel === 'contractor' ? 'Cửa tiệm mở cửa cả ngày' : '15 phút có mặt',
+          timeEstimate: wLevel === 'contractor' ? 'Cửa tiệm mở cửa cả ngày' : 'Có mặt theo hẹn',
           address: this.newWorkerForm.address || 'TP. Tuy Hòa',
           rating: 5.0,
           jobsCompleted: 1,
@@ -19858,7 +19858,7 @@ Cam kết: Bảo hành thiết bị 24 tháng • Đổi mới 30 ngày nếu l�
 - Thiết bị lưu trữ: ${est.storageLabel}
 - Tổng tiền vốn thợ (Giá sỉ chiết khấu): ${est.totalWholesale.toLocaleString('vi-VN')} đ
 
-Kho Đất Phú Tuy Hòa sẽ liên hệ giao hàng hỏa tốc trong 15 phút tới hiện trường!
+Kho Đất Phú Tuy Hòa sẽ liên hệ giao hàng hỏa tốc tới hiện trường!
 Hotline hỗ trợ: 0979 991 898`);
       },
 
@@ -19893,7 +19893,7 @@ Hotline hỗ trợ: 0979 991 898`);
           area: this.currentWorker.area,
           avatar: this.currentWorker.avatar,
           cover: this.currentWorker.cover || '',
-          slogan: this.currentWorker.slogan || 'Tận tâm - Đúng giá - Có mặt sau 15 phút tại Tuy Hòa',
+          slogan: this.currentWorker.slogan || 'Tận tâm - Đúng giá - Phục vụ tận nơi tại Tuy Hòa',
           experience: this.currentWorker.experience || '12 Năm Kinh Nghiệm',
           bio: this.currentWorker.bio || '',
           themeColor: this.currentWorker.themeColor || 'amber-red'
@@ -19966,7 +19966,7 @@ Hotline hỗ trợ: 0979 991 898`);
           area: target.address || target.area || '142 Trần Hưng Đạo, P. 4, Tuy Hòa',
           avatar: target.avatar || (this.currentWorker && this.currentWorker.avatar) || 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=150&q=80',
           cover: target.cover || (this.currentWorker && this.currentWorker.cover) || 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1000&q=80',
-          slogan: target.slogan || 'Tận tâm - Đúng giá - Có mặt sau 15 phút tại Tuy Hòa',
+          slogan: target.slogan || 'Tận tâm - Đúng giá - Phục vụ tận nơi tại Tuy Hòa',
           experience: target.experience || '12 Năm Kinh Nghiệm',
           bio: target.bio || target.desc || 'Chuyên xử lý chập điện âm tường, sự cố máy bơm, rò rỉ đường ống nước chịu nhiệt PPR, thay CB an toàn PCCC, nghiệm thu bàn giao xong mới thu tiền.',
           themeColor: target.themeColor || (this.currentWorker && this.currentWorker.themeColor) || 'amber-red',
@@ -20833,8 +20833,8 @@ Hotline hỗ trợ: 0979 991 898`);
         const catLabels = {
           fnb: 'Món Ngon Quán Quen Tuy Hòa',
           buy: 'Dịch Vụ Mua Hộ / Đi Chợ Hộ',
-          ship: 'Dịch Vụ Giao Hộ Siêu Tốc 15 Phút',
-          electric: 'Cứu Hộ Điện Nước 24/7',
+          ship: 'Dịch Vụ Giao Hộ Hỏa Tốc',
+          electric: 'Sửa Điện Nước Tận Nhà',
           lock: 'Thợ Khóa & Cửa Cuốn',
           cool: 'Điện Lạnh & Giặt Sấy',
           other: 'Nhu Cầu Kỹ Thuật Tự Do'
