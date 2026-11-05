@@ -5299,97 +5299,172 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           
-          <!-- Cột 1: Thông tin sàn -->
-          <div>
-            <div class="flex items-center gap-2.5 mb-3">
+          <!-- Cột 1: Thông tin tiện ích dân sinh -->
+          <div class="space-y-3">
+            <div class="flex items-center gap-2.5">
               <img src="logo_datphu.jpg" alt="Logo Đất Phú" class="h-8 object-contain bg-white/95 p-1 rounded-xl shadow">
-              <span class="font-black text-base tracking-tight text-white">TIỆN ÍCH DÂN SINH BẢN ĐỊA</span>
+              <div>
+                <span class="font-black text-sm sm:text-base tracking-tight text-white block">TIỆN ÍCH DÂN SINH BẢN ĐỊA</span>
+                <span class="text-[9px] text-amber-300 font-bold uppercase tracking-wider">TP. Tuy Hòa • Phú Yên</span>
+              </div>
             </div>
-            <p class="text-xs text-slate-400 leading-relaxed mb-3">
-              Hạ tầng kết nối tiện ích dân sinh bản địa Tuy Hòa - Phú Yên: Đất Phú Chợ Phiên (Ẩm thực & OCOP), Đất Phú Trạm Thợ (Sửa chữa dân sinh), Đất Phú Express (Giao hàng) và Đất Phú POS.
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Nền tảng số kết nối giao thương và dịch vụ thiết yếu phục vụ bà con: Đi chợ tiện lợi, gọi thợ tin cậy, thúc đẩy kinh tế tuần hoàn và giữ trọn vẹn dòng tiền cho cộng đồng địa phương.
             </p>
-            <div class="text-xs text-slate-300 space-y-1">
-              <div class="flex items-center gap-2">
-                <i class="fa-solid fa-location-dot text-amber-400"></i>
-                <span>TP. Tuy Hòa, Tỉnh Phú Yên</span>
+            <div class="text-xs text-slate-300 space-y-1.5 pt-1">
+              <div class="flex items-start gap-2">
+                <i class="fa-solid fa-location-dot text-amber-400 mt-0.5 text-xs"></i>
+                <span class="text-[11px] text-slate-300">111 Nguyễn Văn Linh, P. Phú Lâm & 172 Ngô Gia Tự, P. Phú Đông, TP. Tuy Hòa</span>
               </div>
               <div class="flex items-center gap-2">
-                <i class="fa-solid fa-phone text-emerald-400"></i>
-                <span>Hotline Đặt Thợ & Hỗ Trợ: 0979 991 898 (24/7)</span>
+                <i class="fa-solid fa-phone text-emerald-400 text-xs"></i>
+                <span class="text-[11px] font-bold text-white">Tổng Đài Dân Sinh: <a href="tel:0979991898" class="text-amber-300 hover:underline font-mono">0979 991 898</a> (24/7)</span>
               </div>
             </div>
           </div>
 
-          <!-- Cột 2: Cư Dân & Du Khách -->
+          <!-- Cột 2: Dành cho bà con cư dân -->
           <div>
-            <h4 class="text-xs font-black uppercase text-amber-400 tracking-wider mb-3">Dành Cho Cư Dân</h4>
-            <ul class="text-xs text-slate-400 space-y-2">
-              <li><a href="#" @click.prevent="selectedCatId = 'all'" class="hover:text-white transition-colors">🔥 Món ngon & Đặc sản giao nhanh</a></li>
-              <li><a href="#" @click.prevent="openNearbyWorkers" class="hover:text-white transition-colors">📡 Radar Tìm Thợ Quanh Đây</a></li>
-              <li><a href="#" @click.prevent="navigateToCategory('cat_nail')" class="hover:text-white transition-colors">💅 Tiệm Nail & Spa - Đặt lịch trước</a></li>
-              <li><a href="#" @click.prevent="navigateToCategory('cat_cake')" class="hover:text-white transition-colors">🎂 Tiệm Bánh - Đặt bánh kèm lời chúc</a></li>
-              <li><a href="#" @click.prevent="showVoucherModal = true" class="hover:text-white transition-colors">🎟️ Săn Voucher Chợ Phiên & Freeship</a></li>
+            <h4 class="text-xs font-black uppercase text-amber-400 tracking-wider mb-3 flex items-center gap-1.5">
+              <i class="fa-solid fa-house-chimney-user text-amber-400"></i>
+              <span>Dành Cho Bà Con Cư Dân</span>
+            </h4>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li>
+                <a href="#" @click.prevent="consumerSpace = 'market'; selectedCatId = 'all'" class="hover:text-amber-300 transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-utensils text-datphu-red text-[10px]"></i>
+                  <span>Món Nóng & Thực Phẩm Tươi Sống (Chợ Tuy Hòa)</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" @click.prevent="consumerSpace = 'worker'; openNearbyWorkers()" class="hover:text-cyan-300 transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-screwdriver-wrench text-blue-400 text-[10px]"></i>
+                  <span>Gọi Thợ Kỹ Thuật Tận Nhà (Điện, nước, máy lạnh, khóa)</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" @click.prevent="openNearbyWorkers()" class="hover:text-emerald-300 transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-satellite-dish text-emerald-400 text-[10px]"></i>
+                  <span>Radar Quét Thợ Sửa Chữa Bán Kính 3KM</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" @click.prevent="showVoucherModal = true" class="hover:text-amber-300 transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-ticket text-amber-400 text-[10px]"></i>
+                  <span>Phiếu Giảm Giá & Tiết Kiệm Chi Tiêu Hàng Ngày</span>
+                </a>
+              </li>
+              <li>
+                <a href="tel:0979991898" class="hover:text-rose-300 transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-comment-dots text-rose-400 text-[10px]"></i>
+                  <span>Góp Ý & Phản Ánh Chất Lượng Phục Vụ (0979 991 898)</span>
+                </a>
+              </li>
             </ul>
           </div>
 
-          <!-- Cột 3: Đối tác & Thợ nghề -->
+          <!-- Cột 3: Dành cho tiểu thương & thợ nghề -->
           <div>
-            <h4 class="text-xs font-black uppercase text-emerald-400 tracking-wider mb-3">Dành Cho Đối Tác</h4>
-            <ul class="text-xs text-slate-400 space-y-2">
-              <li><a href="#" @click.prevent="activeTier = 'merchant'" class="hover:text-white transition-colors">🏪 Đăng ký thuê quầy số & Mở quán</a></li>
-              <li><a href="#" @click.prevent="activeTier = 'merchant'" class="hover:text-white transition-colors">🖨️ In bảng Mica Standee QR quầy</a></li>
-              <li><a href="#" @click.prevent="navigateToWorkerRegistration" class="hover:text-white transition-colors">🛠️ Gia nhập Đội Thợ 6K Cơ Động</a></li>
+            <h4 class="text-xs font-black uppercase text-emerald-400 tracking-wider mb-3 flex items-center gap-1.5">
+              <i class="fa-solid fa-handshake text-emerald-400"></i>
+              <span>Tiểu Thương & Thợ Nghề</span>
+            </h4>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li>
+                <a href="#" @click.prevent="activeTier = 'merchant'" class="hover:text-emerald-300 transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-shop text-emerald-400 text-[10px]"></i>
+                  <span>Đăng Ký Mở Quầy Bán Hàng (0% Chiết Khấu Sàn)</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" @click.prevent="navigateToWorkerRegistration" class="hover:text-cyan-300 transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-user-plus text-cyan-400 text-[10px]"></i>
+                  <span>Đăng Ký Tay Nghề Thợ & Nhận Cuốc Gần Nhà</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" @click.prevent="activeTier = 'merchant'" class="hover:text-amber-300 transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-qrcode text-amber-400 text-[10px]"></i>
+                  <span>Cấp Mã Quầy & Standee VietQR Miễn Phí</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" @click.prevent="openEcomRegulationsModal('decree85_regulations')" class="hover:text-white transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-scale-balanced text-slate-400 text-[10px]"></i>
+                  <span>Quy Chế Hoạt Động & Giao Thương Minh Bạch</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" @click.prevent="openEcomRegulationsModal('privacy13_protection')" class="hover:text-white transition-colors flex items-center gap-1.5">
+                  <i class="fa-solid fa-shield-halved text-slate-400 text-[10px]"></i>
+                  <span>Chính Sách Bảo Mật Dữ Liệu & Quyền Lợi Tiểu Thương</span>
+                </a>
+              </li>
               <template v-if="activeTier === 'master'">
-              <li><a href="#" @click.prevent="openLeanReportModal('daily')" class="hover:text-white text-rose-300 font-black transition-colors flex items-center gap-1">⚡ <span>Trung tâm chỉ huy & Báo cáo quản trị (Lean Cockpit)</span></a></li>
-              <li><a href="#" @click.prevent="openProjectTrackerModal('all')" class="hover:text-white text-purple-300 font-black transition-colors flex items-center gap-1">📊 <span>Bảng theo dõi tiến độ dự án Đất Phú</span></a></li>
-              <li><a href="#" @click.prevent="openSopModal('worker')" class="hover:text-white text-blue-300 font-black transition-colors flex items-center gap-1">📋 <span>Bộ quy trình vận hành chuẩn (SOP Đất Phú)</span></a></li>
-            </template>
-              <li><a href="#" @click.prevent="openEcomRegulationsModal('decree85_regulations')" class="hover:text-white text-amber-300 font-bold transition-colors">📜 Quy chế hoạt động Đất Phú Chợ Phiên</a></li>
-              <li><a href="#" @click.prevent="openEcomRegulationsModal('circular89_invoice_tax')" class="hover:text-white text-emerald-300 font-bold transition-colors">📑 Thông tư 89/2026/TT-BTC (Hóa đơn máy tính tiền & B2B)</a></li>
-              <li><a href="#" @click.prevent="openEcomRegulationsModal('dual_mode')" class="hover:text-white transition-colors">🛡️ Cơ chế 2 Ngăn bảo vệ Thợ (Không ép thuế)</a></li>
-              <li><a href="#" @click.prevent="openEcomRegulationsModal('cashless52_consumer2023')" class="hover:text-white transition-colors">⚖️ Thanh toán VietQR & Quyền lợi NTD (Luật 2023)</a></li>
-              <li><a href="#" @click.prevent="openEcomRegulationsModal('privacy13_protection')" class="hover:text-white transition-colors">🔒 Chính sách bảo mật dữ liệu (NĐ 13/2023)</a></li>
+                <li class="pt-1 border-t border-slate-800">
+                  <a href="#" @click.prevent="openLeanReportModal('daily')" class="hover:text-white text-rose-300 font-bold transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-gauge text-rose-400 text-[10px]"></i>
+                    <span>Trung Tâm Chỉ Huy Quản Trị (Lean Cockpit)</span>
+                  </a>
+                </li>
+              </template>
             </ul>
           </div>
 
-          <!-- Cột 4: Tiêu chuẩn an toàn & VietQR -->
+          <!-- Cột 4: 3 Nguyên tắc dân sinh bản địa -->
           <div>
-            <h4 class="text-xs font-black uppercase text-blue-400 tracking-wider mb-3">Cam Kết An Toàn & Chuẩn K6</h4>
-            <div class="bg-slate-800/80 rounded-2xl p-3 border border-slate-700/80 space-y-2 mb-3">
-              <div class="flex items-center gap-2 text-xs font-bold text-emerald-400">
-                <i class="fa-solid fa-circle-check"></i>
-                <span>100% Thuê Chính Chủ Ký Quỹ</span>
+            <h4 class="text-xs font-black uppercase text-cyan-400 tracking-wider mb-3 flex items-center gap-1.5">
+              <i class="fa-solid fa-shield-heart text-cyan-400"></i>
+              <span>3 Cam Kết Dân Sinh Bản Địa</span>
+            </h4>
+            
+            <div class="bg-slate-800/90 rounded-2xl p-3 border border-slate-700/80 space-y-2.5 mb-3">
+              <div class="flex items-start gap-2 text-xs">
+                <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5 text-xs flex-shrink-0"></i>
+                <div class="leading-tight">
+                  <span class="font-bold text-white block">Cửa Hàng & Thợ Thật 100%</span>
+                  <span class="text-[10px] text-slate-400">Bà con lối xóm quen mặt, rõ địa chỉ tại Tuy Hòa.</span>
+                </div>
               </div>
-              <div class="flex items-center gap-2 text-xs font-bold text-amber-300">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span>Thợ Được Kiểm Duyệt Tay Nghề</span>
+              <div class="flex items-start gap-2 text-xs">
+                <i class="fa-solid fa-file-invoice-dollar text-amber-400 mt-0.5 text-xs flex-shrink-0"></i>
+                <div class="leading-tight">
+                  <span class="font-bold text-white block">Giá Niêm Yết • Nghiệm Thu Mới Trả</span>
+                  <span class="text-[10px] text-slate-400">Báo giá rõ ràng trước khi làm, đúng hẹn, bảo hành tận nhà.</span>
+                </div>
               </div>
-              <div class="flex items-center gap-2 text-xs font-bold text-blue-300">
-                <i class="fa-solid fa-qrcode"></i>
-                <span>VietQR Đa Ngân Hàng NAPAS 247</span>
+              <div class="flex items-start gap-2 text-xs">
+                <i class="fa-solid fa-bolt text-cyan-400 mt-0.5 text-xs flex-shrink-0"></i>
+                <div class="leading-tight">
+                  <span class="font-bold text-white block">Tiền Về Thẳng Tiểu Thương</span>
+                  <span class="text-[10px] text-slate-400">VietQR vào thẳng tài khoản người bán, sàn 0% giam vốn.</span>
+                </div>
               </div>
             </div>
-            <div class="text-[10px] text-slate-500 mb-2">
-              Hệ thống vận hành theo khung kiểm soát chuẩn K6 - Chợ Địa Phương Thông Minh Phú Yên.
-            </div>
-            <div class="flex items-center gap-2 text-xs font-bold text-slate-400 pt-1">
-              <i class="fa-solid fa-shield-halved text-emerald-400"></i>
-              <span>Hotline Tiếp Nhận 24/7: 0979 991 898</span>
+
+            <div class="text-[10px] text-slate-400 leading-normal bg-black/30 p-2 rounded-xl border border-white/5">
+              <span class="text-amber-300 font-bold">🌾 Giữ Trọn Dòng Tiền Địa Phương:</span> 100% doanh thu lưu chuyển trong kinh tế Tuy Hòa, hỗ trợ bà con cùng phát triển.
             </div>
           </div>
 
         </div>
 
-        <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
-          <div>
-            © 2026 Đất Phú Chợ Phiên • CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ (MST: 4401020233) • 111 Nguyễn Văn Linh, P. Phú Lâm & 172 Ngô Gia Tự, P. Phú Đông, TP. Tuy Hòa • Hotline: 0979 991 898 (GSM & SMS)
+        <!-- Dòng bản quyền & thông tin pháp lý cuối trang -->
+        <div class="pt-6 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between text-xs text-slate-400 gap-3">
+          <div class="text-center md:text-left text-[11px] leading-relaxed">
+            <div>© 2026 <strong>TIỆN ÍCH DÂN SINH ĐẤT PHÚ</strong> • CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ (MST: 4401020233)</div>
+            <div class="text-slate-500 text-[10px] mt-0.5">Hạ tầng thương mại & dịch vụ số phục vụ cộng đồng dân cư TP. Tuy Hòa, Tỉnh Phú Yên.</div>
           </div>
-          <div class="flex items-center gap-4 text-xs">
-            <span class="text-slate-400">Tiêu Chuẩn K6</span>
-            <span class="text-slate-400">•</span>
-            <span class="text-slate-400">Bảo Hiểm Nghề Nghiệp</span>
-            <span class="text-slate-400">•</span>
-            <span class="text-slate-400">TP. Tuy Hòa</span>
+          <div class="flex items-center gap-3 text-[11px] font-bold text-slate-300 flex-wrap justify-center">
+            <span class="bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 flex items-center gap-1">
+              <i class="fa-solid fa-location-dot text-amber-400"></i> TP. Tuy Hòa
+            </span>
+            <span class="bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 flex items-center gap-1">
+              <i class="fa-solid fa-flag text-datphu-red"></i> Tiện Ích Bản Địa
+            </span>
+            <span class="bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 flex items-center gap-1">
+              <i class="fa-solid fa-arrows-rotate text-emerald-400"></i> Tuần Hoàn Kinh Tế
+            </span>
           </div>
         </div>
       </div>
