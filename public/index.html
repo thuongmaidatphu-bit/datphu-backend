@@ -3904,49 +3904,49 @@
       <!-- THANH CHUYỂN ĐỔI 2 KHÔNG GIAN: CHỢ PHIÊN CỬA HÀNG & TRẠM THỢ KỸ THUẬT   -->
       <!-- ========================================================================= -->
       <div class="bg-gradient-to-r from-slate-200/90 via-slate-100 to-slate-200/90 p-1.5 sm:p-2 rounded-3xl flex items-center gap-2 border border-slate-300/80 shadow-card">
-        <!-- Tab 1: Chợ Phiên & Cửa Hàng (Tông Đỏ Đất Phú & Trắng Ấm Cúng) -->
+        <!-- Tab 1: TÌM CỬA HÀNG QUANH ĐÂY (Tông Đỏ Đất Phú & Trắng Ấm Cúng) -->
         <button 
           type="button"
           @click="consumerSpace = 'market'"
-          class="flex-1 py-2.5 sm:py-3.5 px-3 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-98 relative overflow-hidden"
-          :class="consumerSpace === 'market' ? 'bg-white text-datphu-red shadow-md border-2 border-datphu-red/30' : 'text-slate-600 hover:text-slate-950 hover:bg-white/50'">
-          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-base sm:text-lg shadow-2xs"
+          class="flex-1 py-2.5 sm:py-3.5 px-2.5 sm:px-3 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-98 relative overflow-hidden"
+          :class="consumerSpace === 'market' ? 'bg-white text-datphu-red shadow-md border-2 border-datphu-red/30 ring-2 ring-red-500/10' : 'text-slate-600 hover:text-slate-950 hover:bg-white/50'">
+          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-base sm:text-lg shadow-2xs shrink-0"
                :class="consumerSpace === 'market' ? 'bg-red-50 text-datphu-red' : 'bg-slate-200/60 text-slate-600'">
-            🍜
+            🏪
           </div>
-          <div class="text-left leading-tight">
+          <div class="text-left leading-tight min-w-0">
             <div class="flex items-center gap-1.5">
-              <span>ĐẤT PHÚ CHỢ PHIÊN</span>
-              <span v-if="consumerSpace === 'market'" class="w-2 h-2 rounded-full bg-datphu-red animate-ping hidden md:inline-block"></span>
+              <span class="truncate">TÌM CỬA HÀNG QUANH ĐÂY</span>
+              <span v-if="consumerSpace === 'market'" class="w-2 h-2 rounded-full bg-datphu-red animate-ping hidden md:inline-block shrink-0"></span>
             </div>
-            <div class="text-[9px] font-bold text-slate-400 hidden sm:block">Ẩm thực • Món ngon • Nông sản OCOP</div>
+            <div class="text-[9px] font-bold text-slate-400 hidden sm:block truncate">Quán ăn • Mua sắm gần bạn</div>
           </div>
-          <span class="text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full font-black uppercase ml-1 hidden lg:inline" 
+          <span class="text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full font-black uppercase ml-1 hidden lg:inline shrink-0" 
                 :class="consumerSpace === 'market' ? 'bg-datphu-red text-white shadow-2xs' : 'bg-slate-200 text-slate-600'">
-            9 Phân Hệ
+            Bán Kính 3KM
           </span>
         </button>
 
-        <!-- Tab 2: Trạm Thợ Kỹ Thuật (Tông Xanh Navy & Công Nghệ Bản Địa) -->
+        <!-- Tab 2: TÌM THỢ QUANH ĐÂY (Tông Xanh Navy & Kỹ Thuật Bản Địa) -->
         <button 
           type="button"
           @click="consumerSpace = 'worker'"
-          class="flex-1 py-2.5 sm:py-3.5 px-3 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-98 relative overflow-hidden"
+          class="flex-1 py-2.5 sm:py-3.5 px-2.5 sm:px-3 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-98 relative overflow-hidden"
           :class="consumerSpace === 'worker' ? 'bg-gradient-to-r from-datphu-navy via-blue-900 to-indigo-950 text-white shadow-xl border-2 border-blue-500/60 ring-2 ring-blue-500/20' : 'text-slate-600 hover:text-slate-950 hover:bg-white/50'">
-          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-base sm:text-lg shadow-2xs"
+          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-base sm:text-lg shadow-2xs shrink-0"
                :class="consumerSpace === 'worker' ? 'bg-blue-500/30 text-blue-300 border border-blue-400/40' : 'bg-slate-200/60 text-slate-600'">
             🛠️
           </div>
-          <div class="text-left leading-tight">
+          <div class="text-left leading-tight min-w-0">
             <div class="flex items-center gap-1.5">
-              <span :class="consumerSpace === 'worker' ? 'text-white' : ''">ĐẤT PHÚ TRẠM THỢ</span>
-              <span v-if="consumerSpace === 'worker'" class="w-2 h-2 rounded-full bg-cyan-400 animate-ping hidden md:inline-block"></span>
+              <span class="truncate" :class="consumerSpace === 'worker' ? 'text-white' : ''">TÌM THỢ QUANH ĐÂY</span>
+              <span v-if="consumerSpace === 'worker'" class="w-2 h-2 rounded-full bg-cyan-400 animate-ping hidden md:inline-block shrink-0"></span>
             </div>
-            <div class="text-[9px] font-bold hidden sm:block" :class="consumerSpace === 'worker' ? 'text-blue-200' : 'text-slate-400'">
-              Điện, nước, lạnh, khóa có mặt 15p
+            <div class="text-[9px] font-bold hidden sm:block truncate" :class="consumerSpace === 'worker' ? 'text-blue-200' : 'text-slate-400'">
+              Điện, nước, khóa có mặt 15p
             </div>
           </div>
-          <span class="text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full font-black uppercase ml-1"
+          <span class="text-[8px] sm:text-[9px] px-2 py-0.5 rounded-full font-black uppercase ml-1 shrink-0"
                 :class="consumerSpace === 'worker' ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-sm animate-pulse' : 'bg-slate-200 text-slate-600'">
             Cứu Hộ 24/7
           </span>
