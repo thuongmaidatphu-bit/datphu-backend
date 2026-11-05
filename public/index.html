@@ -6875,6 +6875,314 @@
     </div>
   </div>
 
+  <!-- ======================== MODAL: ĐẤT PHÚ CAM ADVANCED STUDIO (ĐÓNG DẤU 5 NGÀNH HÀNG) ======================== -->
+  <div v-if="showDatPhuCamModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 animate-fadeIn">
+    <div class="bg-white w-full max-w-5xl rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xl max-h-[95vh] overflow-y-auto border border-slate-200">
+      
+      <!-- Header Modal -->
+      <div class="flex items-center justify-between border-b pb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-600 to-cyan-600 text-white flex items-center justify-center text-lg shadow-sm">
+            <i class="fa-solid fa-camera-retro"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-sm sm:text-base font-black text-slate-900 uppercase">Đất Phú Cam Studio Pro</h3>
+              <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black px-2 py-0.5 rounded-full border border-emerald-300">Công Nghệ Chống Sao Chép</span>
+            </div>
+            <p class="text-[10px] text-slate-500">Đóng dấu chìm Logo Đất Phú, Tên Quán/Thợ, Dấu thời gian & Tọa độ Tuy Hòa • Bảo vệ tài sản số</p>
+          </div>
+        </div>
+        <button 
+          @click="showDatPhuCamModal = false"
+          class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- THANH CHỌN 5 KHUÔN MẪU NGÀNH HÀNG CHUYÊN BIỆT -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 p-1 bg-slate-100 rounded-2xl text-[11px] font-bold">
+        <button 
+          type="button"
+          @click="applyCategoryPreset('fnb')"
+          class="py-2 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5"
+          :class="datPhuCamCategory === 'fnb' ? 'bg-datphu-red text-white shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'">
+          <span>🍲</span> <span>Ẩm Thực F&B</span>
+        </button>
+
+        <button 
+          type="button"
+          @click="applyCategoryPreset('beauty')"
+          class="py-2 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5"
+          :class="datPhuCamCategory === 'beauty' ? 'bg-pink-600 text-white shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'">
+          <span>💅</span> <span>Nail, Mi & Spa</span>
+        </button>
+
+        <button 
+          type="button"
+          @click="applyCategoryPreset('worker')"
+          class="py-2 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5"
+          :class="datPhuCamCategory === 'worker' ? 'bg-blue-600 text-white shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'">
+          <span>🛠️</span> <span>Thợ K6 Nghiệm Thu</span>
+        </button>
+
+        <button 
+          type="button"
+          @click="applyCategoryPreset('farm')"
+          class="py-2 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5"
+          :class="datPhuCamCategory === 'farm' ? 'bg-emerald-600 text-white shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'">
+          <span>🌾</span> <span>Nông Sản OCOP</span>
+        </button>
+
+        <button 
+          type="button"
+          @click="applyCategoryPreset('used')"
+          class="py-2 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5"
+          :class="datPhuCamCategory === 'used' ? 'bg-slate-700 text-white shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'">
+          <span>📦</span> <span>Đồ Cũ C2C</span>
+        </button>
+      </div>
+
+      <!-- BỐ CỤC 2 CỘT: CẤU HÌNH THÔNG TIN (5 Cột) vs LIVE CANVAS PREVIEW (7 Cột) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- CỘT TRÁI: ĐIỀU KHIỂN & BỘ LỌC ẢNH -->
+        <div class="lg:col-span-5 space-y-3 text-xs">
+          
+          <!-- Chụp từ Camera / Tải tệp -->
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-700 block">Tải ảnh chụp từ máy / Bật Camera:</label>
+            <div class="flex items-center gap-2">
+              <label class="flex-1 cursor-pointer bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-black px-3 py-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-2 shadow-2xs">
+                <i class="fa-solid fa-camera text-emerald-600 text-sm"></i>
+                <span>Chụp / Chọn Ảnh Từ Máy</span>
+                <input type="file" accept="image/*" @change="handleDatPhuCamUpload" class="hidden">
+              </label>
+            </div>
+          </div>
+
+          <!-- Bộ lọc màu ảnh Pro (Enhancement Filters) -->
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-700 block">Hiệu ứng màu sắc tự nhiên:</label>
+            <div class="grid grid-cols-4 gap-1.5">
+              <button 
+                type="button"
+                @click="setDatPhuCamFilter('none')"
+                class="py-1 px-1.5 rounded-lg border text-[10px] font-bold text-center transition-all"
+                :class="datPhuCamFilter === 'none' ? 'bg-slate-900 text-white border-slate-900' : 'bg-slate-50 text-slate-600 border-slate-200'">
+                Chân Thực
+              </button>
+              <button 
+                type="button"
+                @click="setDatPhuCamFilter('warm')"
+                class="py-1 px-1.5 rounded-lg border text-[10px] font-bold text-center transition-all"
+                :class="datPhuCamFilter === 'warm' ? 'bg-amber-600 text-white border-amber-600' : 'bg-slate-50 text-slate-600 border-slate-200'">
+                Ấm Nóng
+              </button>
+              <button 
+                type="button"
+                @click="setDatPhuCamFilter('bright')"
+                class="py-1 px-1.5 rounded-lg border text-[10px] font-bold text-center transition-all"
+                :class="datPhuCamFilter === 'bright' ? 'bg-pink-600 text-white border-pink-600' : 'bg-slate-50 text-slate-600 border-slate-200'">
+                Sáng Mịn
+              </button>
+              <button 
+                type="button"
+                @click="setDatPhuCamFilter('sharp')"
+                class="py-1 px-1.5 rounded-lg border text-[10px] font-bold text-center transition-all"
+                :class="datPhuCamFilter === 'sharp' ? 'bg-blue-600 text-white border-blue-600' : 'bg-slate-50 text-slate-600 border-slate-200'">
+                Sắc Nét
+              </button>
+            </div>
+          </div>
+
+          <!-- Nhập Tên Đơn Vị / Thợ -->
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-700 block">
+              {{ datPhuCamCategory === 'worker' ? 'Họ Tên Thợ & Mã Số K6:' : 'Tên Cửa Hàng / Tiệm / Nhà Vườn:' }}
+            </label>
+            <input 
+              v-if="datPhuCamCategory === 'worker'"
+              v-model="datPhuCamForm.workerName" 
+              type="text" 
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800">
+            <input 
+              v-else
+              v-model="datPhuCamForm.storeName" 
+              type="text" 
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800">
+          </div>
+
+          <!-- Nhập Tên Món / Hạng Mục -->
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-700 block">
+              {{ datPhuCamCategory === 'worker' ? 'Hạng Mục Công Việc Nghiệm Thu:' : 'Tên Sản Phẩm / Món Ăn / Mẫu Dịch Vụ:' }}
+            </label>
+            <input 
+              v-if="datPhuCamCategory === 'worker'"
+              v-model="datPhuCamForm.workerJob" 
+              type="text" 
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800">
+            <input 
+              v-else
+              v-model="datPhuCamForm.itemName" 
+              type="text" 
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800">
+          </div>
+
+          <!-- Thông Số Kỹ Thuật / Định Lượng Khắc Lên Ảnh -->
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-700 block">Định lượng / Cam kết khắc chìm:</label>
+            <input 
+              v-model="datPhuCamForm.specs" 
+              type="text" 
+              placeholder="Ví dụ: Suất 350g gà thả vườn • Tặng kèm canh giang"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800">
+          </div>
+
+          <!-- Địa chỉ & Hotline -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-700 block">Địa chỉ tại Tuy Hòa:</label>
+              <input 
+                v-model="datPhuCamForm.address" 
+                type="text" 
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] text-slate-800">
+            </div>
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-700 block">Hotline Điều Phối:</label>
+              <input 
+                v-model="datPhuCamForm.phone" 
+                type="text" 
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] font-mono text-slate-800">
+            </div>
+          </div>
+
+          <!-- Checkbox Cam Kết Pháp Lý (Ranh Giới An Toàn) -->
+          <div class="p-2.5 bg-amber-50 rounded-2xl border border-amber-200 space-y-1">
+            <label class="flex items-start gap-2 cursor-pointer text-[10px] text-amber-950">
+              <input type="checkbox" v-model="datPhuCamForm.legalAgreed" class="mt-0.5 w-4 h-4 rounded text-amber-600 focus:ring-amber-500">
+              <span class="leading-relaxed">
+                <strong>Cam kết pháp lý:</strong> Tôi xác nhận đây là ảnh chụp thực tế tại cơ sở/công trình của tôi. Tôi hoàn toàn chịu trách nhiệm về chất lượng, an toàn thực phẩm hoặc kỹ thuật trước khách hàng.
+              </span>
+            </label>
+          </div>
+
+        </div>
+
+        <!-- CỘT PHẢI: KHUNG XEM TRƯỚC BẢN QUYỀN THỜI GIAN THỰC -->
+        <div class="lg:col-span-7 space-y-3 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                <i class="fa-solid fa-eye text-emerald-600"></i> Xem Trước Ảnh Đã Đóng Dấu (1200 x 900 px)
+              </span>
+              <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                Hiệu ứng: {{ datPhuCamFilter === 'none' ? 'Chân thực' : datPhuCamFilter === 'warm' ? 'Ấm nóng' : datPhuCamFilter === 'bright' ? 'Sáng mịn' : 'Sắc nét' }}
+              </span>
+            </div>
+
+            <!-- Khung Ảnh Preview Trực Quan -->
+            <div class="relative rounded-2xl overflow-hidden shadow-xl border-2 border-slate-300 bg-slate-900 select-none group aspect-4/3" oncontextmenu="return false;">
+              <img 
+                :src="datPhuCamForm.imageSrc" 
+                class="w-full h-full object-cover transition-all"
+                :class="{
+                  'brightness-105 contrast-105 saturate-125': datPhuCamFilter === 'warm',
+                  'brightness-110 contrast-100 saturate-105': datPhuCamFilter === 'bright',
+                  'brightness-100 contrast-115 saturate-110': datPhuCamFilter === 'sharp'
+                }">
+
+              <!-- DẢI BĂNG ĐỈNH (TOP RIBBON) -->
+              <div class="absolute top-0 left-0 right-0 bg-slate-950/85 backdrop-blur-sm px-3 py-2 flex items-center justify-between text-white border-b border-white/10">
+                <div class="flex items-center gap-2">
+                  <img src="logo_datphu.jpg" class="w-6 h-6 object-contain rounded bg-white p-0.5">
+                  <div class="leading-tight">
+                    <div class="text-[9px] font-black tracking-wide uppercase text-slate-100">CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ</div>
+                    <div class="text-[7px] text-slate-400 font-mono">MST: 4401020233 • BẢO HỘ BẢN QUYỀN HÌNH ẢNH</div>
+                  </div>
+                </div>
+                <div 
+                  class="text-white text-[8px] font-black px-2 py-0.8 rounded shadow-xs flex items-center gap-1 uppercase"
+                  :class="{
+                    'bg-datphu-red': datPhuCamCategory === 'fnb',
+                    'bg-pink-600': datPhuCamCategory === 'beauty',
+                    'bg-blue-600': datPhuCamCategory === 'worker',
+                    'bg-emerald-600': datPhuCamCategory === 'farm',
+                    'bg-slate-700': datPhuCamCategory === 'used'
+                  }">
+                  <i class="fa-solid fa-camera"></i>
+                  <span>{{ datPhuCamCategory === 'fnb' ? '🍲 BẾP XỨ NẪU • NÓNG SỐT' : datPhuCamCategory === 'beauty' ? '💅 MẪU THẬT • BH 7 NGÀY' : datPhuCamCategory === 'worker' ? '🛠️ THỢ K6 • NGHIỆM THU' : datPhuCamCategory === 'farm' ? '🌾 NÔNG SẢN • OCOP PHÚ YÊN' : '📦 ẢNH NGUYÊN BẢN' }}</span>
+                </div>
+              </div>
+
+              <!-- DẢI BĂNG CHÂN (BOTTOM BANNER) -->
+              <div 
+                class="absolute bottom-0 left-0 right-0 bg-slate-950/92 backdrop-blur-md p-3 text-white border-t-2"
+                :class="{
+                  'border-datphu-red': datPhuCamCategory === 'fnb',
+                  'border-pink-500': datPhuCamCategory === 'beauty',
+                  'border-blue-500': datPhuCamCategory === 'worker',
+                  'border-emerald-500': datPhuCamCategory === 'farm',
+                  'border-slate-400': datPhuCamCategory === 'used'
+                }">
+                <div class="flex items-end justify-between gap-2">
+                  <div class="space-y-0.5 flex-1 min-w-0">
+                    <div class="font-black text-amber-300 text-xs sm:text-sm uppercase tracking-wide truncate">
+                      {{ datPhuCamCategory === 'worker' ? ('THỢ K6: ' + datPhuCamForm.workerName) : datPhuCamForm.storeName }}
+                    </div>
+                    <div class="text-[10px] text-white font-bold truncate">
+                      {{ datPhuCamCategory === 'worker' ? ('Hạng mục: ' + datPhuCamForm.workerJob) : ('Món/Hàng: ' + datPhuCamForm.itemName) }}
+                    </div>
+                    <div class="text-[8px] text-emerald-300 truncate font-mono">
+                      📋 {{ datPhuCamForm.specs || 'Chuẩn chất lượng thực tế' }}
+                    </div>
+                    <div class="text-[8px] text-slate-400 truncate">
+                      📍 {{ datPhuCamForm.address }} • Hotline: <span class="font-mono text-amber-200">{{ datPhuCamForm.phone }}</span>
+                    </div>
+                  </div>
+                  <div class="text-right flex-shrink-0 leading-tight">
+                    <div class="text-[8px] text-amber-400 font-bold">⏱️ {{ datPhuCamForm.timestamp }}</div>
+                    <div class="text-[7px] text-slate-400 font-mono">#DP-CAM-TuyHoa</div>
+                    <div class="text-[7px] text-emerald-400 font-bold mt-0.5">✓ Bản quyền ảnh đối tác</div>
+                    <div class="text-[6px] text-slate-400">Đơn vị chịu trách nhiệm CL</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lớp màng bảo vệ trong suốt chống kéo thả -->
+              <div class="absolute inset-0 bg-transparent z-10"></div>
+            </div>
+          </div>
+
+          <!-- 2 NÚT HÀNH ĐỘNG XUẤT ẢNH -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+            <button 
+              type="button"
+              @click="downloadDatPhuCamImage"
+              :disabled="!datPhuCamForm.legalAgreed"
+              class="w-full bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white font-black py-3 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 border border-slate-700">
+              <i class="fa-solid fa-download text-amber-400 text-sm"></i>
+              <span>Tải Ảnh Đã Đóng Dấu Về Máy (PNG)</span>
+            </button>
+
+            <button 
+              type="button"
+              @click="publishDatPhuCamToMarket"
+              :disabled="!datPhuCamForm.legalAgreed"
+              class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:opacity-50 text-white font-black py-3 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-floating transition-all active:scale-95">
+              <i class="fa-solid fa-cloud-arrow-up text-sm"></i>
+              <span>Đăng Thẳng Lên Sàn Đất Phú</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
   <!-- ======================== MODAL: CHI TIẾT SẢN PHẨM & DỊCH VỤ (ĐẤT PHÚ CAM BẢO HỘ) ======================== -->
   <div v-if="showProductDetailModal && selectedProductDetail" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
     <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl max-h-[92vh] overflow-y-auto p-5 sm:p-6 space-y-4 shadow-2xl">
@@ -15698,23 +16006,24 @@
         // End-user Orders & Needs Screening State
         showNavDropdown: false,
         showDatPhuCamModal: false,
-        datPhuCamMode: 'merchant',
+        datPhuCamCategory: 'fnb', // 'fnb', 'beauty', 'worker', 'farm', 'used'
+        datPhuCamFilter: 'none', // 'none', 'warm', 'bright', 'sharp'
         datPhuCamForm: {
           imageSrc: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80',
-          logoType: 'datphu',
-          customLogoUrl: '',
           storeName: 'Tiệm Bánh Kem & Bakery Hương Đất Phú',
           itemName: 'Bánh Kem Bắp Non Thơm Béo Tuy Hòa',
           itemPrice: 220000,
+          specs: 'Ổ 18cm • Bắp ngọt hữu cơ • Bánh nướng mới hôm nay',
           workerName: 'Chú Nguyễn Văn Tùng',
-          workerCode: 'THO-6K-TuyHoa-08',
-          workerJob: 'Sửa chữa điện lạnh & Vệ sinh máy điều hòa',
+          workerCode: 'K6-THO-TUYHOA-08',
+          workerJob: 'Vệ sinh máy lạnh & Nạp ga Inverter R32',
           workerPrice: 150000,
           address: '72 Nguyễn Huệ, Phường 5, TP. Tuy Hòa',
           phone: '0979 991 898',
           timestamp: '05/11/2026 - 13:00',
-          badgeText: '✓ 100% ẢNH THẬT ĐẤT PHÚ CAM',
-          frameTheme: 'gold'
+          badgeText: '✓ ẢNH THẬT ĐẤT PHÚ CAM',
+          legalAgreed: true,
+          includeQR: true
         },
         showProductDetailModal: false,
         selectedProductDetail: null,
@@ -19498,20 +19807,62 @@ Hotline hỗ trợ: 0979 991 898`);
         else this.cart.push({ ...product, qty: 1 });
       },
 
-      openDatPhuCamModal(mode = 'merchant', preset = null) {
-        this.datPhuCamMode = mode;
+      openDatPhuCamModal(cat = 'fnb', preset = null) {
+        this.datPhuCamCategory = cat;
         if (preset) {
-          if (mode === 'merchant') {
-            this.datPhuCamForm.storeName = preset.storeName || preset.name || this.datPhuCamForm.storeName;
-            this.datPhuCamForm.itemName = preset.name || this.datPhuCamForm.itemName;
-            this.datPhuCamForm.imageSrc = preset.image || this.datPhuCamForm.imageSrc;
-          } else {
-            this.datPhuCamForm.workerName = preset.name || this.datPhuCamForm.workerName;
-            this.datPhuCamForm.workerJob = preset.specialty || preset.specialtyDesc || this.datPhuCamForm.workerJob;
-          }
+          this.datPhuCamForm.storeName = preset.storeName || preset.name || this.datPhuCamForm.storeName;
+          this.datPhuCamForm.itemName = preset.name || this.datPhuCamForm.itemName;
+          this.datPhuCamForm.imageSrc = preset.image || this.datPhuCamForm.imageSrc;
+          if (preset.price) this.datPhuCamForm.itemPrice = preset.price;
+        } else {
+          this.applyCategoryPreset(cat);
         }
         this.datPhuCamForm.timestamp = new Date().toLocaleDateString('vi-VN') + ' - ' + new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
         this.showDatPhuCamModal = true;
+      },
+
+      applyCategoryPreset(cat) {
+        this.datPhuCamCategory = cat;
+        if (cat === 'fnb') {
+          this.datPhuCamForm.storeName = 'Cơm Gà Xứ Nẫu Tuy Hòa';
+          this.datPhuCamForm.itemName = 'Cơm Gà Xé Đặc Biệt (Gà Thả Vườn)';
+          this.datPhuCamForm.itemPrice = 45000;
+          this.datPhuCamForm.specs = 'Suất đầy đặn • Kèm canh lá giang • Nước mắm gừng';
+          this.datPhuCamForm.imageSrc = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80';
+          this.datPhuCamFilter = 'warm';
+        } else if (cat === 'beauty') {
+          this.datPhuCamForm.storeName = 'Tiệm Nail & Móng Xinh Tuy Hòa';
+          this.datPhuCamForm.itemName = 'Mẫu Nail Đính Charm Bướm Dạ Hội';
+          this.datPhuCamForm.itemPrice = 180000;
+          this.datPhuCamForm.specs = 'Sơn Gel thạch Hàn Quốc • Tiệt trùng y tế • Bảo hành 7 ngày';
+          this.datPhuCamForm.imageSrc = 'https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80';
+          this.datPhuCamFilter = 'bright';
+        } else if (cat === 'worker') {
+          this.datPhuCamForm.workerName = 'Chú Nguyễn Văn Tùng (K6-08)';
+          this.datPhuCamForm.workerJob = 'Thay van nước & Sửa rò rỉ đồng hồ';
+          this.datPhuCamForm.workerPrice = 80000;
+          this.datPhuCamForm.specs = 'Vật tư chính hãng Tiền Phong • Nghiệm thu tại nhà • BH 3 tháng';
+          this.datPhuCamForm.imageSrc = 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=800&q=80';
+          this.datPhuCamFilter = 'sharp';
+        } else if (cat === 'farm') {
+          this.datPhuCamForm.storeName = 'Vườn Nông Sản Sạch Hòa Mỹ';
+          this.datPhuCamForm.itemName = 'Mít Thái Nghệ & Chuối Ngự Vườn Nhà';
+          this.datPhuCamForm.itemPrice = 35000;
+          this.datPhuCamForm.specs = 'Hái chín tự nhiên tại vườn sáng nay • OCOP Xứ Nẫu 3 Sao';
+          this.datPhuCamForm.imageSrc = 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?auto=format&fit=crop&w=800&q=80';
+          this.datPhuCamFilter = 'none';
+        } else if (cat === 'used') {
+          this.datPhuCamForm.storeName = 'Cư Dân Phường 7 (Thanh Lý)';
+          this.datPhuCamForm.itemName = 'Quạt Lửng Senko Đảo Chiều Còn Mới 95%';
+          this.datPhuCamForm.itemPrice = 120000;
+          this.datPhuCamForm.specs = 'Động cơ êm ru • Chưa qua sửa chữa • Xem tại 45 Hùng Vương';
+          this.datPhuCamForm.imageSrc = 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80';
+          this.datPhuCamFilter = 'none';
+        }
+      },
+
+      setDatPhuCamFilter(f) {
+        this.datPhuCamFilter = f;
       },
 
       handleDatPhuCamUpload(event) {
@@ -19531,117 +19882,140 @@ Hotline hỗ trợ: 0979 991 898`);
       },
 
       downloadDatPhuCamImage() {
+        if (!this.datPhuCamForm.legalAgreed) {
+          alert('Vui lòng tích xác nhận cam kết ảnh chụp thật tại cơ sở để bảo đảm an toàn pháp lý!');
+          return;
+        }
+
         const img = new Image();
         img.crossOrigin = 'anonymous';
         img.onload = () => {
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
           
-          // Định dạng chuẩn HD 1200 x 900
           const w = 1200;
           const h = 900;
           canvas.width = w;
           canvas.height = h;
 
-          // 1. Vẽ ảnh gốc (Crop vừa vặn trung tâm)
-          ctx.drawImage(img, 0, 0, w, h);
-
-          // 2. Vẽ dải băng Watermark trên đỉnh (Top Ribbon)
-          ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-          ctx.fillRect(0, 0, w, 75);
-
-          // Logo & Tên Công Ty Đất Phú
-          ctx.fillStyle = '#FFFFFF';
-          ctx.font = 'bold 24px Arial, sans-serif';
-          ctx.fillText('CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ', 30, 48);
-
-          // Huy hiệu Đất Phú Cam bảo hộ
-          ctx.fillStyle = '#D32027';
-          ctx.fillRect(w - 380, 16, 350, 44);
-          ctx.fillStyle = '#FFFFFF';
-          ctx.font = 'bold 20px Arial, sans-serif';
-          ctx.fillText('📷 ĐẤT PHÚ CAM • ẢNH THẬT 100%', w - 365, 46);
-
-          // 3. Vẽ dải băng Watermark dưới chân (Bottom Stamped Banner)
-          const bH = 150;
-          ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
-          ctx.fillRect(0, h - bH, w, bH);
-
-          // Viền vàng kim ngăn cách
-          ctx.fillStyle = '#F59E0B';
-          ctx.fillRect(0, h - bH, w, 5);
-
-          if (this.datPhuCamMode === 'merchant') {
-            // Tên Quán / Cửa Hàng
-            ctx.fillStyle = '#FBBF24';
-            ctx.font = 'bold 30px Arial, sans-serif';
-            ctx.fillText(this.datPhuCamForm.storeName.toUpperCase(), 30, h - bH + 45);
-
-            // Tên Món Ăn / Sản phẩm
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = 'bold 24px Arial, sans-serif';
-            ctx.fillText('Món: ' + this.datPhuCamForm.itemName, 30, h - bH + 85);
-
-            // Địa chỉ & Hotline
-            ctx.fillStyle = '#94A3B8';
-            ctx.font = '20px Arial, sans-serif';
-            ctx.fillText('📍 ' + this.datPhuCamForm.address + ' • Hotline Điều Phối: ' + this.datPhuCamForm.phone, 30, h - bH + 122);
+          // Bộ lọc ảnh Pro
+          if (this.datPhuCamFilter === 'warm') {
+            ctx.filter = 'brightness(1.04) contrast(1.05) saturate(1.15)';
+          } else if (this.datPhuCamFilter === 'bright') {
+            ctx.filter = 'brightness(1.08) contrast(1.02) saturate(1.05)';
+          } else if (this.datPhuCamFilter === 'sharp') {
+            ctx.filter = 'brightness(1.02) contrast(1.12) saturate(1.08)';
           } else {
-            // Thợ Kỹ Thuật K6
-            ctx.fillStyle = '#38BDF8';
-            ctx.font = 'bold 30px Arial, sans-serif';
-            ctx.fillText('THỢ K6: ' + this.datPhuCamForm.workerName.toUpperCase(), 30, h - bH + 45);
-
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = 'bold 24px Arial, sans-serif';
-            ctx.fillText('Công trình: ' + this.datPhuCamForm.workerJob, 30, h - bH + 85);
-
-            ctx.fillStyle = '#94A3B8';
-            ctx.font = '20px Arial, sans-serif';
-            ctx.fillText('📍 Phú Yên • Nghiệm thu kỹ thuật • Hotline: ' + this.datPhuCamForm.phone, 30, h - bH + 122);
+            ctx.filter = 'none';
           }
 
-          // Dấu thời gian thực & Mã Hash góc phải dưới
-          ctx.fillStyle = '#FBBF24';
+          // 1. Vẽ ảnh gốc
+          ctx.drawImage(img, 0, 0, w, h);
+          ctx.filter = 'none'; // reset filter for watermarks
+
+          // 2. Dải băng đỉnh (Top Ribbon)
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.90)';
+          ctx.fillRect(0, 0, w, 78);
+
+          // Logo Đất Phú & Pháp nhân
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = 'bold 22px Arial, sans-serif';
+          ctx.fillText('CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ • MST: 4401020233', 30, 48);
+
+          // Huy hiệu chuyên biệt theo ngành
+          let badgeTitle = '📷 ĐẤT PHÚ CAM • ẢNH THẬT 100%';
+          let badgeBg = '#D32027';
+          if (this.datPhuCamCategory === 'fnb') { badgeTitle = '🍲 BẾP XỨ NẪU • NÓNG SỐT TẠI NƠI'; badgeBg = '#DC2626'; }
+          else if (this.datPhuCamCategory === 'beauty') { badgeTitle = '💅 MẪU THỰC TẾ • BẢO HÀNH 7 NGÀY'; badgeBg = '#DB2777'; }
+          else if (this.datPhuCamCategory === 'worker') { badgeTitle = '🛠️ THỢ K6 • NGHIỆM THU TẠI CÔNG TRÌNH'; badgeBg = '#2563EB'; }
+          else if (this.datPhuCamCategory === 'farm') { badgeTitle = '🌾 NÔNG SẢN TƯƠI • OCOP PHÚ YÊN'; badgeBg = '#059669'; }
+          else if (this.datPhuCamCategory === 'used') { badgeTitle = '📦 C2C DÂN SINH • ẢNH NGUYÊN BẢN'; badgeBg = '#475569'; }
+
+          ctx.fillStyle = badgeBg;
+          ctx.fillRect(w - 440, 16, 410, 46);
+          ctx.fillStyle = '#FFFFFF';
           ctx.font = 'bold 18px Arial, sans-serif';
-          ctx.fillText('⏱️ ' + this.datPhuCamForm.timestamp, w - 320, h - bH + 50);
+          ctx.fillText(badgeTitle, w - 425, 46);
+
+          // 3. Dải băng chân (Bottom Banner)
+          const bH = 165;
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.94)';
+          ctx.fillRect(0, h - bH, w, bH);
+
+          // Viền màu ngành hàng
+          ctx.fillStyle = badgeBg;
+          ctx.fillRect(0, h - bH, w, 6);
+
+          const isWorker = this.datPhuCamCategory === 'worker';
+          const mainTitle = isWorker ? ('THỢ K6: ' + this.datPhuCamForm.workerName.toUpperCase()) : this.datPhuCamForm.storeName.toUpperCase();
+          const subTitle = isWorker ? ('Hạng mục: ' + this.datPhuCamForm.workerJob) : ('Sản phẩm: ' + this.datPhuCamForm.itemName);
+
+          // Tên Tiệm / Thợ
+          ctx.fillStyle = '#FBBF24';
+          ctx.font = 'bold 28px Arial, sans-serif';
+          ctx.fillText(mainTitle, 30, h - bH + 42);
+
+          // Tên Món / Hạng mục
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = 'bold 22px Arial, sans-serif';
+          ctx.fillText(subTitle, 30, h - bH + 78);
+
+          // Thông số kỹ thuật / Định lượng
+          ctx.fillStyle = '#A7F3D0';
+          ctx.font = '18px Arial, sans-serif';
+          ctx.fillText('📋 ' + (this.datPhuCamForm.specs || 'Chuẩn chất lượng bảo chứng'), 30, h - bH + 110);
+
+          // Địa chỉ & Hotline
+          ctx.fillStyle = '#94A3B8';
+          ctx.font = '17px Arial, sans-serif';
+          ctx.fillText('📍 ' + this.datPhuCamForm.address + ' • Hotline Điều Phối: ' + this.datPhuCamForm.phone, 30, h - bH + 140);
+
+          // Dấu thời gian & Quyền pháp lý (Góc phải dưới)
+          ctx.fillStyle = '#FBBF24';
+          ctx.font = 'bold 17px Arial, sans-serif';
+          ctx.fillText('⏱️ ' + this.datPhuCamForm.timestamp, w - 370, h - bH + 42);
 
           ctx.fillStyle = '#CBD5E1';
-          ctx.font = 'italic 16px Arial, sans-serif';
-          ctx.fillText('Mã bảo chứng: #DP-CAM-' + Math.floor(10000 + Math.random() * 90000), w - 320, h - bH + 85);
+          ctx.font = 'italic 15px Arial, sans-serif';
+          ctx.fillText('Mã tài sản số: #DP-CAM-' + Math.floor(10000 + Math.random() * 90000), w - 370, h - bH + 75);
 
-          ctx.fillStyle = '#10B981';
-          ctx.font = 'bold 16px Arial, sans-serif';
-          ctx.fillText('✓ Bảo hộ bản quyền hình ảnh đối tác', w - 320, h - bH + 118);
+          ctx.fillStyle = '#E2E8F0';
+          ctx.font = '14px Arial, sans-serif';
+          ctx.fillText('✓ Bảo hộ bản quyền hình ảnh đối tác', w - 370, h - bH + 105);
+
+          ctx.fillStyle = '#94A3B8';
+          ctx.font = '13px Arial, sans-serif';
+          ctx.fillText('Chất lượng do đơn vị chịu trách nhiệm', w - 370, h - bH + 135);
 
           // Tải file về máy
           const link = document.createElement('a');
-          const safeName = (this.datPhuCamMode === 'merchant' ? this.datPhuCamForm.storeName : this.datPhuCamForm.workerName).replace(/[^a-zA-Z0-9]/g, '_');
-          link.download = 'DatPhuCam_' + safeName + '.png';
+          const safeName = (isWorker ? this.datPhuCamForm.workerName : this.datPhuCamForm.storeName).replace(/[^a-zA-Z0-9]/g, '_');
+          link.download = 'DatPhuCam_' + this.datPhuCamCategory + '_' + safeName + '.png';
           link.href = canvas.toDataURL('image/png');
           link.click();
 
-          alert('🎉 ĐÃ TẢI ẢNH ĐÓNG DẤU BẢN QUYỀN VỀ MÁY THÀNH CÔNG!\n\n' +
-                '✓ Ảnh đã được dập đầy đủ Logo Đất Phú, Tên Quán/Thợ, Địa chỉ Tuy Hòa và Hotline ' + this.datPhuCamForm.phone + '\n' +
+          alert('🎉 ĐÃ TẢI ẢNH ĐÓNG DẤU CHUẨN HD VỀ MÁY THÀNH CÔNG!\n\n' +
+                '✓ Độ phân giải: 1200 x 900 px\n' +
+                '✓ Dập đầy đủ Logo Đất Phú, Tên Quán/Thợ, Định lượng và Hotline ' + this.datPhuCamForm.phone + '\n' +
                 '✓ Bạn có thể thoải mái đăng lên Facebook, Fanpage, Hội nhóm Tuy Hòa mà không sợ bị đối thủ đánh cắp!');
         };
 
         img.onerror = () => {
-          alert('Không thể tải ảnh gốc để đóng dấu. Vui lòng chọn tệp ảnh trực tiếp từ điện thoại/máy tính của bạn.');
+          alert('Không thể tải ảnh để đóng dấu. Vui lòng chọn tệp ảnh trực tiếp từ máy của bạn.');
         };
 
         img.src = this.datPhuCamForm.imageSrc;
       },
 
       publishDatPhuCamToMarket() {
-        const isStore = this.datPhuCamMode === 'merchant';
+        const isWorker = this.datPhuCamCategory === 'worker';
         const newProduct = {
           id: 'prod_cam_' + Date.now(),
-          name: isStore ? this.datPhuCamForm.itemName : this.datPhuCamForm.workerJob,
-          storeName: isStore ? this.datPhuCamForm.storeName : this.datPhuCamForm.workerName,
-          price: isStore ? (this.datPhuCamForm.itemPrice || 60000) : (this.datPhuCamForm.workerPrice || 120000),
+          name: isWorker ? this.datPhuCamForm.workerJob : this.datPhuCamForm.itemName,
+          storeName: isWorker ? this.datPhuCamForm.workerName : this.datPhuCamForm.storeName,
+          price: isWorker ? (this.datPhuCamForm.workerPrice || 120000) : (this.datPhuCamForm.itemPrice || 60000),
           image: this.datPhuCamForm.imageSrc,
-          desc: (isStore ? 'Món ngon chính hiệu từ ' : 'Dịch vụ thợ K6 thực hiện bởi ') + (isStore ? this.datPhuCamForm.storeName : this.datPhuCamForm.workerName) + ' (Có con dấu Đất Phú Cam bảo hộ)',
+          desc: (isWorker ? 'Dịch vụ thợ K6 thực hiện bởi ' : 'Món ngon chính hiệu từ ') + (isWorker ? this.datPhuCamForm.workerName : this.datPhuCamForm.storeName) + ' (Có con dấu Đất Phú Cam bảo hộ)',
           origin: this.datPhuCamForm.address || 'TP. Tuy Hòa, Phú Yên',
           certBadge: 'Đất Phú Cam • Ảnh Thật 100%',
           hasCamBadge: true
