@@ -4874,162 +4874,117 @@
             </div>
 
             <!-- Lưới 3 Thợ Trực Chiến Nổi Bật -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
               <div 
                 v-for="w in nearbyWorkersList.slice(0, 3)" 
                 :key="w.id"
-                class="bg-slate-900 border-2 rounded-3xl flex flex-col justify-between transition-all duration-300 group hover:shadow-2xl hover:-translate-y-1 relative overflow-hidden"
-                :class="{
-                  'border-emerald-500/60 hover:border-emerald-400 shadow-emerald-950/20': w.level === 'freelance' || !w.level,
-                  'border-amber-500/70 hover:border-amber-400 shadow-amber-950/20': w.level === 'team',
-                  'border-rose-500/80 hover:border-rose-400 shadow-rose-950/30': w.level === 'contractor'
-                }">
+                class="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-card hover:shadow-md transition-all flex flex-col justify-between group">
                 
-                <div>
-                  <!-- 1. BẢNG HIỆU CỬA TIỆM THỰC TẾ (PHONG CÁCH BIỂN HIỆU ĐỜI THỰC - CHỮ TO RÕ) -->
-                  <div 
-                    class="p-3 sm:p-3.5 border-b flex flex-col gap-1.5 shadow-md relative"
-                    :class="{
-                      'bg-gradient-to-r from-emerald-900 via-teal-900 to-emerald-950 border-emerald-500/50 text-emerald-100': w.level === 'freelance' || !w.level,
-                      'bg-gradient-to-r from-amber-900 via-orange-950 to-amber-950 border-amber-500/50 text-amber-100': w.level === 'team',
-                      'bg-gradient-to-r from-rose-950 via-red-900 to-rose-950 border-rose-500/60 text-rose-100': w.level === 'contractor'
-                    }">
-                    
-                    <!-- Hàng cấp độ & Mã Hợp Đồng -->
-                    <div class="flex items-center justify-between text-xs">
-                      <span 
-                        class="font-black uppercase px-2 py-0.5 rounded-lg border shadow-xs flex items-center gap-1.5 text-[11px]"
-                        :class="{
-                          'bg-emerald-500 text-slate-950 border-emerald-300': w.level === 'freelance' || !w.level,
-                          'bg-amber-400 text-slate-950 border-amber-200': w.level === 'team',
-                          'bg-rose-500 text-white border-rose-300': w.level === 'contractor'
-                        }">
-                        <span v-if="w.level === 'freelance' || !w.level">🛠️ LEVEL 1: THỢ TỰ DO</span>
-                        <span v-else-if="w.level === 'team'">⚡ LEVEL 2: ĐỘI CƠ ĐỘNG</span>
-                        <span v-else-if="w.level === 'contractor'">🏢 LEVEL 3: CHỦ TIỆM & THẦU</span>
-                      </span>
-
-                      <div class="flex items-center gap-1.5 text-xs font-bold text-amber-300">
-                        <i class="fa-solid fa-star text-amber-400"></i>
-                        <span class="text-white font-black">{{ w.rating || '4.98' }}</span>
-                        <span class="text-slate-400 text-[11px]">({{ w.jobsCompleted || 156 }} cuốc)</span>
+                <!-- Store/Worker Header Info (Chuẩn mẫu thẻ Gian hàng Tuy Hòa) -->
+                <div class="p-3.5 sm:p-4 border-b border-slate-100 flex items-start justify-between gap-3 cursor-pointer" @click="openWorkerPublicBooth(w)">
+                  <div class="flex items-start gap-3">
+                    <img :src="w.avatar" class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl object-cover shadow-sm flex-shrink-0 group-hover:scale-105 transition-transform border border-slate-100">
+                    <div>
+                      <div class="flex items-center gap-1.5 flex-wrap">
+                        <h4 class="text-xs sm:text-sm font-black text-slate-900 group-hover:text-datphu-red transition-colors leading-snug">
+                          {{ w.boothName || w.name }}
+                        </h4>
+                        <span class="text-[8px] sm:text-[9px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">
+                          {{ w.specialtyName || 'Dịch Vụ Sửa Chữa' }}
+                        </span>
                       </div>
-                    </div>
 
-                    <!-- TÊN TIỆM / TÊN THỢ: TO RÕ RÀNG (16px - 18px) KHÔNG BỊ CẮT CHỮ -->
-                    <div class="pt-0.5">
-                      <h3 
-                        @click="openWorkerPublicBooth(w)" 
-                        class="text-base sm:text-lg font-black text-white hover:text-amber-300 transition-colors cursor-pointer leading-snug">
-                        {{ w.name }}
-                      </h3>
-                      <div class="text-xs sm:text-sm font-bold text-amber-300 mt-0.5 flex items-center gap-1.5">
-                        <i class="fa-solid mr-0.5" :class="w.level === 'contractor' ? 'fa-building text-rose-300' : (w.level === 'team' ? 'fa-users text-amber-300' : 'fa-screwdriver-wrench text-emerald-300')"></i>
-                        <span>{{ w.title }}</span>
+                      <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+                        <span class="text-[8px] sm:text-[9px] font-black bg-datphu-navy text-white px-2 py-0.5 rounded shadow-sm flex items-center gap-1">
+                          <i class="fa-solid fa-store text-[7px] text-amber-300"></i>
+                          <span>{{ w.contractCode || 'Trạm 6K #TM-01' }}</span>
+                        </span>
+                        
+                        <span class="text-[8px] sm:text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                          <i class="fa-solid fa-file-signature text-[7px]"></i> Thuê Chính Chủ
+                        </span>
+
+                        <span v-if="w.level === 'contractor'" class="text-[8px] sm:text-[9px] font-black text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded">
+                          🏢 Tổng Thầu
+                        </span>
+                        <span v-else-if="w.level === 'team'" class="text-[8px] sm:text-[9px] font-black text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
+                          ⚡ Đội Cơ Động
+                        </span>
+                        <span v-else class="text-[8px] sm:text-[9px] font-black text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded">
+                          🛠️ Thợ Tự Do
+                        </span>
+                      </div>
+
+                      <div class="text-[10px] sm:text-[11px] text-slate-400 flex items-center gap-2 mt-1.5 font-medium flex-wrap">
+                        <span class="font-bold text-amber-500 flex items-center gap-1">
+                          <i class="fa-solid fa-star text-amber-400"></i> {{ w.rating || '4.98' }}
+                        </span>
+                        <span>•</span>
+                        <span class="text-slate-600">{{ w.timeEstimate || 'Hỗ trợ tận nơi nhanh chóng' }}</span>
+                        <span>•</span>
+                        <span class="text-slate-500">Cách {{ w.distance }}</span>
                       </div>
                     </div>
                   </div>
 
-                  <!-- 2. THÔNG TIN THỰC ĐỊA & HỒ SƠ THỢ (CHỮ TO 13px, RÕ RÀNG) -->
-                  <div class="p-3.5 space-y-3">
-                    
-                    <div class="flex items-start gap-3">
-                      <!-- Ảnh đại diện to rõ (60x60px) có viền kim loại -->
-                      <div 
-                        @click="openWorkerPublicBooth(w)" 
-                        class="relative flex-shrink-0 cursor-pointer group-hover:scale-105 transition-transform"
-                        title="Bấm để xem gian hàng">
-                        <img :src="w.avatar" class="w-16 h-16 rounded-2xl object-cover border-2 border-amber-400 shadow-md">
-                        <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-slate-900" title="Đang trực chiến"></span>
-                      </div>
-
-                      <!-- Địa chỉ và thẩm định quan hệ -->
-                      <div class="flex-1 min-w-0 space-y-1">
-                        <div class="text-xs sm:text-[13px] text-slate-200 flex items-start gap-1.5 leading-snug font-medium">
-                          <i class="fa-solid fa-location-dot text-rose-400 text-sm mt-0.5 flex-shrink-0"></i>
-                          <span>{{ w.address }}</span>
-                        </div>
-                        <div class="text-xs font-bold text-cyan-300 flex items-center gap-2">
-                          <span>Cách bạn: {{ w.distance }}</span>
-                          <span class="text-slate-600">•</span>
-                          <span class="text-emerald-400">{{ w.timeEstimate || '15p có mặt' }}</span>
-                        </div>
-                        <div class="pt-0.5">
-                          <span class="inline-flex items-center gap-1.5 text-[11px] font-black text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-lg">
-                            <i class="fa-solid fa-shield-check text-emerald-400"></i> Đã Khảo Sát Thực Địa Tận Nơi
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- NĂNG LỰC ĐỘI NGŨ / MÔ HÌNH HOẠT ĐỘNG -->
-                    <div class="py-2 px-3 rounded-xl flex items-center justify-between text-xs font-bold"
-                         :class="w.level === 'contractor' ? 'bg-rose-950/40 border border-rose-500/30 text-rose-200' : (w.level === 'team' ? 'bg-amber-950/40 border border-amber-500/30 text-amber-200' : 'bg-slate-950/80 border border-slate-800 text-slate-200')">
-                      <span class="flex items-center gap-1.5">
-                        <span v-if="w.level === 'contractor'"><i class="fa-solid fa-store mr-1 text-rose-400"></i> Có Tiệm Thật & Bán Sỉ Vật Tư</span>
-                        <span v-else-if="w.level === 'team'"><i class="fa-solid fa-people-group mr-1 text-amber-400"></i> {{ w.teamSize || 'Đội 3-5 thợ cơ động' }}</span>
-                        <span v-else><i class="fa-solid fa-user-check mr-1 text-emerald-400"></i> Thợ Lẻ Sửa Nhanh Quanh Xóm</span>
-                      </span>
-                      <span class="font-mono text-cyan-300">
-                        <span v-if="w.level === 'contractor'">Nhận Thầu Trọn Gói</span>
-                        <span v-else-if="w.level === 'team'">Cứu Hộ 24/7</span>
-                        <span v-else>15p Tới Liền</span>
-                      </span>
-                    </div>
-
-                    <!-- BẢNG GIÁ CÔNG KHOÁN TIÊU BIỂU (CHỮ TO 13px - 14px, DỄ ĐỌC CHO NGƯỜI GIÀ) -->
-                    <div class="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
-                      <div class="text-[11px] uppercase tracking-wide text-amber-400 font-black flex items-center justify-between border-b border-slate-800 pb-1.5">
-                        <span><i class="fa-solid fa-clipboard-check mr-1"></i> Báo Giá Công Khoán Chuẩn K6:</span>
-                        <span class="text-emerald-400 text-[10px] font-mono">Nghiệm Thu Mới Trả</span>
-                      </div>
-
-                      <div v-if="w.packages && w.packages.length" class="space-y-1.5">
-                        <div 
-                          v-for="(pkg, idx) in w.packages.slice(0, 2)" 
-                          :key="idx" 
-                          class="flex items-center justify-between text-xs sm:text-[13px]">
-                          <span class="text-slate-200 font-medium">
-                            • {{ pkg.name }}
-                          </span>
-                          <span class="font-mono font-black text-amber-400 text-sm whitespace-nowrap ml-2">
-                            {{ pkg.price === 0 ? 'Khảo Sát Miễn Phí' : formatCurrency(pkg.price) }}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
+                  <!-- Nút Vào Tiệm (Chuẩn mẫu pill đỏ nhạt) -->
+                  <button 
+                    type="button"
+                    @click.stop="openWorkerPublicBooth(w)"
+                    class="bg-datphu-redLight hover:bg-red-100 text-datphu-red text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-xl flex-shrink-0 transition-colors flex items-center gap-1 shadow-xs">
+                    <span>Vào Tiệm</span>
+                    <i class="fa-solid fa-chevron-right text-[8px] ml-0.5"></i>
+                  </button>
                 </div>
 
-                <!-- 3. CỤM NÚT HÀNH ĐỘNG: NÚT GỌI XANH LÁ SIÊU TO (HERO BUTTON) DỄ BẤM -->
-                <div class="p-3.5 pt-0 space-y-2">
-                  
-                  <!-- NÚT GỌI THỢ XANH LÁ SIÊU TO: NGƯỜI GIÀ CHẠM 1 PHÁT LÀ GỌI ĐƯỢC NGAY -->
-                  <a 
-                    :href="'tel:' + (w.phone || '0979991898')" 
-                    class="w-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-black py-3 px-3 rounded-2xl text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-950/60 active:scale-95 transition-all border-2 border-emerald-400/60">
-                    <i class="fa-solid fa-phone-volume text-lg animate-bounce"></i>
-                    <span>GỌI THỢ: {{ w.phone || '0979 991 898' }}</span>
-                  </a>
+                <!-- DỊCH VỤ & MÓN ĐƯỢC YÊU THÍCH NHẤT: (2 CỘT CHUẨN MẪU HÌNH ẢNH RÕ NÉT) -->
+                <div class="p-3 bg-slate-50/60">
+                  <div class="text-[10px] sm:text-[11px] text-slate-400 font-bold mb-2 uppercase tracking-wide">
+                    DỊCH VỤ & MÓN ĐƯỢC YÊU THÍCH NHẤT:
+                  </div>
 
-                  <!-- 2 NÚT PHỤ: XEM GIAN HÀNG & ĐẶT LỊCH HẸN -->
-                  <div class="grid grid-cols-2 gap-2">
-                    <button 
-                      type="button"
-                      @click="openWorkerPublicBooth(w)"
-                      class="bg-slate-800 hover:bg-slate-750 text-slate-200 hover:text-white font-bold py-2.5 px-2 rounded-xl text-xs flex items-center justify-center gap-1.5 border border-slate-700 active:scale-95 transition-all">
-                      <i class="fa-solid fa-store text-amber-400 text-xs"></i>
-                      <span>{{ w.level === 'contractor' ? 'Xem Tiệm & Kho' : 'Xem Bảng Giá' }}</span>
-                    </button>
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div 
+                      v-for="(pkg, idx) in (w.packages || []).slice(0, 2)" 
+                      :key="idx"
+                      class="bg-white rounded-2xl p-2 border border-slate-100 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-colors group/item">
+                      <div>
+                        <img 
+                          :src="pkg.image || 'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?auto=format&fit=crop&w=300&q=80'" 
+                          class="w-full h-20 sm:h-24 object-cover rounded-xl mb-1.5 shadow-xs group-hover/item:scale-[1.02] transition-transform">
+                        <div class="text-[10px] sm:text-[11px] font-bold text-slate-900 line-clamp-1 leading-snug">
+                          {{ pkg.name }}
+                        </div>
+                      </div>
 
-                    <button 
-                      type="button"
-                      @click="openServiceTicket({ title: w.title, tag: w.specialtyName, specialty: w.specialty }, 'urgent')"
-                      class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black py-2.5 px-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all">
-                      <i class="fa-solid fa-bolt text-xs"></i>
-                      <span>{{ w.level === 'contractor' ? 'Báo Giá Thầu' : 'Đặt Hẹn 15p' }}</span>
-                    </button>
+                      <div class="mt-1.5 flex items-center justify-between pt-1 border-t border-slate-50">
+                        <span class="text-[11px] sm:text-xs font-black text-datphu-red font-mono">
+                          {{ pkg.price === 0 ? 'Khảo Sát 0Đ' : formatCurrency(pkg.price) }}
+                        </span>
+                        <button 
+                          type="button"
+                          @click.stop="openServiceTicket({ title: pkg.name, tag: w.specialtyName, specialty: w.specialty }, 'urgent')"
+                          class="w-6 h-6 rounded-full bg-datphu-navy text-white flex items-center justify-center text-[11px] font-black active:scale-90 shadow-sm hover:bg-datphu-red transition-colors"
+                          title="Đặt dịch vụ này">
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- THANH LIÊN HỆ GỌI TRỰC TIẾP DÀNH CHO BÀ CON -->
+                  <div class="mt-2.5 pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs">
+                    <a 
+                      :href="'tel:' + (w.phone || '0979991898')" 
+                      class="flex items-center gap-1.5 text-emerald-700 hover:text-emerald-800 font-bold hover:underline">
+                      <i class="fa-solid fa-phone-volume text-emerald-600 text-xs animate-pulse"></i>
+                      <span class="text-[10px] text-slate-500">Gọi Thợ:</span>
+                      <span class="font-mono font-black text-emerald-700 text-xs">{{ w.phone || '0979 991 898' }}</span>
+                    </a>
+
+                    <span class="text-[9px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-bold flex items-center gap-1">
+                      <i class="fa-solid fa-shield-check text-emerald-600"></i> Đã Khảo Sát
+                    </span>
                   </div>
                 </div>
 
@@ -16604,9 +16559,8 @@
             statusText: 'Đang mở cửa tiệm & trực công trình',
             verified: true,
             packages: [
-              { name: 'Khảo sát & Báo giá thi công công trình nhà phố', price: 0 },
-              { name: 'Vệ sinh & Nạp gas máy lạnh tại tiệm / tận nhà', price: 120000 },
-              { name: 'Lắp mới máy lạnh Inverter trọn gói vật tư', price: 350000 }
+              { name: 'Khảo Sát & Báo Giá Thi Công Nhà Phố', price: 0, image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=300&q=80' },
+              { name: 'Vệ Sinh & Nạp Gas Máy Lạnh Tại Nhà', price: 120000, image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=300&q=80' }
             ]
           },
           {
@@ -16632,8 +16586,8 @@
             statusText: 'Đang trực chiến sẵn sàng',
             verified: true,
             packages: [
-              { name: 'Thay van nước / vòi sen / đường ống', price: 60000 },
-              { name: 'Khắc phục chập điện aptomat sập nguồn', price: 90000 }
+              { name: 'Gói Công Thay Van Nước & Vòi Sen', price: 60000, image: 'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?auto=format&fit=crop&w=300&q=80' },
+              { name: 'Khắc Phục Sự Cố Nhảy Aptomat Điện', price: 90000, image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=300&q=80' }
             ]
           },
           {
@@ -16660,8 +16614,8 @@
             statusText: 'Cứu hộ cơ động trực chiến 24/7',
             verified: true,
             packages: [
-              { name: 'Vá lốp không ruột tại chỗ đêm ngày', price: 40000 },
-              { name: 'Kích bình ắc quy xe máy hết điện tận nơi', price: 50000 }
+              { name: 'Vá Lốp Xe Máy Không Ruột Tận Nơi', price: 40000, image: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=300&q=80' },
+              { name: 'Kích Bình Ắc Quy Xe Máy Hết Điện', price: 50000, image: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=300&q=80' }
             ]
           },
           {
