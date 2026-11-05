@@ -168,6 +168,16 @@
           <i class="fa-solid fa-chevron-down text-[7px] text-slate-400"></i>
         </button>
 
+        <!-- NÚT THEO DÕI TIẾN ĐỘ DỰ ÁN ĐẤT PHÚ -->
+        <button 
+          type="button"
+          @click="openProjectTrackerModal('all')"
+          class="bg-purple-900/60 hover:bg-purple-800 text-purple-200 border border-purple-500/40 px-2.5 py-1 rounded-lg text-[9px] font-black flex items-center gap-1.5 shadow-2xs transition-all"
+          title="Bảng theo dõi tiến độ dự án Đất Phú (WBS & Milestones)">
+          <i class="fa-solid fa-bars-progress text-purple-300"></i>
+          <span>Tiến Độ</span>
+        </button>
+
         <!-- NÚT CHUẨN VẬN HÀNH SOP ĐẤT PHÚ -->
         <button 
           type="button"
@@ -232,6 +242,28 @@
           <div class="text-base font-black text-purple-300 mt-0.5">6 Mẫu</div>
         </div>
       </div>
+    </div>
+
+    <!-- BAN CHỈ ĐẠO: BẢNG TIẾN ĐỘ DỰ ÁN ĐẤT PHÚ -->
+    <div class="bg-gradient-to-r from-purple-900/80 via-indigo-900/80 to-slate-900 p-4 rounded-3xl border border-purple-500/50 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-purple-600 text-white flex items-center justify-center text-lg font-black shadow-md flex-shrink-0">
+          <i class="fa-solid fa-chart-line text-amber-300"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="text-xs font-black text-white uppercase tracking-wider">Tiến Độ Tổng Thể Dự Án: {{ calcProjectOverallProgress() }}%</h3>
+            <span class="bg-emerald-500/20 text-emerald-300 text-[9px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/40">18/24 Hoàn Thành</span>
+          </div>
+          <p class="text-[10px] text-purple-200 mt-0.5">Phân rã 5 luồng công việc WBS • Trạm Thợ K6 • Chợ Phiên POS • Express • Pháp Lý</p>
+        </div>
+      </div>
+      <button 
+        @click="openProjectTrackerModal('all')"
+        class="bg-purple-600 hover:bg-purple-500 text-white font-black px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-md transition-all flex-shrink-0">
+        <i class="fa-solid fa-bars-progress"></i>
+        <span>Mở Bảng Tiến Độ Chi Tiết</span>
+      </button>
     </div>
 
     <!-- BẢNG ĐIỀU KHIỂN SỔ ĐEN & CẤM SỐ PHÁ HOẠI (LỚP PHÒNG THỦ 5) -->
@@ -4936,6 +4968,7 @@
               <li><a href="#" @click.prevent="activeTier = 'merchant'" class="hover:text-white transition-colors">🏪 Đăng ký thuê quầy số & Mở quán</a></li>
               <li><a href="#" @click.prevent="activeTier = 'merchant'" class="hover:text-white transition-colors">🖨️ In bảng Mica Standee QR quầy</a></li>
               <li><a href="#" @click.prevent="navigateToWorkerRegistration" class="hover:text-white transition-colors">🛠️ Gia nhập Đội Thợ 6K Cơ Động</a></li>
+              <li><a href="#" @click.prevent="openProjectTrackerModal('all')" class="hover:text-white text-purple-300 font-black transition-colors flex items-center gap-1">📊 <span>Bảng theo dõi tiến độ dự án Đất Phú</span></a></li>
               <li><a href="#" @click.prevent="openSopModal('worker')" class="hover:text-white text-blue-300 font-black transition-colors flex items-center gap-1">📋 <span>Bộ quy trình vận hành chuẩn (SOP Đất Phú)</span></a></li>
               <li><a href="#" @click.prevent="openEcomRegulationsModal('decree85_regulations')" class="hover:text-white text-amber-300 font-bold transition-colors">📜 Quy chế hoạt động Đất Phú Chợ Phiên</a></li>
               <li><a href="#" @click.prevent="openEcomRegulationsModal('circular89_invoice_tax')" class="hover:text-white text-emerald-300 font-bold transition-colors">📑 Thông tư 89/2026/TT-BTC (Hóa đơn máy tính tiền & B2B)</a></li>
@@ -8704,6 +8737,241 @@
           class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-6 rounded-xl text-xs transition-all w-full sm:w-auto">
           Đã Hiểu & Đóng Hộp Thoại
         </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: BẢNG THEO DÕI TIẾN ĐỘ DỰ ÁN ĐẤT PHÚ 2026 (PROJECT ROADMAP & WBS) -->
+  <!-- ========================================================================= -->
+  <div v-if="showProjectTrackerModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 animate-fadeIn">
+    <div class="bg-white w-full max-w-5xl rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xl max-h-[94vh] overflow-y-auto border border-slate-200">
+      
+      <!-- Tiêu đề Modal -->
+      <div class="flex items-center justify-between border-b pb-3.5">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-700 via-indigo-700 to-blue-800 text-white flex items-center justify-center text-lg font-black shadow-lg">
+            <i class="fa-solid fa-bars-progress"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-black text-slate-900 text-base">BẢNG THEO DÕI TIẾN ĐỘ DỰ ÁN ĐẤT PHÚ 2026</h3>
+              <span class="bg-purple-100 text-purple-800 text-[10px] font-black px-2 py-0.5 rounded-full border border-purple-300">Phase 3 • Pilot Tuy Hòa</span>
+            </div>
+            <p class="text-[11px] text-slate-500">
+              CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ • MST: <b class="text-slate-800">4401020233</b> • Hotline Ban Chỉ Đạo: <b class="text-datphu-red">0979 991 898</b>
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button 
+            type="button" 
+            @click="exportProjectScheduleCsv"
+            class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 text-xs font-bold transition-all shadow-xs"
+            title="Tải bảng theo dõi dạng file CSV / Excel">
+            <i class="fa-solid fa-file-excel text-emerald-600"></i>
+            <span>Xuất Excel</span>
+          </button>
+          <button 
+            type="button" 
+            @click="printSopGuide"
+            class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all shadow-xs"
+            title="In báo cáo tiến độ A4">
+            <i class="fa-solid fa-print text-slate-600"></i>
+            <span>In A4</span>
+          </button>
+          <button 
+            type="button" 
+            @click="showProjectTrackerModal = false"
+            class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Khối tóm tắt chỉ số tiến độ (Executive KPI Banner) -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        <div class="bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-2xl p-3">
+          <div class="text-[10px] text-purple-700 font-bold uppercase tracking-wider">Tiến Độ Toàn Dự Án</div>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="text-2xl font-black text-purple-900">{{ calcProjectOverallProgress() }}%</span>
+            <span class="text-[10px] text-purple-600 font-bold">24 Hạng mục</span>
+          </div>
+          <div class="w-full bg-purple-200 rounded-full h-1.5 mt-2 overflow-hidden">
+            <div class="bg-purple-600 h-1.5 rounded-full transition-all" :style="{ width: calcProjectOverallProgress() + '%' }"></div>
+          </div>
+        </div>
+
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3">
+          <div class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Đã Hoàn Thành</div>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="text-2xl font-black text-emerald-800">{{ countProjectTasksByStatus('done') }}</span>
+            <span class="text-[10px] text-emerald-600 font-bold">/ 24 Việc ({{ ((countProjectTasksByStatus('done') / projectTasks.length) * 100).toFixed(0) }}%)</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1.5">Core App, VietQR, SOP, Pháp lý TMĐT</p>
+        </div>
+
+        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3">
+          <div class="text-[10px] text-blue-700 font-bold uppercase tracking-wider">Đang Triển Khai</div>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="text-2xl font-black text-blue-800">{{ countProjectTasksByStatus('running') }}</span>
+            <span class="text-[10px] text-blue-600 font-bold">Hạng mục Pilot</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1.5">Standee Mica Tuy Hòa, 20 Thợ K6</p>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3">
+          <div class="text-[10px] text-amber-800 font-bold uppercase tracking-wider">Cột Mốc Kế Tiếp</div>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="text-base font-black text-amber-900 truncate">Q2/2026</span>
+            <span class="text-[10px] text-amber-700 font-bold">Mở Rộng Vùng</span>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1.5">Sông Cầu, Đông Hòa, OCOP B2B</p>
+        </div>
+      </div>
+
+      <!-- Thanh lọc phân hệ (Filter Tabs) -->
+      <div class="flex flex-wrap gap-1.5 p-1 bg-slate-100 rounded-2xl text-xs font-bold">
+        <button 
+          type="button"
+          @click="projectTrackerActiveTab = 'all'"
+          :class="projectTrackerActiveTab === 'all' ? 'bg-white text-slate-900 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'"
+          class="py-2 px-3 rounded-xl transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-list-check text-slate-600"></i>
+          <span>Tất Cả ({{ projectTasks.length }})</span>
+        </button>
+        <button 
+          type="button"
+          @click="projectTrackerActiveTab = 'tech'"
+          :class="projectTrackerActiveTab === 'tech' ? 'bg-white text-purple-700 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'"
+          class="py-2 px-3 rounded-xl transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-laptop-code text-purple-600"></i>
+          <span>1. Công Nghệ & PWA (7)</span>
+        </button>
+        <button 
+          type="button"
+          @click="projectTrackerActiveTab = 'worker'"
+          :class="projectTrackerActiveTab === 'worker' ? 'bg-white text-blue-700 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'"
+          class="py-2 px-3 rounded-xl transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-screwdriver-wrench text-blue-600"></i>
+          <span>2. Đất Phú Trạm Thợ (6)</span>
+        </button>
+        <button 
+          type="button"
+          @click="projectTrackerActiveTab = 'merchant'"
+          :class="projectTrackerActiveTab === 'merchant' ? 'bg-white text-datphu-red shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'"
+          class="py-2 px-3 rounded-xl transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-store text-datphu-red"></i>
+          <span>3. Chợ Phiên & POS (5)</span>
+        </button>
+        <button 
+          type="button"
+          @click="projectTrackerActiveTab = 'express'"
+          :class="projectTrackerActiveTab === 'express' ? 'bg-white text-emerald-700 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'"
+          class="py-2 px-3 rounded-xl transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-motorcycle text-emerald-600"></i>
+          <span>4. Đất Phú Express (4)</span>
+        </button>
+        <button 
+          type="button"
+          @click="projectTrackerActiveTab = 'governance'"
+          :class="projectTrackerActiveTab === 'governance' ? 'bg-white text-indigo-700 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'"
+          class="py-2 px-3 rounded-xl transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-scale-balanced text-indigo-600"></i>
+          <span>5. Pháp Lý & Quản Trị (4)</span>
+        </button>
+      </div>
+
+      <!-- Danh sách bảng công việc (Interactive Task Cards) -->
+      <div class="space-y-2.5">
+        <div 
+          v-for="task in getFilteredProjectTasks()" 
+          :key="task.code"
+          class="bg-white rounded-2xl p-3.5 border border-slate-200 hover:border-purple-300 hover:shadow-md transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+          
+          <div class="flex items-start gap-3 flex-1">
+            <span class="font-mono text-[10px] font-black px-2 py-1 rounded-lg flex-shrink-0"
+              :class="{
+                'bg-purple-100 text-purple-900': task.stream === 'tech',
+                'bg-blue-100 text-blue-900': task.stream === 'worker',
+                'bg-red-100 text-red-900': task.stream === 'merchant',
+                'bg-emerald-100 text-emerald-900': task.stream === 'express',
+                'bg-indigo-100 text-indigo-900': task.stream === 'governance'
+              }">
+              {{ task.code }}
+            </span>
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <h4 class="font-black text-xs text-slate-900">{{ task.title }}</h4>
+                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600">{{ task.phase }}</span>
+                <span class="text-[9px] font-bold text-slate-400">• PIC: <b class="text-slate-700">{{ task.pic }}</b></span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-snug">{{ task.desc }}</p>
+              <div class="text-[10px] text-emerald-700 font-bold flex items-center gap-1 pt-0.5">
+                <i class="fa-solid fa-box-archive text-emerald-600"></i>
+                <span>Đầu ra: {{ task.deliverable }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tiến độ & Trạng thái -->
+          <div class="flex items-center justify-between md:justify-end gap-3 w-full md:w-56 flex-shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100">
+            <div class="flex-1 text-right">
+              <div class="text-[10px] font-bold text-slate-500 mb-1 flex items-center justify-between md:justify-end gap-2">
+                <span>Tiến độ</span>
+                <b class="text-slate-900 font-mono">{{ task.progress }}%</b>
+              </div>
+              <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                <div 
+                  class="h-1.5 rounded-full transition-all"
+                  :class="{
+                    'bg-emerald-500': task.status === 'done',
+                    'bg-blue-500': task.status === 'running',
+                    'bg-amber-400': task.status === 'upcoming'
+                  }"
+                  :style="{ width: task.progress + '%' }"></div>
+              </div>
+            </div>
+            <span 
+              class="text-[10px] font-black px-2.5 py-1 rounded-xl flex items-center gap-1 flex-shrink-0"
+              :class="{
+                'bg-emerald-100 text-emerald-800 border border-emerald-300': task.status === 'done',
+                'bg-blue-100 text-blue-800 border border-blue-300 animate-pulse': task.status === 'running',
+                'bg-amber-100 text-amber-800 border border-amber-300': task.status === 'upcoming'
+              }">
+              <i class="fa-solid text-[9px]" 
+                :class="{
+                  'fa-check-circle text-emerald-600': task.status === 'done',
+                  'fa-spinner fa-spin text-blue-600': task.status === 'running',
+                  'fa-clock text-amber-600': task.status === 'upcoming'
+                }"></i>
+              <span>{{ task.status === 'done' ? 'Xong 100%' : (task.status === 'running' ? 'Đang Chạy' : 'Kế Hoạch') }}</span>
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer Modal Tiến Độ -->
+      <div class="border-t pt-3 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
+        <div class="text-[11px] text-slate-500 text-center sm:text-left">
+          Hệ thống theo dõi tiến độ thời gian thực • Ban Quản Lý Dự Án <b class="text-slate-800">CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ</b>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <button 
+            type="button" 
+            @click="exportProjectScheduleCsv"
+            class="sm:hidden flex-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold py-2 px-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 border border-emerald-300">
+            <i class="fa-solid fa-file-excel"></i> Xuất Excel
+          </button>
+          <button 
+            type="button" 
+            @click="showProjectTrackerModal = false"
+            class="flex-1 sm:flex-initial bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-6 rounded-xl text-xs transition-all">
+            Đóng Bảng Tiến Độ
+          </button>
+        </div>
       </div>
 
     </div>
@@ -13571,6 +13839,40 @@
         workerLoginForm: { phone: '', otp: '', otpSent: false },
         // === WORK EXCEL SPREADSHEETS (QUẢN LÝ CÔNG VIỆC & DỊCH VỤ DẠNG EXCEL) ===
       ordersViewMode: 'excel',
+      showProjectTrackerModal: false,
+      projectTrackerActiveTab: 'all',
+      projectTasks: [
+        { code: 'WBS-TC-01', stream: 'tech', title: 'Kiến trúc Frontend PWA & Vue State', desc: 'Single-Page App responsive, Service Worker PWA, LocalStorage offline-first', pic: 'Tech Lead', phase: 'Phase 1', progress: 100, status: 'done', deliverable: 'Ứng dụng chạy mượt trên mọi thiết bị' },
+        { code: 'WBS-TC-02', stream: 'tech', title: 'Tích hợp VietQR NAPAS 247 Dynamic', desc: 'Mã QR thanh toán động đúng định dạng chuẩn NAPAS, tiền về thẳng TK cá nhân', pic: 'Tech Team', phase: 'Phase 1', progress: 100, status: 'done', deliverable: 'Cổng thanh toán không qua trung gian' },
+        { code: 'WBS-TC-03', stream: 'tech', title: 'Phần mềm POS Quầy & In Bill K80', desc: 'Mẫu hóa đơn K80 in nhiệt, quản trị thực đơn, kết nối máy in Bluetooth', pic: 'Tech Team', phase: 'Phase 1', progress: 100, status: 'done', deliverable: 'Máy in bill K80 chuẩn quầy ăn uống' },
+        { code: 'WBS-TC-04', stream: 'tech', title: 'Sổ kế toán EasyBooks & 5 File Excel', desc: 'Hệ thống kế toán đơn giản hóa, nhật ký thu chi tiền mặt và công nợ', pic: 'Tech Team', phase: 'Phase 2', progress: 100, status: 'done', deliverable: 'Bộ 5 file Excel quản trị dịch vụ thợ' },
+        { code: 'WBS-TC-05', stream: 'tech', title: 'Đóng gói Backend GitHub & Vercel', desc: 'Kho mã nguồn thuongmaidatphu-bit/datphu-backend, serverless handler', pic: 'Tech Team', phase: 'Phase 2', progress: 100, status: 'done', deliverable: 'Triển khai Edge Serverless CDN' },
+        { code: 'WBS-TC-06', stream: 'tech', title: 'Giao diện tương tác Sổ tay SOP 4 phân hệ', desc: 'Modal hướng dẫn 4 tab, nút in A4 dán tường, checklist 6 vật phẩm', pic: 'Tech Team', phase: 'Phase 2', progress: 100, status: 'done', deliverable: 'Sổ tay SOP vận hành tương tác trực tiếp' },
+        { code: 'WBS-TC-07', stream: 'tech', title: 'Đồng bộ Realtime WebSockets & Push Alert', desc: 'Bắn tín hiệu nổ cuốc khẩn cấp cho thợ gần nhất theo tọa độ radar', pic: 'Tech Team', phase: 'Phase 3', progress: 75, status: 'running', deliverable: 'Chuông báo cứu hộ thời gian thực' },
+
+        { code: 'WBS-OP-01', stream: 'worker', title: 'Tiêu chuẩn tay nghề Thợ K6 Tuy Hòa', desc: 'Khung kiểm soát chất lượng 5 bước, bảng niêm yết giá công minh bạch', pic: 'Ops Lead', phase: 'Phase 1', progress: 100, status: 'done', deliverable: 'Bộ quy chuẩn tay nghề Thợ K6' },
+        { code: 'WBS-OP-02', stream: 'worker', title: 'Thiết kế thẻ định danh hành nghề QR', desc: 'Thẻ nhân viên có mã QR chống mạo danh, tra cứu lịch sử và tay nghề', pic: 'Design Team', phase: 'Phase 2', progress: 100, status: 'done', deliverable: 'Mẫu thẻ đeo ngực có mã QR định danh' },
+        { code: 'WBS-OP-03', stream: 'worker', title: 'Tuyển mộ & Thẩm định 20 Thợ nòng cốt', desc: 'Xác minh CCCD, ký cam kết giá minh bạch, kiểm tra tay nghề thực địa', pic: 'Ops Team', phase: 'Phase 3', progress: 90, status: 'running', deliverable: '20 Thợ điện, nước, máy lạnh Tuy Hòa' },
+        { code: 'WBS-OP-04', stream: 'worker', title: 'Thiết lập trực ban Cứu Hộ Dân Sinh 24/7', desc: 'Đấu nối đường dây nóng 0979 991 898, phân ca trực đêm Tuy Hòa', pic: 'Ops Team', phase: 'Phase 3', progress: 100, status: 'done', deliverable: 'Đường dây nóng 0979 991 898 trực 24/7' },
+        { code: 'WBS-OP-05', stream: 'worker', title: 'Cấp phát trang bị (Áo thợ, Túi đồ nghề)', desc: '20 Bộ đồng phục Đất Phú, găng tay cách điện, đồng hồ đo điện áp', pic: 'Ops / Admin', phase: 'Phase 3', progress: 70, status: 'running', deliverable: 'Trang phục & dụng cụ an toàn lao động' },
+        { code: 'WBS-OP-06', stream: 'worker', title: 'Mở rộng mạng lưới Sông Cầu, Đông Hòa', desc: 'Khảo sát thợ sửa chữa, tiệm xe máy tại TX. Sông Cầu và TX. Đông Hòa', pic: 'Ops Team', phase: 'Phase 4', progress: 20, status: 'upcoming', deliverable: 'Mạng lưới thợ vệ tinh liên huyện' },
+
+        { code: 'WBS-MC-01', stream: 'merchant', title: 'Phân loại danh mục: Ẩm thực, Bánh, Nail, OCOP', desc: 'Cấu trúc thực đơn số hóa, chuẩn hóa hình ảnh món ăn đặc sản Phú Yên', pic: 'Biz Dev', phase: 'Phase 1', progress: 100, status: 'done', deliverable: 'Danh mục phân loại ngành hàng địa phương' },
+        { code: 'WBS-MC-02', stream: 'merchant', title: 'Thiết kế & In ấn Standee Mica A5 để bàn', desc: 'Standee Mica khắc logo Đất Phú, mã QR quầy thanh toán VietQR', pic: 'Design Team', phase: 'Phase 2', progress: 100, status: 'done', deliverable: 'Bản in Standee Mica mã VietQR quầy' },
+        { code: 'WBS-MC-03', stream: 'merchant', title: 'Ký kết gian hàng số 30 Quán ăn Tuy Hòa', desc: 'Ký hợp đồng thuê quầy số 0% phí chiết khấu, bàn giao Standee Mica', pic: 'Biz Dev', phase: 'Phase 3', progress: 80, status: 'running', deliverable: '30 Quán ăn, cafe trung tâm Tuy Hòa' },
+        { code: 'WBS-MC-04', stream: 'merchant', title: 'Tập huấn chủ quán sử dụng POS di động', desc: 'Hướng dẫn nhận đơn, in hóa đơn K80, kiểm tra tiền về ngân hàng', pic: 'Biz Dev', phase: 'Phase 3', progress: 75, status: 'running', deliverable: 'Chủ quán thành thạo quản lý đơn số' },
+        { code: 'WBS-MC-05', stream: 'merchant', title: 'Kết nối HTX & Đặc sản OCOP Phú Yên', desc: 'Bò một nắng Sơn Hòa, Nước mắm Gành Đỏ, Muối kiến vàng, Chả cá', pic: 'Biz Dev', phase: 'Phase 4', progress: 40, status: 'upcoming', deliverable: 'Gian hàng số OCOP Tuy Hòa - Phú Yên' },
+
+        { code: 'WBS-EX-01', stream: 'express', title: 'Chính sách cước mua hộ & giao hàng nhanh', desc: 'Biểu cước đồng giá Tuy Hòa, phụ phí ban đêm minh bạch, 0% ép giá', pic: 'Logistics Lead', phase: 'Phase 2', progress: 100, status: 'done', deliverable: 'Biểu cước Đất Phú Express 2026' },
+        { code: 'WBS-EX-02', stream: 'express', title: 'Đội hình 10 Tài xế xe ôm công nghệ tiên phong', desc: 'Trang bị thùng giữ nhiệt chống đổ tràn thức ăn, áo khoác đồng phục', pic: 'Logistics Lead', phase: 'Phase 3', progress: 80, status: 'running', deliverable: 'Đội ngũ tài xế công nghệ bản địa' },
+        { code: 'WBS-EX-03', stream: 'express', title: 'Thử nghiệm dịch vụ Mua Hộ Thuốc & Đồ Đêm', desc: 'Thời gian giao hàng cam kết < 30 phút nội thành, có hóa đơn bán lẻ', pic: 'Logistics Team', phase: 'Phase 3', progress: 85, status: 'running', deliverable: 'Dịch vụ mua hộ thần tốc 24/7' },
+        { code: 'WBS-EX-04', stream: 'express', title: 'Mở tuyến chuyển phát nhanh liên huyện', desc: 'Tuyến vận tải Tuy Hòa - Sông Cầu - Tuy An - Tây Hòa trong ngày', pic: 'Logistics Team', phase: 'Phase 4', progress: 15, status: 'upcoming', deliverable: 'Mạng lưới chuyển phát nội tỉnh' },
+
+        { code: 'WBS-GV-01', stream: 'governance', title: 'Thành lập pháp nhân & MST: 4401020233', desc: 'CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ được cấp phép hoạt động hợp pháp', pic: 'Ban Giám Đốc', phase: 'Phase 1', progress: 100, status: 'done', deliverable: 'Giấy chứng nhận ĐKKD & Mã số thuế' },
+        { code: 'WBS-GV-02', stream: 'governance', title: 'Nộp hồ sơ bảo hộ nhãn hiệu ĐẤT PHÚ', desc: 'Đăng ký sở hữu trí tuệ thương hiệu Đất Phú và biểu tượng logo DA-HU', pic: 'Ban Giám Đốc', phase: 'Phase 2', progress: 80, status: 'running', deliverable: 'Giấy biên nhận Cục Sở Hữu Trí Tuệ' },
+        { code: 'WBS-GV-03', stream: 'governance', title: 'Bộ quy chế pháp lý sàn TMĐT chuẩn 2026', desc: 'Tuân thủ Nghị định 85/52/13, cơ chế 2 ngăn bảo vệ thợ, không ép thuế', pic: 'Pháp Chế', phase: 'Phase 2', progress: 100, status: 'done', deliverable: 'Trung tâm pháp lý TMĐT Đất Phú' },
+        { code: 'WBS-GV-04', stream: 'governance', title: 'Kết nối máy tính tiền TT 89/2026/TT-BTC', desc: 'Tích hợp EasyInvoice / Cục Thuế Phú Yên xuất hóa đơn điện tử tự động', pic: 'Kế Toán Trưởng', phase: 'Phase 5', progress: 30, status: 'upcoming', deliverable: 'Cổng hóa đơn máy tính tiền hợp chuẩn' }
+      ],
       showSopModal: false,
       sopActiveTab: 'worker',
       showExcelSuiteModal: false,
@@ -15668,7 +15970,50 @@
         return this.calcEasyBooksTotalCashIn() - this.calcEasyBooksTotalCashOut();
       },
 
-      openSopModal(tab) {
+      openProjectTrackerModal(tab) {
+      this.projectTrackerActiveTab = tab || 'all';
+      this.showProjectTrackerModal = true;
+    },
+    exportProjectScheduleCsv() {
+      const headers = ['Mã WBS', 'Phân Hệ', 'Tên Hạng Mục', 'Mô Tả Chi Tiết', 'Người Phụ Trách', 'Giai Đoạn', 'Tiến Độ (%)', 'Trạng Thái', 'Đầu Ra Bàn Giao'];
+      const streamNames = { tech: 'Công Nghệ PWA', worker: 'Trạm Thợ K6', merchant: 'Chợ Phiên & POS', express: 'Express Vận Tải', governance: 'Pháp Lý & Vốn' };
+      const statusNames = { done: 'Hoàn thành 100%', running: 'Đang triển khai', upcoming: 'Kế hoạch sắp tới' };
+      
+      const rows = this.projectTasks.map(t => [
+        t.code,
+        streamNames[t.stream] || t.stream,
+        '"' + t.title.replace(/"/g, '""') + '"',
+        '"' + t.desc.replace(/"/g, '""') + '"',
+        t.pic,
+        t.phase,
+        t.progress + '%',
+        statusNames[t.status] || t.status,
+        '"' + t.deliverable.replace(/"/g, '""') + '"'
+      ]);
+      
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute('download', 'Tien_Do_Du_An_Dat_Phu_' + new Date().toISOString().slice(0, 10) + '.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    getFilteredProjectTasks() {
+      if (this.projectTrackerActiveTab === 'all') return this.projectTasks;
+      return this.projectTasks.filter(t => t.stream === this.projectTrackerActiveTab);
+    },
+    calcProjectOverallProgress() {
+      if (!this.projectTasks || this.projectTasks.length === 0) return 0;
+      const total = this.projectTasks.reduce((sum, t) => sum + t.progress, 0);
+      return (total / this.projectTasks.length).toFixed(1);
+    },
+    countProjectTasksByStatus(status) {
+      if (!this.projectTasks) return 0;
+      return this.projectTasks.filter(t => t.status === status).length;
+    },
+    openSopModal(tab) {
       this.sopActiveTab = tab || 'worker';
       this.showSopModal = true;
     },
