@@ -541,7 +541,7 @@
             <!-- Cụm Hình Dáng Mặt Trăng Trực Quan (Tròn, Khuyết, Lưỡi Liềm) -->
             <div class="flex items-center gap-2.5">
               <div id="moonVisualWrapper" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-950 p-0.5 shadow-md flex items-center justify-center shrink-0 border-2 border-slate-700 relative overflow-hidden">
-                <svg id="moonSvgVisual" viewBox="0 0 40 40" class="w-full h-full">
+                <svg id="moonSvgVisual" viewBox="0 0 50 50" class="w-full h-full">
                   <defs>
                     <radialGradient id="moonFullGrad" cx="35%" cy="35%" r="65%">
                       <stop offset="0%" stop-color="#ffffff"/>
@@ -1616,39 +1616,39 @@
     }
 
     
-    // ============================================================
-    // CƠ CHẾ VẼ MẶT TRĂNG THIÊN VĂN (TRÒN, KHUYẾT, LƯỠI LIỀM)
+        // ============================================================
+    // CƠ CHẾ VẼ VẦNG TRĂNG NGHỆ THUẬT SIÊU ĐẸP & CHÂN THỰC
     // ============================================================
     const MOON_FOLK_QUOTES = {
       1: "Mồng một lưỡi trai (Trăng mới)",
-      2: "Mồng hai lá lúa (Trăng non)",
-      3: "Mồng ba câu liêm (Lưỡi liềm đầu tháng)",
+      2: "Mồng hai lá lúa (Trăng non e ấp)",
+      3: "Mồng ba câu liêm (Lưỡi liềm cong vút)",
       4: "Mồng bốn lưỡi liềm (Sáng đầu hôm)",
       5: "Mồng năm khuyết nửa",
-      6: "Mồng sáu trăng nghiêng",
+      6: "Mồng sáu trăng nghiêng bên trời",
       7: "Mồng bảy trăng lên",
       8: "Mồng tám trăng treo (Bán nguyệt)",
       9: "Mồng chín trăng cao",
       10: "Mồng mười trăng tỏ",
       11: "Mười một trăng thanh",
       12: "Mười hai trăng ngọc",
-      13: "Mười ba trăng sáng",
+      13: "Mười ba trăng sáng vườn dừa",
       14: "Mười bốn trăng non",
       15: "Mười lăm trăng rằm sáng gương tròn",
       16: "Mười sáu trăng tròn vằng vặc",
-      17: "Mười bảy trăng tà",
+      17: "Mười bảy trăng tà bờ đông",
       18: "Mười tám trăng tàn",
       19: "Mười chín trăng ngả nửa đêm",
       20: "Hai mươi trăng muộn",
       21: "Hai mốt trăng khuya",
-      22: "Hai hai trăng gác đồi",
+      22: "Hai hai trăng gác triền đồi",
       23: "Hai ba gà gáy trăng lên (Hạ huyền)",
       24: "Hai tư trăng lặn",
       25: "Hai lăm trăng khuyết cuối tháng",
       26: "Hai sáu trăng tàn",
-      27: "Hai bảy trăng lặn đón nước cạn",
+      27: "Hai bảy trăng tàn đón nước cạn",
       28: "Hai tám trăng mai",
-      29: "Hai chín trăng lặn đáy nước",
+      29: "Hai chín trăng lặn đáy đầm",
       30: "Ba mươi trăng lặn không còn (Điểm Sóc)"
     };
 
@@ -1660,9 +1660,9 @@
 
       if (!gContent) return;
 
-      const R = 18;
-      const cx = 20;
-      const cy = 20;
+      const R = 22;
+      const cx = 25;
+      const cy = 25;
       let phase = ((day - 1) % 29.53058868) / 29.53058868;
       let illum = Math.round((1 - Math.cos(phase * 2 * Math.PI)) / 2 * 100);
 
@@ -1671,60 +1671,77 @@
         quoteEl.innerText = `"${MOON_FOLK_QUOTES[day] || "Trăng soi bóng nước"}"`;
       }
 
-      // TRĂNG RẰM (15 - 16 ÂL): Tròn vành vạnh có hào quang vàng
+      // TRĂNG RẰM (15 - 16 ÂL): Tròn vành vạnh tỏa hào quang vàng ngọc rực rỡ
       if (day === 15 || day === 16) {
         gContent.innerHTML = `
-          <circle cx="${cx}" cy="${cy}" r="${R}" fill="url(#moonFullGrad)" filter="url(#moonGlow)"/>
-          <!-- Vệt biển mặt trăng chân thực mờ ảo -->
-          <circle cx="15" cy="16" r="3" fill="#ca8a04" opacity="0.2"/>
-          <circle cx="25" cy="18" r="4.5" fill="#ca8a04" opacity="0.25"/>
-          <circle cx="18" cy="25" r="3.5" fill="#ca8a04" opacity="0.2"/>
+          <!-- Vầng hào quang ngoài -->
+          <circle cx="${cx}" cy="${cy}" r="${R + 2}" fill="#fde047" opacity="0.35" filter="url(#moonGlow)"/>
+          <!-- Đĩa trăng vàng óng ánh -->
+          <circle cx="${cx}" cy="${cy}" r="${R}" fill="url(#moonFullGrad)" stroke="#facc15" stroke-width="1.2" filter="url(#moonGlow)"/>
+          <!-- Vết biển mặt trăng chân thực (Lunar Mare) -->
+          <ellipse cx="19" cy="18" rx="4" ry="5" fill="#ca8a04" opacity="0.22"/>
+          <ellipse cx="31" cy="21" rx="5" ry="6" fill="#ca8a04" opacity="0.28"/>
+          <ellipse cx="23" cy="30" rx="4.5" ry="3.5" fill="#ca8a04" opacity="0.22"/>
+          <circle cx="27" cy="14" r="2.5" fill="#ca8a04" opacity="0.25"/>
+          <!-- Đốm sáng tinh khôi -->
+          <circle cx="17" cy="15" r="1.5" fill="#ffffff" opacity="0.6"/>
         `;
-        if (nameEl) nameEl.innerText = `Trăng Tròn Vọng (Rằm ${day} • ${illum}% Sáng)`;
-        if (wrapper) wrapper.className = "w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-950 p-0.5 shadow-[0_0_15px_rgba(250,204,21,0.6)] flex items-center justify-center shrink-0 border-2 border-yellow-400 relative overflow-hidden";
+        if (nameEl) nameEl.innerHTML = `<strong class="text-amber-500">Trăng Tròn Vọng</strong> (Rằm ${day} • 100% Sáng)`;
+        if (wrapper) wrapper.className = "w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-slate-950 p-0.5 shadow-[0_0_20px_rgba(250,204,21,0.85)] flex items-center justify-center shrink-0 border-2 border-yellow-300 relative overflow-hidden transition-all duration-300";
         return;
       }
 
-      // TRĂNG MỚI / ĐIỂM SÓC (1 & 30 ÂL): Tối trời, viền bạc mỏng
+      // TRĂNG MỚI (MÙNG 1 & NGÀY 30 ÂL): Trăng Điểm Sóc huyền ảo, có vì sao nhỏ lấp lánh
       if (day === 1 || day === 30) {
         gContent.innerHTML = `
-          <circle cx="${cx}" cy="${cy}" r="${R}" fill="#0f172a" stroke="#475569" stroke-width="0.8"/>
-          <path d="M${cx} ${cy - R} A${R} ${R} 0 0 1 ${cx} ${cy + R}" stroke="#94a3b8" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <circle cx="${cx}" cy="${cy}" r="${R}" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+          <!-- Vành ánh sáng địa cầu huyền diệu (Earthshine) -->
+          <path d="M${cx} ${cy - R} A${R} ${R} 0 0 1 ${cx} ${cy + R}" stroke="#94a3b8" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <!-- Ngôi sao nhỏ lấp lánh bên cạnh vầng trăng tối -->
+          <circle cx="34" cy="15" r="1.2" fill="#fde047" opacity="0.9"/>
+          <circle cx="15" cy="33" r="0.9" fill="#fde047" opacity="0.7"/>
         `;
-        if (nameEl) nameEl.innerText = `Trăng Mới / Điểm Sóc (Ngày ${day} • ${illum}% Sáng)`;
-        if (wrapper) wrapper.className = "w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-950 p-0.5 shadow flex items-center justify-center shrink-0 border border-slate-700 relative overflow-hidden";
+        if (nameEl) nameEl.innerText = `Trăng Mới / Điểm Sóc (Ngày ${day} • 0% Sáng)`;
+        if (wrapper) wrapper.className = "w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-slate-950 p-0.5 shadow-md flex items-center justify-center shrink-0 border border-slate-700 relative overflow-hidden transition-all duration-300";
         return;
       }
 
-      // TRĂNG KHUYẾT & LƯỠI LIỀM ĐỘNG THEO THIÊN VĂN
+      // TRĂNG KHUYẾT & LƯỠI LIỀM (RÕ RÀNG, SẮC NÉT & QUYẾN RŨ)
       let phi = phase * 2 * Math.PI;
       let isWaxing = phase < 0.5; // Ngày 2-14: sáng bên phải
       let cosPhi = Math.cos(phi);
-      let rx = Math.max(0.5, Math.abs(R * cosPhi));
-      let path = "";
+      // Tinh chỉnh độ dày của lưỡi liềm để mùng 2, 3 nhìn thấy rõ vầng trăng cong lá lúa tuyệt đẹp
+      let rx = Math.abs(R * cosPhi);
+      if (day === 2 || day === 29) rx = R * 0.72; // Hiển thị lưỡi liềm rõ ràng cho mùng 2
+      else if (day === 3 || day === 28) rx = R * 0.55;
+      else if (day === 4 || day === 27) rx = R * 0.38;
 
+      let path = "";
       if (isWaxing) {
         if (phase <= 0.25) {
-          // Lưỡi liềm đầu tháng (concave)
+          // Lưỡi liềm đầu tháng cong vút bên phải
           path = `M${cx} ${cy - R} A${R} ${R} 0 0 1 ${cx} ${cy + R} A${rx} ${R} 0 0 0 ${cx} ${cy - R}`;
         } else {
-          // Trương huyền đầu tháng (gibbous)
+          // Trương huyền đầu tháng bầu bĩnh
           path = `M${cx} ${cy - R} A${R} ${R} 0 0 1 ${cx} ${cy + R} A${rx} ${R} 0 0 1 ${cx} ${cy - R}`;
         }
       } else {
         if (phase <= 0.75) {
-          // Trương huyền cuối tháng (gibbous)
+          // Trương huyền cuối tháng bên trái
           path = `M${cx} ${cy - R} A${R} ${R} 0 0 0 ${cx} ${cy + R} A${rx} ${R} 0 0 0 ${cx} ${cy - R}`;
         } else {
-          // Lưỡi liềm cuối tháng (concave)
+          // Lưỡi liềm cuối tháng mỏng cong bên trái
           path = `M${cx} ${cy - R} A${R} ${R} 0 0 0 ${cx} ${cy + R} A${rx} ${R} 0 0 1 ${cx} ${cy - R}`;
         }
       }
 
       gContent.innerHTML = `
-        <circle cx="${cx}" cy="${cy}" r="${R}" fill="#0f172a"/>
-        <path d="${path}" fill="url(#moonLitGrad)"/>
-        <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#475569" stroke-width="0.8" opacity="0.3"/>
+        <!-- Bầu trời đêm sâu thẳm -->
+        <circle cx="${cx}" cy="${cy}" r="${R}" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+        <!-- Phần trăng sáng vàng ươm tỏa ánh ngọc -->
+        <path d="${path}" fill="url(#moonLitGrad)" stroke="#facc15" stroke-width="0.8" filter="url(#moonGlow)"/>
+        <!-- Ngôi sao nhỏ cạnh trăng non -->
+        <circle cx="${isWaxing ? 12 : 38}" cy="18" r="1.2" fill="#fde047" opacity="0.85"/>
       `;
 
       let phaseTitle = "Trăng Khuyết";
@@ -1735,11 +1752,11 @@
       else if (day >= 22 && day <= 23) phaseTitle = "Trăng Hạ Huyền (Nửa Trăng)";
       else if (day >= 24 && day <= 29) phaseTitle = "Trăng Lưỡi Liềm Cuối Tháng";
 
-      if (nameEl) nameEl.innerText = `${phaseTitle} (${illum}% Sáng)`;
-      if (wrapper) wrapper.className = "w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-950 p-0.5 shadow flex items-center justify-center shrink-0 border border-slate-600 relative overflow-hidden";
+      if (nameEl) nameEl.innerHTML = `<strong class="text-amber-500">${phaseTitle}</strong> (${illum}% Sáng)`;
+      if (wrapper) wrapper.className = "w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-slate-950 p-0.5 shadow-[0_0_12px_rgba(250,204,21,0.45)] flex items-center justify-center shrink-0 border-2 border-amber-400 relative overflow-hidden transition-all duration-300";
     }
 
-    function renderBloc() {
+        function renderBloc() {
       let d = currentDate.getDate();
       let m = currentDate.getMonth() + 1;
       let y = currentDate.getFullYear();
@@ -1770,7 +1787,8 @@
 
       let phaseAngle = (lun.day - 1) / 29.53058868;
       let illum = Math.round((1 - Math.cos(phaseAngle * 2 * Math.PI)) / 2 * 100);
-      document.getElementById("moonPhaseSimple").innerText = lun.day === 1 ? "Điểm Sóc (0.8%)" : (lun.day === 15 ? "Trăng Rằm (100%)" : `${illum}% sáng`);
+      const oldMoonEl = document.getElementById("moonPhaseSimple");
+      if (oldMoonEl) oldMoonEl.innerText = lun.day === 1 ? "Điểm Sóc (0%)" : (lun.day === 15 ? "Trăng Rằm (100%)" : `${illum}% sáng`);
 
       let sl = getSunLongitude(lun.jdn, TIME_ZONE) * 180 / Math.PI;
       let termIndex = INT(sl / 15);
