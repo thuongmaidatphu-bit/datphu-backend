@@ -189,13 +189,78 @@
       color: #fde047 !important;
     }
   
-    .super-bloc {
-      background-color: #ffffff;
-      border: 4px solid #d9232a;
-      box-shadow: 0 20px 45px rgba(217, 35, 42, 0.25);
+    /* KHỐI LỊCH BLOC 3D SIÊU THỰC - TẬP GIẤY DÀY 365 TỜ CHÂN THỰC */
+    .bloc-3d-wrapper {
+      perspective: 1200px;
+      perspective-origin: center 40%;
+      position: relative;
     }
 
-    /* SỐ NGÀY ÂM LỊCH SIÊU KHỔNG LỒ (ĐỎ ĐẤT PHÚ) */
+    .super-bloc {
+      background: linear-gradient(180deg, #ffffff 0%, #fffdf8 35%, #fefcf4 70%, #fdf8eb 100%);
+      border: 3.5px solid #d9232a;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+      /* Hiệu ứng xếp lớp mép giấy 3D (stack depth) mô phỏng tập lịch bloc dày 2.5cm ngoài đời */
+      box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.08),
+        /* Mép tờ 2 */
+        0 4px 0 -1px #fffef9,
+        0 4px 2px 0 rgba(0, 0, 0, 0.16),
+        /* Mép tờ 3 */
+        0 8px 0 -2px #fdf7e7,
+        0 8px 3px -1px rgba(0, 0, 0, 0.20),
+        /* Mép tờ 4 */
+        0 12px 0 -3px #faeed3,
+        0 12px 4px -2px rgba(0, 0, 0, 0.24),
+        /* Mép gáy cấn mạ vàng / đế bìa cứng */
+        0 16px 0 -4px #e5ce9e,
+        0 17px 5px -3px rgba(185, 28, 28, 0.28),
+        /* Đổ bóng khối 3D trên nền */
+        0 26px 40px -6px rgba(0, 0, 0, 0.32),
+        0 42px 65px -10px rgba(217, 35, 42, 0.22);
+    }
+
+    /* Hiệu ứng cong vồng nhẹ 2 góc dưới (Natural Organic Page Curl) */
+    .super-bloc::after {
+      content: "";
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 2px;
+      height: 18px;
+      background: transparent;
+      box-shadow: 0 14px 22px rgba(0, 0, 0, 0.32);
+      border-radius: 50%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Vệt sáng phản chiếu bề mặt 3D khi rê chuột / chạm (Dynamic Specular Glare) */
+    .bloc-glare-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: radial-gradient(circle 380px at var(--mouse-x, 50%) var(--mouse-y, 30%), rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 70%);
+      opacity: 0.75;
+      mix-blend-mode: overlay;
+      transition: opacity 0.3s;
+      z-index: 5;
+    }
+
+    /* NẸP KIM LOẠI ĐỒNG MẠ VÀNG 3D VÀ ĐƯỜNG RĂNG CƯA XÉ LỊCH */
+    .bloc-metal-bracket {
+      background: linear-gradient(180deg, #fef9c3 0%, #facc15 30%, #eab308 60%, #b45309 100%);
+      border-bottom: 2px solid #78350f;
+      box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.95),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.35),
+        0 4px 6px -1px rgba(0, 0, 0, 0.25);
+    }
+
+    /* SỐ NGÀY ÂM LỊCH DẬP NỔI 3D (FOIL RELIEF LETTERPRESS) */
     .lunar-number-giant {
       font-family: 'JetBrains Mono', monospace;
       font-size: 8.5rem;
@@ -203,6 +268,11 @@
       font-weight: 900;
       color: #d9232a;
       letter-spacing: -0.05em;
+      text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9),
+        0 2px 1px rgba(185, 28, 28, 0.4),
+        0 4px 8px rgba(0, 0, 0, 0.22),
+        0 8px 18px rgba(217, 35, 42, 0.22);
     }
 
     @media (min-width: 640px) {
@@ -211,11 +281,32 @@
       }
     }
 
+    /* NÚT BẤM CƠ HỌC 3D (TACTILE 3D MECHANICAL BUTTONS) */
     .big-touch-btn {
       min-height: 54px;
       font-size: 1.1rem;
       font-weight: 900;
       border-radius: 1.25rem;
+      position: relative;
+      transition: all 0.12s ease-out;
+    }
+    .big-touch-btn.btn-3d-red {
+      background: linear-gradient(180deg, #ef4444 0%, #d9232a 60%, #b91c1c 100%) !important;
+      box-shadow: 0 5px 0 #7f1d1d, 0 8px 16px rgba(217, 35, 42, 0.45) !important;
+      border: 1px solid #fca5a5 !important;
+    }
+    .big-touch-btn.btn-3d-red:active {
+      transform: translateY(3px) scale(0.985);
+      box-shadow: 0 2px 0 #7f1d1d, 0 4px 8px rgba(217, 35, 42, 0.3) !important;
+    }
+    .big-touch-btn.btn-3d-blue {
+      background: linear-gradient(180deg, #273e6b 0%, #1b2a47 60%, #111b2f 100%) !important;
+      box-shadow: 0 5px 0 #0b1322, 0 8px 16px rgba(15, 23, 42, 0.4) !important;
+      border: 1px solid #60a5fa !important;
+    }
+    .big-touch-btn.btn-3d-blue:active {
+      transform: translateY(3px) scale(0.985);
+      box-shadow: 0 2px 0 #0b1322, 0 4px 8px rgba(15, 23, 42, 0.25) !important;
     }
 
     /* HIỆU ỨNG XÉ LỊCH BLOC 3D CHÂN THỰC & SỐNG ĐỘNG */
@@ -302,9 +393,29 @@
       }
     }
     body.night-mode .super-bloc {
-      background-color: #0b1329 !important;
-      border: 4px solid #3b82f6 !important;
+      background: linear-gradient(180deg, #0f172a 0%, #0b1329 50%, #080d1a 100%) !important;
+      border-color: #3b82f6 !important;
+      box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        0 4px 0 -1px #1e293b,
+        0 5px 2px -1px rgba(0, 0, 0, 0.6),
+        0 8px 0 -2px #172554,
+        0 9px 3px -2px rgba(0, 0, 0, 0.7),
+        0 12px 0 -3px #1e1b4b,
+        0 13px 4px -2px rgba(0, 0, 0, 0.8),
+        0 25px 45px -5px rgba(0, 0, 0, 0.85),
+        0 0 35px rgba(59, 130, 246, 0.35) !important;
       animation: moonGlowPulse 4.5s ease-in-out infinite;
+    }
+    body.night-mode .bloc-metal-bracket {
+      background: linear-gradient(180deg, #38bdf8 0%, #2563eb 50%, #1e3a8a 100%) !important;
+      border-bottom-color: #0f172a !important;
+    }
+    body.night-mode .lunar-number-giant {
+      color: #60a5fa !important;
+      text-shadow:
+        0 0 20px rgba(96, 165, 250, 0.7),
+        0 0 40px rgba(59, 130, 246, 0.4) !important;
     }
     body.night-mode #soundToggleBtn {
       border-color: #475569 !important;
@@ -568,7 +679,7 @@
       </div>
 
       <!-- KHỐI LỊCH BLOC KHÁNH SƠN MÀI HOÀNG GIA (THEO ẢNH BÌA LỊCH BLOC TRUYỀN THỐNG) -->
-      <div class="relative drop-shadow-2xl">
+      <div class="bloc-3d-wrapper relative drop-shadow-2xl">
         
         <!-- KHÁNH LỊCH ĐỎ SƠN MÀI KHÁNH VÀNG TRUYỀN THỐNG -->
         <div id="khanhLichHeader" class="hidden">
@@ -625,6 +736,34 @@
 
         <!-- TỜ BLOC NGÀY ĐẠI -->
         <main id="blocLeaf" class="super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3">
+
+          <!-- VỆT SÁNG PHẢN QUANG 3D BỀ MẶT GIẤY -->
+          <div class="bloc-glare-overlay"></div>
+
+          <!-- NẸP KIM LOẠI ĐỒNG MẠ VÀNG 3D VÀ ĐƯỜNG RĂNG CƯA XÉ LỊCH -->
+          <div class="bloc-metal-bracket relative -mx-5 -mt-5 sm:-mx-7 sm:-mt-7 mb-3 px-4 py-2.5 rounded-t-[1.35rem] flex items-center justify-between shadow-md select-none">
+            <!-- Ốc đồng mạ bóng bên trái -->
+            <div class="w-4 h-4 rounded-full bg-gradient-to-br from-amber-100 via-yellow-400 to-amber-700 shadow-[inset_0_1px_2px_rgba(255,255,255,0.9),0_2px_4px_rgba(0,0,0,0.5)] border border-amber-600 flex items-center justify-center">
+              <div class="w-1.5 h-0.5 bg-amber-950/70 rounded-full"></div>
+            </div>
+
+            <!-- Tên thương hiệu dập nổi trên nẹp -->
+            <div class="text-[10px] sm:text-xs font-black tracking-widest text-amber-950 uppercase flex items-center gap-1.5 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
+              <i class="fa-solid fa-crown text-amber-800 text-[10px]"></i>
+              <span>LỊCH BLOC ĐẤT PHÚ • TRUYỀN THỐNG 3D</span>
+              <i class="fa-solid fa-crown text-amber-800 text-[10px]"></i>
+            </div>
+
+            <!-- Ốc đồng mạ bóng bên phải -->
+            <div class="w-4 h-4 rounded-full bg-gradient-to-br from-amber-100 via-yellow-400 to-amber-700 shadow-[inset_0_1px_2px_rgba(255,255,255,0.9),0_2px_4px_rgba(0,0,0,0.5)] border border-amber-600 flex items-center justify-center">
+              <div class="w-1.5 h-0.5 bg-amber-950/70 rounded-full"></div>
+            </div>
+            
+            <!-- Đường răng cưa vết xé giấy (Perforated Tear Line) -->
+            <div class="absolute -bottom-2 inset-x-0 h-2 flex justify-between overflow-hidden opacity-60 pointer-events-none">
+              <div class="w-full border-b-2 border-dashed border-red-700/60"></div>
+            </div>
+          </div>
 
         <!-- TRANG TRÍ HOA MAI VÀNG RỰC RỠ NGÀY TẾT (ẨN/HIỆN THEO NGÀY) -->
                 <!-- TRANG TRÍ HOA MAI VÀNG RỰC RỠ & LIỄN ĐỎ LÌ XÌ TREO CÀNH (THEO ẢNH DÂN GIAN) -->
@@ -1035,19 +1174,19 @@
 </main>
       </div>
 
-      <!-- 3 NÚT ĐIỀU KHIỂN CỰC LỚN (LẬT LỊCH NGÀY) -->
+      <!-- 3 NÚT ĐIỀU KHIỂN CỰC LỚN (LẬT LỊCH NGÀY 3D) -->
       <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
-        <button onclick="tearLeaf(-1)" class="big-touch-btn bg-gradient-to-b from-[#1b2a47] to-[#121c30] text-white hover:from-[#253b64] hover:to-[#1b2a47] active:scale-95 transition shadow-md flex items-center justify-center gap-1.5 border border-blue-800/40" title="Xem ngày hôm qua">
+        <button onclick="tearLeaf(-1)" class="big-touch-btn btn-3d-blue text-white flex items-center justify-center gap-1.5" title="Xem ngày hôm qua">
           <i class="fa-solid fa-arrow-left text-sm text-blue-200"></i>
           <span class="tracking-wide">HÔM QUA</span>
         </button>
 
-        <button onclick="goToToday()" class="big-touch-btn bg-gradient-to-b from-[#d9232a] to-[#b91c1c] text-white hover:from-[#ef4444] hover:to-[#dc2626] active:scale-95 transition shadow-lg flex items-center justify-center gap-1.5 border border-red-500/50" title="Về lại ngày hôm nay">
+        <button onclick="goToToday()" class="big-touch-btn btn-3d-red text-white flex items-center justify-center gap-1.5" title="Về lại ngày hôm nay">
           <i class="fa-solid fa-rotate-right text-sm text-amber-200"></i>
           <span class="tracking-wide text-yellow-100">HÔM NAY</span>
         </button>
 
-        <button onclick="tearLeaf(1)" class="big-touch-btn bg-gradient-to-b from-[#1b2a47] to-[#121c30] text-white hover:from-[#253b64] hover:to-[#1b2a47] active:scale-95 transition shadow-md flex items-center justify-center gap-1.5 border border-blue-800/40" title="Xem ngày mai">
+        <button onclick="tearLeaf(1)" class="big-touch-btn btn-3d-blue text-white flex items-center justify-center gap-1.5" title="Xem ngày mai">
           <span class="tracking-wide">NGÀY MAI</span>
           <i class="fa-solid fa-arrow-right text-sm text-blue-200"></i>
         </button>
@@ -4961,10 +5100,63 @@
       setTimeout(() => { toast.style.opacity = "0"; }, 3500);
     }
 
+    // ============================================================
+    // HIỆU ỨNG NGHIÊNG 3D & PHẢN QUANG TƯƠNG TÁC (3D BLOC TILT & SPECULAR)
+    // ============================================================
+    function init3DBlocTilt() {
+      const wrapper = document.querySelector(".bloc-3d-wrapper");
+      const leaf = document.getElementById("blocLeaf");
+      if (!wrapper || !leaf) return;
+
+      wrapper.addEventListener("mousemove", (e) => {
+        if (leaf.classList.contains("tearing-next") || leaf.classList.contains("tearing-prev")) return;
+
+        const rect = wrapper.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -5;
+        const rotateY = ((x - centerX) / centerX) * 5;
+
+        leaf.style.setProperty("--mouse-x", `${(x / rect.width) * 100}%`);
+        leaf.style.setProperty("--mouse-y", `${(y / rect.height) * 100}%`);
+        leaf.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.008, 1.008, 1.008)`;
+      });
+
+      wrapper.addEventListener("mouseleave", () => {
+        leaf.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+      });
+
+      wrapper.addEventListener("touchmove", (e) => {
+        if (e.touches.length !== 1) return;
+        const touch = e.touches[0];
+        const rect = wrapper.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        if (x < 0 || x > rect.width || y < 0 || y > rect.height) return;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -3.5;
+        const rotateY = ((x - centerX) / centerX) * 3.5;
+
+        leaf.style.setProperty("--mouse-x", `${(x / rect.width) * 100}%`);
+        leaf.style.setProperty("--mouse-y", `${(y / rect.height) * 100}%`);
+        leaf.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
+      }, { passive: true });
+
+      wrapper.addEventListener("touchend", () => {
+        leaf.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+      }, { passive: true });
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       initSoundMode();
       initDayNightMode();
       initUserMemoryStreak();
+      init3DBlocTilt();
       renderBloc();
       triggerAutoAIObserver(false);
       setInterval(fetchSatelliteWeather, 30 * 60 * 1000);
