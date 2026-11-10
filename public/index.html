@@ -116,6 +116,52 @@
       box-shadow: 0 15px 35px rgba(220, 38, 38, 0.45);
     }
   
+  
+    /* CÁC CHỦ ĐỀ MÀU SẮC ĐẶC BIỆT CHO TỜ LỊCH BLOC */
+    .super-bloc.theme-tet {
+      background: linear-gradient(180deg, #991b1b 0%, #b91c1c 40%, #7f1d1d 100%) !important;
+      border: 4px solid #fbbf24 !important;
+      box-shadow: 0 25px 50px rgba(185, 28, 28, 0.4) !important;
+      color: #ffffff !important;
+    }
+    .super-bloc.theme-tet #leafLunarDayNumber {
+      color: #fef08a !important;
+      text-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+    }
+    .super-bloc.theme-tet #leafLunarDayText {
+      color: #fde047 !important;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+    }
+    .super-bloc.theme-tet #leafLunarYear {
+      color: #ffffff !important;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .super-bloc.theme-viamau {
+      background: linear-gradient(180deg, #faf5ff 0%, #ffffff 50%, #f3e8ff 100%) !important;
+      border: 4px solid #9333ea !important;
+      box-shadow: 0 20px 45px rgba(147, 51, 234, 0.25) !important;
+    }
+
+    .super-bloc.theme-chay {
+      background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 50%, #d1fae5 100%) !important;
+      border: 4px solid #059669 !important;
+      box-shadow: 0 20px 45px rgba(5, 150, 105, 0.25) !important;
+    }
+
+    .super-bloc.theme-gio {
+      background: linear-gradient(180deg, #fffbeb 0%, #ffffff 50%, #fef3c7 100%) !important;
+      border: 4px solid #d97706 !important;
+      box-shadow: 0 20px 45px rgba(217, 119, 6, 0.25) !important;
+    }
+
+    .super-bloc.theme-normal {
+      background: #ffffff !important;
+      border: 4px solid #d9232a !important;
+      box-shadow: 0 20px 45px rgba(217, 35, 42, 0.25) !important;
+      color: #000000 !important;
+    }
+  
   </style>
 </head>
 <body class="min-h-screen p-2.5 sm:p-5 flex flex-col items-center justify-between">
@@ -433,31 +479,48 @@
               </span>
             </div>
             <button onclick="openLuckyRedEnvelope()" class="px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-red-950 font-black text-xs rounded-xl shadow transition flex items-center gap-1 active:scale-95 animate-bounce">
-              <span>🧧 HÁI LỘC ĐẦU NĂM</span>
+              <span class="flex items-center gap-1"><i class="fa-solid fa-gift text-red-700"></i> HÁI LỘC ĐẦU NĂM</span>
             </button>
           </div>
 
           <!-- Mâm cỗ Bánh Chưng, Bánh Dày, Bánh Tét & Dưa Hấu đỏ -->
           <div class="grid grid-cols-4 gap-1.5 text-center text-[10px] sm:text-xs text-amber-100 font-bold">
-            <div class="p-2 bg-red-900/60 rounded-xl border border-amber-400/40 flex flex-col items-center shadow-inner">
-              <span class="text-2xl mb-0.5">🟩</span>
+            <!-- Bánh Chưng xanh vuông vắn gói lạt vàng -->
+            <div class="p-2 bg-red-900/80 rounded-xl border border-amber-400/60 flex flex-col items-center shadow-inner">
+              <div class="w-8 h-8 rounded-lg bg-emerald-600 border-2 border-emerald-400 flex items-center justify-center relative shadow mb-0.5">
+                <div class="w-full h-0.5 bg-amber-300 absolute"></div>
+                <div class="h-full w-0.5 bg-amber-300 absolute"></div>
+                <span class="text-[10px] text-amber-200 font-black z-10">TẾT</span>
+              </div>
               <span class="font-black text-yellow-300">Bánh Chưng</span>
-              <span class="text-[9px] text-amber-200">Tượng Đất Vuông</span>
+              <span class="text-[9px] text-amber-200">Đất Vuông</span>
             </div>
-            <div class="p-2 bg-red-900/60 rounded-xl border border-amber-400/40 flex flex-col items-center shadow-inner">
-              <span class="text-2xl mb-0.5">⚪</span>
+
+            <!-- Bánh Dày tròn trắng ngần -->
+            <div class="p-2 bg-red-900/80 rounded-xl border border-amber-400/60 flex flex-col items-center shadow-inner">
+              <div class="w-8 h-8 rounded-full bg-white border-2 border-amber-300 flex items-center justify-center shadow mb-0.5">
+                <span class="text-xs font-black text-amber-800">福</span>
+              </div>
               <span class="font-black text-yellow-300">Bánh Dày</span>
-              <span class="text-[9px] text-amber-200">Tượng Trời Tròn</span>
+              <span class="text-[9px] text-amber-200">Trời Tròn</span>
             </div>
-            <div class="p-2 bg-red-900/60 rounded-xl border border-amber-400/40 flex flex-col items-center shadow-inner">
-              <span class="text-2xl mb-0.5">🎋</span>
-              <span class="font-black text-yellow-300">Bánh Tét Nẫu</span>
-              <span class="text-[9px] text-amber-200">Đòn Dài Miền Trung</span>
+
+            <!-- Bánh Tét Nẫu đòn dài -->
+            <div class="p-2 bg-red-900/80 rounded-xl border border-amber-400/60 flex flex-col items-center shadow-inner">
+              <div class="w-8 h-8 rounded-full bg-emerald-700 border-2 border-yellow-400 flex items-center justify-center shadow mb-0.5">
+                <div class="w-5 h-5 rounded-full bg-amber-300 border border-emerald-900 flex items-center justify-center text-[8px] font-black text-red-800">NẪU</div>
+              </div>
+              <span class="font-black text-yellow-300">Bánh Tét</span>
+              <span class="text-[9px] text-amber-200">Đòn Dài</span>
             </div>
-            <div class="p-2 bg-red-900/60 rounded-xl border border-amber-400/40 flex flex-col items-center shadow-inner">
-              <span class="text-2xl mb-0.5">🍉</span>
-              <span class="font-black text-yellow-300">Dưa Hấu Đỏ</span>
-              <span class="text-[9px] text-amber-200">Đỏ Ruột Cát Tường</span>
+
+            <!-- Dưa Hấu đỏ lòng son -->
+            <div class="p-2 bg-red-900/80 rounded-xl border border-amber-400/60 flex flex-col items-center shadow-inner">
+              <div class="w-8 h-8 rounded-full bg-red-600 border-2 border-emerald-600 flex items-center justify-center shadow mb-0.5 text-xs">
+                🍉
+              </div>
+              <span class="font-black text-yellow-300">Dưa Hấu</span>
+              <span class="text-[9px] text-amber-200">Cát Tường</span>
             </div>
           </div>
         </div>
@@ -1465,11 +1528,11 @@
         if (maiContainer) maiContainer.classList.remove("hidden");
         const tetCakes = document.getElementById("tetCakesContainer");
         if (tetCakes) tetCakes.classList.remove("hidden");
-        leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-gradient-to-b from-[#b91c1c] via-[#d9232a] to-[#991b1b] border-4 border-amber-300 shadow-2xl text-white overflow-hidden";
+        leaf.className = "super-bloc theme-tet rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 overflow-hidden";
         if (solarRow) solarRow.className = "bg-red-950/70 border-2 border-amber-400/60 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-amber-200";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1.5 rounded-full bg-amber-400 text-red-950 text-xs sm:text-sm font-black uppercase tracking-wider border-2 border-amber-300 shadow-md";
-          lunarBadge.innerText = lun.month === 1 ? `🌸 🧨 MÙNG ${lun.day} TẾT NGUYÊN ĐÁN • XUÂN MỚI 🧨 🌸` : "🎆 TẤT NIÊN & GIAO THỪA NGUYÊN ĐÁN 🎆";
+          lunarBadge.innerHTML = lun.month === 1 ? `<span class="text-amber-200 mr-1">🌸</span> <i class="fa-solid fa-fire text-red-600 mr-1"></i> MÙNG ${lun.day} TẾT NGUYÊN ĐÁN • XUÂN MỚI <i class="fa-solid fa-fire text-red-600 ml-1"></i> <span class="text-amber-200 ml-1">🌸</span>` : `<i class="fa-solid fa-wand-magic-sparkles text-amber-300 mr-1"></i> TẤT NIÊN & GIAO THỪA NGUYÊN ĐÁN <i class="fa-solid fa-wand-magic-sparkles text-amber-300 ml-1"></i>`;
         }
         if (lunarDayNum) {
           lunarDayNum.className = "lunar-number-giant select-none text-yellow-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]";
@@ -1490,7 +1553,7 @@
       if (tetCakes) tetCakes.classList.add("hidden");
       // CẤP 2: CHÍNH GIỖ GIA TIÊN (VÀNG ĐỒNG ẤM ÁP)
       if (isTodayMem) {
-        leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-gradient-to-b from-amber-50/80 via-white to-amber-50/40 border-4 border-amber-500 shadow-xl text-black";
+        leaf.className = "super-bloc theme-gio rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3";
         if (solarRow) solarRow.className = "bg-amber-100/70 border-2 border-amber-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-amber-950";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-amber-200 text-amber-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-amber-300 shadow-sm";
@@ -1506,7 +1569,7 @@
 
       // CẤP 3: NGÀY TUẦN VÍA MẪU (TÍM HOA SEN LINH THIÊNG)
       if (isViaMau) {
-        leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-gradient-to-b from-purple-50/70 via-white to-purple-50/40 border-4 border-purple-600 shadow-xl text-black";
+        leaf.className = "super-bloc theme-viamau rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3";
         if (solarRow) solarRow.className = "bg-purple-100/70 border-2 border-purple-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-purple-950";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-purple-200 text-purple-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-purple-300 shadow-sm";
@@ -1522,7 +1585,7 @@
 
       // CẤP 4: NGÀY SÓC VỌNG / ĂN CHAY (XANH NGỌC BÍCH THANH TỊNH)
       if (isChay) {
-        leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-gradient-to-b from-emerald-50/70 via-white to-emerald-50/40 border-4 border-emerald-600 shadow-xl text-black";
+        leaf.className = "super-bloc theme-chay rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3";
         if (solarRow) solarRow.className = "bg-emerald-100/70 border-2 border-emerald-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-emerald-950";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-emerald-200 text-emerald-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-emerald-300 shadow-sm";
@@ -1539,7 +1602,7 @@
       if (maiContainer) maiContainer.classList.add("hidden");
 
       // CẤP 5: NGÀY THƯỜNG (TRẮNG ĐỎ CỔ ĐIỂN TƯƠNG PHẢN CAO)
-      leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-white border-4 border-[#d9232a] shadow-lg text-black";
+      leaf.className = "super-bloc theme-normal rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 text-black";
       if (solarRow) solarRow.className = "bg-blue-50 border-2 border-blue-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-[#1b2a47]";
       if (lunarBadge) {
         lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-red-100 text-[#d9232a] text-xs sm:text-sm font-black uppercase tracking-widest border border-red-200";
@@ -1889,7 +1952,7 @@
       // ƯU TIÊN 1: TẾT CỔ TRUYỀN DÂN TỘC KINH & CÁC TIẾT LỄ NGUYÊN ĐÁN
       if (lun.month === 1 && lun.day === 1) {
         banner.className = "rounded-2xl p-3 shadow-md flex items-center justify-between gap-2.5 my-2 border-2 bg-red-50 border-red-500 text-red-950";
-        document.getElementById("spiritualLeafIcon").innerText = "🧨";
+        document.getElementById("spiritualLeafIcon").innerHTML = `<i class="fa-solid fa-envelope-open-text text-red-600"></i>`;
         document.getElementById("spiritualLeafTitle").innerText = "HÔM NAY: MÙNG 1 TẾT NGUYÊN ĐÁN (TẾT CHA)";
         document.getElementById("spiritualLeafDesc").innerText = "Mừng Xuân Mới • Khai Niên Đại Cát • Chúc thọ ông bà cha mẹ, vạn sự cát tường";
         const btn = document.getElementById("spiritualLeafBtn");
@@ -1903,7 +1966,7 @@
 
       if (lun.month === 1 && lun.day === 2) {
         banner.className = "rounded-2xl p-3 shadow-md flex items-center justify-between gap-2.5 my-2 border-2 bg-red-50 border-red-500 text-red-950";
-        document.getElementById("spiritualLeafIcon").innerText = "🧨";
+        document.getElementById("spiritualLeafIcon").innerHTML = `<i class="fa-solid fa-envelope-open-text text-red-600"></i>`;
         document.getElementById("spiritualLeafTitle").innerText = "HÔM NAY: MÙNG 2 TẾT NGUYÊN ĐÁN (TẾT MẸ)";
         document.getElementById("spiritualLeafDesc").innerText = "Về thăm quê ngoại, chúc tết nội ngoại hai bên, gia đạo êm ấm thuận hòa";
         const btn = document.getElementById("spiritualLeafBtn");
@@ -1917,7 +1980,7 @@
 
       if (lun.month === 1 && lun.day === 3) {
         banner.className = "rounded-2xl p-3 shadow-md flex items-center justify-between gap-2.5 my-2 border-2 bg-red-50 border-red-500 text-red-950";
-        document.getElementById("spiritualLeafIcon").innerText = "🧨";
+        document.getElementById("spiritualLeafIcon").innerHTML = `<i class="fa-solid fa-envelope-open-text text-red-600"></i>`;
         document.getElementById("spiritualLeafTitle").innerText = "HÔM NAY: MÙNG 3 TẾT NGUYÊN ĐÁN (TẾT THẦY)";
         document.getElementById("spiritualLeafDesc").innerText = "Tôn sư trọng đạo, tri ân thầy cô giáo khai tâm mở trí, bạn hữu sum vầy";
         const btn = document.getElementById("spiritualLeafBtn");
@@ -1931,7 +1994,7 @@
 
       if (lun.month === 1 && lun.day >= 4 && lun.day <= 7) {
         banner.className = "rounded-2xl p-3 shadow-md flex items-center justify-between gap-2.5 my-2 border-2 bg-amber-50 border-amber-400 text-amber-950";
-        document.getElementById("spiritualLeafIcon").innerText = "🧧";
+        document.getElementById("spiritualLeafIcon").innerHTML = `<i class="fa-solid fa-envelope-open-text text-amber-500"></i>`;
         document.getElementById("spiritualLeafTitle").innerText = `HÔM NAY: MÙNG ${lun.day} TẾT (KHAI HẠ / XUẤT HÀNH)`;
         document.getElementById("spiritualLeafDesc").innerText = "Hạ nêu, chọn ngày hoàng đạo mở hàng, xuất hành đi biển / ra đồng đầu năm";
         const btn = document.getElementById("spiritualLeafBtn");
