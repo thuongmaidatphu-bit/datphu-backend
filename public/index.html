@@ -154,14 +154,39 @@
       background-color: #1e293b !important;
     }
 
-    /* Tiện ích 3 nút điều khiển */
+    /* TIỆN ÍCH DÂN SINH & NÚT ĐIỀU KHIỂN CHẾ ĐỘ BAN ĐÊM */
     body.night-mode .big-touch-btn.bg-\[\#1b2a47\] {
-      background-color: #0f172a !important;
+      background: linear-gradient(180deg, #131d33 0%, #0d1527 100%) !important;
       border-color: #334155 !important;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+    }
+    body.night-mode .big-touch-btn.bg-\[\#d9232a\] {
+      background: linear-gradient(180deg, #b91c1c 0%, #881313 100%) !important;
+      border-color: #f59e0b !important;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.4) !important;
     }
 
-    body.night-mode #btnSpeakCalendar {
-      background-color: #0f172a !important;
+    /* BỘ 4 THẺ TIỆN ÍCH DÂN SINH CAO CẤP */
+    .action-card-btn {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .action-card-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.12);
+    }
+    body.night-mode .action-card-btn {
+      background-color: #0c1527 !important;
+      border-color: #1e293b !important;
+      color: #f1f5f9 !important;
+    }
+    body.night-mode .action-card-btn:hover {
+      border-color: #facc15 !important;
+      background-color: #131e36 !important;
+      box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.6) !important;
+    }
+    body.night-mode .action-card-btn .icon-bubble {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+      color: #fde047 !important;
     }
   
     .super-bloc {
@@ -917,39 +942,56 @@
 </main>
       </div>
 
-      <!-- 3 NÚT ĐIỀU KHIỂN CỰC LỚN -->
+      <!-- 3 NÚT ĐIỀU KHIỂN CỰC LỚN (LẬT LỊCH NGÀY) -->
       <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
-        <button onclick="tearLeaf(-1)" class="big-touch-btn bg-[#1b2a47] text-white hover:bg-[#253b64] active:scale-95 transition shadow-lg flex items-center justify-center gap-1.5 border-2 border-blue-900">
-          <i class="fa-solid fa-arrow-left"></i>
-          <span>HÔM QUA</span>
+        <button onclick="tearLeaf(-1)" class="big-touch-btn bg-gradient-to-b from-[#1b2a47] to-[#121c30] text-white hover:from-[#253b64] hover:to-[#1b2a47] active:scale-95 transition shadow-md flex items-center justify-center gap-1.5 border border-blue-800/40" title="Xem ngày hôm qua">
+          <i class="fa-solid fa-arrow-left text-sm text-blue-200"></i>
+          <span class="tracking-wide">HÔM QUA</span>
         </button>
 
-        <button onclick="goToToday()" class="big-touch-btn bg-[#d9232a] text-white hover:bg-[#b91c1c] active:scale-95 transition shadow-lg flex items-center justify-center gap-1 border-2 border-red-700">
-          <i class="fa-solid fa-rotate-right"></i>
-          <span>HÔM NAY</span>
+        <button onclick="goToToday()" class="big-touch-btn bg-gradient-to-b from-[#d9232a] to-[#b91c1c] text-white hover:from-[#ef4444] hover:to-[#dc2626] active:scale-95 transition shadow-lg flex items-center justify-center gap-1.5 border border-red-500/50" title="Về lại ngày hôm nay">
+          <i class="fa-solid fa-rotate-right text-sm text-amber-200"></i>
+          <span class="tracking-wide text-yellow-100">HÔM NAY</span>
         </button>
 
-        <button onclick="tearLeaf(1)" class="big-touch-btn bg-[#1b2a47] text-white hover:bg-[#253b64] active:scale-95 transition shadow-lg flex items-center justify-center gap-1.5 border-2 border-blue-900">
-          <span>NGÀY MAI</span>
-          <i class="fa-solid fa-arrow-right"></i>
+        <button onclick="tearLeaf(1)" class="big-touch-btn bg-gradient-to-b from-[#1b2a47] to-[#121c30] text-white hover:from-[#253b64] hover:to-[#1b2a47] active:scale-95 transition shadow-md flex items-center justify-center gap-1.5 border border-blue-800/40" title="Xem ngày mai">
+          <span class="tracking-wide">NGÀY MAI</span>
+          <i class="fa-solid fa-arrow-right text-sm text-blue-200"></i>
         </button>
       </div>
 
-      <!-- 3 TIỆN ÍCH DÂN SINH ĐẤT PHÚ (GIỌNG NÓI • CÀI ĐẶT • CHIA SẺ ZALO) -->
-      <div class="grid grid-cols-3 gap-2 pt-1.5">
-        <button id="btnSpeakCalendar" onclick="speakTodayCalendar()" class="py-2.5 px-1 sm:px-2 bg-[#1b2a47] text-white rounded-2xl border-2 border-yellow-400 shadow-md font-black text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1 hover:bg-[#273d66] active:scale-95 transition">
-          <i class="fa-solid fa-volume-high text-yellow-300 text-base"></i>
-          <span>ĐỌC LỊCH</span>
+      <!-- 4 TIỆN ÍCH DÂN SINH NGHĨA TÌNH ĐẤT PHÚ (CÂN ĐỐI 4 CỘT) -->
+      <div class="grid grid-cols-4 gap-2 pt-1.5">
+        <!-- 1. ĐỌC LỊCH GIỌNG NÓI TRUYỀN CẢM -->
+        <button id="btnSpeakCalendar" onclick="speakTodayCalendar()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-amber-400 hover:bg-amber-50/50 flex flex-col items-center justify-center gap-1 active:scale-95 transition group" title="Nghe giọng đọc ngày tháng và câu chúc Gemini">
+          <div class="icon-bubble w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center group-hover:scale-110 transition">
+            <i class="fa-solid fa-volume-high text-sm"></i>
+          </div>
+          <span class="tracking-tight leading-tight">Đọc Lịch</span>
         </button>
 
-        <button onclick="installPwaApp()" class="py-2.5 px-1 sm:px-2 bg-white text-[#1b2a47] rounded-2xl border-2 border-[#1b2a47] shadow-md font-black text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1 hover:bg-slate-100 active:scale-95 transition">
-          <i class="fa-solid fa-mobile-screen-button text-[#d9232a] text-base"></i>
-          <span>CÀI VÀO MÁY</span>
+        <!-- 2. SỔ GIỖ GIA TIÊN (UỐNG NƯỚC NHỚ NGUỒN) -->
+        <button onclick="toggleMemorialModal()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-red-400 hover:bg-red-50/50 flex flex-col items-center justify-center gap-1 active:scale-95 transition group" title="Sổ giỗ gia tiên tưởng nhớ cội nguồn">
+          <div class="icon-bubble w-8 h-8 rounded-full bg-red-100 text-[#d9232a] flex items-center justify-center group-hover:scale-110 transition">
+            <i class="fa-solid fa-people-roof text-sm"></i>
+          </div>
+          <span class="tracking-tight leading-tight">Sổ Gia Tiên</span>
         </button>
 
-        <button onclick="shareZaloGreeting()" class="py-2.5 px-1 sm:px-2 bg-[#0068ff] text-white rounded-2xl border-2 border-blue-400 shadow-md font-black text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1 hover:bg-[#0052cc] active:scale-95 transition">
-          <i class="fa-solid fa-share-nodes text-yellow-300 text-base"></i>
-          <span>GỬI ZALO</span>
+        <!-- 3. CÀI LỊCH RA MÀN HÌNH CHÍNH (PWA) -->
+        <button onclick="installPwaApp()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-blue-400 hover:bg-blue-50/50 flex flex-col items-center justify-center gap-1 active:scale-95 transition group" title="Cài ứng dụng ra màn hình chính để mở xem mỗi ngày">
+          <div class="icon-bubble w-8 h-8 rounded-full bg-blue-100 text-[#1b2a47] flex items-center justify-center group-hover:scale-110 transition">
+            <i class="fa-solid fa-mobile-screen-button text-sm"></i>
+          </div>
+          <span class="tracking-tight leading-tight">Cài Lịch</span>
+        </button>
+
+        <!-- 4. GỬI LỜI CHÚC QUA ZALO -->
+        <button onclick="shareZaloGreeting()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-emerald-400 hover:bg-emerald-50/50 flex flex-col items-center justify-center gap-1 active:scale-95 transition group" title="Gửi thiệp chúc bình an ngày mới qua Zalo">
+          <div class="icon-bubble w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition">
+            <i class="fa-solid fa-share-nodes text-sm"></i>
+          </div>
+          <span class="tracking-tight leading-tight">Gửi Zalo</span>
         </button>
       </div>
 
@@ -1029,18 +1071,7 @@
       </div>
     </section>
 
-    <!-- TIỆN ÍCH DÂN SINH: GIA TIÊN & TÂM LINH ĐẤT PHÚ -->
-    <div class="flex flex-wrap items-center justify-center gap-2 pt-1">
-      <button onclick="toggleMemorialModal()" class="px-4 py-2.5 rounded-2xl bg-white border-2 border-slate-300 font-black text-xs sm:text-sm text-slate-800 hover:bg-slate-100 transition shadow-sm flex items-center gap-2">
-        <i class="fa-solid fa-people-roof text-[#d9232a]"></i> Sổ Giỗ Gia Tiên
-      </button>
-      <button onclick="toggleSpiritualModal('viamau')" style="display: none !important;" class="hidden px-4 py-2.5 rounded-2xl bg-white border-2 border-purple-300 font-black text-xs sm:text-sm text-purple-900 hover:bg-purple-50 transition shadow-sm flex items-center gap-2">
-        <i class="fa-solid fa-spa text-purple-600"></i> Lễ Chùa & Vía Mẫu (8 - 18 - 28)
-      </button>
-      <button onclick="toggleSpiritualModal('caopho')" style="display: none !important;" class="hidden px-4 py-2.5 rounded-2xl bg-white border-2 border-slate-300 font-black text-xs sm:text-sm text-slate-700 hover:bg-slate-100 transition shadow-sm flex items-center gap-2">
-        <i class="fa-solid fa-bell text-slate-500"></i> Cáo Phó Khẩn Zalo
-      </button>
-    </div>
+    <!-- TIỆN ÍCH DÂN SINH ĐÃ ĐƯỢC QUY HOẠCH TINH GỌN VÀO THANH ĐIỀU HÀNH CHÍNH -->
 
     <!-- MODAL HƯỚNG DẪN CÀI ĐẶT RA MÀN HÌNH CHÍNH (PWA) -->
     <div id="installGuideModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3.5">
@@ -4059,6 +4090,12 @@
         chunks.push(`Hôm nay là ngày ${chayText} âm lịch, ngày trai giới lễ Phật. Kính chúc bà con thân tâm an lạc, vạn sự cát tường.`);
       }
 
+      // Bổ sung thông điệp cảm động của Gemini nếu có
+      const wisdomEl = document.getElementById("aiEmotionalGreeting");
+      if (wisdomEl && wisdomEl.innerText) {
+        chunks.push(`Thông điệp Đất Phú: ${wisdomEl.innerText}.`);
+      }
+
       chunks.push(`Lịch Đất Phú kính chúc bà con một ngày mới dồi dào sức khỏe, an khang và bình an!`);
 
       // Thử dùng Web Speech API trước nếu có sẵn và có giọng tiếng Việt
@@ -4097,11 +4134,9 @@
       let btn = document.getElementById("btnSpeakCalendar");
       if (!btn) return;
       if (speaking) {
-        btn.innerHTML = '<i class="fa-solid fa-volume-xmark text-yellow-300 animate-pulse text-base"></i><span>DỪNG ĐỌC</span>';
-        btn.classList.add("bg-[#b91c1c]");
+        btn.innerHTML = '<div class="icon-bubble w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center animate-pulse"><i class="fa-solid fa-volume-xmark text-sm"></i></div><span class="tracking-tight leading-tight text-red-600 font-black">Dừng Đọc</span>';
       } else {
-        btn.innerHTML = '<i class="fa-solid fa-volume-high text-yellow-300 text-base"></i><span>ĐỌC LỊCH</span>';
-        btn.classList.remove("bg-[#b91c1c]");
+        btn.innerHTML = '<div class="icon-bubble w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center group-hover:scale-110 transition"><i class="fa-solid fa-volume-high text-sm"></i></div><span class="tracking-tight leading-tight">Đọc Lịch</span>';
       }
     }
 
@@ -4192,8 +4227,12 @@
         specialGreeting = `☸️ Hôm nay là ngày ${lunarDay === 1 ? 'Mùng Một' : 'Rằm 15'} ÂL - Kính chúc bình an, tâm thanh tịnh, vạn sự cát tường!\n`;
       }
 
+      const wisdomEl = document.getElementById("aiEmotionalGreeting");
+      let wisdomText = (wisdomEl && wisdomEl.innerText) ? `✨ Lời chúc: "${wisdomEl.innerText}"\n` : '';
+
       let text = `🌸 Chúc bạn và gia đình một ngày ${dayName} bình an, mạnh khỏe và vạn sự như ý!\n` +
                  `📅 Hôm nay: ${d}/${m}/${y} Dương lịch (Nhằm ${lunarStr} Tháng ${lunarMonth} Âm lịch)\n` +
+                 wisdomText +
                  specialGreeting +
                  `👉 Xem con nước và lịch hôm nay tại: https://datphu-backend.vercel.app`;
 
