@@ -1488,8 +1488,19 @@
         <!-- HEADER CỐ ĐỊNH -->
         <div class="p-3.5 sm:p-4 pb-3 border-b-2 border-slate-200 flex items-center justify-between shrink-0 bg-white z-10">
           <div class="flex items-center gap-2.5">
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-600 to-indigo-700 text-white font-black text-xl flex items-center justify-center shadow shrink-0">
-              <i class="fa-solid fa-gear"></i>
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 p-2 text-white flex items-center justify-center shadow-md shrink-0 border border-indigo-400/30">
+              <!-- SVG Bánh Răng Cơ Khí Hoa Sen Dát Vàng -->
+              <svg viewBox="0 0 24 24" class="w-full h-full drop-shadow-sm">
+                <defs>
+                  <linearGradient id="gradGearGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fef08a"/>
+                    <stop offset="50%" stop-color="#facc15"/>
+                    <stop offset="100%" stop-color="#ca8a04"/>
+                  </linearGradient>
+                </defs>
+                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" fill="#ffffff"/>
+                <path d="M19.4 13a7.8 7.8 0 00.1-2l2-1.5-2-3.5-2.4.8a7.8 7.8 0 00-1.7-1L15 3.4h-4l-.4 2.4a7.8 7.8 0 00-1.7 1L6.5 6 4.5 9.5l2 1.5a7.8 7.8 0 000 2l-2 1.5 2 3.5 2.4-.8a7.8 7.8 0 001.7 1l.4 2.4h4l.4-2.4a7.8 7.8 0 001.7-1l2.4.8 2-3.5-2-1.5zM12 16a4 4 0 110-8 4 4 0 010 8z" fill="url(#gradGearGold)"/>
+              </svg>
             </div>
             <div>
               <h3 class="text-base sm:text-lg font-black text-slate-900 leading-tight">CÀI ĐẶT & TIỆN ÍCH</h3>
@@ -1499,19 +1510,52 @@
           <button onclick="toggleSettingsCenterModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-700 flex items-center justify-center transition active:scale-95 text-sm" title="Đóng">✕</button>
         </div>
 
-        <!-- THANH 4 TAB ĐIỀU HƯỚNG TRỰC QUAN -->
+        <!-- THANH 4 TAB ĐIỀU HƯỚNG TRỰC QUAN (ICON ĐỘC BẢN SẮC NÉT - KHÔNG LỖI FONT) -->
         <div class="grid grid-cols-4 gap-1 p-1.5 sm:p-2 bg-slate-100 border-b-2 border-slate-200 shrink-0 text-xs font-black">
-          <button id="tabBtn_healing" onclick="switchSettingsTab('healing')" class="py-2 px-1 rounded-xl text-center transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-white text-teal-800 shadow-sm border border-teal-500/40 font-black">
-            <span>🌿</span> <span class="text-[11px] sm:text-xs">Trị Liệu</span>
+          <!-- TAB 1: TRỊ LIỆU -->
+          <button id="tabBtn_healing" onclick="switchSettingsTab('healing')" class="py-2 px-1 rounded-xl text-center transition flex flex-col sm:flex-row items-center justify-center gap-1.5 bg-white text-teal-800 shadow-sm border border-teal-500/40 font-black">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 drop-shadow-xs">
+              <defs><linearGradient id="tabLotus" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#34d399"/></linearGradient></defs>
+              <path d="M12 2 C10.5 6 9 10 12 17 C15 10 13.5 6 12 2Z" fill="url(#tabLotus)"/>
+              <path d="M7 6 C5.5 10 6.5 14 12 17 C9 13 8 9 7 6Z" fill="#10b981" opacity="0.9"/>
+              <path d="M17 6 C18.5 10 17.5 14 12 17 C15 13 16 9 17 6Z" fill="#10b981" opacity="0.9"/>
+              <circle cx="12" cy="13.5" r="2" fill="#fde047"/>
+            </svg>
+            <span class="text-[11px] sm:text-xs">Trị Liệu</span>
           </button>
-          <button id="tabBtn_ringtone" onclick="switchSettingsTab('ringtone')" class="py-2 px-1 rounded-xl text-center transition flex flex-col sm:flex-row items-center justify-center gap-1 text-slate-600 hover:text-slate-900 hover:bg-white/60 font-bold">
-            <span>🔔</span> <span class="text-[11px] sm:text-xs">Chuông Âm</span>
+
+          <!-- TAB 2: CHUÔNG ÂM -->
+          <button id="tabBtn_ringtone" onclick="switchSettingsTab('ringtone')" class="py-2 px-1 rounded-xl text-center transition flex flex-col sm:flex-row items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 hover:bg-white/60 font-bold">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 drop-shadow-xs">
+              <defs><linearGradient id="tabBell" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs>
+              <path d="M12 2 C8 2 6 6 6 11 V16 L4 18 V19 H20 V18 L18 16 V11 C18 6 16 2 12 2 Z" fill="url(#tabBell)"/>
+              <path d="M10 20 C10 21.1 10.9 22 12 22 C13.1 22 14 21.1 14 20" stroke="#b45309" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+              <circle cx="12" cy="11" r="1.8" fill="#fef08a"/>
+            </svg>
+            <span class="text-[11px] sm:text-xs">Chuông Âm</span>
           </button>
-          <button id="tabBtn_youth" onclick="switchSettingsTab('youth')" class="py-2 px-1 rounded-xl text-center transition flex flex-col sm:flex-row items-center justify-center gap-1 text-slate-600 hover:text-slate-900 hover:bg-white/60 font-bold">
-            <span>🧑‍💻</span> <span class="text-[11px] sm:text-xs">Gen Z</span>
+
+          <!-- TAB 3: GEN Z HUB -->
+          <button id="tabBtn_youth" onclick="switchSettingsTab('youth')" class="py-2 px-1 rounded-xl text-center transition flex flex-col sm:flex-row items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 hover:bg-white/60 font-bold">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 drop-shadow-xs">
+              <defs><linearGradient id="tabYouth" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs>
+              <!-- Ngôi sao may mắn 4 cánh Neon Cyberpunk -->
+              <path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z" fill="url(#tabYouth)"/>
+              <circle cx="12" cy="12" r="2.2" fill="#ffffff"/>
+            </svg>
+            <span class="text-[11px] sm:text-xs">Gen Z</span>
           </button>
-          <button id="tabBtn_system" onclick="switchSettingsTab('system')" class="py-2 px-1 rounded-xl text-center transition flex flex-col sm:flex-row items-center justify-center gap-1 text-slate-600 hover:text-slate-900 hover:bg-white/60 font-bold">
-            <span>🛠️</span> <span class="text-[11px] sm:text-xs">Giao Diện</span>
+
+          <!-- TAB 4: GIAO DIỆN -->
+          <button id="tabBtn_system" onclick="switchSettingsTab('system')" class="py-2 px-1 rounded-xl text-center transition flex flex-col sm:flex-row items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 hover:bg-white/60 font-bold">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 drop-shadow-xs">
+              <defs><linearGradient id="tabSys" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient></defs>
+              <rect x="3" y="3" width="8" height="8" rx="2" fill="url(#tabSys)"/>
+              <rect x="13" y="3" width="8" height="8" rx="2" fill="url(#tabSys)" opacity="0.75"/>
+              <rect x="3" y="13" width="8" height="8" rx="2" fill="url(#tabSys)" opacity="0.75"/>
+              <rect x="13" y="13" width="8" height="8" rx="2" fill="url(#tabSys)"/>
+            </svg>
+            <span class="text-[11px] sm:text-xs">Giao Diện</span>
           </button>
         </div>
 
@@ -1563,37 +1607,60 @@
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-center">
-                  <button onclick="playHealingPreset('anxiety')" id="presetBtn_anxiety" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+                  <!-- 1. XUA LO ÂU (396Hz) -->
+                  <button onclick="playHealingPreset('anxiety')" id="presetBtn_anxiety" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-1">
                     <div class="flex items-center justify-between">
-                      <span class="text-xs">🌿</span>
-                      <span class="text-[9px] font-mono text-teal-300">396Hz</span>
+                      <!-- SVG Mầm Cây Xanh Tươi Sinh Mệnh -->
+                      <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 drop-shadow-xs">
+                        <defs><linearGradient id="pSprout" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#34d399"/></linearGradient></defs>
+                        <path d="M12 22 V11 C12 7 9 4 4 4 C4 9 7 12 11 12 M12 14 C15 11 19 11 20 6 C15 6 13 9 12 14 Z" fill="none" stroke="url(#pSprout)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="12" cy="11" r="1.5" fill="#34d399"/>
+                      </svg>
+                      <span class="text-[9px] font-mono text-teal-300 font-bold">396Hz</span>
                     </div>
                     <div class="font-black text-[11px] text-white">Xua Lo Âu</div>
                     <div class="text-[9px] text-slate-400 truncate">Giảm bồn chồn</div>
                   </button>
 
-                  <button onclick="playHealingPreset('burnout')" id="presetBtn_burnout" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+                  <!-- 2. GIẢI STRESS (528Hz) -->
+                  <button onclick="playHealingPreset('burnout')" id="presetBtn_burnout" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-1">
                     <div class="flex items-center justify-between">
-                      <span class="text-xs">🕊️</span>
-                      <span class="text-[9px] font-mono text-emerald-300">528Hz</span>
+                      <!-- SVG Cánh Chim Bồ Câu Thanh Thoát -->
+                      <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 drop-shadow-xs">
+                        <path d="M21 5 C17 6 14 9 13 13 C11 11 8 10 4 11 C8 13 10 16 11 19 C13 17 17 15 21 15 C19 12 20 8 21 5 Z" fill="#ffffff" opacity="0.95"/>
+                        <circle cx="18" cy="8" r="1" fill="#facc15"/>
+                      </svg>
+                      <span class="text-[9px] font-mono text-emerald-300 font-bold">528Hz</span>
                     </div>
                     <div class="font-black text-[11px] text-white">Giải Stress</div>
                     <div class="text-[9px] text-slate-400 truncate">Hồi phục kiệt sức</div>
                   </button>
 
-                  <button onclick="playHealingPreset('sadness')" id="presetBtn_sadness" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+                  <!-- 3. XOA BUỒN BÃ (639Hz) -->
+                  <button onclick="playHealingPreset('sadness')" id="presetBtn_sadness" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-1">
                     <div class="flex items-center justify-between">
-                      <span class="text-xs">🕯️</span>
-                      <span class="text-[9px] font-mono text-cyan-300">639Hz</span>
+                      <!-- SVG Trái Tim Hồng Ngọc Vỗ Về -->
+                      <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 drop-shadow-xs">
+                        <defs><linearGradient id="pHeart" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f43f5e"/><stop offset="100%" stop-color="#e11d48"/></linearGradient></defs>
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#pHeart)"/>
+                        <circle cx="9" cy="7.5" r="1.2" fill="#ffffff" opacity="0.6"/>
+                      </svg>
+                      <span class="text-[9px] font-mono text-cyan-300 font-bold">639Hz</span>
                     </div>
                     <div class="font-black text-[11px] text-white">Xoa Buồn Bã</div>
                     <div class="text-[9px] text-slate-400 truncate">Hàn gắn cô đơn</div>
                   </button>
 
-                  <button onclick="playHealingPreset('sleep')" id="presetBtn_sleep" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+                  <!-- 4. NGỦ NGON (432Hz) -->
+                  <button onclick="playHealingPreset('sleep')" id="presetBtn_sleep" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-1">
                     <div class="flex items-center justify-between">
-                      <span class="text-xs">🌙</span>
-                      <span class="text-[9px] font-mono text-indigo-300">432Hz</span>
+                      <!-- SVG Vầng Trăng Khuyết & Ngôi Sao Mơ Màng -->
+                      <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 drop-shadow-xs">
+                        <defs><linearGradient id="pMoon" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient></defs>
+                        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" fill="url(#pMoon)"/>
+                        <circle cx="17" cy="6" r="1.2" fill="#ffffff"/>
+                      </svg>
+                      <span class="text-[9px] font-mono text-indigo-300 font-bold">432Hz</span>
                     </div>
                     <div class="font-black text-[11px] text-white">Ngủ Ngon</div>
                     <div class="text-[9px] text-slate-400 truncate">Xua Overthinking</div>
@@ -1602,8 +1669,6 @@
               </div>
             </div>
 
-            
-            
             <!-- BÀI THỞ SINH HỌC 4-7-8 TRỰC QUAN -->
             <div class="p-4 bg-gradient-to-br from-slate-950 via-teal-950 to-slate-900 text-white border-2 border-teal-500/40 rounded-2xl text-center space-y-3 relative overflow-hidden shadow-md">
               <div class="text-[11px] font-black text-teal-300 uppercase tracking-wider flex items-center justify-center gap-1.5">
@@ -1690,12 +1755,17 @@
                 <span id="currentSoundscapeBadge" class="font-bold text-white bg-teal-800/60 px-2 py-0.5 rounded-full border border-teal-500/30">Sẵn sàng</span>
               </div>
 
-              <!-- LƯỚI 6 KHÔNG GIAN ÂM THANH XỨ NẪU ĐẶC TRƯNG -->
+              <!-- LƯỚI 6 KHÔNG GIAN ÂM THANH XỨ NẪU ĐẶC TRƯNG (ICON VECTOR RIÊNG BIỆT) -->
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 <!-- 1. THIỀN MƯA & CHUÔNG GIÓ -->
                 <button onclick="playAmbientSound('zen_rain')" id="soundCard_zen_rain" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
                   <div class="flex items-center justify-between">
-                    <span class="text-base">🎐</span>
+                    <!-- SVG Chuông Gió Furin & Mưa -->
+                    <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0 drop-shadow-xs">
+                      <path d="M12 2 V6 M7 6 H17 C17 10 15 12 12 12 C9 12 7 10 7 6 Z" fill="#38bdf8"/>
+                      <line x1="12" y1="12" x2="12" y2="18" stroke="#facc15" stroke-width="1.5"/>
+                      <rect x="10" y="18" width="4" height="4" rx="0.5" fill="#f43f5e"/>
+                    </svg>
                     <span id="badgePlaying_zen_rain" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
                   </div>
                   <div class="text-[11px] font-black text-white">Thiền Mưa & Chuông Gió</div>
@@ -1705,7 +1775,15 @@
                 <!-- 2. SÁO TRÚC & THIỀN TRÀ ĐẤT PHÚ -->
                 <button onclick="playAmbientSound('bamboo_flute')" id="soundCard_bamboo_flute" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
                   <div class="flex items-center justify-between">
-                    <span class="text-base">🎋</span>
+                    <!-- SVG Sáo Trúc Ngũ Cung -->
+                    <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0 drop-shadow-xs">
+                      <rect x="2" y="10" width="20" height="4" rx="1.5" fill="#10b981"/>
+                      <circle cx="6" cy="12" r="0.9" fill="#064e3b"/>
+                      <circle cx="10" cy="12" r="0.9" fill="#064e3b"/>
+                      <circle cx="14" cy="12" r="0.9" fill="#064e3b"/>
+                      <circle cx="18" cy="12" r="0.9" fill="#064e3b"/>
+                      <path d="M2 10 L4 8 M22 14 L20 16" stroke="#facc15" stroke-width="1"/>
+                    </svg>
                     <span id="badgePlaying_bamboo_flute" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
                   </div>
                   <div class="text-[11px] font-black text-white">Sáo Trúc & Thiền Trà</div>
@@ -1715,7 +1793,12 @@
                 <!-- 3. CHÙA ĐÁ TRẮNG BẠCH THẠCH TỰ -->
                 <button onclick="playAmbientSound('bach_thach')" id="soundCard_bach_thach" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
                   <div class="flex items-center justify-between">
-                    <span class="text-base">🕉️</span>
+                    <!-- SVG Đại Hồng Chung Cổ Kính -->
+                    <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0 drop-shadow-xs">
+                      <path d="M12 2 C7.5 2 5 6 5 12 V17 L3 19 V20 H21 V19 L19 17 V12 C19 6 16.5 2 12 2 Z" fill="#d97706"/>
+                      <circle cx="12" cy="12" r="2.2" fill="#fef08a"/>
+                      <line x1="5" y1="16" x2="19" y2="16" stroke="#fef08a" stroke-width="1.2"/>
+                    </svg>
                     <span id="badgePlaying_bach_thach" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
                   </div>
                   <div class="text-[11px] font-black text-white">Chuông Chùa Đá Trắng</div>
@@ -1725,7 +1808,12 @@
                 <!-- 4. SÓNG BIỂN GÀNH ĐÁ ĐĨA -->
                 <button onclick="playAmbientSound('ocean')" id="soundCard_ocean" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
                   <div class="flex items-center justify-between">
-                    <span class="text-base">🌊</span>
+                    <!-- SVG Sóng Biển Bazan Gành Đá Đĩa -->
+                    <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0 drop-shadow-xs">
+                      <path d="M2 16 C5 13 8 13 11 16 C14 19 17 19 22 16 V21 H2 Z" fill="#0284c7"/>
+                      <path d="M2 11 C6 8 9 9 12 12 C15 15 18 14 22 11" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M16 6 C18 4 20 5 22 7" fill="none" stroke="#bae6fd" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
                     <span id="badgePlaying_ocean" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
                   </div>
                   <div class="text-[11px] font-black text-white">Sóng Gành Đá Đĩa</div>
@@ -1735,7 +1823,11 @@
                 <!-- 5. GIÓ THÔNG ĐÈO CẢ & SUỐI MƠ -->
                 <button onclick="playAmbientSound('deo_ca')" id="soundCard_deo_ca" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
                   <div class="flex items-center justify-between">
-                    <span class="text-base">🌲</span>
+                    <!-- SVG Rừng Thông & Dãy Núi Đèo Cả -->
+                    <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0 drop-shadow-xs">
+                      <polygon points="12,2 5,11 9,11 4,18 20,18 15,11 19,11" fill="#15803d"/>
+                      <rect x="10.5" y="18" width="3" height="4" fill="#78350f"/>
+                    </svg>
                     <span id="badgePlaying_deo_ca" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
                   </div>
                   <div class="text-[11px] font-black text-white">Gió Thông Đèo Cả</div>
@@ -1745,7 +1837,13 @@
                 <!-- 6. BÌNH MINH MŨI ĐIỆN (528 Hz) -->
                 <button onclick="playAmbientSound('muidien_dawn')" id="soundCard_muidien_dawn" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
                   <div class="flex items-center justify-between">
-                    <span class="text-base">🌅</span>
+                    <!-- SVG Ngọn Hải Đăng Mũi Điện & Mặt Trời -->
+                    <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0 drop-shadow-xs">
+                      <circle cx="17" cy="7" r="4.5" fill="#facc15"/>
+                      <polygon points="6,21 12,21 10,7 8,7" fill="#dc2626"/>
+                      <rect x="7.5" y="4" width="3" height="3" fill="#ffffff"/>
+                      <path d="M10.5 5.5 L19 2 M10.5 5.5 L20 8" stroke="#fef08a" stroke-width="1.2" stroke-linecap="round"/>
+                    </svg>
                     <span id="badgePlaying_muidien_dawn" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
                   </div>
                   <div class="text-[11px] font-black text-white">Bình Minh Mũi Điện</div>
