@@ -93,6 +93,18 @@
       display: none !important;
     }
 
+    /* WIDGET THỜI TIẾT DÂN SINH ĐẤT PHÚ CAO CẤP */
+    #weatherWidgetCard {
+      background: linear-gradient(135deg, #102a4e 0%, #173d6b 50%, #1e528e 100%);
+      border: 1.5px solid rgba(147, 197, 253, 0.35);
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    body.night-mode #weatherWidgetCard {
+      background: linear-gradient(135deg, #090e1a 0%, #101a2e 50%, #162035 100%) !important;
+      border-color: rgba(250, 204, 21, 0.35) !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), inset 0 1px 1px 0 rgba(250, 204, 21, 0.15) !important;
+    }
+
     /* Bloc Leaf ở chế độ ban đêm: Nền đen saphir viền hoàng kim phát sáng */
     body.night-mode .super-bloc {
       background: linear-gradient(180deg, #0b0f19 0%, #111827 50%, #070a12 100%) !important;
@@ -353,34 +365,61 @@
     <!-- ============================================================ -->
     <section id="viewDaySection" class="space-y-3">
       
-      <!-- WIDGET THỜI TIẾT & RADAR MƯA WINDOWS TUY HÒA -->
-      <div class="bg-[#1b4f8a] text-white p-3.5 sm:p-4 rounded-3xl shadow-md space-y-2.5 border-2 border-blue-900">
-        <div class="flex items-center justify-between text-xs font-bold">
-          <div class="flex items-center gap-1.5 text-sm sm:text-base font-black">
-            <i class="fa-solid fa-house"></i>
-            <span id="widgetLocationName">Tuy Hòa</span>
+      <!-- WIDGET THỜI TIẾT DÂN SINH & RADAR MƯA SƠN HÒA / TUY HÒA -->
+      <div id="weatherWidgetCard" class="text-white p-4 sm:p-5 rounded-3xl space-y-3 transition-all duration-300 relative overflow-hidden">
+        <!-- Ánh sáng nền trang trí mềm mại -->
+        <div class="pointer-events-none absolute -top-12 -right-12 w-40 h-40 bg-sky-400/10 rounded-full blur-2xl"></div>
+        <div class="pointer-events-none absolute -bottom-10 -left-10 w-36 h-36 bg-amber-400/10 rounded-full blur-xl"></div>
+
+        <!-- HÀNG TRÊN: VỊ TRÍ & LỜI CHÚC DÂN SINH ĐẤT PHÚ -->
+        <div class="relative z-10 flex items-center justify-between text-xs font-bold gap-2 flex-wrap">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-black text-white shadow-sm">
+              <i class="fa-solid fa-location-dot text-amber-300"></i>
+              <span id="widgetLocationName">Tuy Hòa</span>
+            </span>
+            <span id="weatherStatusDesc" class="text-[11px] font-bold text-blue-100/90 px-2.5 py-0.5 rounded-lg bg-blue-900/40 border border-blue-400/20 hidden sm:inline-block">
+              Gió biển mát lành
+            </span>
           </div>
-          <div class="text-[11px] text-blue-200">
-            <span class="text-blue-200"><i class="fa-solid fa-feather-pointed text-amber-300 mr-1"></i>Trời êm biển lặng • Đất Phú an bình</span>
+
+          <div class="text-[11px] sm:text-xs text-amber-200/95 font-semibold flex items-center gap-1.5 drop-shadow-sm ml-auto">
+            <i class="fa-solid fa-feather-pointed text-amber-300"></i>
+            <span>Trời êm biển lặng • Đất Phú an bình</span>
           </div>
         </div>
 
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <span id="weatherWidgetIcon" class="text-4xl sm:text-5xl">⛅</span>
-            <div class="flex items-start">
-              <span id="weatherWidgetTemp" class="text-5xl sm:text-6xl font-black font-mono leading-none">25</span>
-              <span class="text-2xl font-bold ml-1">°C</span>
+        <!-- HÀNG DƯỚI: NHIỆT ĐỘ, BIỂU TƯỢNG VÀ RADAR TÂM MƯA -->
+        <div class="relative z-10 flex items-center justify-between gap-3 pt-0.5">
+          <!-- BÊN TRÁI: BIỂU TƯỢNG & NHIỆT ĐỘ CÙNG THÔNG SỐ GIÓ/ẨM -->
+          <div>
+            <div class="flex items-center gap-3">
+              <span id="weatherWidgetIcon" class="text-4xl sm:text-5xl drop-shadow transform hover:scale-105 transition duration-300 inline-block">⛅</span>
+              <div class="flex items-baseline">
+                <span id="weatherWidgetTemp" class="text-4xl sm:text-5xl md:text-6xl font-black font-mono leading-none tracking-tight text-white drop-shadow-md">25</span>
+                <span class="text-2xl sm:text-3xl font-black ml-1 text-amber-300 drop-shadow">°C</span>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 mt-1.5 text-[11px] text-blue-100/90 font-medium">
+              <span class="flex items-center gap-1"><i class="fa-solid fa-wind text-sky-300"></i> Gió: <strong id="widgetWindSpeed" class="text-white">12 km/h</strong></span>
+              <span class="text-blue-300/40">•</span>
+              <span class="flex items-center gap-1"><i class="fa-solid fa-droplet text-cyan-300"></i> Ẩm: <strong id="widgetHumidity" class="text-white">76%</strong></span>
             </div>
           </div>
 
+          <!-- BÊN PHẢI: CHIP RADAR TÂM MƯA & VÙNG NGUỒN NƯỚC -->
           <div class="text-right">
-            <div class="inline-flex items-center gap-1 text-xs sm:text-sm font-black bg-blue-900/60 border border-blue-400/40 px-3 py-1.5 rounded-xl">
-              <span>💧 Tâm mưa:</span>
-              <span id="rainDistanceText" class="text-yellow-300 font-black">14 km</span>
+            <div class="inline-flex items-center gap-2 bg-black/25 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-2xl shadow-inner">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+              </span>
+              <span class="text-[11px] sm:text-xs font-bold text-blue-100">Tâm mưa:</span>
+              <span id="rainDistanceText" class="text-xs sm:text-sm font-black text-amber-300">14 km</span>
             </div>
-            <div class="text-[11px] text-blue-200 mt-1 font-semibold" id="rainProximityDesc">
-              Vùng mưa thượng nguồn Chư Sê / Gia Lai
+            <div class="text-[11px] text-blue-200 mt-1 font-medium flex items-center justify-end gap-1" id="rainProximityDesc">
+              <i class="fa-solid fa-mountain text-amber-300/70 text-[10px]"></i> Vùng mưa thượng nguồn Chư Sê / Gia Lai
             </div>
           </div>
         </div>
@@ -2186,34 +2225,69 @@
       }
     }
 
-    // THỜI TIẾT VỆ TINH
+    // THỜI TIẾT VỆ TINH DÂN SINH ĐẤT PHÚ
     async function fetchSatelliteWeather() {
       const loc = LOCATIONS[currentLocationKey];
-      document.getElementById("widgetLocationName").innerText = loc.name;
-      document.getElementById("rainDistanceText").innerText = loc.rainDist;
-      document.getElementById("rainProximityDesc").innerText = loc.rainDesc;
+      if (document.getElementById("widgetLocationName")) {
+        document.getElementById("widgetLocationName").innerText = loc.name;
+      }
+      if (document.getElementById("rainDistanceText")) {
+        document.getElementById("rainDistanceText").innerText = loc.rainDist;
+      }
+      if (document.getElementById("rainProximityDesc")) {
+        document.getElementById("rainProximityDesc").innerHTML = `<i class="fa-solid fa-mountain text-amber-300/70 text-[10px] mr-1"></i>${loc.rainDesc}`;
+      }
 
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,precipitation,wind_speed_10m&timezone=Asia%2FBangkok`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&timezone=Asia%2FBangkok`;
 
       try {
         const res = await fetch(url);
         const data = await res.json();
         const cur = data.current;
 
-        document.getElementById("weatherWidgetTemp").innerText = `${cur.temperature_2m.toFixed(0)}`;
+        if (document.getElementById("weatherWidgetTemp")) {
+          document.getElementById("weatherWidgetTemp").innerText = `${cur.temperature_2m.toFixed(0)}`;
+        }
+        if (document.getElementById("widgetWindSpeed") && cur.wind_speed_10m !== undefined) {
+          document.getElementById("widgetWindSpeed").innerText = `${cur.wind_speed_10m.toFixed(0)} km/h`;
+        }
+        if (document.getElementById("widgetHumidity") && cur.relative_humidity_2m !== undefined) {
+          document.getElementById("widgetHumidity").innerText = `${cur.relative_humidity_2m}%`;
+        }
+
         let icon = "⛅";
-        if (cur.precipitation > 15.0) icon = "⛈️";
-        else if (cur.precipitation > 0.1) icon = "🌧️";
-        document.getElementById("weatherWidgetIcon").innerText = icon;
+        let statusText = "Gió biển mát lành";
+        if (cur.precipitation > 15.0) {
+          icon = "⛈️";
+          statusText = "Mưa dông lớn ven biển";
+        } else if (cur.precipitation > 0.1) {
+          icon = "🌧️";
+          statusText = "Có mưa rải rác";
+        } else if (cur.temperature_2m >= 33) {
+          icon = "☀️";
+          statusText = "Nắng gắt đồng bằng";
+        } else if (cur.temperature_2m <= 22) {
+          icon = "🌤️";
+          statusText = "Se lạnh sớm mai";
+        }
+
+        if (document.getElementById("weatherWidgetIcon")) {
+          document.getElementById("weatherWidgetIcon").innerText = icon;
+        }
+        if (document.getElementById("weatherStatusDesc")) {
+          document.getElementById("weatherStatusDesc").innerText = statusText;
+        }
 
         if (cur.precipitation >= 20.0 || cur.wind_speed_10m >= 35.0) {
           const banner = document.getElementById("severeAlertBanner");
-          banner.classList.remove("hidden");
-          document.getElementById("alertTitle").innerText = `LƯU Ý THỜI TIẾT TẠI ${loc.name.toUpperCase()} (THAM KHẢO)`;
-          document.getElementById("alertDesc").innerText = `Vệ tinh ghi nhận mưa ${cur.precipitation} mm, gió ${cur.wind_speed_10m} km/h. Bà con lưu ý an toàn lao động và theo dõi chỉ đạo của chính quyền địa phương.`;
+          if (banner) banner.classList.remove("hidden");
+          if (document.getElementById("alertTitle")) document.getElementById("alertTitle").innerText = `LƯU Ý THỜI TIẾT TẠI ${loc.name.toUpperCase()} (THAM KHẢO)`;
+          if (document.getElementById("alertDesc")) document.getElementById("alertDesc").innerText = `Vệ tinh ghi nhận mưa ${cur.precipitation} mm, gió ${cur.wind_speed_10m} km/h. Bà con lưu ý an toàn lao động và theo dõi chỉ đạo của chính quyền địa phương.`;
         }
       } catch (e) {
-        document.getElementById("weatherWidgetTemp").innerText = "25";
+        if (document.getElementById("weatherWidgetTemp")) document.getElementById("weatherWidgetTemp").innerText = "25";
+        if (document.getElementById("widgetWindSpeed")) document.getElementById("widgetWindSpeed").innerText = "12 km/h";
+        if (document.getElementById("widgetHumidity")) document.getElementById("widgetHumidity").innerText = "76%";
       }
     }
 
