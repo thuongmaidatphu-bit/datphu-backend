@@ -2252,10 +2252,12 @@
         return isPhuYen ? "🍵 Trưa đứng bóng • Nghỉ tay uống nước mát" : "🍵 Nhớ nghỉ trưa giữ sức khỏe bạn nhé";
       } else if (h >= 14 && h < 17) {
         return isPhuYen ? "🍃 Chiều êm mát mẻ • Đất Phú hiền hòa" : "🍃 Chiều dịu mát mẻ • Vạn sự thuận hòa";
-      } else if (h >= 17 && h < 20) {
-        return isPhuYen ? "🕊️ Khói lam chiều • Cơm ấm cùng gia đình" : "🌸 Khói lam chiều buông • Đất Mẹ dõi theo bạn";
-      } else if (h >= 20 && h < 23) {
-        return isPhuYen ? "🌙 Đêm trăng soi bóng • Đất Phú an lành" : "✨ Trăng thanh đêm mát • Bình an thân tâm";
+      } else if (h >= 17 && h < 18) {
+        return isPhuYen ? "🕊️ Khói lam chiều • Chuẩn bị cơm ấm gia đình" : "🌸 Khói lam chiều buông • Đất Mẹ dõi theo bạn";
+      } else if (h >= 18 && h < 21) {
+        return isPhuYen ? "🌙 Trời tối lên đèn • Đất Phú an bình ấm cúng" : "🌙 Trời tối lên đèn • Đất Mẹ luôn dõi theo bạn";
+      } else if (h >= 21 && h < 23) {
+        return isPhuYen ? "🌙 Đêm trăng soi bóng • Thân tâm an lạc" : "✨ Trăng thanh đêm mát • Bình an thân tâm";
       } else {
         return isPhuYen ? "✨ Đêm đã về khuya • Chúc giấc ngủ an lành" : "✨ Đêm khuya thanh vắng • Ngủ ngon bạn nhé";
       }
@@ -2385,22 +2387,35 @@
     let isNightMode = false;
 
     function initDayNightMode() {
-      const savedTheme = localStorage.getItem("datphu_theme_mode");
-      if (savedTheme) {
-        isNightMode = (savedTheme === "night");
+      const currentHour = new Date().getHours();
+      // Đúng 18:00 (6h chiều) đến 05:59 sáng: TỰ ĐỘNG CHUYỂN SANG TRỜI TỐI / BAN ĐÊM
+      const isNightTime = (currentHour >= 18 || currentHour < 6);
+
+      const sessionManualTheme = sessionStorage.getItem("datphu_session_manual_theme");
+      if (sessionManualTheme) {
+        isNightMode = (sessionManualTheme === "night");
       } else {
-        // Tự động theo thời gian thực địa phương GMT+7
-        const currentHour = new Date().getHours();
-        // Ban đêm từ 18:00 chiều đến 05:59 sáng
-        isNightMode = (currentHour >= 18 || currentHour < 6);
+        isNightMode = isNightTime;
       }
       applyDayNightModeUI();
     }
 
     function toggleDayNightMode() {
       isNightMode = !isNightMode;
-      localStorage.setItem("datphu_theme_mode", isNightMode ? "night" : "day");
+      sessionStorage.setItem("datphu_session_manual_theme", isNightMode ? "night" : "day");
       applyDayNightModeUI();
+      fetchSatelliteWeather();
+    }
+
+    // Tự động kiểm tra mỗi phút để khi đến 18:00 là tự động chuyển trời tối
+    function checkRealtimeDayNightCycle() {
+      const currentHour = new Date().getHours();
+      const isNightTime = (currentHour >= 18 || currentHour < 6);
+      if (!sessionStorage.getItem("datphu_session_manual_theme") && isNightMode !== isNightTime) {
+        isNightMode = isNightTime;
+        applyDayNightModeUI();
+        fetchSatelliteWeather();
+      }
     }
 
     function applyDayNightModeUI() {
@@ -2491,14 +2506,26 @@
           document.getElementById("widgetHumidity").innerText = `${cur.relative_humidity_2m}%`;
         }
 
-        let icon = "⛅";
-        let statusText = "Gió biển mát lành";
+        const currentHour = new Date().getHours();
+        const isNightTime = (currentHour >= 18 || currentHour < 6);
+
+        let icon = isNightTime ? "🌙" : "⛅";
+        let statusText = isNightTime ? "Trời đêm mát lành" : "Gió biển mát lành";
+
         if (cur.precipitation > 15.0) {
           icon = "⛈️";
-          statusText = "Mưa dông lớn ven biển";
+          statusText = isNightTime ? "Mưa dông trong đêm" : "Mưa dông lớn ven biển";
         } else if (cur.precipitation > 0.1) {
           icon = "🌧️";
-          statusText = "Có mưa rải rác";
+          statusText = isNightTime ? "Mưa đêm lất phất" : "Có mưa rải rác";
+        } else if (isNightTime) {
+          if (cur.temperature_2m <= 22) {
+            icon = "🌙";
+            statusText = "Đêm se lạnh sương khuya";
+          } else {
+            icon = "🌙";
+            statusText = "Trời đêm thanh mát";
+          }
         } else if (cur.temperature_2m >= 33) {
           icon = "☀️";
           statusText = "Nắng gắt đồng bằng";
@@ -4207,6 +4234,7 @@
       renderBloc();
       triggerAutoAIObserver(false);
       setInterval(fetchSatelliteWeather, 30 * 60 * 1000);
+      setInterval(checkRealtimeDayNightCycle, 30 * 1000); // Tự động phát hiện chuyển trời tối
     });
   </script>
 </body>
