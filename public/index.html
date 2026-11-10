@@ -177,6 +177,25 @@
         </div>
 
         <!-- BANNER NHẮC NGÀY GIỖ GIA TIÊN TỰ ĐỘNG -->
+        
+        <!-- BANNER NHẮC NGÀY VÍA MẪU & LỄ PHẬT / ĂN CHAY -->
+        <div id="spiritualLeafBanner" class="hidden rounded-2xl p-3 shadow-sm flex items-center justify-between gap-2.5 my-2 border-2">
+          <div class="flex items-center gap-2.5">
+            <span id="spiritualLeafIcon" class="text-2xl shrink-0">🪷</span>
+            <div>
+              <span id="spiritualLeafTitle" class="text-xs sm:text-sm font-black block uppercase">
+                HÔM NAY: NGÀY TUẦN VÍA MẪU (MÙNG 8 ÂL)
+              </span>
+              <span id="spiritualLeafDesc" class="text-[11px] font-bold block">
+                Lễ tạ ơn Mẹ Xứ Sở Thiên Y A Na • Cầu bình an, thuyền xuôi gió lặng, buôn may bán đắt
+              </span>
+            </div>
+          </div>
+          <button onclick="toggleSpiritualModal()" id="spiritualLeafBtn" class="px-2.5 py-1.5 font-black text-xs rounded-xl shrink-0 transition">
+            XEM LỄ
+          </button>
+        </div>
+
         <div id="memorialLeafBanner" class="hidden bg-amber-50 border-2 border-amber-400 rounded-2xl p-3 shadow-sm flex items-center justify-between gap-2.5 my-2">
           <div class="flex items-center gap-2.5">
             <span class="text-2xl shrink-0">🕯️</span>
@@ -318,10 +337,16 @@
       </div>
     </section>
 
-    <!-- NÚT MỞ SỔ GIA ĐÌNH -->
-    <div class="flex items-center justify-center pt-1">
-      <button onclick="toggleMemorialModal()" class="px-5 py-2.5 rounded-2xl bg-white border-2 border-slate-300 font-black text-xs sm:text-sm text-slate-800 hover:bg-slate-100 transition shadow-sm flex items-center gap-2">
-        <i class="fa-solid fa-people-roof text-[#d9232a]"></i> Sổ Kỷ Niệm & Ngày Giỗ Gia Tiên
+    <!-- TIỆN ÍCH DÂN SINH: GIA TIÊN & TÂM LINH ĐẤT PHÚ -->
+    <div class="flex flex-wrap items-center justify-center gap-2 pt-1">
+      <button onclick="toggleMemorialModal()" class="px-4 py-2.5 rounded-2xl bg-white border-2 border-slate-300 font-black text-xs sm:text-sm text-slate-800 hover:bg-slate-100 transition shadow-sm flex items-center gap-2">
+        <i class="fa-solid fa-people-roof text-[#d9232a]"></i> Sổ Giỗ Gia Tiên
+      </button>
+      <button onclick="toggleSpiritualModal('viamau')" class="px-4 py-2.5 rounded-2xl bg-white border-2 border-purple-300 font-black text-xs sm:text-sm text-purple-900 hover:bg-purple-50 transition shadow-sm flex items-center gap-2">
+        <i class="fa-solid fa-spa text-purple-600"></i> Lễ Chùa & Vía Mẫu (8 - 18 - 28)
+      </button>
+      <button onclick="toggleSpiritualModal('caopho')" class="px-4 py-2.5 rounded-2xl bg-white border-2 border-slate-300 font-black text-xs sm:text-sm text-slate-700 hover:bg-slate-100 transition shadow-sm flex items-center gap-2">
+        <i class="fa-solid fa-bell text-slate-500"></i> Cáo Phó Khẩn Zalo
       </button>
     </div>
 
@@ -540,6 +565,147 @@
         </div>
 
         <button onclick="toggleMemorialModal()" class="w-full py-2.5 bg-white border-2 border-slate-300 text-slate-600 font-bold text-xs rounded-xl hover:bg-slate-100 transition">
+          Đóng lại
+        </button>
+      </div>
+    </div>
+
+    <!-- MODAL LỄ TIẾT, VÍA MẪU & BA ĐẠI SỰ ĐẤT PHÚ -->
+    <div id="spiritualModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3">
+      <div class="bg-white border-4 border-purple-900 rounded-3xl p-5 w-full max-w-lg shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between pb-3 border-b-2 border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-700 font-black text-xl flex items-center justify-center border-2 border-purple-300 shadow-sm">🪷</div>
+            <div>
+              <h3 class="text-base sm:text-lg font-black text-purple-950 leading-tight">LỄ TIẾT & TÂM LINH ĐẤT PHÚ</h3>
+              <p class="text-[11px] font-bold text-slate-500">Vía Mẫu 8 - 18 - 28 • Ngày Ăn Chay Lễ Phật • Cáo Phó Khẩn</p>
+            </div>
+          </div>
+          <button onclick="toggleSpiritualModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-700 flex items-center justify-center transition">✕</button>
+        </div>
+
+        <!-- 3 Tab Điều Hướng -->
+        <div class="grid grid-cols-3 gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-300 text-xs font-black">
+          <button id="tabSpBtnViaMau" onclick="switchSpiritualTab('viamau')" class="py-2 rounded-xl bg-purple-900 text-white shadow transition flex items-center justify-center gap-1 text-[11px] sm:text-xs">
+            🪷 VÍA MẪU
+          </button>
+          <button id="tabSpBtnChay" onclick="switchSpiritualTab('chay')" class="py-2 rounded-xl text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1 text-[11px] sm:text-xs">
+            ☸️ ĂN CHAY
+          </button>
+          <button id="tabSpBtnCaoPho" onclick="switchSpiritualTab('caopho')" class="py-2 rounded-xl text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1 text-[11px] sm:text-xs">
+            🖤 CÁO PHÓ
+          </button>
+        </div>
+
+        <!-- TAB 1: VÍA MẪU (MÙNG 8, 18, 28 HÀNG THÁNG) -->
+        <div id="spContentViaMau" class="space-y-3 text-xs sm:text-sm">
+          <div class="p-3.5 bg-purple-50 rounded-2xl border-2 border-purple-300 space-y-2">
+            <div class="flex items-center gap-2 text-purple-900 font-black text-sm">
+              <span>🪷</span>
+              <span>BÁT TUẦN VÍA MẪU: MÙNG 8 - 18 - 28 ÂM LỊCH</span>
+            </div>
+            <p class="text-slate-700 text-xs leading-relaxed">
+              Theo tập quán thờ phụng dân gian và Đạo Mẫu Nam Trung Bộ, hàng tháng ba ngày mang đuôi số 8 (<strong>Mùng 8, 18, 28 Âm lịch</strong>) là ngày tuần vía Mẫu linh thiêng.
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <div class="font-black text-slate-900 text-xs uppercase text-purple-900">👑 Tín ngưỡng Mẹ Xứ Sở Thiên Y A Na (Phú Yên - Nam Trung Bộ):</div>
+            <ul class="space-y-1.5 text-xs text-slate-700 list-disc pl-4 leading-relaxed">
+              <li><strong>Địa điểm phụng tự:</strong> Tháp Nhạn (Núi Nhạn - Tuy Hòa), Đền Mẫu Thiên Y A Na, các miếu Bà Cô ven đầm Ô Loan, sông Ba, vịnh Xuân Đài.</li>
+              <li><strong>Nguyện cầu thiết thực:</strong> Ngư dân cầu ra khơi thuận buồm xuôi gió, biển lặng tôm cá đầy khoang; tiểu thương chợ quê cầu buôn may bán đắt; gia đình cầu con cháu bình an hòa thuận.</li>
+              <li><strong>Lễ vật thanh tịnh:</strong> Hoa tươi thơm ngát (hoa huệ trắng, cúc vàng, sen), trái cây ngũ sắc, trầu cau, hương trầm, xôi chè ngọt hoặc mâm cỗ chay. Tránh sát sinh ô uế tại chính điện.</li>
+              <li><strong>Đại lễ Vía Mẫu trong năm:</strong> Từ ngày 20 đến 23 tháng 3 Âm lịch (Đại lễ hội Tháp Bà / Tháp Nhạn).</li>
+            </ul>
+          </div>
+
+          <div class="p-3 bg-amber-50 rounded-2xl border border-amber-300 text-amber-900 text-xs font-semibold">
+            💡 <strong>Trùng hợp ý nghĩa:</strong> Ngày 8, 18, 28 Âm lịch cũng là 3 ngày trong Thập Trai (10 ngày ăn chay thanh tịnh mỗi tháng) của Phật giáo.
+          </div>
+        </div>
+
+        <!-- TAB 2: LỄ CHÙA & ĂN CHAY (PHẬT SỰ) -->
+        <div id="spContentChay" class="hidden space-y-3 text-xs sm:text-sm">
+          <div class="p-3.5 bg-emerald-50 rounded-2xl border-2 border-emerald-300 space-y-1.5">
+            <div class="flex items-center gap-2 text-emerald-900 font-black text-sm">
+              <span>☸️</span>
+              <span>LỊCH TRAI GIỚI (ĂN CHAY) HÀNG THÁNG</span>
+            </div>
+            <p class="text-slate-700 text-xs leading-relaxed">
+              • <strong>Tứ Trai (4 ngày):</strong> Mùng 1 (Sóc), ngày 14, Rằm 15 (Vọng), ngày 30 (hoặc 29 tháng thiếu).<br>
+              • <strong>Thập Trai (10 ngày):</strong> Mùng 1, 8, 14, 15, 18, 23, 24, 28, 29, 30 Âm lịch.
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <div class="font-black text-slate-900 text-xs uppercase text-emerald-900">📿 Cổ Tự Danh Lam Phú Yên & Lưu Ý An Toàn Hành Hương:</div>
+            <div class="space-y-2 text-xs">
+              <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="font-black text-slate-900 block">1. Chùa Đá Trắng (Từ Quang Tự - Đèo Tam Giang, Tuy An)</span>
+                <span class="text-slate-600 block mt-0.5">Cổ tự lịch sử nổi tiếng với giống xoài ngự dâng vua. <em>Lưu ý: Đoạn đèo Tam Giang dốc cao, đường cua cần cẩn thận khi trời mưa trơn trượt.</em></span>
+              </div>
+              <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="font-black text-slate-900 block">2. Chùa Bát Nhã (Triền Núi Chóp Chài - Tuy Hòa)</span>
+                <span class="text-slate-600 block mt-0.5">Không gian thanh tịnh nhìn trọn đồng lúa Tuy Hòa. <em>Lưu ý: Đường lên núi dốc đứng quanh co, mùa sương mù tầm nhìn hạn chế.</em></span>
+              </div>
+              <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="font-black text-slate-900 block">3. Chùa Thanh Lương (An Chấn, Tuy An)</span>
+                <span class="text-slate-600 block mt-0.5">Nổi tiếng với tượng Bồ Tát ngự giữa hồ nước và kiến trúc san hô, gáo dừa mộc mạc.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: SOẠN CÁO PHÓ KHẨN CẤP (ZALO) -->
+        <div id="spContentCaoPho" class="hidden space-y-3 text-xs sm:text-sm">
+          <div class="p-3 bg-red-50 rounded-2xl border-2 border-red-300 space-y-1">
+            <span class="font-black text-red-900 block text-xs">🖤 BÁO TANG KHẨN CẤP CHO BÀ CON DÒNG HỌ & XÓM LÀNG</span>
+            <p class="text-slate-600 text-[11px] leading-relaxed">
+              Điền nhanh thông tin người thân quá cố để tạo Cáo Phó chuẩn mực và gửi ngay qua Zalo đến con cháu, họ hàng ở xa.
+            </p>
+          </div>
+
+          <div class="space-y-2 text-xs">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-bold text-slate-700 text-[11px] mb-1">Họ tên người quá cố:</label>
+                <input type="text" id="caoPhoName" placeholder="vd: Cụ Bà Nguyễn Thị Mai" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold bg-white focus:outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 text-[11px] mb-1">Hưởng thọ / Hưởng dương:</label>
+                <input type="text" id="caoPhoAge" placeholder="vd: Hưởng thọ 86 tuổi" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold bg-white focus:outline-none">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-bold text-slate-700 text-[11px] mb-1">Lâm chung hồi (giờ/ngày):</label>
+                <input type="text" id="caoPhoDeathTime" placeholder="vd: 06h15 ngày 10/11/2026" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold bg-white focus:outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 text-[11px] mb-1">Lễ Di quan / Động quan:</label>
+                <input type="text" id="caoPhoBurialTime" placeholder="vd: 07h00 sáng ngày 12/11/2026" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold bg-white focus:outline-none">
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 text-[11px] mb-1">Nơi an táng / Nghĩa trang:</label>
+              <input type="text" id="caoPhoLocation" placeholder="vd: Nghĩa trang Đồng Bé, TP. Tuy Hòa" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold bg-white focus:outline-none">
+            </div>
+
+            <div class="p-2.5 bg-amber-50 rounded-xl border border-amber-300 text-amber-900 text-[11px] font-semibold">
+              ⚠️ <strong>Lưu ý nghĩa trang Phú Yên:</strong> Nghĩa trang đồi cát (Đông Hòa, Tuy An) hoặc triền núi (Đồng Bé, Núi Nhạn) vào mùa mưa dễ lầy lún xe tang. Bà con nên kiểm tra thời tiết giờ hạ huyệt trước khi xuất hành.
+            </div>
+
+            <button onclick="generateAndSendCaoPho()" class="w-full py-3 bg-[#1b2a47] hover:bg-[#253b64] text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-paper-plane text-yellow-300"></i> SOẠN CÁO PHÓ & GỬI QUA ZALO
+            </button>
+          </div>
+        </div>
+
+        <button onclick="toggleSpiritualModal()" class="w-full py-2.5 bg-white border-2 border-slate-300 text-slate-600 font-bold text-xs rounded-xl hover:bg-slate-100 transition">
           Đóng lại
         </button>
       </div>
@@ -848,6 +1014,7 @@
       ];
       document.getElementById("solarTermSimple").innerText = `${SOLAR_TERMS[termIndex % 24]} (${Math.round(sl)}°)`;
       checkMemorialForBloc(lun);
+      checkSpiritualForBloc(lun);
     }
 
     function tearLeaf(delta) {
@@ -977,6 +1144,124 @@
         { id: 1, relation: "Ông Nội", name: "Nguyễn Văn An", day: 2, month: 10, burial: "Đồi Chóp Chài, Tuy Hòa", notes: "Chính giỗ Mùng 2 Tháng 10. Mâm cúng chay thanh tịnh." },
         { id: 2, relation: "Cụ Cố / Tiên Tổ", name: "Nguyễn Tộc Tiên Linh", day: 15, month: 10, burial: "Nghĩa trang Đồng Bé", notes: "Cúng tạ ơn cơm mới Rằm Tháng Mười" }
       ];
+    }
+
+    // ============================================================
+    // TIỆN ÍCH LỄ TIẾT, VÍA MẪU (8 - 18 - 28) & BA ĐẠI SỰ
+    // ============================================================
+    function checkSpiritualForBloc(lun) {
+      const banner = document.getElementById("spiritualLeafBanner");
+      if (!banner) return;
+
+      const isViaMau = (lun.day === 8 || lun.day === 18 || lun.day === 28);
+      const isChay = (lun.day === 1 || lun.day === 15 || lun.day === 14 || lun.day === 30);
+
+      if (isViaMau) {
+        banner.className = "rounded-2xl p-3 shadow-sm flex items-center justify-between gap-2.5 my-2 border-2 bg-purple-50 border-purple-400 text-purple-950";
+        document.getElementById("spiritualLeafIcon").innerText = "🪷";
+        document.getElementById("spiritualLeafTitle").innerText = `HÔM NAY: NGÀY TUẦN VÍA MẪU (MÙNG ${lun.day} ÂL)`;
+        document.getElementById("spiritualLeafDesc").innerText = "Lễ tạ ơn Mẹ Xứ Sở Thiên Y A Na • Cầu bình an, thuyền xuôi sóng lặng, buôn may bán đắt";
+        const btn = document.getElementById("spiritualLeafBtn");
+        if (btn) {
+          btn.className = "px-2.5 py-1.5 font-black text-xs rounded-xl shrink-0 transition bg-purple-200 hover:bg-purple-300 text-purple-950";
+          btn.innerText = "XEM LỄ";
+        }
+        banner.classList.remove("hidden");
+        return;
+      }
+
+      if (isChay) {
+        banner.className = "rounded-2xl p-3 shadow-sm flex items-center justify-between gap-2.5 my-2 border-2 bg-emerald-50 border-emerald-400 text-emerald-950";
+        document.getElementById("spiritualLeafIcon").innerText = "☸️";
+        let chayTitle = lun.day === 1 ? "MÙNG 1 ÂL (NGÀY SÓC - ĂN CHAY & LỄ PHẬT)" : (lun.day === 15 ? "RẰM 15 ÂL (NGÀY VỌNG - ĂN CHAY & LỄ PHẬT)" : `NGÀY ${lun.day} ÂL (TRAI GIỚI TỊNH TÂM)`);
+        document.getElementById("spiritualLeafTitle").innerText = `HÔM NAY: ${chayTitle}`;
+        document.getElementById("spiritualLeafDesc").innerText = "Trai giới thanh tịnh, niệm Phật cầu an cho gia quyến & quê hương";
+        const btn = document.getElementById("spiritualLeafBtn");
+        if (btn) {
+          btn.className = "px-2.5 py-1.5 font-black text-xs rounded-xl shrink-0 transition bg-emerald-200 hover:bg-emerald-300 text-emerald-950";
+          btn.innerText = "XEM LỄ";
+        }
+        banner.classList.remove("hidden");
+        return;
+      }
+
+      // Nếu là ngày mai có Vía Mẫu (mùng 7, 17, 27)
+      if (lun.day === 7 || lun.day === 17 || lun.day === 27) {
+        banner.className = "rounded-2xl p-3 shadow-sm flex items-center justify-between gap-2.5 my-2 border-2 bg-purple-50/70 border-purple-300 text-purple-900";
+        document.getElementById("spiritualLeafIcon").innerText = "🪷";
+        document.getElementById("spiritualLeafTitle").innerText = `NGÀY MAI: NGÀY TUẦN VÍA MẪU (MÙNG ${lun.day + 1} ÂL)`;
+        document.getElementById("spiritualLeafDesc").innerText = "Chuẩn bị hoa huệ, cúc tươi, ngũ quả dâng lễ Mẹ Xứ Sở";
+        const btn = document.getElementById("spiritualLeafBtn");
+        if (btn) {
+          btn.className = "px-2.5 py-1.5 font-black text-xs rounded-xl shrink-0 transition bg-purple-200 hover:bg-purple-300 text-purple-900";
+          btn.innerText = "XEM LỄ";
+        }
+        banner.classList.remove("hidden");
+        return;
+      }
+
+      banner.classList.add("hidden");
+    }
+
+    function toggleSpiritualModal(tab = 'viamau') {
+      const modal = document.getElementById("spiritualModal");
+      if (!modal) return;
+      modal.classList.toggle("hidden");
+      if (!modal.classList.contains("hidden")) {
+        switchSpiritualTab(tab);
+      }
+    }
+
+    function switchSpiritualTab(tab) {
+      const btnViaMau = document.getElementById("tabSpBtnViaMau");
+      const btnChay = document.getElementById("tabSpBtnChay");
+      const btnCaoPho = document.getElementById("tabSpBtnCaoPho");
+
+      const contViaMau = document.getElementById("spContentViaMau");
+      const contChay = document.getElementById("spContentChay");
+      const contCaoPho = document.getElementById("spContentCaoPho");
+
+      btnViaMau.className = "py-2 rounded-xl text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1 text-[11px] sm:text-xs";
+      btnChay.className = "py-2 rounded-xl text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1 text-[11px] sm:text-xs";
+      btnCaoPho.className = "py-2 rounded-xl text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1 text-[11px] sm:text-xs";
+
+      contViaMau.classList.add("hidden");
+      contChay.classList.add("hidden");
+      contCaoPho.classList.add("hidden");
+
+      if (tab === 'chay') {
+        btnChay.className = "py-2 rounded-xl bg-emerald-700 text-white shadow transition flex items-center justify-center gap-1 text-[11px] sm:text-xs";
+        contChay.classList.remove("hidden");
+      } else if (tab === 'caopho') {
+        btnCaoPho.className = "py-2 rounded-xl bg-[#1b2a47] text-white shadow transition flex items-center justify-center gap-1 text-[11px] sm:text-xs";
+        contCaoPho.classList.remove("hidden");
+      } else {
+        btnViaMau.className = "py-2 rounded-xl bg-purple-900 text-white shadow transition flex items-center justify-center gap-1 text-[11px] sm:text-xs";
+        contViaMau.classList.remove("hidden");
+      }
+    }
+
+    function generateAndSendCaoPho() {
+      const name = document.getElementById("caoPhoName")?.value.trim() || "Cụ / Người thân";
+      const age = document.getElementById("caoPhoAge")?.value.trim() || "";
+      const deathTime = document.getElementById("caoPhoDeathTime")?.value.trim() || "";
+      const burialTime = document.getElementById("caoPhoBurialTime")?.value.trim() || "";
+      const location = document.getElementById("caoPhoLocation")?.value.trim() || "";
+
+      let text = `🖤 TIN BUỒN - CÁO PHÓ 🖤\n\n` +
+                 `Gia đình chúng tôi vô cùng thương tiếc báo tin:\n` +
+                 `${name}\n` +
+                 (age ? `(${age})\n` : '') +
+                 (deathTime ? `Đã tạ thế hồi: ${deathTime}\n` : '') +
+                 (burialTime ? `Lễ di quan / Động quan hồi: ${burialTime}\n` : '') +
+                 (location ? `Nơi an táng: ${location}\n` : '') +
+                 `\nKính báo để bà con họ hàng nội ngoại, bạn bè thân hữu gần xa được biết và cùng cầu nguyện cho hương linh sớm siêu sinh tịnh độ!\n\n` +
+                 `🌐 Xem thông tin thời tiết & con nước đưa tang tại: https://datphu-backend.vercel.app`;
+
+      const prevEl = document.getElementById("zaloPreviewText");
+      if (prevEl) prevEl.innerText = text;
+      toggleSpiritualModal();
+      toggleZaloModal();
     }
 
     function checkMemorialForBloc(lun) {
@@ -1236,7 +1521,11 @@
       let d = currentDate.getDate();
       let m = currentDate.getMonth() + 1;
       let y = currentDate.getFullYear();
-      let [lunarDay, lunarMonth, lunarYear, isLeap] = convertSolar2Lunar(d, m, y, TIME_ZONE);
+      let lun = convertSolar2Lunar(d, m, y, TIME_ZONE);
+      let lunarDay = lun.day;
+      let lunarMonth = lun.month;
+      let lunarYear = lun.year;
+      let isLeap = lun.isLeap;
       let lunarStr = lunarDay < 10 ? `Mùng ${lunarDay}` : `Ngày ${lunarDay}`;
       let dayName = getDayOfWeek(d, m, y);
       let canChiDay = getCanChiDay(d, m, y);
@@ -1247,9 +1536,17 @@
       let chunks = [
         `Hôm nay là ${dayName}, ngày ${d} tháng ${m} năm ${y} dương lịch.`,
         `Nhằm ngày ${lunarStr} tháng ${lunarMonth} âm lịch, ngày ${canChiDay}.`,
-        `Khu vực ${locName} nhiệt độ khoảng ${temp} độ C. Hiện tại là ${tide}.`,
-        `Lịch Đất Phú kính chúc bà con một ngày mới dồi dào sức khỏe, an khang và bình an!`
+        `Khu vực ${locName} nhiệt độ khoảng ${temp} độ C. Hiện tại là ${tide}.`
       ];
+
+      if (lunarDay === 8 || lunarDay === 18 || lunarDay === 28) {
+        chunks.push(`Hôm nay là ngày tuần vía Mẫu, mùng ${lunarDay} âm lịch. Kính chúc bà con gia đạo bình an, công việc hanh thông, buôn may bán đắt, ghe thuyền ra khơi thuận buồm xuôi gió.`);
+      } else if (lunarDay === 1 || lunarDay === 15 || lunarDay === 14 || lunarDay === 30) {
+        let chayText = lunarDay === 1 ? "mùng một" : (lunarDay === 15 ? "rằm mười lăm" : `ngày ${lunarDay}`);
+        chunks.push(`Hôm nay là ngày ${chayText} âm lịch, ngày trai giới lễ Phật. Kính chúc bà con thân tâm an lạc, vạn sự cát tường.`);
+      }
+
+      chunks.push(`Lịch Đất Phú kính chúc bà con một ngày mới dồi dào sức khỏe, an khang và bình an!`);
 
       // Thử dùng Web Speech API trước nếu có sẵn và có giọng tiếng Việt
       if ('speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined') {
@@ -1365,12 +1662,22 @@
       let d = currentDate.getDate();
       let m = currentDate.getMonth() + 1;
       let y = currentDate.getFullYear();
-      let [lunarDay, lunarMonth] = convertSolar2Lunar(d, m, y, TIME_ZONE);
+      let lun = convertSolar2Lunar(d, m, y, TIME_ZONE);
+      let lunarDay = lun.day;
+      let lunarMonth = lun.month;
       let lunarStr = lunarDay < 10 ? `Mùng ${lunarDay}` : `Ngày ${lunarDay}`;
       let dayName = getDayOfWeek(d, m, y);
 
+      let specialGreeting = "";
+      if (lunarDay === 8 || lunarDay === 18 || lunarDay === 28) {
+        specialGreeting = `🪷 Hôm nay là Ngày Tuần Vía Mẫu (Mùng ${lunarDay} ÂL) - Kính chúc gia quyến bình an, buôn may bán đắt, vạn sự hanh thông!\n`;
+      } else if (lunarDay === 1 || lunarDay === 15) {
+        specialGreeting = `☸️ Hôm nay là ngày ${lunarDay === 1 ? 'Mùng Một' : 'Rằm 15'} ÂL - Kính chúc bình an, tâm thanh tịnh, vạn sự cát tường!\n`;
+      }
+
       let text = `🌸 Chúc bạn và gia đình một ngày ${dayName} bình an, mạnh khỏe và vạn sự như ý!\n` +
                  `📅 Hôm nay: ${d}/${m}/${y} Dương lịch (Nhằm ${lunarStr} Tháng ${lunarMonth} Âm lịch)\n` +
+                 specialGreeting +
                  `👉 Xem con nước và lịch hôm nay tại: https://datphu-backend.vercel.app`;
 
       const prevEl = document.getElementById("zaloPreviewText");
