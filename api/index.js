@@ -8,12 +8,13 @@ const server = require('../src/server');
 
 module.exports = (req, res) => {
   const reqUrl = req.url || '';
-  const matchedPath = req.headers['x-matched-path'] || '';
+  const parsed = new URL(reqUrl, 'http://localhost');
+  const q = parsed.searchParams.get('q') || '';
 
   // 1. CỔNG PHÁT ÂM THANH GIỌNG NÓI TTS TIẾNG VIỆT (STREAMING MP3)
-  if (reqUrl.includes('/api/tts') || matchedPath.includes('/api/tts') || req.query?.q) {
-    const q = (req.query && req.query.q) || 'Lịch Đất Phú';
-    const ttsUrl = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=' + encodeURIComponent(q);
+  if (reqUrl.includes('tts') || q) {
+    const textToSpeak = q || 'Lịch Đất Phú';
+    const ttsUrl = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=' + encodeURIComponent(textToSpeak);
 
     return https.get(ttsUrl, {
       headers: {
