@@ -1174,50 +1174,98 @@
         </button>
       </div>
 
-      <!-- 4 TIỆN ÍCH DÂN SINH NGHĨA TÌNH ĐẤT PHÚ (CÂN ĐỐI 4 CỘT) -->
+      <!-- 4 TIỆN ÍCH DÂN SINH NGHĨA TÌNH ĐẤT PHÚ (ICON RIÊNG BIỆT ĐỘC BẢN) -->
       <div class="grid grid-cols-4 gap-2 pt-1.5">
         <!-- 1. ĐỌC LỊCH GIỌNG NÓI TRUYỀN CẢM & CHỌN CHUÔNG -->
         <div class="relative group">
-          <button id="btnSpeakCalendar" onclick="speakTodayCalendar()" class="w-full action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-amber-400 hover:bg-amber-50/50 flex flex-col items-center justify-center gap-1 active:scale-95 transition" title="Nghe giọng đọc ngày tháng, lời chúc & nhạc chuông">
-            <div class="icon-bubble w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center group-hover:scale-110 transition">
-              <i class="fa-solid fa-volume-high text-sm"></i>
+          <button id="btnSpeakCalendar" onclick="speakTodayCalendar()" class="w-full action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-amber-400 hover:bg-amber-50/50 flex flex-col items-center justify-center gap-1.5 active:scale-95 transition" title="Nghe giọng đọc ngày tháng, lời chúc & nhạc chuông">
+            <div class="icon-bubble w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-100 to-amber-200 text-amber-800 flex items-center justify-center group-hover:scale-110 transition shadow-xs border border-amber-300/40">
+              <!-- SVG Loa Phát Thanh Dân Sinh Mạ Đồng -->
+              <svg viewBox="0 0 24 24" class="w-5 h-5 drop-shadow-xs">
+                <defs>
+                  <linearGradient id="gradHorn" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fbbf24"/>
+                    <stop offset="60%" stop-color="#d97706"/>
+                    <stop offset="100%" stop-color="#92400e"/>
+                  </linearGradient>
+                </defs>
+                <path d="M11 5 L6 9 H2 V15 H6 L11 19 V5 Z" fill="url(#gradHorn)"/>
+                <path d="M15 9.5 C16.2 10.5 16.2 13.5 15 14.5" stroke="#d97706" stroke-width="2" stroke-linecap="round" fill="none"/>
+                <path d="M18.5 7 C21 9.5 21 14.5 18.5 17" stroke="#b45309" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
             </div>
             <span class="tracking-tight leading-tight">Đọc Lịch</span>
           </button>
           <!-- Nút đổi kiểu chuông và niệm Phật nhỏ gọn tinh tế -->
-          <button onclick="event.stopPropagation(); toggleRingtoneModal()" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-400 hover:bg-amber-500 text-amber-950 flex items-center justify-center text-[10px] shadow border border-white transition active:scale-90" title="Cài đặt nhạc chuông đọc lịch & niệm Phật">
+          <button onclick="event.stopPropagation(); toggleRingtoneModal()" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-amber-950 flex items-center justify-center text-[9px] shadow border border-white transition active:scale-90" title="Cài đặt nhạc chuông đọc lịch & niệm Phật">
             <i class="fa-solid fa-sliders"></i>
           </button>
         </div>
 
         <!-- 2. SỔ GIỖ GIA TIÊN (UỐNG NƯỚC NHỚ NGUỒN) -->
-        <button onclick="toggleMemorialModal()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-red-400 hover:bg-red-50/50 flex flex-col items-center justify-center gap-1 active:scale-95 transition group" title="Sổ giỗ gia tiên tưởng nhớ cội nguồn">
-          <div class="icon-bubble w-8 h-8 rounded-full bg-red-100 text-[#d9232a] flex items-center justify-center group-hover:scale-110 transition">
-            <i class="fa-solid fa-people-roof text-sm"></i>
+        <button onclick="toggleMemorialModal()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-red-400 hover:bg-red-50/50 flex flex-col items-center justify-center gap-1.5 active:scale-95 transition group" title="Sổ giỗ gia tiên tưởng nhớ cội nguồn">
+          <div class="icon-bubble w-9 h-9 rounded-2xl bg-gradient-to-br from-red-100 to-rose-200 text-[#d9232a] flex items-center justify-center group-hover:scale-110 transition shadow-xs border border-red-300/40">
+            <!-- SVG Mái Ngói Đình Làng & Cuốn Gia Phả Hoàng Gia -->
+            <svg viewBox="0 0 24 24" class="w-5 h-5 drop-shadow-xs">
+              <defs>
+                <linearGradient id="gradTempleRoof" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ef4444"/>
+                  <stop offset="100%" stop-color="#991b1b"/>
+                </linearGradient>
+              </defs>
+              <path d="M1 9 C4 8.5 8 5.5 12 3 C16 5.5 20 8.5 23 9 C20 8 16 6 12 6 C8 6 4 8 1 9 Z" fill="#facc15"/>
+              <path d="M3 10 C6 9 9 7.5 12 7.5 C15 7.5 18 9 21 10 L19 14 H5 L3 10 Z" fill="url(#gradTempleRoof)"/>
+              <rect x="6" y="14" width="2.2" height="7" fill="#d97706" rx="0.4"/>
+              <rect x="15.8" y="14" width="2.2" height="7" fill="#d97706" rx="0.4"/>
+              <rect x="9.5" y="14.5" width="5" height="6.5" fill="#fef08a" rx="1"/>
+              <line x1="2" y1="21" x2="22" y2="21" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </div>
           <span class="tracking-tight leading-tight">Sổ Gia Tiên</span>
         </button>
 
         <!-- 3. CÀI LỊCH RA MÀN HÌNH CHÍNH (PWA) -->
-        <button onclick="installPwaApp()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-blue-400 hover:bg-blue-50/50 flex flex-col items-center justify-center gap-1 active:scale-95 transition group" title="Cài ứng dụng ra màn hình chính để mở xem mỗi ngày">
-          <div class="icon-bubble w-8 h-8 rounded-full bg-blue-100 text-[#1b2a47] flex items-center justify-center group-hover:scale-110 transition">
-            <i class="fa-solid fa-mobile-screen-button text-sm"></i>
+        <button onclick="installPwaApp()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-blue-400 hover:bg-blue-50/50 flex flex-col items-center justify-center gap-1.5 active:scale-95 transition group" title="Cài ứng dụng ra màn hình chính để mở xem mỗi ngày">
+          <div class="icon-bubble w-9 h-9 rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-200 text-[#1b2a47] flex items-center justify-center group-hover:scale-110 transition shadow-xs border border-blue-300/40">
+            <!-- SVG Điện Thoại Mở Tờ Bloc Đất Phú -->
+            <svg viewBox="0 0 24 24" class="w-5 h-5 drop-shadow-xs">
+              <defs>
+                <linearGradient id="gradPhoneIcon" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#0284c7"/>
+                </linearGradient>
+              </defs>
+              <rect x="4" y="2" width="16" height="20" rx="3.5" fill="url(#gradPhoneIcon)"/>
+              <rect x="6" y="4.5" width="12" height="15" rx="1.8" fill="#ffffff"/>
+              <rect x="7.5" y="6" width="9" height="12" rx="1.2" fill="#d9232a"/>
+              <circle cx="12" cy="11.5" r="2.2" fill="#fef08a"/>
+              <rect x="7.5" y="6" width="9" height="2" rx="0.5" fill="#facc15"/>
+            </svg>
           </div>
           <span class="tracking-tight leading-tight">Cài Lịch</span>
         </button>
 
         <!-- 4. GỬI LỜI CHÚC QUA ZALO -->
-        <button onclick="shareZaloGreeting()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-emerald-400 hover:bg-emerald-50/50 flex flex-col items-center justify-center gap-1 active:scale-95 transition group" title="Gửi thiệp chúc bình an ngày mới qua Zalo">
-          <div class="icon-bubble w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition">
-            <i class="fa-solid fa-share-nodes text-sm"></i>
+        <button onclick="shareZaloGreeting()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-emerald-400 hover:bg-emerald-50/50 flex flex-col items-center justify-center gap-1.5 active:scale-95 transition group" title="Gửi thiệp chúc bình an ngày mới qua Zalo">
+          <div class="icon-bubble w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-200 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs border border-emerald-300/40">
+            <!-- SVG Cánh Én Mùa Xuân & Thiệp Hồng An Nhiên -->
+            <svg viewBox="0 0 24 24" class="w-5 h-5 drop-shadow-xs">
+              <defs>
+                <linearGradient id="gradEnv" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#34d399"/>
+                  <stop offset="100%" stop-color="#059669"/>
+                </linearGradient>
+              </defs>
+              <rect x="3" y="6" width="18" height="13" rx="2.5" fill="url(#gradEnv)"/>
+              <path d="M3 7 L12 13 L21 7" fill="none" stroke="#a7f3d0" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M12 2 C13 4 15 5 18 4 C15.5 6 14.5 8 13.5 10 C12.5 8 11.5 6 9 4 C12 5 11 4 12 2 Z" fill="#fde047"/>
+            </svg>
           </div>
           <span class="tracking-tight leading-tight">Gửi Zalo</span>
         </button>
       </div>
 
-    
-
-      <!-- HUB TIỆN ÍCH DÀNH CHO NGƯỜI TRẺ (GEN Z & YOUTH FOCUS) -->
+    <!-- HUB TIỆN ÍCH DÀNH CHO NGƯỜI TRẺ (GEN Z & YOUTH FOCUS) -->
       <div id="youthLifestyleHub" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-4 sm:p-5 rounded-3xl border-2 border-indigo-400/50 shadow-xl space-y-3.5 relative overflow-hidden transition-all duration-300">
         <!-- Ánh sáng neon nền thời thượng -->
         <div class="pointer-events-none absolute -top-10 -right-10 w-36 h-36 bg-cyan-500/15 rounded-full blur-2xl"></div>
@@ -1333,19 +1381,53 @@
           ★ Số Lớn ở giữa là Ngày Âm Lịch • Số nhỏ góc trên là Dương Lịch • Chạm vào ngày để xem chi tiết ★
         </div>
 
-        <!-- CHÚ THÍCH NHẬN DIỆN MÀU SẮC NGÀY LỄ / NGÀY THƯỜNG (BIỂU TƯỢNG RÕ NÉT KHÔNG LỖI FONT) -->
+        <!-- CHÚ THÍCH NHẬN DIỆN MÀU SẮC NGÀY LỄ / NGÀY THƯỜNG (BỘ ICON ĐỘC BẢN SẮC NÉT) -->
         <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2.5 py-2 px-3 bg-slate-50 rounded-2xl border border-slate-200 text-[10px] sm:text-[11px] font-bold shadow-sm">
-          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-red-50 text-red-800 border border-red-200 shadow-2xs">
-            <i class="fa-solid fa-fire text-red-600 text-[10px]"></i> <span>Tết Cổ Truyền</span>
+          <!-- 1. TẾT CỔ TRUYỀN -->
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-red-50 text-red-950 border border-red-200 shadow-2xs">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 drop-shadow-xs shrink-0">
+              <defs><linearGradient id="legTet" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#b91c1c"/></linearGradient></defs>
+              <rect x="4" y="2" width="16" height="20" rx="3" fill="url(#legTet)"/>
+              <path d="M4 6 C8 9 16 9 20 6" fill="none" stroke="#fef08a" stroke-width="1.5"/>
+              <circle cx="12" cy="13" r="2.2" fill="#facc15"/>
+              <circle cx="12" cy="13" r="1.1" fill="#ef4444"/>
+            </svg>
+            <span>Tết Cổ Truyền</span>
           </span>
-          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-purple-50 text-purple-800 border border-purple-200 shadow-2xs">
-            <i class="fa-solid fa-spa text-purple-600 text-[10px]"></i> <span>Vía Mẫu (8-18-28)</span>
+
+          <!-- 2. VÍA MẪU (8-18-28) -->
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-purple-50 text-purple-950 border border-purple-200 shadow-2xs">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 drop-shadow-xs shrink-0">
+              <defs><linearGradient id="legLotus" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#c026d3"/><stop offset="100%" stop-color="#f472b6"/></linearGradient></defs>
+              <path d="M12 2 C10.5 6 9 10 12 17 C15 10 13.5 6 12 2Z" fill="url(#legLotus)"/>
+              <path d="M7 6 C5.5 10 6.5 14 12 17 C9 13 8 9 7 6Z" fill="#db2777" opacity="0.9"/>
+              <path d="M17 6 C18.5 10 17.5 14 12 17 C15 13 16 9 17 6Z" fill="#db2777" opacity="0.9"/>
+              <circle cx="12" cy="13.5" r="2" fill="#fde047"/>
+            </svg>
+            <span>Vía Mẫu (8-18-28)</span>
           </span>
-          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-2xs">
-            <i class="fa-solid fa-dharmachakra text-emerald-600 text-[10px]"></i> <span>Rằm / Mùng 1 (Chay)</span>
+
+          <!-- 3. RẰM / MÙNG 1 (ĂN CHAY) -->
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-950 border border-emerald-200 shadow-2xs">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 drop-shadow-xs shrink-0">
+              <defs><linearGradient id="legLeaf" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#047857"/></linearGradient></defs>
+              <circle cx="12" cy="12" r="9" fill="#fef08a" opacity="0.5"/>
+              <path d="M12 2 C8 6 4 10 5.5 15 C6.8 19 10 21.5 12 21.5 C14 21.5 17.2 19 18.5 15 C20 10 16 6 12 2Z" fill="url(#legLeaf)"/>
+              <path d="M12 4 V20 M12 9 Q8 12 7 14 M12 9 Q16 12 17 14" stroke="#a7f3d0" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            </svg>
+            <span>Rằm / Mùng 1 (Chay)</span>
           </span>
-          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-200 shadow-2xs">
-            <i class="fa-solid fa-fire-flame-curved text-amber-600 text-[10px]"></i> <span>Giỗ Gia Tiên</span>
+
+          <!-- 4. GIỖ GIA TIÊN -->
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-amber-50 text-amber-950 border border-amber-200 shadow-2xs">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 drop-shadow-xs shrink-0">
+              <defs><linearGradient id="legBronze" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#92400e"/></linearGradient></defs>
+              <path d="M9 6 C8 4 10 3 9 1 M12 5 C11 3 13 2 12 1 M15 6 C14 4 16 3 15 1" stroke="#fcd34d" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+              <path d="M5 7 H19 L17.5 17 Q12 19 6.5 17 Z" fill="url(#legBronze)"/>
+              <circle cx="12" cy="12" r="1.8" fill="#fef3c7"/>
+              <path d="M7 17 L6 20 M12 18 L12 21 M17 17 L18 20" stroke="#b45309" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <span>Giỗ Gia Tiên</span>
           </span>
         </div>
 
@@ -4892,16 +4974,42 @@
           dayThemeClass = "is-today-cell bg-[#d9232a] text-white border-2 border-red-700 shadow-md ring-2 ring-red-400";
         } else if (isTet) {
           dayThemeClass = "bg-red-50 border-2 border-amber-400 text-red-950 font-black shadow-sm";
-          badgeDot = '<span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-red-100 text-red-600 text-[9px]" title="Tết Nguyên Đán"><i class="fa-solid fa-fire text-[9px]"></i></span>';
+          badgeDot = `<span class="inline-flex items-center justify-center w-4 h-4 shrink-0" title="Tết Cổ Truyền">
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 drop-shadow-xs">
+              <rect x="4" y="2" width="16" height="20" rx="3" fill="#dc2626"/>
+              <path d="M4 6 C8 9 16 9 20 6" fill="none" stroke="#fde047" stroke-width="1.5"/>
+              <circle cx="12" cy="13" r="2.2" fill="#facc15"/>
+            </svg>
+          </span>`;
         } else if (isTodayMem) {
           dayThemeClass = "bg-amber-50 border-2 border-amber-400 text-amber-950 font-black shadow-sm";
-          badgeDot = '<span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-amber-100 text-amber-700 text-[9px]" title="Giỗ gia tiên"><i class="fa-solid fa-fire-flame-curved text-[9px]"></i></span>';
+          badgeDot = `<span class="inline-flex items-center justify-center w-4 h-4 shrink-0" title="Giỗ Gia Tiên">
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 drop-shadow-xs">
+              <path d="M9 5 C8 3 10 2 9 1 M12 4 C11 2 13 2 12 1 M15 5 C14 3 16 2 15 1" stroke="#f59e0b" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+              <path d="M5 6 H19 L17.5 16 Q12 18 6.5 16 Z" fill="#b45309"/>
+              <circle cx="12" cy="11.5" r="1.8" fill="#fef08a"/>
+              <path d="M7 16 L6 19 M12 17 L12 20 M17 16 L18 19" stroke="#78350f" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>`;
         } else if (isViaMau) {
           dayThemeClass = "bg-purple-50/90 border-2 border-purple-300 text-purple-950 font-black";
-          badgeDot = '<span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-purple-100 text-purple-700 text-[9px]" title="Vía Mẫu (8-18-28)"><i class="fa-solid fa-spa text-[9px]"></i></span>';
+          badgeDot = `<span class="inline-flex items-center justify-center w-4 h-4 shrink-0" title="Vía Mẫu (8-18-28)">
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 drop-shadow-xs">
+              <path d="M12 2 C10.5 6 9 10 12 17 C15 10 13.5 6 12 2Z" fill="#c026d3"/>
+              <path d="M7 6 C5.5 10 6.5 14 12 17 C9 13 8 9 7 6Z" fill="#ec4899" opacity="0.9"/>
+              <path d="M17 6 C18.5 10 17.5 14 12 17 C15 13 16 9 17 6Z" fill="#ec4899" opacity="0.9"/>
+              <circle cx="12" cy="13.5" r="2" fill="#fde047"/>
+            </svg>
+          </span>`;
         } else if (isChay) {
           dayThemeClass = "bg-emerald-50/90 border-2 border-emerald-300 text-emerald-950 font-black";
-          badgeDot = '<span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 text-[9px]" title="Rằm / Mùng 1 (Ăn chay)"><i class="fa-solid fa-dharmachakra text-[9px]"></i></span>';
+          badgeDot = `<span class="inline-flex items-center justify-center w-4 h-4 shrink-0" title="Rằm / Mùng 1 (Ăn chay)">
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 drop-shadow-xs">
+              <circle cx="12" cy="12" r="9" fill="#fef08a" opacity="0.45"/>
+              <path d="M12 2 C8 6 4 10 5.5 15 C6.8 19 10 21.5 12 21.5 C14 21.5 17.2 19 18.5 15 C20 10 16 6 12 2Z" fill="#059669"/>
+              <path d="M12 4 V20 M12 9 Q8 12 7 14 M12 9 Q16 12 17 14" stroke="#a7f3d0" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </span>`;
         } else if (isSunday) {
           dayThemeClass = "border-red-200 bg-red-50/40 text-slate-800 hover:bg-red-50/80";
         } else if (isSaturday) {
