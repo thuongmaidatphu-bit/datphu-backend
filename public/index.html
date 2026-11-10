@@ -48,6 +48,102 @@
       box-shadow: inset 0 0 30px rgba(15, 23, 42, 0.8), 0 8px 24px rgba(0, 0, 0, 0.45);
     }
   
+    
+    /* ======================================================== */
+    /* CHẾ ĐỘ BAN ĐÊM (NIGHT MODE) - ÊM DỊU CHO MẮT VÀ SÂU LẮNG */
+    /* ======================================================== */
+    body.night-mode {
+      background-color: #030712 !important;
+      background: radial-gradient(ellipse at 50% 0%, #0c1527 0%, #030712 70%) !important;
+      color: #f8fafc !important;
+    }
+
+    body.night-mode header {
+      background-color: #090d16 !important;
+      border-color: #334155 !important;
+      color: #f8fafc !important;
+    }
+
+    body.night-mode #selectLocation {
+      background-color: #111827 !important;
+      border-color: #475569 !important;
+      color: #f8fafc !important;
+    }
+
+    body.night-mode .grid.grid-cols-3.bg-white {
+      background-color: #090d16 !important;
+      border-color: #334155 !important;
+    }
+
+    body.night-mode #navBtnMonth,
+    body.night-mode #navBtnYear {
+      color: #94a3b8 !important;
+    }
+    body.night-mode #navBtnMonth:hover,
+    body.night-mode #navBtnYear:hover {
+      background-color: #1e293b !important;
+      color: #f8fafc !important;
+    }
+
+    /* Bloc Leaf ở chế độ ban đêm: Nền đen saphir viền hoàng kim phát sáng */
+    body.night-mode .super-bloc {
+      background: linear-gradient(180deg, #0b0f19 0%, #111827 50%, #070a12 100%) !important;
+      border-color: #ca8a04 !important;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(250, 204, 21, 0.25) !important;
+      color: #f8fafc !important;
+    }
+
+    body.night-mode .super-bloc.theme-normal #leafLunarDayNumber {
+      color: #fde047 !important;
+      text-shadow: 0 0 30px rgba(250, 204, 21, 0.65), 0 4px 10px rgba(0,0,0,0.8) !important;
+    }
+
+    body.night-mode .super-bloc.theme-normal #leafLunarDayText {
+      color: #fef08a !important;
+    }
+
+    body.night-mode .super-bloc.theme-normal #leafLunarYear {
+      color: #e2e8f0 !important;
+    }
+
+    body.night-mode #leafSolarRow {
+      background-color: #0f172a !important;
+      border-color: #334155 !important;
+      color: #e2e8f0 !important;
+    }
+
+    body.night-mode #leafLunarBadge {
+      background-color: #1e1b4b !important;
+      border-color: #4338ca !important;
+      color: #c7d2fe !important;
+    }
+
+    /* Lưới tháng ở chế độ ban đêm */
+    body.night-mode #viewMonthSection .bg-white {
+      background-color: #090d16 !important;
+      border-color: #334155 !important;
+      color: #f8fafc !important;
+    }
+
+    body.night-mode #monthGridContainer button {
+      background-color: #0f172a !important;
+      border-color: #1e293b !important;
+      color: #f8fafc !important;
+    }
+    body.night-mode #monthGridContainer button:hover {
+      background-color: #1e293b !important;
+    }
+
+    /* Tiện ích 3 nút điều khiển */
+    body.night-mode .big-touch-btn.bg-\[\#1b2a47\] {
+      background-color: #0f172a !important;
+      border-color: #334155 !important;
+    }
+
+    body.night-mode #btnSpeakCalendar {
+      background-color: #0f172a !important;
+    }
+  
     .super-bloc {
       background-color: #ffffff;
       border: 4px solid #d9232a;
@@ -213,13 +309,22 @@
         <img src="img/logo_datphu_brand.jpg" alt="Logo Đất Phú" class="h-10 sm:h-12 w-auto object-contain rounded-lg" />
       </div>
 
-      <!-- CHỌN TIỂU VÙNG -->
+      
+      <div class="flex items-center gap-2">
+        <!-- NÚT CHUYỂN ĐỔI GIAO DIỆN BAN NGÀY / BAN ĐÊM (ÁNH NẮNG / TRĂNG SAO) -->
+        <button id="dayNightToggleBtn" onclick="toggleDayNightMode()" class="px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-amber-400 bg-amber-50 hover:bg-amber-100 text-amber-950 flex items-center gap-1.5 text-xs font-black shadow-sm transition active:scale-95" title="Bấm để chuyển đổi giao diện Ban Ngày / Ban Đêm">
+          <span id="dayNightIcon" class="text-sm">☀️</span>
+          <span id="dayNightText" class="hidden sm:inline">BAN NGÀY</span>
+        </button>
+
+        <!-- CHỌN TIỂU VÙNG -->
       <select id="selectLocation" onchange="changeLocation(this.value)" class="bg-slate-100 border-2 border-[#1b2a47] text-[#1b2a47] rounded-xl px-2.5 py-1.5 text-xs sm:text-sm font-black focus:outline-none">
         <option value="tuy-hoa" selected>Tuy Hòa ⌵</option>
         <option value="dong-xuan">Đồng Xuân ⌵</option>
         <option value="song-cau">Sông Cầu ⌵</option>
         <option value="song-hinh">Sông Hinh ⌵</option>
       </select>
+      </div>
     </header>
 
     <!-- THANH ĐIỀU HƯỚNG 3 CHẾ ĐỘ: HÔM NAY • HÀNG THÁNG • HÀNG NĂM -->
@@ -1966,6 +2071,52 @@
     let currentView = "day"; // 'day' | 'month' | 'year'
 
     // CHUYỂN ĐỔI 3 CHẾ ĐỘ: HÔM NAY • HÀNG THÁNG • HÀNG NĂM
+    
+    // QUẢN LÝ GIAO DIỆN BAN NGÀY / BAN ĐÊM (THỜI GIAN THỰC & CHỦ ĐỘNG)
+    let isNightMode = false;
+
+    function initDayNightMode() {
+      const savedTheme = localStorage.getItem("datphu_theme_mode");
+      if (savedTheme) {
+        isNightMode = (savedTheme === "night");
+      } else {
+        // Tự động theo thời gian thực địa phương GMT+7
+        const currentHour = new Date().getHours();
+        // Ban đêm từ 18:00 chiều đến 05:59 sáng
+        isNightMode = (currentHour >= 18 || currentHour < 6);
+      }
+      applyDayNightModeUI();
+    }
+
+    function toggleDayNightMode() {
+      isNightMode = !isNightMode;
+      localStorage.setItem("datphu_theme_mode", isNightMode ? "night" : "day");
+      applyDayNightModeUI();
+    }
+
+    function applyDayNightModeUI() {
+      const body = document.body;
+      const btn = document.getElementById("dayNightToggleBtn");
+      const icon = document.getElementById("dayNightIcon");
+      const text = document.getElementById("dayNightText");
+
+      if (isNightMode) {
+        body.classList.add("night-mode");
+        if (btn) {
+          btn.className = "px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-indigo-400 bg-indigo-950 text-indigo-200 flex items-center gap-1.5 text-xs font-black shadow-[0_0_12px_rgba(99,102,241,0.5)] transition active:scale-95";
+        }
+        if (icon) icon.innerText = "🌙";
+        if (text) text.innerText = "BAN ĐÊM";
+      } else {
+        body.classList.remove("night-mode");
+        if (btn) {
+          btn.className = "px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-amber-400 bg-amber-50 hover:bg-amber-100 text-amber-950 flex items-center gap-1.5 text-xs font-black shadow-sm transition active:scale-95";
+        }
+        if (icon) icon.innerText = "☀️";
+        if (text) text.innerText = "BAN NGÀY";
+      }
+    }
+  
     function switchView(view) {
       currentView = view;
       document.getElementById("viewDaySection").classList.add("hidden");
