@@ -554,6 +554,12 @@
 
       
       <div class="flex items-center gap-2">
+        <!-- NÚT BÁNH RĂNG CÀI ĐẶT & CHỌN PHONG CÁCH NGƯỜI TRẺ -->
+        <button id="settingsGearBtn" onclick="toggleSettingsCenterModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 flex items-center gap-1.5 text-xs font-black shadow-sm transition active:scale-95 group" title="Cài đặt & Giao diện người trẻ Gen Z">
+          <i class="fa-solid fa-gear text-sm group-hover:rotate-90 transition-transform duration-300 text-slate-700"></i>
+          <span class="hidden sm:inline">CÀI ĐẶT</span>
+        </button>
+
         <!-- NÚT ÂM THANH XÉ LỊCH & CHUÔNG BÁO -->
         <button id="soundToggleBtn" onclick="toggleRingtoneModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 flex items-center gap-1.5 text-xs font-black shadow-sm transition active:scale-95" title="Cài đặt nhạc chuông đọc lịch & niệm Phật">
           <span id="soundIcon" class="text-sm">🔔</span>
@@ -673,6 +679,89 @@
             </div>
             <div class="text-[11px] text-blue-200 mt-1 font-medium flex items-center justify-end gap-1" id="rainProximityDesc">
               <i class="fa-solid fa-mountain text-amber-300/70 text-[10px]"></i> Vùng mưa thượng nguồn Chư Sê / Gia Lai
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HUB TIỆN ÍCH DÀNH CHO NGƯỜI TRẺ (GEN Z & YOUTH FOCUS) -->
+      <div id="youthLifestyleHub" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-4 sm:p-5 rounded-3xl border-2 border-indigo-400/50 shadow-xl space-y-3.5 relative overflow-hidden transition-all duration-300">
+        <!-- Ánh sáng neon nền thời thượng -->
+        <div class="pointer-events-none absolute -top-10 -right-10 w-36 h-36 bg-cyan-500/15 rounded-full blur-2xl"></div>
+        <div class="pointer-events-none absolute -bottom-10 -left-10 w-36 h-36 bg-purple-500/15 rounded-full blur-2xl"></div>
+
+        <!-- HÀNG 1: HEADER GEN Z & NÚT ĐỔI SỰ KIỆN -->
+        <div class="flex items-center justify-between text-xs font-black pb-1 border-b border-indigo-800/40">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white text-[10px] uppercase tracking-wider font-black shadow-sm">
+              GEN Z HUB
+            </span>
+            <span class="text-indigo-200">Không Gian Người Trẻ</span>
+          </div>
+          <button onclick="toggleSettingsCenterModal('countdown')" class="text-amber-300 hover:text-amber-200 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition">
+            <i class="fa-solid fa-pen-to-square text-[10px]"></i> Đổi sự kiện
+          </button>
+        </div>
+
+        <!-- HÀNG 2: BỘ ĐẾM NGƯỢC COUNTDOWN THỜI GIAN THỰC -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-xs sm:text-sm font-black text-white flex items-center gap-1.5 truncate">
+              <i class="fa-solid fa-hourglass-half text-amber-400 animate-pulse text-xs"></i>
+              <span id="countdownEventTitle">Tết Nguyên Đán Bính Ngọ 2026</span>
+            </div>
+            <span class="text-[10px] text-indigo-300 font-bold shrink-0">Đang đếm ngược</span>
+          </div>
+
+          <div class="grid grid-cols-4 gap-2 text-center">
+            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
+              <div id="cdDays" class="text-2xl sm:text-3xl font-black font-mono text-cyan-300 leading-none">00</div>
+              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">NGÀY</div>
+            </div>
+            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
+              <div id="cdHours" class="text-2xl sm:text-3xl font-black font-mono text-purple-300 leading-none">00</div>
+              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">GIỜ</div>
+            </div>
+            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
+              <div id="cdMinutes" class="text-2xl sm:text-3xl font-black font-mono text-amber-300 leading-none">00</div>
+              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">PHÚT</div>
+            </div>
+            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
+              <div id="cdSeconds" class="text-2xl sm:text-3xl font-black font-mono text-pink-400 leading-none">00</div>
+              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">GIÂY</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HÀNG 3: CHIÊM TINH CUNG HOÀNG ĐẠO & ÂM THANH FOCUS LO-FI -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+          <!-- BÊN TRÁI: CHIÊM TINH & CON SỐ MAY MẮN -->
+          <div class="bg-slate-950/60 border border-indigo-500/30 rounded-2xl p-2.5 flex items-center justify-between">
+            <div>
+              <div class="text-[10px] text-indigo-300 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-sparkles text-amber-300"></i> <span id="zodiacYouthSign">Ma Kết</span>
+              </div>
+              <div class="text-xs font-black text-white mt-0.5">
+                Số hên: <span id="zodiacYouthNumber" class="text-amber-300 font-mono">04, 18, 88</span>
+              </div>
+            </div>
+            <span id="zodiacYouthVibe" class="px-2 py-0.5 rounded-full bg-indigo-500/30 border border-indigo-400/40 text-[10px] font-black text-indigo-200 shrink-0">
+              96% Vibe
+            </span>
+          </div>
+
+          <!-- BÊN PHẢI: NÚT ÂM THANH LO-FI THƯ THÁI FOCUS -->
+          <div class="bg-slate-950/60 border border-indigo-500/30 rounded-2xl p-2.5 flex items-center justify-between gap-1.5">
+            <span class="text-[10px] font-bold text-slate-300 shrink-0">
+              <i class="fa-solid fa-headphones text-pink-400"></i> Focus:
+            </span>
+            <div class="flex items-center gap-1.5">
+              <button id="btnAmbientRain" onclick="playAmbientSound('rain')" class="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-[11px] font-bold border border-slate-600 transition active:scale-95" title="Mưa rơi Tuy Hòa">
+                🌧️ Mưa
+              </button>
+              <button id="btnAmbientOcean" onclick="playAmbientSound('ocean')" class="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-[11px] font-bold border border-slate-600 transition active:scale-95" title="Sóng biển đêm">
+                🌊 Sóng
+              </button>
             </div>
           </div>
         </div>
@@ -1310,6 +1399,123 @@
     </section>
 
     <!-- TIỆN ÍCH DÂN SINH ĐÃ ĐƯỢC QUY HOẠCH TINH GỌN VÀO THANH ĐIỀU HÀNH CHÍNH -->
+
+    <!-- MODAL TRUNG TÂM CÀI ĐẶT & TRẢI NGHIỆM PHONG CÁCH CHO NGƯỜI TRẺ -->
+    <div id="settingsCenterModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+      <div id="settingsCenterCard" class="bg-white border-4 border-indigo-500 rounded-3xl w-full max-w-lg shadow-2xl flex flex-col max-h-[88vh] overflow-hidden">
+        
+        <!-- HEADER CỐ ĐỊNH -->
+        <div class="p-4 sm:p-5 pb-3 border-b-2 border-slate-200 flex items-center justify-between shrink-0 bg-white z-10">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-black text-xl flex items-center justify-center shadow shrink-0">
+              <i class="fa-solid fa-gear"></i>
+            </div>
+            <div>
+              <h3 class="text-base sm:text-lg font-black text-slate-900 leading-tight">CÀI ĐẶT & PHONG CÁCH</h3>
+              <p class="text-[11px] font-bold text-slate-500">Tùy biến chế độ Người Trẻ (Gen Z) & Truyền Thống</p>
+            </div>
+          </div>
+          <button onclick="toggleSettingsCenterModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-700 flex items-center justify-center transition active:scale-95 text-sm" title="Đóng">✕</button>
+        </div>
+
+        <!-- THÂN MODAL CUỘN -->
+        <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1">
+          
+          <!-- MỤC 1: CHỌN PHONG CÁCH TRẢI NGHIỆM -->
+          <div class="space-y-2">
+            <div class="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i> Phong Cách Giao Diện:
+            </div>
+            <div class="grid grid-cols-2 gap-2.5">
+              <!-- Chế độ người trẻ -->
+              <button onclick="setAppThemeMode('youth')" id="themeOptionYouth" class="p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-2 border-indigo-500 bg-indigo-50/80 shadow-sm ring-2 ring-indigo-400/40">
+                <div class="flex items-center justify-between">
+                  <span class="text-2xl">🧑‍💻</span>
+                  <span id="badgeThemeYouth" class="text-[9px] px-2 py-0.5 rounded-full bg-indigo-600 text-white font-black">ĐANG DÙNG</span>
+                </div>
+                <div>
+                  <div class="font-black text-xs sm:text-sm text-indigo-950">Người Trẻ (Gen Z)</div>
+                  <div class="text-[10px] text-indigo-700 leading-tight mt-0.5">Countdown, Focus Lo-Fi, Chiêm tinh & Vibe</div>
+                </div>
+              </button>
+
+              <!-- Chế độ truyền thống / người già -->
+              <button onclick="setAppThemeMode('senior')" id="themeOptionSenior" class="p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-2 border-slate-200 bg-white hover:border-slate-300">
+                <div class="flex items-center justify-between">
+                  <span class="text-2xl">👴</span>
+                  <span id="badgeThemeSenior" class="text-[9px] px-2 py-0.5 rounded-full bg-slate-600 text-white font-black hidden">ĐANG DÙNG</span>
+                </div>
+                <div>
+                  <div class="font-black text-xs sm:text-sm text-slate-800">Cổ Điển (Người Lớn)</div>
+                  <div class="text-[10px] text-slate-500 leading-tight mt-0.5">Số cực to, tối giản thanh tịnh, dễ nhìn</div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- MỤC 2: TÙY CHỈNH ĐẾM NGƯỢC COUNTDOWN CHO NGƯỜI TRẺ -->
+          <div class="p-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl space-y-2.5">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-black text-slate-800 flex items-center gap-1.5">
+                <i class="fa-solid fa-hourglass-start text-amber-500"></i> Đặt Mục Tiêu Đếm Ngược:
+              </label>
+              <button onclick="resetDefaultTetCountdown()" class="text-[10px] font-bold text-indigo-600 hover:underline">
+                Về Tết 2026
+              </button>
+            </div>
+            
+            <input type="text" id="inputCountdownEventName" placeholder="Tên sự kiện (VD: Thi tốt nghiệp, Chuyến đi Tuy Hòa...)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:border-indigo-500" />
+            
+            <div class="flex items-center gap-2">
+              <input type="datetime-local" id="inputCountdownEventDate" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:border-indigo-500" />
+              <button onclick="saveCustomCountdown()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl shadow active:scale-95 transition shrink-0">
+                Lưu Hẹn
+              </button>
+            </div>
+          </div>
+
+          <!-- MỤC 3: CHỌN CUNG HOÀNG ĐẠO GEN Z -->
+          <div class="p-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl space-y-2">
+            <label class="text-xs font-black text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-sparkles text-purple-600"></i> Chòm Sao Hoàng Đạo Của Bạn:
+            </label>
+            <select id="selectYouthZodiac" onchange="changeYouthZodiac(this.value)" class="w-full bg-white border border-slate-300 text-slate-800 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-indigo-500">
+              <option value="capricorn">♑ Ma Kết (22/12 - 19/01)</option>
+              <option value="aquarius">♒ Bảo Bình (20/01 - 18/02)</option>
+              <option value="pisces">♓ Song Ngư (19/02 - 20/03)</option>
+              <option value="aries">♈ Bạch Dương (21/03 - 19/04)</option>
+              <option value="taurus">♉ Kim Ngưu (20/04 - 20/05)</option>
+              <option value="gemini">♊ Song Tử (21/05 - 21/06)</option>
+              <option value="cancer">♋ Cự Giải (22/06 - 22/07)</option>
+              <option value="leo">♌ Sư Tử (23/07 - 22/08)</option>
+              <option value="virgo">♍ Xử Nữ (23/08 - 22/09)</option>
+              <option value="libra">♎ Thiên Bình (23/09 - 23/10)</option>
+              <option value="scorpio">♏ Thiên Yết (24/10 - 21/11)</option>
+              <option value="sagittarius">♐ Nhân Mã (22/11 - 21/12)</option>
+            </select>
+          </div>
+
+          <!-- MỤC 4: LỐI TẮT TIỆN ÍCH -->
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="toggleSettingsCenterModal(); toggleRingtoneModal();" class="p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition">
+              <i class="fa-solid fa-bell text-amber-500"></i> Cài Chuông Đọc Lịch
+            </button>
+            <button onclick="toggleSettingsCenterModal(); toggleDayNightMode();" class="p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition">
+              <i class="fa-solid fa-circle-half-stroke text-indigo-500"></i> Đổi Ngày / Đêm
+            </button>
+          </div>
+
+        </div>
+
+        <!-- FOOTER CỐ ĐỊNH -->
+        <div class="p-3 sm:p-4 pt-2.5 border-t-2 border-slate-100 shrink-0 bg-white z-10">
+          <button onclick="toggleSettingsCenterModal()" class="w-full py-2.5 sm:py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-black text-xs sm:text-sm shadow-md active:scale-95 transition">
+            ĐÃ LƯU • HOÀN TẤT
+          </button>
+        </div>
+
+      </div>
+    </div>
 
     <!-- MODAL CÀI ĐẶT NHẠC CHUÔNG & GIỌNG ĐỌC LỊCH (NAM MÔ A DI ĐÀ PHẬT, CHUÔNG CHÙA, CHUÔNG GIÓ...) -->
     <div id="ringtoneModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
@@ -5190,8 +5396,327 @@
       }, { passive: true });
     }
 
+    // =========================================================================
+    // TRUNG TÂM CÀI ĐẶT & KHÔNG GIAN NGƯỜI TRẺ (GEN Z HUB & SETTINGS)
+    // =========================================================================
+    const DEFAULT_TET_DATE = "2026-02-17T00:00:00";
+    const DEFAULT_TET_TITLE = "Tết Nguyên Đán Bính Ngọ 2026";
+
+    const ZODIAC_DATA = {
+      capricorn: { name: "♑ Ma Kết", numbers: "04, 18, 88", vibe: "96% Vibe", quote: "Kiên định, điềm tĩnh và bứt phá sự nghiệp." },
+      aquarius: { name: "♒ Bảo Bình", numbers: "07, 21, 99", vibe: "98% Vibe", quote: "Tư duy sáng tạo, tự do khám phá chân trời mới." },
+      pisces: { name: "♓ Song Ngư", numbers: "02, 16, 68", vibe: "94% Vibe", quote: "Tâm hồn giàu cảm xúc, trực giác nhạy bén." },
+      aries: { name: "♈ Bạch Dương", numbers: "01, 09, 82", vibe: "97% Vibe", quote: "Nhiệt huyết bùng nổ, sẵn sàng đón đầu thử thách." },
+      taurus: { name: "♉ Kim Ngưu", numbers: "06, 24, 79", vibe: "95% Vibe", quote: "Vững vàng thực tế, đón lộc tài chính thịnh vượng." },
+      gemini: { name: "♊ Song Tử", numbers: "05, 14, 85", vibe: "99% Vibe", quote: "Linh hoạt, giao thiệp rộng mở và muôn điều vui tươi." },
+      cancer: { name: "♋ Cự Giải", numbers: "02, 20, 77", vibe: "93% Vibe", quote: "Ấm áp yêu thương, gia đạo gắn kết an lành." },
+      leo: { name: "♌ Sư Tử", numbers: "01, 19, 95", vibe: "99% Vibe", quote: "Tự tin tỏa sáng, năng lượng lãnh đạo tràn ngập." },
+      virgo: { name: "♍ Xử Nữ", numbers: "03, 15, 66", vibe: "96% Vibe", quote: "Cẩn trọng chu đáo, đạt được sự hoàn mỹ tuyệt đối." },
+      libra: { name: "♎ Thiên Bình", numbers: "06, 24, 86", vibe: "97% Vibe", quote: "Cân bằng hòa nhã, kết nối nhân duyên tốt đẹp." },
+      scorpio: { name: "♏ Thiên Yết", numbers: "08, 18, 92", vibe: "98% Vibe", quote: "Bản lĩnh nội tâm, sắc bén vượt qua mọi chông gai." },
+      sagittarius: { name: "♐ Nhân Mã", numbers: "03, 09, 72", vibe: "99% Vibe", quote: "Lạc quan phóng khoáng, chuyến phiêu lưu đầy ắp niềm vui." }
+    };
+
+    function toggleSettingsCenterModal(targetSection) {
+      const modal = document.getElementById("settingsCenterModal");
+      if (!modal) return;
+      if (modal.classList.contains("hidden")) {
+        modal.classList.remove("hidden");
+        syncSettingsCenterModalUI();
+        if (targetSection === "countdown") {
+          const cdInput = document.getElementById("inputCountdownEventName");
+          if (cdInput) {
+            setTimeout(() => cdInput.focus(), 150);
+          }
+        }
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function syncSettingsCenterModalUI() {
+      const currentMode = localStorage.getItem("datphu_lifestyle_mode") || "youth";
+      updateThemeButtonsUI(currentMode);
+
+      const titleInput = document.getElementById("inputCountdownEventName");
+      const dateInput = document.getElementById("inputCountdownEventDate");
+      const zodiacSelect = document.getElementById("selectYouthZodiac");
+
+      if (titleInput) {
+        titleInput.value = localStorage.getItem("datphu_cd_title") || DEFAULT_TET_TITLE;
+      }
+      if (dateInput) {
+        const savedDate = localStorage.getItem("datphu_cd_date") || DEFAULT_TET_DATE;
+        dateInput.value = savedDate.substring(0, 16);
+      }
+      if (zodiacSelect) {
+        zodiacSelect.value = localStorage.getItem("datphu_zodiac") || "capricorn";
+      }
+    }
+
+    function setAppThemeMode(mode) {
+      localStorage.setItem("datphu_lifestyle_mode", mode);
+      applyAppThemeMode(mode);
+      updateThemeButtonsUI(mode);
+      showToast(mode === "youth" ? "🚀 Đã kích hoạt Chế độ Người Trẻ (Gen Z)" : "📜 Đã chuyển sang Chế độ Cổ Điển (Người Lớn)");
+    }
+
+    function applyAppThemeMode(mode) {
+      const youthHub = document.getElementById("youthLifestyleHub");
+      if (youthHub) {
+        if (mode === "senior") {
+          youthHub.classList.add("hidden");
+        } else {
+          youthHub.classList.remove("hidden");
+        }
+      }
+    }
+
+    function updateThemeButtonsUI(mode) {
+      const btnYouth = document.getElementById("themeOptionYouth");
+      const btnSenior = document.getElementById("themeOptionSenior");
+      const badgeYouth = document.getElementById("badgeThemeYouth");
+      const badgeSenior = document.getElementById("badgeThemeSenior");
+
+      if (btnYouth && btnSenior && badgeYouth && badgeSenior) {
+        if (mode === "youth") {
+          btnYouth.className = "p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-2 border-indigo-500 bg-indigo-50/80 shadow-sm ring-2 ring-indigo-400/40";
+          badgeYouth.classList.remove("hidden");
+          btnSenior.className = "p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-2 border-slate-200 bg-white hover:border-slate-300";
+          badgeSenior.classList.add("hidden");
+        } else {
+          btnSenior.className = "p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-2 border-amber-600 bg-amber-50/80 shadow-sm ring-2 ring-amber-400/40";
+          badgeSenior.classList.remove("hidden");
+          btnYouth.className = "p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-2 border-slate-200 bg-white hover:border-slate-300";
+          badgeYouth.classList.add("hidden");
+        }
+      }
+    }
+
+    function updateCountdownTimer() {
+      const targetStr = localStorage.getItem("datphu_cd_date") || DEFAULT_TET_DATE;
+      const titleStr = localStorage.getItem("datphu_cd_title") || DEFAULT_TET_TITLE;
+
+      const titleEl = document.getElementById("countdownEventTitle");
+      if (titleEl) titleEl.innerText = titleStr;
+
+      const targetDate = new Date(targetStr).getTime();
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      const dEl = document.getElementById("cdDays");
+      const hEl = document.getElementById("cdHours");
+      const mEl = document.getElementById("cdMinutes");
+      const sEl = document.getElementById("cdSeconds");
+
+      if (!dEl || !hEl || !mEl || !sEl) return;
+
+      if (isNaN(diff) || diff <= 0) {
+        dEl.innerText = "00";
+        hEl.innerText = "00";
+        mEl.innerText = "00";
+        sEl.innerText = "00";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      dEl.innerText = String(days).padStart(2, "0");
+      hEl.innerText = String(hours).padStart(2, "0");
+      mEl.innerText = String(minutes).padStart(2, "0");
+      sEl.innerText = String(seconds).padStart(2, "0");
+    }
+
+    function saveCustomCountdown() {
+      const nameInput = document.getElementById("inputCountdownEventName");
+      const dateInput = document.getElementById("inputCountdownEventDate");
+
+      const title = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : DEFAULT_TET_TITLE;
+      let dateVal = (dateInput && dateInput.value) ? dateInput.value : DEFAULT_TET_DATE;
+
+      if (dateVal.length === 16) dateVal += ":00";
+
+      localStorage.setItem("datphu_cd_title", title);
+      localStorage.setItem("datphu_cd_date", dateVal);
+
+      updateCountdownTimer();
+      showToast("🎯 Đã lưu sự kiện đếm ngược: " + title);
+    }
+
+    function resetDefaultTetCountdown() {
+      localStorage.setItem("datphu_cd_title", DEFAULT_TET_TITLE);
+      localStorage.setItem("datphu_cd_date", DEFAULT_TET_DATE);
+
+      const nameInput = document.getElementById("inputCountdownEventName");
+      const dateInput = document.getElementById("inputCountdownEventDate");
+      if (nameInput) nameInput.value = DEFAULT_TET_TITLE;
+      if (dateInput) dateInput.value = DEFAULT_TET_DATE.substring(0, 16);
+
+      updateCountdownTimer();
+      showToast("🌸 Đã trở lại đếm ngược Tết Bính Ngọ 2026!");
+    }
+
+    function changeYouthZodiac(signKey) {
+      localStorage.setItem("datphu_zodiac", signKey);
+      updateYouthZodiacUI();
+      const z = ZODIAC_DATA[signKey] || ZODIAC_DATA.capricorn;
+      showToast("✨ Đã chọn cung " + z.name + " (" + z.vibe + ")");
+    }
+
+    function updateYouthZodiacUI() {
+      const signKey = localStorage.getItem("datphu_zodiac") || "capricorn";
+      const z = ZODIAC_DATA[signKey] || ZODIAC_DATA.capricorn;
+
+      const signEl = document.getElementById("zodiacYouthSign");
+      const numEl = document.getElementById("zodiacYouthNumber");
+      const vibeEl = document.getElementById("zodiacYouthVibe");
+
+      if (signEl) signEl.innerText = z.name;
+      if (numEl) numEl.innerText = z.numbers;
+      if (vibeEl) vibeEl.innerText = z.vibe;
+    }
+
+    // =========================================================================
+    // LO-FI SYNTHESIZER: MƯA TUY HÒA & SÓNG BIỂN GÀNH ĐÁ ĐĨA (0 BYTE OFFLINE)
+    // =========================================================================
+    let ambientCtx = null;
+    let ambientSource = null;
+    let ambientGain = null;
+    let ambientLfo = null;
+    let currentAmbientType = null;
+
+    function playAmbientSound(type) {
+      if (currentAmbientType === type) {
+        stopAmbientSound();
+        showToast("⏹️ Đã dừng âm thanh thư giãn");
+        return;
+      }
+
+      stopAmbientSound();
+
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        if (!ambientCtx) ambientCtx = new AudioContextClass();
+        if (ambientCtx.state === "suspended") ambientCtx.resume();
+
+        // Buffer tiếng ồn 5 giây lặp lại
+        const bufferSize = ambientCtx.sampleRate * 5;
+        const noiseBuffer = ambientCtx.createBuffer(1, bufferSize, ambientCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        let b0 = 0, b1 = 0, b2 = 0;
+
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          if (type === "ocean") {
+            b0 = 0.99765 * b0 + white * 0.0990460;
+            b1 = 0.96300 * b1 + white * 0.2965164;
+            b2 = 0.57000 * b2 + white * 1.0526913;
+            output[i] = (b0 + b1 + b2 + white * 0.1848) * 0.08;
+          } else {
+            output[i] = white * 0.18;
+          }
+        }
+
+        ambientSource = ambientCtx.createBufferSource();
+        ambientSource.buffer = noiseBuffer;
+        ambientSource.loop = true;
+
+        const filter = ambientCtx.createBiquadFilter();
+        ambientGain = ambientCtx.createGain();
+
+        if (type === "ocean") {
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(450, ambientCtx.currentTime);
+          ambientGain.gain.setValueAtTime(0.05, ambientCtx.currentTime);
+
+          ambientLfo = ambientCtx.createOscillator();
+          const lfoGain = ambientCtx.createGain();
+          ambientLfo.type = "sine";
+          ambientLfo.frequency.setValueAtTime(0.18, ambientCtx.currentTime);
+          lfoGain.gain.setValueAtTime(0.12, ambientCtx.currentTime);
+
+          ambientLfo.connect(lfoGain);
+          lfoGain.connect(ambientGain.gain);
+          ambientLfo.start();
+
+          showToast("🌊 Đang phát tiếng sóng biển đêm Gành Đá Đĩa...");
+        } else {
+          filter.type = "bandpass";
+          filter.frequency.setValueAtTime(900, ambientCtx.currentTime);
+          filter.Q.setValueAtTime(0.8, ambientCtx.currentTime);
+          ambientGain.gain.setValueAtTime(0.16, ambientCtx.currentTime);
+
+          showToast("🌧️ Đang phát tiếng mưa rơi êm dịu Tuy Hòa...");
+        }
+
+        ambientSource.connect(filter);
+        filter.connect(ambientGain);
+        ambientGain.connect(ambientCtx.destination);
+        ambientSource.start();
+
+        currentAmbientType = type;
+        updateAmbientButtonsUI();
+
+      } catch (e) {
+        console.warn("Không thể phát ambient:", e);
+      }
+    }
+
+    function stopAmbientSound() {
+      if (ambientSource) {
+        try { ambientSource.stop(); } catch (e) {}
+        ambientSource.disconnect();
+        ambientSource = null;
+      }
+      if (ambientLfo) {
+        try { ambientLfo.stop(); } catch (e) {}
+        ambientLfo.disconnect();
+        ambientLfo = null;
+      }
+      currentAmbientType = null;
+      updateAmbientButtonsUI();
+    }
+
+    function updateAmbientButtonsUI() {
+      const btnRain = document.getElementById("btnAmbientRain");
+      const btnOcean = document.getElementById("btnAmbientOcean");
+
+      if (btnRain) {
+        if (currentAmbientType === "rain") {
+          btnRain.className = "px-2.5 py-1 rounded-xl bg-cyan-600 text-white text-[11px] font-black border border-cyan-300 shadow ring-2 ring-cyan-400/50 transition active:scale-95 animate-pulse";
+          btnRain.innerHTML = "🌧️ Mưa (Bật)";
+        } else {
+          btnRain.className = "px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95";
+          btnRain.innerHTML = "🌧️ Mưa";
+        }
+      }
+
+      if (btnOcean) {
+        if (currentAmbientType === "ocean") {
+          btnOcean.className = "px-2.5 py-1 rounded-xl bg-indigo-600 text-white text-[11px] font-black border border-indigo-300 shadow ring-2 ring-indigo-400/50 transition active:scale-95 animate-pulse";
+          btnOcean.innerHTML = "🌊 Sóng (Bật)";
+        } else {
+          btnOcean.className = "px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95";
+          btnOcean.innerHTML = "🌊 Sóng";
+        }
+      }
+    }
+
+    function initYouthThemeMode() {
+      const mode = localStorage.getItem("datphu_lifestyle_mode") || "youth";
+      applyAppThemeMode(mode);
+      updateCountdownTimer();
+      updateYouthZodiacUI();
+      setInterval(updateCountdownTimer, 1000);
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       initSoundMode();
+      initYouthThemeMode();
       initDayNightMode();
       initUserMemoryStreak();
       init3DBlocTilt();
