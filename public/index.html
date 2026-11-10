@@ -382,7 +382,7 @@
       <div class="relative drop-shadow-2xl">
         
         <!-- KHÁNH LỊCH ĐỎ SƠN MÀI KHÁNH VÀNG TRUYỀN THỐNG -->
-        <div id="khanhLichHeader" class="khanh-lich-lacquer relative rounded-t-3xl p-3 sm:p-4 border-b-0 overflow-hidden">
+        <div id="khanhLichHeader" class="hidden">
           <!-- Hoa văn góc vân mây Thụy Vân hoàng kim dát vàng -->
           <div class="pointer-events-none absolute top-1 left-2 opacity-70">
             <svg width="42" height="42" viewBox="0 0 50 50" fill="none">
@@ -435,7 +435,7 @@
         </div>
 
         <!-- TỜ BLOC NGÀY ĐẠI -->
-        <main id="blocLeaf" class="super-bloc rounded-b-3xl rounded-t-none p-5 sm:p-7 relative transition-transform duration-300 space-y-3 pt-6 border-t-2">
+        <main id="blocLeaf" class="super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3">
 
         <!-- TRANG TRÍ HOA MAI VÀNG RỰC RỠ NGÀY TẾT (ẨN/HIỆN THEO NGÀY) -->
                 <!-- TRANG TRÍ HOA MAI VÀNG RỰC RỠ & LIỄN ĐỎ LÌ XÌ TREO CÀNH (THEO ẢNH DÂN GIAN) -->
@@ -737,7 +737,7 @@
         </div>
 
         <!-- ĐÀI THIÊN VĂN MẶT TRĂNG 3D & THỦY TRIỀU SINH KẾ ĐẤT PHÚ (THEO ẢNH GIÁO DỤC SỐ & NASA) -->
-        <div id="leafTideBox" class="celestial-card relative overflow-hidden rounded-2xl p-3.5 sm:p-4 space-y-3 text-white">
+        <div id="leafTideBox" class="hidden">
           
           <!-- Bầu trời đêm sâu thẳm với bụi sao thiên hà & mây bạc lãng đãng (theo ảnh 2 & 4) -->
           <div class="pointer-events-none absolute inset-0 opacity-40">
@@ -2518,7 +2518,7 @@
         if (maiContainer) maiContainer.classList.remove("hidden");
         const tetCakes = document.getElementById("tetCakesContainer");
         if (tetCakes) tetCakes.classList.remove("hidden");
-        leaf.className = "super-bloc theme-tet rounded-b-3xl rounded-t-none p-5 sm:p-7 relative transition-transform duration-300 space-y-3 pt-6 border-t-2 overflow-hidden";
+        leaf.className = "super-bloc theme-tet rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 overflow-hidden";
         if (solarRow) solarRow.className = "bg-red-950/70 border-2 border-amber-400/60 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-amber-200";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1.5 rounded-full bg-amber-400 text-red-950 text-xs sm:text-sm font-black uppercase tracking-wider border-2 border-amber-300 shadow-md";
@@ -2545,7 +2545,7 @@
       if (isTodayMem) {
         if (khanhTitle) khanhTitle.innerText = "ẨM NƯỚC NHỚ NGUỒN • GIA ĐẠO HƯNG LONG";
         if (khanhSub) khanhSub.innerHTML = "<span>✦ CHÍNH GIỖ TƯỞNG NHỚ TIỀN NHÂN ✦</span>";
-        leaf.className = "super-bloc theme-gio rounded-b-3xl rounded-t-none p-5 sm:p-7 relative transition-transform duration-300 space-y-3 pt-6 border-t-2";
+        leaf.className = "super-bloc theme-gio rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3";
         if (solarRow) solarRow.className = "bg-amber-100/70 border-2 border-amber-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-amber-950";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-amber-200 text-amber-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-amber-300 shadow-sm";
@@ -2563,7 +2563,7 @@
       if (isViaMau) {
         if (khanhTitle) khanhTitle.innerText = "HOÀNG KIM THÁNH MẪU • PHÙ HỘ BÌNH AN";
         if (khanhSub) khanhSub.innerHTML = "<span>✦ BÁT TUẦN VÍA MẪU LIỄU HẠNH ✦</span>";
-        leaf.className = "super-bloc theme-viamau rounded-b-3xl rounded-t-none p-5 sm:p-7 relative transition-transform duration-300 space-y-3 pt-6 border-t-2";
+        leaf.className = "super-bloc theme-viamau rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3";
         if (solarRow) solarRow.className = "bg-purple-100/70 border-2 border-purple-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-purple-950";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-purple-200 text-purple-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-purple-300 shadow-sm";
@@ -2581,7 +2581,7 @@
       if (isChay) {
         if (khanhTitle) khanhTitle.innerText = "TÂM THÀNH Ý NGUYỆN • PHẬT QUANG PHỔ CHIẾU";
         if (khanhSub) khanhSub.innerHTML = "<span>✦ SÓC VỌNG TRAI GIỚI CẦU AN ✦</span>";
-        leaf.className = "super-bloc theme-chay rounded-b-3xl rounded-t-none p-5 sm:p-7 relative transition-transform duration-300 space-y-3 pt-6 border-t-2";
+        leaf.className = "super-bloc theme-chay rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3";
         if (solarRow) solarRow.className = "bg-emerald-100/70 border-2 border-emerald-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-emerald-950";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-emerald-200 text-emerald-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-emerald-300 shadow-sm";
@@ -2601,7 +2601,7 @@
       if (khanhSub) khanhSub.innerHTML = "<span>✦ PHÙ ĐIÊU KHÁNH VÀNG ĐẤT PHÚ ✦</span>";
       if (khanhIcon) khanhIcon.className = "fa-solid fa-dragon text-yellow-300 text-lg sm:text-xl drop-shadow";
       // CẤP 5: NGÀY THƯỜNG (TRẮNG ĐỎ CỔ ĐIỂN TƯƠNG PHẢN CAO)
-      leaf.className = "super-bloc theme-normal rounded-b-3xl rounded-t-none p-5 sm:p-7 relative transition-transform duration-300 space-y-3 pt-6 border-t-2 text-black";
+      leaf.className = "super-bloc theme-normal rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 text-black";
       if (solarRow) solarRow.className = "bg-blue-50 border-2 border-blue-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-[#1b2a47]";
       if (lunarBadge) {
         lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-red-100 text-[#d9232a] text-xs sm:text-sm font-black uppercase tracking-widest border border-red-200";
