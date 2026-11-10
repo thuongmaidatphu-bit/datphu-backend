@@ -971,7 +971,13 @@
 
         <div id="memorialLeafBanner" class="hidden bg-amber-50 border-2 border-amber-400 rounded-2xl p-3 shadow-sm flex items-center justify-between gap-2.5 my-2">
           <div class="flex items-center gap-2.5">
-            <span class="text-2xl shrink-0">🕯️</span>
+            <div class="w-7 h-7 rounded-lg bg-amber-500 p-1 text-white shrink-0 shadow-xs flex items-center justify-center">
+              <svg viewBox="0 0 24 24" class="w-full h-full">
+                <path d="M12 2c-.8 1.5-1.5 2.5-1.2 3.8.3 1.2 2.1 1.2 2.4 0 .3-1.3-.4-2.3-1.2-3.8z" fill="#fef08a"/>
+                <rect x="10.5" y="6.5" width="3" height="11.5" rx="1" fill="#ffffff"/>
+                <ellipse cx="12" cy="19" rx="5" ry="1.5" fill="#ca8a04"/>
+              </svg>
+            </div>
             <div>
               <span id="memorialLeafTitle" class="text-xs sm:text-sm font-black text-amber-900 block uppercase">
                 HÔM NAY: NGÀY GIỖ ÔNG NỘI
@@ -2365,7 +2371,34 @@
         <!-- Header -->
         <div class="flex items-center justify-between pb-3 border-b-2 border-slate-200">
           <div class="flex items-center gap-2.5">
-            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 font-black text-xl flex items-center justify-center border-2 border-amber-300 shadow-sm">🕯️</div>
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 via-amber-600 to-yellow-700 p-2 text-white flex items-center justify-center border-2 border-amber-400 shadow-md shrink-0">
+              <!-- SVG Ngọn Nến Tâm Hương Tri Ân Gia Tiên -->
+              <svg viewBox="0 0 24 24" class="w-full h-full drop-shadow-sm">
+                <defs>
+                  <linearGradient id="gradCandleFlame" x1="0%" y1="100%" x2="0%" y2="0%">
+                    <stop offset="0%" stop-color="#ef4444"/>
+                    <stop offset="40%" stop-color="#f59e0b"/>
+                    <stop offset="80%" stop-color="#fef08a"/>
+                    <stop offset="100%" stop-color="#ffffff"/>
+                  </linearGradient>
+                  <linearGradient id="gradCandleBrass" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fef08a"/>
+                    <stop offset="50%" stop-color="#d97706"/>
+                    <stop offset="100%" stop-color="#78350f"/>
+                  </linearGradient>
+                </defs>
+                <!-- Chân nến đồng chạm khắc -->
+                <ellipse cx="12" cy="20.5" rx="7" ry="2" fill="url(#gradCandleBrass)"/>
+                <path d="M10 20.5 C10 18.5 11 17 12 17 C13 17 14 18.5 14 20.5 Z" fill="#b45309"/>
+                <!-- Thân nến sáp trắng ngọc trang trọng -->
+                <rect x="10.5" y="9.5" width="3" height="8.5" rx="1.2" fill="#ffffff"/>
+                <!-- Tim nến -->
+                <line x1="12" y1="9.5" x2="12" y2="7.5" stroke="#78350f" stroke-width="1.2" stroke-linecap="round"/>
+                <!-- Ngọn lửa ấm áp linh thiêng -->
+                <path d="M12 2 C10.8 4.2 9.5 5.8 10 7.5 C10.5 9 13.5 9 14 7.5 C14.5 5.8 13.2 4.2 12 2 Z" fill="url(#gradCandleFlame)"/>
+                <circle cx="12" cy="6.5" r="1.2" fill="#ffffff" opacity="0.9"/>
+              </svg>
+            </div>
             <div>
               <h3 class="text-base sm:text-lg font-black text-[#1b2a47] leading-tight">SỔ KỶ NIỆM & GIỖ GIA TIÊN</h3>
               <p class="text-[11px] font-bold text-slate-500">Hiếu nghĩa gia tộc • Tự động nhắc giỗ & đổi ngày Dương</p>
@@ -2989,7 +3022,28 @@
         <!-- Header -->
         <div class="flex items-center justify-between pb-3 border-b-2 border-slate-200">
           <div class="flex items-center gap-2.5">
-            <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-700 font-black text-xl flex items-center justify-center border-2 border-purple-300 shadow-sm">🪷</div>
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-700 via-indigo-800 to-purple-950 p-2 text-white flex items-center justify-center border-2 border-purple-400 shadow-md shrink-0">
+              <!-- SVG Pháp Luân Bát Chánh Đạo Hoàng Kim Cổ Điển -->
+              <svg viewBox="0 0 24 24" class="w-full h-full drop-shadow-sm">
+                <defs>
+                  <linearGradient id="gradDharmaWheel" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fef08a"/>
+                    <stop offset="50%" stop-color="#facc15"/>
+                    <stop offset="100%" stop-color="#ca8a04"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="12" cy="12" r="9" fill="none" stroke="url(#gradDharmaWheel)" stroke-width="2"/>
+                <circle cx="12" cy="12" r="3" fill="#ffffff" stroke="url(#gradDharmaWheel)" stroke-width="1.5"/>
+                <line x1="12" y1="3" x2="12" y2="9" stroke="url(#gradDharmaWheel)" stroke-width="1.8"/>
+                <line x1="12" y1="15" x2="12" y2="21" stroke="url(#gradDharmaWheel)" stroke-width="1.8"/>
+                <line x1="3" y1="12" x2="9" y2="12" stroke="url(#gradDharmaWheel)" stroke-width="1.8"/>
+                <line x1="15" y1="12" x2="21" y2="12" stroke="url(#gradDharmaWheel)" stroke-width="1.8"/>
+                <line x1="5.6" y1="5.6" x2="9.8" y2="9.8" stroke="url(#gradDharmaWheel)" stroke-width="1.5"/>
+                <line x1="14.2" y1="14.2" x2="18.4" y2="18.4" stroke="url(#gradDharmaWheel)" stroke-width="1.5"/>
+                <line x1="18.4" y1="5.6" x2="14.2" y2="9.8" stroke="url(#gradDharmaWheel)" stroke-width="1.5"/>
+                <line x1="9.8" y1="14.2" x2="5.6" y2="18.4" stroke="url(#gradDharmaWheel)" stroke-width="1.5"/>
+              </svg>
+            </div>
             <div>
               <h3 class="text-base sm:text-lg font-black text-purple-950 leading-tight">LỄ TIẾT & TÂM LINH ĐẤT PHÚ</h3>
               <p class="text-[11px] font-bold text-slate-500">Vía Mẫu 8 - 18 - 28 • Ngày Ăn Chay Lễ Phật • Cáo Phó Khẩn</p>
@@ -3004,7 +3058,7 @@
             🏡 LÀM NHÀ
           </button>
           <button id="tabSpBtnViaMau" onclick="switchSpiritualTab('viamau')" class="py-2 rounded-xl text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-0.5">
-            🪷 VÍA MẪU
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 inline-block mr-1 text-purple-700"><path d="M12 2 C10.5 6 9 10 12 17 C15 10 13.5 6 12 2Z" fill="#a855f7"/><path d="M7 6 C5.5 10 6.5 14 12 17 C9 13 8 9 7 6Z" fill="#c084fc"/><path d="M17 6 C18.5 10 17.5 14 12 17 C15 13 16 9 17 6Z" fill="#c084fc"/><circle cx="12" cy="13.5" r="2" fill="#facc15"/></svg>VÍA MẪU
           </button>
           <button id="tabSpBtnChay" onclick="switchSpiritualTab('chay')" class="py-2 rounded-xl text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-0.5">
             ☸️ ĂN CHAY
@@ -5476,7 +5530,47 @@
       if (memorials.length === 0) {
         cont.innerHTML = `
           <div class="text-center py-6 text-slate-500 font-bold text-xs sm:text-sm">
-            <div class="text-3xl mb-1">📖</div>
+            <div class="w-16 h-16 mx-auto mb-2 drop-shadow-sm">
+              <!-- SVG Cuốn Sổ Gia Phả Hoàng Kim Bìa Lụa Đỏ Cổ Truyền -->
+              <svg viewBox="0 0 64 64" class="w-full h-full">
+                <defs>
+                  <linearGradient id="bookCoverRed" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#b91c1c"/>
+                    <stop offset="50%" stop-color="#991b1b"/>
+                    <stop offset="100%" stop-color="#7f1d1d"/>
+                  </linearGradient>
+                  <linearGradient id="bookPaperCream" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#fef3c7"/>
+                    <stop offset="100%" stop-color="#fde68a"/>
+                  </linearGradient>
+                  <linearGradient id="bookTrimGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fef08a"/>
+                    <stop offset="50%" stop-color="#facc15"/>
+                    <stop offset="100%" stop-color="#d97706"/>
+                  </linearGradient>
+                </defs>
+                <!-- Bìa sách gia phả mở rộng -->
+                <path d="M6 50 C18 47 30 50 32 53 C34 50 46 47 58 50 V18 C46 15 34 18 32 21 C30 18 18 15 6 18 Z" fill="url(#bookCoverRed)"/>
+                <!-- Trang giấy ngà thư tịch -->
+                <path d="M8 48 C19 45 29 48 31 50 V18 C29 16 19 13 8 16 Z" fill="url(#bookPaperCream)"/>
+                <path d="M56 48 C45 45 35 48 33 50 V18 C35 16 45 13 56 16 Z" fill="url(#bookPaperCream)"/>
+                <!-- Gáy sách mạ vàng -->
+                <line x1="32" y1="18" x2="32" y2="54" stroke="url(#bookTrimGold)" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- Dải lụa đỏ đánh dấu trang -->
+                <path d="M32 21 C34 26 36 32 37 40 L39 37 L41 41 C39 33 36 27 33 21 Z" fill="#dc2626"/>
+                <!-- Nét thư pháp mô phỏng gia phả -->
+                <line x1="12" y1="23" x2="27" y2="21" stroke="#b45309" stroke-width="1.5" stroke-linecap="round" opacity="0.65"/>
+                <line x1="12" y1="28" x2="25" y2="26" stroke="#b45309" stroke-width="1.5" stroke-linecap="round" opacity="0.65"/>
+                <line x1="12" y1="33" x2="27" y2="31" stroke="#b45309" stroke-width="1.5" stroke-linecap="round" opacity="0.65"/>
+                <line x1="12" y1="38" x2="23" y2="36" stroke="#b45309" stroke-width="1.5" stroke-linecap="round" opacity="0.65"/>
+                <line x1="37" y1="21" x2="52" y2="23" stroke="#b45309" stroke-width="1.5" stroke-linecap="round" opacity="0.65"/>
+                <line x1="39" y1="26" x2="52" y2="28" stroke="#b45309" stroke-width="1.5" stroke-linecap="round" opacity="0.65"/>
+                <line x1="37" y1="31" x2="52" y2="33" stroke="#b45309" stroke-width="1.5" stroke-linecap="round" opacity="0.65"/>
+                <!-- Góc sách bọc đồng hoàng kim -->
+                <circle cx="10" cy="18" r="1.5" fill="url(#bookTrimGold)"/>
+                <circle cx="54" cy="18" r="1.5" fill="url(#bookTrimGold)"/>
+              </svg>
+            </div>
             Chưa có ngày giỗ nào trong sổ.<br>Bấm "+ Thêm Người Thân" ở dưới để lưu giữ ngày giỗ ông bà cha mẹ.
           </div>
         `;
@@ -5523,9 +5617,9 @@
 
         let badgeHtml = "";
         if (m.diffDays === 0) {
-          badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-red-600 text-white font-black text-[10px] animate-pulse">🔥 HÔM NAY CHÍNH GIỖ</span>`;
+          badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-red-600 text-white font-black text-[10px] animate-pulse inline-flex items-center gap-1"><svg viewBox="0 0 24 24" class="w-3 h-3"><path d="M12 2c-.5 2.5-2.5 4.5-3 7-1 4.5 2 8 3 9 1-1 4-4.5 3-9-.5-2.5-2.5-4.5-3-7z" fill="#fde047"/><path d="M12 9c-.3 1.5-1.5 2.7-1.8 4.2-.6 2.7 1.2 4.8 1.8 5.4.6-.6 2.4-2.7 1.8-5.4-.3-1.5-1.5-2.7-1.8-4.2z" fill="#ef4444"/></svg>HÔM NAY CHÍNH GIỖ</span>`;
         } else if (m.diffDays <= 3) {
-          badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-amber-500 text-white font-black text-[10px]">🕯️ CÒN ${m.diffDays} NGÀY</span>`;
+          badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-amber-500 text-white font-black text-[10px] inline-flex items-center gap-1"><svg viewBox="0 0 24 24" class="w-3 h-3"><path d="M12 2c-.8 1.5-1.5 2.5-1.2 3.8.3 1.2 2.1 1.2 2.4 0 .3-1.3-.4-2.3-1.2-3.8z" fill="#fef08a"/><rect x="10.5" y="6.5" width="3" height="11.5" rx="1" fill="#ffffff"/><ellipse cx="12" cy="19" rx="5" ry="1.5" fill="#ca8a04"/></svg>CÒN ${m.diffDays} NGÀY</span>`;
         } else {
           badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 font-bold text-[10px]">Còn ${m.diffDays} ngày</span>`;
         }
@@ -5540,11 +5634,13 @@
                 <span class="text-[#1b2a47] font-black text-base">${m.name}</span>
                 ${badgeHtml}
               </div>
-              <div class="text-[#d9232a] font-black text-xs mt-1">
-                📅 Âm lịch: ${lunarStr} Tháng ${m.month}
+              <div class="text-[#d9232a] font-black text-xs mt-1 flex items-center gap-1">
+                <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 shrink-0 text-red-600"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z" fill="currentColor"/><path d="M12 11c-1.8 0-3 1.2-3 3s1.2 3 3 3c.7 0 1.3-.2 1.8-.6-.6-.2-1-.8-1-1.4 0-.8.7-1.5 1.5-1.5.3 0 .5.1.7.2-.2-1.6-1.5-2.7-3-2.7z" fill="#d9232a"/></svg>
+                <span>Âm lịch: ${lunarStr} Tháng ${m.month}</span>
               </div>
-              <div class="text-slate-600 font-bold text-xs mt-0.5">
-                🗓️ Dương lịch: <strong class="text-slate-800">${m.solarWeekday}, ${m.solarDay < 10 ? '0' : ''}${m.solarDay}/${m.solarMonth < 10 ? '0' : ''}${m.solarMonth}/${m.solarYear}</strong>
+              <div class="text-slate-600 font-bold text-xs mt-0.5 flex items-center gap-1">
+                <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 shrink-0 text-slate-700"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z" fill="currentColor"/><circle cx="12" cy="14.5" r="2.5" fill="#3b82f6"/></svg>
+                <span>Dương lịch: <strong class="text-slate-800">${m.solarWeekday}, ${m.solarDay < 10 ? '0' : ''}${m.solarDay}/${m.solarMonth < 10 ? '0' : ''}${m.solarMonth}/${m.solarYear}</strong></span>
               </div>
             </div>
             <button onclick="deleteMemorial(${m.id})" class="text-slate-400 hover:text-red-600 text-sm font-black p-1 transition" title="Xóa">✕</button>
