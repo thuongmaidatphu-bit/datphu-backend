@@ -1579,11 +1579,12 @@
               <!-- HÀNG 1: TIÊU ĐỀ & NGỮ CẢNH THỜI GIAN HIỆN TẠI -->
               <div class="flex items-center justify-between text-xs font-black pb-1 border-b border-teal-800/40">
                 <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-[10px] uppercase tracking-wider font-black shadow-sm flex items-center gap-1">
-                    <span>🌿</span> ÂM NHẠC TRỊ LIỆU
+                  <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-[10px] uppercase tracking-wider font-black shadow-sm flex items-center gap-1.5">
+                    <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 shrink-0 drop-shadow-xs"><path d="M12 2 C10.5 6 9 10 12 17 C15 10 13.5 6 12 2Z" fill="#a7f3d0"/><path d="M7 6 C5.5 10 6.5 14 12 17 C9 13 8 9 7 6Z" fill="#6ee7b7" opacity="0.9"/><path d="M17 6 C18.5 10 17.5 14 12 17 C15 13 16 9 17 6Z" fill="#6ee7b7" opacity="0.9"/><circle cx="12" cy="13.5" r="1.5" fill="#fef08a"/></svg>
+                    <span>ÂM NHẠC TRỊ LIỆU</span>
                   </span>
-                  <span id="healingTimeContextBadge" class="text-teal-200 text-[11px] truncate">
-                    🌙 Đêm An Lành (396 Hz)
+                  <span id="healingTimeContextBadge" class="text-teal-200 text-[11px] truncate flex items-center">
+                    <i class="fa-solid fa-moon text-indigo-300 mr-1"></i>Đêm An Lành (396 Hz)
                   </span>
                 </div>
                 <span class="text-[10px] text-teal-300 font-bold">Web Audio 100% Offline</span>
@@ -1600,7 +1601,7 @@
                   </p>
                 </div>
                 <button id="btnQuickPlayHealing" onclick="toggleQuickHealingSound()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-black text-xs shadow-md active:scale-95 transition shrink-0 flex items-center gap-1.5" title="Bật âm thanh chữa lành theo ngữ cảnh hiện tại">
-                  <span id="quickPlayHealingIcon">▶️</span>
+                  <span id="quickPlayHealingIcon" class="flex items-center"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5 fill-current"><polygon points="6 4 20 12 6 20 6 4"/></svg></span>
                   <span id="quickPlayHealingText">Xoa Dịu</span>
                 </button>
               </div>
@@ -7024,25 +7025,25 @@
       const hour = new Date().getHours();
       if (hour >= 5 && hour < 9) {
         return {
-          title: "🌅 Ban Mai Tươi Mới (528 Hz)",
+          title: '<i class="fa-solid fa-sun text-amber-300 mr-1.5"></i>Ban Mai Tươi Mới (528 Hz)',
           freq: 528,
           quote: "Một ngày mới bắt đầu, hãy mở rộng lòng đón nhận ánh nắng và những điều may mắn lành thiện."
         };
       } else if (hour >= 9 && hour < 14) {
         return {
-          title: "☀️ Tĩnh Tâm Giữa Ngày (432 Hz)",
+          title: '<i class="fa-solid fa-sun text-yellow-300 mr-1.5"></i>Tĩnh Tâm Giữa Ngày (432 Hz)',
           freq: 432,
           quote: "Dừng lại một nhịp, thở sâu và buông lỏng đôi vai. Mọi áp lực rồi sẽ được hóa giải."
         };
       } else if (hour >= 14 && hour < 18) {
         return {
-          title: "🌇 Hoàng Hôn Buông Xả (639 Hz)",
+          title: '<i class="fa-solid fa-cloud-sun text-orange-300 mr-1.5"></i>Hoàng Hôn Buông Xả (639 Hz)',
           freq: 639,
           quote: "Khép lại những bộn bề, gửi mệt mỏi theo gió biển Tuy Hòa. Trái tim bạn xứng đáng được vỗ về."
         };
       } else {
         return {
-          title: "🌙 Đêm An Lành (396 Hz)",
+          title: '<i class="fa-solid fa-moon text-indigo-300 mr-1.5"></i>Đêm An Lành (396 Hz)',
           freq: 396,
           quote: "Bạn đã vất vả nhiều rồi, hãy thả lỏng và cho phép mình được nghỉ ngơi. Mọi chuyện rồi sẽ bình an."
         };
@@ -7053,7 +7054,7 @@
       const ctx = detectCurrentHealingContext();
       const badge = document.getElementById("healingTimeContextBadge");
       const quote = document.getElementById("healingAffirmationText");
-      if (badge) badge.innerText = ctx.title;
+      if (badge) badge.innerHTML = ctx.title;
       if (quote) quote.innerText = `"${ctx.quote}"`;
     }
 
@@ -7087,19 +7088,19 @@
 
       const affirmations = {
         anxiety: {
-          badge: "🌿 Giải Phóng Lo Âu (396 Hz)",
+          badge: '<i class="fa-solid fa-seedling text-emerald-400 mr-1.5"></i>Giải Phóng Lo Âu (396 Hz)',
           quote: "Bạn đang an toàn ở đây, ngay phút giây này. Cơn bão nào rồi cũng sẽ tan, bình an đang ở lại trong bạn."
         },
         burnout: {
-          badge: "🕊️ Hồi Phục Kiệt Sức (528 Hz)",
+          badge: '<i class="fa-solid fa-dove text-teal-200 mr-1.5"></i>Hồi Phục Kiệt Sức (528 Hz)',
           quote: "Hãy thả lỏng đôi vai, hít một hơi thật sâu. Bạn đã cống hiến hết mình hôm nay rồi, giờ là lúc tâm trí được nghỉ ngơi."
         },
         sadness: {
-          badge: "🕯️ Hàn Gắn Yêu Thương (639 Hz)",
+          badge: '<i class="fa-solid fa-heart text-rose-400 mr-1.5"></i>Hàn Gắn Yêu Thương (639 Hz)',
           quote: "Nỗi buồn như giọt mưa rơi ngoài hiên, qua đi trời sẽ lại trong xanh. Bạn không hề đơn độc, luôn có tình thương quanh bạn."
         },
         sleep: {
-          badge: "🌙 Ngủ Ngon & Sâu Lắng (432 Hz)",
+          badge: '<i class="fa-solid fa-moon text-amber-300 mr-1.5"></i>Ngủ Ngon & Sâu Lắng (432 Hz)',
           quote: "Gác lại mọi nghĩ suy miên man. Đêm nay, đất trời Đất Phú ôm ấp bạn vào giấc ngủ êm đềm, thanh thản."
         }
       };
@@ -7108,7 +7109,7 @@
       if (item) {
         const badgeEl = document.getElementById("healingTimeContextBadge");
         const quoteEl = document.getElementById("healingAffirmationText");
-        if (badgeEl) badgeEl.innerText = item.badge;
+        if (badgeEl) badgeEl.innerHTML = item.badge;
         if (quoteEl) {
           quoteEl.classList.add("transition-all", "duration-200", "opacity-0");
           setTimeout(() => {
@@ -7266,7 +7267,7 @@
           qText.innerText = "Dừng Lại";
           qBtn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-black text-xs shadow-md active:scale-95 transition shrink-0 flex items-center gap-1.5 ring-2 ring-rose-400/40";
         } else {
-          qIcon.innerHTML = "▶️";
+          qIcon.innerHTML = '<svg viewBox="0 0 24 24" class="w-3.5 h-3.5 fill-current"><polygon points="6 4 20 12 6 20 6 4"/></svg>';
           qText.innerText = "Xoa Dịu";
           qBtn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-black text-xs shadow-md active:scale-95 transition shrink-0 flex items-center gap-1.5";
         }
