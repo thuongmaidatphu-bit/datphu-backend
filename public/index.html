@@ -843,24 +843,24 @@
           </div>
 
           <!-- BÊN PHẢI: NÚT ÂM THANH LO-FI THƯ THÁI FOCUS & THIỀN MƯA -->
-          <div class="bg-slate-950/60 border border-indigo-500/30 rounded-2xl p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div class="flex items-center justify-between sm:justify-start gap-2">
-              <span class="text-[10px] font-bold text-slate-300 shrink-0 flex items-center gap-1">
-                <i class="fa-solid fa-headphones text-pink-400"></i> Âm Thanh:
+          <div class="bg-slate-950/60 border border-indigo-500/30 rounded-2xl p-2.5 flex flex-col justify-between gap-1.5">
+            <div class="flex items-center justify-between text-[10px]">
+              <span class="font-bold text-slate-300 flex items-center gap-1">
+                <i class="fa-solid fa-headphones text-pink-400"></i> Lo-Fi Focus:
               </span>
-              <button onclick="toggleZenRainModal()" class="text-[10px] font-bold text-teal-300 hover:text-teal-200 underline flex items-center gap-1 active:scale-95 transition" title="Bảng điều khiển Thiền Mưa Phật Giáo & Hẹn giờ ngủ">
+              <button onclick="toggleZenRainModal()" class="font-bold text-teal-300 hover:text-teal-200 underline flex items-center gap-1 active:scale-95 transition whitespace-nowrap" title="Bảng điều khiển Thiền Mưa Phật Giáo & Hẹn giờ ngủ">
                 <i class="fa-solid fa-sliders text-[9px]"></i> Hẹn giờ ngủ
               </button>
             </div>
-            <div class="flex items-center gap-1.5 flex-wrap">
-              <button id="btnAmbientZenRain" onclick="playAmbientSound('zen_rain')" class="px-2.5 py-1 rounded-xl bg-gradient-to-r from-teal-800 to-cyan-800 hover:from-teal-700 hover:to-cyan-700 text-cyan-100 text-[11px] font-black border border-cyan-400/50 shadow transition active:scale-95 flex items-center gap-1" title="Nhạc Thiền Phật Giáo kết hợp tiếng mưa & chuông gió cho bình an nội tâm và giấc ngủ sâu">
+            <div class="grid grid-cols-3 gap-1">
+              <button id="btnAmbientZenRain" onclick="playAmbientSound('zen_rain')" class="py-1 px-1.5 rounded-xl bg-gradient-to-r from-teal-800 to-cyan-800 hover:from-teal-700 hover:to-cyan-700 text-cyan-100 text-[10px] font-black border border-cyan-400/50 shadow transition active:scale-95 flex items-center justify-center gap-1 truncate" title="Nhạc Thiền Phật Giáo kết hợp tiếng mưa & chuông gió cho bình an nội tâm và giấc ngủ sâu">
                 <span>🎐</span> Thiền Mưa
               </button>
-              <button id="btnAmbientRain" onclick="playAmbientSound('rain')" class="px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95" title="Mưa rơi Tuy Hòa">
-                🌧️ Mưa
+              <button id="btnAmbientRain" onclick="playAmbientSound('rain')" class="py-1 px-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold border border-slate-600 transition active:scale-95 flex items-center justify-center gap-1 truncate" title="Mưa rơi Tuy Hòa">
+                <span>🌧️</span> Mưa
               </button>
-              <button id="btnAmbientOcean" onclick="playAmbientSound('ocean')" class="px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95" title="Sóng biển đêm">
-                🌊 Sóng
+              <button id="btnAmbientOcean" onclick="playAmbientSound('ocean')" class="py-1 px-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold border border-slate-600 transition active:scale-95 flex items-center justify-center gap-1 truncate" title="Sóng biển đêm">
+                <span>🌊</span> Sóng
               </button>
             </div>
           </div>
@@ -1560,7 +1560,7 @@
                 <i class="fa-solid fa-hourglass-start text-amber-500"></i> Đặt Mục Tiêu Đếm Ngược:
               </label>
               <button onclick="resetDefaultTetCountdown()" class="text-[10px] font-bold text-indigo-600 hover:underline">
-                Về Tết 2026
+                Về Tết Nguyên Đán
               </button>
             </div>
             
@@ -5772,8 +5772,33 @@
     // =========================================================================
     // TRUNG TÂM CÀI ĐẶT & KHÔNG GIAN NGƯỜI TRẺ (GEN Z HUB & SETTINGS)
     // =========================================================================
-    const DEFAULT_TET_DATE = "2026-02-17T00:00:00";
-    const DEFAULT_TET_TITLE = "Tết Nguyên Đán Bính Ngọ 2026";
+    function getDynamicTetTarget() {
+      const now = new Date();
+      const currentYear = now.getFullYear();
+
+      // Kiểm tra Tết của năm hiện tại
+      let targetYear = currentYear;
+      let targetSol = convertLunar2Solar(1, 1, targetYear, 0, TIME_ZONE);
+      let tetDate = new Date(targetSol.year, targetSol.month - 1, targetSol.day, 0, 0, 0);
+
+      // Nếu Tết năm nay đã qua, hướng tới Tết năm sau
+      if (tetDate.getTime() <= now.getTime()) {
+        targetYear = currentYear + 1;
+        targetSol = convertLunar2Solar(1, 1, targetYear, 0, TIME_ZONE);
+      }
+
+      const can = CAN[(targetYear + 6) % 10];
+      const chi = CHI[(targetYear + 8) % 12];
+      const canChiYear = `${can} ${chi} ${targetYear}`;
+
+      const m = targetSol.month < 10 ? `0${targetSol.month}` : `${targetSol.month}`;
+      const d = targetSol.day < 10 ? `0${targetSol.day}` : `${targetSol.day}`;
+
+      return {
+        date: `${targetSol.year}-${m}-${d}T00:00:00`,
+        title: `Tết Nguyên Đán ${canChiYear}`
+      };
+    }
 
     const ZODIAC_DATA = {
       capricorn: { name: "♑ Ma Kết", numbers: "04, 18, 88", vibe: "96% Vibe", quote: "Kiên định, điềm tĩnh và bứt phá sự nghiệp." },
@@ -5811,15 +5836,16 @@
       const currentMode = localStorage.getItem("datphu_lifestyle_mode") || "youth";
       updateThemeButtonsUI(currentMode);
 
+      const defaultTet = getDynamicTetTarget();
       const titleInput = document.getElementById("inputCountdownEventName");
       const dateInput = document.getElementById("inputCountdownEventDate");
       const zodiacSelect = document.getElementById("selectYouthZodiac");
 
       if (titleInput) {
-        titleInput.value = localStorage.getItem("datphu_cd_title") || DEFAULT_TET_TITLE;
+        titleInput.value = localStorage.getItem("datphu_cd_title") || defaultTet.title;
       }
       if (dateInput) {
-        const savedDate = localStorage.getItem("datphu_cd_date") || DEFAULT_TET_DATE;
+        const savedDate = localStorage.getItem("datphu_cd_date") || defaultTet.date;
         dateInput.value = savedDate.substring(0, 16);
       }
       if (zodiacSelect) {
@@ -5867,14 +5893,24 @@
     }
 
     function updateCountdownTimer() {
-      const targetStr = localStorage.getItem("datphu_cd_date") || DEFAULT_TET_DATE;
-      const titleStr = localStorage.getItem("datphu_cd_title") || DEFAULT_TET_TITLE;
+      const defaultTet = getDynamicTetTarget();
+      let targetStr = localStorage.getItem("datphu_cd_date");
+      let titleStr = localStorage.getItem("datphu_cd_title");
+
+      const now = new Date().getTime();
+
+      // Nếu chưa có cài đặt hoặc ngày cài đặt là ngày Tết trong quá khứ -> Tự động chuyển tới Tết sắp tới
+      if (!targetStr || (new Date(targetStr).getTime() <= now && (!titleStr || titleStr.includes("Tết")))) {
+        targetStr = defaultTet.date;
+        titleStr = defaultTet.title;
+        localStorage.setItem("datphu_cd_date", targetStr);
+        localStorage.setItem("datphu_cd_title", titleStr);
+      }
 
       const titleEl = document.getElementById("countdownEventTitle");
-      if (titleEl) titleEl.innerText = titleStr;
+      if (titleEl) titleEl.innerText = titleStr || defaultTet.title;
 
       const targetDate = new Date(targetStr).getTime();
-      const now = new Date().getTime();
       const diff = targetDate - now;
 
       const dEl = document.getElementById("cdDays");
@@ -5904,11 +5940,12 @@
     }
 
     function saveCustomCountdown() {
+      const defaultTet = getDynamicTetTarget();
       const nameInput = document.getElementById("inputCountdownEventName");
       const dateInput = document.getElementById("inputCountdownEventDate");
 
-      const title = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : DEFAULT_TET_TITLE;
-      let dateVal = (dateInput && dateInput.value) ? dateInput.value : DEFAULT_TET_DATE;
+      const title = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : defaultTet.title;
+      let dateVal = (dateInput && dateInput.value) ? dateInput.value : defaultTet.date;
 
       if (dateVal.length === 16) dateVal += ":00";
 
@@ -5920,16 +5957,17 @@
     }
 
     function resetDefaultTetCountdown() {
-      localStorage.setItem("datphu_cd_title", DEFAULT_TET_TITLE);
-      localStorage.setItem("datphu_cd_date", DEFAULT_TET_DATE);
+      const defaultTet = getDynamicTetTarget();
+      localStorage.setItem("datphu_cd_title", defaultTet.title);
+      localStorage.setItem("datphu_cd_date", defaultTet.date);
 
       const nameInput = document.getElementById("inputCountdownEventName");
       const dateInput = document.getElementById("inputCountdownEventDate");
-      if (nameInput) nameInput.value = DEFAULT_TET_TITLE;
-      if (dateInput) dateInput.value = DEFAULT_TET_DATE.substring(0, 16);
+      if (nameInput) nameInput.value = defaultTet.title;
+      if (dateInput) dateInput.value = defaultTet.date.substring(0, 16);
 
       updateCountdownTimer();
-      showToast("🌸 Đã trở lại đếm ngược Tết Bính Ngọ 2026!");
+      showToast("🌸 Đã trở lại đếm ngược " + defaultTet.title + "!");
     }
 
     function changeYouthZodiac(signKey) {
