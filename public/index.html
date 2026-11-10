@@ -85,15 +85,16 @@
       color: #f8fafc !important;
     }
 
-    /* Bloc Leaf ở chế độ ban đêm: Nền đen saphir viền hoàng kim phát sáng */
-    body.night-mode 
-    /* ẨN HOÀN TOÀN CỤM THIÊN VĂN THEO YÊU CẦU NGƯỜI DÙNG */
+    /* ẨN HOÀN TOÀN CÁC PHẦN THEO YÊU CẦU TINH GỌN */
     #leafTideBox,
-    #khanhLichHeader {
+    #khanhLichHeader,
+    button[onclick*="toggleSpiritualModal('viamau')"],
+    button[onclick*="toggleSpiritualModal('caopho')"] {
       display: none !important;
     }
-  
-    .super-bloc {
+
+    /* Bloc Leaf ở chế độ ban đêm: Nền đen saphir viền hoàng kim phát sáng */
+    body.night-mode .super-bloc {
       background: linear-gradient(180deg, #0b0f19 0%, #111827 50%, #070a12 100%) !important;
       border-color: #ca8a04 !important;
       box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(250, 204, 21, 0.25) !important;
@@ -970,10 +971,10 @@
       <button onclick="toggleMemorialModal()" class="px-4 py-2.5 rounded-2xl bg-white border-2 border-slate-300 font-black text-xs sm:text-sm text-slate-800 hover:bg-slate-100 transition shadow-sm flex items-center gap-2">
         <i class="fa-solid fa-people-roof text-[#d9232a]"></i> Sổ Giỗ Gia Tiên
       </button>
-      <button onclick="toggleSpiritualModal('viamau')" class="px-4 py-2.5 rounded-2xl bg-white border-2 border-purple-300 font-black text-xs sm:text-sm text-purple-900 hover:bg-purple-50 transition shadow-sm flex items-center gap-2">
+      <button onclick="toggleSpiritualModal('viamau')" style="display: none !important;" class="hidden px-4 py-2.5 rounded-2xl bg-white border-2 border-purple-300 font-black text-xs sm:text-sm text-purple-900 hover:bg-purple-50 transition shadow-sm flex items-center gap-2">
         <i class="fa-solid fa-spa text-purple-600"></i> Lễ Chùa & Vía Mẫu (8 - 18 - 28)
       </button>
-      <button onclick="toggleSpiritualModal('caopho')" class="px-4 py-2.5 rounded-2xl bg-white border-2 border-slate-300 font-black text-xs sm:text-sm text-slate-700 hover:bg-slate-100 transition shadow-sm flex items-center gap-2">
+      <button onclick="toggleSpiritualModal('caopho')" style="display: none !important;" class="hidden px-4 py-2.5 rounded-2xl bg-white border-2 border-slate-300 font-black text-xs sm:text-sm text-slate-700 hover:bg-slate-100 transition shadow-sm flex items-center gap-2">
         <i class="fa-solid fa-bell text-slate-500"></i> Cáo Phó Khẩn Zalo
       </button>
     </div>
