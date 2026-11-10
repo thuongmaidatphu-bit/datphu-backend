@@ -122,7 +122,7 @@ const server = http.createServer(async (req, res) => {
   // ========================================================================
   // BỘ PHÁT GIỌNG NÓI ĐỌC LỊCH ĐẤT PHÚ (TTS PROXY STREAMING MP3)
   // ========================================================================
-  if (pathname === '/api/tts' && req.method === 'GET') {
+  if ((pathname === '/api/tts' || pathname.includes('tts') || parsedUrl.searchParams.has('q')) && req.method === 'GET') {
     const q = parsedUrl.searchParams.get('q') || '';
     if (!q) {
       res.writeHead(400, { 'Content-Type': 'text/plain' });
