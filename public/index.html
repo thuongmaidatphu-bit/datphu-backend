@@ -145,6 +145,12 @@
       color: #f8fafc !important;
     }
 
+    body.night-mode #monthGridContainer button.is-today-cell {
+      background-color: #d9232a !important;
+      border-color: #f87171 !important;
+      color: #ffffff !important;
+    }
+
     body.night-mode #monthGridContainer button {
       background-color: #0f172a !important;
       border-color: #1e293b !important;
@@ -1323,27 +1329,37 @@
           </button>
         </div>
 
-        <div class="text-xs font-bold text-center text-slate-500">
-          ★ Số Đỏ ở giữa là Ngày Âm Lịch • Số xám nhỏ là Dương Lịch • Chạm vào ngày để xem chi tiết ★
+        <div class="text-[11px] sm:text-xs font-bold text-center text-slate-500">
+          ★ Số Lớn ở giữa là Ngày Âm Lịch • Số nhỏ góc trên là Dương Lịch • Chạm vào ngày để xem chi tiết ★
         </div>
 
-        <!-- CHÚ THÍCH NHẬN DIỆN MÀU SẮC NGÀY LỄ / NGÀY THƯỜNG -->
-        <div class="flex flex-wrap items-center justify-center gap-2 py-2 px-3 bg-slate-50 rounded-2xl border border-slate-200 text-[10px] sm:text-[11px] font-bold shadow-sm">
-          <span class="flex items-center gap-1 text-red-700">🧨 <strong>Tết Cổ Truyền</strong></span>
-          <span class="text-slate-300">•</span>
-          <span class="flex items-center gap-1 text-purple-700">🪷 <strong>Vía Mẫu (8-18-28)</strong></span>
-          <span class="text-slate-300">•</span>
-          <span class="flex items-center gap-1 text-emerald-700">☸️ <strong>Rằm / Mùng 1 (Ăn chay)</strong></span>
-          <span class="text-slate-300">•</span>
-          <span class="flex items-center gap-1 text-amber-800">🕯️ <strong>Giỗ Gia Tiên</strong></span>
+        <!-- CHÚ THÍCH NHẬN DIỆN MÀU SẮC NGÀY LỄ / NGÀY THƯỜNG (BIỂU TƯỢNG RÕ NÉT KHÔNG LỖI FONT) -->
+        <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2.5 py-2 px-3 bg-slate-50 rounded-2xl border border-slate-200 text-[10px] sm:text-[11px] font-bold shadow-sm">
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-red-50 text-red-800 border border-red-200 shadow-2xs">
+            <i class="fa-solid fa-fire text-red-600 text-[10px]"></i> <span>Tết Cổ Truyền</span>
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-purple-50 text-purple-800 border border-purple-200 shadow-2xs">
+            <i class="fa-solid fa-spa text-purple-600 text-[10px]"></i> <span>Vía Mẫu (8-18-28)</span>
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-2xs">
+            <i class="fa-solid fa-dharmachakra text-emerald-600 text-[10px]"></i> <span>Rằm / Mùng 1 (Chay)</span>
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-200 shadow-2xs">
+            <i class="fa-solid fa-fire-flame-curved text-amber-600 text-[10px]"></i> <span>Giỗ Gia Tiên</span>
+          </span>
         </div>
 
-        <!-- Tiêu đề 7 Thứ -->
-        <div class="grid grid-cols-7 gap-1 text-center font-black text-xs sm:text-sm text-slate-700 pb-1">
-          <div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div class="text-[#1b2a47]">T7</div><div class="text-[#d9232a]">CN</div>
+        <!-- Tiêu đề 7 Thứ Cân Đối & Bắt Mắt -->
+        <div class="grid grid-cols-7 gap-1 text-center font-black text-xs sm:text-sm py-1.5 bg-slate-100 rounded-xl border border-slate-200">
+          <div class="text-slate-700">T2</div>
+          <div class="text-slate-700">T3</div>
+          <div class="text-slate-700">T4</div>
+          <div class="text-slate-700">T5</div>
+          <div class="text-slate-700">T6</div>
+          <div class="text-blue-700">T7</div>
+          <div class="text-[#d9232a]">CN</div>
         </div>
 
-        <!-- Lưới Ngày Trong Tháng -->
         <div id="monthGridContainer" class="grid grid-cols-7 gap-1.5 text-center"></div>
 
       </div>
@@ -4835,17 +4851,27 @@
 
       document.getElementById("monthViewTitle").innerText = `Tháng ${month} / ${year}`;
       let grid = document.getElementById("monthGridContainer");
+      if (!grid) return;
       grid.innerHTML = "";
 
       let firstDay = new Date(year, month - 1, 1).getDay();
       let totalDays = new Date(year, month, 0).getDate();
       let startCol = firstDay === 0 ? 6 : firstDay - 1;
 
-      for (let i = 0; i < startCol; i++) grid.appendChild(document.createElement("div"));
+      for (let i = 0; i < startCol; i++) {
+        const emptyCell = document.createElement("div");
+        emptyCell.className = "min-h-[64px] sm:min-h-[70px] opacity-0";
+        grid.appendChild(emptyCell);
+      }
 
       for (let day = 1; day <= totalDays; day++) {
         let lun = convertSolar2Lunar(day, month, year);
         let btn = document.createElement("button");
+        let dateObj = new Date(year, month - 1, day);
+        let dayOfWeek = dateObj.getDay(); // 0: CN, 6: T7
+        let isSunday = (dayOfWeek === 0);
+        let isSaturday = (dayOfWeek === 6);
+
         let isToday = (day === activeDay && month === (new Date().getMonth() + 1) && year === new Date().getFullYear());
         
         let isTet = (lun.month === 1 && lun.day >= 1 && lun.day <= 3) || (lun.month === 12 && (lun.day === 29 || lun.day === 30));
@@ -4858,37 +4884,47 @@
           switchView("day");
         };
 
-        // Phân biệt màu sắc trực quan trên ô lịch tháng
-        let dayThemeClass = "border-slate-200 bg-white text-slate-800 hover:bg-slate-50";
+        // Phân biệt màu sắc trực quan & trang nhã trên từng ô lịch tháng
+        let dayThemeClass = "border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50";
         let badgeDot = "";
 
         if (isToday) {
-          dayThemeClass = "bg-[#d9232a] text-white border-2 border-red-700 shadow-md ring-2 ring-red-400";
+          dayThemeClass = "is-today-cell bg-[#d9232a] text-white border-2 border-red-700 shadow-md ring-2 ring-red-400";
         } else if (isTet) {
           dayThemeClass = "bg-red-50 border-2 border-amber-400 text-red-950 font-black shadow-sm";
-          badgeDot = '<span class="text-[10px]" title="Tết Nguyên Đán">🧨</span>';
+          badgeDot = '<span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-red-100 text-red-600 text-[9px]" title="Tết Nguyên Đán"><i class="fa-solid fa-fire text-[9px]"></i></span>';
         } else if (isTodayMem) {
           dayThemeClass = "bg-amber-50 border-2 border-amber-400 text-amber-950 font-black shadow-sm";
-          badgeDot = '<span class="text-[10px]" title="Giỗ gia tiên">🕯️</span>';
+          badgeDot = '<span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-amber-100 text-amber-700 text-[9px]" title="Giỗ gia tiên"><i class="fa-solid fa-fire-flame-curved text-[9px]"></i></span>';
         } else if (isViaMau) {
-          dayThemeClass = "bg-purple-50 border-2 border-purple-300 text-purple-950 font-black";
-          badgeDot = '<span class="text-[10px]" title="Vía Mẫu">🪷</span>';
+          dayThemeClass = "bg-purple-50/90 border-2 border-purple-300 text-purple-950 font-black";
+          badgeDot = '<span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-purple-100 text-purple-700 text-[9px]" title="Vía Mẫu (8-18-28)"><i class="fa-solid fa-spa text-[9px]"></i></span>';
         } else if (isChay) {
-          dayThemeClass = "bg-emerald-50 border-2 border-emerald-300 text-emerald-950 font-black";
-          badgeDot = '<span class="text-[10px]" title="Rằm / Mùng 1">☸️</span>';
+          dayThemeClass = "bg-emerald-50/90 border-2 border-emerald-300 text-emerald-950 font-black";
+          badgeDot = '<span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 text-[9px]" title="Rằm / Mùng 1 (Ăn chay)"><i class="fa-solid fa-dharmachakra text-[9px]"></i></span>';
+        } else if (isSunday) {
+          dayThemeClass = "border-red-200 bg-red-50/40 text-slate-800 hover:bg-red-50/80";
+        } else if (isSaturday) {
+          dayThemeClass = "border-blue-200 bg-blue-50/30 text-slate-800 hover:bg-blue-50/60";
         }
 
-        btn.className = `p-1.5 sm:p-2 rounded-2xl flex flex-col items-center justify-between min-h-[64px] font-black transition relative ${dayThemeClass}`;
+        btn.className = `p-1.5 sm:p-2 rounded-2xl flex flex-col items-center justify-between min-h-[64px] sm:min-h-[70px] font-black transition relative hover:scale-[1.03] active:scale-95 duration-200 shadow-2xs ${dayThemeClass}`;
+
+        // Màu số dương lịch nhỏ
+        let solarColor = isToday ? 'text-white' : (isSunday ? 'text-red-500 font-bold' : (isSaturday ? 'text-blue-600 font-bold' : 'text-slate-400'));
+        
+        // Màu số âm lịch lớn
+        let lunarColor = isToday ? 'text-white' : (isTet ? 'text-red-700' : (isViaMau ? 'text-purple-800' : (isChay ? 'text-emerald-700' : (isTodayMem ? 'text-amber-800' : (isSunday ? 'text-red-700' : 'text-slate-800')))));
 
         btn.innerHTML = `
-          <div class="w-full flex items-center justify-between px-1">
-            <span class="text-[10px] sm:text-[11px] ${isToday ? 'text-white' : 'text-slate-400'} font-mono">${day}</span>
+          <div class="w-full flex items-center justify-between px-0.5">
+            <span class="text-[10px] sm:text-[11px] ${solarColor} font-mono leading-none">${day}</span>
             ${badgeDot}
           </div>
-          <span class="text-xl sm:text-2xl font-black ${isToday ? 'text-white' : (isTet ? 'text-red-700' : (isViaMau ? 'text-purple-800' : (isChay ? 'text-emerald-700' : (isTodayMem ? 'text-amber-800' : 'text-slate-800'))))} leading-none">
+          <span class="text-xl sm:text-2xl font-black ${lunarColor} leading-none my-0.5">
             ${lun.day}
           </span>
-          <span class="text-[9px] ${isToday ? 'text-yellow-200' : (lun.day === 1 ? 'text-red-600 font-black' : 'text-slate-400')} font-bold">
+          <span class="text-[9px] ${isToday ? 'text-yellow-200 font-black' : (lun.day === 1 ? 'text-red-600 font-black' : 'text-slate-400')} font-bold leading-none">
             ${lun.day === 1 ? `Th.${lun.month}` : ''}
           </span>
         `;
