@@ -750,16 +750,24 @@
             </span>
           </div>
 
-          <!-- BÊN PHẢI: NÚT ÂM THANH LO-FI THƯ THÁI FOCUS -->
-          <div class="bg-slate-950/60 border border-indigo-500/30 rounded-2xl p-2.5 flex items-center justify-between gap-1.5">
-            <span class="text-[10px] font-bold text-slate-300 shrink-0">
-              <i class="fa-solid fa-headphones text-pink-400"></i> Focus:
-            </span>
-            <div class="flex items-center gap-1.5">
-              <button id="btnAmbientRain" onclick="playAmbientSound('rain')" class="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-[11px] font-bold border border-slate-600 transition active:scale-95" title="Mưa rơi Tuy Hòa">
+          <!-- BÊN PHẢI: NÚT ÂM THANH LO-FI THƯ THÁI FOCUS & THIỀN MƯA -->
+          <div class="bg-slate-950/60 border border-indigo-500/30 rounded-2xl p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex items-center justify-between sm:justify-start gap-2">
+              <span class="text-[10px] font-bold text-slate-300 shrink-0 flex items-center gap-1">
+                <i class="fa-solid fa-headphones text-pink-400"></i> Âm Thanh:
+              </span>
+              <button onclick="toggleZenRainModal()" class="text-[10px] font-bold text-teal-300 hover:text-teal-200 underline flex items-center gap-1 active:scale-95 transition" title="Bảng điều khiển Thiền Mưa Phật Giáo & Hẹn giờ ngủ">
+                <i class="fa-solid fa-sliders text-[9px]"></i> Hẹn giờ ngủ
+              </button>
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button id="btnAmbientZenRain" onclick="playAmbientSound('zen_rain')" class="px-2.5 py-1 rounded-xl bg-gradient-to-r from-teal-800 to-cyan-800 hover:from-teal-700 hover:to-cyan-700 text-cyan-100 text-[11px] font-black border border-cyan-400/50 shadow transition active:scale-95 flex items-center gap-1" title="Nhạc Thiền Phật Giáo kết hợp tiếng mưa & chuông gió cho bình an nội tâm và giấc ngủ sâu">
+                <span>🎐</span> Thiền Mưa
+              </button>
+              <button id="btnAmbientRain" onclick="playAmbientSound('rain')" class="px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95" title="Mưa rơi Tuy Hòa">
                 🌧️ Mưa
               </button>
-              <button id="btnAmbientOcean" onclick="playAmbientSound('ocean')" class="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-[11px] font-bold border border-slate-600 transition active:scale-95" title="Sóng biển đêm">
+              <button id="btnAmbientOcean" onclick="playAmbientSound('ocean')" class="px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95" title="Sóng biển đêm">
                 🌊 Sóng
               </button>
             </div>
@@ -1517,6 +1525,133 @@
       </div>
     </div>
 
+    <!-- MODAL THIỀN PHẬT GIÁO KẾT HỢP TIẾNG MƯA & GIẤC NGỦ SÂU (PHẬT NGỒI THIỀN & CHUÔNG GIÓ DƯỚI MƯA) -->
+    <div id="zenRainModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+      <div id="zenRainCard" class="bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 border-2 border-teal-500/50 rounded-3xl w-full max-w-lg shadow-2xl flex flex-col max-h-[90vh] overflow-hidden text-white relative">
+        
+        <!-- HIỆU ỨNG ÁNH SÁNG & SƯƠNG MỜ PHẬT GIÁO -->
+        <div class="pointer-events-none absolute -top-12 -left-12 w-44 h-44 bg-teal-500/20 rounded-full blur-3xl"></div>
+        <div class="pointer-events-none absolute -bottom-12 -right-12 w-44 h-44 bg-amber-500/15 rounded-full blur-3xl"></div>
+
+        <!-- HEADER CỐ ĐỊNH -->
+        <div class="p-4 sm:p-5 pb-3 border-b border-teal-800/40 flex items-center justify-between shrink-0 bg-slate-950/70 backdrop-blur z-10">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-teal-400 to-emerald-600 text-white font-black text-xl flex items-center justify-center shadow-lg ring-2 ring-teal-300/40 shrink-0">
+              <span>🎐</span>
+            </div>
+            <div>
+              <h3 class="text-base sm:text-lg font-black text-white leading-tight flex items-center gap-1.5">
+                THIỀN PHẬT GIÁO & TIẾNG MƯA
+              </h3>
+              <p class="text-[11px] font-bold text-teal-300">Bình An Nội Tâm • Giấc Ngủ Sâu & Thư Thái</p>
+            </div>
+          </div>
+          <button onclick="toggleZenRainModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 font-black text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95 text-sm" title="Đóng">✕</button>
+        </div>
+
+        <!-- THÂN MODAL -->
+        <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1">
+          
+          <!-- BANNER NGHỆ THUẬT: PHẬT NGỒI DƯỚI HIÊN TRÚC & CHUÔNG GIÓ DƯỚI MƯA -->
+          <div class="relative rounded-2xl overflow-hidden border border-teal-500/30 bg-gradient-to-br from-emerald-950/80 via-slate-900 to-teal-950/80 p-4 shadow-inner">
+            <div class="flex items-center gap-3.5">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-b from-amber-400/20 to-teal-500/20 border border-teal-300/30 flex items-center justify-center shrink-0 shadow">
+                <svg viewBox="0 0 24 24" class="w-10 h-10 fill-amber-300 drop-shadow">
+                  <path d="M12 2C11.5 5.5 9 8.5 6 9.8C8.5 11 10.5 13.5 11 16.5C11.5 13.5 13.5 11 16 9.8C13 8.5 10.5 5.5 12 2Z"/>
+                  <path d="M12 16.5C9.5 18.5 6.5 19.5 2 19C4.5 20.8 8 21.5 12 21.5C16 21.5 19.5 20.8 22 19C17.5 19.5 14.5 18.5 12 16.5Z" opacity="0.9"/>
+                  <circle cx="12" cy="11" r="2.5" fill="#fef08a"/>
+                </svg>
+              </div>
+              <div class="space-y-1">
+                <div class="text-xs font-black text-teal-200 uppercase tracking-wider flex items-center gap-1.5">
+                  <i class="fa-solid fa-water text-cyan-400"></i> Âm Thanh Trị Liệu Thân Tâm
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed italic">
+                  "Hít vào tâm tĩnh lặng, thở ra miệng mỉm cười. Mưa gột rửa ưu tư, chuông gió ngân bình an."
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- NÚT PHÁT CHÍNH TO & NỔI BẬT -->
+          <div class="text-center py-2">
+            <button id="zenRainMasterToggleBtn" onclick="toggleZenRainPlay()" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-teal-500 via-emerald-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-black text-sm sm:text-base shadow-xl ring-4 ring-teal-400/30 active:scale-95 transition flex items-center justify-center gap-2.5 mx-auto">
+              <span id="zenRainPlayIcon" class="text-xl">▶️</span>
+              <span id="zenRainPlayText">BẬT THIỀN MƯA & CHUÔNG GIÓ</span>
+            </button>
+            <div id="zenRainStatusDesc" class="text-[11px] font-bold text-slate-400 mt-2">
+              Sẵn sàng thư giãn • Bấm để lắng nghe hòa tấu thiền
+            </div>
+          </div>
+
+          <!-- BẬT / TẮT TỪNG TẦNG ÂM THANH -->
+          <div class="p-3 bg-slate-900/80 border border-teal-500/30 rounded-2xl space-y-2.5">
+            <div class="text-[11px] font-black text-slate-300 uppercase tracking-wider flex items-center justify-between">
+              <span>Hòa Phối Âm Thanh</span>
+              <span class="text-teal-400 text-[10px]">3 Tầng Âm Ba Tự Nhiên</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+              <div class="p-2 rounded-xl bg-slate-950/60 border border-teal-500/20 text-center space-y-1">
+                <div class="text-lg">🌧️</div>
+                <div class="text-[11px] font-bold text-slate-200">Mưa Rơi</div>
+                <div class="text-[9px] text-teal-300 font-mono">Êm dịu</div>
+              </div>
+              <div class="p-2 rounded-xl bg-slate-950/60 border border-teal-500/20 text-center space-y-1">
+                <div class="text-lg">🎐</div>
+                <div class="text-[11px] font-bold text-slate-200">Chuông Gió</div>
+                <div class="text-[9px] text-teal-300 font-mono">Pha lê</div>
+              </div>
+              <div class="p-2 rounded-xl bg-slate-950/60 border border-teal-500/20 text-center space-y-1">
+                <div class="text-lg">🕉️</div>
+                <div class="text-[11px] font-bold text-slate-200">Chuông Thiền</div>
+                <div class="text-[9px] text-teal-300 font-mono">528 Hz</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BỘ HẸN GIỜ TẮT CHO GIẤC NGỦ SÂU (SLEEP TIMER) -->
+          <div class="p-3.5 bg-slate-900/80 border border-teal-500/30 rounded-2xl space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-black text-slate-200 flex items-center gap-1.5">
+                <i class="fa-solid fa-moon text-amber-300"></i> Hẹn Giờ Tự Tắt (Giấc Ngủ Sâu):
+              </span>
+              <span id="zenRainTimerBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-teal-300 font-black">
+                Không hẹn giờ
+              </span>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2">
+              <button onclick="setZenRainSleepTimer(15)" id="timerBtn_15" class="p-2 rounded-xl border border-slate-700 bg-slate-950 hover:bg-slate-800 text-slate-300 text-xs font-black transition active:scale-95">
+                15 phút
+              </button>
+              <button onclick="setZenRainSleepTimer(30)" id="timerBtn_30" class="p-2 rounded-xl border border-slate-700 bg-slate-950 hover:bg-slate-800 text-slate-300 text-xs font-black transition active:scale-95">
+                30 phút
+              </button>
+              <button onclick="setZenRainSleepTimer(60)" id="timerBtn_60" class="p-2 rounded-xl border border-slate-700 bg-slate-950 hover:bg-slate-800 text-slate-300 text-xs font-black transition active:scale-95">
+                60 phút
+              </button>
+              <button onclick="setZenRainSleepTimer(0)" id="timerBtn_0" class="p-2 rounded-xl border border-teal-500 bg-teal-950 text-teal-300 text-xs font-black transition active:scale-95">
+                Vô cực ♾️
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FOOTER CỐ ĐỊNH -->
+        <div class="p-3 sm:p-4 border-t border-teal-800/40 shrink-0 bg-slate-950/80 flex items-center justify-between gap-3">
+          <div class="text-[11px] text-slate-400 font-medium">
+            100% Thuần âm thanh tự nhiên • Hoạt động khi tắt mạng
+          </div>
+          <button onclick="toggleZenRainModal()" class="px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white rounded-xl font-black text-xs shadow active:scale-95 transition shrink-0">
+            ĐÓNG
+          </button>
+        </div>
+
+      </div>
+    </div>
+
     <!-- MODAL CÀI ĐẶT NHẠC CHUÔNG & GIỌNG ĐỌC LỊCH (NAM MÔ A DI ĐÀ PHẬT, CHUÔNG CHÙA, CHUÔNG GIÓ...) -->
     <div id="ringtoneModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
       <div id="ringtoneModalCard" class="bg-white border-4 border-amber-500 rounded-3xl w-full max-w-lg shadow-2xl flex flex-col max-h-[88vh] overflow-hidden">
@@ -1577,6 +1712,28 @@
               </div>
               <button onclick="event.stopPropagation(); previewRingtone('phat')" class="shrink-0 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white rounded-xl font-black text-xs shadow-sm hover:scale-105 active:scale-95 transition flex items-center gap-1.5 border border-amber-400/40" title="Bấm để nghe thử">
                 <i class="fa-solid fa-play text-[10px]"></i>
+                <span>Thử</span>
+              </button>
+            </div>
+
+            <!-- 1B. THIỀN PHẬT GIÁO KẾT HỢP TIẾNG MƯA & CHUÔNG GIÓ (GIẤC NGỦ SÂU) -->
+            <div onclick="selectRingtoneOption('thien_mua')" id="ringtoneCard_thien_mua" class="p-3 border-2 rounded-2xl transition cursor-pointer hover:border-teal-400 bg-white border-slate-200 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-teal-400 via-emerald-500 to-cyan-700 text-white flex items-center justify-center shadow-md ring-2 ring-teal-300/60 shrink-0 text-xl">
+                  <span>🎐</span>
+                </div>
+                <div>
+                  <div class="font-black text-xs sm:text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
+                    Thiền Phật Giáo & Mưa Rơi Chuông Gió
+                    <span id="badgeCurrent_thien_mua" class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-600 text-white font-black shadow-sm hidden">
+                      <i class="fa-solid fa-check text-[9px]"></i> ĐANG CHỌN
+                    </span>
+                  </div>
+                  <div class="text-[11px] text-slate-500 leading-tight mt-0.5">Chuông xoay thiền Tây Tạng & Chuông gió pha lê hòa tiếng mưa êm đềm, giúp an định thân tâm & ngủ sâu</div>
+                </div>
+              </div>
+              <button onclick="event.stopPropagation(); previewRingtone('thien_mua')" class="shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-black text-xs shadow-sm hover:scale-105 active:scale-95 transition flex items-center gap-1.5 border border-slate-300" title="Bấm để nghe thử">
+                <i class="fa-solid fa-play text-[10px] text-slate-500"></i>
                 <span>Thử</span>
               </button>
             </div>
@@ -4325,6 +4482,7 @@
     function getRingtoneName(type) {
       switch (type) {
         case 'phat': return "Niệm Phật & Chuông Chùa Bát Nhã";
+        case 'thien_mua': return "Thiền Phật Giáo & Mưa Rơi Chuông Gió";
         case 'binhan': return "Chuông Bình An 528 Hz";
         case 'gio_tre': return "Chuông Gió Tre Làng Quê";
         case 'binh_minh': return "Bình Minh Rạng Đông";
@@ -4335,7 +4493,7 @@
 
     function updateRingtoneModalUI() {
       const current = localStorage.getItem("datphu_ringtone_type") || "phat";
-      const types = ['phat', 'binhan', 'gio_tre', 'binh_minh', 'truc_tiep'];
+      const types = ['phat', 'thien_mua', 'binhan', 'gio_tre', 'binh_minh', 'truc_tiep'];
       types.forEach(t => {
         const card = document.getElementById("ringtoneCard_" + t);
         const badge = document.getElementById("badgeCurrent_" + t);
@@ -4406,6 +4564,11 @@
         setTimeout(() => {
           speakPreviewText(getMantraText() + " Hôm nay là ngày lành tháng tốt, vạn sự bình an.");
         }, 1450);
+      } else if (type === "thien_mua") {
+        playZenRainSoundSample();
+        setTimeout(() => {
+          speakPreviewText("Thiền Phật giáo kết hợp tiếng mưa. Thân tâm tĩnh lặng, buông bỏ muộn phiền, giấc ngủ an lành.");
+        }, 1600);
       } else if (type === "binhan") {
         playBellChimeSound(528);
         setTimeout(() => {
@@ -5099,6 +5262,9 @@
       if (ringtone === "phat") {
         playTempleBellAndMo();
         startDelay = 1450;
+      } else if (ringtone === "thien_mua") {
+        playZenRainSoundSample();
+        startDelay = 1600;
       } else if (ringtone === "binhan") {
         playBellChimeSound(528);
         startDelay = 500;
@@ -5129,6 +5295,8 @@
 
       if (ringtone === "phat") {
         chunks.push(getMantraText());
+      } else if (ringtone === "thien_mua") {
+        chunks.push("Nam Mô A Di Đà Phật. Kính chúc một ngày tâm an tĩnh lặng như mưa lành tưới mát vạn vật, vạn sự hanh thông.");
       }
 
       chunks.push(`Hôm nay là ${dayName}, ngày ${d} tháng ${m} năm ${y} dương lịch.`);
@@ -5580,13 +5748,127 @@
     }
 
     // =========================================================================
-    // LO-FI SYNTHESIZER: MƯA TUY HÒA & SÓNG BIỂN GÀNH ĐÁ ĐĨA (0 BYTE OFFLINE)
+    // LO-FI SYNTHESIZER: THIỀN PHẬT GIÁO, MƯA TUY HÒA & SÓNG BIỂN (0 BYTE OFFLINE)
     // =========================================================================
     let ambientCtx = null;
     let ambientSource = null;
     let ambientGain = null;
     let ambientLfo = null;
+    let ambientChimeTimer = null;
+    let ambientBowlTimer = null;
+    let zenRainSleepTimerId = null;
+    let zenRainSleepMinutes = 0;
     let currentAmbientType = null;
+
+    // 1. TIẾNG CHUÔNG GIÓ PHA LÊ / THỦY TINH FURIN (PENTATONIC GLASS CHIME)
+    function playSingleGlassChime(ctx, freq, startTime, gainLevel = 0.08) {
+      try {
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const g1 = ctx.createGain();
+        const g2 = ctx.createGain();
+
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(freq, startTime);
+
+        // Bội âm cao tạo độ leng keng trong trẻo đặc trưng chuông gió thủy tinh
+        osc2.type = "sine";
+        osc2.frequency.setValueAtTime(freq * 2.756, startTime);
+
+        g1.gain.setValueAtTime(0.0001, startTime);
+        g1.gain.linearRampToValueAtTime(gainLevel, startTime + 0.015);
+        g1.gain.exponentialRampToValueAtTime(0.0001, startTime + 1.85);
+
+        g2.gain.setValueAtTime(0.0001, startTime);
+        g2.gain.linearRampToValueAtTime(gainLevel * 0.3, startTime + 0.01);
+        g2.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.75);
+
+        osc1.connect(g1);
+        osc2.connect(g2);
+        g1.connect(ctx.destination);
+        g2.connect(ctx.destination);
+
+        osc1.start(startTime);
+        osc2.start(startTime);
+        osc1.stop(startTime + 1.9);
+        osc2.stop(startTime + 1.9);
+      } catch (e) {}
+    }
+
+    // 2. CHUÔNG XOAY TÂY TẠNG / CHUÔNG THIỀN TRẦM ẤM 432Hz / 528Hz (TIBETAN SINGING BOWL)
+    function playTibetanSingingBowl(ctx, baseFreq = 432, startTime, duration = 6.5, gainLevel = 0.12) {
+      try {
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const sub = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(baseFreq, startTime);
+
+        // Chênh tần số 2.2Hz tạo hiệu ứng sóng nhịp Alpha/Theta an thần giấc ngủ
+        osc2.type = "sine";
+        osc2.frequency.setValueAtTime(baseFreq * 1.005, startTime);
+
+        // Âm trầm nền êm ái
+        sub.type = "sine";
+        sub.frequency.setValueAtTime(baseFreq * 0.5, startTime);
+
+        gain.gain.setValueAtTime(0.0001, startTime);
+        gain.gain.linearRampToValueAtTime(gainLevel, startTime + 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        sub.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start(startTime);
+        osc2.start(startTime);
+        sub.start(startTime);
+        osc1.stop(startTime + duration + 0.1);
+        osc2.stop(startTime + duration + 0.1);
+        sub.stop(startTime + duration + 0.1);
+      } catch (e) {}
+    }
+
+    // MẪU ÂM BÁO: THIỀN PHẬT GIÁO KẾT HỢP TIẾNG MƯA & CHUÔNG GIÓ (CHO ĐỌC LỊCH / THỬ CHUÔNG)
+    function playZenRainSoundSample() {
+      if (!isSoundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+
+        // Tiếng mưa nhẹ 1.8 giây
+        const bufferSize = ctx.sampleRate * 2;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.14;
+        const src = ctx.createBufferSource();
+        src.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = "bandpass";
+        filter.frequency.setValueAtTime(950, now);
+        filter.Q.setValueAtTime(0.85, now);
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.linearRampToValueAtTime(0.12, now + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
+        src.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        src.start(now);
+        src.stop(now + 1.8);
+
+        // Chuông xoay thiền 432Hz
+        playTibetanSingingBowl(ctx, 432, now + 0.08, 4.2, 0.15);
+
+        // Chuông gió Furin ngân nga
+        playSingleGlassChime(ctx, 1567.98, now + 0.45, 0.09);
+        playSingleGlassChime(ctx, 2093.00, now + 0.85, 0.07);
+      } catch (e) {}
+    }
 
     function playAmbientSound(type) {
       if (currentAmbientType === type) {
@@ -5628,7 +5910,45 @@
         const filter = ambientCtx.createBiquadFilter();
         ambientGain = ambientCtx.createGain();
 
-        if (type === "ocean") {
+        if (type === "zen_rain") {
+          // THIỀN PHẬT GIÁO KẾT HỢP TIẾNG MƯA & CHUÔNG GIÓ
+          filter.type = "bandpass";
+          filter.frequency.setValueAtTime(950, ambientCtx.currentTime);
+          filter.Q.setValueAtTime(0.85, ambientCtx.currentTime);
+          ambientGain.gain.setValueAtTime(0.12, ambientCtx.currentTime);
+
+          // Phát ngay chuông xoay thiền & chuông gió mở đầu
+          playTibetanSingingBowl(ambientCtx, 432, ambientCtx.currentTime + 0.1, 6.0, 0.15);
+          playSingleGlassChime(ambientCtx, 1567.98, ambientCtx.currentTime + 0.8, 0.08);
+
+          // Chu kỳ chuông gió tự nhiên (2.5 - 5.5 giây)
+          const chimeNotes = [1174.66, 1318.51, 1567.98, 1760.00, 2093.00, 2349.32];
+          function scheduleNextChime() {
+            if (currentAmbientType !== "zen_rain") return;
+            const delay = 2500 + Math.random() * 3200;
+            ambientChimeTimer = setTimeout(() => {
+              if (currentAmbientType === "zen_rain" && ambientCtx) {
+                const note = chimeNotes[Math.floor(Math.random() * chimeNotes.length)];
+                playSingleGlassChime(ambientCtx, note, ambientCtx.currentTime, 0.07 + Math.random() * 0.03);
+                if (Math.random() > 0.55) {
+                  const note2 = chimeNotes[Math.floor(Math.random() * chimeNotes.length)];
+                  playSingleGlassChime(ambientCtx, note2, ambientCtx.currentTime + 0.28, 0.05);
+                }
+                scheduleNextChime();
+              }
+            }, delay);
+          }
+          scheduleNextChime();
+
+          // Chu kỳ chuông xoay Tây Tạng / Chuông chùa 432Hz (mỗi 18 giây ngân dài)
+          ambientBowlTimer = setInterval(() => {
+            if (currentAmbientType === "zen_rain" && ambientCtx) {
+              playTibetanSingingBowl(ambientCtx, 432, ambientCtx.currentTime, 6.8, 0.13);
+            }
+          }, 18000);
+
+          showToast("🎐 Đang phát Thiền Phật Giáo kết hợp tiếng mưa & chuông gió...");
+        } else if (type === "ocean") {
           filter.type = "lowpass";
           filter.frequency.setValueAtTime(450, ambientCtx.currentTime);
           ambientGain.gain.setValueAtTime(0.05, ambientCtx.currentTime);
@@ -5677,32 +5997,132 @@
         ambientLfo.disconnect();
         ambientLfo = null;
       }
+      if (ambientChimeTimer) {
+        clearTimeout(ambientChimeTimer);
+        ambientChimeTimer = null;
+      }
+      if (ambientBowlTimer) {
+        clearInterval(ambientBowlTimer);
+        ambientBowlTimer = null;
+      }
       currentAmbientType = null;
       updateAmbientButtonsUI();
     }
 
     function updateAmbientButtonsUI() {
+      const btnZen = document.getElementById("btnAmbientZenRain");
       const btnRain = document.getElementById("btnAmbientRain");
       const btnOcean = document.getElementById("btnAmbientOcean");
 
+      if (btnZen) {
+        if (currentAmbientType === "zen_rain") {
+          btnZen.className = "px-2.5 py-1 rounded-xl bg-teal-600 text-white text-[11px] font-black border border-teal-300 shadow ring-2 ring-teal-400/50 transition active:scale-95 animate-pulse flex items-center gap-1";
+          btnZen.innerHTML = "<span>🎐</span> Thiền Mưa (Bật)";
+        } else {
+          btnZen.className = "px-2.5 py-1 rounded-xl bg-gradient-to-r from-teal-800 to-cyan-800 hover:from-teal-700 hover:to-cyan-700 text-cyan-100 text-[11px] font-black border border-cyan-400/50 shadow transition active:scale-95 flex items-center gap-1";
+          btnZen.innerHTML = "<span>🎐</span> Thiền Mưa";
+        }
+      }
+
       if (btnRain) {
         if (currentAmbientType === "rain") {
-          btnRain.className = "px-2.5 py-1 rounded-xl bg-cyan-600 text-white text-[11px] font-black border border-cyan-300 shadow ring-2 ring-cyan-400/50 transition active:scale-95 animate-pulse";
+          btnRain.className = "px-2 py-1 rounded-xl bg-cyan-600 text-white text-[11px] font-black border border-cyan-300 shadow ring-2 ring-cyan-400/50 transition active:scale-95 animate-pulse";
           btnRain.innerHTML = "🌧️ Mưa (Bật)";
         } else {
-          btnRain.className = "px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95";
+          btnRain.className = "px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95";
           btnRain.innerHTML = "🌧️ Mưa";
         }
       }
 
       if (btnOcean) {
         if (currentAmbientType === "ocean") {
-          btnOcean.className = "px-2.5 py-1 rounded-xl bg-indigo-600 text-white text-[11px] font-black border border-indigo-300 shadow ring-2 ring-indigo-400/50 transition active:scale-95 animate-pulse";
+          btnOcean.className = "px-2 py-1 rounded-xl bg-indigo-600 text-white text-[11px] font-black border border-indigo-300 shadow ring-2 ring-indigo-400/50 transition active:scale-95 animate-pulse";
           btnOcean.innerHTML = "🌊 Sóng (Bật)";
         } else {
-          btnOcean.className = "px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95";
+          btnOcean.className = "px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95";
           btnOcean.innerHTML = "🌊 Sóng";
         }
+      }
+
+      // Cập nhật giao diện bên trong Modal Thiền Mưa nếu đang mở
+      const toggleBtn = document.getElementById("zenRainMasterToggleBtn");
+      const playIcon = document.getElementById("zenRainPlayIcon");
+      const playText = document.getElementById("zenRainPlayText");
+      const desc = document.getElementById("zenRainStatusDesc");
+
+      if (toggleBtn && playIcon && playText && desc) {
+        if (currentAmbientType === "zen_rain") {
+          toggleBtn.className = "px-6 py-3.5 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-black text-sm sm:text-base shadow-xl ring-4 ring-rose-400/30 active:scale-95 transition flex items-center justify-center gap-2.5 mx-auto";
+          playIcon.innerText = "⏹️";
+          playText.innerText = "DỪNG THIỀN MƯA";
+          desc.innerText = "Đang phát tiếng mưa rơi êm đềm, chuông gió pha lê và chuông thiền 528Hz...";
+        } else {
+          toggleBtn.className = "px-6 py-3.5 rounded-2xl bg-gradient-to-r from-teal-500 via-emerald-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-black text-sm sm:text-base shadow-xl ring-4 ring-teal-400/30 active:scale-95 transition flex items-center justify-center gap-2.5 mx-auto";
+          playIcon.innerText = "▶️";
+          playText.innerText = "BẬT THIỀN MƯA & CHUÔNG GIÓ";
+          desc.innerText = "Sẵn sàng thư giãn • Bấm để lắng nghe hòa tấu thiền";
+        }
+      }
+    }
+
+    // MODAL THIỀN MƯA & HẸN GIỜ NGỦ
+    function toggleZenRainModal() {
+      const modal = document.getElementById("zenRainModal");
+      if (!modal) return;
+      if (modal.classList.contains("hidden")) {
+        modal.classList.remove("hidden");
+        updateAmbientButtonsUI();
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function toggleZenRainPlay() {
+      playAmbientSound("zen_rain");
+    }
+
+    function setZenRainSleepTimer(minutes) {
+      if (zenRainSleepTimerId) {
+        clearTimeout(zenRainSleepTimerId);
+        zenRainSleepTimerId = null;
+      }
+
+      zenRainSleepMinutes = minutes;
+      const badge = document.getElementById("zenRainTimerBadge");
+
+      [0, 15, 30, 60].forEach(m => {
+        const btn = document.getElementById("timerBtn_" + m);
+        if (!btn) return;
+        if (m === minutes) {
+          btn.className = "p-2 rounded-xl border border-teal-500 bg-teal-950 text-teal-300 text-xs font-black transition active:scale-95 ring-2 ring-teal-400/40";
+        } else {
+          btn.className = "p-2 rounded-xl border border-slate-700 bg-slate-950 hover:bg-slate-800 text-slate-300 text-xs font-black transition active:scale-95";
+        }
+      });
+
+      if (minutes > 0) {
+        if (badge) badge.innerText = "Tự tắt sau: " + minutes + " phút";
+        if (currentAmbientType !== "zen_rain") {
+          playAmbientSound("zen_rain");
+        }
+        showToast("🌙 Đã hẹn giờ tắt nhạc thiền sau " + minutes + " phút. Chúc bạn ngủ ngon!");
+
+        zenRainSleepTimerId = setTimeout(() => {
+          if (ambientGain && ambientCtx) {
+            try {
+              ambientGain.gain.exponentialRampToValueAtTime(0.0001, ambientCtx.currentTime + 6.0);
+            } catch (e) {}
+          }
+          setTimeout(() => {
+            stopAmbientSound();
+            showToast("🌙 Đã kết thúc giờ thiền. Chúc bạn giấc ngủ thật an lành!");
+            if (badge) badge.innerText = "Không hẹn giờ";
+            setZenRainSleepTimer(0);
+          }, 6500);
+        }, minutes * 60 * 1000);
+      } else {
+        if (badge) badge.innerText = "Không hẹn giờ (Vô cực ♾️)";
+        showToast("♾️ Nhạc thiền sẽ phát liên tục không giới hạn");
       }
     }
 
