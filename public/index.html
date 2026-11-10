@@ -2279,7 +2279,13 @@
                 <!-- Chế độ người trẻ -->
                 <button onclick="setAppThemeMode('youth')" id="themeOptionYouth" class="p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-2 border-indigo-500 bg-indigo-50/80 shadow-sm ring-2 ring-indigo-400/40">
                   <div class="flex items-center justify-between">
-                    <span class="text-2xl">🧑‍💻</span>
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-600 to-indigo-700 p-1.5 text-white shadow-xs flex items-center justify-center">
+                      <!-- SVG Ngôi Sao May Mắn & Tia Sét Cyberpunk Tuổi Trẻ -->
+                      <svg viewBox="0 0 24 24" class="w-full h-full">
+                        <path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z" fill="#ffffff"/>
+                        <polygon points="13 7 9 13 12 13 11 17 15 11 12 11" fill="#fde047"/>
+                      </svg>
+                    </div>
                     <span id="badgeThemeYouth" class="text-[9px] px-2 py-0.5 rounded-full bg-indigo-600 text-white font-black">ĐANG DÙNG</span>
                   </div>
                   <div>
@@ -2291,7 +2297,17 @@
                 <!-- Chế độ truyền thống / người già -->
                 <button onclick="setAppThemeMode('senior')" id="themeOptionSenior" class="p-3 rounded-2xl border-2 text-left transition flex flex-col justify-between gap-2 border-slate-200 bg-white hover:border-slate-300">
                   <div class="flex items-center justify-between">
-                    <span class="text-2xl">👴</span>
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 via-yellow-600 to-amber-700 p-1.5 text-white shadow-xs flex items-center justify-center">
+                      <!-- SVG Kính Lão Trí Tuệ & Cuốn Thư Cổ Điển -->
+                      <svg viewBox="0 0 24 24" class="w-full h-full">
+                        <circle cx="8" cy="12" r="4" fill="none" stroke="#ffffff" stroke-width="2"/>
+                        <circle cx="16" cy="12" r="4" fill="none" stroke="#ffffff" stroke-width="2"/>
+                        <line x1="12" y1="12" x2="12" y2="12" stroke="#ffffff" stroke-width="2"/>
+                        <path d="M12 12 C12 10.5 13 9.5 14.5 9.5" fill="none" stroke="#fde047" stroke-width="1.8"/>
+                        <line x1="4" y1="12" x2="2" y2="10" stroke="#fde047" stroke-width="1.8" stroke-linecap="round"/>
+                        <line x1="20" y1="12" x2="22" y2="10" stroke="#fde047" stroke-width="1.8" stroke-linecap="round"/>
+                      </svg>
+                    </div>
                     <span id="badgeThemeSenior" class="text-[9px] px-2 py-0.5 rounded-full bg-slate-600 text-white font-black hidden">ĐANG DÙNG</span>
                   </div>
                   <div>
@@ -2343,14 +2359,22 @@
 
             <!-- THÔNG TIN ÂM NHẠC & TRỊ LIỆU -->
             <div class="p-3 bg-teal-50 border-2 border-teal-300 rounded-2xl flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <span class="text-xl">🌿</span>
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 p-1.5 text-white shrink-0 shadow-xs flex items-center justify-center">
+                  <!-- SVG Hoa Sen Ngọc Bích Ánh Kim -->
+                  <svg viewBox="0 0 24 24" class="w-full h-full">
+                    <path d="M12 2 C10.5 6 9 10 12 17 C15 10 13.5 6 12 2Z" fill="#ffffff"/>
+                    <path d="M7 6 C5.5 10 6.5 14 12 17 C9 13 8 9 7 6Z" fill="#a7f3d0"/>
+                    <path d="M17 6 C18.5 10 17.5 14 12 17 C15 13 16 9 17 6Z" fill="#a7f3d0"/>
+                    <circle cx="12" cy="13.5" r="1.5" fill="#fde047"/>
+                  </svg>
+                </div>
                 <div>
                   <div class="text-xs font-black text-teal-950">Không Gian Âm Nhạc & Trị Liệu</div>
-                  <div class="text-[10px] text-teal-700">Đã quy hoạch vào Tab [🌿 Trị Liệu] để trang chủ rộng rãi</div>
+                  <div class="text-[10px] text-teal-700 font-semibold">Đã chuyển vào Tab Trị Liệu để trang chủ luôn thoáng đãng</div>
                 </div>
               </div>
-              <button onclick="switchSettingsTab('healing')" class="px-3 py-1.5 rounded-xl font-black text-xs bg-teal-600 hover:bg-teal-700 text-white shadow active:scale-95 transition">
+              <button onclick="switchSettingsTab('healing')" class="px-3.5 py-1.5 rounded-xl font-black text-xs bg-teal-600 hover:bg-teal-700 text-white shadow active:scale-95 transition">
                 Mở Xem
               </button>
             </div>
