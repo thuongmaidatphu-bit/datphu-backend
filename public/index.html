@@ -148,7 +148,7 @@
       <main id="blocLeaf" class="super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3">
         
         <!-- DÒNG NGÀY DƯƠNG LỊCH: GỌN GÀNG MÀU XANH NAVY -->
-        <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-[#1b2a47]">
+        <div id="leafSolarRow" class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-[#1b2a47]">
           <div class="flex items-center gap-2">
             <span class="px-2 py-0.5 rounded-lg bg-[#1b2a47] text-white text-xs uppercase">DƯƠNG LỊCH</span>
             <span id="leafSolarFull">THỨ HAI, 09 THÁNG 11 NĂM 2026</span>
@@ -158,7 +158,7 @@
 
         <!-- TỰA ĐỀ ÂM LỊCH -->
         <div class="text-center pt-1">
-          <span class="inline-block px-4 py-1 rounded-full bg-red-100 text-[#d9232a] text-xs sm:text-sm font-black uppercase tracking-widest border border-red-200">
+          <span id="leafLunarBadge" class="inline-block px-4 py-1 rounded-full bg-red-100 text-[#d9232a] text-xs sm:text-sm font-black uppercase tracking-widest border border-red-200">
             ★ NGÀY ÂM LỊCH CHÍNH (CHU KỲ MẶT TRĂNG) ★
           </span>
         </div>
@@ -214,10 +214,10 @@
         </div>
 
         <!-- ĐƯỜNG PHÂN CÁCH ĐỎ RỰC -->
-        <div class="border-t-4 border-[#d9232a] my-2"></div>
+        <div id="leafDivider" class="border-t-4 border-[#d9232a] my-2"></div>
 
         <!-- THÔNG TIN THỦY TRIỀU THỰC TẾ -->
-        <div class="bg-slate-50 border-2 border-slate-300 rounded-2xl p-3.5 space-y-2">
+        <div id="leafTideBox" class="bg-slate-50 border-2 border-slate-300 rounded-2xl p-3.5 space-y-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="text-2xl">🌊</span>
@@ -295,6 +295,17 @@
 
         <div class="text-xs font-bold text-center text-slate-500">
           ★ Số Đỏ ở giữa là Ngày Âm Lịch • Số xám nhỏ là Dương Lịch • Chạm vào ngày để xem chi tiết ★
+        </div>
+
+        <!-- CHÚ THÍCH NHẬN DIỆN MÀU SẮC NGÀY LỄ / NGÀY THƯỜNG -->
+        <div class="flex flex-wrap items-center justify-center gap-2 py-2 px-3 bg-slate-50 rounded-2xl border border-slate-200 text-[10px] sm:text-[11px] font-bold shadow-sm">
+          <span class="flex items-center gap-1 text-red-700">🧨 <strong>Tết Cổ Truyền</strong></span>
+          <span class="text-slate-300">•</span>
+          <span class="flex items-center gap-1 text-purple-700">🪷 <strong>Vía Mẫu (8-18-28)</strong></span>
+          <span class="text-slate-300">•</span>
+          <span class="flex items-center gap-1 text-emerald-700">☸️ <strong>Rằm / Mùng 1 (Ăn chay)</strong></span>
+          <span class="text-slate-300">•</span>
+          <span class="flex items-center gap-1 text-amber-800">🕯️ <strong>Giỗ Gia Tiên</strong></span>
         </div>
 
         <!-- Tiêu đề 7 Thứ -->
@@ -1022,6 +1033,109 @@
     }
 
     // RENDER BẢNG 1: HÔM NAY (BLOC NGÀY)
+    
+    // HÀM ÁP DỤNG GIAO DIỆN ĐẶC BIỆT THEO NGÀY LỄ / TẾT / GIỖ / VÍA MẪU
+    function applyDayTheme(lun) {
+      const leaf = document.getElementById("blocLeaf");
+      const solarRow = document.getElementById("leafSolarRow");
+      const lunarBadge = document.getElementById("leafLunarBadge");
+      const lunarDayNum = document.getElementById("leafLunarDayNumber");
+      const lunarDayText = document.getElementById("leafLunarDayText");
+      const lunarYear = document.getElementById("leafLunarYear");
+      const divider = document.getElementById("leafDivider");
+      const tideBox = document.getElementById("leafTideBox");
+
+      if (!leaf) return;
+
+      const isTet = (lun.month === 1 && lun.day >= 1 && lun.day <= 3) || (lun.month === 12 && (lun.day === 29 || lun.day === 30));
+      const isViaMau = (lun.day === 8 || lun.day === 18 || lun.day === 28);
+      const isChay = (lun.day === 1 || lun.day === 15);
+      const isTodayMem = memorials && memorials.some(m => m.day === lun.day && m.month === lun.month);
+
+      // CẤP 1: ĐẠI LỄ TẾT NGUYÊN ĐÁN (ĐỎ HOÀNG KIM)
+      if (isTet) {
+        leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-gradient-to-b from-[#b91c1c] via-[#d9232a] to-[#991b1b] border-4 border-amber-300 shadow-2xl text-white";
+        if (solarRow) solarRow.className = "bg-red-950/70 border-2 border-amber-400/60 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-amber-200";
+        if (lunarBadge) {
+          lunarBadge.className = "inline-block px-4 py-1.5 rounded-full bg-amber-400 text-red-950 text-xs sm:text-sm font-black uppercase tracking-wider border-2 border-amber-300 shadow-md";
+          lunarBadge.innerText = lun.month === 1 ? `🌸 🧨 MÙNG ${lun.day} TẾT NGUYÊN ĐÁN • XUÂN MỚI 🧨 🌸` : "🎆 TẤT NIÊN & GIAO THỪA NGUYÊN ĐÁN 🎆";
+        }
+        if (lunarDayNum) {
+          lunarDayNum.className = "lunar-number-giant select-none text-yellow-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]";
+        }
+        if (lunarDayText) {
+          lunarDayText.className = "text-2xl sm:text-3xl font-black text-amber-200 tracking-wide mt-1 drop-shadow";
+        }
+        if (lunarYear) {
+          lunarYear.className = "text-base font-black text-white mt-0.5 uppercase tracking-wider drop-shadow";
+        }
+        if (divider) divider.className = "border-t-4 border-amber-400 my-2 shadow";
+        if (tideBox) tideBox.className = "bg-red-950/60 border-2 border-amber-400/50 rounded-2xl p-3.5 space-y-2 text-amber-100";
+        return;
+      }
+
+      // CẤP 2: CHÍNH GIỖ GIA TIÊN (VÀNG ĐỒNG ẤM ÁP)
+      if (isTodayMem) {
+        leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-gradient-to-b from-amber-50/80 via-white to-amber-50/40 border-4 border-amber-500 shadow-xl text-black";
+        if (solarRow) solarRow.className = "bg-amber-100/70 border-2 border-amber-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-amber-950";
+        if (lunarBadge) {
+          lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-amber-200 text-amber-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-amber-300 shadow-sm";
+          lunarBadge.innerText = "🕯️ CHÍNH GIỖ GIA TIÊN • HIẾU NGHĨA 🕯️";
+        }
+        if (lunarDayNum) lunarDayNum.className = "lunar-number-giant select-none drop-shadow text-amber-900";
+        if (lunarDayText) lunarDayText.className = "text-2xl sm:text-3xl font-black text-amber-900 tracking-wide mt-1";
+        if (lunarYear) lunarYear.className = "text-base font-black text-amber-950 mt-0.5";
+        if (divider) divider.className = "border-t-4 border-amber-500 my-2";
+        if (tideBox) tideBox.className = "bg-amber-50/50 border-2 border-amber-200 rounded-2xl p-3.5 space-y-2 text-amber-950";
+        return;
+      }
+
+      // CẤP 3: NGÀY TUẦN VÍA MẪU (TÍM HOA SEN LINH THIÊNG)
+      if (isViaMau) {
+        leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-gradient-to-b from-purple-50/70 via-white to-purple-50/40 border-4 border-purple-600 shadow-xl text-black";
+        if (solarRow) solarRow.className = "bg-purple-100/70 border-2 border-purple-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-purple-950";
+        if (lunarBadge) {
+          lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-purple-200 text-purple-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-purple-300 shadow-sm";
+          lunarBadge.innerText = "🪷 BÁT TUẦN VÍA MẪU • TẠ ƠN MẸ XỨ SỞ 🪷";
+        }
+        if (lunarDayNum) lunarDayNum.className = "lunar-number-giant select-none drop-shadow text-purple-900";
+        if (lunarDayText) lunarDayText.className = "text-2xl sm:text-3xl font-black text-purple-900 tracking-wide mt-1";
+        if (lunarYear) lunarYear.className = "text-base font-black text-purple-950 mt-0.5";
+        if (divider) divider.className = "border-t-4 border-purple-600 my-2";
+        if (tideBox) tideBox.className = "bg-purple-50/50 border-2 border-purple-200 rounded-2xl p-3.5 space-y-2 text-purple-950";
+        return;
+      }
+
+      // CẤP 4: NGÀY SÓC VỌNG / ĂN CHAY (XANH NGỌC BÍCH THANH TỊNH)
+      if (isChay) {
+        leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-gradient-to-b from-emerald-50/70 via-white to-emerald-50/40 border-4 border-emerald-600 shadow-xl text-black";
+        if (solarRow) solarRow.className = "bg-emerald-100/70 border-2 border-emerald-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-emerald-950";
+        if (lunarBadge) {
+          lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-emerald-200 text-emerald-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-emerald-300 shadow-sm";
+          lunarBadge.innerText = lun.day === 1 ? "☸️ MÙNG 1 ÂL • NGÀY SÓC TRAI GIỚI ☸️" : "☸️ RẰM 15 ÂL • NGÀY VỌNG LỄ PHẬT ☸️";
+        }
+        if (lunarDayNum) lunarDayNum.className = "lunar-number-giant select-none drop-shadow text-emerald-800";
+        if (lunarDayText) lunarDayText.className = "text-2xl sm:text-3xl font-black text-emerald-800 tracking-wide mt-1";
+        if (lunarYear) lunarYear.className = "text-base font-black text-emerald-950 mt-0.5";
+        if (divider) divider.className = "border-t-4 border-emerald-600 my-2";
+        if (tideBox) tideBox.className = "bg-emerald-50/50 border-2 border-emerald-200 rounded-2xl p-3.5 space-y-2 text-emerald-950";
+        return;
+      }
+
+      // CẤP 5: NGÀY THƯỜNG (TRẮNG ĐỎ CỔ ĐIỂN TƯƠNG PHẢN CAO)
+      leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-white border-4 border-[#d9232a] shadow-lg text-black";
+      if (solarRow) solarRow.className = "bg-blue-50 border-2 border-blue-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-[#1b2a47]";
+      if (lunarBadge) {
+        lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-red-100 text-[#d9232a] text-xs sm:text-sm font-black uppercase tracking-widest border border-red-200";
+        lunarBadge.innerText = "★ NGÀY ÂM LỊCH CHÍNH (CHU KỲ MẶT TRĂNG) ★";
+      }
+      if (lunarDayNum) lunarDayNum.className = "lunar-number-giant select-none drop-shadow text-[#d9232a]";
+      if (lunarDayText) lunarDayText.className = "text-2xl sm:text-3xl font-black text-[#d9232a] tracking-wide mt-1";
+      if (lunarYear) lunarYear.className = "text-base font-black text-slate-800 mt-0.5";
+      if (divider) divider.className = "border-t-4 border-[#d9232a] my-2";
+      if (tideBox) tideBox.className = "bg-slate-50 border-2 border-slate-300 rounded-2xl p-3.5 space-y-2 text-slate-900";
+    }
+
     function renderBloc() {
       let d = currentDate.getDate();
       let m = currentDate.getMonth() + 1;
@@ -1066,6 +1180,7 @@
       document.getElementById("solarTermSimple").innerText = `${SOLAR_TERMS[termIndex % 24]} (${Math.round(sl)}°)`;
       checkMemorialForBloc(lun);
       checkSpiritualForBloc(lun);
+      applyDayTheme(lun);
     }
 
     function tearLeaf(delta) {
@@ -1111,21 +1226,47 @@
         let btn = document.createElement("button");
         let isToday = (day === activeDay && month === (new Date().getMonth() + 1) && year === new Date().getFullYear());
         
+        let isTet = (lun.month === 1 && lun.day >= 1 && lun.day <= 3) || (lun.month === 12 && (lun.day === 29 || lun.day === 30));
+        let isViaMau = (lun.day === 8 || lun.day === 18 || lun.day === 28);
+        let isChay = (lun.day === 1 || lun.day === 15);
+        let isTodayMem = memorials && memorials.some(m => m.day === lun.day && m.month === lun.month);
+
         btn.onclick = () => {
           currentDate = new Date(year, month - 1, day);
           switchView("day");
         };
 
-        btn.className = `p-2 rounded-2xl border-2 flex flex-col items-center justify-between min-h-[64px] font-black transition ${
-          isToday ? 'bg-[#d9232a] text-white border-[#d9232a] shadow-lg' : 'border-slate-300 text-[#1b2a47] hover:bg-slate-100 hover:border-slate-400'
-        }`;
+        // Phân biệt màu sắc trực quan trên ô lịch tháng
+        let dayThemeClass = "border-slate-200 bg-white text-slate-800 hover:bg-slate-50";
+        let badgeDot = "";
+
+        if (isToday) {
+          dayThemeClass = "bg-[#d9232a] text-white border-2 border-red-700 shadow-md ring-2 ring-red-400";
+        } else if (isTet) {
+          dayThemeClass = "bg-red-50 border-2 border-amber-400 text-red-950 font-black shadow-sm";
+          badgeDot = '<span class="text-[10px]" title="Tết Nguyên Đán">🧨</span>';
+        } else if (isTodayMem) {
+          dayThemeClass = "bg-amber-50 border-2 border-amber-400 text-amber-950 font-black shadow-sm";
+          badgeDot = '<span class="text-[10px]" title="Giỗ gia tiên">🕯️</span>';
+        } else if (isViaMau) {
+          dayThemeClass = "bg-purple-50 border-2 border-purple-300 text-purple-950 font-black";
+          badgeDot = '<span class="text-[10px]" title="Vía Mẫu">🪷</span>';
+        } else if (isChay) {
+          dayThemeClass = "bg-emerald-50 border-2 border-emerald-300 text-emerald-950 font-black";
+          badgeDot = '<span class="text-[10px]" title="Rằm / Mùng 1">☸️</span>';
+        }
+
+        btn.className = `p-1.5 sm:p-2 rounded-2xl flex flex-col items-center justify-between min-h-[64px] font-black transition relative ${dayThemeClass}`;
 
         btn.innerHTML = `
-          <span class="text-[11px] ${isToday ? 'text-white' : 'text-slate-500'} font-mono">${day}</span>
-          <span class="text-xl sm:text-2xl font-black ${isToday ? 'text-white' : (lun.day === 1 || lun.day === 15 ? 'text-[#d9232a]' : 'text-[#1b2a47]')} leading-none">
+          <div class="w-full flex items-center justify-between px-1">
+            <span class="text-[10px] sm:text-[11px] ${isToday ? 'text-white' : 'text-slate-400'} font-mono">${day}</span>
+            ${badgeDot}
+          </div>
+          <span class="text-xl sm:text-2xl font-black ${isToday ? 'text-white' : (isTet ? 'text-red-700' : (isViaMau ? 'text-purple-800' : (isChay ? 'text-emerald-700' : (isTodayMem ? 'text-amber-800' : 'text-slate-800'))))} leading-none">
             ${lun.day}
           </span>
-          <span class="text-[9px] ${isToday ? 'text-yellow-200' : 'text-slate-400'} font-bold">
+          <span class="text-[9px] ${isToday ? 'text-yellow-200' : (lun.day === 1 ? 'text-red-600 font-black' : 'text-slate-400')} font-bold">
             ${lun.day === 1 ? `Th.${lun.month}` : ''}
           </span>
         `;
