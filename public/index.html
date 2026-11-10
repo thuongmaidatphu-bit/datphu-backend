@@ -58,6 +58,44 @@
       100% { transform: translateY(120px) scale(0.85); opacity: 0; }
     }
     .tearing { animation: tearLeafAnim 0.35s ease-out forwards; }
+  
+    /* HIỆU ỨNG HOA MAI VÀNG RỘN RÀNG NGÀY TẾT */
+    @keyframes maiSway {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(8deg) scale(1.05); }
+    }
+    .mai-sway {
+      animation: maiSway 3s ease-in-out infinite;
+      transform-origin: top left;
+    }
+    .mai-sway-right {
+      animation: maiSway 3.5s ease-in-out infinite reverse;
+      transform-origin: top right;
+    }
+
+    @keyframes maiPetalFall1 {
+      0% { transform: translate(0, -20px) rotate(0deg); opacity: 0; }
+      15% { opacity: 0.9; }
+      85% { opacity: 0.85; }
+      100% { transform: translate(60px, 340px) rotate(360deg); opacity: 0; }
+    }
+    @keyframes maiPetalFall2 {
+      0% { transform: translate(0, -20px) rotate(45deg); opacity: 0; }
+      15% { opacity: 0.9; }
+      85% { opacity: 0.85; }
+      100% { transform: translate(-50px, 340px) rotate(-300deg); opacity: 0; }
+    }
+    @keyframes maiPetalFall3 {
+      0% { transform: translate(0, -20px) rotate(90deg); opacity: 0; }
+      15% { opacity: 0.9; }
+      85% { opacity: 0.85; }
+      100% { transform: translate(40px, 340px) rotate(270deg); opacity: 0; }
+    }
+    .petal-1 { animation: maiPetalFall1 6s linear infinite; }
+    .petal-2 { animation: maiPetalFall2 7.5s linear infinite 1.5s; }
+    .petal-3 { animation: maiPetalFall3 5.5s linear infinite 3s; }
+    .petal-4 { animation: maiPetalFall1 8s linear infinite 4.5s; }
+  
   </style>
 </head>
 <body class="min-h-screen p-2.5 sm:p-5 flex flex-col items-center justify-between">
@@ -146,6 +184,82 @@
 
       <!-- TỜ BLOC NGÀY ĐẠI -->
       <main id="blocLeaf" class="super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3">
+
+        <!-- TRANG TRÍ HOA MAI VÀNG RỰC RỠ NGÀY TẾT (ẨN/HIỆN THEO NGÀY) -->
+        <div id="maiVangContainer" class="hidden pointer-events-none absolute inset-0 overflow-hidden rounded-3xl z-10">
+          
+          <!-- Cành mai góc trái trên -->
+          <div class="absolute -top-1 -left-1 w-28 sm:w-36 h-28 sm:h-36 mai-sway drop-shadow-md">
+            <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+              <!-- Cành nâu -->
+              <path d="M0 0 C30 15, 60 20, 95 40 M45 18 C65 5, 80 8, 90 2" stroke="#78350f" stroke-width="4" stroke-linecap="round"/>
+              <path d="M40 17 C48 32, 60 45, 75 55" stroke="#78350f" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Lộc non -->
+              <path d="M92 38 Q100 35, 96 30 Q90 34, 92 38Z" fill="#84cc16"/>
+              <path d="M88 3 Q95 0, 93 -4 Q87 -1, 88 3Z" fill="#84cc16"/>
+              <!-- Nụ mai vàng -->
+              <circle cx="75" cy="55" r="4.5" fill="#facc15" stroke="#ca8a04" stroke-width="1"/>
+              <circle cx="92" cy="3" r="5" fill="#facc15" stroke="#ca8a04" stroke-width="1"/>
+              <!-- Bông hoa mai 1 (lớn) -->
+              <g transform="translate(55, 20)">
+                <!-- 5 cánh hoa mai vàng -->
+                <circle cx="0" cy="-11" r="7.5" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="10" cy="-3" r="7.5" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="6" cy="9" r="7.5" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="-6" cy="9" r="7.5" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="-10" cy="-3" r="7.5" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <!-- Nhụy hoa đỏ cam -->
+                <circle cx="0" cy="0" r="4" fill="#ea580c"/>
+                <circle cx="0" cy="0" r="2" fill="#fef08a"/>
+              </g>
+              <!-- Bông hoa mai 2 (vừa) -->
+              <g transform="translate(90, 42) scale(0.8)">
+                <circle cx="0" cy="-10" r="7" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="9.5" cy="-3" r="7" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="6" cy="8" r="7" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="-6" cy="8" r="7" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="-9.5" cy="-3" r="7" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="0" cy="0" r="3.5" fill="#dc2626"/>
+                <circle cx="0" cy="0" r="1.8" fill="#fef08a"/>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Cành mai góc phải trên -->
+          <div class="absolute -top-1 -right-1 w-28 sm:w-36 h-28 sm:h-36 mai-sway-right drop-shadow-md">
+            <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full transform scale-x-[-1]">
+              <path d="M0 0 C30 15, 60 20, 95 40 M45 18 C65 5, 80 8, 90 2" stroke="#78350f" stroke-width="4" stroke-linecap="round"/>
+              <path d="M40 17 C48 32, 60 45, 75 55" stroke="#78350f" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M92 38 Q100 35, 96 30 Q90 34, 92 38Z" fill="#84cc16"/>
+              <circle cx="75" cy="55" r="4.5" fill="#facc15" stroke="#ca8a04" stroke-width="1"/>
+              <g transform="translate(55, 20)">
+                <circle cx="0" cy="-11" r="7.5" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="10" cy="-3" r="7.5" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="6" cy="9" r="7.5" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="-6" cy="9" r="7.5" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="-10" cy="-3" r="7.5" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="0" cy="0" r="4" fill="#ea580c"/>
+                <circle cx="0" cy="0" r="2" fill="#fef08a"/>
+              </g>
+              <g transform="translate(90, 42) scale(0.8)">
+                <circle cx="0" cy="-10" r="7" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="9.5" cy="-3" r="7" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="6" cy="8" r="7" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="-6" cy="8" r="7" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="-9.5" cy="-3" r="7" fill="#fde047" stroke="#eab308" stroke-width="0.8"/>
+                <circle cx="0" cy="0" r="3.5" fill="#dc2626"/>
+                <circle cx="0" cy="0" r="1.8" fill="#fef08a"/>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Các cánh hoa mai vàng rơi nhẹ phất phơ mang lại sinh khí vui tươi -->
+          <div class="absolute top-2 left-1/4 petal-1 text-yellow-300 text-lg opacity-85">🌸</div>
+          <div class="absolute top-4 right-1/4 petal-2 text-amber-300 text-base opacity-85">🌼</div>
+          <div class="absolute top-1 left-2/3 petal-3 text-yellow-200 text-sm opacity-80">🌸</div>
+          <div class="absolute top-6 left-1/6 petal-4 text-amber-200 text-base opacity-85">🌼</div>
+        </div>
+
         
         <!-- DÒNG NGÀY DƯƠNG LỊCH: GỌN GÀNG MÀU XANH NAVY -->
         <div id="leafSolarRow" class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-[#1b2a47]">
@@ -1052,9 +1166,12 @@
       const isChay = (lun.day === 1 || lun.day === 15);
       const isTodayMem = memorials && memorials.some(m => m.day === lun.day && m.month === lun.month);
 
-      // CẤP 1: ĐẠI LỄ TẾT NGUYÊN ĐÁN (ĐỎ HOÀNG KIM)
+      const maiContainer = document.getElementById("maiVangContainer");
+
+      // CẤP 1: ĐẠI LỄ TẾT NGUYÊN ĐÁN (ĐỎ HOÀNG KIM & HOA MAI VÀNG RỰC RỠ)
       if (isTet) {
-        leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-gradient-to-b from-[#b91c1c] via-[#d9232a] to-[#991b1b] border-4 border-amber-300 shadow-2xl text-white";
+        if (maiContainer) maiContainer.classList.remove("hidden");
+        leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-gradient-to-b from-[#b91c1c] via-[#d9232a] to-[#991b1b] border-4 border-amber-300 shadow-2xl text-white overflow-hidden";
         if (solarRow) solarRow.className = "bg-red-950/70 border-2 border-amber-400/60 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-amber-200";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1.5 rounded-full bg-amber-400 text-red-950 text-xs sm:text-sm font-black uppercase tracking-wider border-2 border-amber-300 shadow-md";
@@ -1074,6 +1191,7 @@
         return;
       }
 
+      if (maiContainer) maiContainer.classList.add("hidden");
       // CẤP 2: CHÍNH GIỖ GIA TIÊN (VÀNG ĐỒNG ẤM ÁP)
       if (isTodayMem) {
         leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-gradient-to-b from-amber-50/80 via-white to-amber-50/40 border-4 border-amber-500 shadow-xl text-black";
@@ -1121,6 +1239,8 @@
         if (tideBox) tideBox.className = "bg-emerald-50/50 border-2 border-emerald-200 rounded-2xl p-3.5 space-y-2 text-emerald-950";
         return;
       }
+
+      if (maiContainer) maiContainer.classList.add("hidden");
 
       // CẤP 5: NGÀY THƯỜNG (TRẮNG ĐỎ CỔ ĐIỂN TƯƠNG PHẢN CAO)
       leaf.className = "super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 bg-white border-4 border-[#d9232a] shadow-lg text-black";
