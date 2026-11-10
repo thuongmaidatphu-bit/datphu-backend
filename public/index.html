@@ -306,7 +306,7 @@
     <!-- THANH TIÊU ĐỀ ĐƠN GIẢN VỚI LOGO ĐẤT PHÚ -->
     <header class="bg-white border-2 border-[#1b2a47] p-3 rounded-2xl shadow-sm flex items-center justify-between">
       <div class="flex items-center gap-2.5">
-        <img src="img/logo_datphu_brand.jpg" alt="Logo Đất Phú" class="h-10 sm:h-12 w-auto object-contain rounded-lg" />
+        <img src="img/logo_datphu_brand.jpg" alt="Logo Đất Phú" class="h-10 sm:h-11 max-w-[150px] object-contain rounded-lg" />
       </div>
 
       
@@ -609,9 +609,7 @@
           <div class="absolute top-1 left-2/3 petal-3 text-yellow-200 text-sm drop-shadow">✨</div>
           <div class="absolute top-6 left-1/6 petal-4 text-amber-200 text-base drop-shadow">🌼</div>
         </div>
-        </div>
 
-        
         <!-- DÒNG NGÀY DƯƠNG LỊCH: GỌN GÀNG MÀU XANH NAVY -->
         <div id="leafSolarRow" class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-[#1b2a47]">
           <div class="flex items-center gap-2">
@@ -2520,7 +2518,7 @@
         if (maiContainer) maiContainer.classList.remove("hidden");
         const tetCakes = document.getElementById("tetCakesContainer");
         if (tetCakes) tetCakes.classList.remove("hidden");
-        leaf.className = "super-bloc theme-tet rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 overflow-hidden";
+        leaf.className = "super-bloc theme-tet rounded-b-3xl rounded-t-none p-5 sm:p-7 relative transition-transform duration-300 space-y-3 pt-6 border-t-2 overflow-hidden";
         if (solarRow) solarRow.className = "bg-red-950/70 border-2 border-amber-400/60 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-amber-200";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1.5 rounded-full bg-amber-400 text-red-950 text-xs sm:text-sm font-black uppercase tracking-wider border-2 border-amber-300 shadow-md";
@@ -2547,7 +2545,7 @@
       if (isTodayMem) {
         if (khanhTitle) khanhTitle.innerText = "ẨM NƯỚC NHỚ NGUỒN • GIA ĐẠO HƯNG LONG";
         if (khanhSub) khanhSub.innerHTML = "<span>✦ CHÍNH GIỖ TƯỞNG NHỚ TIỀN NHÂN ✦</span>";
-        leaf.className = "super-bloc theme-gio rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3";
+        leaf.className = "super-bloc theme-gio rounded-b-3xl rounded-t-none p-5 sm:p-7 relative transition-transform duration-300 space-y-3 pt-6 border-t-2";
         if (solarRow) solarRow.className = "bg-amber-100/70 border-2 border-amber-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-amber-950";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-amber-200 text-amber-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-amber-300 shadow-sm";
@@ -2565,7 +2563,7 @@
       if (isViaMau) {
         if (khanhTitle) khanhTitle.innerText = "HOÀNG KIM THÁNH MẪU • PHÙ HỘ BÌNH AN";
         if (khanhSub) khanhSub.innerHTML = "<span>✦ BÁT TUẦN VÍA MẪU LIỄU HẠNH ✦</span>";
-        leaf.className = "super-bloc theme-viamau rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3";
+        leaf.className = "super-bloc theme-viamau rounded-b-3xl rounded-t-none p-5 sm:p-7 relative transition-transform duration-300 space-y-3 pt-6 border-t-2";
         if (solarRow) solarRow.className = "bg-purple-100/70 border-2 border-purple-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-purple-950";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-purple-200 text-purple-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-purple-300 shadow-sm";
@@ -2583,7 +2581,7 @@
       if (isChay) {
         if (khanhTitle) khanhTitle.innerText = "TÂM THÀNH Ý NGUYỆN • PHẬT QUANG PHỔ CHIẾU";
         if (khanhSub) khanhSub.innerHTML = "<span>✦ SÓC VỌNG TRAI GIỚI CẦU AN ✦</span>";
-        leaf.className = "super-bloc theme-chay rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3";
+        leaf.className = "super-bloc theme-chay rounded-b-3xl rounded-t-none p-5 sm:p-7 relative transition-transform duration-300 space-y-3 pt-6 border-t-2";
         if (solarRow) solarRow.className = "bg-emerald-100/70 border-2 border-emerald-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-emerald-950";
         if (lunarBadge) {
           lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-emerald-200 text-emerald-950 text-xs sm:text-sm font-black uppercase tracking-widest border border-emerald-300 shadow-sm";
@@ -2603,7 +2601,7 @@
       if (khanhSub) khanhSub.innerHTML = "<span>✦ PHÙ ĐIÊU KHÁNH VÀNG ĐẤT PHÚ ✦</span>";
       if (khanhIcon) khanhIcon.className = "fa-solid fa-dragon text-yellow-300 text-lg sm:text-xl drop-shadow";
       // CẤP 5: NGÀY THƯỜNG (TRẮNG ĐỎ CỔ ĐIỂN TƯƠNG PHẢN CAO)
-      leaf.className = "super-bloc theme-normal rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3 text-black";
+      leaf.className = "super-bloc theme-normal rounded-b-3xl rounded-t-none p-5 sm:p-7 relative transition-transform duration-300 space-y-3 pt-6 border-t-2 text-black";
       if (solarRow) solarRow.className = "bg-blue-50 border-2 border-blue-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-[#1b2a47]";
       if (lunarBadge) {
         lunarBadge.className = "inline-block px-4 py-1 rounded-full bg-red-100 text-[#d9232a] text-xs sm:text-sm font-black uppercase tracking-widest border border-red-200";
@@ -3179,12 +3177,6 @@
     // SỔ KỶ NIỆM & NGÀY GIỖ GIA TIÊN (CAO CẤP)
     // ============================================================
     let memorials = JSON.parse(localStorage.getItem("datphu_neutral_memorials") || "[]");
-    if (memorials.length === 0) {
-      memorials = [
-        { id: 1, relation: "Ông Nội", name: "Nguyễn Văn An", day: 2, month: 10, burial: "Đồi Chóp Chài, Tuy Hòa", notes: "Chính giỗ Mùng 2 Tháng 10. Mâm cúng chay thanh tịnh." },
-        { id: 2, relation: "Cụ Cố / Tiên Tổ", name: "Nguyễn Tộc Tiên Linh", day: 15, month: 10, burial: "Nghĩa trang Đồng Bé", notes: "Cúng tạ ơn cơm mới Rằm Tháng Mười" }
-      ];
-    }
 
     // ============================================================
     // TIỆN ÍCH LỄ TIẾT, VÍA MẪU (8 - 18 - 28) & BA ĐẠI SỰ
