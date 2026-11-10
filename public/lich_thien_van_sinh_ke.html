@@ -176,6 +176,24 @@
           </div>
         </div>
 
+        <!-- BANNER NHẮC NGÀY GIỖ GIA TIÊN TỰ ĐỘNG -->
+        <div id="memorialLeafBanner" class="hidden bg-amber-50 border-2 border-amber-400 rounded-2xl p-3 shadow-sm flex items-center justify-between gap-2.5 my-2">
+          <div class="flex items-center gap-2.5">
+            <span class="text-2xl shrink-0">🕯️</span>
+            <div>
+              <span id="memorialLeafTitle" class="text-xs sm:text-sm font-black text-amber-900 block uppercase">
+                HÔM NAY: NGÀY GIỖ ÔNG NỘI
+              </span>
+              <span id="memorialLeafDesc" class="text-[11px] font-bold text-amber-800 block">
+                Nguyễn Văn A • Mùng 2 Tháng 10 Âm Lịch
+              </span>
+            </div>
+          </div>
+          <button onclick="toggleMemorialModal()" class="px-2.5 py-1.5 bg-amber-200 hover:bg-amber-300 text-amber-900 font-black text-xs rounded-xl shrink-0 transition">
+            XEM SỔ
+          </button>
+        </div>
+
         <!-- ĐƯỜNG PHÂN CÁCH ĐỎ RỰC -->
         <div class="border-t-4 border-[#d9232a] my-2"></div>
 
@@ -434,26 +452,96 @@
     </div>
 
     <!-- MODAL SỔ KỶ NIỆM GIA ĐÌNH -->
-    <div id="memorialModal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-3">
-      <div class="bg-white border-4 border-[#1b2a47] rounded-3xl p-5 w-full max-w-lg shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-        <div class="flex items-center justify-between pb-2 border-b-2 border-slate-200">
-          <h3 class="text-lg font-black text-[#1b2a47]">SỔ KỶ NIỆM & GIỖ GIA ĐÌNH</h3>
-          <button onclick="toggleMemorialModal()" class="px-3 py-1 font-black text-lg text-red-600">ĐÓNG ✕</button>
-        </div>
-        <div id="memorialListContainer" class="space-y-2 text-sm"></div>
-        <div class="pt-2 border-t border-slate-200 flex justify-end">
-          <button onclick="toggleAddMemorialForm()" class="px-4 py-2 bg-[#d9232a] text-white font-black rounded-xl text-sm">
-            + Thêm Người Thân
-          </button>
-        </div>
-        <div id="addMemorialForm" class="hidden space-y-3 pt-3 border-t border-slate-200 text-sm">
-          <input type="text" id="inputMemName" placeholder="Họ tên người thân" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold">
-          <div class="grid grid-cols-2 gap-2">
-            <input type="number" id="inputMemDay" placeholder="Ngày mất (Âm lịch)" min="1" max="30" class="border-2 border-slate-300 rounded-xl p-2 font-bold">
-            <input type="number" id="inputMemMonth" placeholder="Tháng mất (Âm lịch)" min="1" max="12" class="border-2 border-slate-300 rounded-xl p-2 font-bold">
+    <div id="memorialModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3">
+      <div class="bg-white border-4 border-[#1b2a47] rounded-3xl p-5 w-full max-w-lg shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between pb-3 border-b-2 border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 font-black text-xl flex items-center justify-center border-2 border-amber-300 shadow-sm">🕯️</div>
+            <div>
+              <h3 class="text-base sm:text-lg font-black text-[#1b2a47] leading-tight">SỔ KỶ NIỆM & GIỖ GIA TIÊN</h3>
+              <p class="text-[11px] font-bold text-slate-500">Hiếu nghĩa gia tộc • Tự động nhắc giỗ & đổi ngày Dương</p>
+            </div>
           </div>
-          <button onclick="saveNewMemorial()" class="w-full py-2.5 bg-[#1b2a47] text-white font-black rounded-xl">Lưu Vào Sổ</button>
+          <button onclick="toggleMemorialModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-700 flex items-center justify-center transition">✕</button>
         </div>
+
+        <!-- Danh sách ngày giỗ -->
+        <div id="memorialListContainer" class="space-y-2.5 text-sm"></div>
+
+        <!-- Nút thêm người thân -->
+        <div class="pt-2 border-t border-slate-200 flex items-center justify-between">
+          <button onclick="toggleAddMemorialForm()" id="btnAddMemorialToggle" class="px-3.5 py-2 bg-[#d9232a] hover:bg-[#b91c1c] text-white font-black rounded-xl text-xs sm:text-sm shadow transition flex items-center gap-1.5">
+            <i class="fa-solid fa-plus"></i> Thêm Người Thân
+          </button>
+          <span class="text-[11px] text-slate-500 font-bold">Lưu riêng tư trên máy bạn</span>
+        </div>
+
+        <!-- Form thêm ngày giỗ mới -->
+        <div id="addMemorialForm" class="hidden space-y-3 pt-3 p-3.5 bg-slate-50 rounded-2xl border-2 border-slate-200 text-xs sm:text-sm">
+          <div class="font-black text-[#1b2a47] text-sm">THÊM NGÀY GIỖ GIA TIÊN MỚI</div>
+          
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 text-[11px] mb-1">Quan hệ / Danh xưng:</label>
+              <select id="inputMemRelation" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold bg-white focus:outline-none">
+                <option value="Ông Nội">Ông Nội</option>
+                <option value="Bà Nội">Bà Nội</option>
+                <option value="Cha (Bố)">Cha (Bố)</option>
+                <option value="Mẹ">Mẹ</option>
+                <option value="Ông Ngoại">Ông Ngoại</option>
+                <option value="Bà Ngoại">Bà Ngoại</option>
+                <option value="Cụ Cố / Tiên Tổ">Cụ Cố / Tiên Tổ</option>
+                <option value="Bác">Bác</option>
+                <option value="Chú">Chú</option>
+                <option value="Cô">Cô</option>
+                <option value="Dì">Dì</option>
+                <option value="Cậu">Cậu</option>
+                <option value="Anh / Chị">Anh / Chị</option>
+                <option value="Người Thân">Người Thân</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 text-[11px] mb-1">Họ tên người thân:</label>
+              <input type="text" id="inputMemName" placeholder="vd: Nguyễn Văn A" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold bg-white focus:outline-none">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-[#d9232a] text-[11px] mb-1">Ngày mất (Âm lịch):</label>
+              <input type="number" id="inputMemDay" placeholder="Từ 1 đến 30" min="1" max="30" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold bg-white focus:outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-[#d9232a] text-[11px] mb-1">Tháng mất (Âm lịch):</label>
+              <input type="number" id="inputMemMonth" placeholder="Từ 1 đến 12" min="1" max="12" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold bg-white focus:outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 text-[11px] mb-1">Nơi an táng / Mộ phần (tùy chọn):</label>
+            <input type="text" id="inputMemBurial" placeholder="vd: Nghĩa trang Đồng Bé, Tuy Hòa" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold bg-white focus:outline-none">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 text-[11px] mb-1">Lời dặn cúng giỗ / Món chay ưa thích:</label>
+            <input type="text" id="inputMemNotes" placeholder="vd: Cúng chay thanh tịnh, ngày giỗ nhớ mời cô bác" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold bg-white focus:outline-none">
+          </div>
+
+          <div class="flex gap-2 pt-1">
+            <button onclick="saveNewMemorial()" class="flex-1 py-2.5 bg-[#1b2a47] hover:bg-[#253b64] text-white font-black rounded-xl shadow transition">
+              LƯU VÀO SỔ GIA TIÊN
+            </button>
+            <button onclick="toggleAddMemorialForm()" class="px-4 py-2.5 bg-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-300 transition">
+              Hủy
+            </button>
+          </div>
+        </div>
+
+        <button onclick="toggleMemorialModal()" class="w-full py-2.5 bg-white border-2 border-slate-300 text-slate-600 font-bold text-xs rounded-xl hover:bg-slate-100 transition">
+          Đóng lại
+        </button>
       </div>
     </div>
 
@@ -601,6 +689,39 @@
       return { day: lunarDay, month: lunarMonth, year: lunarYear, isLeap: lunarLeap, jdn: dayNumber };
     }
 
+    function convertLunar2Solar(lunarDay, lunarMonth, lunarYear, isLeap = false, timeZone = TIME_ZONE) {
+      let a11, b11;
+      if (lunarMonth < 11) {
+        a11 = getLunarMonth11(lunarYear - 1, timeZone);
+        b11 = getLunarMonth11(lunarYear, timeZone);
+      } else {
+        a11 = getLunarMonth11(lunarYear, timeZone);
+        b11 = getLunarMonth11(lunarYear + 1, timeZone);
+      }
+
+      let k = INT(0.5 + (a11 - 2415021.076998695) / 29.530588853);
+      let off = lunarMonth < 11 ? lunarMonth + 1 : lunarMonth - 11;
+      let leapOff = 0;
+      let leapMonth = 0;
+
+      if (b11 - a11 > 365) {
+        leapOff = getLeapMonthOffset(a11, timeZone);
+        leapMonth = leapOff - 2;
+        if (leapMonth < 0) leapMonth += 12;
+        if (isLeap && lunarMonth !== leapMonth) {
+          return null;
+        }
+        if (isLeap || off >= leapOff) {
+          off += 1;
+        }
+      }
+
+      let monthStart = getNewMoonDay(k + off, timeZone);
+      let jdn = monthStart + lunarDay - 1;
+      let [d, m, y] = jdToDate(jdn);
+      return { day: d, month: m, year: y, jdn };
+    }
+
     const CAN = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
     const CHI = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
     const WEEKDAYS = ["CHỦ NHẬT", "THỨ HAI", "THỨ BA", "THỨ TƯ", "THỨ NĂM", "THỨ SÁU", "THỨ BẢY"];
@@ -726,6 +847,7 @@
         "Đông Chí", "Tiểu Hàn", "Đại Hàn", "Lập Xuân", "Vũ Thủy", "Kinh Trập"
       ];
       document.getElementById("solarTermSimple").innerText = `${SOLAR_TERMS[termIndex % 24]} (${Math.round(sl)}°)`;
+      checkMemorialForBloc(lun);
     }
 
     function tearLeaf(delta) {
@@ -846,56 +968,219 @@
       }
     }
 
-    // SỔ GIA ĐÌNH
+    // ============================================================
+    // SỔ KỶ NIỆM & NGÀY GIỖ GIA TIÊN (CAO CẤP)
+    // ============================================================
     let memorials = JSON.parse(localStorage.getItem("datphu_neutral_memorials") || "[]");
     if (memorials.length === 0) {
       memorials = [
-        { id: 1, name: "Cụ Ông Thân Sinh", day: 15, month: 10 }
+        { id: 1, relation: "Ông Nội", name: "Nguyễn Văn An", day: 2, month: 10, burial: "Đồi Chóp Chài, Tuy Hòa", notes: "Chính giỗ Mùng 2 Tháng 10. Mâm cúng chay thanh tịnh." },
+        { id: 2, relation: "Cụ Cố / Tiên Tổ", name: "Nguyễn Tộc Tiên Linh", day: 15, month: 10, burial: "Nghĩa trang Đồng Bé", notes: "Cúng tạ ơn cơm mới Rằm Tháng Mười" }
       ];
     }
 
+    function checkMemorialForBloc(lun) {
+      const banner = document.getElementById("memorialLeafBanner");
+      if (!banner) return;
+
+      // 1. Khớp chính giỗ hôm nay
+      const todayMem = memorials.find(m => m.day === lun.day && m.month === lun.month);
+      if (todayMem) {
+        banner.classList.remove("hidden");
+        document.getElementById("memorialLeafTitle").innerText = `🕯️ HÔM NAY: NGÀY GIỖ ${todayMem.relation ? todayMem.relation.toUpperCase() : 'NGƯỜI THÂN'}`;
+        document.getElementById("memorialLeafDesc").innerText = `${todayMem.name} • Mùng ${todayMem.day} Tháng ${todayMem.month} Âm Lịch (Kính cẩn tưởng nhớ)`;
+        return;
+      }
+
+      // 2. Kiểm tra ngày giỗ sắp tới trong 3 ngày
+      const upcoming = memorials.find(m => {
+        if (m.month === lun.month) {
+          const diff = m.day - lun.day;
+          return diff > 0 && diff <= 3;
+        }
+        return false;
+      });
+
+      if (upcoming) {
+        banner.classList.remove("hidden");
+        const diff = upcoming.day - lun.day;
+        document.getElementById("memorialLeafTitle").innerText = `🕯️ CÒN ${diff} NGÀY: NGÀY GIỖ ${upcoming.relation ? upcoming.relation.toUpperCase() : 'NGƯỜI THÂN'}`;
+        document.getElementById("memorialLeafDesc").innerText = `${upcoming.name} • Ngày ${upcoming.day} Tháng ${upcoming.month} Âm Lịch (Chuẩn bị mâm cơm)`;
+        return;
+      }
+
+      banner.classList.add("hidden");
+    }
+
     function toggleMemorialModal() {
-      document.getElementById("memorialModal").classList.toggle("hidden");
-      renderMemorials();
+      const modal = document.getElementById("memorialModal");
+      if (!modal) return;
+      modal.classList.toggle("hidden");
+      if (!modal.classList.contains("hidden")) {
+        renderMemorials();
+      }
     }
 
     function toggleAddMemorialForm() {
-      document.getElementById("addMemorialForm").classList.toggle("hidden");
+      const f = document.getElementById("addMemorialForm");
+      if (f) f.classList.toggle("hidden");
     }
 
     function renderMemorials() {
       const cont = document.getElementById("memorialListContainer");
+      if (!cont) return;
       cont.innerHTML = "";
-      memorials.forEach(m => {
-        let card = document.createElement("div");
-        card.className = "p-3 rounded-xl bg-slate-100 border-2 border-slate-300 flex items-center justify-between font-black";
-        card.innerHTML = `
-          <div>
-            <div class="text-[#1b2a47] text-base">${m.name}</div>
-            <div class="text-[#d9232a] text-xs">Ngày ${m.day} Tháng ${m.month} (Âm lịch)</div>
+
+      if (memorials.length === 0) {
+        cont.innerHTML = `
+          <div class="text-center py-6 text-slate-500 font-bold text-xs sm:text-sm">
+            <div class="text-3xl mb-1">📖</div>
+            Chưa có ngày giỗ nào trong sổ.<br>Bấm "+ Thêm Người Thân" ở dưới để lưu giữ ngày giỗ ông bà cha mẹ.
           </div>
-          <button onclick="deleteMemorial(${m.id})" class="text-red-600 px-2 py-1 text-xs">Xóa</button>
+        `;
+        return;
+      }
+
+      const currentYear = currentDate.getFullYear();
+      const todayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+
+      // Tính ngày Dương lịch năm nay và số ngày đếm ngược
+      const enriched = memorials.map(m => {
+        let sol = convertLunar2Solar(m.day, m.month, currentYear);
+        if (!sol) sol = convertLunar2Solar(m.day, m.month, currentYear + 1);
+
+        let solDate = new Date(sol.year, sol.month - 1, sol.day);
+        let diffMs = solDate.getTime() - todayDate.getTime();
+        let diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+        if (diffDays < 0) {
+          sol = convertLunar2Solar(m.day, m.month, currentYear + 1);
+          solDate = new Date(sol.year, sol.month - 1, sol.day);
+          diffMs = solDate.getTime() - todayDate.getTime();
+          diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+        }
+
+        const weekday = WEEKDAYS[solDate.getDay()];
+        return {
+          ...m,
+          solarDay: sol.day,
+          solarMonth: sol.month,
+          solarYear: sol.year,
+          solarWeekday: weekday,
+          diffDays
+        };
+      });
+
+      // Sắp xếp người sắp đến ngày giỗ nhất lên đầu
+      enriched.sort((a, b) => a.diffDays - b.diffDays);
+
+      enriched.forEach(m => {
+        let card = document.createElement("div");
+        card.className = "p-3.5 rounded-2xl border-2 transition shadow-sm space-y-2 " + 
+          (m.diffDays === 0 ? "bg-red-50 border-red-500" : (m.diffDays <= 3 ? "bg-amber-50 border-amber-400" : "bg-slate-50 border-slate-300"));
+
+        let badgeHtml = "";
+        if (m.diffDays === 0) {
+          badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-red-600 text-white font-black text-[10px] animate-pulse">🔥 HÔM NAY CHÍNH GIỖ</span>`;
+        } else if (m.diffDays <= 3) {
+          badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-amber-500 text-white font-black text-[10px]">🕯️ CÒN ${m.diffDays} NGÀY</span>`;
+        } else {
+          badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 font-bold text-[10px]">Còn ${m.diffDays} ngày</span>`;
+        }
+
+        const lunarStr = m.day < 10 ? `Mùng ${m.day}` : `Ngày ${m.day}`;
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="px-2 py-0.5 rounded-lg bg-[#1b2a47] text-white font-black text-xs uppercase">${m.relation || "Người Thân"}</span>
+                <span class="text-[#1b2a47] font-black text-base">${m.name}</span>
+                ${badgeHtml}
+              </div>
+              <div class="text-[#d9232a] font-black text-xs mt-1">
+                📅 Âm lịch: ${lunarStr} Tháng ${m.month}
+              </div>
+              <div class="text-slate-600 font-bold text-xs mt-0.5">
+                🗓️ Dương lịch: <strong class="text-slate-800">${m.solarWeekday}, ${m.solarDay < 10 ? '0' : ''}${m.solarDay}/${m.solarMonth < 10 ? '0' : ''}${m.solarMonth}/${m.solarYear}</strong>
+              </div>
+            </div>
+            <button onclick="deleteMemorial(${m.id})" class="text-slate-400 hover:text-red-600 text-sm font-black p-1 transition" title="Xóa">✕</button>
+          </div>
+
+          ${m.burial ? `<div class="text-[11px] text-slate-500 font-semibold border-t border-slate-200/80 pt-1.5"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>Mộ phần: <span class="text-slate-700">${m.burial}</span></div>` : ''}
+          ${m.notes ? `<div class="text-[11px] text-slate-500 font-semibold pt-0.5"><i class="fa-solid fa-note-sticky text-amber-500 mr-1"></i>Lời dặn: <span class="text-slate-700">${m.notes}</span></div>` : ''}
+
+          <div class="pt-1 flex items-center justify-end">
+            <button onclick="shareMemorialInvitation(${m.id})" class="px-3 py-1.5 bg-[#0068ff] hover:bg-[#0052cc] text-white font-black text-xs rounded-xl shadow transition flex items-center gap-1.5 active:scale-95">
+              <i class="fa-solid fa-paper-plane text-yellow-300"></i> Báo Giỗ Qua Zalo
+            </button>
+          </div>
         `;
         cont.appendChild(card);
       });
     }
 
+    function shareMemorialInvitation(id) {
+      const m = memorials.find(x => x.id === id);
+      if (!m) return;
+      const currentYear = currentDate.getFullYear();
+      let sol = convertLunar2Solar(m.day, m.month, currentYear);
+      if (!sol) sol = convertLunar2Solar(m.day, m.month, currentYear + 1);
+      const solDate = new Date(sol.year, sol.month - 1, sol.day);
+      const weekday = WEEKDAYS[solDate.getDay()];
+      const lunarStr = m.day < 10 ? `Mùng ${m.day}` : `Ngày ${m.day}`;
+
+      const text = `🕯️ THÔNG BÁO NGÀY GIỖ GIA TIÊN 🕯️\n\n` +
+                   `Kính gửi cô bác, anh chị em và con cháu trong gia đình:\n` +
+                   `Nhằm ngày ${lunarStr} Tháng ${m.month} Âm Lịch (tức ${weekday}, ngày ${sol.day}/${sol.month}/${sol.year} Dương lịch) ` +
+                   `là ngày chính giỗ của ${m.relation ? m.relation : 'Người thân'} (${m.name}).\n` +
+                   (m.burial ? `📍 Nơi an táng: ${m.burial}\n` : '') +
+                   (m.notes ? `📝 Dặn dò: ${m.notes}\n` : '') +
+                   `Kính mời gia đình cùng tề tựu dâng nén hương thơm tưởng nhớ và sum họp ấm cúng!\n\n` +
+                   `👉 Xem ngày giỗ và lịch tại: https://datphu-backend.vercel.app`;
+
+      const prevEl = document.getElementById("zaloPreviewText");
+      if (prevEl) prevEl.innerText = text;
+      toggleZaloModal();
+    }
+
     function saveNewMemorial() {
+      let relation = document.getElementById("inputMemRelation") ? document.getElementById("inputMemRelation").value : "Người Thân";
       let name = document.getElementById("inputMemName").value.trim();
       let day = parseInt(document.getElementById("inputMemDay").value, 10);
       let month = parseInt(document.getElementById("inputMemMonth").value, 10);
-      if (!name || isNaN(day) || isNaN(month)) return alert("Vui lòng điền đủ họ tên và ngày tháng âm lịch");
-      memorials.push({ id: Date.now(), name, day, month });
+      let burial = document.getElementById("inputMemBurial") ? document.getElementById("inputMemBurial").value.trim() : "";
+      let notes = document.getElementById("inputMemNotes") ? document.getElementById("inputMemNotes").value.trim() : "";
+
+      if (!name || isNaN(day) || isNaN(month)) {
+        return alert("Vui lòng điền đủ họ tên, ngày và tháng mất âm lịch");
+      }
+      memorials.push({
+        id: Date.now(),
+        relation,
+        name,
+        day,
+        month,
+        burial,
+        notes
+      });
       localStorage.setItem("datphu_neutral_memorials", JSON.stringify(memorials));
       document.getElementById("inputMemName").value = "";
+      if (document.getElementById("inputMemBurial")) document.getElementById("inputMemBurial").value = "";
+      if (document.getElementById("inputMemNotes")) document.getElementById("inputMemNotes").value = "";
       toggleAddMemorialForm();
       renderMemorials();
+      renderBloc();
+      showToast("Đã lưu ngày giỗ vào sổ gia tiên thành công!");
     }
 
     function deleteMemorial(id) {
+      if (!confirm("Bạn có chắc chắn muốn xóa mục này khỏi sổ giỗ gia đình?")) return;
       memorials = memorials.filter(x => x.id !== id);
       localStorage.setItem("datphu_neutral_memorials", JSON.stringify(memorials));
       renderMemorials();
+      renderBloc();
     }
 
     // ============================================================
