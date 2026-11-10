@@ -307,6 +307,95 @@
       </button>
     </div>
 
+    <!-- MODAL HƯỚNG DẪN CÀI ĐẶT RA MÀN HÌNH CHÍNH (PWA) -->
+    <div id="installGuideModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3.5">
+      <div class="bg-white border-4 border-[#1b2a47] rounded-3xl p-5 w-full max-w-md shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+        
+        <!-- Header Modal -->
+        <div class="flex items-center justify-between pb-3 border-b-2 border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <img src="img/logo_datphu_brand.jpg" alt="Logo" class="h-10 w-auto rounded-lg object-contain shadow-sm" />
+            <div>
+              <h3 class="text-base sm:text-lg font-black text-[#1b2a47] leading-tight">CÀI LỊCH ĐẤT PHÚ</h3>
+              <p class="text-[11px] font-bold text-slate-500">Mở xem mỗi ngày như ứng dụng có sẵn trên máy</p>
+            </div>
+          </div>
+          <button onclick="toggleInstallModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-700 flex items-center justify-center transition">✕</button>
+        </div>
+
+        <!-- Nút Cài Nhanh 1 Chạm (Nếu Trình Duyệt Hỗ Trợ) -->
+        <div id="pwaDirectInstallBox" class="hidden bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-3 text-center space-y-2">
+          <p class="text-xs font-bold text-emerald-800">Trình duyệt của bạn hỗ trợ cài đặt tự động 1 chạm:</p>
+          <button onclick="triggerDirectPwaInstall()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-download"></i> BẤM CÀI ĐẶT NGAY
+          </button>
+        </div>
+
+        <!-- 2 Tab Chuyển Đổi: ANDROID vs IPHONE -->
+        <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-300">
+          <button id="tabBtnAndroid" onclick="switchInstallTab('android')" class="py-2 rounded-xl font-black text-xs sm:text-sm bg-[#1b2a47] text-white shadow transition flex items-center justify-center gap-1.5">
+            <i class="fa-brands fa-android text-emerald-400"></i> ANDROID / SAMSUNG
+          </button>
+          <button id="tabBtnIos" onclick="switchInstallTab('ios')" class="py-2 rounded-xl font-black text-xs sm:text-sm text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
+            <i class="fa-brands fa-apple text-slate-800"></i> IPHONE / IPAD
+          </button>
+        </div>
+
+        <!-- Hướng dẫn cho Android -->
+        <div id="guideAndroidContent" class="space-y-3 pt-1 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 rounded-2xl border-2 border-slate-200 flex items-start gap-3">
+            <div class="w-7 h-7 rounded-full bg-[#1b2a47] text-white font-black text-xs flex items-center justify-center shrink-0">1</div>
+            <div>
+              <span class="font-black text-slate-900 block">Chạm vào nút 3 chấm <span class="text-base text-blue-600 font-mono font-bold">⋮</span> ở góc trên bên phải màn hình</span>
+              <span class="text-slate-500 text-[11px] block mt-0.5">Nằm ở góc trên cùng của trình duyệt Chrome hoặc Cốc Cốc.</span>
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-2xl border-2 border-slate-200 flex items-start gap-3">
+            <div class="w-7 h-7 rounded-full bg-[#1b2a47] text-white font-black text-xs flex items-center justify-center shrink-0">2</div>
+            <div>
+              <span class="font-black text-slate-900 block">Chọn dòng <strong class="text-[#d9232a]">"Cài đặt ứng dụng"</strong> hoặc <strong class="text-[#d9232a]">"Thêm vào màn hình chính"</strong></span>
+              <span class="text-slate-500 text-[11px] block mt-0.5">Có biểu tượng hình chiếc điện thoại hoặc dấu cộng.</span>
+            </div>
+          </div>
+
+          <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-300 flex items-center gap-2 text-emerald-800 text-xs font-bold">
+            <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+            <span>Xong! Biểu tượng Lịch Đất Phú sẽ xuất hiện ngay trên màn hình chính của bạn.</span>
+          </div>
+        </div>
+
+        <!-- Hướng dẫn cho iPhone (iOS) -->
+        <div id="guideIosContent" class="hidden space-y-3 pt-1 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 rounded-2xl border-2 border-slate-200 flex items-start gap-3">
+            <div class="w-7 h-7 rounded-full bg-[#1b2a47] text-white font-black text-xs flex items-center justify-center shrink-0">1</div>
+            <div>
+              <span class="font-black text-slate-900 block">Chạm vào nút Chia sẻ <i class="fa-solid fa-arrow-up-from-bracket text-blue-600"></i> ở thanh dưới cùng Safari</span>
+              <span class="text-slate-500 text-[11px] block mt-0.5">Biểu tượng hình ô vuông có mũi tên chỉ lên trên.</span>
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-2xl border-2 border-slate-200 flex items-start gap-3">
+            <div class="w-7 h-7 rounded-full bg-[#1b2a47] text-white font-black text-xs flex items-center justify-center shrink-0">2</div>
+            <div>
+              <span class="font-black text-slate-900 block">Cuộn xuống chọn dòng <strong class="text-[#d9232a]">"Thêm vào MH chính"</strong> (Add to Home Screen)</span>
+              <span class="text-slate-500 text-[11px] block mt-0.5">Có biểu tượng ô vuông với dấu cộng <strong class="text-blue-600">[ + ]</strong>.</span>
+            </div>
+          </div>
+
+          <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-300 flex items-center gap-2 text-emerald-800 text-xs font-bold">
+            <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+            <span>Bấm "Thêm" ở góc trên bên phải là hoàn tất!</span>
+          </div>
+        </div>
+
+        <!-- Nút đóng -->
+        <button onclick="toggleInstallModal()" class="w-full py-3 bg-[#1b2a47] hover:bg-[#253b64] text-white font-black text-sm rounded-2xl transition shadow">
+          ĐÃ HIỂU, ĐÓNG LẠI
+        </button>
+      </div>
+    </div>
+
     <!-- MODAL SỔ KỶ NIỆM GIA ĐÌNH -->
     <div id="memorialModal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-3">
       <div class="bg-white border-4 border-[#1b2a47] rounded-3xl p-5 w-full max-w-lg shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
@@ -884,29 +973,68 @@
       }
     }
 
-    // PWA: Cài đặt ra màn hình chính
+    // PWA: Cài đặt ra màn hình chính (Modal Hướng Dẫn Trực Quan)
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
+      const directBox = document.getElementById("pwaDirectInstallBox");
+      if (directBox) directBox.classList.remove("hidden");
     });
 
     function installPwaApp() {
+      toggleInstallModal();
+    }
+
+    function toggleInstallModal() {
+      const modal = document.getElementById("installGuideModal");
+      if (!modal) return;
+      const isHidden = modal.classList.contains("hidden");
+      if (isHidden) {
+        modal.classList.remove("hidden");
+        // Tự động nhận diện thiết bị iPhone hay Android
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        switchInstallTab(isIOS ? 'ios' : 'android');
+
+        const directBox = document.getElementById("pwaDirectInstallBox");
+        if (directBox) {
+          if (deferredPrompt) directBox.classList.remove("hidden");
+          else directBox.classList.add("hidden");
+        }
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function switchInstallTab(platform) {
+      const btnAnd = document.getElementById("tabBtnAndroid");
+      const btnIos = document.getElementById("tabBtnIos");
+      const guideAnd = document.getElementById("guideAndroidContent");
+      const guideIos = document.getElementById("guideIosContent");
+
+      if (platform === 'ios') {
+        btnIos.className = "py-2 rounded-xl font-black text-xs sm:text-sm bg-[#1b2a47] text-white shadow transition flex items-center justify-center gap-1.5";
+        btnAnd.className = "py-2 rounded-xl font-black text-xs sm:text-sm text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5";
+        guideIos.classList.remove("hidden");
+        guideAnd.classList.add("hidden");
+      } else {
+        btnAnd.className = "py-2 rounded-xl font-black text-xs sm:text-sm bg-[#1b2a47] text-white shadow transition flex items-center justify-center gap-1.5";
+        btnIos.className = "py-2 rounded-xl font-black text-xs sm:text-sm text-slate-700 hover:bg-slate-200 transition flex items-center justify-center gap-1.5";
+        guideAnd.classList.remove("hidden");
+        guideIos.classList.add("hidden");
+      }
+    }
+
+    function triggerDirectPwaInstall() {
       if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
             showToast("Đã thêm Lịch Đất Phú ra màn hình chính!");
+            toggleInstallModal();
           }
           deferredPrompt = null;
         });
-      } else {
-        let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        if (isIOS) {
-          alert("Để cài Lịch ra màn hình chính iPhone:\n1. Bấm nút Chia sẻ (biểu tượng mũi tên lên ở đáy màn hình Safari)\n2. Chọn 'Thêm vào MH chính' (Add to Home Screen).");
-        } else {
-          alert("Để cài Lịch ra màn hình điện thoại:\nBấm vào nút 3 chấm góc trên trình duyệt Chrome/Cốc Cốc -> Chọn 'Cài đặt ứng dụng' hoặc 'Thêm vào màn hình chính'.");
-        }
       }
     }
 
