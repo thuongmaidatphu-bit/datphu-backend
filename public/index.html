@@ -654,183 +654,6 @@
         </div>
       </div>
 
-      <!-- KHÔNG GIAN ÂM NHẠC TRỊ LIỆU & CHỮA LÀNH TÂM BỆNH THEO NGỮ CẢNH (CONTEXT-AWARE HEALING) -->
-      <div id="healingContextCard" class="bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-900 text-white p-3.5 sm:p-4 rounded-3xl border-2 border-teal-500/40 shadow-xl space-y-3 relative overflow-hidden transition-all duration-300">
-        <!-- Đốm sáng hào quang chữa lành nhẹ dịu -->
-        <div class="pointer-events-none absolute -top-10 -right-10 w-36 h-36 bg-teal-400/15 rounded-full blur-2xl"></div>
-        <div class="pointer-events-none absolute -bottom-10 -left-10 w-36 h-36 bg-emerald-400/15 rounded-full blur-2xl"></div>
-
-        <!-- HÀNG 1: TIÊU ĐỀ & NGỮ CẢNH THỜI GIAN HIỆN TẠI -->
-        <div class="flex items-center justify-between text-xs font-black pb-1 border-b border-teal-800/40">
-          <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-[10px] uppercase tracking-wider font-black shadow-sm flex items-center gap-1">
-              <span>🌿</span> ÂM NHẠC TRỊ LIỆU
-            </span>
-            <span id="healingTimeContextBadge" class="text-teal-200 text-[11px] truncate">
-              🌙 Đêm An Lành (396 Hz)
-            </span>
-          </div>
-
-          <button onclick="toggleHealingSanctuaryModal()" class="text-amber-300 hover:text-amber-200 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition">
-            <i class="fa-solid fa-spa text-[10px]"></i> Liệu pháp sâu
-          </button>
-        </div>
-
-        <!-- HÀNG 2: LỜI VỖ VỀ CHỮA LÀNH TRỰC DIỆN -->
-        <div class="p-2.5 bg-slate-950/60 rounded-2xl border border-teal-500/25 flex items-center justify-between gap-3">
-          <div class="space-y-0.5 flex-1 min-w-0">
-            <div class="text-[10px] text-teal-300 font-bold flex items-center gap-1">
-              <i class="fa-solid fa-heart text-rose-400"></i> Lời Vỗ Về Thân Tâm:
-            </div>
-            <p id="healingAffirmationText" class="text-xs text-slate-200 italic font-medium leading-relaxed truncate sm:whitespace-normal">
-              "Bạn đã vất vả nhiều rồi, hãy thả lỏng và cho phép mình được nghỉ ngơi. Mọi chuyện rồi sẽ bình an."
-            </p>
-          </div>
-          <button id="btnQuickPlayHealing" onclick="toggleQuickHealingSound()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-black text-xs shadow-md active:scale-95 transition shrink-0 flex items-center gap-1.5" title="Bật âm thanh chữa lành theo ngữ cảnh hiện tại">
-            <span id="quickPlayHealingIcon">▶️</span>
-            <span id="quickPlayHealingText">Xoa Dịu</span>
-          </button>
-        </div>
-
-        <!-- HÀNG 3: CÁC NGỮ CẢNH TÂM BỆNH CẦN CHỮA LÀNH TỨC THÌ -->
-        <div class="space-y-1.5">
-          <div class="text-[10px] font-black text-slate-300 uppercase tracking-wider flex items-center justify-between">
-            <span>Chọn Ngữ Cảnh Bạn Cần Xoa Dịu:</span>
-            <span class="text-[9px] text-teal-400 font-normal">Tần số Solfeggio & Tự nhiên</span>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-center">
-            <button onclick="playHealingPreset('anxiety')" id="presetBtn_anxiety" class="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
-              <div class="flex items-center justify-between">
-                <span class="text-xs">🌿</span>
-                <span class="text-[9px] font-mono text-teal-300">396Hz</span>
-              </div>
-              <div class="font-black text-[11px] text-white">Xua Lo Âu</div>
-              <div class="text-[9px] text-slate-400 truncate">Giảm bồn chồn</div>
-            </button>
-
-            <button onclick="playHealingPreset('burnout')" id="presetBtn_burnout" class="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
-              <div class="flex items-center justify-between">
-                <span class="text-xs">🕊️</span>
-                <span class="text-[9px] font-mono text-emerald-300">528Hz</span>
-              </div>
-              <div class="font-black text-[11px] text-white">Giải Stress</div>
-              <div class="text-[9px] text-slate-400 truncate">Hồi phục kiệt sức</div>
-            </button>
-
-            <button onclick="playHealingPreset('sadness')" id="presetBtn_sadness" class="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
-              <div class="flex items-center justify-between">
-                <span class="text-xs">🕯️</span>
-                <span class="text-[9px] font-mono text-cyan-300">639Hz</span>
-              </div>
-              <div class="font-black text-[11px] text-white">Xoa Buồn Bã</div>
-              <div class="text-[9px] text-slate-400 truncate">Hàn gắn cô đơn</div>
-            </button>
-
-            <button onclick="playHealingPreset('sleep')" id="presetBtn_sleep" class="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
-              <div class="flex items-center justify-between">
-                <span class="text-xs">🌙</span>
-                <span class="text-[9px] font-mono text-indigo-300">432Hz</span>
-              </div>
-              <div class="font-black text-[11px] text-white">Ngủ Ngon</div>
-              <div class="text-[9px] text-slate-400 truncate">Xua Overthinking</div>
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- HUB TIỆN ÍCH DÀNH CHO NGƯỜI TRẺ (GEN Z & YOUTH FOCUS) -->
-      <div id="youthLifestyleHub" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-4 sm:p-5 rounded-3xl border-2 border-indigo-400/50 shadow-xl space-y-3.5 relative overflow-hidden transition-all duration-300">
-        <!-- Ánh sáng neon nền thời thượng -->
-        <div class="pointer-events-none absolute -top-10 -right-10 w-36 h-36 bg-cyan-500/15 rounded-full blur-2xl"></div>
-        <div class="pointer-events-none absolute -bottom-10 -left-10 w-36 h-36 bg-purple-500/15 rounded-full blur-2xl"></div>
-
-        <!-- HÀNG 1: HEADER GEN Z & NÚT ĐỔI SỰ KIỆN -->
-        <div class="flex items-center justify-between text-xs font-black pb-1 border-b border-indigo-800/40">
-          <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white text-[10px] uppercase tracking-wider font-black shadow-sm">
-              GEN Z HUB
-            </span>
-            <span class="text-indigo-200">Không Gian Người Trẻ</span>
-          </div>
-          <button onclick="toggleSettingsCenterModal('countdown')" class="text-amber-300 hover:text-amber-200 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition">
-            <i class="fa-solid fa-pen-to-square text-[10px]"></i> Đổi sự kiện
-          </button>
-        </div>
-
-        <!-- HÀNG 2: BỘ ĐẾM NGƯỢC COUNTDOWN THỜI GIAN THỰC -->
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <div class="text-xs sm:text-sm font-black text-white flex items-center gap-1.5 truncate">
-              <i class="fa-solid fa-hourglass-half text-amber-400 animate-pulse text-xs"></i>
-              <span id="countdownEventTitle">Tết Nguyên Đán Bính Ngọ 2026</span>
-            </div>
-            <span class="text-[10px] text-indigo-300 font-bold shrink-0">Đang đếm ngược</span>
-          </div>
-
-          <div class="grid grid-cols-4 gap-2 text-center">
-            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
-              <div id="cdDays" class="text-2xl sm:text-3xl font-black font-mono text-cyan-300 leading-none">00</div>
-              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">NGÀY</div>
-            </div>
-            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
-              <div id="cdHours" class="text-2xl sm:text-3xl font-black font-mono text-purple-300 leading-none">00</div>
-              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">GIỜ</div>
-            </div>
-            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
-              <div id="cdMinutes" class="text-2xl sm:text-3xl font-black font-mono text-amber-300 leading-none">00</div>
-              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">PHÚT</div>
-            </div>
-            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
-              <div id="cdSeconds" class="text-2xl sm:text-3xl font-black font-mono text-pink-400 leading-none">00</div>
-              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">GIÂY</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- HÀNG 3: CHIÊM TINH CUNG HOÀNG ĐẠO & ÂM THANH FOCUS LO-FI -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-          <!-- BÊN TRÁI: CHIÊM TINH & CON SỐ MAY MẮN -->
-          <div class="bg-slate-950/60 border border-indigo-500/30 rounded-2xl p-2.5 flex items-center justify-between">
-            <div>
-              <div class="text-[10px] text-indigo-300 font-bold flex items-center gap-1">
-                <i class="fa-solid fa-sparkles text-amber-300"></i> <span id="zodiacYouthSign">Ma Kết</span>
-              </div>
-              <div class="text-xs font-black text-white mt-0.5">
-                Số hên: <span id="zodiacYouthNumber" class="text-amber-300 font-mono">04, 18, 88</span>
-              </div>
-            </div>
-            <span id="zodiacYouthVibe" class="px-2 py-0.5 rounded-full bg-indigo-500/30 border border-indigo-400/40 text-[10px] font-black text-indigo-200 shrink-0">
-              96% Vibe
-            </span>
-          </div>
-
-          <!-- BÊN PHẢI: NÚT ÂM THANH LO-FI THƯ THÁI FOCUS & THIỀN MƯA -->
-          <div class="bg-slate-950/60 border border-indigo-500/30 rounded-2xl p-2.5 flex flex-col justify-between gap-1.5">
-            <div class="flex items-center justify-between text-[10px]">
-              <span class="font-bold text-slate-300 flex items-center gap-1">
-                <i class="fa-solid fa-headphones text-pink-400"></i> Lo-Fi Focus:
-              </span>
-              <button onclick="toggleZenRainModal()" class="font-bold text-teal-300 hover:text-teal-200 underline flex items-center gap-1 active:scale-95 transition whitespace-nowrap" title="Bảng điều khiển Thiền Mưa Phật Giáo & Hẹn giờ ngủ">
-                <i class="fa-solid fa-sliders text-[9px]"></i> Hẹn giờ ngủ
-              </button>
-            </div>
-            <div class="grid grid-cols-3 gap-1">
-              <button id="btnAmbientZenRain" onclick="playAmbientSound('zen_rain')" class="py-1 px-1.5 rounded-xl bg-gradient-to-r from-teal-800 to-cyan-800 hover:from-teal-700 hover:to-cyan-700 text-cyan-100 text-[10px] font-black border border-cyan-400/50 shadow transition active:scale-95 flex items-center justify-center gap-1 truncate" title="Nhạc Thiền Phật Giáo kết hợp tiếng mưa & chuông gió cho bình an nội tâm và giấc ngủ sâu">
-                <span>🎐</span> Thiền Mưa
-              </button>
-              <button id="btnAmbientRain" onclick="playAmbientSound('rain')" class="py-1 px-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold border border-slate-600 transition active:scale-95 flex items-center justify-center gap-1 truncate" title="Mưa rơi Tuy Hòa">
-                <span>🌧️</span> Mưa
-              </button>
-              <button id="btnAmbientOcean" onclick="playAmbientSound('ocean')" class="py-1 px-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold border border-slate-600 transition active:scale-95 flex items-center justify-center gap-1 truncate" title="Sóng biển đêm">
-                <span>🌊</span> Sóng
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- KHỐI LỊCH BLOC KHÁNH SƠN MÀI HOÀNG GIA (THEO ẢNH BÌA LỊCH BLOC TRUYỀN THỐNG) -->
       <div class="bloc-3d-wrapper relative drop-shadow-2xl">
         
@@ -1386,6 +1209,99 @@
         </button>
       </div>
 
+    
+
+      <!-- HUB TIỆN ÍCH DÀNH CHO NGƯỜI TRẺ (GEN Z & YOUTH FOCUS) -->
+      <div id="youthLifestyleHub" class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-4 sm:p-5 rounded-3xl border-2 border-indigo-400/50 shadow-xl space-y-3.5 relative overflow-hidden transition-all duration-300">
+        <!-- Ánh sáng neon nền thời thượng -->
+        <div class="pointer-events-none absolute -top-10 -right-10 w-36 h-36 bg-cyan-500/15 rounded-full blur-2xl"></div>
+        <div class="pointer-events-none absolute -bottom-10 -left-10 w-36 h-36 bg-purple-500/15 rounded-full blur-2xl"></div>
+
+        <!-- HÀNG 1: HEADER GEN Z & NÚT ĐỔI SỰ KIỆN -->
+        <div class="flex items-center justify-between text-xs font-black pb-1 border-b border-indigo-800/40">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white text-[10px] uppercase tracking-wider font-black shadow-sm">
+              GEN Z HUB
+            </span>
+            <span class="text-indigo-200">Không Gian Người Trẻ</span>
+          </div>
+          <button onclick="toggleSettingsCenterModal('countdown')" class="text-amber-300 hover:text-amber-200 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition">
+            <i class="fa-solid fa-pen-to-square text-[10px]"></i> Đổi sự kiện
+          </button>
+        </div>
+
+        <!-- HÀNG 2: BỘ ĐẾM NGƯỢC COUNTDOWN THỜI GIAN THỰC -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-xs sm:text-sm font-black text-white flex items-center gap-1.5 truncate">
+              <i class="fa-solid fa-hourglass-half text-amber-400 animate-pulse text-xs"></i>
+              <span id="countdownEventTitle">Tết Nguyên Đán Bính Ngọ 2026</span>
+            </div>
+            <span class="text-[10px] text-indigo-300 font-bold shrink-0">Đang đếm ngược</span>
+          </div>
+
+          <div class="grid grid-cols-4 gap-2 text-center">
+            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
+              <div id="cdDays" class="text-2xl sm:text-3xl font-black font-mono text-cyan-300 leading-none">00</div>
+              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">NGÀY</div>
+            </div>
+            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
+              <div id="cdHours" class="text-2xl sm:text-3xl font-black font-mono text-purple-300 leading-none">00</div>
+              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">GIỜ</div>
+            </div>
+            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
+              <div id="cdMinutes" class="text-2xl sm:text-3xl font-black font-mono text-amber-300 leading-none">00</div>
+              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">PHÚT</div>
+            </div>
+            <div class="bg-slate-950/80 border border-indigo-500/40 rounded-2xl p-2 shadow-inner">
+              <div id="cdSeconds" class="text-2xl sm:text-3xl font-black font-mono text-pink-400 leading-none">00</div>
+              <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mt-1">GIÂY</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HÀNG 3: CHIÊM TINH CUNG HOÀNG ĐẠO & ÂM THANH FOCUS LO-FI -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+          <!-- BÊN TRÁI: CHIÊM TINH & CON SỐ MAY MẮN -->
+          <div class="bg-slate-950/60 border border-indigo-500/30 rounded-2xl p-2.5 flex items-center justify-between">
+            <div>
+              <div class="text-[10px] text-indigo-300 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-sparkles text-amber-300"></i> <span id="zodiacYouthSign">Ma Kết</span>
+              </div>
+              <div class="text-xs font-black text-white mt-0.5">
+                Số hên: <span id="zodiacYouthNumber" class="text-amber-300 font-mono">04, 18, 88</span>
+              </div>
+            </div>
+            <span id="zodiacYouthVibe" class="px-2 py-0.5 rounded-full bg-indigo-500/30 border border-indigo-400/40 text-[10px] font-black text-indigo-200 shrink-0">
+              96% Vibe
+            </span>
+          </div>
+
+          <!-- BÊN PHẢI: NÚT ÂM THANH LO-FI THƯ THÁI FOCUS & THIỀN MƯA -->
+          <div class="bg-slate-950/60 border border-indigo-500/30 rounded-2xl p-2.5 flex flex-col justify-between gap-1.5">
+            <div class="flex items-center justify-between text-[10px]">
+              <span class="font-bold text-slate-300 flex items-center gap-1">
+                <i class="fa-solid fa-headphones text-pink-400"></i> Lo-Fi Focus:
+              </span>
+              <button onclick="toggleZenRainModal()" class="font-bold text-teal-300 hover:text-teal-200 underline flex items-center gap-1 active:scale-95 transition whitespace-nowrap" title="Bảng điều khiển Thiền Mưa Phật Giáo & Hẹn giờ ngủ">
+                <i class="fa-solid fa-sliders text-[9px]"></i> Hẹn giờ ngủ
+              </button>
+            </div>
+            <div class="grid grid-cols-3 gap-1">
+              <button id="btnAmbientZenRain" onclick="playAmbientSound('zen_rain')" class="py-1 px-1.5 rounded-xl bg-gradient-to-r from-teal-800 to-cyan-800 hover:from-teal-700 hover:to-cyan-700 text-cyan-100 text-[10px] font-black border border-cyan-400/50 shadow transition active:scale-95 flex items-center justify-center gap-1 truncate" title="Nhạc Thiền Phật Giáo kết hợp tiếng mưa & chuông gió cho bình an nội tâm và giấc ngủ sâu">
+                <span>🎐</span> Thiền Mưa
+              </button>
+              <button id="btnAmbientRain" onclick="playAmbientSound('rain')" class="py-1 px-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold border border-slate-600 transition active:scale-95 flex items-center justify-center gap-1 truncate" title="Mưa rơi Tuy Hòa">
+                <span>🌧️</span> Mưa
+              </button>
+              <button id="btnAmbientOcean" onclick="playAmbientSound('ocean')" class="py-1 px-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold border border-slate-600 transition active:scale-95 flex items-center justify-center gap-1 truncate" title="Sóng biển đêm">
+                <span>🌊</span> Sóng
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </section>
 
     <!-- ============================================================ -->
@@ -1506,6 +1422,89 @@
           
           <!-- ================= TAB 1: 🌿 TRỊ LIỆU & THIỀN ================= -->
           <div id="tabContent_healing" class="space-y-4">
+            <!-- KHỐI NGỮ CẢNH TRỊ LIỆU & LỜI VỖ VỀ THÂN TÂM (ĐÃ CHUYỂN VÀO CÀI ĐẶT) -->
+            <div id="healingContextCard" class="bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-900 text-white p-3.5 sm:p-4 rounded-2xl border-2 border-teal-500/40 shadow-lg space-y-3 relative overflow-hidden">
+              <!-- Hào quang chữa lành -->
+              <div class="pointer-events-none absolute -top-10 -right-10 w-36 h-36 bg-teal-400/15 rounded-full blur-2xl"></div>
+              <div class="pointer-events-none absolute -bottom-10 -left-10 w-36 h-36 bg-emerald-400/15 rounded-full blur-2xl"></div>
+
+              <!-- HÀNG 1: TIÊU ĐỀ & NGỮ CẢNH THỜI GIAN HIỆN TẠI -->
+              <div class="flex items-center justify-between text-xs font-black pb-1 border-b border-teal-800/40">
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-[10px] uppercase tracking-wider font-black shadow-sm flex items-center gap-1">
+                    <span>🌿</span> ÂM NHẠC TRỊ LIỆU
+                  </span>
+                  <span id="healingTimeContextBadge" class="text-teal-200 text-[11px] truncate">
+                    🌙 Đêm An Lành (396 Hz)
+                  </span>
+                </div>
+                <span class="text-[10px] text-teal-300 font-bold">Web Audio 100% Offline</span>
+              </div>
+
+              <!-- HÀNG 2: LỜI VỖ VỀ THÂN TÂM & NÚT PHÁT NHANH -->
+              <div class="p-2.5 bg-slate-950/70 rounded-xl border border-teal-500/25 flex items-center justify-between gap-2.5">
+                <div class="space-y-0.5 flex-1 min-w-0">
+                  <div class="text-[10px] text-teal-300 font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-heart text-rose-400"></i> Lời Vỗ Về Thân Tâm:
+                  </div>
+                  <p id="healingAffirmationText" class="text-xs text-slate-200 italic font-medium leading-relaxed">
+                    "Bạn đã vất vả nhiều rồi, hãy thả lỏng và cho phép mình được nghỉ ngơi. Mọi chuyện rồi sẽ bình an."
+                  </p>
+                </div>
+                <button id="btnQuickPlayHealing" onclick="toggleQuickHealingSound()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-black text-xs shadow-md active:scale-95 transition shrink-0 flex items-center gap-1.5" title="Bật âm thanh chữa lành theo ngữ cảnh hiện tại">
+                  <span id="quickPlayHealingIcon">▶️</span>
+                  <span id="quickPlayHealingText">Xoa Dịu</span>
+                </button>
+              </div>
+
+              <!-- HÀNG 3: 4 PRESET TÂM BỆNH CẦN XOA DỊU -->
+              <div class="space-y-1.5">
+                <div class="text-[10px] font-black text-slate-300 uppercase tracking-wider flex items-center justify-between">
+                  <span>Chọn Ngữ Cảnh Bạn Cần Xoa Dịu:</span>
+                  <span class="text-[9px] text-teal-400 font-normal">Tần số Solfeggio & Pink Noise</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-center">
+                  <button onclick="playHealingPreset('anxiety')" id="presetBtn_anxiety" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs">🌿</span>
+                      <span class="text-[9px] font-mono text-teal-300">396Hz</span>
+                    </div>
+                    <div class="font-black text-[11px] text-white">Xua Lo Âu</div>
+                    <div class="text-[9px] text-slate-400 truncate">Giảm bồn chồn</div>
+                  </button>
+
+                  <button onclick="playHealingPreset('burnout')" id="presetBtn_burnout" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs">🕊️</span>
+                      <span class="text-[9px] font-mono text-emerald-300">528Hz</span>
+                    </div>
+                    <div class="font-black text-[11px] text-white">Giải Stress</div>
+                    <div class="text-[9px] text-slate-400 truncate">Hồi phục kiệt sức</div>
+                  </button>
+
+                  <button onclick="playHealingPreset('sadness')" id="presetBtn_sadness" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs">🕯️</span>
+                      <span class="text-[9px] font-mono text-cyan-300">639Hz</span>
+                    </div>
+                    <div class="font-black text-[11px] text-white">Xoa Buồn Bã</div>
+                    <div class="text-[9px] text-slate-400 truncate">Hàn gắn cô đơn</div>
+                  </button>
+
+                  <button onclick="playHealingPreset('sleep')" id="presetBtn_sleep" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs">🌙</span>
+                      <span class="text-[9px] font-mono text-indigo-300">432Hz</span>
+                    </div>
+                    <div class="font-black text-[11px] text-white">Ngủ Ngon</div>
+                    <div class="text-[9px] text-slate-400 truncate">Xua Overthinking</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            
             
             <!-- BÀI THỞ SINH HỌC 4-7-8 TRỰC QUAN -->
             <div class="p-4 bg-gradient-to-br from-slate-950 via-teal-950 to-slate-900 text-white border-2 border-teal-500/40 rounded-2xl text-center space-y-3 relative overflow-hidden shadow-md">
@@ -1937,14 +1936,17 @@
               </select>
             </div>
 
-            <!-- TÙY CHỌN HIỂN THỊ KHỐI CHỮA LÀNH NGOÀI TRANG CHỦ -->
-            <div class="p-3 bg-slate-50 border-2 border-slate-200 rounded-2xl flex items-center justify-between">
-              <div>
-                <div class="text-xs font-black text-slate-800">Khối Âm Nhạc Chữa Lành Ngoài Trang Chủ</div>
-                <div class="text-[10px] text-slate-500">Tắt nếu bạn muốn tờ bloc lịch tinh gọn, không dàn trải</div>
+            <!-- THÔNG TIN ÂM NHẠC & TRỊ LIỆU -->
+            <div class="p-3 bg-teal-50 border-2 border-teal-300 rounded-2xl flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🌿</span>
+                <div>
+                  <div class="text-xs font-black text-teal-950">Không Gian Âm Nhạc & Trị Liệu</div>
+                  <div class="text-[10px] text-teal-700">Đã quy hoạch vào Tab [🌿 Trị Liệu] để trang chủ rộng rãi</div>
+                </div>
               </div>
-              <button id="toggleHealingCardHomeBtn" onclick="toggleHealingCardHomeDisplay()" class="px-3.5 py-1.5 rounded-xl font-black text-xs bg-teal-600 text-white shadow active:scale-95 transition">
-                ĐANG BẬT
+              <button onclick="switchSettingsTab('healing')" class="px-3 py-1.5 rounded-xl font-black text-xs bg-teal-600 hover:bg-teal-700 text-white shadow active:scale-95 transition">
+                Mở Xem
               </button>
             </div>
 
@@ -5859,17 +5861,9 @@
     }
 
     function applyHomeCardsVisibility() {
-      const healingCard = document.getElementById("healingContextCard");
       const youthHub = document.getElementById("youthLifestyleHub");
       const mode = localStorage.getItem("datphu_lifestyle_mode") || "youth";
-
-      const showHealing = localStorage.getItem("datphu_show_healing_card") !== "false";
       const showYouth = (localStorage.getItem("datphu_show_youth_hub") !== "false") && (mode !== "senior");
-
-      if (healingCard) {
-        if (showHealing) healingCard.classList.remove("hidden");
-        else healingCard.classList.add("hidden");
-      }
 
       if (youthHub) {
         if (showYouth) youthHub.classList.remove("hidden");
