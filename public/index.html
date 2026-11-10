@@ -1350,87 +1350,116 @@
             </div>
 
             <!-- 1. NIỆM PHẬT & ĐẠI HỒNG CHUNG BÁT NHÃ -->
-            <div onclick="selectRingtoneOption('phat')" id="ringtoneCard_phat" class="p-3 border-2 rounded-2xl transition cursor-pointer hover:border-amber-400 bg-amber-50/70 border-amber-500 shadow-sm flex items-center justify-between gap-3">
-              <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg shrink-0">🪷</div>
+            <div onclick="selectRingtoneOption('phat')" id="ringtoneCard_phat" class="p-3 border-2 rounded-2xl transition cursor-pointer hover:border-amber-400 bg-amber-50/90 border-amber-500 shadow-md flex items-center justify-between gap-3 ring-2 ring-amber-400/40">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 text-white flex items-center justify-center shadow-md ring-2 ring-amber-300/60 shrink-0">
+                  <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current drop-shadow">
+                    <path d="M12 2C11.5 5.5 9 8.5 6 9.8C8.5 11 10.5 13.5 11 16.5C11.5 13.5 13.5 11 16 9.8C13 8.5 10.5 5.5 12 2Z"/>
+                    <path d="M12 16.5C9.5 18.5 6.5 19.5 2 19C4.5 20.8 8 21.5 12 21.5C16 21.5 19.5 20.8 22 19C17.5 19.5 14.5 18.5 12 16.5Z" opacity="0.9"/>
+                    <circle cx="12" cy="11" r="2.5" fill="#fef08a"/>
+                  </svg>
+                </div>
                 <div>
-                  <div class="font-black text-xs sm:text-sm text-amber-950 flex items-center gap-1.5">
-                    Niệm Phật & Chuông Chùa Bát Nhã
-                    <span id="badgeCurrent_phat" class="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-600 text-white font-black">ĐANG CHỌN</span>
+                  <div class="font-black text-xs sm:text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
+                    Niệm Phật & Chuông Bát Nhã
+                    <span id="badgeCurrent_phat" class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-600 text-white font-black shadow-sm">
+                      <i class="fa-solid fa-check text-[9px]"></i> ĐANG CHỌN
+                    </span>
                   </div>
-                  <div class="text-[11px] text-slate-600 leading-tight">Đại hồng chung ngân vang, 3 tiếng mõ & câu niệm "Nam Mô A Di Đà Phật"</div>
+                  <div class="text-[11px] text-slate-500 leading-tight mt-0.5">Đại hồng chung ngân dài, 3 tiếng mõ & câu niệm "Nam Mô A Di Đà Phật"</div>
                 </div>
               </div>
-              <button onclick="event.stopPropagation(); previewRingtone('phat')" class="shrink-0 px-2.5 py-1.5 bg-white border border-amber-300 rounded-xl font-bold text-xs text-amber-800 hover:bg-amber-100 active:scale-95 transition flex items-center gap-1 shadow-sm">
-                <i class="fa-solid fa-play text-[10px]"></i> Thử
+              <button onclick="event.stopPropagation(); previewRingtone('phat')" class="shrink-0 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white rounded-xl font-black text-xs shadow-sm hover:scale-105 active:scale-95 transition flex items-center gap-1.5 border border-amber-400/40" title="Bấm để nghe thử">
+                <i class="fa-solid fa-play text-[10px]"></i>
+                <span>Thử</span>
               </button>
             </div>
 
             <!-- 2. CHUÔNG ĐỒNG BÌNH AN (528 Hz) -->
             <div onclick="selectRingtoneOption('binhan')" id="ringtoneCard_binhan" class="p-3 border-2 rounded-2xl transition cursor-pointer hover:border-slate-300 bg-white border-slate-200 flex items-center justify-between gap-3">
-              <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center text-lg shrink-0">🔔</div>
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600 text-white flex items-center justify-center shadow-md ring-2 ring-sky-300/60 shrink-0">
+                  <i class="fa-solid fa-bell text-white text-lg drop-shadow"></i>
+                </div>
                 <div>
-                  <div class="font-black text-xs sm:text-sm text-slate-800 flex items-center gap-1.5">
+                  <div class="font-black text-xs sm:text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
                     Chuông Bình An 528 Hz
-                    <span id="badgeCurrent_binhan" class="text-[9px] px-1.5 py-0.5 rounded-full bg-blue-600 text-white font-black hidden">ĐANG CHỌN</span>
+                    <span id="badgeCurrent_binhan" class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-600 text-white font-black shadow-sm hidden">
+                      <i class="fa-solid fa-check text-[9px]"></i> ĐANG CHỌN
+                    </span>
                   </div>
-                  <div class="text-[11px] text-slate-500 leading-tight">Âm ba thanh tịnh chuông đồng Solfeggio chữa lành tâm trí</div>
+                  <div class="text-[11px] text-slate-500 leading-tight mt-0.5">Âm ba thanh tịnh chuông đồng Solfeggio chữa lành và khởi đầu an lạc</div>
                 </div>
               </div>
-              <button onclick="event.stopPropagation(); previewRingtone('binhan')" class="shrink-0 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl font-bold text-xs text-slate-700 hover:bg-slate-100 active:scale-95 transition flex items-center gap-1 shadow-sm">
-                <i class="fa-solid fa-play text-[10px]"></i> Thử
+              <button onclick="event.stopPropagation(); previewRingtone('binhan')" class="shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-black text-xs shadow-sm hover:scale-105 active:scale-95 transition flex items-center gap-1.5 border border-slate-300" title="Bấm để nghe thử">
+                <i class="fa-solid fa-play text-[10px] text-slate-500"></i>
+                <span>Thử</span>
               </button>
             </div>
 
             <!-- 3. CHUÔNG GIÓ TRE LÀNG QUÊ -->
             <div onclick="selectRingtoneOption('gio_tre')" id="ringtoneCard_gio_tre" class="p-3 border-2 rounded-2xl transition cursor-pointer hover:border-slate-300 bg-white border-slate-200 flex items-center justify-between gap-3">
-              <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-lg shrink-0">🎋</div>
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-400 via-teal-500 to-green-700 text-white flex items-center justify-center shadow-md ring-2 ring-emerald-300/60 shrink-0">
+                  <i class="fa-solid fa-wind text-white text-lg drop-shadow"></i>
+                </div>
                 <div>
-                  <div class="font-black text-xs sm:text-sm text-slate-800 flex items-center gap-1.5">
-                    Chuông Gió Tre & Làng Quê Đất Phú
-                    <span id="badgeCurrent_gio_tre" class="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-600 text-white font-black hidden">ĐANG CHỌN</span>
+                  <div class="font-black text-xs sm:text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
+                    Chuông Gió Tre & Làng Quê
+                    <span id="badgeCurrent_gio_tre" class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-600 text-white font-black shadow-sm hidden">
+                      <i class="fa-solid fa-check text-[9px]"></i> ĐANG CHỌN
+                    </span>
                   </div>
-                  <div class="text-[11px] text-slate-500 leading-tight">Tiếng gõ tre mộc mạc, bình dị, rộn ràng hương vị đồng quê</div>
+                  <div class="text-[11px] text-slate-500 leading-tight mt-0.5">Tiếng gõ tre mộc mạc, bình dị, rộn ràng làn gió biển Tuy Hòa</div>
                 </div>
               </div>
-              <button onclick="event.stopPropagation(); previewRingtone('gio_tre')" class="shrink-0 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl font-bold text-xs text-slate-700 hover:bg-slate-100 active:scale-95 transition flex items-center gap-1 shadow-sm">
-                <i class="fa-solid fa-play text-[10px]"></i> Thử
+              <button onclick="event.stopPropagation(); previewRingtone('gio_tre')" class="shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-black text-xs shadow-sm hover:scale-105 active:scale-95 transition flex items-center gap-1.5 border border-slate-300" title="Bấm để nghe thử">
+                <i class="fa-solid fa-play text-[10px] text-slate-500"></i>
+                <span>Thử</span>
               </button>
             </div>
 
             <!-- 4. RẠNG ĐÔNG BÌNH MINH (TIẾNG GÀ GÁY SỚM) -->
             <div onclick="selectRingtoneOption('binh_minh')" id="ringtoneCard_binh_minh" class="p-3 border-2 rounded-2xl transition cursor-pointer hover:border-slate-300 bg-white border-slate-200 flex items-center justify-between gap-3">
-              <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg shrink-0">🌅</div>
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-600 text-white flex items-center justify-center shadow-md ring-2 ring-orange-300/60 shrink-0">
+                  <i class="fa-solid fa-sun text-white text-lg drop-shadow"></i>
+                </div>
                 <div>
-                  <div class="font-black text-xs sm:text-sm text-slate-800 flex items-center gap-1.5">
-                    Bình Minh Rạng Đông (Gà Gáy Sớm)
-                    <span id="badgeCurrent_binh_minh" class="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-600 text-white font-black hidden">ĐANG CHỌN</span>
+                  <div class="font-black text-xs sm:text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
+                    Bình Minh Rạng Đông
+                    <span id="badgeCurrent_binh_minh" class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-600 text-white font-black shadow-sm hidden">
+                      <i class="fa-solid fa-check text-[9px]"></i> ĐANG CHỌN
+                    </span>
                   </div>
-                  <div class="text-[11px] text-slate-500 leading-tight">Hợp âm ban mai tươi vui, nhắc thức giấc đón ngày mới tốt lành</div>
+                  <div class="text-[11px] text-slate-500 leading-tight mt-0.5">Hợp âm ban mai tươi vui, nhắc thức giấc đón ngày mới tốt lành</div>
                 </div>
               </div>
-              <button onclick="event.stopPropagation(); previewRingtone('binh_minh')" class="shrink-0 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl font-bold text-xs text-slate-700 hover:bg-slate-100 active:scale-95 transition flex items-center gap-1 shadow-sm">
-                <i class="fa-solid fa-play text-[10px]"></i> Thử
+              <button onclick="event.stopPropagation(); previewRingtone('binh_minh')" class="shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-black text-xs shadow-sm hover:scale-105 active:scale-95 transition flex items-center gap-1.5 border border-slate-300" title="Bấm để nghe thử">
+                <i class="fa-solid fa-play text-[10px] text-slate-500"></i>
+                <span>Thử</span>
               </button>
             </div>
 
             <!-- 5. ĐỌC TRỰC TIẾP (KHÔNG NHẠC DẠO) -->
             <div onclick="selectRingtoneOption('truc_tiep')" id="ringtoneCard_truc_tiep" class="p-3 border-2 rounded-2xl transition cursor-pointer hover:border-slate-300 bg-white border-slate-200 flex items-center justify-between gap-3">
-              <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center text-lg shrink-0">🕊️</div>
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-400 via-slate-600 to-slate-800 text-white flex items-center justify-center shadow-md ring-2 ring-slate-300/60 shrink-0">
+                  <i class="fa-solid fa-volume-high text-white text-lg drop-shadow"></i>
+                </div>
                 <div>
-                  <div class="font-black text-xs sm:text-sm text-slate-800 flex items-center gap-1.5">
-                    Đọc Trực Tiếp (Không Nhạc Dạo)
-                    <span id="badgeCurrent_truc_tiep" class="text-[9px] px-1.5 py-0.5 rounded-full bg-slate-600 text-white font-black hidden">ĐANG CHỌN</span>
+                  <div class="font-black text-xs sm:text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
+                    Đọc Trực Tiếp Nhanh Gọn
+                    <span id="badgeCurrent_truc_tiep" class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-600 text-white font-black shadow-sm hidden">
+                      <i class="fa-solid fa-check text-[9px]"></i> ĐANG CHỌN
+                    </span>
                   </div>
-                  <div class="text-[11px] text-slate-500 leading-tight">Vào ngay nội dung lịch, nhanh gọn và trang nhã</div>
+                  <div class="text-[11px] text-slate-500 leading-tight mt-0.5">Vào ngay nội dung ngày giờ và thời tiết, không nhạc mở đầu</div>
                 </div>
               </div>
-              <button onclick="event.stopPropagation(); previewRingtone('truc_tiep')" class="shrink-0 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl font-bold text-xs text-slate-700 hover:bg-slate-100 active:scale-95 transition flex items-center gap-1 shadow-sm">
-                <i class="fa-solid fa-play text-[10px]"></i> Thử
+              <button onclick="event.stopPropagation(); previewRingtone('truc_tiep')" class="shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-black text-xs shadow-sm hover:scale-105 active:scale-95 transition flex items-center gap-1.5 border border-slate-300" title="Bấm để nghe thử">
+                <i class="fa-solid fa-play text-[10px] text-slate-500"></i>
+                <span>Thử</span>
               </button>
             </div>
           </div>
@@ -4106,7 +4135,7 @@
         const badge = document.getElementById("badgeCurrent_" + t);
         if (!card || !badge) return;
         if (t === current) {
-          card.className = "p-3 border-2 rounded-2xl transition cursor-pointer bg-amber-50/70 border-amber-500 shadow-sm flex items-center justify-between gap-3";
+          card.className = "p-3 border-2 rounded-2xl transition cursor-pointer bg-amber-50/90 border-amber-500 shadow-md flex items-center justify-between gap-3 ring-2 ring-amber-400/40";
           badge.classList.remove("hidden");
         } else {
           card.className = "p-3 border-2 rounded-2xl transition cursor-pointer hover:border-slate-300 bg-white border-slate-200 flex items-center justify-between gap-3";
