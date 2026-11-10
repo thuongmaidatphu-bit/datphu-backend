@@ -149,7 +149,7 @@ const server = http.createServer(async (req, res) => {
   // ========================================================================
   // CỔNG AI MINH TRIẾT NHÂN LOẠI & DÂN SINH ĐẤT PHÚ (GEMINI)
   // ========================================================================
-  if (pathname === '/api/wisdom' || pathname.includes('wisdom')) {
+  if (pathname === '/api/wisdom' || pathname.includes('wisdom') || parsedUrl.searchParams.get('action') === 'wisdom') {
     const wisdomHandler = require('../api/wisdom');
     return wisdomHandler(req, res);
   }
