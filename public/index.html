@@ -444,9 +444,9 @@
       
       <div class="flex items-center gap-2">
         <!-- NÚT ÂM THANH XÉ LỊCH & CHUÔNG BÁO -->
-        <button id="soundToggleBtn" onclick="toggleSoundMode()" class="px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 flex items-center gap-1.5 text-xs font-black shadow-sm transition active:scale-95" title="Bật/Tắt âm thanh xé lịch & chuông báo">
+        <button id="soundToggleBtn" onclick="toggleRingtoneModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 flex items-center gap-1.5 text-xs font-black shadow-sm transition active:scale-95" title="Cài đặt nhạc chuông đọc lịch & niệm Phật">
           <span id="soundIcon" class="text-sm">🔔</span>
-          <span id="soundText" class="hidden sm:inline">ÂM BÁO</span>
+          <span id="soundText" class="hidden sm:inline">CHUÔNG & ÂM</span>
         </button>
 
         <!-- NÚT CHUYỂN ĐỔI GIAO DIỆN BAN NGÀY / BAN ĐÊM (ÁNH NẮNG / TRĂNG SAO) -->
@@ -1055,13 +1055,19 @@
 
       <!-- 4 TIỆN ÍCH DÂN SINH NGHĨA TÌNH ĐẤT PHÚ (CÂN ĐỐI 4 CỘT) -->
       <div class="grid grid-cols-4 gap-2 pt-1.5">
-        <!-- 1. ĐỌC LỊCH GIỌNG NÓI TRUYỀN CẢM -->
-        <button id="btnSpeakCalendar" onclick="speakTodayCalendar()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-amber-400 hover:bg-amber-50/50 flex flex-col items-center justify-center gap-1 active:scale-95 transition group" title="Nghe giọng đọc ngày tháng và câu chúc Gemini">
-          <div class="icon-bubble w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center group-hover:scale-110 transition">
-            <i class="fa-solid fa-volume-high text-sm"></i>
-          </div>
-          <span class="tracking-tight leading-tight">Đọc Lịch</span>
-        </button>
+        <!-- 1. ĐỌC LỊCH GIỌNG NÓI TRUYỀN CẢM & CHỌN CHUÔNG -->
+        <div class="relative group">
+          <button id="btnSpeakCalendar" onclick="speakTodayCalendar()" class="w-full action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-amber-400 hover:bg-amber-50/50 flex flex-col items-center justify-center gap-1 active:scale-95 transition" title="Nghe giọng đọc ngày tháng, lời chúc & nhạc chuông">
+            <div class="icon-bubble w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center group-hover:scale-110 transition">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+            </div>
+            <span class="tracking-tight leading-tight">Đọc Lịch</span>
+          </button>
+          <!-- Nút đổi kiểu chuông và niệm Phật nhỏ gọn tinh tế -->
+          <button onclick="event.stopPropagation(); toggleRingtoneModal()" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-400 hover:bg-amber-500 text-amber-950 flex items-center justify-center text-[10px] shadow border border-white transition active:scale-90" title="Cài đặt nhạc chuông đọc lịch & niệm Phật">
+            <i class="fa-solid fa-sliders"></i>
+          </button>
+        </div>
 
         <!-- 2. SỔ GIỖ GIA TIÊN (UỐNG NƯỚC NHỚ NGUỒN) -->
         <button onclick="toggleMemorialModal()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-red-400 hover:bg-red-50/50 flex flex-col items-center justify-center gap-1 active:scale-95 transition group" title="Sổ giỗ gia tiên tưởng nhớ cội nguồn">
@@ -1165,6 +1171,146 @@
     </section>
 
     <!-- TIỆN ÍCH DÂN SINH ĐÃ ĐƯỢC QUY HOẠCH TINH GỌN VÀO THANH ĐIỀU HÀNH CHÍNH -->
+
+    <!-- MODAL CÀI ĐẶT NHẠC CHUÔNG & GIỌNG ĐỌC LỊCH (NAM MÔ A DI ĐÀ PHẬT, CHUÔNG CHÙA, CHUÔNG GIÓ...) -->
+    <div id="ringtoneModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3.5">
+      <div class="bg-white border-4 border-amber-500 rounded-3xl p-5 w-full max-w-lg shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+        <!-- Tiêu đề modal -->
+        <div class="flex items-center justify-between pb-3 border-b-2 border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-amber-950 font-black text-xl flex items-center justify-center shadow">
+              <i class="fa-solid fa-bell"></i>
+            </div>
+            <div>
+              <h3 class="text-base sm:text-lg font-black text-slate-900 leading-tight">NHẠC CHUÔNG & ÂM BÁO ĐỌC LỊCH</h3>
+              <p class="text-[11px] font-bold text-slate-500">Tùy chọn chuông mở đầu & lời niệm an lành</p>
+            </div>
+          </div>
+          <button onclick="toggleRingtoneModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-700 flex items-center justify-center transition">✕</button>
+        </div>
+
+        <!-- CÔNG TẮC BẬT / TẮT TOÀN BỘ ÂM THANH -->
+        <div class="flex items-center justify-between p-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl">
+          <div>
+            <div class="font-black text-xs sm:text-sm text-slate-800">Âm thanh ứng dụng & Tiếng xé lịch</div>
+            <div class="text-[10px] text-slate-500 font-medium">Bao gồm tiếng xé giấy bloc và chuông thông báo</div>
+          </div>
+          <button id="modalSoundMasterSwitch" onclick="toggleMasterSoundFromModal()" class="px-4 py-2 rounded-xl font-black text-xs sm:text-sm bg-emerald-600 text-white shadow transition active:scale-95">
+            ĐANG BẬT 🔔
+          </button>
+        </div>
+
+        <!-- DANH SÁCH CÁC KIỂU NHẠC CHUÔNG -->
+        <div class="space-y-2.5">
+          <div class="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-music text-amber-600"></i> Chọn Kiểu Chuông Khi Đọc Lịch:
+          </div>
+
+          <!-- 1. NIỆM PHẬT & ĐẠI HỒNG CHUNG BÁT NHÃ -->
+          <div onclick="selectRingtoneOption('phat')" id="ringtoneCard_phat" class="p-3.5 border-2 rounded-2xl transition cursor-pointer hover:border-amber-400 bg-amber-50/70 border-amber-500 shadow-sm flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-xl shrink-0">🪷</div>
+              <div>
+                <div class="font-black text-xs sm:text-sm text-amber-950 flex items-center gap-1.5">
+                  Niệm Phật & Chuông Chùa Bát Nhã
+                  <span id="badgeCurrent_phat" class="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-600 text-white font-black">ĐANG CHỌN</span>
+                </div>
+                <div class="text-[11px] text-slate-600">Đại hồng chung ngân vang, 3 tiếng mõ & lời niệm "Nam Mô A Di Đà Phật"</div>
+              </div>
+            </div>
+            <button onclick="event.stopPropagation(); previewRingtone('phat')" class="shrink-0 px-2.5 py-1.5 bg-white border border-amber-300 rounded-xl font-bold text-xs text-amber-800 hover:bg-amber-100 active:scale-95 transition flex items-center gap-1 shadow-sm">
+              <i class="fa-solid fa-play text-[10px]"></i> Thử
+            </button>
+          </div>
+
+          <!-- 2. CHUÔNG ĐỒNG BÌNH AN (528 Hz) -->
+          <div onclick="selectRingtoneOption('binhan')" id="ringtoneCard_binhan" class="p-3.5 border-2 rounded-2xl transition cursor-pointer hover:border-slate-300 bg-white border-slate-200 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center text-xl shrink-0">🔔</div>
+              <div>
+                <div class="font-black text-xs sm:text-sm text-slate-800 flex items-center gap-1.5">
+                  Chuông Bình An 528 Hz
+                  <span id="badgeCurrent_binhan" class="text-[9px] px-1.5 py-0.5 rounded-full bg-blue-600 text-white font-black hidden">ĐANG CHỌN</span>
+                </div>
+                <div class="text-[11px] text-slate-500">Âm ba thanh tịnh chuông đồng Solfeggio chữa lành tâm trí</div>
+              </div>
+            </div>
+            <button onclick="event.stopPropagation(); previewRingtone('binhan')" class="shrink-0 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl font-bold text-xs text-slate-700 hover:bg-slate-100 active:scale-95 transition flex items-center gap-1 shadow-sm">
+              <i class="fa-solid fa-play text-[10px]"></i> Thử
+            </button>
+          </div>
+
+          <!-- 3. CHUÔNG GIÓ TRE LÀNG QUÊ -->
+          <div onclick="selectRingtoneOption('gio_tre')" id="ringtoneCard_gio_tre" class="p-3.5 border-2 rounded-2xl transition cursor-pointer hover:border-slate-300 bg-white border-slate-200 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-xl shrink-0">🎋</div>
+              <div>
+                <div class="font-black text-xs sm:text-sm text-slate-800 flex items-center gap-1.5">
+                  Chuông Gió Tre & Làng Quê Đất Phú
+                  <span id="badgeCurrent_gio_tre" class="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-600 text-white font-black hidden">ĐANG CHỌN</span>
+                </div>
+                <div class="text-[11px] text-slate-500">Tiếng gõ tre mộc mạc, bình dị, rộn ràng hương vị đồng quê</div>
+              </div>
+            </div>
+            <button onclick="event.stopPropagation(); previewRingtone('gio_tre')" class="shrink-0 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl font-bold text-xs text-slate-700 hover:bg-slate-100 active:scale-95 transition flex items-center gap-1 shadow-sm">
+              <i class="fa-solid fa-play text-[10px]"></i> Thử
+            </button>
+          </div>
+
+          <!-- 4. RẠNG ĐÔNG BÌNH MINH (TIẾNG GÀ GÁY SỚM) -->
+          <div onclick="selectRingtoneOption('binh_minh')" id="ringtoneCard_binh_minh" class="p-3.5 border-2 rounded-2xl transition cursor-pointer hover:border-slate-300 bg-white border-slate-200 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-xl shrink-0">🌅</div>
+              <div>
+                <div class="font-black text-xs sm:text-sm text-slate-800 flex items-center gap-1.5">
+                  Bình Minh Rạng Đông (Gà Gáy Sớm)
+                  <span id="badgeCurrent_binh_minh" class="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-600 text-white font-black hidden">ĐANG CHỌN</span>
+                </div>
+                <div class="text-[11px] text-slate-500">Hợp âm ban mai tươi vui, nhắc thức giấc đón ngày mới tốt lành</div>
+              </div>
+            </div>
+            <button onclick="event.stopPropagation(); previewRingtone('binh_minh')" class="shrink-0 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl font-bold text-xs text-slate-700 hover:bg-slate-100 active:scale-95 transition flex items-center gap-1 shadow-sm">
+              <i class="fa-solid fa-play text-[10px]"></i> Thử
+            </button>
+          </div>
+
+          <!-- 5. ĐỌC TRỰC TIẾP (KHÔNG NHẠC DẠO) -->
+          <div onclick="selectRingtoneOption('truc_tiep')" id="ringtoneCard_truc_tiep" class="p-3.5 border-2 rounded-2xl transition cursor-pointer hover:border-slate-300 bg-white border-slate-200 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center text-xl shrink-0">🕊️</div>
+              <div>
+                <div class="font-black text-xs sm:text-sm text-slate-800 flex items-center gap-1.5">
+                  Đọc Trực Tiếp (Không Nhạc Dạo)
+                  <span id="badgeCurrent_truc_tiep" class="text-[9px] px-1.5 py-0.5 rounded-full bg-slate-600 text-white font-black hidden">ĐANG CHỌN</span>
+                </div>
+                <div class="text-[11px] text-slate-500">Vào ngay nội dung lịch, nhanh gọn và trang nhã</div>
+              </div>
+            </div>
+            <button onclick="event.stopPropagation(); previewRingtone('truc_tiep')" class="shrink-0 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl font-bold text-xs text-slate-700 hover:bg-slate-100 active:scale-95 transition flex items-center gap-1 shadow-sm">
+              <i class="fa-solid fa-play text-[10px]"></i> Thử
+            </button>
+          </div>
+        </div>
+
+        <!-- TÙY CHỌN BỔ SUNG: CÂU NIỆM PHẬT / LỜI KÍNH CHÚC -->
+        <div id="buddhistMantraOptions" class="p-3.5 bg-amber-50/80 border-2 border-amber-300 rounded-2xl space-y-2">
+          <label class="text-xs font-black text-amber-950 block">Câu Niệm Phật & Quán Âm Mở Đầu:</label>
+          <select id="selectMantraType" onchange="changeMantraType(this.value)" class="w-full bg-white border-2 border-amber-300 text-amber-950 rounded-xl p-2 text-xs font-bold focus:outline-none">
+            <option value="adida">Nam Mô A Di Đà Phật</option>
+            <option value="thichca">Nam Mô Bổn Sư Thích Ca Mâu Ni Phật</option>
+            <option value="quanam">Nam Mô Quán Thế Âm Bồ Tát cứu khổ cứu nạn</option>
+            <option value="all">Nam Mô A Di Đà Phật • Nam Mô Quán Thế Âm Bồ Tát</option>
+          </select>
+        </div>
+
+        <!-- NÚT ĐÓNG VÀ HOÀN TẤT -->
+        <div class="pt-2">
+          <button onclick="toggleRingtoneModal()" class="w-full py-3 bg-[#1b2a47] text-white rounded-2xl font-black text-xs sm:text-sm shadow-md hover:bg-slate-800 active:scale-95 transition">
+            ĐÃ LƯU • HOÀN TẤT
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- MODAL HƯỚNG DẪN CÀI ĐẶT RA MÀN HÌNH CHÍNH (PWA) -->
     <div id="installGuideModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3.5">
@@ -3632,6 +3778,118 @@
       }
     }
 
+    // 3. ĐẠI HỒNG CHUNG BÁT NHÃ & 3 TIẾNG MÕ THANH TỊNH (NIỆM PHẬT)
+    function playTempleBellAndMo() {
+      if (!isSoundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+
+        // Tiếng Đại Hồng Chung (Trầm sâu, ngân 3.2s)
+        const bellFreqs = [144, 288, 432, 648, 1080];
+        const bellGains = [0.38, 0.22, 0.12, 0.08, 0.04];
+        bellFreqs.forEach((f, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(f, now);
+
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.linearRampToValueAtTime(bellGains[idx], now + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.2);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 3.2);
+        });
+
+        // 3 tiếng Mõ Chùa thanh tịnh (gõ cách quãng 0.75s, 1.15s, 1.55s)
+        [0.75, 1.15, 1.55].forEach(delay => {
+          const moTime = now + delay;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          const filter = ctx.createBiquadFilter();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(740, moTime);
+          osc.frequency.exponentialRampToValueAtTime(560, moTime + 0.03);
+
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(650, moTime);
+          filter.Q.value = 6;
+
+          gain.gain.setValueAtTime(0.001, moTime);
+          gain.gain.linearRampToValueAtTime(0.38, moTime + 0.008);
+          gain.gain.exponentialRampToValueAtTime(0.0001, moTime + 0.14);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(moTime);
+          osc.stop(moTime + 0.15);
+        });
+      } catch (e) {
+        console.warn("Temple bell error:", e);
+      }
+    }
+
+    // 4. CHUÔNG GIÓ TRE LÀNG QUÊ ĐẤT PHÚ
+    function playBambooChime() {
+      if (!isSoundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const notes = [587, 659, 880, 987, 1174];
+        [0, 0.12, 0.28, 0.44, 0.65].forEach((del, i) => {
+          const t = now + del;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(notes[i], t);
+          gain.gain.setValueAtTime(0.001, t);
+          gain.gain.linearRampToValueAtTime(0.22, t + 0.01);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.35);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.36);
+        });
+      } catch (e) {
+        console.warn("Bamboo chime error:", e);
+      }
+    }
+
+    // 5. BÌNH MINH RẠNG ĐÔNG (TIẾNG GÀ GÁY & BAN MAI)
+    function playDawnChime() {
+      if (!isSoundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        [0, 0.14, 0.28, 0.45].forEach((del, i) => {
+          const t = now + del;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(notes[i], t);
+          gain.gain.setValueAtTime(0.001, t);
+          gain.gain.linearRampToValueAtTime(0.25, t + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + 1.2);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 1.25);
+        });
+      } catch (e) {
+        console.warn("Dawn chime error:", e);
+      }
+    }
+
     function toggleSoundMode() {
       isSoundEnabled = !isSoundEnabled;
       localStorage.setItem("datphu_sound_enabled", isSoundEnabled ? "true" : "false");
@@ -3652,14 +3910,148 @@
 
       if (isSoundEnabled) {
         if (icon) icon.innerText = "🔔";
-        if (text) text.innerText = "ÂM BÁO";
-        btn.setAttribute("title", "Âm thanh đang BẬT (bấm để tắt)");
+        if (text) text.innerText = "CHUÔNG & ÂM";
+        btn.setAttribute("title", "Cài đặt nhạc chuông đọc lịch & niệm Phật");
         btn.classList.remove("opacity-50");
       } else {
         if (icon) icon.innerText = "🔕";
         if (text) text.innerText = "YÊN TĨNH";
-        btn.setAttribute("title", "Âm thanh đang TẮT (bấm để bật)");
+        btn.setAttribute("title", "Âm thanh đang TẮT (bấm để cài đặt)");
         btn.classList.add("opacity-50");
+      }
+    }
+
+    // MODAL NHẠC CHUÔNG & ÂM BÁO
+    function toggleRingtoneModal() {
+      const modal = document.getElementById("ringtoneModal");
+      if (!modal) return;
+      if (modal.classList.contains("hidden")) {
+        modal.classList.remove("hidden");
+        updateRingtoneModalUI();
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function selectRingtoneOption(type) {
+      localStorage.setItem("datphu_ringtone_type", type);
+      updateRingtoneModalUI();
+      showToast("Đã lưu kiểu chuông: " + getRingtoneName(type));
+    }
+
+    function getRingtoneName(type) {
+      switch (type) {
+        case 'phat': return "Niệm Phật & Chuông Chùa Bát Nhã";
+        case 'binhan': return "Chuông Bình An 528 Hz";
+        case 'gio_tre': return "Chuông Gió Tre Làng Quê";
+        case 'binh_minh': return "Bình Minh Rạng Đông";
+        case 'truc_tiep': return "Đọc Trực Tiếp";
+        default: return "Niệm Phật & Chuông Chùa Bát Nhã";
+      }
+    }
+
+    function updateRingtoneModalUI() {
+      const current = localStorage.getItem("datphu_ringtone_type") || "phat";
+      const types = ['phat', 'binhan', 'gio_tre', 'binh_minh', 'truc_tiep'];
+      types.forEach(t => {
+        const card = document.getElementById("ringtoneCard_" + t);
+        const badge = document.getElementById("badgeCurrent_" + t);
+        if (!card || !badge) return;
+        if (t === current) {
+          card.className = "p-3.5 border-2 rounded-2xl transition cursor-pointer bg-amber-50/70 border-amber-500 shadow-sm flex items-center justify-between gap-3";
+          badge.classList.remove("hidden");
+        } else {
+          card.className = "p-3.5 border-2 rounded-2xl transition cursor-pointer hover:border-slate-300 bg-white border-slate-200 flex items-center justify-between gap-3";
+          badge.classList.add("hidden");
+        }
+      });
+
+      const mantraBox = document.getElementById("buddhistMantraOptions");
+      if (mantraBox) {
+        if (current === 'phat') mantraBox.classList.remove("hidden");
+        else mantraBox.classList.add("hidden");
+      }
+
+      const mantraSelect = document.getElementById("selectMantraType");
+      if (mantraSelect) {
+        mantraSelect.value = localStorage.getItem("datphu_mantra_type") || "adida";
+      }
+
+      const masterSwitch = document.getElementById("modalSoundMasterSwitch");
+      if (masterSwitch) {
+        if (isSoundEnabled) {
+          masterSwitch.innerText = "ĐANG BẬT 🔔";
+          masterSwitch.className = "px-4 py-2 rounded-xl font-black text-xs sm:text-sm bg-emerald-600 text-white shadow transition active:scale-95";
+        } else {
+          masterSwitch.innerText = "ĐANG TẮT 🔕";
+          masterSwitch.className = "px-4 py-2 rounded-xl font-black text-xs sm:text-sm bg-slate-400 text-white shadow transition active:scale-95";
+        }
+      }
+    }
+
+    function toggleMasterSoundFromModal() {
+      toggleSoundMode();
+      updateRingtoneModalUI();
+    }
+
+    function changeMantraType(val) {
+      localStorage.setItem("datphu_mantra_type", val);
+      showToast("Đã lưu câu niệm: " + (val === 'adida' ? 'Nam Mô A Di Đà Phật' : (val === 'thichca' ? 'Nam Mô Thích Ca' : 'Nam Mô Quán Thế Âm')));
+    }
+
+    function getMantraText() {
+      const mantraType = localStorage.getItem("datphu_mantra_type") || "adida";
+      if (mantraType === "thichca") {
+        return "Nam Mô Bổn Sư Thích Ca Mâu Ni Phật. Kính chúc một ngày an lạc và vạn sự cát tường.";
+      } else if (mantraType === "quanam") {
+        return "Nam Mô Quán Thế Âm Bồ Tát cứu khổ cứu nạn. Kính chúc thân tâm an lạc, bình an vạn sự.";
+      } else if (mantraType === "all") {
+        return "Nam Mô A Di Đà Phật. Nam Mô Quán Thế Âm Bồ Tát. Kính chúc một ngày thân tâm an lạc, phước lộc tràn đầy.";
+      }
+      return "Nam Mô A Di Đà Phật. Kính chúc một ngày mới an lạc, thân tâm thanh tịnh và vạn sự cát tường.";
+    }
+
+    function previewRingtone(type) {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      if (currentTtsAudio) {
+        currentTtsAudio.pause();
+        currentTtsAudio = null;
+      }
+
+      if (type === "phat") {
+        playTempleBellAndMo();
+        setTimeout(() => {
+          speakPreviewText(getMantraText() + " Hôm nay là ngày lành tháng tốt, vạn sự bình an.");
+        }, 1450);
+      } else if (type === "binhan") {
+        playBellChimeSound(528);
+        setTimeout(() => {
+          speakPreviewText("Chuông bình an 528Hz. Kính chúc bà con ngày mới nhiều sức khỏe và may mắn.");
+        }, 500);
+      } else if (type === "gio_tre") {
+        playBambooChime();
+        setTimeout(() => {
+          speakPreviewText("Tiếng chuông gió tre. Đất Phú quê mình, nắng ấm biển trong lành.");
+        }, 650);
+      } else if (type === "binh_minh") {
+        playDawnChime();
+        setTimeout(() => {
+          speakPreviewText("Rạng đông bình minh. Thức giấc ngày mới, chúc bà con buôn may bán đắt!");
+        }, 750);
+      } else if (type === "truc_tiep") {
+        speakPreviewText("Đọc trực tiếp. Hôm nay ngày tốt tháng lành, gia đạo bình an.");
+      }
+    }
+
+    function speakPreviewText(text) {
+      if ('speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined') {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'vi-VN';
+        utter.rate = 0.95;
+        const voices = window.speechSynthesis.getVoices();
+        const viVoice = voices.find(v => v.lang.startsWith('vi') || v.lang.includes('VIE'));
+        if (viVoice) utter.voice = viVoice;
+        window.speechSynthesis.speak(utter);
       }
     }
 
@@ -4318,7 +4710,22 @@
         return;
       }
 
-      playBellChimeSound(528);
+      const ringtone = localStorage.getItem("datphu_ringtone_type") || "phat";
+      let startDelay = 0;
+
+      if (ringtone === "phat") {
+        playTempleBellAndMo();
+        startDelay = 1450;
+      } else if (ringtone === "binhan") {
+        playBellChimeSound(528);
+        startDelay = 500;
+      } else if (ringtone === "gio_tre") {
+        playBambooChime();
+        startDelay = 650;
+      } else if (ringtone === "binh_minh") {
+        playDawnChime();
+        startDelay = 750;
+      }
 
       let d = currentDate.getDate();
       let m = currentDate.getMonth() + 1;
@@ -4335,11 +4742,15 @@
       let locName = document.getElementById("widgetLocationName")?.innerText || "Tuy Hòa";
       let tide = (lunarDay >= 1 && lunarDay <= 3) || (lunarDay >= 14 && lunarDay <= 17) ? "kỳ nước rong, triều cường lớn" : "kỳ nước kém, con nước êm";
 
-      let chunks = [
-        `Hôm nay là ${dayName}, ngày ${d} tháng ${m} năm ${y} dương lịch.`,
-        `Nhằm ngày ${lunarStr} tháng ${lunarMonth} âm lịch, ngày ${canChiDay}.`,
-        `Khu vực ${locName} nhiệt độ khoảng ${temp} độ C. Hiện tại là ${tide}.`
-      ];
+      let chunks = [];
+
+      if (ringtone === "phat") {
+        chunks.push(getMantraText());
+      }
+
+      chunks.push(`Hôm nay là ${dayName}, ngày ${d} tháng ${m} năm ${y} dương lịch.`);
+      chunks.push(`Nhằm ngày ${lunarStr} tháng ${lunarMonth} âm lịch, ngày ${canChiDay}.`);
+      chunks.push(`Khu vực ${locName} nhiệt độ khoảng ${temp} độ C. Hiện tại là ${tide}.`);
 
       if (lunarMonth === 1 && lunarDay === 1) {
         chunks.push(`Hôm nay là Mùng Một Tết Nguyên Đán, năm ${yearCan} ${yearChi}. Lịch Đất Phú kính chúc bà con và gia quyến một năm mới an khang thịnh vượng, vạn sự như ý, dồi dào sức khỏe, mùa màng bội thu, buôn may bán đắt!`);
@@ -4362,36 +4773,37 @@
 
       chunks.push(`Lịch Đất Phú kính chúc bà con một ngày mới dồi dào sức khỏe, an khang và bình an!`);
 
-      // Thử dùng Web Speech API trước nếu có sẵn và có giọng tiếng Việt
-      if ('speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined') {
-        try {
-          let fullText = chunks.join(' ');
-          let utter = new SpeechSynthesisUtterance(fullText);
-          utter.lang = 'vi-VN';
-          utter.rate = 0.95;
-          utter.pitch = 1.0;
+      setTimeout(() => {
+        // Thử dùng Web Speech API trước nếu có sẵn và có giọng tiếng Việt
+        if ('speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined') {
+          try {
+            let fullText = chunks.join(' ');
+            let utter = new SpeechSynthesisUtterance(fullText);
+            utter.lang = 'vi-VN';
+            utter.rate = 0.95;
+            utter.pitch = 1.0;
 
-          let voices = window.speechSynthesis.getVoices();
-          let viVoice = voices.find(v => v.lang.startsWith('vi') || v.lang.includes('VIE'));
-          if (viVoice) utter.voice = viVoice;
+            let voices = window.speechSynthesis.getVoices();
+            let viVoice = voices.find(v => v.lang.startsWith('vi') || v.lang.includes('VIE'));
+            if (viVoice) utter.voice = viVoice;
 
-          utter.onstart = () => { isSpeaking = true; updateSpeakBtn(true); };
-          utter.onend = () => { isSpeaking = false; updateSpeakBtn(false); };
-          utter.onerror = () => {
-            // Khi Web Speech bị lỗi trên WebView Android, tự động chuyển sang Audio stream
-            playTtsAudioQueue(chunks);
-          };
+            utter.onstart = () => { isSpeaking = true; updateSpeakBtn(true); };
+            utter.onend = () => { isSpeaking = false; updateSpeakBtn(false); };
+            utter.onerror = () => {
+              playTtsAudioQueue(chunks);
+            };
 
-          window.speechSynthesis.cancel();
-          window.speechSynthesis.speak(utter);
-          return;
-        } catch (e) {
-          // Bỏ qua lỗi và chuyển xuống Audio stream
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utter);
+            return;
+          } catch (e) {
+            // Fallback audio
+          }
         }
-      }
 
-      // TỰ ĐỘNG CHUYỂN SANG BỘ PHÁT AUDIO MP3 (CHẠY 100% TRÊN ZALO, SAMSUNG, WEBVIEW, CHROME)
-      playTtsAudioQueue(chunks);
+        // TỰ ĐỘNG CHUYỂN SANG BỘ PHÁT AUDIO MP3 (CHẠY 100% TRÊN ZALO, SAMSUNG, WEBVIEW, CHROME)
+        playTtsAudioQueue(chunks);
+      }, startDelay);
     }
 
     function updateSpeakBtn(speaking) {
