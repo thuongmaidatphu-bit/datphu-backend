@@ -666,6 +666,13 @@
                 <span>SƠ ĐỒ 8 PHA TRĂNG</span>
               </button>
 
+              
+              <!-- Huy hiệu Chòm sao Hoàng đạo hiện tại (Ảnh 4 & 5) -->
+              <span id="leafZodiacBadge" class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-950/80 border border-indigo-400/40 text-indigo-200 text-[10px] sm:text-[11px] font-bold">
+                <i class="fa-solid fa-star text-yellow-300"></i>
+                <span id="leafZodiacName">Thiên Yết (Scorpio ♏)</span>
+              </span>
+  
               <span id="solarTermSimple" class="px-2 py-0.5 rounded-full bg-amber-400/20 text-yellow-300 font-black border border-amber-400/40 text-[10px] sm:text-xs">Lập Đông (225°)</span>
             </div>
           </div>
@@ -1083,19 +1090,19 @@
     
     
   
-  <!-- MODAL: SƠ ĐỒ CHU KỲ CHUYỂN ĐỘNG CỦA MẶT TRĂNG (THEO ẢNH 1 & ẢNH 3 BẠN CUNG CẤP) -->
+  <!-- MODAL: BẢNG THIÊN VĂN HỌC MẶT TRĂNG, BẠCH ĐẠO & 12 CHÒM SAO HOÀNG ĐẠO (ẢNH 1, 2, 3, 4, 5) -->
   <div id="moonCycleModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md">
-    <div class="bg-gradient-to-b from-[#030712] via-[#0b132b] to-[#111827] text-white w-full max-w-2xl rounded-3xl border-2 border-cyan-400/80 shadow-2xl p-5 sm:p-6 space-y-4 max-h-[92vh] overflow-y-auto">
+    <div class="bg-gradient-to-b from-[#030712] via-[#0b132b] to-[#111827] text-white w-full max-w-3xl rounded-3xl border-2 border-cyan-400/80 shadow-2xl p-5 sm:p-6 space-y-4 max-h-[92vh] overflow-y-auto">
       
       <!-- Tiêu đề modal -->
       <div class="flex items-center justify-between border-b border-cyan-400/40 pb-3">
         <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center text-slate-950 shadow-lg">
-            <i class="fa-solid fa-arrows-spin text-lg"></i>
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center text-slate-950 shadow-lg shrink-0">
+            <i class="fa-solid fa-meteor text-lg"></i>
           </div>
           <div>
-            <h3 class="font-black text-base sm:text-lg text-cyan-300">SƠ ĐỒ CHUYỂN ĐỘNG NHÌN THẤY CỦA MẶT TRĂNG</h3>
-            <p class="text-[11px] text-slate-300">Theo Giáo Dục Số & Thiên Văn Học Quốc Tế (Chu kỳ 29.5 ngày)</p>
+            <h3 class="font-black text-base sm:text-lg text-cyan-300">KHO TÀNG THIÊN VĂN HỌC MẶT TRĂNG & VŨ TRỤ</h3>
+            <p class="text-[11px] text-slate-300">Chu kỳ 8 pha Mặt Trăng NASA • Bạch Đạo 5° • 12 Chòm Sao Hoàng Đạo</p>
           </div>
         </div>
         <button onclick="toggleMoonCycleModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition">
@@ -1103,164 +1110,296 @@
         </button>
       </div>
 
-      <!-- SƠ ĐỒ VÒNG TRÒN QUỸ ĐẠO QUANH TRÁI ĐẤT (TÁI HIỆN CHÍNH XÁC ẢNH 1) -->
-      <div class="relative bg-slate-950/80 rounded-2xl p-4 border border-cyan-500/30 overflow-hidden flex flex-col items-center justify-center min-h-[300px]">
+      <!-- 3 TAB ĐIỀU HƯỚNG CHUYÊN ĐỀ THIÊN VĂN HỌC -->
+      <div class="grid grid-cols-3 gap-1.5 bg-slate-950/80 p-1.5 rounded-2xl border border-cyan-500/30">
+        <button onclick="switchAstroTab('orbit')" id="tabBtnOrbit" class="py-2 px-1 rounded-xl text-xs font-black bg-cyan-500 text-slate-950 shadow flex items-center justify-center gap-1 transition">
+          <i class="fa-solid fa-arrows-spin"></i>
+          <span class="truncate">8 Pha Trăng (Ảnh 1&3)</span>
+        </button>
+        <button onclick="switchAstroTab('bachdao')" id="tabBtnBachDao" class="py-2 px-1 rounded-xl text-xs font-black text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1 transition">
+          <i class="fa-solid fa-circle-nodes"></i>
+          <span class="truncate">Bạch Đạo 5° (Ảnh 2)</span>
+        </button>
+        <button onclick="switchAstroTab('zodiac')" id="tabBtnZodiac" class="py-2 px-1 rounded-xl text-xs font-black text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1 transition">
+          <i class="fa-solid fa-star"></i>
+          <span class="truncate">12 Chòm Sao (Ảnh 4&5)</span>
+        </button>
+      </div>
+
+      <!-- PHẦN 1: SƠ ĐỒ CHU KỲ 8 PHA MẶT TRĂNG QUANH TRÁI ĐẤT (ẢNH 1 & ẢNH 3 NASA) -->
+      <div id="astroTabOrbit" class="space-y-3">
         
-        <!-- Bụi sao nền -->
-        <div class="absolute inset-0 pointer-events-none opacity-30">
-          <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="10%" cy="15%" r="1" fill="#fff"/>
-            <circle cx="90%" cy="20%" r="1" fill="#fff"/>
-            <circle cx="20%" cy="80%" r="1" fill="#fff"/>
-            <circle cx="85%" cy="85%" r="1" fill="#fff"/>
+        <div class="relative bg-slate-950/80 rounded-2xl p-4 border border-cyan-500/30 overflow-hidden flex flex-col items-center justify-center min-h-[320px]">
+          
+          <!-- Bụi sao nền & tia sáng mặt trời chiếu từ bên phải (như ảnh 3 NASA) -->
+          <div class="absolute inset-0 pointer-events-none opacity-30">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="10%" cy="15%" r="1" fill="#fff"/>
+              <circle cx="90%" cy="20%" r="1" fill="#fff"/>
+              <circle cx="20%" cy="80%" r="1" fill="#fff"/>
+              <circle cx="85%" cy="85%" r="1" fill="#fff"/>
+            </svg>
+          </div>
+
+          <!-- Ánh sáng Mặt Trời chiếu từ bên phải (Ảnh 3 NASA) -->
+          <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-yellow-400/40 to-transparent pointer-events-none flex items-center justify-center">
+            <span class="text-[9px] font-black text-yellow-300 uppercase [writing-mode:vertical-rl] tracking-widest">Ánh Sáng Mặt Trời</span>
+          </div>
+
+          <!-- 2 Chú thích chu kỳ 2 tuần (như ảnh 1) -->
+          <div class="absolute top-4 text-center pointer-events-none">
+            <span class="px-3 py-1 rounded-full bg-cyan-900/70 border border-cyan-400/40 text-cyan-300 font-black text-[11px] uppercase tracking-wider">
+              2 TUẦN: TRĂNG SÁNG DẦN (TIẾN VỀ TRĂNG TRÒN)
+            </span>
+          </div>
+          <div class="absolute bottom-4 text-center pointer-events-none">
+            <span class="px-3 py-1 rounded-full bg-blue-900/70 border border-blue-400/40 text-blue-300 font-black text-[11px] uppercase tracking-wider">
+              2 TUẦN: TRĂNG KHUYẾT DẦN (TRỞ VỀ KHÔNG TRĂNG)
+            </span>
+          </div>
+
+          <!-- TRÁI ĐẤT TRUNG TÂM (ẢNH 1, 3, 5) -->
+          <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 via-emerald-400 to-blue-700 shadow-[0_0_25px_rgba(56,189,248,0.6)] flex flex-col items-center justify-center border-2 border-white/80 z-10 my-16">
+            <i class="fa-solid fa-earth-americas text-white text-2xl drop-shadow"></i>
+            <span class="text-[9px] font-black text-white tracking-widest uppercase mt-0.5">TRÁI ĐẤT</span>
+          </div>
+
+          <!-- VÒNG CUNG ELIP QUỸ ĐẠO MẶT TRĂNG (KHOẢNG CÁCH 384.400 KM) -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 440 320">
+            <ellipse cx="220" cy="160" rx="175" ry="115" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>
+            <polygon points="45,160 53,152 53,168" fill="#38bdf8"/>
+            <polygon points="395,160 387,152 387,168" fill="#38bdf8"/>
           </svg>
+
+          <!-- 8 VỊ TRÍ MẶT TRĂNG THEO CHUẨN GIÁO DỤC SỐ & NASA (ẢNH 1 & ẢNH 3) -->
+          
+          <!-- 1. KHÔNG TRĂNG (TRĂNG NON - BÊN TRÁI) -->
+          <button onclick="jumpToPhase(1)" class="absolute left-3 top-1/2 -translate-y-1/2 flex flex-col items-center group cursor-pointer z-20">
+            <div class="w-12 h-12 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-cyan-400 transition flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-black/90"></div>
+            </div>
+            <span class="text-[10px] font-black text-slate-300 group-hover:text-cyan-300 mt-1">Không trăng</span>
+            <span class="text-[8px] text-slate-400">(Trăng non - Mùng 1)</span>
+          </button>
+
+          <!-- 2. TRĂNG LƯỠI LIỀM ĐẦU THÁNG (GÓC TRÊN TRÁI) -->
+          <button onclick="jumpToPhase(4)" class="absolute left-16 top-6 flex flex-col items-center group cursor-pointer z-20">
+            <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
+              <svg viewBox="0 0 30 30" class="w-full h-full">
+                <circle cx="15" cy="15" r="12" fill="#0f172a"/>
+                <path d="M15 3 A12 12 0 0 1 15 27 A8 12 0 0 0 15 3" fill="#fde047"/>
+              </svg>
+            </div>
+            <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng lưỡi liềm</span>
+            <span class="text-[8px] text-slate-400">(Mùng 3 - 5)</span>
+          </button>
+
+          <!-- 3. TRĂNG BÁN NGUYỆT THƯỢNG HUYỀN (ĐỈNH TRÊN) -->
+          <button onclick="jumpToPhase(8)" class="absolute top-2 left-1/2 -translate-x-1/2 flex flex-col items-center group cursor-pointer z-20">
+            <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
+              <svg viewBox="0 0 30 30" class="w-full h-full">
+                <circle cx="15" cy="15" r="12" fill="#0f172a"/>
+                <path d="M15 3 A12 12 0 0 1 15 27 Z" fill="#fde047"/>
+              </svg>
+            </div>
+            <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng bán nguyệt</span>
+            <span class="text-[8px] text-slate-400">(Mùng 7 - 8)</span>
+          </button>
+
+          <!-- 4. TRĂNG KHUYẾT LỚN (GÓC TRÊN PHẢI) -->
+          <button onclick="jumpToPhase(12)" class="absolute right-16 top-6 flex flex-col items-center group cursor-pointer z-20">
+            <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
+              <svg viewBox="0 0 30 30" class="w-full h-full">
+                <circle cx="15" cy="15" r="12" fill="#0f172a"/>
+                <path d="M15 3 A12 12 0 0 1 15 27 A8 12 0 0 1 15 3" fill="#fde047"/>
+              </svg>
+            </div>
+            <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng khuyết</span>
+            <span class="text-[8px] text-slate-400">(Mùng 11 - 13)</span>
+          </button>
+
+          <!-- 5. TRĂNG TRÒN (RẰM 15 - BÊN PHẢI ĐÓN ÁNH MẶT TRỜI TRỰC TIẾP) -->
+          <button onclick="jumpToPhase(15)" class="absolute right-3 top-1/2 -translate-y-1/2 flex flex-col items-center group cursor-pointer z-20">
+            <div class="w-12 h-12 rounded-full bg-yellow-400 border-2 border-yellow-200 shadow-[0_0_15px_rgba(250,204,21,0.85)] group-hover:scale-110 transition flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-white via-yellow-200 to-amber-400"></div>
+            </div>
+            <span class="text-[10px] font-black text-yellow-300 group-hover:text-amber-200 mt-1">Trăng tròn</span>
+            <span class="text-[8px] text-amber-200">(Rằm 15 - 16)</span>
+          </button>
+
+          <!-- 6. TRĂNG KHUYẾT CUỐI THÁNG (GÓC DƯỚI PHẢI) -->
+          <button onclick="jumpToPhase(19)" class="absolute right-16 bottom-6 flex flex-col items-center group cursor-pointer z-20">
+            <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
+              <svg viewBox="0 0 30 30" class="w-full h-full">
+                <circle cx="15" cy="15" r="12" fill="#0f172a"/>
+                <path d="M15 3 A12 12 0 0 0 15 27 A8 12 0 0 0 15 3" fill="#fde047"/>
+              </svg>
+            </div>
+            <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng khuyết</span>
+            <span class="text-[8px] text-slate-400">(Ngày 18 - 20)</span>
+          </button>
+
+          <!-- 7. TRĂNG BÁN NGUYỆT HẠ HUYỀN (ĐÁY DƯỚI) -->
+          <button onclick="jumpToPhase(23)" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center group cursor-pointer z-20">
+            <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
+              <svg viewBox="0 0 30 30" class="w-full h-full">
+                <circle cx="15" cy="15" r="12" fill="#0f172a"/>
+                <path d="M15 3 A12 12 0 0 0 15 27 Z" fill="#fde047"/>
+              </svg>
+            </div>
+            <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng bán nguyệt</span>
+            <span class="text-[8px] text-slate-400">(Ngày 22 - 24)</span>
+          </button>
+
+          <!-- 8. TRĂNG LƯỠI LIỀM CUỐI THÁNG (GÓC DƯỚI TRÁI) -->
+          <button onclick="jumpToPhase(27)" class="absolute left-16 bottom-6 flex flex-col items-center group cursor-pointer z-20">
+            <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
+              <svg viewBox="0 0 30 30" class="w-full h-full">
+                <circle cx="15" cy="15" r="12" fill="#0f172a"/>
+                <path d="M15 3 A12 12 0 0 0 15 27 A8 12 0 0 1 15 3" fill="#fde047"/>
+              </svg>
+            </div>
+            <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng lưỡi liềm</span>
+            <span class="text-[8px] text-slate-400">(Ngày 26 - 28)</span>
+          </button>
+
         </div>
 
-        <!-- 2 Chú thích chu kỳ 2 tuần (như ảnh 1) -->
-        <div class="absolute top-8 text-center pointer-events-none">
-          <span class="px-3 py-1 rounded-full bg-cyan-900/60 border border-cyan-400/40 text-cyan-300 font-black text-xs uppercase tracking-wider">
-            2 TUẦN: TRĂNG SÁNG DẦN (TIẾN VỀ TRĂNG TRÒN)
-          </span>
+        <!-- BẢNG ĐỊNH NGHĨA KHOA HỌC 8 PHA (THEO ẢNH 3 NASA) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 space-y-1">
+            <div class="font-black text-yellow-300">1. Trăng non</div>
+            <p class="text-[11px] text-slate-300 leading-tight">Bề mặt hướng về Trái Đất không được chiếu sáng, ta không nhìn thấy.</p>
+          </div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 space-y-1">
+            <div class="font-black text-yellow-300">2. Lưỡi liềm đầu</div>
+            <p class="text-[11px] text-slate-300 leading-tight">Một phần nhỏ được chiếu sáng, mức độ tròn tăng chậm.</p>
+          </div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 space-y-1">
+            <div class="font-black text-yellow-300">3. Bán nguyệt 1st</div>
+            <p class="text-[11px] text-slate-300 leading-tight">Đúng một nửa Mặt Trăng bên phải được chiếu sáng.</p>
+          </div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 space-y-1">
+            <div class="font-black text-yellow-300">4. Trăng khuyết</div>
+            <p class="text-[11px] text-slate-300 leading-tight">Hơn một nửa được chiếu sáng nhưng vẫn chưa tròn hẳn.</p>
+          </div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 space-y-1">
+            <div class="font-black text-amber-300">5. Trăng tròn</div>
+            <p class="text-[11px] text-slate-300 leading-tight">Mặt hướng về Trái Đất được Mặt Trời chiếu sáng 100%.</p>
+          </div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 space-y-1">
+            <div class="font-black text-yellow-300">6. Khuyết cuối</div>
+            <p class="text-[11px] text-slate-300 leading-tight">Hơn một nửa sáng, độ tròn bắt đầu giảm dần.</p>
+          </div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 space-y-1">
+            <div class="font-black text-yellow-300">7. Bán nguyệt last</div>
+            <p class="text-[11px] text-slate-300 leading-tight">Một nửa Mặt Trăng bên trái được chiếu sáng.</p>
+          </div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 space-y-1">
+            <div class="font-black text-yellow-300">8. Lưỡi liềm tàn</div>
+            <p class="text-[11px] text-slate-300 leading-tight">Phần trăng cuối cùng nhìn thấy trước khi tối hoàn toàn.</p>
+          </div>
         </div>
-        <div class="absolute bottom-8 text-center pointer-events-none">
-          <span class="px-3 py-1 rounded-full bg-blue-900/60 border border-blue-400/40 text-blue-300 font-black text-xs uppercase tracking-wider">
-            2 TUẦN: TRĂNG KHUYẾT DẦN (TRỞ VỀ KHÔNG TRĂNG)
-          </span>
-        </div>
-
-        <!-- TRÁI ĐẤT TRUNG TÂM (ẢNH 1 & ẢNH 5) -->
-        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 via-emerald-400 to-blue-700 shadow-[0_0_25px_rgba(56,189,248,0.6)] flex flex-col items-center justify-center border-2 border-white/80 z-10 my-16">
-          <i class="fa-solid fa-earth-americas text-white text-2xl drop-shadow"></i>
-          <span class="text-[9px] font-black text-white tracking-widest uppercase mt-0.5">TRÁI ĐẤT</span>
-        </div>
-
-        <!-- VÒNG CUNG ELIP QUỸ ĐẠO MẶT TRĂNG (SVG) -->
-        <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 300">
-          <ellipse cx="200" cy="150" rx="160" ry="110" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>
-          <!-- Mũi tên chiều quay thuận thiên văn (ngược chiều kim đồng hồ như ảnh 1) -->
-          <polygon points="40,150 48,142 48,158" fill="#38bdf8"/>
-          <polygon points="360,150 352,142 352,158" fill="#38bdf8"/>
-        </svg>
-
-        <!-- 8 VỊ TRÍ MẶT TRĂNG VỆ TINH TRÊN QUỸ ĐẠO (BẤM ĐƯỢC ĐỂ NHẢY NGÀY) -->
-        
-        <!-- 1. KHÔNG TRĂNG (TRĂNG NON - BÊN TRÁI) -->
-        <button onclick="jumpToPhase(1)" class="absolute left-3 top-1/2 -translate-y-1/2 flex flex-col items-center group cursor-pointer">
-          <div class="w-12 h-12 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-cyan-400 transition flex items-center justify-center">
-            <div class="w-10 h-10 rounded-full bg-black/90"></div>
-          </div>
-          <span class="text-[10px] font-black text-slate-300 group-hover:text-cyan-300 mt-1">Không trăng</span>
-          <span class="text-[8px] text-slate-400">(Trăng non - Mùng 1)</span>
-        </button>
-
-        <!-- 2. TRĂNG LƯỠI LIỀM ĐẦU THÁNG (GÓC TRÊN TRÁI) -->
-        <button onclick="jumpToPhase(4)" class="absolute left-14 top-7 flex flex-col items-center group cursor-pointer">
-          <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
-            <svg viewBox="0 0 30 30" class="w-full h-full">
-              <circle cx="15" cy="15" r="12" fill="#0f172a"/>
-              <path d="M15 3 A12 12 0 0 1 15 27 A8 12 0 0 0 15 3" fill="#fde047"/>
-            </svg>
-          </div>
-          <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng lưỡi liềm</span>
-          <span class="text-[8px] text-slate-400">(Mùng 3 - 5)</span>
-        </button>
-
-        <!-- 3. TRĂNG BÁN NGUYỆT THƯỢNG HUYỀN (ĐỈNH TRÊN) -->
-        <button onclick="jumpToPhase(8)" class="absolute top-2 left-1/2 -translate-x-1/2 flex flex-col items-center group cursor-pointer">
-          <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
-            <svg viewBox="0 0 30 30" class="w-full h-full">
-              <circle cx="15" cy="15" r="12" fill="#0f172a"/>
-              <path d="M15 3 A12 12 0 0 1 15 27 Z" fill="#fde047"/>
-            </svg>
-          </div>
-          <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng bán nguyệt</span>
-          <span class="text-[8px] text-slate-400">(Mùng 7 - 8)</span>
-        </button>
-
-        <!-- 4. TRĂNG KHUYẾT LỚN (GÓC TRÊN PHẢI) -->
-        <button onclick="jumpToPhase(12)" class="absolute right-14 top-7 flex flex-col items-center group cursor-pointer">
-          <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
-            <svg viewBox="0 0 30 30" class="w-full h-full">
-              <circle cx="15" cy="15" r="12" fill="#0f172a"/>
-              <path d="M15 3 A12 12 0 0 1 15 27 A8 12 0 0 1 15 3" fill="#fde047"/>
-            </svg>
-          </div>
-          <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng khuyết</span>
-          <span class="text-[8px] text-slate-400">(Mùng 11 - 13)</span>
-        </button>
-
-        <!-- 5. TRĂNG TRÒN (RẰM 15 - BÊN PHẢI) -->
-        <button onclick="jumpToPhase(15)" class="absolute right-3 top-1/2 -translate-y-1/2 flex flex-col items-center group cursor-pointer">
-          <div class="w-12 h-12 rounded-full bg-yellow-400 border-2 border-yellow-200 shadow-[0_0_15px_rgba(250,204,21,0.8)] group-hover:scale-110 transition flex items-center justify-center">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-white via-yellow-200 to-amber-400"></div>
-          </div>
-          <span class="text-[10px] font-black text-yellow-300 group-hover:text-amber-200 mt-1">Trăng tròn</span>
-          <span class="text-[8px] text-amber-200">(Rằm 15 - 16)</span>
-        </button>
-
-        <!-- 6. TRĂNG KHUYẾT CUỐI THÁNG (GÓC DƯỚI PHẢI) -->
-        <button onclick="jumpToPhase(19)" class="absolute right-14 bottom-7 flex flex-col items-center group cursor-pointer">
-          <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
-            <svg viewBox="0 0 30 30" class="w-full h-full">
-              <circle cx="15" cy="15" r="12" fill="#0f172a"/>
-              <path d="M15 3 A12 12 0 0 0 15 27 A8 12 0 0 0 15 3" fill="#fde047"/>
-            </svg>
-          </div>
-          <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng khuyết</span>
-          <span class="text-[8px] text-slate-400">(Ngày 18 - 20)</span>
-        </button>
-
-        <!-- 7. TRĂNG BÁN NGUYỆT HẠ HUYỀN (ĐÁY DƯỚI) -->
-        <button onclick="jumpToPhase(23)" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center group cursor-pointer">
-          <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
-            <svg viewBox="0 0 30 30" class="w-full h-full">
-              <circle cx="15" cy="15" r="12" fill="#0f172a"/>
-              <path d="M15 3 A12 12 0 0 0 15 27 Z" fill="#fde047"/>
-            </svg>
-          </div>
-          <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng bán nguyệt</span>
-          <span class="text-[8px] text-slate-400">(Ngày 22 - 24)</span>
-        </button>
-
-        <!-- 8. TRĂNG LƯỠI LIỀM CUỐI THÁNG (GÓC DƯỚI TRÁI) -->
-        <button onclick="jumpToPhase(27)" class="absolute left-14 bottom-7 flex flex-col items-center group cursor-pointer">
-          <div class="w-11 h-11 rounded-full bg-slate-900 border-2 border-slate-600 shadow group-hover:border-yellow-300 transition flex items-center justify-center overflow-hidden">
-            <svg viewBox="0 0 30 30" class="w-full h-full">
-              <circle cx="15" cy="15" r="12" fill="#0f172a"/>
-              <path d="M15 3 A12 12 0 0 0 15 27 A8 12 0 0 1 15 3" fill="#fde047"/>
-            </svg>
-          </div>
-          <span class="text-[10px] font-black text-slate-300 group-hover:text-yellow-300 mt-1">Trăng lưỡi liềm</span>
-          <span class="text-[8px] text-slate-400">(Ngày 26 - 28)</span>
-        </button>
 
       </div>
 
-      <!-- Diễn giải khoa học & Sinh kế Đất Phú -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-900/60 p-3.5 rounded-2xl border border-slate-700/60">
-        <div class="space-y-1">
-          <h4 class="font-black text-amber-300 flex items-center gap-1.5">
-            <i class="fa-solid fa-water text-cyan-400"></i> CON NƯỚC RONG (Triều Cường):
-          </h4>
-          <p class="text-slate-300 leading-relaxed">
-            Xảy ra vào kỳ <strong>Trăng Tròn (Rằm 15)</strong> và <strong>Không trăng (Mùng 1 Điểm Sóc)</strong> khi Mặt Trời, Mặt Trăng và Trái Đất cùng nằm trên một đường thẳng. Nước dâng cao, cá mực vào lộng kiếm ăn mạnh nhất.
-          </p>
+      <!-- PHẦN 2: BẠCH ĐẠO & HOÀNG ĐẠO - GÓC LỆCH 5° & HIỆN TƯỢNG NHẬT THỰC / NGUYỆT THỰC (TÁI HIỆN CHÍNH XÁC ẢNH 2) -->
+      <div id="astroTabBachDao" class="hidden space-y-3">
+        <div class="bg-slate-950/80 rounded-2xl p-4 border border-amber-500/30 space-y-3">
+          
+          <div class="flex items-center justify-between border-b border-slate-700/60 pb-2">
+            <h4 class="font-black text-sm text-yellow-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-nodes text-amber-400"></i>
+              BẠCH ĐẠO & HOÀNG ĐẠO (GÓC LỆCH 5°)
+            </h4>
+            <span class="text-[10px] text-amber-200 font-bold bg-amber-950/80 px-2 py-0.5 rounded border border-amber-400/40">
+              Khoảng cách: 384.400 km
+            </span>
+          </div>
+
+          <!-- SƠ ĐỒ TRỰC QUAN GIAO NHAU CỦA 2 MẶT PHẲNG (THEO ẢNH 2 BẠN GỬI) -->
+          <div class="relative h-44 rounded-xl bg-gradient-to-br from-slate-950 via-[#070e24] to-slate-950 flex items-center justify-center overflow-hidden border border-slate-800">
+            <svg viewBox="0 0 400 180" class="w-full h-full">
+              <!-- Mặt phẳng Hoàng Đạo (xanh đậm): Chứa quỹ đạo Trái Đất quay quanh Mặt Trời -->
+              <ellipse cx="200" cy="90" rx="170" ry="70" fill="#0369a1" fill-opacity="0.25" stroke="#38bdf8" stroke-width="1.8"/>
+              <text x="70" y="55" fill="#7dd3fc" font-size="10" font-weight="900">Hoàng đạo (Mặt phẳng quỹ đạo Trái Đất - Mặt Trời)</text>
+
+              <!-- Mặt phẳng Bạch Đạo (xám trắng nghiêng 5°): Chứa quỹ đạo Mặt Trăng quay quanh Trái Đất -->
+              <ellipse cx="200" cy="90" rx="160" ry="55" transform="rotate(-15 200 90)" fill="#64748b" fill-opacity="0.3" stroke="#e2e8f0" stroke-width="1.8"/>
+              <text x="80" y="145" fill="#cbd5e1" font-size="10" font-weight="900">Bạch đạo (Quỹ đạo Mặt Trăng - Lệch 5°)</text>
+
+              <!-- Đường giao tuyến vàng nối 2 điểm nút (Giao điểm Hoàng đạo - Bạch đạo) -->
+              <line x1="70" y1="125" x2="330" y2="55" stroke="#facc15" stroke-width="2.5" stroke-dasharray="4 2"/>
+              <!-- Điểm nút giao 1 -->
+              <circle cx="110" cy="114" r="4.5" fill="#facc15" stroke="#000" stroke-width="1"/>
+              <!-- Điểm nút giao 2 -->
+              <circle cx="290" cy="66" r="4.5" fill="#facc15" stroke="#000" stroke-width="1"/>
+
+              <!-- MẶT TRỜI VÀNG RỰC (GÓC TRÁI TRÊN) -->
+              <circle cx="170" cy="45" r="14" fill="url(#sunGrad)" filter="drop-shadow(0 0 8px rgba(250,204,21,0.8))"/>
+              <defs>
+                <radialGradient id="sunGrad" cx="35%" cy="35%" r="65%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="40%" stop-color="#fde047"/>
+                  <stop offset="100%" stop-color="#ea580c"/>
+                </radialGradient>
+              </defs>
+
+              <!-- TRÁI ĐẤT (Ở TÂM GIAO ĐIỂM) -->
+              <circle cx="230" cy="100" r="11" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>
+              <circle cx="230" cy="100" r="11" fill="none" stroke="#22c55e" stroke-width="1.2" stroke-dasharray="3 2"/>
+
+              <!-- MẶT TRĂNG (QUAY TRÊN MẶT PHẲNG BẠCH ĐẠO) -->
+              <circle cx="255" cy="80" r="5" fill="#f8fafc" stroke="#94a3b8" stroke-width="0.8"/>
+            </svg>
+          </div>
+
+          <!-- LÝ THUYẾT THIÊN VĂN THEO ẢNH 2: TẠI SAO CÓ NHẬT THỰC & NGUYỆT THỰC -->
+          <div class="space-y-2 text-xs text-slate-200 leading-relaxed bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <p>
+              • <strong>Góc nghiêng 5° kỳ diệu:</strong> Mặt phẳng quỹ đạo của Mặt Trăng quanh Trái Đất (Bạch đạo) và mặt phẳng quỹ đạo của Trái Đất quanh Mặt Trời (Hoàng đạo) không trùng khớp mà <strong>lệch nhau một góc khoảng 5°</strong>.
+            </p>
+            <p>
+              • <strong>Hiện tượng Nhật thực (Solar Eclipse):</strong> Chỉ xảy ra vào ngày <strong>Mùng 1 (Không trăng / Trăng non)</strong> KHI VÀ CHỈ KHI Mặt Trăng đi qua đúng <em>đường thẳng giao tuyến giữa Bạch đạo và Hoàng đạo</em>, che khuất ánh sáng Mặt Trời chiếu xuống Trái Đất.
+            </p>
+            <p>
+              • <strong>Hiện tượng Nguyệt thực (Lunar Eclipse):</strong> Chỉ xảy ra vào đêm <strong>Rằm 15 (Trăng tròn)</strong> khi Trái Đất nằm đúng giữa đường thẳng giao tuyến, che bóng đen lên đĩa Mặt Trăng tạo thành "Trăng Máu".
+            </p>
+          </div>
+
         </div>
-        <div class="space-y-1">
-          <h4 class="font-black text-blue-300 flex items-center gap-1.5">
-            <i class="fa-solid fa-water text-blue-400"></i> CON NƯỚC KÉM (Triều Cạn):
-          </h4>
-          <p class="text-slate-300 leading-relaxed">
-            Xảy ra vào kỳ <strong>Trăng Bán Nguyệt (Mùng 7 - 8 & 22 - 24)</strong> khi Mặt Trăng vuông góc với Mặt Trời. Dao động thủy triều nhỏ nhất, biển lặng sóng êm, thuận lợi cào ốc sò ven gành Đá Đĩa.
-          </p>
+      </div>
+
+      <!-- PHẦN 3: 12 CHÒM SAO CUNG HOÀNG ĐẠO (TÁI HIỆN CHÍNH XÁC ẢNH 4 & ẢNH 5) -->
+      <div id="astroTabZodiac" class="hidden space-y-3">
+        <div class="bg-slate-950/80 rounded-2xl p-4 border border-indigo-500/30 space-y-3">
+          
+          <div class="flex items-center justify-between border-b border-slate-700/60 pb-2">
+            <div>
+              <h4 class="font-black text-sm text-indigo-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-star text-yellow-300"></i>
+                12 CHÒM SAO CUNG HOÀNG ĐẠO (ZODIAC CONSTELLATIONS)
+              </h4>
+              <p class="text-[10px] text-slate-400">Vòng tròn 360° Mặt Trời đi qua trong một năm dương lịch</p>
+            </div>
+            <span class="text-xs font-bold text-yellow-300 bg-indigo-950/80 px-2.5 py-1 rounded-full border border-indigo-400/40">
+              12 Chòm Sao
+            </span>
+          </div>
+
+          <!-- LƯỚI 12 CHÒM SAO (THEO ẢNH 4 & ẢNH 5: BẠCH DƯƠNG -> SONG NGƯ) -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="zodiacFullGrid">
+            <!-- Render tự động 12 chòm sao bằng JS -->
+          </div>
+
         </div>
       </div>
 
       <!-- Nút đóng -->
       <div class="pt-1 flex items-center justify-between border-t border-cyan-400/40">
-        <span class="text-xs text-slate-400 italic">Mẹo: Bấm trực tiếp vào các pha trăng trên để xem ngày lịch tương ứng</span>
+        <span class="text-xs text-slate-400 italic">Mẹo: Bấm các pha trăng hoặc chòm sao để khám phá thiên văn học Đất Phú</span>
         <button onclick="toggleMoonCycleModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition">
-          Đóng Sơ Đồ
+          Đóng Cửa Sổ
         </button>
       </div>
 
@@ -1932,6 +2071,62 @@
 
     
     
+    
+    function switchAstroTab(tabId) {
+      const tabOrbit = document.getElementById("astroTabOrbit");
+      const tabBachDao = document.getElementById("astroTabBachDao");
+      const tabZodiac = document.getElementById("astroTabZodiac");
+      const btnOrbit = document.getElementById("tabBtnOrbit");
+      const btnBachDao = document.getElementById("tabBtnBachDao");
+      const btnZodiac = document.getElementById("tabBtnZodiac");
+
+      if (!tabOrbit || !tabBachDao || !tabZodiac) return;
+
+      tabOrbit.classList.add("hidden");
+      tabBachDao.classList.add("hidden");
+      tabZodiac.classList.add("hidden");
+
+      btnOrbit.className = "py-2 px-1 rounded-xl text-xs font-black text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1 transition";
+      btnBachDao.className = "py-2 px-1 rounded-xl text-xs font-black text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1 transition";
+      btnZodiac.className = "py-2 px-1 rounded-xl text-xs font-black text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1 transition";
+
+      if (tabId === "orbit") {
+        tabOrbit.classList.remove("hidden");
+        btnOrbit.className = "py-2 px-1 rounded-xl text-xs font-black bg-cyan-500 text-slate-950 shadow flex items-center justify-center gap-1 transition";
+      } else if (tabId === "bachdao") {
+        tabBachDao.classList.remove("hidden");
+        btnBachDao.className = "py-2 px-1 rounded-xl text-xs font-black bg-amber-500 text-slate-950 shadow flex items-center justify-center gap-1 transition";
+      } else if (tabId === "zodiac") {
+        tabZodiac.classList.remove("hidden");
+        btnZodiac.className = "py-2 px-1 rounded-xl text-xs font-black bg-indigo-500 text-white shadow flex items-center justify-center gap-1 transition";
+        renderZodiacFullGrid();
+      }
+    }
+
+    function renderZodiacFullGrid() {
+      const grid = document.getElementById("zodiacFullGrid");
+      if (!grid || grid.children.length > 0) return;
+
+      const currentZod = getZodiacSign(currentDate.getDate(), currentDate.getMonth() + 1);
+
+      grid.innerHTML = ZODIAC_SIGNS.map(z => {
+        const isCurrent = (z.id === currentZod.id);
+        const activeStyle = isCurrent 
+          ? "border-2 border-yellow-400 bg-indigo-950/90 shadow-[0_0_15px_rgba(250,204,21,0.5)] scale-105" 
+          : "border border-slate-700/60 bg-slate-900/60 hover:bg-slate-800/80";
+
+        return `
+          <div class="p-2.5 rounded-xl flex flex-col items-center text-center transition ${activeStyle}">
+            <div class="text-2xl mb-1">${z.icon}</div>
+            <div class="font-black text-xs text-yellow-300">${z.nameVi}</div>
+            <div class="text-[10px] text-indigo-300 font-bold">${z.nameEn}</div>
+            <div class="text-[9px] text-slate-400 mt-0.5">${z.range}</div>
+            ${isCurrent ? '<span class="mt-1 px-1.5 py-0.5 rounded-full bg-yellow-400 text-slate-950 text-[8px] font-black uppercase">Hiện Tại</span>' : ''}
+          </div>
+        `;
+      }).join("");
+    }
+  
     function toggleMoonCycleModal() {
       const modal = document.getElementById("moonCycleModal");
       if (modal) modal.classList.toggle("hidden");
@@ -2223,6 +2418,38 @@
       30: "Ba mươi trăng lặn không còn (Điểm Sóc)"
     };
 
+    
+    // 12 CHÒM SAO CUNG HOÀNG ĐẠO (THEO ẢNH 4 & ẢNH 5: BẠCH DƯƠNG -> SONG NGƯ)
+    const ZODIAC_SIGNS = [
+      { id: "capricorn", nameVi: "Ma Kết", nameEn: "Capricorn", icon: "♑", range: "22/12 - 19/01", start: [12, 22], end: [1, 19], stars: "Chòm sao Con Dê Biển" },
+      { id: "aquarius", nameVi: "Bảo Bình", nameEn: "Aquarius", icon: "♒", range: "20/01 - 18/02", start: [1, 20], end: [2, 18], stars: "Chòm sao Người Mang Nước" },
+      { id: "pisces", nameVi: "Song Ngư", nameEn: "Pisces", icon: "♓", range: "19/02 - 20/03", start: [2, 19], end: [3, 20], stars: "Chòm sao Đôi Cá Ngậm Dải Lụa" },
+      { id: "aries", nameVi: "Bạch Dương", nameEn: "Aries", icon: "♈", range: "21/03 - 19/04", start: [3, 21], end: [4, 19], stars: "Chòm sao Con Cừu Vàng" },
+      { id: "taurus", nameVi: "Kim Ngưu", nameEn: "Taurus", icon: "♉", range: "20/04 - 20/05", start: [4, 20], end: [5, 20], stars: "Chòm sao Con Trâu Mộng" },
+      { id: "gemini", nameVi: "Song Tử", nameEn: "Gemini", icon: "♊", range: "21/05 - 21/06", start: [5, 21], end: [6, 21], stars: "Chòm sao Cặp Song Sinh" },
+      { id: "cancer", nameVi: "Cự Giải", nameEn: "Cancer", icon: "♋", range: "22/06 - 22/07", start: [6, 22], end: [7, 22], stars: "Chòm sao Con Cua Biển" },
+      { id: "leo", nameVi: "Sư Tử", nameEn: "Leo", icon: "♌", range: "23/07 - 22/08", start: [7, 23], end: [8, 22], stars: "Chòm sao Chúa Sơn Lâm" },
+      { id: "virgo", nameVi: "Xử Nữ", nameEn: "Virgo", icon: "♍", range: "23/08 - 22/09", start: [8, 23], end: [9, 22], stars: "Chòm sao Trinh Nữ Bông Lúa" },
+      { id: "libra", nameVi: "Thiên Bình", nameEn: "Libra", icon: "♎", range: "23/09 - 23/10", start: [9, 23], end: [10, 23], stars: "Chòm sao Cái Cân Công Lý" },
+      { id: "scorpio", nameVi: "Thiên Yết", nameEn: "Scorpio", icon: "♏", range: "24/10 - 21/11", start: [10, 24], end: [11, 21], stars: "Chòm sao Bọ Cạp Thần" },
+      { id: "sagittarius", nameVi: "Nhân Mã", nameEn: "Sagittarius", icon: "♐", range: "22/11 - 21/12", start: [11, 22], end: [12, 21], stars: "Chòm sao Xạ Thủ Bắn Cung" }
+    ];
+
+    function getZodiacSign(day, month) {
+      if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return ZODIAC_SIGNS[0]; // Ma Kết
+      if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return ZODIAC_SIGNS[1]; // Bảo Bình
+      if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return ZODIAC_SIGNS[2]; // Song Ngư
+      if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return ZODIAC_SIGNS[3]; // Bạch Dương
+      if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return ZODIAC_SIGNS[4]; // Kim Ngưu
+      if ((month === 5 && day >= 21) || (month === 6 && day <= 21)) return ZODIAC_SIGNS[5]; // Song Tử
+      if ((month === 6 && day >= 22) || (month === 7 && day <= 22)) return ZODIAC_SIGNS[6]; // Cự Giải
+      if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return ZODIAC_SIGNS[7]; // Sư Tử
+      if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return ZODIAC_SIGNS[8]; // Xử Nữ
+      if ((month === 9 && day >= 23) || (month === 10 && day <= 23)) return ZODIAC_SIGNS[9]; // Thiên Bình
+      if ((month === 10 && day >= 24) || (month === 11 && day <= 21)) return ZODIAC_SIGNS[10]; // Thiên Yết
+      return ZODIAC_SIGNS[11]; // Nhân Mã
+    }
+  
     function renderMoonVisual(day) {
       const gContent = document.getElementById("moonSvgContent");
       const nameEl = document.getElementById("moonPhaseName");
@@ -2431,6 +2658,11 @@
       checkSpiritualForBloc(lun);
       applyDayTheme(lun);
       renderMoonVisual(lun.day);
+
+        const zod = getZodiacSign(currentDate.getDate(), currentDate.getMonth() + 1);
+        const zodNameEl = document.getElementById("leafZodiacName");
+        if (zodNameEl) zodNameEl.innerHTML = `${zod.nameVi} (${zod.nameEn} ${zod.icon})`;
+    
     }
 
     function tearLeaf(delta) {
