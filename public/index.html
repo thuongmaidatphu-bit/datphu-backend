@@ -553,7 +553,38 @@
       color: #000000 !important;
     }
   
-  </style>
+  
+    /* ĐỒNG HỒ CƠ KHÍ HOÀNG KIM 3D & CON LẮC THIÊN VĂN */
+    .clock-3d-case {
+      background: radial-gradient(circle at 35% 35%, #fffbeb 0%, #fef08a 30%, #f59e0b 65%, #ca8a04 85%, #78350f 100%);
+      box-shadow: 
+        0 12px 30px rgba(0, 0, 0, 0.45),
+        inset 0 2px 4px rgba(255, 255, 255, 0.9),
+        inset 0 -3px 6px rgba(120, 53, 15, 0.6);
+      border: 2px solid #ca8a04;
+    }
+
+    .clock-3d-dial {
+      background: radial-gradient(circle at 50% 35%, #ffffff 0%, #f8fafc 55%, #e2e8f0 100%);
+      box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    body.night-mode .clock-3d-dial {
+      background: radial-gradient(circle at 50% 35%, #0f172a 0%, #090e1a 60%, #030712 100%) !important;
+      box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.8), 0 0 15px rgba(250, 204, 21, 0.25) !important;
+    }
+
+    @keyframes balanceSwing {
+      0% { transform: rotate(-25deg); }
+      50% { transform: rotate(25deg); }
+      100% { transform: rotate(-25deg); }
+    }
+
+    .balance-wheel-swing {
+      transform-origin: center center;
+      animation: balanceSwing 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+</style>
 </head>
 <body class="min-h-screen p-2.5 sm:p-5 flex flex-col items-center justify-between">
 
@@ -960,13 +991,85 @@
           <div class="absolute top-6 left-1/6 petal-4 text-amber-200 text-base drop-shadow">🌼</div>
         </div>
 
-        <!-- DÒNG NGÀY DƯƠNG LỊCH: GỌN GÀNG MÀU XANH NAVY -->
-        <div id="leafSolarRow" class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-[#1b2a47]">
-          <div class="flex items-center gap-2">
-            <span class="px-2 py-0.5 rounded-lg bg-[#1b2a47] text-white text-xs uppercase">DƯƠNG LỊCH</span>
-            <span id="leafSolarFull">THỨ HAI, 09 THÁNG 11 NĂM 2026</span>
+        <!-- DÒNG NGÀY DƯƠNG LỊCH & ĐỒNG HỒ CƠ KHÍ HOÀNG KIM 3D -->
+        <div id="leafSolarRow" class="bg-gradient-to-r from-blue-50/90 via-slate-50 to-amber-50/70 border-2 border-blue-200/90 rounded-2xl p-2.5 sm:p-3 flex items-center justify-between gap-2.5 text-sm sm:text-base font-black text-[#1b2a47] shadow-sm relative overflow-hidden transition-colors">
+          
+          <!-- BÊN TRÁI: MẶT ĐỒNG HỒ CƠ 3D & THỜI KHẮC DƯƠNG LỊCH -->
+          <div class="flex items-center gap-2.5 min-w-0">
+            <!-- MẶT ĐỒNG HỒ CƠ KHÍ 3D (CHUYỂN ĐỘNG THỜI GIAN THỰC - BẤM MỞ TOÀN CẢNH) -->
+            <button onclick="toggleClockMasterModal()" class="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-full cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-200 relative group" title="Bấm để mở Bộ Máy Đồng Hồ 3D & Can Chi Giờ Hoàng Đạo">
+              <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow">
+                <defs>
+                  <radialGradient id="miniBezel3D" cx="35%" cy="35%" r="65%">
+                    <stop offset="0%" stop-color="#fffbeb"/>
+                    <stop offset="35%" stop-color="#fde047"/>
+                    <stop offset="70%" stop-color="#ca8a04"/>
+                    <stop offset="100%" stop-color="#78350f"/>
+                  </radialGradient>
+                  <radialGradient id="miniDial3D" cx="50%" cy="35%" r="65%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="65%" stop-color="#f8fafc"/>
+                    <stop offset="100%" stop-color="#e2e8f0"/>
+                  </radialGradient>
+                  <linearGradient id="miniHandGold" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#fef08a"/>
+                    <stop offset="50%" stop-color="#ca8a04"/>
+                    <stop offset="100%" stop-color="#78350f"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="48" fill="url(#miniBezel3D)"/>
+                <circle cx="50" cy="50" r="43" fill="#1b2a47" stroke="#ca8a04" stroke-width="1"/>
+                <circle cx="50" cy="50" r="40" fill="url(#miniDial3D)" id="miniClockDialBg"/>
+                <!-- 4 cọc số chính vàng 3D -->
+                <rect x="48.5" y="13" width="3" height="6" rx="1" fill="#b45309"/>
+                <rect x="81" y="48.5" width="6" height="3" rx="1" fill="#b45309"/>
+                <rect x="48.5" y="81" width="3" height="6" rx="1" fill="#b45309"/>
+                <rect x="13" y="48.5" width="6" height="3" rx="1" fill="#b45309"/>
+                <!-- Kim Giờ -->
+                <g id="miniClockHourHand" transform="rotate(0 50 50)">
+                  <path d="M48 50 L49 26 L50 22 L51 26 L52 50 L50 54 Z" fill="url(#miniHandGold)"/>
+                </g>
+                <!-- Kim Phút -->
+                <g id="miniClockMinHand" transform="rotate(0 50 50)">
+                  <path d="M48.5 50 L49.2 18 L50 14 L50.8 18 L51.5 50 L50 55 Z" fill="url(#miniHandGold)"/>
+                </g>
+                <!-- Kim Giây -->
+                <g id="miniClockSecHand" transform="rotate(0 50 50)">
+                  <line x1="50" y1="58" x2="50" y2="12" stroke="#dc2626" stroke-width="1.3" stroke-linecap="round"/>
+                  <circle cx="50" cy="58" r="2.2" fill="#dc2626"/>
+                </g>
+                <circle cx="50" cy="50" r="3" fill="#ca8a04"/>
+                <circle cx="50" cy="50" r="1.8" fill="#e11d48"/>
+              </svg>
+            </button>
+
+            <!-- NGÀY DƯƠNG LỊCH & ĐỒNG HỒ SỐ 3D -->
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="px-2 py-0.5 rounded-lg bg-[#1b2a47] text-white text-[10px] sm:text-xs uppercase tracking-wider shrink-0 font-black">DƯƠNG LỊCH</span>
+                <span id="leafSolarFull" class="text-xs sm:text-sm font-black truncate text-[#1b2a47]">THỨ TƯ, 11 THÁNG 11 NĂM 2026</span>
+              </div>
+              <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+                <!-- Đồng hồ số điện tử 3D thời gian thực -->
+                <div class="font-mono text-xs sm:text-sm font-black text-amber-900 flex items-center gap-1 tracking-tight">
+                  <i class="fa-regular fa-clock text-amber-600 text-[11px]"></i>
+                  <span id="clockLiveDigital">00:00:00</span>
+                </div>
+                <span class="text-slate-300 hidden sm:inline">•</span>
+                <!-- Can Chi Khung Giờ Hiện Tại -->
+                <div id="clockLiveCanChiBadge" class="text-[11px] font-bold text-teal-800 truncate flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span id="clockLiveCanChiText">Giờ Can Chi</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <span class="text-xs font-bold text-slate-500 font-mono">GMT+7</span>
+
+          <!-- BÊN PHẢI: NÚT XEM ĐỒNG HỒ 3D TOÀN CẢNH -->
+          <button onclick="toggleClockMasterModal()" class="px-2.5 py-1.5 rounded-xl bg-white hover:bg-amber-100/70 border border-amber-300 text-amber-900 text-xs font-black shadow-xs transition active:scale-95 flex items-center gap-1.5 shrink-0" title="Bấm xem Đồng Hồ Cơ Khí 3D & Bảng 12 Giờ Hoàng Đạo">
+            <i class="fa-solid fa-clock text-amber-600 text-xs"></i>
+            <span class="hidden sm:inline">Đồng Hồ 3D</span>
+          </button>
         </div>
 
         <!-- TỰA ĐỀ ÂM LỊCH -->
@@ -7563,6 +7666,349 @@
       setInterval(fetchSatelliteWeather, 30 * 60 * 1000);
       setInterval(checkRealtimeDayNightCycle, 30 * 1000); // Tự động phát hiện chuyển trời tối
     });
-  </script>
+  
+    // =========================================================================
+    // HỆ THỐNG ĐỒNG HỒ CƠ KHÍ & THIÊN VĂN CAN CHI 3D (REAL-TIME ENGINE)
+    // =========================================================================
+    const CAN_CHI_12_HOURS = [
+      { id: "ty", name: "Giờ Tý", range: "23:00 - 01:00", startH: 23, endH: 1, type: "Hoàng Đạo", star: "Thanh Long", desc: "Mọi việc hanh thông, đón sinh khí mới." },
+      { id: "suu", name: "Giờ Sửu", range: "01:00 - 03:00", startH: 1, endH: 3, type: "Hắc Đạo", star: "Câu Trận", desc: "Nên tĩnh dưỡng, nghỉ ngơi sâu lắng." },
+      { id: "dan", name: "Giờ Dần", range: "03:00 - 05:00", startH: 3, endH: 5, type: "Hoàng Đạo", star: "Tư Mệnh", desc: "Khởi tâm lành thiện, thức dậy đón bình minh." },
+      { id: "mao", name: "Giờ Mão", range: "05:00 - 07:00", startH: 5, endH: 7, type: "Hoàng Đạo", star: "Ngọc Đường", desc: "Xuất hành, tập thể dục, đầu óc minh mẫn." },
+      { id: "thin", name: "Giờ Thìn", range: "07:00 - 09:00", startH: 7, endH: 9, type: "Hắc Đạo", star: "Bạch Hổ", desc: "Làm việc cẩn trọng, tập trung chuyên môn." },
+      { id: "ty_h", name: "Giờ Tỵ", range: "09:00 - 11:00", startH: 9, endH: 11, type: "Hoàng Đạo", star: "Minh Đường", desc: "Ký kết giao thương, buôn may bán đắt." },
+      { id: "ngo", name: "Giờ Ngọ", range: "11:00 - 13:00", startH: 11, endH: 13, type: "Hắc Đạo", star: "Thiên Hình", desc: "Ăn trưa thanh tịnh, chợp mắt nghỉ trưa." },
+      { id: "mui", name: "Giờ Mùi", range: "13:00 - 15:00", startH: 13, endH: 15, type: "Hoàng Đạo", star: "Kim Quỹ", desc: "Hồi phục năng lượng, việc làm thuận buồm." },
+      { id: "than", name: "Giờ Thân", range: "15:00 - 17:00", startH: 15, endH: 17, type: "Hoàng Đạo", star: "Kim Đường", desc: "Thương thảo kết nối, học tập sáng tạo." },
+      { id: "dau", name: "Giờ Dậu", range: "17:00 - 19:00", startH: 17, endH: 19, type: "Hắc Đạo", star: "Chu Tước", desc: "Trở về tổ ấm, gác lại bộn bề công việc." },
+      { id: "tuat", name: "Giờ Tuất", range: "19:00 - 21:00", startH: 19, endH: 21, type: "Hoàng Đạo", star: "Tư Mệnh", desc: "Gia đình sum họp, trò chuyện ấm cúng." },
+      { id: "hoi", name: "Giờ Hợi", range: "21:00 - 23:00", startH: 21, endH: 23, type: "Hắc Đạo", star: "Huyền Vũ", desc: "Nghe nhạc trị liệu, thả lỏng chìm vào giấc ngủ." }
+    ];
+
+    let isMechanicalTickActive = false;
+    let tickAudioTimer = null;
+
+    function getLiveCanChiHour(h) {
+      if (h === 23 || h === 0) return CAN_CHI_12_HOURS[0];
+      for (let i = 1; i < CAN_CHI_12_HOURS.length; i++) {
+        if (h >= CAN_CHI_12_HOURS[i].startH && h < CAN_CHI_12_HOURS[i].endH) {
+          return CAN_CHI_12_HOURS[i];
+        }
+      }
+      return CAN_CHI_12_HOURS[0];
+    }
+
+    function toggleClockMasterModal() {
+      const modal = document.getElementById("clockMasterModal");
+      if (!modal) return;
+      modal.classList.toggle("hidden");
+      if (!modal.classList.contains("hidden")) {
+        render12CanChiGrid();
+      }
+    }
+
+    function render12CanChiGrid() {
+      const cont = document.getElementById("grid12CanChiHours");
+      if (!cont) return;
+      cont.innerHTML = "";
+
+      const currentH = new Date().getHours();
+      const currentItem = getLiveCanChiHour(currentH);
+
+      CAN_CHI_12_HOURS.forEach(item => {
+        const isCurrent = (item.id === currentItem.id);
+        const isHoangDao = (item.type === "Hoàng Đạo");
+
+        const el = document.createElement("div");
+        el.className = `p-1.5 rounded-xl border transition ${
+          isCurrent 
+            ? "bg-amber-400 text-slate-950 border-amber-300 ring-2 ring-amber-300/60 font-black scale-105" 
+            : (isHoangDao 
+                ? "bg-emerald-950/50 border-emerald-500/40 text-emerald-200" 
+                : "bg-slate-900/60 border-slate-700 text-slate-400")
+        }`;
+
+        el.innerHTML = `
+          <div class="text-[11px] ${isCurrent ? 'font-black' : 'font-bold'}>${item.name}</div>
+          <div class="text-[9px] opacity-80 font-mono">${item.range.replace(':00', '').replace(':00', '')}</div>
+          <div class="text-[8px] uppercase tracking-wider mt-0.5 ${isCurrent ? 'text-red-950 font-black' : (isHoangDao ? 'text-emerald-400 font-bold' : 'text-slate-500') }">
+            ${isCurrent ? '★ ĐANG TRỰC' : item.type}
+          </div>
+        `;
+        cont.appendChild(el);
+      });
+    }
+
+    // ÂM THANH TÍCH TẮC CƠ KHÍ THỤY SĨ (100% PROCEDURAL WEB AUDIO)
+    function playMechanicalTickImpulse(isTick) {
+      if (!ambientAudioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        ambientAudioCtx = new AudioContext();
+      }
+      if (ambientAudioCtx.state === 'suspended') {
+        ambientAudioCtx.resume();
+      }
+
+      const now = ambientAudioCtx.currentTime;
+      const osc = ambientAudioCtx.createOscillator();
+      const gain = ambientAudioCtx.createGain();
+      const filter = ambientAudioCtx.createBiquadFilter();
+
+      // Tần số gõ cơ học: Tích (1250Hz), Tắc (920Hz)
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(isTick ? 1280 : 940, now);
+      osc.frequency.exponentialRampToValueAtTime(isTick ? 350 : 280, now + 0.025);
+
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(isTick ? 1500 : 1100, now);
+      filter.Q.setValueAtTime(6.0, now);
+
+      gain.gain.setValueAtTime(0.045, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ambientAudioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.04);
+    }
+
+    function toggleMechanicalTickSound() {
+      isMechanicalTickActive = !isMechanicalTickActive;
+      const icon = document.getElementById("tickSoundIcon");
+      const text = document.getElementById("tickSoundText");
+
+      if (isMechanicalTickActive) {
+        if (icon) icon.className = "fa-solid fa-volume-high text-amber-400";
+        if (text) text.innerText = "Tắt Tích Tắc";
+        showToast("Đã bật tiếng tích tắc đồng hồ cơ học êm dịu");
+      } else {
+        if (icon) icon.className = "fa-solid fa-volume-xmark text-slate-400";
+        if (text) text.innerText = "Bật Tích Tắc 3D";
+        showToast("Đã tắt âm thanh tích tắc");
+      }
+    }
+
+    // CHẠY CHU TRÌNH ĐỒNG HỒ 3D THỜI GIAN THỰC (60 FPS SMOOTH SWEEP)
+    let lastTickSecond = -1;
+    function updateLiveClock3DEngine() {
+      const now = new Date();
+      const h = now.getHours();
+      const m = now.getMinutes();
+      const s = now.getSeconds();
+      const ms = now.getMilliseconds();
+
+      // Góc quay chính xác
+      const secAngle = (s + ms / 1000) * 6; // 360 / 60
+      const minAngle = (m + s / 60) * 6;
+      const hourAngle = ((h % 12) + m / 60) * 30;
+
+      // 1. Cập nhật Mini Clock trên tờ lịch
+      const miniH = document.getElementById("miniClockHourHand");
+      const miniM = document.getElementById("miniClockMinHand");
+      const miniS = document.getElementById("miniClockSecHand");
+      if (miniH) miniH.setAttribute("transform", `rotate(${hourAngle.toFixed(2)} 50 50)`);
+      if (miniM) miniM.setAttribute("transform", `rotate(${minAngle.toFixed(2)} 50 50)`);
+      if (miniS) miniS.setAttribute("transform", `rotate(${secAngle.toFixed(2)} 50 50)`);
+
+      // 2. Cập nhật Master Clock trong Modal
+      const mastH = document.getElementById("masterClockHourHand");
+      const mastM = document.getElementById("masterClockMinHand");
+      const mastS = document.getElementById("masterClockSecHand");
+      if (mastH) mastH.setAttribute("transform", `rotate(${hourAngle.toFixed(2)} 100 100)`);
+      if (mastM) mastM.setAttribute("transform", `rotate(${minAngle.toFixed(2)} 100 100)`);
+      if (mastS) mastS.setAttribute("transform", `rotate(${secAngle.toFixed(2)} 100 100)`);
+
+      // 3. Cập nhật Đồng Hồ Số
+      const pad = n => (n < 10 ? '0' : '') + n;
+      const timeStr = `${pad(h)}:${pad(m)}:${pad(s)}`;
+
+      const miniDig = document.getElementById("clockLiveDigital");
+      const mastDig = document.getElementById("masterClockDigital");
+      if (miniDig) miniDig.innerText = timeStr;
+      if (mastDig) mastDig.innerText = timeStr;
+
+      // Phát âm thanh tích tắc nhịp mỗi giây (nếu được kích hoạt)
+      if (isMechanicalTickActive && s !== lastTickSecond) {
+        lastTickSecond = s;
+        playMechanicalTickImpulse(s % 2 === 0);
+      }
+
+      // 4. Cập nhật Can Chi Giờ (mỗi phút một lần)
+      if (s === 0 || !window.__lastCanChiHourH || window.__lastCanChiHourH !== h) {
+        window.__lastCanChiHourH = h;
+        const canChi = getLiveCanChiHour(h);
+        const canChiBadgeText = document.getElementById("clockLiveCanChiText");
+        if (canChiBadgeText) {
+          canChiBadgeText.innerText = `${canChi.name} (${canChi.range.replace(':00', '').replace(':00', '')}) • ${canChi.type}`;
+        }
+
+        const currentName = document.getElementById("currentCanChiName");
+        const currentDesc = document.getElementById("currentCanChiDesc");
+        const currentAdv = document.getElementById("currentCanChiAdvice");
+        const badgeAusp = document.getElementById("badgeCurrentAuspicious");
+
+        if (currentName) currentName.innerText = `${canChi.name.toUpperCase()} (${canChi.range})`;
+        if (currentDesc) currentDesc.innerText = `Sao ${canChi.star} • ${canChi.type} Đất Phú`;
+        if (currentAdv) currentAdv.innerText = `"${canChi.desc}"`;
+        if (badgeAusp) {
+          badgeAusp.innerText = canChi.type.toUpperCase();
+          badgeAusp.className = `px-2 py-0.5 rounded-full text-[10px] font-black ${canChi.type === 'Hoàng Đạo' ? 'bg-emerald-500 text-white' : 'bg-slate-700 text-slate-300'}`;
+        }
+      }
+
+      requestAnimationFrame(updateLiveClock3DEngine);
+    }
+
+    // Khởi động Engine Đồng Hồ 3D
+    document.addEventListener("DOMContentLoaded", () => {
+      requestAnimationFrame(updateLiveClock3DEngine);
+    });
+    // Kích hoạt ngay lập tức nếu DOM đã sẵn sàng
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      requestAnimationFrame(updateLiveClock3DEngine);
+    }
+</script>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL ĐỒNG HỒ CƠ KHÍ & THIÊN VĂN CAN CHI 3D ĐẤT PHÚ (CHUYỂN ĐỘNG THỜI GIAN THỰC) -->
+  <!-- ========================================================================= -->
+  <div id="clockMasterModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3">
+    <div class="bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#090d16] border-2 sm:border-4 border-amber-400/80 rounded-3xl p-4 sm:p-6 w-full max-w-lg shadow-2xl text-white space-y-4 max-h-[92vh] overflow-y-auto">
+      
+      <!-- Header Modal -->
+      <div class="flex items-center justify-between pb-3 border-b border-amber-400/30">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-yellow-600 p-2 text-slate-950 flex items-center justify-center shadow-md font-black shrink-0">
+            <i class="fa-solid fa-clock text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-yellow-300 leading-tight">ĐỒNG HỒ CƠ KHÍ & CAN CHI 3D</h3>
+            <p class="text-[11px] font-bold text-amber-200">Thời khắc thiên văn • 12 Khung giờ Hoàng Đạo Đất Phú</p>
+          </div>
+        </div>
+        <button onclick="toggleClockMasterModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition">✕</button>
+      </div>
+
+      <!-- MẶT ĐỒNG HỒ CƠ KHÍ HOÀNG GIA 3D ĐẠI BẢN -->
+      <div class="flex flex-col items-center justify-center py-2 relative">
+        <div class="w-48 h-48 sm:w-56 sm:h-56 rounded-full clock-3d-case p-2.5 sm:p-3 relative drop-shadow-2xl">
+          <!-- Vành số sapphire -->
+          <div class="w-full h-full rounded-full clock-3d-dial relative flex items-center justify-center overflow-hidden">
+            
+            <!-- Con lắc / Bánh xe cân bằng lộ cơ (Skeleton Balance Wheel) chuyển động -->
+            <div class="absolute bottom-6 w-14 h-14 rounded-full border-2 border-amber-500/30 flex items-center justify-center balance-wheel-swing pointer-events-none opacity-40">
+              <div class="w-12 h-12 rounded-full border border-dashed border-amber-400"></div>
+              <div class="w-1.5 h-10 bg-amber-500/50 absolute"></div>
+            </div>
+
+            <!-- SVG Bộ Kim và Mặt Số 3D Lớn -->
+            <svg viewBox="0 0 200 200" class="w-full h-full">
+              <defs>
+                <radialGradient id="masterGoldCenter" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#fffbeb"/>
+                  <stop offset="60%" stop-color="#f59e0b"/>
+                  <stop offset="100%" stop-color="#78350f"/>
+                </radialGradient>
+              </defs>
+
+              <!-- 12 Cọc số La Mã / Vạch kim cương -->
+              <text x="100" y="30" font-size="14" font-weight="900" fill="#b45309" text-anchor="middle" font-family="'JetBrains Mono', monospace">XII</text>
+              <text x="172" y="105" font-size="14" font-weight="900" fill="#b45309" text-anchor="middle" font-family="'JetBrains Mono', monospace">III</text>
+              <text x="100" y="180" font-size="14" font-weight="900" fill="#b45309" text-anchor="middle" font-family="'JetBrains Mono', monospace">VI</text>
+              <text x="28" y="105" font-size="14" font-weight="900" fill="#b45309" text-anchor="middle" font-family="'JetBrains Mono', monospace">IX</text>
+
+              <!-- Các cọc số phụ -->
+              <circle cx="137" cy="40" r="2.5" fill="#ca8a04"/>
+              <circle cx="163" cy="67" r="2.5" fill="#ca8a04"/>
+              <circle cx="163" cy="133" r="2.5" fill="#ca8a04"/>
+              <circle cx="137" cy="160" r="2.5" fill="#ca8a04"/>
+              <circle cx="63" cy="160" r="2.5" fill="#ca8a04"/>
+              <circle cx="37" cy="133" r="2.5" fill="#ca8a04"/>
+              <circle cx="37" cy="67" r="2.5" fill="#ca8a04"/>
+              <circle cx="63" cy="40" r="2.5" fill="#ca8a04"/>
+
+              <!-- Kim Giờ 3D Lớn -->
+              <g id="masterClockHourHand" transform="rotate(0 100 100)">
+                <path d="M96 100 L98 52 L100 44 L102 52 L104 100 L100 110 Z" fill="url(#miniHandGold)" filter="drop-shadow(0 3px 5px rgba(0,0,0,0.5))"/>
+              </g>
+
+              <!-- Kim Phút 3D Lớn -->
+              <g id="masterClockMinHand" transform="rotate(0 100 100)">
+                <path d="M97 100 L98.5 35 L100 28 L101.5 35 L103 100 L100 112 Z" fill="url(#miniHandGold)" filter="drop-shadow(0 3px 5px rgba(0,0,0,0.5))"/>
+              </g>
+
+              <!-- Kim Giây 3D Lớn Đỏ Thắm -->
+              <g id="masterClockSecHand" transform="rotate(0 100 100)">
+                <line x1="100" y1="120" x2="100" y2="24" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="100" cy="120" r="4.5" fill="#ef4444"/>
+                <circle cx="100" cy="50" r="3" fill="#ef4444"/>
+              </g>
+
+              <!-- Trục giữa đính ngọc -->
+              <circle cx="100" cy="100" r="6" fill="url(#masterGoldCenter)"/>
+              <circle cx="100" cy="100" r="3.5" fill="#e11d48"/>
+              <circle cx="98" cy="98" r="1.2" fill="#ffffff"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- ĐỒNG HỒ SỐ ĐIỆN TỬ 3D LED VÀNG -->
+        <div class="mt-3 text-center space-y-1">
+          <div class="font-mono text-3xl sm:text-4xl font-black text-amber-300 tracking-wider drop-shadow-md">
+            <span id="masterClockDigital">00:00:00</span>
+          </div>
+          <div class="text-xs text-slate-300 font-bold" id="masterClockDateText">
+            Thứ Tư, 11 Tháng 11 Năm 2026
+          </div>
+        </div>
+      </div>
+
+      <!-- THẺ KHUNG GIỜ CAN CHI HIỆN TẠI & ĐÁNH GIÁ CÁT HUNG -->
+      <div id="canChiCurrentCard" class="p-3.5 rounded-2xl bg-slate-800/80 border-2 border-amber-400/40 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-black uppercase text-amber-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-compass text-amber-400"></i> KHUNG GIỜ CAN CHI HIỆN TẠI
+          </span>
+          <span id="badgeCurrentAuspicious" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500 text-white">
+            HOÀNG ĐẠO
+          </span>
+        </div>
+        <div class="flex items-baseline justify-between">
+          <div>
+            <div id="currentCanChiName" class="text-lg font-black text-white">GIỜ MÃO (05:00 - 07:00)</div>
+            <div id="currentCanChiDesc" class="text-xs text-slate-300 font-medium">Con Mèo • Hành Mộc • Sao Ngọc Đường</div>
+          </div>
+        </div>
+        <div id="currentCanChiAdvice" class="text-xs text-amber-100/90 italic font-medium pt-1 border-t border-slate-700">
+          "Giờ Ngọc Đường Hoàng Đạo: Khởi sự may mắn, xuất hành thuận lợi, tinh thần sảng khoái."
+        </div>
+      </div>
+
+      <!-- BẢNG LƯỚI 12 GIỜ CAN CHI TRONG NGÀY (HOÀNG ĐẠO / HẮC ĐẠO) -->
+      <div class="space-y-1.5">
+        <div class="text-xs font-black uppercase text-slate-400 tracking-wide flex items-center justify-between">
+          <span>Bảng 12 Giờ Can Chi Trong Ngày:</span>
+          <span class="text-[10px] text-amber-300 font-normal">Xanh: Hoàng Đạo • Xám: Hắc Đạo</span>
+        </div>
+        <div id="grid12CanChiHours" class="grid grid-cols-3 sm:grid-cols-4 gap-1.5 text-center text-xs font-bold">
+          <!-- Sẽ tự động populate từ Javascript -->
+        </div>
+      </div>
+
+      <!-- ĐIỀU KHIỂN ÂM THANH TÍCH TẮC CƠ KHÍ & ĐÓNG -->
+      <div class="pt-2 border-t border-slate-700/80 flex items-center justify-between gap-2">
+        <button id="btnToggleClockTick" onclick="toggleMechanicalTickSound()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-amber-400/30 text-amber-200 text-xs font-bold transition flex items-center gap-1.5">
+          <i id="tickSoundIcon" class="fa-solid fa-volume-xmark text-slate-400"></i>
+          <span id="tickSoundText">Bật Tích Tắc 3D</span>
+        </button>
+        <button onclick="toggleClockMasterModal()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-md transition">
+          Đóng Lại
+        </button>
+      </div>
+
+    </div>
+  </div>
 </body>
 </html>
