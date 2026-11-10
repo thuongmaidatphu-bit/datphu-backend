@@ -120,6 +120,33 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ========================================================================
+  // BỘ PHÁT GIỌNG NÓI ĐỌC LỊCH ĐẤT PHÚ (TTS PROXY STREAMING MP3)
+  // ========================================================================
+  if (pathname === '/api/tts' && req.method === 'GET') {
+    const q = parsedUrl.searchParams.get('q') || '';
+    if (!q) {
+      res.writeHead(400, { 'Content-Type': 'text/plain' });
+      return res.end('Missing text query');
+    }
+    const ttsUrl = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=' + encodeURIComponent(q);
+    const https = require('https');
+    https.get(ttsUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' }
+    }, (proxyRes) => {
+      res.writeHead(proxyRes.statusCode || 200, {
+        'Content-Type': 'audio/mpeg',
+        'Cache-Control': 'public, max-age=86400',
+        'Access-Control-Allow-Origin': '*'
+      });
+      proxyRes.pipe(res);
+    }).on('error', (err) => {
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end('TTS Proxy Error: ' + err.message);
+    });
+    return;
+  }
+
+  // ========================================================================
   // 0. BỐN CỔNG CHÍNH ĐÁM MÂY SUPABASE (DATABASE, AUTH, STORAGE, REALTIME)
   // ========================================================================
   if (pathname === '/api/cloud/status' && req.method === 'GET') {
