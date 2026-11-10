@@ -147,6 +147,14 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ========================================================================
+  // CỔNG AI MINH TRIẾT NHÂN LOẠI & DÂN SINH ĐẤT PHÚ (GEMINI)
+  // ========================================================================
+  if (pathname === '/api/wisdom' || pathname.includes('wisdom')) {
+    const wisdomHandler = require('../api/wisdom');
+    return wisdomHandler(req, res);
+  }
+
+  // ========================================================================
   // 0. BỐN CỔNG CHÍNH ĐÁM MÂY SUPABASE (DATABASE, AUTH, STORAGE, REALTIME)
   // ========================================================================
   if (pathname === '/api/cloud/status' && req.method === 'GET') {
