@@ -2470,7 +2470,7 @@
     // GỌI CỔNG TRÍ TUỆ NHÂN LOẠI GEMINI (CÓ CACHE BẢO TOÀN TOKEN)
     async function fetchGeminiWisdom(locationName, weatherStatus) {
       try {
-        const url = `/api/wisdom?location=${encodeURIComponent(locationName)}&weather=${encodeURIComponent(weatherStatus)}`;
+        const url = `/api?action=wisdom&location=${encodeURIComponent(locationName)}&weather=${encodeURIComponent(weatherStatus)}`;
         const res = await fetch(url);
         const data = await res.json();
         const greetingEl = document.getElementById("aiEmotionalGreeting");

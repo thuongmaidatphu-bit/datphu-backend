@@ -12,7 +12,7 @@ module.exports = (req, res) => {
   const parsed = new URL(reqUrl, 'http://localhost');
 
   // 1. CỔNG AI MINH TRIẾT NHÂN LOẠI GEMINI (CÓ CACHE)
-  if (reqUrl.includes('/api/wisdom')) {
+  if (parsed.searchParams.get('action') === 'wisdom' || reqUrl.includes('wisdom')) {
     return wisdomHandler(req, res);
   }
 
