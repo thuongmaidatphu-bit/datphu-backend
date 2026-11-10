@@ -337,13 +337,33 @@
           <span id="dayNightText" class="hidden sm:inline">BAN NGÀY</span>
         </button>
 
-        <!-- CHỌN TIỂU VÙNG -->
-      <select id="selectLocation" onchange="changeLocation(this.value)" class="bg-slate-100 border-2 border-[#1b2a47] text-[#1b2a47] rounded-xl px-2.5 py-1.5 text-xs sm:text-sm font-black focus:outline-none">
-        <option value="tuy-hoa" selected>Tuy Hòa ⌵</option>
-        <option value="dong-xuan">Đồng Xuân ⌵</option>
-        <option value="song-cau">Sông Cầu ⌵</option>
-        <option value="song-hinh">Sông Hinh ⌵</option>
-      </select>
+        <!-- CHỌN TIỂU VÙNG HOẶC ĐỂ AI TỰ QUAN SÁT -->
+        <select id="selectLocation" onchange="changeLocation(this.value)" class="bg-slate-100 border-2 border-[#1b2a47] text-[#1b2a47] rounded-xl px-2.5 py-1.5 text-xs sm:text-sm font-black focus:outline-none max-w-[130px] sm:max-w-none truncate" title="Chọn vị trí hoặc để AI tự động nhận diện">
+          <option value="auto">✨ AI Tự Nhận Diện ⌵</option>
+          <optgroup label="🌾 ĐẤT PHÚ (9 HUYỆN THỊ)">
+            <option value="tuy-hoa" selected>TP. Tuy Hòa</option>
+            <option value="song-cau">TX. Sông Cầu</option>
+            <option value="dong-hoa">TX. Đông Hòa</option>
+            <option value="tuy-an">Huyện Tuy An</option>
+            <option value="phu-hoa">Huyện Phú Hòa</option>
+            <option value="tay-hoa">Huyện Tây Hòa</option>
+            <option value="son-hoa">Huyện Sơn Hòa</option>
+            <option value="song-hinh">Huyện Sông Hinh</option>
+            <option value="dong-xuan">Huyện Đồng Xuân</option>
+          </optgroup>
+          <optgroup label="🏙️ BÀ CON XA XỨ & TOÀN QUỐC">
+            <option value="tphcm">TP. Hồ Chí Minh</option>
+            <option value="binh-duong">Bình Dương</option>
+            <option value="dong-nai">Đồng Nai</option>
+            <option value="gia-lai">Gia Lai (Pleiku)</option>
+            <option value="dak-lak">Đắk Lắk (BMT)</option>
+            <option value="khanh-hoa">Khánh Hòa (Nha Trang)</option>
+            <option value="binh-dinh">Bình Định (Quy Nhơn)</option>
+            <option value="da-nang">TP. Đà Nẵng</option>
+            <option value="ha-noi">Thủ đô Hà Nội</option>
+            <option value="can-tho">TP. Cần Thơ</option>
+          </optgroup>
+        </select>
       </div>
     </header>
 
@@ -371,21 +391,25 @@
         <div class="pointer-events-none absolute -top-12 -right-12 w-40 h-40 bg-sky-400/10 rounded-full blur-2xl"></div>
         <div class="pointer-events-none absolute -bottom-10 -left-10 w-36 h-36 bg-amber-400/10 rounded-full blur-xl"></div>
 
-        <!-- HÀNG TRÊN: VỊ TRÍ & LỜI CHÚC DÂN SINH ĐẤT PHÚ -->
+        <!-- HÀNG TRÊN: VỊ TRÍ & LỜI CHÚC DÂN SINH ĐẤT PHÚ (AI TỰ QUAN SÁT) -->
         <div class="relative z-10 flex items-center justify-between text-xs font-bold gap-2 flex-wrap">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-black text-white shadow-sm">
-              <i class="fa-solid fa-location-dot text-amber-300"></i>
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="triggerAutoAIObserver(true)" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-black text-white shadow-sm hover:bg-white/20 transition active:scale-95" title="Bấm để AI tự quét và nhận diện lại vị trí của bạn">
+              <i id="aiObserverIcon" class="fa-solid fa-location-dot text-amber-300"></i>
               <span id="widgetLocationName">Tuy Hòa</span>
-            </span>
+              <span id="aiAutoBadge" class="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-500/80 text-white font-black uppercase tracking-wider">AI</span>
+            </button>
             <span id="weatherStatusDesc" class="text-[11px] font-bold text-blue-100/90 px-2.5 py-0.5 rounded-lg bg-blue-900/40 border border-blue-400/20 hidden sm:inline-block">
               Gió biển mát lành
+            </span>
+            <span id="userStreakBadge" class="text-[10px] font-bold text-amber-300 px-2 py-0.5 rounded-full bg-amber-950/60 border border-amber-400/40 hidden">
+              🌱 Đồng hành cùng Đất Phú
             </span>
           </div>
 
           <div class="text-[11px] sm:text-xs text-amber-200/95 font-semibold flex items-center gap-1.5 drop-shadow-sm ml-auto">
             <i class="fa-solid fa-feather-pointed text-amber-300"></i>
-            <span>Trời êm biển lặng • Đất Phú an bình</span>
+            <span id="aiEmotionalGreeting">Trời êm biển lặng • Đất Phú an bình</span>
           </div>
         </div>
 
@@ -2141,16 +2165,219 @@
     const CHI = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
     const WEEKDAYS = ["CHỦ NHẬT", "THỨ HAI", "THỨ BA", "THỨ TƯ", "THỨ NĂM", "THỨ SÁU", "THỨ BẢY"];
 
+    // ============================================================
+    // BỘ DỮ LIỆU ĐỊA LÝ & THỜI TIẾT ĐẤT PHÚ & BÀ CON XA XỨ
+    // ============================================================
     const LOCATIONS = {
-      "tuy-hoa": { name: "Tuy Hòa", lat: 13.088, lon: 109.313, rainDist: "14 km (Chư Sê)", rainDesc: "Vùng mưa thượng nguồn Chư Sê / Gia Lai" },
-      "dong-xuan": { name: "Đồng Xuân", lat: 13.385, lon: 109.050, rainDist: "8 km (Vân Canh)", rainDesc: "Vùng mưa nguồn sông Kỳ Lộ" },
-      "song-cau": { name: "Sông Cầu", lat: 13.480, lon: 109.220, rainDist: "22 km (Quy Nhơn)", rainDesc: "Gió Đông Bắc vùng Vịnh Xuân Đài" },
-      "song-hinh": { name: "Sông Hinh", lat: 12.920, lon: 109.000, rainDist: "11 km (Krông Năng)", rainDesc: "Mưa nguồn hồ thủy điện Sông Hinh" }
+      // 9 ĐƠN VỊ HÀNH CHÍNH TỈNH PHÚ YÊN
+      "tuy-hoa": { name: "TP. Tuy Hòa", region: "phu-yen", lat: 13.088, lon: 109.313, rainDist: "14 km (Chư Sê)", rainDesc: "Gió biển Tuy Hòa • Vùng mưa Chư Sê / Gia Lai" },
+      "song-cau": { name: "TX. Sông Cầu", region: "phu-yen", lat: 13.480, lon: 109.220, rainDist: "18 km (Quy Nhơn)", rainDesc: "Vịnh Xuân Đài • Gió biển vùng nuôi tôm hùm" },
+      "dong-hoa": { name: "TX. Đông Hòa", region: "phu-yen", lat: 12.933, lon: 109.383, rainDist: "12 km (Vạn Ninh)", rainDesc: "Cảng Vũng Rô • Bãi Môn • Chân Đèo Cả" },
+      "tuy-an": { name: "H. Tuy An", region: "phu-yen", lat: 13.250, lon: 109.233, rainDist: "15 km (Vân Canh)", rainDesc: "Đầm Ô Loan • Gió lộng Gành Đá Đĩa" },
+      "phu-hoa": { name: "H. Phú Hòa", region: "phu-yen", lat: 13.067, lon: 109.217, rainDist: "16 km (Sơn Hòa)", rainDesc: "Đồng lúa phì nhiêu hạ lưu Sông Ba" },
+      "tay-hoa": { name: "H. Tây Hòa", region: "phu-yen", lat: 12.983, lon: 109.183, rainDist: "14 km (M'Đrắk)", rainDesc: "Đập Đồng Cam • Vựa lúa Tây Hòa" },
+      "son-hoa": { name: "H. Sơn Hòa", region: "phu-yen", lat: 13.083, lon: 108.983, rainDist: "9 km (Krông Pa)", rainDesc: "Gò đồi Củng Sơn • Vùng mía sắn thượng nguồn Sông Ba" },
+      "song-hinh": { name: "H. Sông Hinh", region: "phu-yen", lat: 12.920, lon: 109.000, rainDist: "11 km (Krông Năng)", rainDesc: "Mưa nguồn hồ thủy điện Sông Hinh • Giáp Tây Nguyên" },
+      "dong-xuan": { name: "H. Đồng Xuân", region: "phu-yen", lat: 13.385, lon: 109.050, rainDist: "8 km (Vân Canh)", rainDesc: "Thung lũng La Hai • Nguồn nước Sông Kỳ Lộ" },
+
+      // BÀ CON XA XỨ & CÁC TRỌNG ĐIỂM KINH TẾ
+      "tphcm": { name: "TP. Hồ Chí Minh", region: "south", lat: 10.823, lon: 106.630, rainDist: "25 km (Long An)", rainDesc: "Bà con Đất Phú phương Nam • Đất Mẹ luôn dõi theo" },
+      "binh-duong": { name: "Bình Dương", region: "south", lat: 11.133, lon: 106.683, rainDist: "20 km (Củ Chi)", rainDesc: "Vùng đất lập nghiệp cần lao của người con miền Trung" },
+      "dong-nai": { name: "Đồng Nai", region: "south", lat: 10.957, lon: 106.843, rainDist: "22 km (Bình Sơn)", rainDesc: "Nắng ấm phương Nam • Nhớ thương vị mặn quê nhà" },
+      "gia-lai": { name: "Gia Lai (Pleiku)", region: "highland", lat: 13.983, lon: 108.000, rainDist: "10 km (Chư Păh)", rainDesc: "Đất đỏ bazan • Anh em ruột thịt vùng thượng nguồn Sông Ba" },
+      "dak-lak": { name: "Đắk Lắk (BMT)", region: "highland", lat: 12.667, lon: 108.038, rainDist: "12 km (Cư M'gar)", rainDesc: "Đại ngàn Tây Nguyên • Láng giềng gắn bó bao đời" },
+      "khanh-hoa": { name: "Khánh Hòa (Nha Trang)", region: "central", lat: 12.239, lon: 109.197, rainDist: "18 km (Cam Ranh)", rainDesc: "Đất Trầm Hương • Nối liền Đèo Cả Đất Phú" },
+      "binh-dinh": { name: "Bình Định (Quy Nhơn)", region: "central", lat: 13.783, lon: 109.217, rainDist: "15 km (Tuy Phước)", rainDesc: "Xứ Nẫu anh em nghĩa tình bền chặt" },
+      "da-nang": { name: "TP. Đà Nẵng", region: "central", lat: 16.054, lon: 108.202, rainDist: "20 km (Hòa Vang)", rainDesc: "Gió biển miền Trung kiên cường, ấm áp" },
+      "ha-noi": { name: "Thủ đô Hà Nội", region: "north", lat: 21.028, lon: 105.854, rainDist: "30 km (Hà Nam)", rainDesc: "Ngàn năm văn hiến • Trái tim cả nước hướng về quê hương" },
+      "can-tho": { name: "TP. Cần Thơ", region: "south", lat: 10.045, lon: 105.747, rainDist: "20 km (Hậu Giang)", rainDesc: "Sông nước miền Tây hào sảng, hiền hòa" }
     };
 
     let currentLocationKey = "tuy-hoa";
+    let customGeoLocation = null;
     let currentDate = new Date();
     let currentView = "day"; // 'day' | 'month' | 'year'
+
+    // ============================================================
+    // HỆ THỐNG AI TỰ QUAN SÁT & GHI NHỚ NGẦM (AMBIENT AI ENGINE)
+    // ============================================================
+
+    // 1. Ghi nhớ thói quen & Chuỗi ngày đồng hành ("Người dùng không ngờ")
+    function initUserMemoryStreak() {
+      try {
+        const todayStr = new Date().toISOString().split('T')[0];
+        const lastVisit = localStorage.getItem("datphu_last_visit_date");
+        let streak = parseInt(localStorage.getItem("datphu_visit_streak") || "1", 10);
+        let totalVisits = parseInt(localStorage.getItem("datphu_total_visits") || "0", 10) + 1;
+        localStorage.setItem("datphu_total_visits", totalVisits.toString());
+
+        if (lastVisit && lastVisit !== todayStr) {
+          const lastDate = new Date(lastVisit);
+          const todayDate = new Date(todayStr);
+          const diffDays = Math.round((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+          if (diffDays === 1) {
+            streak += 1;
+          } else if (diffDays > 1) {
+            streak = 1; // quá 1 ngày đứt chuỗi
+          }
+        }
+        localStorage.setItem("datphu_last_visit_date", todayStr);
+        localStorage.setItem("datphu_visit_streak", streak.toString());
+
+        const badge = document.getElementById("userStreakBadge");
+        if (badge) {
+          if (streak >= 2) {
+            badge.innerText = `🌱 Ngày thứ ${streak} đồng hành`;
+            badge.classList.remove("hidden");
+          } else if (totalVisits >= 3) {
+            badge.innerText = `❤️ Bạn thân thiết`;
+            badge.classList.remove("hidden");
+          }
+        }
+      } catch (e) {
+        console.warn("User streak memory check:", e);
+      }
+    }
+
+    // 2. AI Tự Quan Sát Khung Giờ Sinh Học (Chronobiology)
+    function getAIEnergeticGreeting(region) {
+      const h = new Date().getHours();
+      const isPhuYen = (region === "phu-yen" || !region);
+
+      if (h >= 5 && h < 8) {
+        return isPhuYen ? "☀️ Sớm mai trong lành • Đất Phú an bình" : "☀️ Sớm mai tinh khôi • Chúc ngày mới hanh thông";
+      } else if (h >= 8 && h < 11) {
+        return isPhuYen ? "🌾 Nắng ấm đồng lúa • Thuận buồm xuôi gió" : "🌾 Chúc công việc hanh thông, vạn sự cát lành";
+      } else if (h >= 11 && h < 14) {
+        return isPhuYen ? "🍵 Trưa đứng bóng • Nghỉ tay uống nước mát" : "🍵 Nhớ nghỉ trưa giữ sức khỏe bạn nhé";
+      } else if (h >= 14 && h < 17) {
+        return isPhuYen ? "🍃 Chiều êm mát mẻ • Đất Phú hiền hòa" : "🍃 Chiều dịu mát mẻ • Vạn sự thuận hòa";
+      } else if (h >= 17 && h < 20) {
+        return isPhuYen ? "🕊️ Khói lam chiều • Cơm ấm cùng gia đình" : "🌸 Khói lam chiều buông • Đất Mẹ dõi theo bạn";
+      } else if (h >= 20 && h < 23) {
+        return isPhuYen ? "🌙 Đêm trăng soi bóng • Đất Phú an lành" : "✨ Trăng thanh đêm mát • Bình an thân tâm";
+      } else {
+        return isPhuYen ? "✨ Đêm đã về khuya • Chúc giấc ngủ an lành" : "✨ Đêm khuya thanh vắng • Ngủ ngon bạn nhé";
+      }
+    }
+
+    // 3. AI Tự Động Định Vị Vị Trí Ngầm (Mà Người Dùng Không Ngờ)
+    async function triggerAutoAIObserver(forceUserPrompt = false) {
+      const icon = document.getElementById("aiObserverIcon");
+      if (icon) icon.className = "fa-solid fa-spinner fa-spin text-amber-300";
+
+      // Kiểm tra bộ nhớ đã lưu vị trí trước đó nếu không bị ép làm mới
+      const savedLoc = localStorage.getItem("datphu_saved_location_key");
+      if (savedLoc && LOCATIONS[savedLoc] && !forceUserPrompt) {
+        currentLocationKey = savedLoc;
+        const select = document.getElementById("selectLocation");
+        if (select) select.value = savedLoc;
+        await fetchSatelliteWeather();
+        if (icon) icon.className = "fa-solid fa-location-dot text-amber-300";
+        return;
+      }
+
+      // Thử dùng định vị GPS nếu người dùng cho phép
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (pos) => {
+            const { latitude, longitude } = pos.coords;
+            await resolveCoordinatesToLocation(latitude, longitude);
+            if (icon) icon.className = "fa-solid fa-location-dot text-amber-300";
+          },
+          async (err) => {
+            // Nếu không cấp GPS, tự động định vị bằng IP ngầm
+            await detectLocationByIP();
+            if (icon) icon.className = "fa-solid fa-location-dot text-amber-300";
+          },
+          { timeout: 5000, maximumAge: 600000 }
+        );
+      } else {
+        await detectLocationByIP();
+        if (icon) icon.className = "fa-solid fa-location-dot text-amber-300";
+      }
+    }
+
+    // Tìm vị trí tương ứng từ tọa độ GPS
+    async function resolveCoordinatesToLocation(lat, lon) {
+      let nearestKey = "tuy-hoa";
+      let minDistance = 999999;
+
+      for (const [key, loc] of Object.entries(LOCATIONS)) {
+        const d = Math.hypot(loc.lat - lat, loc.lon - lon);
+        if (d < minDistance) {
+          minDistance = d;
+          nearestKey = key;
+        }
+      }
+
+      // Nếu gần dưới ~65km (khoảng 0.6 độ kinh vĩ), dùng điểm mốc này
+      if (minDistance < 0.6) {
+        currentLocationKey = nearestKey;
+        localStorage.setItem("datphu_saved_location_key", nearestKey);
+        const select = document.getElementById("selectLocation");
+        if (select) select.value = nearestKey;
+      } else {
+        // Tọa độ tùy chỉnh hoàn toàn (ở tỉnh khác hoặc ngoài danh mục)
+        try {
+          const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=vi`);
+          const geo = await res.json();
+          const placeName = geo.locality || geo.city || geo.principalSubdivision || "Vị trí của bạn";
+          customGeoLocation = {
+            name: `📍 ${placeName}`,
+            region: "other",
+            lat: lat,
+            lon: lon,
+            rainDist: "Đang quét vệ tinh",
+            rainDesc: "AI tự động quan sát thời tiết tại chỗ"
+          };
+          currentLocationKey = "custom";
+        } catch (e) {
+          currentLocationKey = nearestKey;
+        }
+      }
+      await fetchSatelliteWeather();
+    }
+
+    // Tự động nhận diện Tỉnh qua IP (Hoàn toàn âm thầm, không cần hỏi)
+    async function detectLocationByIP() {
+      try {
+        const res = await fetch("https://ipapi.co/json/");
+        const ipData = await res.json();
+        const city = (ipData.city || "").toLowerCase();
+        const region = (ipData.region || "").toLowerCase();
+
+        let matchedKey = "tuy-hoa";
+        if (city.includes("ho chi minh") || region.includes("ho chi minh") || city.includes("saigon")) {
+          matchedKey = "tphcm";
+        } else if (city.includes("hanoi") || region.includes("hanoi")) {
+          matchedKey = "ha-noi";
+        } else if (city.includes("da nang")) {
+          matchedKey = "da-nang";
+        } else if (city.includes("pleiku") || region.includes("gia lai")) {
+          matchedKey = "gia-lai";
+        } else if (city.includes("buon ma thuot") || region.includes("dak lak")) {
+          matchedKey = "dak-lak";
+        } else if (city.includes("nha trang") || region.includes("khanh hoa")) {
+          matchedKey = "khanh-hoa";
+        } else if (city.includes("quy nhon") || region.includes("binh dinh")) {
+          matchedKey = "binh-dinh";
+        } else if (city.includes("can tho")) {
+          matchedKey = "can-tho";
+        } else if (city.includes("binh duong")) {
+          matchedKey = "binh-duong";
+        } else if (city.includes("dong nai") || city.includes("bien hoa")) {
+          matchedKey = "dong-nai";
+        }
+
+        currentLocationKey = matchedKey;
+        const select = document.getElementById("selectLocation");
+        if (select) select.value = matchedKey;
+      } catch (e) {
+        // Giữ mặc định Tuy Hòa nếu mất mạng
+      }
+      await fetchSatelliteWeather();
+    }
 
     // CHUYỂN ĐỔI 3 CHẾ ĐỘ: HÔM NAY • HÀNG THÁNG • HÀNG NĂM
     
@@ -2227,7 +2454,10 @@
 
     // THỜI TIẾT VỆ TINH DÂN SINH ĐẤT PHÚ
     async function fetchSatelliteWeather() {
-      const loc = LOCATIONS[currentLocationKey];
+      const loc = (currentLocationKey === "custom" && customGeoLocation)
+                  ? customGeoLocation
+                  : (LOCATIONS[currentLocationKey] || LOCATIONS["tuy-hoa"]);
+
       if (document.getElementById("widgetLocationName")) {
         document.getElementById("widgetLocationName").innerText = loc.name;
       }
@@ -2236,6 +2466,12 @@
       }
       if (document.getElementById("rainProximityDesc")) {
         document.getElementById("rainProximityDesc").innerHTML = `<i class="fa-solid fa-mountain text-amber-300/70 text-[10px] mr-1"></i>${loc.rainDesc}`;
+      }
+
+      // Cập nhật lời chúc AI tự quan sát theo chu kỳ sinh học & vùng miền
+      const greetingEl = document.getElementById("aiEmotionalGreeting");
+      if (greetingEl) {
+        greetingEl.innerText = getAIEnergeticGreeting(loc.region);
       }
 
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&timezone=Asia%2FBangkok`;
@@ -2296,8 +2532,13 @@
     }
 
     function changeLocation(key) {
-      currentLocationKey = key;
-      fetchSatelliteWeather();
+      if (key === "auto") {
+        triggerAutoAIObserver(true);
+      } else {
+        currentLocationKey = key;
+        localStorage.setItem("datphu_saved_location_key", key);
+        fetchSatelliteWeather();
+      }
     }
 
     // RENDER BẢNG 1: HÔM NAY (BLOC NGÀY)
@@ -3961,8 +4202,10 @@
     }
 
     window.addEventListener("DOMContentLoaded", () => {
+      initDayNightMode();
+      initUserMemoryStreak();
       renderBloc();
-      fetchSatelliteWeather();
+      triggerAutoAIObserver(false);
       setInterval(fetchSatelliteWeather, 30 * 60 * 1000);
     });
   </script>
