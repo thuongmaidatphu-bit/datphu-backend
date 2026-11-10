@@ -1570,49 +1570,108 @@
               </div>
             </div>
 
-            <!-- THIỀN MƯA & CHUÔNG GIÓ TỰ NHIÊN -->
-            <div class="p-3.5 bg-slate-900 text-white border-2 border-teal-500/40 rounded-2xl space-y-3">
-              <div class="flex items-center justify-between">
+            <!-- BỘ SƯU TẬP ÂM THANH CHỮA LÀNH ĐẤT PHÚ (100% WEB AUDIO OFFLINE) -->
+            <div class="p-3.5 sm:p-4 bg-slate-900 text-white border-2 border-teal-500/40 rounded-2xl space-y-3.5 shadow-md">
+              <div class="flex items-center justify-between pb-1.5 border-b border-teal-800/50">
                 <div class="flex items-center gap-2">
-                  <span class="text-xl">🎐</span>
+                  <span class="text-xl">🎋</span>
                   <div>
-                    <div class="text-xs font-black text-teal-200 uppercase">Thiền Phật Giáo & Tiếng Mưa</div>
-                    <div class="text-[10px] text-slate-300">Chuông xoay thiền & Chuông gió pha lê hòa tiếng mưa</div>
+                    <div class="text-xs font-black text-teal-200 uppercase">Hòa Âm Thiên Nhiên Đất Phú & Thiền Định</div>
+                    <div class="text-[10px] text-slate-300">Âm học trị liệu thuần khiết • 0 Byte tải về • Hoạt động khi mất mạng</div>
                   </div>
                 </div>
+                <!-- NÚT PHÁT NHANH / DỪNG -->
                 <button id="zenRainMasterToggleBtn" onclick="toggleZenRainPlay()" class="px-3.5 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs shadow active:scale-95 transition flex items-center gap-1.5">
                   <span id="zenRainPlayIcon">▶️</span>
                   <span id="zenRainPlayText">Phát</span>
                 </button>
               </div>
-              <div id="zenRainStatusDesc" class="text-[10px] text-slate-400 italic">
-                Sẵn sàng thư giãn • Bấm phát để lắng nghe tiếng mưa và chuông gió
+
+              <div id="zenRainStatusDesc" class="text-[10px] text-teal-300 italic flex items-center justify-between">
+                <span>Chọn 1 trong 6 không gian âm thanh xứ Nẫu bên dưới:</span>
+                <span id="currentSoundscapeBadge" class="font-bold text-white bg-teal-800/60 px-2 py-0.5 rounded-full border border-teal-500/30">Sẵn sàng</span>
               </div>
 
-              <!-- CÁC TÙY CHỌN ÂM THANH MÔI TRƯỜNG -->
-              <div class="grid grid-cols-3 gap-1.5 pt-1">
-                <button id="btnAmbientZenRain" onclick="playAmbientSound('zen_rain')" class="p-2 rounded-xl bg-slate-800 text-cyan-200 border border-slate-700 text-center transition active:scale-95">
-                  <div class="text-sm">🎐</div>
-                  <div class="text-[10px] font-bold">Thiền Mưa</div>
+              <!-- LƯỚI 6 KHÔNG GIAN ÂM THANH XỨ NẪU ĐẶC TRƯNG -->
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <!-- 1. THIỀN MƯA & CHUÔNG GIÓ -->
+                <button onclick="playAmbientSound('zen_rain')" id="soundCard_zen_rain" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
+                  <div class="flex items-center justify-between">
+                    <span class="text-base">🎐</span>
+                    <span id="badgePlaying_zen_rain" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
+                  </div>
+                  <div class="text-[11px] font-black text-white">Thiền Mưa & Chuông Gió</div>
+                  <div class="text-[9px] text-slate-400 leading-tight">Chuông xoay 432Hz & Tiếng mưa rơi êm đềm</div>
                 </button>
-                <button id="btnAmbientRain" onclick="playAmbientSound('rain')" class="p-2 rounded-xl bg-slate-800 text-cyan-200 border border-slate-700 text-center transition active:scale-95">
-                  <div class="text-sm">🌧️</div>
-                  <div class="text-[10px] font-bold">Mưa Rừng</div>
+
+                <!-- 2. SÁO TRÚC & THIỀN TRÀ ĐẤT PHÚ -->
+                <button onclick="playAmbientSound('bamboo_flute')" id="soundCard_bamboo_flute" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
+                  <div class="flex items-center justify-between">
+                    <span class="text-base">🎋</span>
+                    <span id="badgePlaying_bamboo_flute" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
+                  </div>
+                  <div class="text-[11px] font-black text-white">Sáo Trúc & Thiền Trà</div>
+                  <div class="text-[9px] text-slate-400 leading-tight">Hòa tấu ngũ cung mộc mạc & Chuông tre làng quê</div>
                 </button>
-                <button id="btnAmbientOcean" onclick="playAmbientSound('ocean')" class="p-2 rounded-xl bg-slate-800 text-cyan-200 border border-slate-700 text-center transition active:scale-95">
-                  <div class="text-sm">🌊</div>
-                  <div class="text-[10px] font-bold">Sóng Biển</div>
+
+                <!-- 3. CHÙA ĐÁ TRẮNG BẠCH THẠCH TỰ -->
+                <button onclick="playAmbientSound('bach_thach')" id="soundCard_bach_thach" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
+                  <div class="flex items-center justify-between">
+                    <span class="text-base">🕉️</span>
+                    <span id="badgePlaying_bach_thach" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
+                  </div>
+                  <div class="text-[11px] font-black text-white">Chuông Chùa Đá Trắng</div>
+                  <div class="text-[9px] text-slate-400 leading-tight">Đại hồng chung Tuy An & Gió rừng xoài cổ thụ</div>
+                </button>
+
+                <!-- 4. SÓNG BIỂN GÀNH ĐÁ ĐĨA -->
+                <button onclick="playAmbientSound('ocean')" id="soundCard_ocean" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
+                  <div class="flex items-center justify-between">
+                    <span class="text-base">🌊</span>
+                    <span id="badgePlaying_ocean" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
+                  </div>
+                  <div class="text-[11px] font-black text-white">Sóng Gành Đá Đĩa</div>
+                  <div class="text-[9px] text-slate-400 leading-tight">Nhịp thở biển đêm 6.8s thư thái an định</div>
+                </button>
+
+                <!-- 5. GIÓ THÔNG ĐÈO CẢ & SUỐI MƠ -->
+                <button onclick="playAmbientSound('deo_ca')" id="soundCard_deo_ca" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
+                  <div class="flex items-center justify-between">
+                    <span class="text-base">🌲</span>
+                    <span id="badgePlaying_deo_ca" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
+                  </div>
+                  <div class="text-[11px] font-black text-white">Gió Thông Đèo Cả</div>
+                  <div class="text-[9px] text-slate-400 leading-tight">Tiếng thông reo đỉnh đèo & Suối nguồn róc rách</div>
+                </button>
+
+                <!-- 6. BÌNH MINH MŨI ĐIỆN (528 Hz) -->
+                <button onclick="playAmbientSound('muidien_dawn')" id="soundCard_muidien_dawn" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1">
+                  <div class="flex items-center justify-between">
+                    <span class="text-base">🌅</span>
+                    <span id="badgePlaying_muidien_dawn" class="text-[8px] font-bold text-teal-300 uppercase tracking-widest hidden">ĐANG PHÁT</span>
+                  </div>
+                  <div class="text-[11px] font-black text-white">Bình Minh Mũi Điện</div>
+                  <div class="text-[9px] text-slate-400 leading-tight">Sóng biển sớm mai Bãi Môn & Chuông 528Hz phục hồi</div>
                 </button>
               </div>
 
-              <!-- HẸN GIỜ THIỀN MƯA -->
+              <!-- THANH GẠT ĐIỀU CHỈNH ÂM LƯỢNG MỊN MÀNG -->
+              <div class="p-2.5 bg-slate-950/80 rounded-xl border border-teal-500/30 flex items-center justify-between gap-3 text-xs">
+                <span class="font-bold text-slate-300 flex items-center gap-1.5 shrink-0">
+                  <i class="fa-solid fa-volume-low text-teal-400"></i> Âm Lượng:
+                </span>
+                <input type="range" id="inputAmbientVolume" min="0.05" max="1" step="0.05" value="0.7" oninput="changeAmbientVolume(this.value)" class="w-full accent-teal-400 cursor-pointer h-1.5 bg-slate-800 rounded-lg" />
+                <span id="ambientVolumeLabel" class="text-[11px] font-mono font-bold text-teal-300 shrink-0 w-8 text-right">70%</span>
+              </div>
+
+              <!-- HẸN GIỜ TỰ TẮT -->
               <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-                <span id="zenRainTimerBadge" class="text-[11px] text-teal-300 font-bold">Hẹn giờ thiền mưa:</span>
+                <span id="zenRainTimerBadge" class="text-[11px] text-teal-300 font-bold">Hẹn giờ tự tắt:</span>
                 <div class="flex items-center gap-1">
                   <button id="timerBtn_15" onclick="setZenRainSleepTimer(15)" class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-bold">15p</button>
                   <button id="timerBtn_30" onclick="setZenRainSleepTimer(30)" class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-bold">30p</button>
                   <button id="timerBtn_60" onclick="setZenRainSleepTimer(60)" class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-bold">60p</button>
-                  <button id="timerBtn_0" onclick="setZenRainSleepTimer(0)" class="px-2 py-0.5 rounded bg-teal-900 border border-teal-500 text-[10px] font-bold text-teal-200">Tắt</button>
+                  <button id="timerBtn_0" onclick="setZenRainSleepTimer(0)" class="px-2 py-0.5 rounded bg-teal-900 border border-teal-500 text-[10px] font-bold text-teal-200">Liên tục</button>
                 </div>
               </div>
             </div>
@@ -6132,10 +6191,104 @@
       } catch (e) {}
     }
 
+    // BIẾN QUẢN LÝ TIẾN TRÌNH ÂM THANH TRỊ LIỆU THIÊN NHIÊN
+    let ambientMelodyTimer = null;
+    let ambientMasterGainNode = null;
+    let currentAmbientVolume = parseFloat(localStorage.getItem("datphu_ambient_volume")) || 0.7;
+
+    // 1. TỔNG HỢP ÂM SẮC SÁO TRÚC NGŨ CUNG ĐẤT PHÚ (PENTATONIC BAMBOO FLUTE)
+    function playBambooFluteNote(ctx, freq, startTime, duration = 2.4, gainLevel = 0.08) {
+      try {
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const vibrato = ctx.createOscillator();
+        const vibratoGain = ctx.createGain();
+        const noteGain = ctx.createGain();
+
+        // Âm sắc ruột trúc rỗng
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(freq, startTime);
+        osc2.type = "triangle";
+        osc2.frequency.setValueAtTime(freq * 2, startTime); // Họa âm bát độ
+
+        // Rung hơi sáo trúc nhẹ nhàng (Vibrato 5.2Hz)
+        vibrato.type = "sine";
+        vibrato.frequency.setValueAtTime(5.2, startTime);
+        vibratoGain.gain.setValueAtTime(1.6, startTime);
+        vibrato.connect(osc1.frequency);
+        vibrato.start(startTime + 0.25);
+
+        // Đường bao ADSR mềm mại bắt hơi từ tốn
+        const effGain = gainLevel * currentAmbientVolume;
+        noteGain.gain.setValueAtTime(0.0001, startTime);
+        noteGain.gain.linearRampToValueAtTime(effGain, startTime + 0.35);
+        noteGain.gain.setValueAtTime(effGain * 0.85, startTime + duration * 0.65);
+        noteGain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+        osc1.connect(noteGain);
+        osc2.connect(noteGain);
+        if (ambientMasterGainNode) noteGain.connect(ambientMasterGainNode);
+        else noteGain.connect(ctx.destination);
+
+        osc1.start(startTime);
+        osc2.start(startTime);
+
+        osc1.stop(startTime + duration + 0.1);
+        osc2.stop(startTime + duration + 0.1);
+        vibrato.stop(startTime + duration + 0.1);
+      } catch (e) {}
+    }
+
+    // 2. ĐẠI HỒNG CHUNG BẠCH THẠCH TỰ (CHÙA ĐÁ TRẮNG TUY AN)
+    function playBachThachBell(ctx, startTime, duration = 12.0, gainLevel = 0.2) {
+      try {
+        // Tần số chuông đồng cổ xưa trầm hùng 128Hz cùng họa âm ngân vang
+        const partials = [
+          { ratio: 0.5, gain: 0.16, dur: duration * 1.1 },
+          { ratio: 1.0, gain: 0.22, dur: duration },
+          { ratio: 1.414, gain: 0.12, dur: duration * 0.75 },
+          { ratio: 2.02, gain: 0.08, dur: duration * 0.5 },
+          { ratio: 2.76, gain: 0.04, dur: duration * 0.35 }
+        ];
+
+        partials.forEach(p => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(128 * p.ratio, startTime);
+
+          const eff = p.gain * gainLevel * currentAmbientVolume;
+          gain.gain.setValueAtTime(0.0001, startTime);
+          gain.gain.linearRampToValueAtTime(eff, startTime + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + p.dur);
+
+          osc.connect(gain);
+          if (ambientMasterGainNode) gain.connect(ambientMasterGainNode);
+          else gain.connect(ctx.destination);
+
+          osc.start(startTime);
+          osc.stop(startTime + p.dur + 0.1);
+        });
+      } catch (e) {}
+    }
+
+    // 3. THAY ĐỔI ÂM LƯỢNG TRỊ LIỆU TỔNG THỂ
+    function changeAmbientVolume(val) {
+      currentAmbientVolume = parseFloat(val);
+      localStorage.setItem("datphu_ambient_volume", currentAmbientVolume);
+      const label = document.getElementById("ambientVolumeLabel");
+      if (label) label.innerText = Math.round(currentAmbientVolume * 100) + "%";
+
+      if (ambientMasterGainNode && ambientCtx) {
+        ambientMasterGainNode.gain.setValueAtTime(currentAmbientVolume, ambientCtx.currentTime);
+      }
+    }
+
+    // 4. PHÁT VÀ ĐIỀU HƯỚNG BỘ SƯU TẬP ÂM THANH XỨ NẪU
     function playAmbientSound(type) {
       if (currentAmbientType === type) {
         stopAmbientSound();
-        showToast("⏹️ Đã dừng âm thanh thư giãn");
+        showToast("⏹️ Đã dừng âm thanh chữa lành");
         return;
       }
 
@@ -6147,7 +6300,12 @@
         if (!ambientCtx) ambientCtx = new AudioContextClass();
         if (ambientCtx.state === "suspended") ambientCtx.resume();
 
-        // Buffer tiếng ồn 5 giây lặp lại
+        // Nút chỉnh âm lượng Master Gain
+        ambientMasterGainNode = ambientCtx.createGain();
+        ambientMasterGainNode.gain.setValueAtTime(currentAmbientVolume, ambientCtx.currentTime);
+        ambientMasterGainNode.connect(ambientCtx.destination);
+
+        // Buffer tiếng ồn nền 5 giây lặp lại
         const bufferSize = ambientCtx.sampleRate * 5;
         const noiseBuffer = ambientCtx.createBuffer(1, bufferSize, ambientCtx.sampleRate);
         const output = noiseBuffer.getChannelData(0);
@@ -6155,13 +6313,21 @@
 
         for (let i = 0; i < bufferSize; i++) {
           const white = Math.random() * 2 - 1;
-          if (type === "ocean") {
+          if (type === "ocean" || type === "muidien_dawn") {
+            // Sóng biển dạt dào (Brown Noise lọc sâu)
             b0 = 0.99765 * b0 + white * 0.0990460;
             b1 = 0.96300 * b1 + white * 0.2965164;
             b2 = 0.57000 * b2 + white * 1.0526913;
-            output[i] = (b0 + b1 + b2 + white * 0.1848) * 0.08;
+            output[i] = (b0 + b1 + b2 + white * 0.1848) * 0.085;
+          } else if (type === "deo_ca") {
+            // Gió rừng thông (Pink noise mịn màng)
+            b0 = 0.99886 * b0 + white * 0.0555179;
+            b1 = 0.99332 * b1 + white * 0.0750759;
+            b2 = 0.96900 * b2 + white * 0.1538520;
+            output[i] = (b0 + b1 + b2 + white * 0.1) * 0.1;
           } else {
-            output[i] = white * 0.18;
+            // Tiếng mưa nhẹ hoặc không khí tĩnh lặng
+            output[i] = white * 0.16;
           }
         }
 
@@ -6172,18 +6338,17 @@
         const filter = ambientCtx.createBiquadFilter();
         ambientGain = ambientCtx.createGain();
 
+        // TÙY BIẾN THEO TỪNG KHÔNG GIAN
         if (type === "zen_rain") {
-          // THIỀN PHẬT GIÁO KẾT HỢP TIẾNG MƯA & CHUÔNG GIÓ
+          // 1. THIỀN MƯA & CHUÔNG GIÓ
           filter.type = "bandpass";
           filter.frequency.setValueAtTime(950, ambientCtx.currentTime);
           filter.Q.setValueAtTime(0.85, ambientCtx.currentTime);
           ambientGain.gain.setValueAtTime(0.12, ambientCtx.currentTime);
 
-          // Phát ngay chuông xoay thiền & chuông gió mở đầu
           playTibetanSingingBowl(ambientCtx, 432, ambientCtx.currentTime + 0.1, 6.0, 0.15);
           playSingleGlassChime(ambientCtx, 1567.98, ambientCtx.currentTime + 0.8, 0.08);
 
-          // Chu kỳ chuông gió tự nhiên (2.5 - 5.5 giây)
           const chimeNotes = [1174.66, 1318.51, 1567.98, 1760.00, 2093.00, 2349.32];
           function scheduleNextChime() {
             if (currentAmbientType !== "zen_rain") return;
@@ -6192,25 +6357,77 @@
               if (currentAmbientType === "zen_rain" && ambientCtx) {
                 const note = chimeNotes[Math.floor(Math.random() * chimeNotes.length)];
                 playSingleGlassChime(ambientCtx, note, ambientCtx.currentTime, 0.07 + Math.random() * 0.03);
-                if (Math.random() > 0.55) {
-                  const note2 = chimeNotes[Math.floor(Math.random() * chimeNotes.length)];
-                  playSingleGlassChime(ambientCtx, note2, ambientCtx.currentTime + 0.28, 0.05);
-                }
                 scheduleNextChime();
               }
             }, delay);
           }
           scheduleNextChime();
 
-          // Chu kỳ chuông xoay Tây Tạng / Chuông chùa 432Hz (mỗi 18 giây ngân dài)
           ambientBowlTimer = setInterval(() => {
             if (currentAmbientType === "zen_rain" && ambientCtx) {
               playTibetanSingingBowl(ambientCtx, 432, ambientCtx.currentTime, 6.8, 0.13);
             }
           }, 18000);
 
-          showToast("🎐 Đang phát Thiền Phật Giáo kết hợp tiếng mưa & chuông gió...");
+          showToast("🎐 Đang phát Thiền Mưa & Chuông Gió 432Hz...");
+
+        } else if (type === "bamboo_flute") {
+          // 2. SÁO TRÚC & THIỀN TRÀ ĐẤT PHÚ
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(1100, ambientCtx.currentTime);
+          ambientGain.gain.setValueAtTime(0.04, ambientCtx.currentTime);
+
+          // Thang âm ngũ cung Đất Phú (D4, F4, G4, A4, C5, D5)
+          const fluteNotes = [293.66, 349.23, 392.00, 440.00, 523.25, 587.33];
+          
+          // Thổi nốt sáo mở đầu
+          playBambooFluteNote(ambientCtx, 440.00, ambientCtx.currentTime + 0.2, 2.8, 0.09);
+          playSingleGlassChime(ambientCtx, 1174.66, ambientCtx.currentTime + 1.2, 0.05);
+
+          // Vòng lặp giai điệu sáo trúc ngũ cung tự nhiên
+          function scheduleNextFluteMelody() {
+            if (currentAmbientType !== "bamboo_flute") return;
+            const delay = 3500 + Math.random() * 3500;
+            ambientMelodyTimer = setTimeout(() => {
+              if (currentAmbientType === "bamboo_flute" && ambientCtx) {
+                const now = ambientCtx.currentTime;
+                const n1 = fluteNotes[Math.floor(Math.random() * fluteNotes.length)];
+                playBambooFluteNote(ambientCtx, n1, now, 2.5, 0.08);
+                
+                // Thổi luyến nốt thứ hai
+                if (Math.random() > 0.4) {
+                  const n2 = fluteNotes[Math.floor(Math.random() * fluteNotes.length)];
+                  playBambooFluteNote(ambientCtx, n2, now + 1.2, 2.2, 0.07);
+                }
+                scheduleNextFluteMelody();
+              }
+            }, delay);
+          }
+          scheduleNextFluteMelody();
+
+          showToast("🎋 Đang phát Sáo Trúc & Thiền Trà Đất Phú...");
+
+        } else if (type === "bach_thach") {
+          // 3. ĐẠI HỒNG CHUNG CHÙA ĐÁ TRẮNG (BẠCH THẠCH TỰ)
+          filter.type = "bandpass";
+          filter.frequency.setValueAtTime(700, ambientCtx.currentTime);
+          filter.Q.setValueAtTime(0.7, ambientCtx.currentTime);
+          ambientGain.gain.setValueAtTime(0.06, ambientCtx.currentTime);
+
+          // Tiếng chuông chùa mở đầu ngân dài
+          playBachThachBell(ambientCtx, ambientCtx.currentTime + 0.3, 13.0, 0.22);
+
+          // Chu kỳ thỉnh chuông chùa mỗi 16 giây
+          ambientBowlTimer = setInterval(() => {
+            if (currentAmbientType === "bach_thach" && ambientCtx) {
+              playBachThachBell(ambientCtx, ambientCtx.currentTime, 12.5, 0.2);
+            }
+          }, 16000);
+
+          showToast("🕉️ Đang phát Đại Hồng Chung Chùa Đá Trắng...");
+
         } else if (type === "ocean") {
+          // 4. SÓNG BIỂN GÀNH ĐÁ ĐĨA
           filter.type = "lowpass";
           filter.frequency.setValueAtTime(450, ambientCtx.currentTime);
           ambientGain.gain.setValueAtTime(0.05, ambientCtx.currentTime);
@@ -6218,7 +6435,7 @@
           ambientLfo = ambientCtx.createOscillator();
           const lfoGain = ambientCtx.createGain();
           ambientLfo.type = "sine";
-          ambientLfo.frequency.setValueAtTime(0.18, ambientCtx.currentTime);
+          ambientLfo.frequency.setValueAtTime(0.15, ambientCtx.currentTime); // Nhịp thở 6.6s
           lfoGain.gain.setValueAtTime(0.12, ambientCtx.currentTime);
 
           ambientLfo.connect(lfoGain);
@@ -6226,7 +6443,58 @@
           ambientLfo.start();
 
           showToast("🌊 Đang phát tiếng sóng biển đêm Gành Đá Đĩa...");
+
+        } else if (type === "deo_ca") {
+          // 5. GIÓ THÔNG ĐÈO CẢ & SUỐI MƠ
+          filter.type = "bandpass";
+          filter.frequency.setValueAtTime(800, ambientCtx.currentTime);
+          filter.Q.setValueAtTime(1.1, ambientCtx.currentTime);
+          ambientGain.gain.setValueAtTime(0.08, ambientCtx.currentTime);
+
+          // LFO tạo luồng gió thổi lúc mạnh lúc dịu qua khe núi
+          ambientLfo = ambientCtx.createOscillator();
+          const lfoGain = ambientCtx.createGain();
+          ambientLfo.type = "sine";
+          ambientLfo.frequency.setValueAtTime(0.11, ambientCtx.currentTime); // Gió thổi chu kỳ 9s
+          lfoGain.gain.setValueAtTime(320, ambientCtx.currentTime);
+
+          ambientLfo.connect(lfoGain);
+          lfoGain.connect(filter.frequency);
+          ambientLfo.start();
+
+          showToast("🌲 Đang phát Gió Rừng Thông Đèo Cả & Suối Mơ...");
+
+        } else if (type === "muidien_dawn") {
+          // 6. BÌNH MINH MŨI ĐIỆN (528 Hz)
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(520, ambientCtx.currentTime);
+          ambientGain.gain.setValueAtTime(0.06, ambientCtx.currentTime);
+
+          // Sóng biển sớm mai nhịp nhàng
+          ambientLfo = ambientCtx.createOscillator();
+          const lfoGain = ambientCtx.createGain();
+          ambientLfo.type = "sine";
+          ambientLfo.frequency.setValueAtTime(0.14, ambientCtx.currentTime);
+          lfoGain.gain.setValueAtTime(0.11, ambientCtx.currentTime);
+
+          ambientLfo.connect(lfoGain);
+          lfoGain.connect(ambientGain.gain);
+          ambientLfo.start();
+
+          // Chuông rạng đông 528Hz mở đầu
+          playTibetanSingingBowl(ambientCtx, 528, ambientCtx.currentTime + 0.2, 7.5, 0.16);
+
+          // Chu kỳ chuông 528Hz phục hồi mỗi 15 giây
+          ambientBowlTimer = setInterval(() => {
+            if (currentAmbientType === "muidien_dawn" && ambientCtx) {
+              playTibetanSingingBowl(ambientCtx, 528, ambientCtx.currentTime, 7.5, 0.15);
+            }
+          }, 15000);
+
+          showToast("🌅 Đang phát Bình Minh Mũi Điện & Tần Số 528Hz...");
+
         } else {
+          // Tiếng mưa rơi cơ bản
           filter.type = "bandpass";
           filter.frequency.setValueAtTime(900, ambientCtx.currentTime);
           filter.Q.setValueAtTime(0.8, ambientCtx.currentTime);
@@ -6237,7 +6505,7 @@
 
         ambientSource.connect(filter);
         filter.connect(ambientGain);
-        ambientGain.connect(ambientCtx.destination);
+        ambientGain.connect(ambientMasterGainNode);
         ambientSource.start();
 
         currentAmbientType = type;
@@ -6267,64 +6535,70 @@
         clearInterval(ambientBowlTimer);
         ambientBowlTimer = null;
       }
+      if (ambientMelodyTimer) {
+        clearTimeout(ambientMelodyTimer);
+        ambientMelodyTimer = null;
+      }
       currentAmbientType = null;
       updateAmbientButtonsUI();
     }
 
     function updateAmbientButtonsUI() {
-      const btnZen = document.getElementById("btnAmbientZenRain");
-      const btnRain = document.getElementById("btnAmbientRain");
-      const btnOcean = document.getElementById("btnAmbientOcean");
-
-      if (btnZen) {
-        if (currentAmbientType === "zen_rain") {
-          btnZen.className = "px-2.5 py-1 rounded-xl bg-teal-600 text-white text-[11px] font-black border border-teal-300 shadow ring-2 ring-teal-400/50 transition active:scale-95 animate-pulse flex items-center gap-1";
-          btnZen.innerHTML = "<span>🎐</span> Thiền Mưa (Bật)";
-        } else {
-          btnZen.className = "px-2.5 py-1 rounded-xl bg-gradient-to-r from-teal-800 to-cyan-800 hover:from-teal-700 hover:to-cyan-700 text-cyan-100 text-[11px] font-black border border-cyan-400/50 shadow transition active:scale-95 flex items-center gap-1";
-          btnZen.innerHTML = "<span>🎐</span> Thiền Mưa";
+      const soundKeys = ['zen_rain', 'bamboo_flute', 'bach_thach', 'ocean', 'deo_ca', 'muidien_dawn'];
+      
+      soundKeys.forEach(key => {
+        const card = document.getElementById("soundCard_" + key);
+        const badge = document.getElementById("badgePlaying_" + key);
+        if (card && badge) {
+          if (currentAmbientType === key) {
+            card.className = "p-2.5 rounded-xl bg-teal-950 border-2 border-teal-400 text-left transition active:scale-95 space-y-1 shadow-lg ring-2 ring-teal-400/40";
+            badge.classList.remove("hidden");
+          } else {
+            card.className = "p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition active:scale-95 space-y-1";
+            badge.classList.add("hidden");
+          }
         }
-      }
+      });
 
-      if (btnRain) {
-        if (currentAmbientType === "rain") {
-          btnRain.className = "px-2 py-1 rounded-xl bg-cyan-600 text-white text-[11px] font-black border border-cyan-300 shadow ring-2 ring-cyan-400/50 transition active:scale-95 animate-pulse";
-          btnRain.innerHTML = "🌧️ Mưa (Bật)";
-        } else {
-          btnRain.className = "px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95";
-          btnRain.innerHTML = "🌧️ Mưa";
-        }
-      }
-
-      if (btnOcean) {
-        if (currentAmbientType === "ocean") {
-          btnOcean.className = "px-2 py-1 rounded-xl bg-indigo-600 text-white text-[11px] font-black border border-indigo-300 shadow ring-2 ring-indigo-400/50 transition active:scale-95 animate-pulse";
-          btnOcean.innerHTML = "🌊 Sóng (Bật)";
-        } else {
-          btnOcean.className = "px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold border border-slate-600 transition active:scale-95";
-          btnOcean.innerHTML = "🌊 Sóng";
-        }
-      }
-
-      // Cập nhật giao diện bên trong Modal Thiền Mưa nếu đang mở
+      // Cập nhật nút phát Master trong Tab Trị Liệu
       const toggleBtn = document.getElementById("zenRainMasterToggleBtn");
       const playIcon = document.getElementById("zenRainPlayIcon");
       const playText = document.getElementById("zenRainPlayText");
-      const desc = document.getElementById("zenRainStatusDesc");
+      const statusDesc = document.getElementById("currentSoundscapeBadge");
 
-      if (toggleBtn && playIcon && playText && desc) {
-        if (currentAmbientType === "zen_rain") {
-          toggleBtn.className = "px-6 py-3.5 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-black text-sm sm:text-base shadow-xl ring-4 ring-rose-400/30 active:scale-95 transition flex items-center justify-center gap-2.5 mx-auto";
+      if (toggleBtn && playIcon && playText) {
+        if (currentAmbientType) {
+          toggleBtn.className = "px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-md active:scale-95 transition flex items-center gap-1.5 ring-2 ring-rose-400/40";
           playIcon.innerText = "⏹️";
-          playText.innerText = "DỪNG THIỀN MƯA";
-          desc.innerText = "Đang phát tiếng mưa rơi êm đềm, chuông gió pha lê và chuông thiền 528Hz...";
+          playText.innerText = "Dừng";
+          if (statusDesc) {
+            const names = {
+              zen_rain: "Thiền Mưa",
+              bamboo_flute: "Sáo Trúc",
+              bach_thach: "Chùa Đá Trắng",
+              ocean: "Sóng Biển",
+              deo_ca: "Gió Đèo Cả",
+              muidien_dawn: "Bình Minh"
+            };
+            statusDesc.innerText = names[currentAmbientType] || "Đang phát";
+            statusDesc.className = "font-bold text-teal-200 bg-teal-800/80 px-2.5 py-0.5 rounded-full border border-teal-400/50 animate-pulse";
+          }
         } else {
-          toggleBtn.className = "px-6 py-3.5 rounded-2xl bg-gradient-to-r from-teal-500 via-emerald-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-black text-sm sm:text-base shadow-xl ring-4 ring-teal-400/30 active:scale-95 transition flex items-center justify-center gap-2.5 mx-auto";
+          toggleBtn.className = "px-3.5 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs shadow active:scale-95 transition flex items-center gap-1.5";
           playIcon.innerText = "▶️";
-          playText.innerText = "BẬT THIỀN MƯA & CHUÔNG GIÓ";
-          desc.innerText = "Sẵn sàng thư giãn • Bấm để lắng nghe hòa tấu thiền";
+          playText.innerText = "Phát";
+          if (statusDesc) {
+            statusDesc.innerText = "Sẵn sàng";
+            statusDesc.className = "font-bold text-white bg-teal-800/60 px-2 py-0.5 rounded-full border border-teal-500/30";
+          }
         }
       }
+
+      // Cập nhật giá trị hiển thị thanh trượt âm lượng
+      const volInput = document.getElementById("inputAmbientVolume");
+      const volLabel = document.getElementById("ambientVolumeLabel");
+      if (volInput) volInput.value = currentAmbientVolume;
+      if (volLabel) volLabel.innerText = Math.round(currentAmbientVolume * 100) + "%";
     }
 
     // MODAL THIỀN MƯA & HẸN GIỜ NGỦ
