@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="bgCam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="60%" stop-color="#dcfce7"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <linearGradient id="lensGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="40%" stop-color="#1e293b"/>
+      <stop offset="80%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <radialGradient id="recGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Nền không gian bảo vệ gia đình -->
+  <rect width="400" height="210" fill="url(#bgCam)"/>
+  <rect x="0" y="210" width="400" height="90" fill="#e2e8f0"/>
+  <line x1="0" y1="210" x2="400" y2="210" stroke="#cbd5e1" stroke-width="3"/>
+
+  <!-- Tường góc nhà & cổng lắp camera -->
+  <rect x="40" y="30" width="30" height="230" fill="#94a3b8"/>
+  <polygon points="70,30 110,60 110,240 70,260" fill="#cbd5e1"/>
+
+  <!-- Chân đế camera gắn tường vững chãi -->
+  <path d="M70 70 L115 85 L115 110 L70 95 Z" fill="#334155"/>
+  <rect x="110" y="90" width="22" height="15" fill="#475569" rx="3"/>
+
+  <!-- Thân Camera Bullet thông minh (Camera an ninh ngoài trời) -->
+  <g transform="rotate(12, 125, 95)">
+    <!-- Vỏ che nắng mưa -->
+    <path d="M120 70 L255 70 L245 130 L120 120 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <!-- Thân camera trắng kim loại -->
+    <rect x="130" y="76" width="105" height="46" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+    <!-- Vòng viền ống kính trước -->
+    <rect x="230" y="74" width="16" height="50" rx="4" fill="#1e293b"/>
+    <!-- Ống kính kính quang học sắc nét -->
+    <ellipse cx="242" cy="99" rx="10" ry="18" fill="url(#lensGrad)"/>
+    <ellipse cx="240" cy="96" rx="4" ry="7" fill="#ffffff" opacity="0.8"/>
+
+    <!-- Đèn hồng ngoại đêm IR LED xung quanh -->
+    <circle cx="236" cy="85" r="2.5" fill="#ef4444"/>
+    <circle cx="236" cy="113" r="2.5" fill="#ef4444"/>
+    <circle cx="246" cy="85" r="2" fill="#ef4444"/>
+    <circle cx="246" cy="113" r="2" fill="#ef4444"/>
+
+    <!-- Ăng-ten thu sóng WiFi băng tần kép -->
+    <line x1="140" y1="76" x2="115" y2="35" stroke="#475569" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="115" cy="35" r="3.5" fill="#1e293b"/>
+  </g>
+
+  <!-- Đèn báo REC đỏ nhấp nháy giám sát 24/7 -->
+  <circle cx="270" cy="120" r="14" fill="url(#recGlow)"/>
+  <circle cx="270" cy="120" r="4.5" fill="#ef4444"/>
+
+  <!-- Sóng phát hiện chuyển động AI thông minh -->
+  <path d="M280 95 A40 40 0 0 1 315 135" fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round"/>
+  <path d="M295 85 A60 60 0 0 1 340 145" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="4,4" stroke-linecap="round"/>
+  <path d="M310 75 A80 80 0 0 1 365 155" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Màn hình điện thoại hiển thị Live Camera giám sát từ xa -->
+  <g transform="translate(230, 160)">
+    <!-- Thân điện thoại -->
+    <rect x="0" y="0" width="70" height="110" rx="12" fill="#0f172a" stroke="#334155" stroke-width="3"/>
+    <!-- Màn hình điện thoại -->
+    <rect x="4" y="8" width="62" height="94" rx="7" fill="#0284c7"/>
+    <!-- Khung hình camera trực tiếp -->
+    <rect x="7" y="16" width="56" height="42" fill="#1e293b" rx="4"/>
+    <circle cx="15" cy="24" r="3" fill="#22c55e"/>
+    <text x="22" y="27" font-size="7" font-family="sans-serif" font-weight="bold" fill="#ffffff">LIVE 2K</text>
+    <polyline points="10,48 24,35 34,42 45,30 58,45" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+    <!-- Khóa an ninh bảo mật -->
+    <circle cx="35" cy="78" r="9" fill="#16a34a"/>
+    <path d="M32 78 L34 81 L39 75" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Huy hiệu Khiên An Ninh Đất Phú 6K -->
+  <g transform="translate(140, 220)">
+    <circle cx="30" cy="30" r="26" fill="#16a34a" stroke="#ffffff" stroke-width="2.5"/>
+    <path d="M30 14 L44 20 V34 C44 44 30 50 30 50 C30 50 16 44 16 34 V20 Z" fill="#ffffff"/>
+    <path d="M25 31 L29 35 L37 25" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

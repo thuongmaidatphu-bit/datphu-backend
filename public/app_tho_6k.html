@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Đất Phú — Cổng Thợ Kỹ Thuật 6K Tuy Hòa</title>
+
+<!-- Font Awesome 6 & Google Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f1f5f9;
+  --card:#ffffff;
+  --blue:#1e2260;
+  --blue-mid:#253085;
+  --blue-soft:#eef2ff;
+  --blue-bd:#c7d2fe;
+  --red:#d7262d;
+  --red-dark:#b91c22;
+  --red-soft:#fef2f2;
+  --red-bd:#fecaca;
+  --txt:#0f172a;
+  --mut:#475569;
+  --bd:#cbd5e1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5}
+.topbar{background:linear-gradient(90deg,var(--blue) 0%,var(--blue-mid) 70%,#2e1a36 100%);color:#fff;padding:12px 20px;border-bottom:4px solid var(--red);box-shadow:0 4px 14px rgba(30,34,96,.18)}
+.topbar-in{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:38px;width:auto;border-radius:7px;background:#fff;padding:3px 6px}
+.brand-t h1{font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:0.3px}
+.brand-t p{font-size:11.5px;color:#dbeafe;margin-top:2px}
+.nav-links{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.nav-btn{background:rgba(255,255,255,.12);color:#fff;text-decoration:none;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:800;border:1px solid rgba(255,255,255,.22);transition:all .2s ease;display:inline-flex;align-items:center;gap:6px}
+.nav-btn:hover{background:rgba(255,255,255,.22)}
+.nav-btn.act{background:var(--red);border-color:#ff6b6b;box-shadow:0 2px 8px rgba(215,38,45,.4)}
+
+.container{max-width:960px;margin:18px auto;padding:0 16px}
+
+/* THANH 3 TAB TO BẢN - CHỐNG NGỢP THÔNG TIN */
+.tab-nav{
+  display:flex;
+  background:#fff;
+  border:1.5px solid var(--bd);
+  border-radius:16px;
+  padding:6px;
+  gap:6px;
+  margin-bottom:18px;
+  box-shadow:0 4px 14px rgba(30,34,96,.05);
+}
+@media(max-width:640px){
+  .tab-nav{flex-direction:column}
+}
+.tab-btn{
+  flex:1;
+  padding:12px 14px;
+  border-radius:12px;
+  border:none;
+  background:transparent;
+  color:var(--mut);
+  font-size:13.5px;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:all 0.2s ease;
+  font-family:inherit;
+}
+.tab-btn:hover{background:#f8fafc;color:var(--blue)}
+.tab-btn.act{
+  background:var(--blue);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(30,34,96,.25);
+}
+.tab-badge{
+  background:var(--red);
+  color:#fff;
+  font-size:11px;
+  padding:2px 8px;
+  border-radius:99px;
+  font-weight:900;
+}
+
+/* NỘI DUNG TỪNG TAB */
+.tab-content{display:none}
+.tab-content.act{display:block;animation:fadeIn 0.25s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.card{background:var(--card);border:1.5px solid var(--bd);border-radius:18px;padding:20px;box-shadow:0 6px 20px rgba(30,34,96,.06);margin-bottom:16px}
+.card-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;margin-bottom:16px;border-bottom:1px solid #e2e8f0}
+.card-title{font-size:15px;font-weight:900;color:var(--blue);display:flex;align-items:center;gap:8px;text-transform:uppercase}
+
+.fld{margin-bottom:14px}
+.fld label{display:block;font-size:12px;font-weight:800;color:var(--blue);margin-bottom:5px}
+.fld input,.fld select,.fld textarea{width:100%;background:#f8fafc;border:1.5px solid #cbd5e1;color:var(--txt);padding:10px 14px;border-radius:10px;font-size:13.5px;font-weight:600;font-family:inherit;transition:all 0.2s}
+.fld input:focus,.fld select:focus,.fld textarea:focus{background:#fff;border-color:var(--blue);outline:none;box-shadow:0 0 0 3px rgba(30,34,96,.1)}
+.fld-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:540px){.fld-2{grid-template-columns:1fr}}
+
+.btn-blue{width:100%;background:linear-gradient(90deg,var(--blue) 0%,var(--blue-mid) 100%);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 12px rgba(30,34,96,.2);transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-blue:hover{opacity:.95;transform:translateY(-1px)}
+.btn-red{width:100%;background:linear-gradient(90deg,var(--red) 0%,var(--red-dark) 100%);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 12px rgba(215,38,45,.25);transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-red:hover{opacity:.95;transform:translateY(-1px)}
+
+/* THẺ CÔNG VIỆC TRONG TAB 1 */
+.job-card{
+  background:#fff;
+  border:1.5px solid #cbd5e1;
+  border-left:5px solid var(--red);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,.04);
+  transition:all 0.2s;
+}
+.job-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 20px rgba(30,34,96,.08)}
+.job-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.job-card-code{font-family:monospace;font-weight:900;background:#e2e8f0;color:var(--blue);padding:3px 8px;border-radius:6px;font-size:12px}
+.job-card-amt{color:var(--red);font-size:16px;font-weight:900}
+.job-card-addr{font-size:13px;color:#334155;margin-bottom:12px;display:flex;align-items:flex-start;gap:6px}
+.job-card-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn-act-call{background:#059669;color:#fff;padding:8px 14px;border-radius:10px;text-decoration:none;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.btn-act-map{background:var(--blue);color:#fff;padding:8px 14px;border-radius:10px;text-decoration:none;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.btn-act-handle{background:#f59e0b;color:#0f172a;padding:8px 14px;border-radius:10px;text-decoration:none;font-weight:900;font-size:12px;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+
+.toast{display:none;background:var(--blue-soft);border:1.5px solid var(--blue);border-left:5px solid var(--red);border-radius:10px;padding:12px;margin-top:12px;font-size:12.5px;color:var(--blue)}
+.chip-quick{display:inline-block;background:#e2e8f0;padding:4px 10px;border-radius:8px;font-size:11.5px;font-weight:700;color:#334155;cursor:pointer;margin-right:4px;margin-top:4px}
+.chip-quick:hover{background:var(--blue);color:#fff}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <img src="/datphu_logo.jpg" alt="Đất Phú" onerror="this.style.display='none'">
+      <div class="brand-t">
+        <h1>ĐẤT PHÚ — CỔNG QUẢN LÝ DÀNH CHO THỢ 6K</h1>
+        <p>Thợ tự công bố biểu phí cá nhân • Báo giá động minh bạch • 0% chiết khấu sàn cho ca nhỏ</p>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-btn act" href="tho_nhan_cuoc.html">
+        <i class="fa-solid fa-motorcycle"></i>
+        <span>Màn Hình Nhận Cuốc Di Động</span>
+      </a>
+      <a class="nav-btn" href="/datphu_nearby_hub.html">
+        <i class="fa-solid fa-map-location-dot"></i>
+        <span>Bản Đồ Quanh Đây</span>
+      </a>
+      <a class="nav-btn" href="tel:0979991898">
+        <i class="fa-solid fa-phone-volume"></i>
+        <span>0979.991.898</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ======================== THANH 3 TAB TINH GỌN (CHỐNG DÀY ĐẶC) ======================== -->
+  <div class="tab-nav">
+    <button id="tabBtn1" class="tab-btn act" onclick="switchTab(1)">
+      <i class="fa-solid fa-list-check"></i>
+      <span>1. VIỆC CỦA TÔI</span>
+      <span class="tab-badge" id="tabJobBadge">39</span>
+    </button>
+    <button id="tabBtn2" class="tab-btn" onclick="switchTab(2)">
+      <i class="fa-solid fa-file-invoice-dollar"></i>
+      <span>2. BÁO GIÁ TẠI NHÀ</span>
+    </button>
+    <button id="tabBtn3" class="tab-btn" onclick="switchTab(3)">
+      <i class="fa-solid fa-sliders"></i>
+      <span>3. CÀI ĐẶT BIỂU PHÍ</span>
+    </button>
+  </div>
+
+  <!-- ======================== TAB 1: VIỆC CỦA TÔI (MẶC ĐỊNH HIỂN THỊ) ======================== -->
+  <div id="tabContent1" class="tab-content act">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fa-solid fa-list-check text-blue-600"></i>
+          <span>Danh Sách Việc Cứu Hộ &amp; Lịch Hẹn Đang Giao</span>
+        </div>
+        <span class="tab-badge" id="jobCountBadge">39 việc</span>
+      </div>
+
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:12.5px;color:#1e40af;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div>
+          <b>💡 Mẹo cho thợ:</b> Bấm gọi khách trước 30 giây để xác nhận có người ở nhà rồi mới nổ máy xe chạy qua nhé!
+        </div>
+        <a href="tho_nhan_cuoc.html" style="background:#d7262d;color:#fff;padding:5px 12px;border-radius:8px;font-weight:900;text-decoration:none;font-size:11.5px">
+          🚨 Bật Chuông Nhận Cuốc Di Động &rarr;
+        </a>
+      </div>
+
+      <div id="workerJobsList"></div>
+    </div>
+  </div>
+
+  <!-- ======================== TAB 2: BÁO GIÁ ĐỘNG TẠI NHÀ ======================== -->
+  <div id="tabContent2" class="tab-content">
+    <div class="card" style="border-top:5px solid var(--red)">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fa-solid fa-file-invoice-dollar" style="color:var(--red)"></i>
+          <span>Lập Báo Giá Động Trực Tiếp Tại Hiện Trường</span>
+        </div>
+        <span style="background:var(--red-soft);color:var(--red);border:1px solid var(--red-bd);font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:99px">
+          Khách duyệt mới làm
+        </span>
+      </div>
+
+      <div class="fld">
+        <label>Chọn Phiếu / Khách hàng bạn đang khảo sát:</label>
+        <select id="qTicketSelect"></select>
+      </div>
+
+      <div class="fld fld-2">
+        <div>
+          <label>Tiền công thợ kiểm tra &amp; sửa chữa (đ):</label>
+          <input type="number" id="qLaborFee" value="150000" oninput="calcTotalPreview()">
+          <div style="margin-top:6px">
+            <span class="chip-quick" onclick="setQuickLabor(100000)">100k</span>
+            <span class="chip-quick" onclick="setQuickLabor(150000)">150k</span>
+            <span class="chip-quick" onclick="setQuickLabor(200000)">200k</span>
+            <span class="chip-quick" onclick="setQuickLabor(250000)">250k</span>
+          </div>
+        </div>
+        <div>
+          <label>Tiền vật tư thay thế (đ, nếu thợ mua hộ):</label>
+          <input type="number" id="qPartsFee" value="80000" oninput="calcTotalPreview()">
+          <div style="font-size:11px;color:var(--mut);margin-top:6px">
+            Khách có thể tự mua vật tư hoặc thợ mua hộ có hóa đơn.
+          </div>
+        </div>
+      </div>
+
+      <div class="fld">
+        <label>Chi tiết vật tư &amp; nội dung thỏa thuận với chủ nhà:</label>
+        <input id="qPartsDesc" value="Thay tụ đề máy bơm 30uF dây đồng chính hãng">
+      </div>
+
+      <!-- DÒNG TỔNG TIỀN TRỰC QUAN -->
+      <div style="background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:13px;font-weight:700;color:#334155">Tổng cộng khách duyệt thanh toán:</span>
+        <span id="qTotalPreviewText" style="font-size:18px;font-weight:900;color:var(--red)">230.000đ</span>
+      </div>
+
+      <button class="btn-red" onclick="sendFieldQuote()">
+        <i class="fa-solid fa-paper-plane"></i>
+        <span>GỬI BÁO GIÁ ĐỘNG THẲNG TỚI ĐIỆN THOẠI KHÁCH HÀNG</span>
+      </button>
+      <div class="toast" id="quoteToast"></div>
+    </div>
+  </div>
+
+  <!-- ======================== TAB 3: CÀI ĐẶT HỒ SƠ & BIỂU PHÍ ======================== -->
+  <div id="tabContent3" class="tab-content">
+    <div class="card" style="border-top:5px solid var(--blue)">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fa-solid fa-sliders" style="color:var(--blue)"></i>
+          <span>Gian Hàng Số &amp; Biểu Phí Cá Nhân Của Thợ</span>
+        </div>
+        <span style="background:var(--blue-soft);color:var(--blue);border:1px solid var(--blue-bd);font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:99px">
+          Thợ tự chủ định giá
+        </span>
+      </div>
+
+      <div class="fld">
+        <label>Chọn Hồ Sơ Thợ Của Bạn:</label>
+        <select id="wSelect" onchange="loadSelectedWorkerProfile()"></select>
+      </div>
+
+      <div class="fld">
+        <label>Giới thiệu năng lực &amp; đồ nghề chuyên môn (Portfolio):</label>
+        <input id="wBio" value="">
+      </div>
+
+      <div class="fld fld-2">
+        <div>
+          <label>Phí kiểm tra khảo sát tự niêm yết (đ):</label>
+          <input type="number" id="wInspectFee" value="0">
+        </div>
+        <div>
+          <label>Đơn giá nhân công khởi điểm (đ):</label>
+          <input type="number" id="wBaseFee" value="100000">
+        </div>
+      </div>
+
+      <div class="fld">
+        <label>Ghi chú chính sách phí kiểm tra (Hiển thị công khai cho khách):</label>
+        <input id="wInspectNote" value="0đ (Khảo sát miễn phí nội thành Tuy Hòa)">
+      </div>
+
+      <div class="fld">
+        <label>Bảng biểu phí chi tiết do chính bạn công bố (Mỗi dòng: Tên dịch vụ | Mức giá):</label>
+        <textarea id="wRateLines" rows="4"></textarea>
+      </div>
+
+      <button class="btn-blue" onclick="saveWorkerRateCard()">
+        <i class="fa-solid fa-floppy-disk"></i>
+        <span>LƯU &amp; CÔNG BỐ BIỂU PHÍ LÊN GIAN HÀNG CÁ NHÂN</span>
+      </button>
+      <div class="toast" id="rateToast"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let allWorkers=[];
+let allTickets=[];
+const fmt=n=>Number(n||0).toLocaleString('vi-VN')+'đ';
+
+// ======================== CHUYỂN TAB GỌN GÀNG ========================
+function switchTab(idx){
+  [1, 2, 3].forEach(i => {
+    const btn = document.getElementById('tabBtn' + i);
+    const content = document.getElementById('tabContent' + i);
+    if(i === idx){
+      btn.classList.add('act');
+      content.classList.add('act');
+    } else {
+      btn.classList.remove('act');
+      content.classList.remove('act');
+    }
+  });
+}
+
+function setQuickLabor(val){
+  document.getElementById('qLaborFee').value = val;
+  calcTotalPreview();
+}
+
+function calcTotalPreview(){
+  const l = Number(document.getElementById('qLaborFee').value || 0);
+  const p = Number(document.getElementById('qPartsFee').value || 0);
+  document.getElementById('qTotalPreviewText').textContent = fmt(l + p);
+}
+
+async function loadData(){
+  try {
+    const res=await fetch('/api/v1/core6k/overview');
+    const d=await res.json();
+    const st=d.state||{};
+    allWorkers=st.workers6k||[];
+    allTickets=[...(st.dispatchTickets||[]),...(st.ordersDp||[])];
+
+    const sel=document.getElementById('wSelect');
+    const currentVal=sel.value||'THO-01';
+    sel.innerHTML=allWorkers.map(w=>`<option value="${w.workerCode}">${w.workerCode} — ${w.fullName} (${w.tradeLabel})</option>`).join('');
+    sel.value=currentVal;
+    loadSelectedWorkerProfile();
+
+    const qSel=document.getElementById('qTicketSelect');
+    qSel.innerHTML=allTickets.map(t=>{
+      const code=t.ticketCode||t.orderCode;
+      return `<option value="${code}">#${code} — ${t.customerName} (${t.assignedWorkerName})</option>`;
+    }).join('');
+
+    const count = allTickets.length || 39;
+    document.getElementById('jobCountBadge').textContent=`${count} việc`;
+    document.getElementById('tabJobBadge').textContent=count;
+
+    renderJobList();
+    calcTotalPreview();
+  } catch(e) {
+    console.warn('loadData err:', e);
+  }
+}
+
+function renderJobList(){
+  const listEl = document.getElementById('workerJobsList');
+  if(!allTickets.length){
+    listEl.innerHTML = '<div style="text-align:center;color:var(--mut);padding:20px">Chưa có ca điều phối nào.</div>';
+    return;
+  }
+
+  listEl.innerHTML = allTickets.slice(0, 6).map(t => {
+    const code = t.ticketCode || t.orderCode;
+    const amt = t.totalAmount || t.grandTotal || 285000;
+    const lat = t.customerLat || 13.0892;
+    const lng = t.customerLng || 109.3095;
+    const phone = t.customerPhone || '0979991898';
+    const phoneClean = phone.replace(/[^0-9]/g, '');
+    const addr = t.customerAddress || t.shippingAddress || '86 Lê Duẩn, Phường 7, TP. Tuy Hòa';
+    const mapUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+
+    return `
+      <div class="job-card">
+        <div class="job-card-head">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="job-card-code">#${code}</span>
+            <span style="font-weight:800;color:var(--blue);font-size:14px">${t.customerName}</span>
+          </div>
+          <span class="job-card-amt">${fmt(amt)}</span>
+        </div>
+
+        <div class="job-card-addr">
+          <i class="fa-solid fa-location-dot" style="color:var(--red);margin-top:2px"></i>
+          <span><b>Địa chỉ đón:</b> ${addr}</span>
+        </div>
+
+        <div class="job-card-btns">
+          <a href="tel:${phoneClean}" class="btn-act-call">
+            <i class="fa-solid fa-phone"></i>
+            <span>Gọi khách (${phone})</span>
+          </a>
+          <a href="${mapUrl}" target="_blank" class="btn-act-map">
+            <i class="fa-solid fa-diamond-turn-right"></i>
+            <span>Mở Google Maps</span>
+          </a>
+          <a href="tho_nhan_cuoc.html" class="btn-act-handle">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Vào Xử Lý Ca Này &rarr;</span>
+          </a>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function loadSelectedWorkerProfile(){
+  const code=document.getElementById('wSelect').value;
+  const w=allWorkers.find(x=>x.workerCode===code);
+  if(!w)return;
+  document.getElementById('wBio').value=w.portfolioBio||'';
+  document.getElementById('wInspectFee').value=w.selfPublishedInspectionFee||0;
+  document.getElementById('wBaseFee').value=w.baseFee||100000;
+  document.getElementById('wInspectNote').value=w.selfPublishedInspectionNote||'0đ (Miễn phí khảo sát nội thành Tuy Hòa)';
+  document.getElementById('wRateLines').value=(w.selfPublishedRateCard||[]).map(r=>`${r.serviceName} | ${r.priceLabel}`).join('\n');
+}
+
+async function saveWorkerRateCard(){
+  const workerCode=document.getElementById('wSelect').value;
+  const lines=document.getElementById('wRateLines').value.split('\n').map(l=>l.trim()).filter(Boolean);
+  const selfPublishedRateCard=lines.map(l=>{
+    const [serviceName,priceLabel]=l.split('|').map(s=>(s||'').trim());
+    return {serviceName:serviceName||'Dịch vụ kỹ thuật',priceLabel:priceLabel||'Thỏa thuận tại nhà',minFee:0};
+  });
+  const res=await fetch('/api/v1/worker/rate-card',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      workerCode,
+      portfolioBio:document.getElementById('wBio').value,
+      selfPublishedInspectionFee:Number(document.getElementById('wInspectFee').value||0),
+      selfPublishedInspectionNote:document.getElementById('wInspectNote').value,
+      baseFee:Number(document.getElementById('wBaseFee').value||100000),
+      selfPublishedRateCard
+    })
+  });
+  const d=await res.json();
+  if(d.success){
+    const box=document.getElementById('rateToast');
+    box.style.display='block';
+    box.innerHTML=`✅ <b>Đã cập nhật biểu phí cá nhân của ${d.worker.fullName}!</b><br>${d.legalNotice}`;
+    loadData();
+  }
+}
+
+async function sendFieldQuote(){
+  const referenceCode=document.getElementById('qTicketSelect').value;
+  const laborFee=Number(document.getElementById('qLaborFee').value||0);
+  const partsFee=Number(document.getElementById('qPartsFee').value||0);
+  const partsDescription=document.getElementById('qPartsDesc').value;
+  const res=await fetch('/api/v1/worker/field-quote',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({referenceCode,laborFee,partsFee,partsDescription})
+  });
+  const d=await res.json();
+  if(d.success){
+    const box=document.getElementById('quoteToast');
+    box.style.display='block';
+    box.innerHTML=`✅ <b>${d.message}</b><br>• ${d.dynamicFieldQuote.civilAgreementNotice}`;
+    loadData();
+  }
+}
+
+loadData();
+</script>
+</body>
+</html>

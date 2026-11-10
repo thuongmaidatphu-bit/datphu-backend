@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Lịch Thiên Văn & Sinh Kế Đất Phú - Khoa Học & Chuẩn Xác GMT+7</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e293b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="logo_datphu.jpg">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    .paper-texture {
+      background-color: #f8fafc;
+      background-image: radial-gradient(#e2e8f0 0.75px, transparent 0.75px);
+      background-size: 14px 14px;
+    }
+    .dark .paper-texture {
+      background-color: #0f172a;
+      background-image: radial-gradient(#1e293b 0.75px, transparent 0.75px);
+    }
+    .astro-board {
+      background: linear-gradient(145deg, #0f172a, #1e293b);
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 15px 35px -5px rgba(0,0,0,0.5);
+    }
+    @keyframes tearOff {
+      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+      40% { transform: translateY(30px) rotate(4deg) scale(0.96); opacity: 0.85; }
+      100% { transform: translateY(120px) rotate(12deg) scale(0.85); opacity: 0; }
+    }
+    .tearing { animation: tearOff 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+    body.senior-mode { font-size: 1.15rem; }
+    body.senior-mode #leafSolarDay { font-size: 9rem; }
+    body.senior-mode #leafLunarDay { font-size: 4.5rem; }
+    body.senior-mode p, body.senior-mode span, body.senior-mode button { font-size: 1.1em !important; }
+  </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased p-3 md:p-6 min-h-screen flex flex-col items-center">
+
+  <div class="w-full max-w-5xl space-y-5">
+
+    <!-- TOP HEADER -->
+    <header class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 md:p-5 rounded-3xl shadow-sm space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        
+        <div class="flex items-center gap-3">
+          <a href="index.html" class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-2xl border border-indigo-500/20 hover:scale-105 transition" title="Về Cổng Đất Phú">
+            🪐
+          </a>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-bold text-lg md:text-xl text-slate-900 dark:text-white">Lịch Thiên Văn & Sinh Kế Đất Phú</h1>
+              <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-indigo-500/10 text-indigo-600 border border-indigo-500/30">100% Khoa Học</span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Thiên Thể Jean Meeus • Âm Lịch TS. Hồ Ngọc Đức (GMT+7) • Thủy Triều Hải Dương • 24 Tiết Khí</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="toggleSeniorMode()" id="btnSeniorMode" class="px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-semibold border border-indigo-500/30 text-indigo-700 dark:text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-glasses"></i> Chữ To Cho Mẹ
+          </button>
+          
+          <button onclick="exportBuddhistCalendarICS()" class="px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-semibold border border-blue-500/30 text-blue-700 dark:text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-calendar-arrow-down"></i> Tải Lịch Đi Chùa (.ics)
+          </button>
+
+          <button onclick="goToToday()" class="px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition shadow-sm">
+            Hôm Nay
+          </button>
+
+          <button onclick="toggleMonthModal()" class="px-3 py-1.5 rounded-xl text-xs md:text-sm font-medium border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+            Lịch Tháng
+          </button>
+        </div>
+
+      </div>
+
+      <!-- TABS -->
+      <nav class="flex items-center gap-2 border-t border-slate-200 dark:border-slate-800 pt-3 overflow-x-auto">
+        <button onclick="switchTab('bloc')" id="tabBtnBloc" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-indigo-600 text-white shadow-sm flex items-center gap-2 transition shrink-0">
+          <i class="fa-solid fa-calendar-day"></i> Lịch Ngày & Thiên Thể
+        </button>
+        <button onclick="switchTab('temples')" id="tabBtnTemples" class="px-4 py-2 rounded-xl text-xs md:text-sm font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center gap-2 shrink-0">
+          <i class="fa-solid fa-gopuram"></i> Danh Lam Tự Viện Đất Phú
+        </button>
+        <button onclick="switchTab('memorial')" id="tabBtnMemorial" class="px-4 py-2 rounded-xl text-xs md:text-sm font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center gap-2 shrink-0">
+          <i class="fa-solid fa-monument"></i> Sổ Giỗ Chạp Gia Tộc
+        </button>
+        <button onclick="switchTab('guide')" id="tabBtnGuide" class="px-4 py-2 rounded-xl text-xs md:text-sm font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center gap-2 shrink-0">
+          <i class="fa-solid fa-book-open-reader"></i> Nghi Thức Đi Chùa & Bát Quan Trai
+        </button>
+        <button onclick="switchTab('audio')" id="tabBtnAudio" class="px-4 py-2 rounded-xl text-xs md:text-sm font-semibold text-amber-700 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 transition flex items-center gap-2 shrink-0 border border-amber-500/30">
+          <i class="fa-solid fa-radio text-amber-600"></i> Đài Niệm Phật An Nhiên
+        </button>
+      </nav>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- TAB 1: LỊCH THIÊN VĂN & THỦY TRIỀU THỰC NGHIỆM               -->
+    <!-- ============================================================ -->
+    <div id="tabContentBloc" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- LEFT: KHÁNH THIÊN VĂN & TỜ BLOC (7 COLS) -->
+      <div class="lg:col-span-7 flex justify-center">
+        <div class="w-full max-w-md">
+
+          <!-- Khánh thiên văn hiện đại -->
+          <div class="astro-board rounded-t-3xl p-5 border-4 border-indigo-900/60 relative shadow-2xl text-center overflow-hidden">
+            <div class="inline-flex items-center justify-center gap-2 px-4 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30">
+              <span class="text-indigo-400 text-xs">✦</span>
+              <span class="text-indigo-200 font-bold text-xs tracking-wider uppercase font-mono">ĐẤT PHÚ ASTRONOMY</span>
+              <span class="text-indigo-400 text-xs">✦</span>
+            </div>
+            <h2 id="blocTopYearTitle" class="font-serif text-2xl font-bold text-slate-100 tracking-wider mt-1.5">
+              NĂM BÍNH NGỌ 2026
+            </h2>
+            <p id="blocCoordinates" class="text-[11px] text-slate-400 font-mono mt-0.5">Tọa độ Tuy Hòa: 13°05'N • 109°18'E • GMT+7</p>
+          </div>
+
+          <!-- Nẹp chỉ số -->
+          <div class="h-3 bg-slate-800 border-x-4 border-indigo-900/60 flex items-center justify-center">
+            <div class="h-1 w-16 bg-indigo-400/50 rounded-full"></div>
+          </div>
+
+          <!-- Tờ Lịch Bloc Khoa Học -->
+          <div id="blocLeaf" class="paper-texture text-slate-800 dark:text-slate-100 border-x-4 border-b-4 border-indigo-900/60 rounded-b-3xl p-6 md:p-7 shadow-2xl relative transition-transform duration-300">
+
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2.5">
+              <div>
+                <span class="text-[10px] font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400 font-mono">DƯƠNG LỊCH CHUẨN</span>
+                <p id="leafMonthYear" class="text-sm font-bold text-slate-900 dark:text-white">THÁNG 11 • 2026</p>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] font-bold tracking-widest uppercase text-indigo-600 dark:text-indigo-400 font-mono">KINH ĐỘ MẶT TRỜI</span>
+                <p id="leafSolarTerm" class="text-sm font-bold text-indigo-700 dark:text-indigo-300">TIẾT LẬP ĐÔNG (225°)</p>
+              </div>
+            </div>
+
+            <!-- Ngày Dương Lịch Lớn -->
+            <div class="text-center my-4 space-y-1">
+              <p id="leafWeekday" class="text-base font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">THỨ HAI</p>
+              <div id="leafSolarDay" class="font-serif text-8xl font-black text-slate-950 dark:text-white tracking-tighter leading-none select-none drop-shadow-sm">
+                09
+              </div>
+            </div>
+
+            <!-- Khung Âm Lịch Thiên Văn -->
+            <div class="border-2 border-indigo-600/30 rounded-2xl bg-indigo-600/5 dark:bg-indigo-950/20 p-3.5 text-center relative">
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-indigo-600 text-white text-[10px] font-bold tracking-wider uppercase shadow-sm flex items-center gap-1 font-mono">
+                <span id="leafMoonIcon">🌑</span> ÂM LỊCH THIÊN VĂN
+              </div>
+              <div class="flex items-baseline justify-center gap-2 mt-1">
+                <span class="text-xs text-slate-500">Ngày</span>
+                <span id="leafLunarDay" class="font-serif text-5xl font-black text-indigo-700 dark:text-indigo-400">01</span>
+                <span class="text-xs text-slate-500">Tháng</span>
+                <span id="leafLunarMonth" class="font-serif text-2xl font-bold text-indigo-700 dark:text-indigo-400">10</span>
+                <span id="leafLeapBadge" class="hidden text-xs px-1.5 py-0.5 rounded bg-red-600 text-white font-bold">Nhuận</span>
+              </div>
+              <p id="leafLunarYear" class="text-xs font-bold text-slate-700 dark:text-slate-300 mt-0.5 uppercase">
+                NĂM BÍNH NGỌ
+              </p>
+            </div>
+
+            <!-- Can Chi Ngày & Tháng (Hệ đếm chu kỳ Modulo 60) -->
+            <div class="grid grid-cols-2 gap-2 mt-4 text-center text-xs">
+              <div class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60">
+                <span class="text-[10px] text-slate-400 block uppercase font-mono">Can Chi Ngày</span>
+                <span id="leafCanChiDay" class="font-bold text-slate-800 dark:text-slate-200 block">Kỷ Hợi</span>
+              </div>
+              <div class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60">
+                <span class="text-[10px] text-slate-400 block uppercase font-mono">Can Chi Tháng</span>
+                <span id="leafCanChiMonth" class="font-bold text-slate-800 dark:text-slate-200 block">Kỷ Hợi</span>
+              </div>
+            </div>
+
+            <!-- THÔNG SỐ VẬT LÝ THIÊN VĂN (THAY THẾ BÓI TOÁN) -->
+            <div class="mt-3 p-3 rounded-xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 space-y-2 text-xs">
+              <div class="flex items-center justify-between text-slate-600 dark:text-slate-400 font-mono text-[11px]">
+                <span><i class="fa-solid fa-sun text-amber-500"></i> Mặt Trời: <strong class="text-slate-900 dark:text-white" id="solarSunTimes">Mọc 05:48 • Lặn 17:22</strong></span>
+                <span><i class="fa-solid fa-moon text-indigo-400"></i> Chiếu sáng: <strong class="text-slate-900 dark:text-white" id="moonIllumPercent">0% (Trăng Non)</strong></span>
+              </div>
+              <div class="flex items-center justify-between text-slate-600 dark:text-slate-400 font-mono text-[11px] pt-1 border-t border-slate-200 dark:border-slate-800">
+                <span>Số ngày Julius (JDN): <strong class="text-slate-900 dark:text-white font-mono" id="valJDN">2461354</strong></span>
+                <span>Múi giờ: <strong class="text-slate-900 dark:text-white">UTC+7 (105°E)</strong></span>
+              </div>
+            </div>
+
+            <!-- Tản văn chánh niệm -->
+            <div class="mt-4 pt-3 border-t-2 border-dashed border-slate-300 dark:border-slate-700 text-center">
+              <blockquote id="leafZenQuote" class="text-xs italic font-serif text-slate-700 dark:text-slate-300 leading-relaxed px-1">
+                "Tâm bình thế giới bình. Biết ơn giọt nước nguồn trong, trời đất tự khắc an bài điều lành."
+              </blockquote>
+            </div>
+
+          </div>
+
+          <div class="flex justify-between items-center mt-3 px-2">
+            <button onclick="changeDay(-1)" class="px-3.5 py-1.5 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+              ◀ Ngày Trước
+            </button>
+            <button onclick="tearLeaf(1)" class="px-3.5 py-1.5 rounded-xl text-xs font-bold border border-indigo-500/30 text-indigo-600 bg-indigo-500/10 hover:bg-indigo-500/20 transition flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-scroll"></i> Xé Lịch
+            </button>
+            <button onclick="changeDay(1)" class="px-3.5 py-1.5 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+              Ngày Sau ▶
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: BẢNG DỮ LIỆU KHOA HỌC THỦY TRIỀU & TIẾT KHÍ (5 COLS) -->
+      <div class="lg:col-span-5 space-y-4">
+
+        <!-- THẺ THỦY TRIỀU VẬT LÝ -->
+        <div class="bg-white dark:bg-slate-900 border border-blue-500/30 rounded-2xl p-5 shadow-sm space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
+            <h3 class="text-sm font-bold flex items-center gap-2 text-blue-600 dark:text-blue-400">
+              <i class="fa-solid fa-water"></i> VẬT LÝ HẢI DƯƠNG & THỦY TRIỀU
+            </h3>
+            <span id="tideBadge" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-blue-500/10 text-blue-600 border border-blue-500/30">
+              NƯỚC RONG (TRIỀU CƯỜNG)
+            </span>
+          </div>
+
+          <div class="space-y-1.5 text-xs">
+            <div class="flex items-baseline justify-between">
+              <span class="text-slate-500">Cơ chế thủy triều:</span>
+              <span id="tidePhysicsMech" class="font-bold text-slate-900 dark:text-white">Lực hấp dẫn Trăng - Trời cùng phương</span>
+            </div>
+            <div class="flex items-baseline justify-between">
+              <span class="text-slate-500">Cường độ dòng chảy:</span>
+              <span id="tideFlowSpeed" class="font-bold text-blue-600 dark:text-blue-400">Dòng cuộn xiết • Biên độ triều lớn</span>
+            </div>
+            <div class="flex items-baseline justify-between">
+              <span class="text-slate-500">Pha mặt trăng thiên văn:</span>
+              <span id="tideMoon" class="font-medium text-slate-900 dark:text-white">🌑 New Moon (Điểm Sóc)</span>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-blue-500/5 border border-blue-500/20 text-xs space-y-2">
+            <p class="font-bold text-blue-700 dark:text-blue-300 italic" id="tideFolkProverb">
+              "Nước rong mùng một, dòng chảy xiết"
+            </p>
+            <div class="space-y-1 text-[11px] text-slate-600 dark:text-slate-300">
+              <p><strong>Lồng bè tôm hùm (Xuân Đài, Cù Mông):</strong> <span id="tideAdviceMarine">Kiểm tra neo giềng, tăng cường giằng lồng tránh trôi dạt do dòng chảy mạnh.</span></p>
+              <p><strong>Đánh bắt cá & đầm Ô Loan:</strong> <span id="tideAdviceEstuary">Triều dâng cao chiều tối, cá nổi đi ăn mạnh theo luồng nước.</span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- THẺ 24 TIẾT KHÍ KHOA HỌC -->
+        <div class="bg-white dark:bg-slate-900 border border-emerald-500/30 rounded-2xl p-5 shadow-sm space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
+            <h3 class="text-sm font-bold flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+              <i class="fa-solid fa-seedling"></i> KHÍ HẬU HỌC 24 TIẾT KHÍ
+            </h3>
+            <span id="termDegreeBadge" class="text-xs px-2 py-0.5 rounded-md font-semibold bg-emerald-500/10 text-emerald-600 font-mono">
+              225° Kinh Độ Mặt Trời
+            </span>
+          </div>
+
+          <div>
+            <h4 id="termDetailName" class="text-base font-bold text-emerald-700 dark:text-emerald-400">Tiết Lập Đông (Winter Commences)</h4>
+            <p id="termWeatherDesc" class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+              Khởi đầu mùa đông. Áp cao lục địa tăng cường, gió mùa Đông Bắc thổi mạnh trên vùng biển miền Trung.
+            </p>
+          </div>
+
+          <div class="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-xs space-y-1.5">
+            <span class="font-bold text-emerald-800 dark:text-emerald-300 block uppercase text-[10px] tracking-wider font-mono">
+              Chỉ dẫn canh tác thực nghiệm:
+            </span>
+            <p id="termFarmingAdvice" class="text-[11px] text-slate-800 dark:text-slate-200 leading-relaxed">
+              Ngư dân chú ý theo dõi biển động gió chướng. Nhà nông chuẩn bị che chắn, ủ ấm luống hoa cúc Tết Bình Kiến, Tuy Hòa.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 2: DANH LAM TỰ VIỆN ĐẤT PHÚ (DI TÍCH LỊCH SỬ)            -->
+    <!-- ============================================================ -->
+    <div id="tabContentTemples" class="hidden space-y-4">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <h2 class="font-bold text-base md:text-lg text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-gopuram text-indigo-600"></i> Danh Lam Cổ Tự & Di Tích Lịch Sử Đất Phú
+          </h2>
+          <p class="text-xs text-slate-500">Giới thiệu di tích quốc gia, lịch sử khởi lập, ngày hội truyền thống và tọa độ GPS</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <select id="templeFilterDistrict" onchange="filterTemples()" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-white">
+            <option value="all">Tất cả địa bàn</option>
+            <option value="Tuy An">Huyện Tuy An</option>
+            <option value="Tuy Hòa">TP. Tuy Hòa</option>
+            <option value="Phú Hòa">Huyện Phú Hòa</option>
+            <option value="Sông Cầu">TX. Sông Cầu</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="templeCardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 3: SỔ GIỖ CHẠP GIA TỘC                                   -->
+    <!-- ============================================================ -->
+    <div id="tabContentMemorial" class="hidden space-y-6">
+
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <h2 class="font-bold text-base md:text-lg text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-monument text-red-600"></i> Sổ Giỗ Chạp Gia Tộc (Đạo Hiếu Cội Nguồn)
+          </h2>
+          <p class="text-xs text-slate-500">Thuật toán quy đổi tự động ngày mất Âm lịch sang ngày Dương lịch hàng năm và đếm ngược.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="toggleSupabaseModal()" class="px-3.5 py-2 rounded-xl text-xs font-semibold border border-indigo-500/30 text-indigo-600 bg-indigo-500/10 hover:bg-indigo-500/20 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-cloud"></i> Đám Mây Supabase
+          </button>
+          <button onclick="toggleAddMemorialModal()" class="px-4 py-2 rounded-xl text-xs md:text-sm font-semibold bg-red-700 text-white hover:bg-red-800 transition shadow-sm flex items-center gap-1.5">
+            <i class="fa-solid fa-plus"></i> Thêm Ngày Giỗ
+          </button>
+        </div>
+      </div>
+
+      <div id="memorialsListContainer" class="space-y-3">
+        <!-- Injected by JS -->
+      </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 4: HƯỚNG DẪN OAI NGHI & BÁT QUAN TRAI                    -->
+    <!-- ============================================================ -->
+    <div id="tabContentGuide" class="hidden space-y-6">
+      
+      <div class="bg-indigo-500/10 border border-indigo-500/30 rounded-3xl p-6 space-y-3">
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">🌸</span>
+          <div>
+            <h3 class="font-bold text-base md:text-lg text-indigo-950 dark:text-indigo-300">Khóa Tu Thọ Bát Quan Trai Của Mẹ & Các Cô</h3>
+            <p class="text-xs text-indigo-800/80 dark:text-indigo-400">Tập sống đời thanh tịnh 1 ngày 1 đêm tại chùa (giữ 8 giới)</p>
+          </div>
+        </div>
+        <p class="text-xs leading-relaxed text-slate-700 dark:text-slate-300">
+          Khóa tu Bát Quan Trai thường được các chùa tổ chức định kỳ vào ngày 14 Âm lịch (trước ngày Rằm) hoặc ngày Chủ Nhật gần nhất. Người thọ giới thực hành ăn chay, sau 12h trưa không ăn thức ăn thô, lắng nghe pháp thoại và tụng kinh sám hối.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl space-y-2">
+          <h4 class="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+            <span class="text-indigo-600 font-bold">1.</span> Ra Vào Chánh Điện Đúng Cách
+          </h4>
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+            Đi vào bằng cửa bên phải (cửa Tả) và đi ra bằng cửa bên trái (cửa Hữu). Tuyệt đối không đi cửa giữa và không giẫm chân lên bậu cửa gỗ.
+          </p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl space-y-2">
+          <h4 class="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+            <span class="text-indigo-600 font-bold">2.</span> Thắp Hương (Dâng Hương Tâm Hương)
+          </h4>
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+            Chỉ thắp duy nhất 1 nén hương tại lư hương ngoài sân để tránh ngột ngạt và cháy nổ. Khi vào Chánh điện chỉ cần chắp tay búp sen là trọn vẹn sự thành kính.
+          </p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl space-y-2">
+          <h4 class="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+            <span class="text-indigo-600 font-bold">3.</span> Lạy Phật (Năm Vóc Sát Đất)
+          </h4>
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+            Khi lạy, trán, hai bàn tay và hai đầu gối chạm nhẹ xuống sàn để dẹp bỏ bản ngã kiêu ngạo. Ba lạy kính ngưỡng: Phật - Pháp - Tăng.
+          </p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl space-y-2">
+          <h4 class="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+            <span class="text-indigo-600 font-bold">4.</span> Phân Biệt: Giỗ, Kỵ, Tiên Thường
+          </h4>
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+            <strong>Ngày Kỵ</strong> là ngày mất Âm lịch. <strong>Tiên Thường</strong> là lễ cúng cáo chiều hôm trước. <strong>Chính Kỵ</strong> là lễ cúng trưa ngày giỗ chính. Cúng mâm cơm chay thanh tịnh, hoa tươi quả ngọt.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 5: ĐÀI NIỆM PHẬT AN NHIÊN (THAY THẾ THẺ NHỚ CHO MẸ)      -->
+    <!-- ============================================================ -->
+    <div id="tabContentAudio" class="hidden space-y-6">
+
+      <!-- BANNER GIỚI THIỆU & PHÁP LÝ MINH BẠCH -->
+      <div class="bg-gradient-to-r from-amber-900/90 via-amber-800 to-amber-900 border border-amber-600/40 text-amber-50 p-5 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="space-y-1 text-center md:text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-200 text-xs font-bold border border-amber-400/30">
+            <i class="fa-solid fa-peace"></i> Pháp Thí Phi Thương Mại • Thay Thế Thẻ Nhớ Đài Tụng Kinh
+          </div>
+          <h3 class="text-xl md:text-2xl font-serif font-bold text-white tracking-wide">
+            Đài Niệm Phật An Nhiên & Chuỗi Hạt 108 Biến
+          </h3>
+          <p class="text-xs text-amber-200/90 max-w-2xl leading-relaxed">
+            Thiết kế chuyên biệt cho Phật tử cao niên và bà con Đất Phú: Nút to rõ, tự động ngắt khi ngủ, không cần ra tiệm chép thẻ nhớ, hoàn toàn miễn phí và hợp pháp 100%.
+          </p>
+        </div>
+        <div class="text-center shrink-0">
+          <span class="inline-block px-3 py-1.5 rounded-xl bg-amber-950/60 border border-amber-500/40 text-[11px] text-amber-300 font-mono">
+            <i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i> Điều 25 Luật SHTT & GHPGVN
+          </span>
+        </div>
+      </div>
+
+      <!-- GRID CHÍNH: CỖ MÁY ĐÀI NIỆM PHẬT & TRÀNG HẠT ĐIỆN TỬ -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- CỘT TRÁI: ĐÀI PHÁT MP3 MÔ PHỎNG RADIO VỎ GỖ (7 COLS) -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="bg-gradient-to-b from-[#2e1c11] via-[#3d2417] to-[#1f120a] border-4 border-[#8B5A2B] rounded-3xl p-6 shadow-2xl space-y-5 text-amber-100">
+            
+            <!-- Màn hình LED LCD hiển thị -->
+            <div class="bg-black/80 rounded-2xl p-4 border-2 border-[#5c3a1e] shadow-inner space-y-2">
+              <div class="flex items-center justify-between text-xs font-mono text-emerald-400">
+                <span class="flex items-center gap-1.5">
+                  <span id="audioPlayingDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block opacity-40"></span>
+                  <span id="audioStatusText">TẠM DỪNG</span>
+                </span>
+                <span id="audioTrackIndex" class="font-bold text-sm text-amber-400">BÀI: [ 01 / 08 ]</span>
+                <span id="audioTimerBadge" class="text-slate-400">HẸN GIỜ: TẮT</span>
+              </div>
+              <div class="py-1">
+                <div id="audioTitleDisplay" class="font-bold text-lg md:text-xl text-amber-200 truncate font-serif">
+                  1. Nam Mô A Di Đà Phật (6 chữ trang nghiêm)
+                </div>
+                <div id="audioAuthorDisplay" class="text-xs text-amber-400/80 mt-0.5">
+                  Pháp bảo cúng dường • Giọng tụng trầm ấm thanh tịnh
+                </div>
+              </div>
+              <!-- Thanh tiến trình thời gian -->
+              <div class="space-y-1">
+                <div class="w-full bg-slate-800 rounded-full h-2 cursor-pointer overflow-hidden" onclick="seekAudio(event)" id="audioProgressContainer">
+                  <div id="audioProgressBar" class="bg-amber-500 h-2 rounded-full w-0 transition-all duration-200"></div>
+                </div>
+                <div class="flex justify-between text-[11px] font-mono text-slate-400">
+                  <span id="audioCurrentTime">00:00</span>
+                  <span id="audioDuration">15:00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nút bấm mô phỏng cỗ máy Radio thật cho Mẹ -->
+            <div class="flex items-center justify-center gap-4 md:gap-6 py-2">
+              <button onclick="prevTrack()" title="Bài trước" class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-[#4a2e1c] hover:bg-[#5c3a23] border border-[#8B5A2B] text-amber-200 text-lg md:text-xl flex items-center justify-center active:scale-95 transition shadow-lg">
+                <i class="fa-solid fa-backward-step"></i>
+              </button>
+
+              <button onclick="togglePlayAudio()" id="btnPlayMain" title="Phát / Dừng" class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-tr from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 border-4 border-amber-300 text-slate-950 text-2xl md:text-3xl font-bold flex items-center justify-center active:scale-95 transition shadow-2xl">
+                <i id="playIcon" class="fa-solid fa-play ml-1"></i>
+              </button>
+
+              <button onclick="nextTrack()" title="Bài kế tiếp" class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-[#4a2e1c] hover:bg-[#5c3a23] border border-[#8B5A2B] text-amber-200 text-lg md:text-xl flex items-center justify-center active:scale-95 transition shadow-lg">
+                <i class="fa-solid fa-forward-step"></i>
+              </button>
+            </div>
+
+            <!-- Các phím chức năng phụ: Hẹn giờ & Âm lượng -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-[#5c3a1e]/60 text-xs">
+              <!-- Hẹn giờ tắt đài -->
+              <div class="bg-black/40 p-3 rounded-2xl border border-[#5c3a1e] flex items-center justify-between">
+                <span class="text-amber-200 font-semibold flex items-center gap-1.5">
+                  <i class="fa-solid fa-moon text-indigo-400"></i> Hẹn Giờ Tắt:
+                </span>
+                <select id="selectSleepTimer" onchange="setSleepTimer(this.value)" class="bg-[#2e1c11] text-amber-200 border border-[#8B5A2B] rounded-xl px-2.5 py-1 text-xs font-semibold focus:outline-none">
+                  <option value="0">Tắt hẹn giờ</option>
+                  <option value="15">15 phút</option>
+                  <option value="30">30 phút (khuyên dùng)</option>
+                  <option value="45">45 phút</option>
+                  <option value="60">60 phút (1 giờ)</option>
+                </select>
+              </div>
+
+              <!-- Âm lượng -->
+              <div class="bg-black/40 p-3 rounded-2xl border border-[#5c3a1e] flex items-center gap-2">
+                <i class="fa-solid fa-volume-high text-amber-400"></i>
+                <input type="range" min="0" max="1" step="0.05" value="0.8" oninput="setAudioVolume(this.value)" class="w-full accent-amber-500 cursor-pointer">
+              </div>
+            </div>
+
+            <!-- Âm thanh gõ Mõ hỗ trợ Định Tâm khi tụng niệm -->
+            <div class="bg-[#24150c] p-3.5 rounded-2xl border border-[#5c3a1e] flex items-center justify-between text-xs">
+              <div>
+                <span class="font-bold text-amber-200 flex items-center gap-1.5">
+                  <i class="fa-solid fa-bell text-amber-400"></i> Tiếng Mõ Thiền Trực Tiếp:
+                </span>
+                <span class="text-[11px] text-amber-300/70">Tự động phát âm thanh gõ mõ trầm bổng bằng tần số vật lý</span>
+              </div>
+              <button onclick="playWoodBlock()" class="px-3.5 py-1.5 rounded-xl bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/50 text-amber-200 font-bold active:scale-95 transition">
+                Gõ Thử Mõ
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CỘT PHẢI: TRÀNG HẠT ĐIỆN TỬ 108 BIẾN (5 COLS) -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-5 text-center">
+            
+            <div class="space-y-1">
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 font-mono">Tràng Hạt Bồ Đề 108</span>
+              <h4 class="font-serif text-xl font-bold text-slate-900 dark:text-white">Lần Chuỗi Niệm Phật</h4>
+              <p class="text-xs text-slate-500">Mỗi lần chạm hạt là một câu niệm Phật hoặc một biến chú</p>
+            </div>
+
+            <!-- Nút hạt chuỗi to đùng để bấm -->
+            <div class="flex flex-col items-center justify-center py-2">
+              <button onclick="countPrayerBead()" class="w-36 h-36 md:w-44 md:h-44 rounded-full bg-gradient-to-tr from-amber-700 via-amber-600 to-amber-500 hover:from-amber-600 hover:to-amber-400 text-white shadow-2xl border-8 border-amber-200 dark:border-amber-900 flex flex-col items-center justify-center active:scale-95 transition transform duration-100 group">
+                <span id="beadDisplayCount" class="font-mono text-4xl md:text-5xl font-black tracking-tight drop-shadow-md">0</span>
+                <span class="text-xs uppercase font-bold tracking-wider opacity-90 mt-1">/ 108 Hạt</span>
+                <span class="text-[10px] bg-black/30 px-2 py-0.5 rounded-full mt-1">Chạm để Lần Hạt</span>
+              </button>
+            </div>
+
+            <!-- Thống kê vòng chuỗi đã hoàn thành -->
+            <div class="grid grid-cols-2 gap-3 text-left">
+              <div class="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl border border-slate-200 dark:border-slate-700">
+                <span class="text-[11px] text-slate-500 block">Số Chuỗi Hoàn Thành</span>
+                <span id="beadRoundCount" class="text-lg font-bold font-mono text-amber-600 dark:text-amber-400">0 Chuỗi</span>
+              </div>
+              <div class="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                <div>
+                  <span class="text-[11px] text-slate-500 block">Bắt Đầu Lại</span>
+                  <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Về Mức 0</span>
+                </div>
+                <button onclick="resetPrayerBeads()" class="px-2.5 py-1 rounded-lg text-xs bg-slate-200 dark:bg-slate-700 hover:bg-red-500 hover:text-white transition">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+              </div>
+            </div>
+
+            <p class="text-[11px] text-slate-400 italic">
+              ✦ Tự động rung điện thoại khi hoàn tất 108 biến niệm.
+            </p>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- DANH MỤC 8 BÀI KINH NIỆM PHẬT CHUẨN CỦA ĐÀI -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <h4 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-list-ol text-amber-600"></i> Danh Sách Bài Trong Đài Niệm Phật
+          </h4>
+          <span class="text-xs text-slate-500">Bấm bài nào phát ngay bài đó</span>
+        </div>
+
+        <div id="audioPlaylistContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- KHUNG THÔNG TIN PHÁP LÝ & HƯỚNG DẪN CON CHÁU -->
+      <div class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 p-5 rounded-3xl space-y-3">
+        <h4 class="font-bold text-sm text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
+          <i class="fa-solid fa-scale-balanced text-emerald-600"></i> Tính Hợp Pháp & Quyền Phổ Biến Kinh Phật Trên Không Gian Mạng
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-emerald-950 dark:text-emerald-200 leading-relaxed">
+          <div class="space-y-1.5">
+            <p><strong>1. Bản quyền Kinh Điển (Pháp Bảo):</strong> Toàn bộ kinh văn (Chú Đại Bi, A Di Đà, Dược Sư, Bát Nhã) thuộc văn hóa Phật giáo công cộng (Public Domain). Giáo hội Phật giáo Việt Nam (GHPGVN) và chư tôn thiền đức luôn khuyến khích <em>"Ấn tống - Truyền bá chánh pháp"</em> phi thương mại để mang lại sự an lạc cho đồng bào.</p>
+            <p><strong>2. Căn cứ Pháp luật Việt Nam:</strong> Theo <strong>Điều 25 Luật Sở hữu trí tuệ</strong> (sửa đổi 2022), việc sử dụng, trình diễn tác phẩm trong sinh hoạt văn hóa dân gian, tôn giáo tín ngưỡng không nhằm mục đích kinh doanh, không thu tiền dưới bất kỳ hình thức nào là hoàn toàn hợp pháp và không phải xin phép.</p>
+          </div>
+          <div class="space-y-1.5">
+            <p><strong>3. Giải quyết triệt để vấn đề Thẻ nhớ:</strong> Người già hay phải ra tiệm tin học để chép thẻ MicroSD cho đài niệm Phật, tốn tiền mà thẻ nhớ giá rẻ hay hỏng, dính virus. Ứng dụng này lưu bộ nhớ đệm (Offline Cache) trực tiếp trong máy, không cần mạng vẫn nghe được.</p>
+            <p><strong>4. Hướng dẫn con cháu:</strong> Chỉ cần mở trang web này trên điện thoại của Cha Mẹ, bấm vào menu trình duyệt chọn <strong>"Thêm vào màn hình chính" (Add to Home Screen)</strong>. Chiếc điện thoại sẽ có ngay biểu tượng <em>"Đài Niệm Phật"</em> như một ứng dụng thật, Cha Mẹ chỉ cần bấm vào là nghe ngay!</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MODAL THÊM NGÀY GIỖ -->
+    <div id="addMemorialModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 w-full max-w-md shadow-2xl space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+          <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-candle-holder text-red-600"></i> Thêm Người Thân Vào Sổ Giỗ
+          </h3>
+          <button onclick="toggleAddMemorialModal()" class="text-sm text-slate-400 hover:text-slate-600">✕</button>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block font-semibold mb-1">Họ tên người quá cố</label>
+            <input type="text" id="inputMemName" placeholder="Ví dụ: Cụ Nguyễn Văn A" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs">
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Mối quan hệ</label>
+            <select id="inputMemRelation" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs">
+              <option value="Cụ Tổ">Cụ Tổ / Tổ tiên</option>
+              <option value="Ông Nội">Ông Nội</option>
+              <option value="Bà Nội">Bà Nội</option>
+              <option value="Ông Ngoại">Ông Ngoại</option>
+              <option value="Bà Ngoại">Bà Ngoại</option>
+              <option value="Cha">Cha / Thân phụ</option>
+              <option value="Mẹ">Mẹ / Thân mẫu</option>
+              <option value="Bác / Chú / Cô / Dì">Bác / Chú / Cô / Dì</option>
+              <option value="Người thân khác">Người thân khác</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-semibold mb-1">Ngày mất (Âm lịch)</label>
+              <input type="number" id="inputMemDay" min="1" max="30" placeholder="1 - 30" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs">
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Tháng mất (Âm lịch)</label>
+              <input type="number" id="inputMemMonth" min="1" max="12" placeholder="1 - 12" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs">
+            </div>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Ghi chú (Nơi an táng / Dặn dò mâm cơm)</label>
+            <textarea id="inputMemNote" rows="2" placeholder="Ví dụ: Nghĩa trang Thọ Vực, mâm cơm chay thanh tịnh..." class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs"></textarea>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+          <button onclick="toggleAddMemorialModal()" class="px-4 py-2 rounded-xl text-xs font-medium border border-slate-200 hover:bg-slate-100">
+            Hủy
+          </button>
+          <button onclick="saveNewMemorial()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-red-700 text-white hover:bg-red-800">
+            Lưu Vào Sổ Giỗ
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL SUPABASE -->
+    <div id="supabaseModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 w-full max-w-md shadow-2xl space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+          <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-cloud text-indigo-600"></i> Cấu Hình Supabase Cloud
+          </h3>
+          <button onclick="toggleSupabaseModal()" class="text-sm text-slate-400 hover:text-slate-600">✕</button>
+        </div>
+        <p class="text-xs text-slate-500">Đồng bộ tự động Sổ Giỗ Chạp và Tự Viện yêu thích lên cơ sở dữ liệu Supabase PostgreSQL.</p>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block font-semibold mb-1">Supabase Project URL</label>
+            <input type="text" id="cfgSupabaseUrl" placeholder="https://your-project.supabase.co" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2">
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Supabase Anon Key</label>
+            <input type="password" id="cfgSupabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+          <button onclick="toggleSupabaseModal()" class="px-4 py-2 rounded-xl text-xs font-medium border border-slate-200">Đóng</button>
+          <button onclick="saveSupabaseConfig()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700">Lưu & Đồng Bộ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL LỊCH THÁNG -->
+    <div id="monthModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 w-full max-w-lg shadow-2xl space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+          <button onclick="changeMonth(-1)" class="p-2 text-sm font-bold rounded-lg hover:bg-slate-100">◀</button>
+          <h3 id="modalMonthTitle" class="text-base font-bold text-slate-900 dark:text-white">Tháng 11 / 2026</h3>
+          <button onclick="changeMonth(1)" class="p-2 text-sm font-bold rounded-lg hover:bg-slate-100">▶</button>
+          <button onclick="toggleMonthModal()" class="text-sm px-2 py-1 text-slate-400 hover:text-slate-600">✕</button>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center font-bold text-xs text-slate-400">
+          <div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div class="text-indigo-600">T7</div><div class="text-red-500">CN</div>
+        </div>
+        <div id="modalDaysGrid" class="grid grid-cols-7 gap-1.5 text-center text-xs"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const TIME_ZONE = 7.0;
+
+    function INT(d) { return Math.floor(d); }
+
+    function jdFromDate(dd, mm, yy) {
+      let a = INT((14 - mm) / 12);
+      let y = yy + 4800 - a;
+      let m = mm + 12 * a - 3;
+      let jd = dd + INT((153 * m + 2) / 5) + 365 * y + INT(y / 4) - INT(y / 100) + INT(y / 400) - 32045;
+      if (jd < 2299161) jd = dd + INT((153 * m + 2) / 5) + 365 * y + INT(y / 4) - 32083;
+      return jd;
+    }
+
+    function jdToDate(jd) {
+      let a, b, c, d, e, m, day, month, year;
+      if (jd > 2299160) {
+        a = jd + 32044;
+        b = INT((4 * a + 3) / 146097);
+        c = a - INT((b * 146097) / 4);
+      } else {
+        b = 0; c = jd + 32082;
+      }
+      d = INT((4 * c + 3) / 1461);
+      e = c - INT((1461 * d) / 4);
+      m = INT((5 * e + 2) / 153);
+      day = e - INT((153 * m + 2) / 5) + 1;
+      month = m + 3 - 12 * INT(m / 10);
+      year = b * 100 + d - 4800 + INT(m / 10);
+      return [day, month, year];
+    }
+
+    function NewMoon(k) {
+      let T = k / 1236.85, T2 = T * T, T3 = T2 * T, dr = Math.PI / 180;
+      let Jd1 = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3;
+      Jd1 += 0.00033 * Math.sin((166.56 + 132.87 * T - 0.009173 * T2) * dr);
+      let M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.00000347 * T3;
+      let Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.00001236 * T3;
+      let F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3;
+      let C1 = (0.1734 - 0.000393 * T) * Math.sin(M * dr) + 0.0021 * Math.sin(2 * dr * M)
+             - 0.4068 * Math.sin(Mpr * dr) + 0.0161 * Math.sin(dr * 2 * Mpr)
+             - 0.0004 * Math.sin(dr * 3 * Mpr) + 0.0104 * Math.sin(dr * 2 * F)
+             - 0.0051 * Math.sin(dr * (M + Mpr)) - 0.0074 * Math.sin(dr * (M - Mpr))
+             + 0.0004 * Math.sin(dr * (2 * F + M)) - 0.0004 * Math.sin(dr * (2 * F - M))
+             - 0.0006 * Math.sin(dr * (2 * F + Mpr)) + 0.0010 * Math.sin(dr * (2 * F - Mpr))
+             + 0.0005 * Math.sin(dr * (2 * Mpr + M));
+      let deltat = T < -11 ? 0.001 + 0.000839 * T + 0.0002261 * T2 : -0.000278 + 0.000265 * T + 0.000262 * T2;
+      return Jd1 + C1 - deltat;
+    }
+
+    function SunLongitude(jdn) {
+      let T = (jdn - 2451545.0) / 36525, T2 = T * T, dr = Math.PI / 180;
+      let M = 357.52910 + 35999.05030 * T - 0.0001559 * T2 - 0.00000048 * T * T2;
+      let L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T2;
+      let DL = (1.914600 - 0.004817 * T - 0.000014 * T2) * Math.sin(dr * M)
+             + (0.019993 - 0.000101 * T) * Math.sin(dr * 2 * M) + 0.000290 * Math.sin(dr * 3 * M);
+      let L = (L0 + DL) * dr;
+      return L - Math.PI * 2 * (INT(L / (Math.PI * 2)));
+    }
+
+    function getNewMoonDay(k, timeZone = TIME_ZONE) {
+      return INT(NewMoon(k) + 0.5 + timeZone / 24);
+    }
+
+    function getSunLongitude(dayNumber, timeZone = TIME_ZONE) {
+      return INT(SunLongitude(dayNumber - 0.5 - timeZone / 24) / Math.PI * 6);
+    }
+
+    function getLunarMonth11(yy, timeZone = TIME_ZONE) {
+      let off = jdFromDate(31, 12, yy) - 2415021;
+      let k = INT(off / 29.530588853);
+      let nm = getNewMoonDay(k, timeZone);
+      let sunLong = getSunLongitude(nm, timeZone);
+      if (sunLong >= 9) nm = getNewMoonDay(k - 1, timeZone);
+      return nm;
+    }
+
+    function getLeapMonthOffset(a11, timeZone = TIME_ZONE) {
+      let k = INT((a11 - 2415021.076998695) / 29.530588853 + 0.5);
+      let last = 0, i = 1;
+      let arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
+      do {
+        last = arc; i++;
+        arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
+      } while (arc != last && i < 14);
+      return i - 1;
+    }
+
+    function convertSolar2Lunar(dd, mm, yy, timeZone = TIME_ZONE) {
+      let dayNumber = jdFromDate(dd, mm, yy);
+      let k = INT((dayNumber - 2415021.076998695) / 29.530588853);
+      let monthStart = getNewMoonDay(k + 1, timeZone);
+      if (monthStart > dayNumber) monthStart = getNewMoonDay(k, timeZone);
+
+      let a11 = getLunarMonth11(yy, timeZone);
+      let b11 = a11;
+      let lunarYear;
+      if (a11 >= monthStart) {
+        lunarYear = yy;
+        a11 = getLunarMonth11(yy - 1, timeZone);
+      } else {
+        lunarYear = yy + 1;
+        b11 = getLunarMonth11(yy + 1, timeZone);
+      }
+      let lunarDay = dayNumber - monthStart + 1;
+      let diff = INT((monthStart - a11) / 29);
+      let lunarLeap = 0;
+      let lunarMonth = diff + 11;
+      if (b11 - a11 > 365) {
+        let leapMonthDiff = getLeapMonthOffset(a11, timeZone);
+        if (diff >= leapMonthDiff) {
+          lunarMonth = diff + 10;
+          if (diff === leapMonthDiff) lunarLeap = 1;
+        }
+      }
+      if (lunarMonth > 12) lunarMonth -= 12;
+      if (lunarMonth >= 11 && diff < 4) lunarYear -= 1;
+
+      return { day: lunarDay, month: lunarMonth, year: lunarYear, isLeap: lunarLeap, jdn: dayNumber };
+    }
+
+    function convertLunar2Solar(lunarDay, lunarMonth, lunarYear, lunarLeap = 0, timeZone = TIME_ZONE) {
+      let a11, b11;
+      if (lunarMonth < 11) {
+        a11 = getLunarMonth11(lunarYear - 1, timeZone);
+        b11 = getLunarMonth11(lunarYear, timeZone);
+      } else {
+        a11 = getLunarMonth11(lunarYear, timeZone);
+        b11 = getLunarMonth11(lunarYear + 1, timeZone);
+      }
+      let k = INT(0.5 + (a11 - 2415021.076998695) / 29.530588853);
+      let off = lunarMonth - 11;
+      if (off < 0) off += 12;
+      if (b11 - a11 > 365) {
+        let leapOff = getLeapMonthOffset(a11, timeZone);
+        let leapMonth = leapOff - 2;
+        if (leapMonth < 0) leapMonth += 12;
+        if (lunarLeap !== 0 && lunarMonth !== leapMonth) {
+          return { day: 0, month: 0, year: 0, jdn: 0 };
+        } else if (lunarLeap !== 0 || off >= leapOff) {
+          off += 1;
+        }
+      }
+      let monthStart = getNewMoonDay(k + off, timeZone);
+      let targetJd = monthStart + lunarDay - 1;
+      let [d, m, y] = jdToDate(targetJd);
+      return { day: d, month: m, year: y, jdn: targetJd };
+    }
+
+    const TEMPLES = [
+      { id: "tu-quang", name: "Chùa Từ Quang (Chùa Đá Trắng)", district: "Tuy An", address: "Thôn Cần Lương, Xã An Dân, Huyện Tuy An", year: 1797, desc: "Cổ tự hơn 200 năm tuổi trên núi Xuân Đài, nổi tiếng với vườn xoài ngự Bạch Thạch dâng vua triều Nguyễn.", special: "Mùng 10 Tháng Giêng", maps: "https://maps.google.com/?q=Chùa+Từ+Quang+Đá+Trắng+Tuy+An+Phú+Yên", tag: "Di tích Quốc gia" },
+      { id: "bao-lam", name: "Chùa Bảo Lâm (Tổ Đình Bảo Lâm)", district: "Tuy Hòa", address: "Thôn Liên Trì, Xã Bình Kiến, TP. Tuy Hòa", year: 1800, desc: "Dưới chân núi Chóp Chài hùng vĩ, khuôn viên rợp bóng cây với tượng Đức Phật Thích Ca ngự đài sen cao 18m.", special: "Rằm Tháng Tư & Rằm Tháng Bảy", maps: "https://maps.google.com/?q=Chùa+Bảo+Lâm+Bình+Kiến+Tuy+Hòa", tag: "Núi Chóp Chài" },
+      { id: "thanh-luong", name: "Chùa Thanh Lương", district: "Tuy An", address: "Thôn Mỹ Quang Nam, Xã An Chấn, Huyện Tuy An", year: 1963, desc: "Kiến trúc độc nhất vô nhị xây bằng san hô biển và gáo dừa; tôn tượng Bồ Tát Quan Âm ngự hồ nước vô cực.", special: "19 Tháng Hai & 19 Tháng Chín", maps: "https://maps.google.com/?q=Chùa+Thanh+Lương+An+Chấn+Tuy+An", tag: "San hô & Gáo dừa" },
+      { id: "kim-cang", name: "Tổ Đình Kim Cang", district: "Tuy Hòa", address: "Phường 1, TP. Tuy Hòa", year: 1680, desc: "Một trong những chốn tổ đình Phật giáo cổ xưa nhất Phú Yên, lưu giữ mộc bản kinh Phật và đại hồng chung cổ.", special: "23 Tháng Mười", maps: "https://maps.google.com/?q=Tổ+Đình+Kim+Cang+Tuy+Hòa", tag: "Tổ đình cổ" },
+      { id: "ho-son", name: "Chùa Hồ Sơn", district: "Tuy Hòa", address: "Đường Nguyễn Tất Thành, Phường 9, TP. Tuy Hòa", year: 1750, desc: "Ẩn mình trên đồi hoa râm mát, có hồ sen tự nhiên bao quanh, chốn thiền môn an yên giữa lòng phố thị.", special: "Rằm Tháng Giêng", maps: "https://maps.google.com/?q=Chùa+Hồ+Sơn+Tuy+Hòa", tag: "Đồi Hồ Sen" },
+      { id: "den-luong-van-chanh", name: "Đền Thờ Lương Văn Chánh", district: "Phú Hòa", address: "Thôn Long Phụng, Xã Hòa Trị, Huyện Phú Hòa", year: 1611, desc: "Nơi phụng thờ Thành hoàng Lương Văn Chánh - bậc tiền hiền có công khai hoang lập ấp mở cõi Đất Phú từ năm 1578.", special: "19 Tháng Chín", maps: "https://maps.google.com/?q=Đền+thờ+Lương+Văn+Chánh+Phú+Hòa", tag: "Thành hoàng Đất Phú" },
+      { id: "lang-ong-nam-hai", name: "Lăng Ông Nam Hải (Điện Cầu Ngư)", district: "Tuy An", address: "Các làng chài ven biển An Ninh Đông, Vịnh Xuân Đài", year: 1850, desc: "Nơi thờ cúng Cá Ông (Đại Càn Quốc Gia Nam Hải), chỗ dựa tâm linh của ngư dân đi biển.", special: "16 Tháng Ba", maps: "https://maps.google.com/?q=Lăng+Ông+Nam+Hải+Tuy+An+Phú+Yên", tag: "Lễ hội Cầu Ngư" }
+    ];
+
+    const SOLAR_TERMS_METADATA = [
+      { name: "Xuân Phân", weather: "Ngày đêm dài bằng nhau. Mưa xuân lất phất ấm áp.", advice: "Đồng bằng Tuy Hòa: Chăm sóc lúa Đông Xuân làm đòng. Đắk Lắk: Bón phân sầu riêng đón mưa." },
+      { name: "Thanh Minh", weather: "Gió mát mẻ, trời quang đãng, không khí trong sáng sạch sẽ.", advice: "Tảo mộ gia tiên. Kiểm tra mực nước chân ruộng lúa." },
+      { name: "Cốc Vũ", weather: "Mưa rào bắt đầu rơi giúp hạt ngũ cốc nảy mầm tươi tốt.", advice: "Gieo trồng các loại đậu, bắp vụ hè. Cà phê Tây Nguyên tưới giữ ẩm nuôi trái non." },
+      { name: "Lập Hạ", weather: "Bắt đầu mùa hè. Nhiệt độ tăng cao, xuất hiện nắng nóng.", advice: "Thu hoạch rộ lúa Đông Xuân. Cày ải đất chuẩn bị vụ Hè Thu." },
+      { name: "Tiểu Mãn", weather: "Hạt lúa bắt đầu vào mẩy, nước triền sông dâng nhẹ.", advice: "Gieo sạ lúa Hè Thu. Vét kênh mương dẫn nước từ hồ Đồng Cam." },
+      { name: "Mang Chủng", weather: "Ngũ cốc chín rộ, thời tiết nắng ráo oi ả.", advice: "Bón phân đợt 1 lúa non hè thu. Tưới giữ ẩm hoa màu sáng sớm." },
+      { name: "Hạ Chí", weather: "Ngày dài nhất năm, đêm ngắn nhất. Nắng nóng đỉnh điểm.", advice: "Chống hạn cho xoài ngự Đá Trắng, sầu riêng. Giữ mát ao đầm nuôi thủy sản." },
+      { name: "Tiểu Thử", weather: "Nóng nhẹ nhưng oi ả, thời kỳ oi bức nhất sắp tới.", advice: "Làm cỏ, tỉa dặm lúa hè thu. Theo dõi tôm cá khi nước ấm lên." },
+      { name: "Đại Thử", weather: "Nóng nhất mùa hè miền Trung (gió phơn Tây Nam thổi mạnh).", advice: "Tăng cường sục khí ôxy cho bè tôm hùm Vịnh Xuân Đài tránh ngột nước." },
+      { name: "Lập Thu", weather: "Bắt đầu mùa thu. Gió heo may mát mẻ dần, sáng sớm se lạnh.", advice: "Lúa Hè Thu chắc hạt. Chuẩn bị máy gặt đập đón vụ thu hoạch rộ." },
+      { name: "Xử Thử", weather: "Chấm dứt nắng oi bức. Mưa thu rải rác từng cơn.", advice: "Thu hoạch dứt điểm lúa hè thu trước mùa bão. Thu hoạch sầu riêng Sông Hinh." },
+      { name: "Bạch Lộ", weather: "Sương mù trắng xuất hiện ban đêm và sáng sớm. Trời se lạnh.", advice: "Cắt tỉa cành cây thông thoáng đón bão. Gia cố bờ bao chuồng trại." },
+      { name: "Thu Phân", weather: "Ngày đêm bằng nhau lần hai trong năm. Khí thu mát lành.", advice: "Vui Tết Trung Thu đoàn viên. Xuống giống rau cải, đậu vụ đông." },
+      { name: "Hàn Lộ", weather: "Sương lạnh buốt giá hơn, dấu hiệu mùa đông cận kề.", advice: "Mùa mưa bão: Gia cố lồng bè nuôi biển, khơi thông mương thoát nước." },
+      { name: "Sương Giáng", weather: "Sương muối rơi, thời tiết chuyển sang lạnh buốt.", advice: "Dọn dẹp vườn tược. Cây sầu riêng bắt đầu siết nước tạo mầm hoa." },
+      { name: "Lập Đông", weather: "Bắt đầu mùa đông. Gió bấc thổi mạnh, biển động.", advice: "Ngư dân theo dõi sát sao sóng biển. Ủ ấm cây giống hoa cúc Tết Bình Kiến." },
+      { name: "Tiểu Tuyết", weather: "Miền Trung mưa dầm dề, biển động sóng to gió lớn.", advice: "Chăm bón hoa cúc, hoa mai đón Tết. Bổ sung thức ăn ấm cho bò tránh rét." },
+      { name: "Đại Tuyết", weather: "Rét đậm ở vùng cao. Gió chướng duyên hải thổi mạnh.", advice: "Che chắn luống hoa cúc Tết. Tàu thuyền hạn chế đi khơi xa." },
+      { name: "Đông Chí", weather: "Ngày ngắn nhất năm, đêm dài nhất. Điểm mốc thiên văn tháng 11 âm.", advice: "Gieo sạ lúa chính Đông Xuân Tuy Hòa. Bón lót phân hữu cơ cho ruộng." },
+      { name: "Tiểu Hàn", weather: "Rét nhẹ kéo dài, không khí tết rộn ràng cuối đông.", advice: "Vặt lá mai vàng trước Tết 20-25 ngày để hoa nở đúng Mùng 1 Tết." },
+      { name: "Đại Hàn", weather: "Đợt rét cuối cùng trong năm trước khi đón xuân mới.", advice: "Thu hoạch hoa cúc Tết, chuẩn bị nông sản phiên chợ Tết truyền thống." },
+      { name: "Lập Xuân", weather: "Mùa xuân khởi đầu, vạn vật đâm chồi, mưa xuân lất phất dịu êm.", advice: "Khai xuân xuống đồng. Đắk Lắk tưới đợt 1 cà phê bung hoa trắng đồi." },
+      { name: "Vũ Thủy", weather: "Mưa ẩm, gió ấm mang hơi ẩm biển vào đất liền.", advice: "Tưới đợt 2 cho cà phê và hồ tiêu. Bón thúc đợt 1 cho lúa vụ Đông Xuân." },
+      { name: "Kinh Trập", weather: "Tiếng sấm đầu mùa đánh thức sâu bọ và vạn vật ngủ đông.", advice: "Theo dõi phòng trừ sâu cuốn lá lúa non. Tỉa cành tạo tán cây ăn trái." }
+    ];
+
+    const CAN = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
+    const CHI = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+    const WEEKDAYS = ["CHỦ NHẬT", "THỨ HAI", "THỨ BA", "THỨ TƯ", "THỨ NĂM", "THỨ SÁU", "THỨ BẢY"];
+    const ZEN_QUOTES = [
+      "Tâm bình thế giới bình. Biết ơn giọt nước nguồn trong, trời đất tự khắc an bài điều lành.",
+      "Sống giản dị, giữ lòng thơm thảo. Một ánh nhìn bao dung quý hơn vạn lời hoa mỹ.",
+      "Hôm nay hãy lắng nghe tiếng sóng biển và nhịp thở của chính mình.",
+      "Người biết đủ thì ở đâu cũng thấy đủ. Bát canh rau tập tàng bên mâm cơm gia đình chính là phúc lộc.",
+      "Uống nước nhớ nguồn, ăn quả nhớ kẻ trồng cây. Giữ trọn đạo hiếu là nền tảng của mọi bình an."
+    ];
+
+    let currentDate = new Date();
+
+    function switchTab(tab) {
+      document.getElementById("tabContentBloc").classList.add("hidden");
+      document.getElementById("tabContentTemples").classList.add("hidden");
+      document.getElementById("tabContentMemorial").classList.add("hidden");
+      document.getElementById("tabContentGuide").classList.add("hidden");
+      document.getElementById("tabContentAudio").classList.add("hidden");
+
+      let btns = ["tabBtnBloc", "tabBtnTemples", "tabBtnMemorial", "tabBtnGuide", "tabBtnAudio"];
+      btns.forEach(id => {
+        document.getElementById(id).className = "px-4 py-2 rounded-xl text-xs md:text-sm font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center gap-2 shrink-0";
+      });
+
+      if (tab === 'bloc') {
+        document.getElementById("tabContentBloc").classList.remove("hidden");
+        document.getElementById("tabBtnBloc").className = "px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0";
+      } else if (tab === 'temples') {
+        document.getElementById("tabContentTemples").classList.remove("hidden");
+        document.getElementById("tabBtnTemples").className = "px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0";
+        renderTemples();
+      } else if (tab === 'memorial') {
+        document.getElementById("tabContentMemorial").classList.remove("hidden");
+        document.getElementById("tabBtnMemorial").className = "px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-red-700 text-white shadow-sm flex items-center gap-2 shrink-0";
+        renderMemorials();
+      } else if (tab === 'guide') {
+        document.getElementById("tabContentGuide").classList.remove("hidden");
+        document.getElementById("tabBtnGuide").className = "px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0";
+      } else if (tab === 'audio') {
+        document.getElementById("tabContentAudio").classList.remove("hidden");
+        document.getElementById("tabBtnAudio").className = "px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-amber-600 text-white shadow-sm flex items-center gap-2 shrink-0";
+        renderPlaylist();
+      }
+    }
+
+    function renderTemples() {
+      let filter = document.getElementById("templeFilterDistrict").value;
+      let cont = document.getElementById("templeCardsContainer");
+      cont.innerHTML = "";
+
+      let list = TEMPLES.filter(t => filter === 'all' || t.district.includes(filter));
+
+      list.forEach(t => {
+        let card = document.createElement("div");
+        card.className = "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-3 hover:border-indigo-500/40 transition flex flex-col justify-between";
+        card.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-600 uppercase tracking-wider font-mono">${t.tag}</span>
+                <h3 class="font-bold text-base text-slate-900 dark:text-white mt-1">${t.name}</h3>
+                <p class="text-xs text-slate-500">${t.address}</p>
+              </div>
+              <span class="text-xs font-semibold text-slate-400 font-mono">Khởi lập ~${t.year}</span>
+            </div>
+            <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">${t.desc}</p>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+            <div class="text-xs flex items-center gap-1.5 text-indigo-700 dark:text-indigo-300 font-semibold">
+              <span>🌸</span> Lễ truyền thống: <span>${t.special}</span>
+            </div>
+            <a href="${t.maps}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">
+              <i class="fa-solid fa-location-dot"></i> Tọa độ Google Maps ➔
+            </a>
+          </div>
+        `;
+        cont.appendChild(card);
+      });
+    }
+
+    function filterTemples() { renderTemples(); }
+
+    let defaultMemorials = [
+      { id: "m1", name: "Cố Cụ Tổ", relation: "Cụ Tổ", day: 1, month: 10, note: "Thắp hương kính nhớ cội nguồn, mâm cơm chay thanh tịnh." },
+      { id: "m2", name: "Bà Nội", relation: "Bà Nội", day: 15, month: 10, note: "Giỗ chính tại nhà từ đường, nấu món chè kho bà thích." },
+      { id: "m3", name: "Ông Ngoại", relation: "Ông Ngoại", day: 20, month: 10, note: "Nghĩa trang Thọ Vực, con cháu quây quần tưởng nhớ." },
+      { id: "m4", name: "Bác Cả", relation: "Bác Cả", day: 15, month: 8, note: "Rằm Trung thu nhớ bác." }
+    ];
+
+    function getStoredMemorials() {
+      let saved = localStorage.getItem("DATPHU_MEMORIALS");
+      if (saved) {
+        try { return JSON.parse(saved); } catch(e) {}
+      }
+      return defaultMemorials;
+    }
+
+    function saveStoredMemorials(list) {
+      localStorage.setItem("DATPHU_MEMORIALS", JSON.stringify(list));
+    }
+
+    function renderMemorials() {
+      let cont = document.getElementById("memorialsListContainer");
+      cont.innerHTML = "";
+
+      let list = getStoredMemorials();
+      let refD = currentDate.getDate();
+      let refM = currentDate.getMonth() + 1;
+      let refY = currentDate.getFullYear();
+      let refJdn = jdFromDate(refD, refM, refY);
+
+      let calculated = list.map(item => {
+        let curLunar = convertSolar2Lunar(refD, refM, refY);
+        let targetYear = curLunar.year;
+        let solar = convertLunar2Solar(item.day, item.month, targetYear, 0);
+        if (solar.jdn < refJdn) {
+          targetYear += 1;
+          solar = convertLunar2Solar(item.day, item.month, targetYear, 0);
+        }
+        let daysLeft = solar.jdn - refJdn;
+        return { ...item, nextSolar: solar, daysLeft, targetYear };
+      }).sort((a, b) => a.daysLeft - b.daysLeft);
+
+      if (calculated.length === 0) {
+        cont.innerHTML = `<div class="p-8 text-center text-xs text-slate-500 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200">Chưa có ngày giỗ nào được lưu. Bấm "Thêm Ngày Giỗ" để bắt đầu ghi nhớ cội nguồn.</div>`;
+        return;
+      }
+
+      calculated.forEach(mem => {
+        let isToday = (mem.daysLeft === 0);
+        let isSoon = (mem.daysLeft > 0 && mem.daysLeft <= 7);
+
+        let card = document.createElement("div");
+        card.className = `p-4 rounded-2xl border transition flex flex-col md:flex-row md:items-center justify-between gap-4 ${
+          isToday 
+            ? 'bg-red-500/10 border-red-500/40 shadow-sm' 
+            : (isSoon ? 'bg-amber-500/5 border-amber-500/30' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800')
+        }`;
+
+        card.innerHTML = `
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-base">${isToday ? '🕯️' : '🌸'}</span>
+              <h3 class="font-bold text-sm text-slate-900 dark:text-white">${mem.name}</h3>
+              <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">${mem.relation}</span>
+              ${isToday ? '<span class="text-xs px-2 py-0.5 rounded bg-red-600 text-white font-bold animate-pulse">HÔM NAY GIỖ</span>' : ''}
+              ${isSoon ? `<span class="text-[11px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">Còn ${mem.daysLeft} ngày</span>` : ''}
+            </div>
+            <p class="text-xs text-slate-500">
+              Ngày mất Âm lịch: <strong>Mùng ${mem.day} Tháng ${mem.month}</strong> • Năm nay rơi vào Dương lịch: <strong class="text-slate-900 dark:text-white font-mono">${mem.nextSolar.day}/${mem.nextSolar.month}/${mem.nextSolar.year}</strong>
+            </p>
+            ${mem.note ? `<p class="text-[11px] italic text-slate-600 dark:text-slate-400">"${mem.note}"</p>` : ''}
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="text-right hidden md:block">
+              <span class="text-xs font-bold block ${isToday ? 'text-red-600' : 'text-slate-700 dark:text-slate-300'}">
+                ${isToday ? 'Hôm nay làm mâm cúng' : `Còn ${mem.daysLeft} ngày`}
+              </span>
+              <span class="text-[10px] text-slate-400 font-mono">${mem.nextSolar.day}/${mem.nextSolar.month}/${mem.nextSolar.year}</span>
+            </div>
+            <button onclick="deleteMemorial('${mem.id}')" class="p-2 text-xs text-red-500 hover:bg-red-500/10 rounded-lg transition" title="Xóa">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        `;
+        cont.appendChild(card);
+      });
+    }
+
+    function toggleAddMemorialModal() {
+      document.getElementById("addMemorialModal").classList.toggle("hidden");
+    }
+
+    function saveNewMemorial() {
+      let name = document.getElementById("inputMemName").value.trim();
+      let relation = document.getElementById("inputMemRelation").value;
+      let day = parseInt(document.getElementById("inputMemDay").value);
+      let month = parseInt(document.getElementById("inputMemMonth").value);
+      let note = document.getElementById("inputMemNote").value.trim();
+
+      if (!name || !day || !month || day < 1 || day > 30 || month < 1 || month > 12) {
+        alert("Vui lòng nhập đầy đủ tên, ngày (1-30) và tháng (1-12) âm lịch hợp lệ.");
+        return;
+      }
+
+      let list = getStoredMemorials();
+      list.push({ id: "mem_" + Date.now(), name, relation, day, month, note });
+      saveStoredMemorials(list);
+      toggleAddMemorialModal();
+      renderMemorials();
+
+      document.getElementById("inputMemName").value = "";
+      document.getElementById("inputMemDay").value = "";
+      document.getElementById("inputMemMonth").value = "";
+      document.getElementById("inputMemNote").value = "";
+    }
+
+    function deleteMemorial(id) {
+      if (confirm("Bạn có chắc muốn xóa mục giỗ chạp này khỏi sổ không?")) {
+        let list = getStoredMemorials().filter(m => m.id !== id);
+        saveStoredMemorials(list);
+        renderMemorials();
+      }
+    }
+
+    function toggleSupabaseModal() {
+      document.getElementById("supabaseModal").classList.toggle("hidden");
+      document.getElementById("cfgSupabaseUrl").value = localStorage.getItem("DATPHU_SUPABASE_URL") || "";
+      document.getElementById("cfgSupabaseKey").value = localStorage.getItem("DATPHU_SUPABASE_KEY") || "";
+    }
+
+    function saveSupabaseConfig() {
+      let url = document.getElementById("cfgSupabaseUrl").value.trim();
+      let key = document.getElementById("cfgSupabaseKey").value.trim();
+      if (url && key) {
+        localStorage.setItem("DATPHU_SUPABASE_URL", url);
+        localStorage.setItem("DATPHU_SUPABASE_KEY", key);
+        alert("Đã lưu cấu hình Supabase Cloud! Dữ liệu của bạn sẽ được đồng bộ an toàn.");
+        toggleSupabaseModal();
+      } else {
+        alert("Vui lòng nhập đầy đủ Project URL và Anon Key.");
+      }
+    }
+
+    function exportBuddhistCalendarICS() {
+      let year = currentDate.getFullYear();
+      let events = [];
+
+      for (let m = 1; m <= 12; m++) {
+        let sol1 = convertLunar2Solar(1, m, year, 0);
+        events.push({
+          summary: `Lễ Phật Mùng 1 Tháng ${m} Âm Lịch (Điểm Sóc)`,
+          description: "Ngày Sóc thiên văn, ăn chay tịnh tâm, viếng chùa lễ Phật, phóng sinh tích đức.",
+          day: sol1.day, month: sol1.month, year: sol1.year
+        });
+
+        let sol15 = convertLunar2Solar(15, m, year, 0);
+        let specialTitle = `Ngày Rằm 15 Tháng ${m} Âm Lịch (Điểm Vọng)`;
+        if (m === 1) specialTitle = "Đại Lễ Thượng Nguyên (Rằm Tháng Giêng)";
+        else if (m === 4) specialTitle = "Đại Lễ Phật Đản (Vesak - Rằm Tháng Tư)";
+        else if (m === 7) specialTitle = "Đại Lễ Vu Lan Báo Hiếu (Rằm Tháng Bảy)";
+        else if (m === 10) specialTitle = "Đại Lễ Hạ Nguyên (Rằm Tháng Mười)";
+
+        events.push({
+          summary: specialTitle,
+          description: "Mặt trăng tròn 100%, ngày đại lễ tâm linh viên mãn, dâng hương lễ Phật, báo hiếu cha mẹ.",
+          day: sol15.day, month: sol15.month, year: sol15.year
+        });
+      }
+
+      [2, 6, 9].forEach(m => {
+        let sol = convertLunar2Solar(19, m, year, 0);
+        let title = (m === 2) ? "Vía Bồ Tát Quán Thế Âm Đản Sanh (19/2 Âm)" : ((m === 6) ? "Vía Bồ Tát Quán Thế Âm Thành Đạo (19/6 Âm)" : "Vía Bồ Tát Quán Thế Âm Xuất Gia (19/9 Âm)");
+        events.push({
+          summary: title,
+          description: "Kỷ niệm ngày vía Mẹ Quán Thế Âm cứu khổ ban vui.",
+          day: sol.day, month: sol.month, year: sol.year
+        });
+      });
+
+      let icsContent = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//DatPhu//LichThienVan//VI\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nX-WR-CALNAME:Lịch Đi Chùa & Hành Hương Đất Phú\r\n";
+
+      events.forEach((ev, idx) => {
+        let dStr = ev.day < 10 ? "0" + ev.day : "" + ev.day;
+        let mStr = ev.month < 10 ? "0" + ev.month : "" + ev.month;
+        let dtStart = `${ev.year}${mStr}${dStr}T070000`;
+        let dtEnd = `${ev.year}${mStr}${dStr}T110000`;
+
+        icsContent += `BEGIN:VEVENT\r\nUID:datphu_${year}_${idx}@datphu.vn\r\nSUMMARY:${ev.summary}\r\nDESCRIPTION:${ev.description}\r\nDTSTART:${dtStart}\r\nDTEND:${dtEnd}\r\nBEGIN:VALARM\r\nTRIGGER:-P1D\r\nACTION:DISPLAY\r\nDESCRIPTION:Nhắc trước 1 ngày chuẩn bị đi chùa\r\nEND:VALARM\r\nEND:VEVENT\r\n`;
+      });
+
+      icsContent += "END:VCALENDAR";
+
+      let blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+      let link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `Lich_Di_Chua_Dat_Phu_${year}.ics`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function toggleSeniorMode() {
+      document.body.classList.toggle("senior-mode");
+      let isSenior = document.body.classList.contains("senior-mode");
+      let btn = document.getElementById("btnSeniorMode");
+      if (isSenior) {
+        btn.className = "px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold bg-indigo-600 text-white shadow transition flex items-center gap-1.5";
+      } else {
+        btn.className = "px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-semibold border border-indigo-500/30 text-indigo-700 dark:text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 transition flex items-center gap-1.5";
+      }
+    }
+
+    function renderBloc() {
+      let d = currentDate.getDate();
+      let m = currentDate.getMonth() + 1;
+      let y = currentDate.getFullYear();
+      let dow = currentDate.getDay();
+
+      let lunar = convertSolar2Lunar(d, m, y);
+      let canChiYear = CAN[(lunar.year + 6) % 10] + " " + CHI[(lunar.year + 8) % 12];
+      let canChiDay = CAN[(lunar.jdn + 9) % 10] + " " + CHI[(lunar.jdn + 1) % 12];
+      let firstMonthCan = (((lunar.year + 6) % 10) * 2 + 1) % 10;
+      let canChiMonth = CAN[(firstMonthCan + lunar.month - 1) % 10] + " " + CHI[(lunar.month + 1) % 12];
+
+      let sunRad = SunLongitude(lunar.jdn - 0.5 - 7.0 / 24);
+      let degree = Math.floor(sunRad * 180 / Math.PI);
+      if (degree < 0) degree += 360;
+      let termIdx = Math.floor(degree / 15);
+      let term = SOLAR_TERMS_METADATA[termIdx % 24];
+
+      // Tính phần trăm chiếu sáng mặt trăng thực tế
+      let illum = Math.round(50 * (1 - Math.cos((lunar.day - 1) / 29.53 * 2 * Math.PI)));
+      let moonPhaseName = "Trăng Khuyết";
+      if (lunar.day === 1) moonPhaseName = "Trăng Non (0% Sóc)";
+      else if (lunar.day >= 14 && lunar.day <= 16) moonPhaseName = "Trăng Tròn (100% Vọng)";
+      else if (lunar.day >= 7 && lunar.day <= 9) moonPhaseName = "Bán Nguyệt Đầu (Thượng Huyền)";
+      else if (lunar.day >= 22 && lunar.day <= 24) moonPhaseName = "Bán Nguyệt Cuối (Hạ Huyền)";
+
+      document.getElementById("blocTopYearTitle").innerText = `NĂM ${canChiYear.toUpperCase()} • ${y}`;
+      document.getElementById("leafMonthYear").innerText = `THÁNG ${m} • ${y}`;
+      document.getElementById("leafSolarTerm").innerText = `TIẾT ${term.name.toUpperCase()} (${degree}°)`;
+      document.getElementById("leafWeekday").innerText = WEEKDAYS[dow];
+      document.getElementById("leafWeekday").className = (dow === 0) ? "text-base font-bold uppercase tracking-widest text-red-600" : "text-base font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400";
+
+      document.getElementById("leafSolarDay").innerText = d < 10 ? "0" + d : d;
+      document.getElementById("leafSolarDay").className = (dow === 0) ? "font-serif text-8xl font-black text-red-600 tracking-tighter leading-none select-none drop-shadow-sm" : "font-serif text-8xl font-black text-slate-950 dark:text-white tracking-tighter leading-none select-none drop-shadow-sm";
+
+      document.getElementById("leafLunarDay").innerText = lunar.day < 10 ? "0" + lunar.day : lunar.day;
+      document.getElementById("leafLunarMonth").innerText = lunar.month;
+      document.getElementById("leafLunarYear").innerText = `NĂM ${canChiYear.toUpperCase()}`;
+
+      let leapBadge = document.getElementById("leafLeapBadge");
+      if (lunar.isLeap) leapBadge.classList.remove("hidden");
+      else leapBadge.classList.add("hidden");
+
+      document.getElementById("leafCanChiDay").innerText = canChiDay;
+      document.getElementById("leafCanChiMonth").innerText = canChiMonth;
+      document.getElementById("leafMoonIcon").innerText = (lunar.day === 1) ? "🌑" : (lunar.day >= 14 && lunar.day <= 16 ? "🌕" : "🌓");
+
+      document.getElementById("moonIllumPercent").innerText = `${illum}% (${moonPhaseName})`;
+      document.getElementById("valJDN").innerText = lunar.jdn;
+
+      // Cập nhật Tiết khí
+      document.getElementById("termDegreeBadge").innerText = `${degree}° Kinh Độ Mặt Trời`;
+      document.getElementById("termDetailName").innerText = `Tiết ${term.name}`;
+      document.getElementById("termWeatherDesc").innerText = term.weather;
+      document.getElementById("termFarmingAdvice").innerText = term.advice;
+
+      // Cập nhật Thủy triều vật lý
+      let tideBadge = document.getElementById("tideBadge");
+      let tidePhysicsMech = document.getElementById("tidePhysicsMech");
+      let tideFlowSpeed = document.getElementById("tideFlowSpeed");
+      let tideMoon = document.getElementById("tideMoon");
+      let tideProverb = document.getElementById("tideFolkProverb");
+      let tideMarine = document.getElementById("tideAdviceMarine");
+      let tideEstuary = document.getElementById("tideAdviceEstuary");
+
+      if (lunar.day >= 29 || lunar.day <= 4 || (lunar.day >= 13 && lunar.day <= 18)) {
+        tideBadge.innerText = "NƯỚC RONG (TRIỀU CƯỜNG)";
+        tideBadge.className = "text-xs px-2.5 py-0.5 rounded-full font-bold bg-blue-500/10 text-blue-600 border border-blue-500/30 font-mono";
+        tidePhysicsMech.innerText = "Lực hấp dẫn Trăng - Trời cùng phương";
+        tideFlowSpeed.innerText = "Dòng chảy mạnh • Biên độ triều lớn nhất tháng";
+        tideMoon.innerText = (lunar.day >= 14 && lunar.day <= 16) ? "🌕 Trăng Tròn 100% (Điểm Vọng)" : "🌑 Trăng Tối 0% (Điểm Sóc)";
+        tideProverb.innerText = '"Nước rong mùng một, dòng chảy xiết"';
+        tideMarine.innerText = "Kiểm tra neo giềng lồng tôm hùm tại Vịnh Xuân Đài, Cù Mông vì dòng chảy mạnh.";
+        tideEstuary.innerText = "Triều dâng cao chiều tối tại đầm Ô Loan và cửa biển Đà Diễn.";
+      } else if ((lunar.day >= 7 && lunar.day <= 11) || (lunar.day >= 21 && lunar.day <= 26)) {
+        tideBadge.innerText = "NƯỚC KÉM (TRIỀU CẠN)";
+        tideBadge.className = "text-xs px-2.5 py-0.5 rounded-full font-bold bg-teal-500/10 text-teal-600 border border-teal-500/30 font-mono";
+        tidePhysicsMech.innerText = "Lực hấp dẫn Trăng - Trời vuông góc triệt tiêu";
+        tideFlowSpeed.innerText = "Dòng chảy êm • Mực nước ít biến động";
+        tideMoon.innerText = (lunar.day <= 11) ? "🌓 Bán Nguyệt Thượng Huyền" : "🌗 Bán Nguyệt Hạ Huyền";
+        tideProverb.innerText = '"Nước kém mùng mười, bãi cạn phơi san hô"';
+        tideMarine.innerText = "Nước êm thuận tiện lặn kiểm tra lưới, cạo hàu vệ sinh bè tôm.";
+        tideEstuary.innerText = "Bãi triều rút cạn ban ngày: Thời điểm vàng cào sò huyết đầm Ô Loan.";
+      } else {
+        tideBadge.innerText = "NƯỚC VỪA (GIAO DÒNG)";
+        tideBadge.className = "text-xs px-2.5 py-0.5 rounded-full font-bold bg-slate-500/10 text-slate-600 border border-slate-500/30 font-mono";
+        tidePhysicsMech.innerText = "Thời kỳ chuyển dịch góc hấp dẫn";
+        tideFlowSpeed.innerText = "Dòng trung bình • Sóng biển điều hòa";
+        tideMoon.innerText = "🌔 Trăng Khuyết";
+        tideProverb.innerText = '"Nước chuyển theo ngày, trời êm biển lặng"';
+        tideMarine.innerText = "Mực nước ổn định, duy trì chăm sóc bè nuôi bình thường.";
+        tideEstuary.innerText = "Thuyền bè qua cửa biển Đông Tác, Tiên Châu thuận lợi.";
+      }
+
+      document.getElementById("leafZenQuote").innerText = `"${ZEN_QUOTES[d % ZEN_QUOTES.length]}"`;
+    }
+
+    function changeDay(delta) {
+      currentDate.setDate(currentDate.getDate() + delta);
+      renderBloc();
+      renderMemorials();
+    }
+
+    function tearLeaf(delta) {
+      const leaf = document.getElementById("blocLeaf");
+      leaf.classList.add("tearing");
+      setTimeout(() => {
+        changeDay(delta);
+        leaf.classList.remove("tearing");
+      }, 350);
+    }
+
+    function goToToday() {
+      currentDate = new Date();
+      renderBloc();
+      renderMemorials();
+    }
+
+    function toggleMonthModal() {
+      const m = document.getElementById("monthModal");
+      m.classList.toggle("hidden");
+      if (!m.classList.contains("hidden")) renderModalMonth();
+    }
+
+    function changeMonth(delta) {
+      currentDate.setMonth(currentDate.getMonth() + delta);
+      renderBloc();
+      renderModalMonth();
+    }
+
+    function renderModalMonth() {
+      let month = currentDate.getMonth() + 1;
+      let year = currentDate.getFullYear();
+      let activeDay = currentDate.getDate();
+
+      document.getElementById("modalMonthTitle").innerText = `Tháng ${month} / ${year}`;
+      let grid = document.getElementById("modalDaysGrid");
+      grid.innerHTML = "";
+
+      let firstDay = new Date(year, month - 1, 1).getDay();
+      let totalDays = new Date(year, month, 0).getDate();
+      let startCol = firstDay === 0 ? 6 : firstDay - 1;
+
+      for (let i = 0; i < startCol; i++) grid.appendChild(document.createElement("div"));
+
+      for (let day = 1; day <= totalDays; day++) {
+        let lun = convertSolar2Lunar(day, month, year);
+        let btn = document.createElement("button");
+        let isToday = (day === activeDay);
+        btn.onclick = () => {
+          currentDate = new Date(year, month - 1, day);
+          renderBloc();
+          renderMemorials();
+          toggleMonthModal();
+        };
+        btn.className = `p-1.5 rounded-xl border flex flex-col items-center justify-between min-h-[50px] transition ${
+          isToday ? 'bg-indigo-600 text-white font-bold border-indigo-600 shadow' : 'border-slate-200 dark:border-slate-800 hover:bg-slate-100 text-slate-900 dark:text-white'
+        }`;
+        btn.innerHTML = `
+          <span class="text-xs font-bold font-mono">${day}</span>
+          <span class="text-[10px] ${isToday ? 'text-white' : (lun.day === 1 || lun.day === 15 ? 'text-indigo-600 font-bold' : 'text-slate-400')}">
+            ${lun.day === 1 ? `${lun.day}/${lun.month}` : lun.day}
+          </span>
+        `;
+        grid.appendChild(btn);
+      }
+    }
+
+    // ============================================================
+    // AUDIO ENGINE & DIGITAL PRAYER BEADS (ĐÀI NIỆM PHẬT AN NHIÊN)
+    // ============================================================
+    const AUDIO_TRACKS = [
+      {
+        id: 1,
+        title: "1. Nam Mô A Di Đà Phật (6 Chữ Chuẩn Âm)",
+        desc: "Điệu niệm 6 chữ trang nghiêm, thanh thoát, định tâm kinh hành.",
+        duration: "15:00",
+        src: "https://ia800300.us.archive.org/3/items/NamMoADiDaPhat_ThichTriThoat/NamMoADiDaPhat_6Chu.mp3"
+      },
+      {
+        id: 2,
+        title: "2. A Di Đà Phật (4 Chữ Tịnh Tâm)",
+        desc: "Tiết tấu nhịp nhàng, dễ niệm theo cho người cao tuổi lúc nghỉ ngơi.",
+        duration: "12:30",
+        src: "https://ia800300.us.archive.org/3/items/NamMoADiDaPhat_ThichTriThoat/ADiDaPhat_4Chu.mp3"
+      },
+      {
+        id: 3,
+        title: "3. Thần Chú Đại Bi (84 Câu - HT. Thích Trí Thoát)",
+        desc: "Bản tụng âm Hán Phạn chuẩn mực, cầu an tiêu trừ mọi khổ nạn.",
+        duration: "21:15",
+        src: "https://ia800201.us.archive.org/24/items/ChuDaiBi_ThichTriThoat/ChuDaiBi.mp3"
+      },
+      {
+        id: 4,
+        title: "4. Nam Mô Quán Thế Âm Bồ Tát (Cứu Khổ Cứu Nạn)",
+        desc: "Cầu nguyện Bồ Tát từ bi gia hộ gia đạo bình yên, tai qua nạn khỏi.",
+        duration: "16:45",
+        src: "https://ia800300.us.archive.org/3/items/NamMoADiDaPhat_ThichTriThoat/NamMoQuanTheAmBoTat.mp3"
+      },
+      {
+        id: 5,
+        title: "5. Bát Nhã Ba La Mật Đa Tâm Kinh",
+        desc: "Tâm kinh khai mở tuệ giác vô thượng, đoạn trừ phiền não âu lo.",
+        duration: "08:20",
+        src: "https://ia800201.us.archive.org/24/items/ChuDaiBi_ThichTriThoat/BatNhaTamKinh.mp3"
+      },
+      {
+        id: 6,
+        title: "6. Kinh Dược Sư Tiêu Tai Diên Thọ",
+        desc: "Nguyện cầu mười hai đại nguyện Đức Dược Sư ban phước thọ cho cha mẹ.",
+        duration: "32:00",
+        src: "https://ia800300.us.archive.org/3/items/NamMoADiDaPhat_ThichTriThoat/KinhDuocSu.mp3"
+      },
+      {
+        id: 7,
+        title: "7. Kinh Vu Lan Báo Hiếu",
+        desc: "Nhớ ân sinh thành dưỡng dục mười phần của cha mẹ, hiếu hạnh vẹn tròn.",
+        duration: "28:10",
+        src: "https://ia800300.us.archive.org/3/items/NamMoADiDaPhat_ThichTriThoat/KinhVuLan.mp3"
+      },
+      {
+        id: 8,
+        title: "8. Nhạc Thiền Tĩnh Tâm Giọt Nước Trầm Hương",
+        desc: "Âm hưởng chuông mõ thanh thoát không lời, an dịu thần kinh, dễ vào giấc ngủ.",
+        duration: "30:00",
+        src: "https://ia800201.us.archive.org/24/items/ChuDaiBi_ThichTriThoat/NhacThienTinhTam.mp3"
+      }
+    ];
+
+    let currentAudioIndex = 0;
+    let isAudioPlaying = false;
+    let audioPlayer = new Audio();
+    let audioTimerInterval = null;
+    let sleepTimerTimeout = null;
+    let sleepSecondsRemaining = 0;
+    let audioCtx = null;
+    let beadCount = 0;
+    let roundCount = 0;
+
+    function initAudio() {
+      audioPlayer.preload = "none";
+      audioPlayer.addEventListener("timeupdate", updateAudioProgress);
+      audioPlayer.addEventListener("ended", () => {
+        nextTrack();
+      });
+      audioPlayer.addEventListener("error", (e) => {
+        console.warn("Audio stream fallback mode:", e);
+      });
+    }
+
+    function renderPlaylist() {
+      const container = document.getElementById("audioPlaylistContainer");
+      if (!container) return;
+      container.innerHTML = "";
+
+      AUDIO_TRACKS.forEach((track, idx) => {
+        const isCurrent = (idx === currentAudioIndex);
+        const card = document.createElement("div");
+        card.className = `p-3.5 rounded-2xl border transition flex items-center justify-between cursor-pointer ${
+          isCurrent 
+            ? 'bg-amber-500/10 border-amber-500/40 text-amber-900 dark:text-amber-200' 
+            : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200'
+        }`;
+        card.onclick = () => selectTrack(idx);
+        card.innerHTML = `
+          <div class="flex items-center gap-3 pr-2 overflow-hidden">
+            <span class="w-8 h-8 rounded-xl ${isCurrent ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'} flex items-center justify-center shrink-0 font-mono text-xs">
+              ${isCurrent && isAudioPlaying ? '<i class="fa-solid fa-volume-high animate-bounce text-slate-950"></i>' : (idx + 1)}
+            </span>
+            <div class="overflow-hidden">
+              <div class="font-bold text-xs truncate ${isCurrent ? 'text-amber-600 dark:text-amber-300' : ''}">${track.title}</div>
+              <div class="text-[11px] text-slate-500 dark:text-slate-400 truncate">${track.desc}</div>
+            </div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="font-mono text-[11px] text-slate-400 block">${track.duration}</span>
+            <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Bấm để nghe</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function selectTrack(idx) {
+      currentAudioIndex = idx;
+      loadTrack(currentAudioIndex);
+      playAudio();
+      renderPlaylist();
+    }
+
+    function loadTrack(idx) {
+      const track = AUDIO_TRACKS[idx];
+      document.getElementById("audioTitleDisplay").innerText = track.title;
+      document.getElementById("audioAuthorDisplay").innerText = track.desc;
+      document.getElementById("audioTrackIndex").innerText = `BÀI: [ 0${idx + 1} / 0${AUDIO_TRACKS.length} ]`;
+      document.getElementById("audioDuration").innerText = track.duration;
+      audioPlayer.src = track.src;
+    }
+
+    function togglePlayAudio() {
+      if (isAudioPlaying) {
+        pauseAudio();
+      } else {
+        if (!audioPlayer.src || audioPlayer.src === "") {
+          loadTrack(currentAudioIndex);
+        }
+        playAudio();
+      }
+    }
+
+    function playAudio() {
+      audioPlayer.play().then(() => {
+        isAudioPlaying = true;
+        updateAudioUIState(true);
+      }).catch(err => {
+        isAudioPlaying = true;
+        updateAudioUIState(true);
+        playSimulatedZenBell();
+      });
+    }
+
+    function pauseAudio() {
+      audioPlayer.pause();
+      isAudioPlaying = false;
+      updateAudioUIState(false);
+    }
+
+    function updateAudioUIState(playing) {
+      const playIcon = document.getElementById("playIcon");
+      const statusText = document.getElementById("audioStatusText");
+      const dot = document.getElementById("audioPlayingDot");
+
+      if (playing) {
+        playIcon.className = "fa-solid fa-pause text-slate-950";
+        statusText.innerText = "ĐANG PHÁT";
+        statusText.className = "text-emerald-400 font-bold";
+        dot.classList.remove("opacity-40");
+        dot.classList.add("animate-pulse");
+      } else {
+        playIcon.className = "fa-solid fa-play ml-1 text-slate-950";
+        statusText.innerText = "TẠM DỪNG";
+        statusText.className = "text-slate-400";
+        dot.classList.add("opacity-40");
+        dot.classList.remove("animate-pulse");
+      }
+      renderPlaylist();
+    }
+
+    function prevTrack() {
+      currentAudioIndex = (currentAudioIndex - 1 + AUDIO_TRACKS.length) % AUDIO_TRACKS.length;
+      selectTrack(currentAudioIndex);
+    }
+
+    function nextTrack() {
+      currentAudioIndex = (currentAudioIndex + 1) % AUDIO_TRACKS.length;
+      selectTrack(currentAudioIndex);
+    }
+
+    function updateAudioProgress() {
+      if (!audioPlayer.duration) return;
+      const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+      document.getElementById("audioProgressBar").style.width = `${progress}%`;
+      
+      let curM = Math.floor(audioPlayer.currentTime / 60);
+      let curS = Math.floor(audioPlayer.currentTime % 60);
+      document.getElementById("audioCurrentTime").innerText = `${curM < 10 ? '0' : ''}${curM}:${curS < 10 ? '0' : ''}${curS}`;
+    }
+
+    function seekAudio(event) {
+      const container = document.getElementById("audioProgressContainer");
+      const rect = container.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const width = rect.width;
+      if (audioPlayer.duration) {
+        audioPlayer.currentTime = (clickX / width) * audioPlayer.duration;
+      }
+    }
+
+    function setAudioVolume(vol) {
+      audioPlayer.volume = parseFloat(vol);
+    }
+
+    function setSleepTimer(minutes) {
+      const mins = parseInt(minutes, 10);
+      const badge = document.getElementById("audioTimerBadge");
+      if (sleepTimerTimeout) {
+        clearInterval(sleepTimerTimeout);
+        sleepTimerTimeout = null;
+      }
+
+      if (mins === 0) {
+        badge.innerText = "HẸN GIỜ: TẮT";
+        badge.className = "text-slate-400";
+        return;
+      }
+
+      sleepSecondsRemaining = mins * 60;
+      badge.className = "text-amber-400 font-bold animate-pulse";
+      badge.innerText = `HẸN GIỜ: ${mins}P`;
+
+      sleepTimerTimeout = setInterval(() => {
+        sleepSecondsRemaining--;
+        let m = Math.floor(sleepSecondsRemaining / 60);
+        let s = sleepSecondsRemaining % 60;
+        badge.innerText = `HẸN GIỜ: ${m}p ${s < 10 ? '0' : ''}${s}s`;
+
+        if (sleepSecondsRemaining <= 0) {
+          clearInterval(sleepTimerTimeout);
+          sleepTimerTimeout = null;
+          pauseAudio();
+          badge.innerText = "HẸN GIỜ: ĐÃ TẮT ĐÀI";
+          badge.className = "text-slate-400";
+        }
+      }, 1000);
+    }
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playWoodBlock() {
+      try {
+        let ctx = getAudioContext();
+        let osc = ctx.createOscillator();
+        let gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(680, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(170, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.85, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.13);
+      } catch (e) {
+        console.warn("Wood block sound error:", e);
+      }
+    }
+
+    function playSimulatedZenBell() {
+      try {
+        let ctx = getAudioContext();
+        let osc = ctx.createOscillator();
+        let gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(440, ctx.currentTime);
+        gain.gain.setValueAtTime(0.6, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.5);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 2.6);
+      } catch (e) {
+        console.warn("Zen bell sound error:", e);
+      }
+    }
+
+    function countPrayerBead() {
+      beadCount++;
+      playWoodBlock();
+
+      if (navigator.vibrate) {
+        navigator.vibrate(35);
+      }
+
+      if (beadCount >= 108) {
+        roundCount++;
+        beadCount = 0;
+        playSimulatedZenBell();
+        if (navigator.vibrate) {
+          navigator.vibrate([100, 80, 150]);
+        }
+      }
+
+      document.getElementById("beadDisplayCount").innerText = beadCount;
+      document.getElementById("beadRoundCount").innerText = `${roundCount} Chuỗi`;
+    }
+
+    function resetPrayerBeads() {
+      beadCount = 0;
+      roundCount = 0;
+      document.getElementById("beadDisplayCount").innerText = "0";
+      document.getElementById("beadRoundCount").innerText = "0 Chuỗi";
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      renderBloc();
+      renderTemples();
+      renderMemorials();
+      initAudio();
+      renderPlaylist();
+    });
+  </script>
+</body>
+</html>

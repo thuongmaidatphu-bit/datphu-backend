@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Đất Phú — Dịch Vụ Kỹ Thuật Gia Đình (Xác Thực Bảo Mật Zalo OTP)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --blue:#1e2260;
+  --blue-mid:#29328a;
+  --blue-soft:#eef2ff;
+  --blue-bd:#d8e2ff;
+  --red:#d7262d;
+  --red-dark:#ad171d;
+  --red-soft:#fff1f2;
+  --txt:#0f172a;
+  --mut:#526077;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Plus Jakarta Sans',system-ui,-apple-system,Roboto,sans-serif;
+  background:#f8fafc;
+  color:var(--txt);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.topbar{
+  background:#ffffff;
+  color:var(--txt);
+  padding:10px 24px;
+  border-bottom:1px solid #e2e8f0;
+  box-shadow:0 1px 3px rgba(15,23,42,.05);
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.topbar-in{
+  max-width:1060px;
+  margin:0 auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand img{height:38px;width:auto;border-radius:8px;object-fit:contain}
+.brand-t h1{font-size:15.5px;font-weight:800;letter-spacing:-0.2px;color:#0f172a;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge-zns{
+  font-size:10px;
+  font-weight:700;
+  padding:2px 8px;
+  background:#eff6ff;
+  color:#1d4ed8;
+  border:1px solid #bfdbfe;
+  border-radius:99px;
+  letter-spacing:normal;
+}
+.brand-t p{font-size:12px;color:#64748b;font-weight:500;margin-top:2px}
+
+.top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ghost-link{
+  color:#334155;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:700;
+  padding:8px 14px;
+  border-radius:12px;
+  background:#f1f5f9;
+  border:1px solid #e2e8f0;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:all .2s;
+}
+.ghost-link:hover{background:#e2e8f0;color:#0f172a}
+.hotline-pill{
+  background:var(--red);
+  color:#fff;
+  text-decoration:none;
+  padding:8px 16px;
+  border-radius:12px;
+  font-size:13.5px;
+  font-weight:800;
+  box-shadow:0 4px 12px rgba(215,38,45,.25);
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:all .2s;
+}
+.hotline-pill:hover{background:var(--red-dark);box-shadow:0 4px 14px rgba(215,38,45,.35)}
+.hotline-pill svg{width:16px;height:16px}
+
+.stage-wrap{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 16px;
+}
+.kiosk-card{
+  width:100%;
+  max-width:940px;
+  background:var(--card);
+  border-radius:26px;
+  padding:18px 28px 22px;
+  box-shadow:0 20px 50px rgba(30,34,96,.1),0 2px 10px rgba(30,34,96,.04);
+}
+@media(max-width:720px){.kiosk-card{padding:16px 14px;border-radius:20px}}
+
+.progress-bar{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+}
+.p-step{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:13.5px;
+  font-weight:700;
+  color:var(--mut);
+  padding:5px 13px;
+  border-radius:99px;
+  background:#f8fafc;
+  cursor:pointer;
+}
+.p-step .dot{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#e2e8f0;
+  color:#475569;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12.5px;
+  font-weight:800;
+}
+.p-step.act{background:var(--blue-soft);color:var(--blue)}
+.p-step.act .dot{background:var(--red);color:#fff}
+.p-line{width:26px;height:2px;background:#e2e8f0;border-radius:2px}
+
+.screen{display:none;animation:fadeSlide .25s cubic-bezier(.2,.8,.2,1)}
+.screen.active{display:block}
+@keyframes fadeSlide{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.hero-title{text-align:center;font-size:23px;font-weight:800;color:var(--blue)}
+.hero-sub{text-align:center;font-size:14.5px;color:var(--mut);margin-top:3px;margin-bottom:14px}
+
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:720px){.theme-grid{grid-template-columns:1fr}}
+
+.theme-card{
+  background:#f8fafc;
+  border:2.5px solid #e2e8f0;
+  border-radius:20px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:all .22s ease;
+  display:flex;
+  align-items:stretch;
+  box-shadow:0 6px 18px rgba(15,23,42,.04);
+}
+.theme-card:hover{
+  background:#fff;
+  border-color:var(--red);
+  transform:translateY(-3px);
+  box-shadow:0 14px 28px rgba(215,38,45,.14);
+}
+.tc-visual{width:165px;min-height:130px;position:relative;flex-shrink:0;overflow:hidden;background:var(--blue)}
+@media(max-width:520px){.tc-visual{width:125px}}
+.tc-visual img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.theme-card:hover .tc-visual img{transform:scale(1.06)}
+.tc-icon-badge{
+  position:absolute;
+  bottom:8px;
+  right:8px;
+  z-index:2;
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--blue) 0%,var(--blue-mid) 100%);
+  border:2.5px solid #ffffff;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 16px rgba(15,23,42,.35);
+}
+.theme-card:hover .tc-icon-badge{background:linear-gradient(135deg,var(--red) 0%,var(--red-dark) 100%)}
+.tc-icon-badge svg{width:27px;height:27px}
+.tc-body{padding:14px 16px;display:flex;flex-direction:column;justify-content:center;flex:1}
+.tc-tag{display:inline-block;align-self:flex-start;font-size:11px;font-weight:800;text-transform:uppercase;color:var(--red);background:var(--red-soft);padding:3px 10px;border-radius:99px;margin-bottom:5px}
+.tc-title{font-size:18.5px;font-weight:800;color:var(--blue);line-height:1.25;margin-bottom:4px}
+.tc-desc{font-size:13.5px;color:var(--mut);line-height:1.36}
+
+.extra-strip{
+  margin-top:14px;
+  background:linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+  border:2px solid #cbd5e1;
+  border-radius:18px;
+  padding:12px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  cursor:pointer;
+  transition:all .25s cubic-bezier(.2,.8,.2,1);
+  box-shadow:0 3px 12px rgba(15,23,42,.04);
+}
+.extra-strip:hover{
+  border-color:var(--red);
+  background:#ffffff;
+  box-shadow:0 8px 24px rgba(215,38,45,.14);
+  transform:translateY(-1px);
+}
+.es-left{display:flex;align-items:center;gap:14px;font-size:14.5px;font-weight:700;color:var(--blue);flex:1}
+.es-ico{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#d7262d 0%,#ea580c 100%);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 4px 12px rgba(215,38,45,.28);
+  position:relative;
+}
+.es-ico svg{width:24px;height:24px}
+.es-thumb-preview{
+  width:42px;
+  height:42px;
+  border-radius:10px;
+  object-fit:cover;
+  border:1.5px solid #cbd5e1;
+  flex-shrink:0;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+.es-nav-btn{
+  background:linear-gradient(135deg,#d7262d 0%,#b91c1c 100%);
+  color:#fff;
+  padding:8px 16px;
+  border-radius:99px;
+  font-size:13px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+  flex-shrink:0;
+  box-shadow:0 4px 12px rgba(215,38,45,.25);
+  transition:all .2s;
+}
+.extra-strip:hover .es-nav-btn{
+  background:#b91c1c;
+  box-shadow:0 6px 16px rgba(215,38,45,.35);
+}
+.es-nav-arrow{
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:rgba(255,255,255,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform .2s;
+}
+.extra-strip:hover .es-nav-arrow{
+  transform:translateX(3px);
+}
+
+.top-back-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+  padding-bottom:10px;
+  border-bottom:1px solid #eef2f6;
+}
+.btn-back{
+  background:#f1f5f9;
+  color:#334155;
+  border:1px solid #e2e8f0;
+  padding:8px 16px;
+  border-radius:99px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:all .2s;
+}
+.btn-back:hover{background:#e2e8f0;color:#0f172a}
+.selected-banner{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#fef2f2;
+  border:1px solid #fecdd3;
+  padding:4px 14px 4px 6px;
+  border-radius:99px;
+}
+.selected-banner img{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1.5px solid var(--red)}
+.selected-banner b{font-size:13.5px;color:var(--red);font-weight:800}
+
+/* BỐ CỤC 1 LUỒNG DỌC TỪ TRÊN XUỐNG (SINGLE-COLUMN VERTICAL FLOW) */
+.form-flow-card{
+  max-width:620px;
+  margin:0 auto;
+  padding:4px 0 12px;
+}
+.flow-step-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#eff6ff;
+  color:#1d4ed8;
+  font-size:11.5px;
+  font-weight:800;
+  border:1px solid #bfdbfe;
+  margin-right:6px;
+  flex-shrink:0;
+}
+.map-embed-container{
+  margin-top:10px;
+  border:1.5px solid #e2e8f0;
+  border-radius:16px;
+  padding:12px;
+  background:#f8fafc;
+}
+.map-embed-container .map-frame-wrap{
+  height:180px;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid #cbd5e1;
+}
+
+.field-group{margin-bottom:16px}
+.field-label{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;font-weight:700;color:#0f172a;margin-bottom:8px}
+.field-hint{font-size:11px;font-weight:600;color:#64748b;background:#f1f5f9;padding:2px 8px;border-radius:99px}
+
+.input-row{display:grid;grid-template-columns:1.25fr 1fr;gap:10px}
+@media(max-width:520px){.input-row{grid-template-columns:1fr}}
+
+.input-wrap{position:relative;width:100%}
+.input-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;color:#64748b}
+
+.soft-input{
+  width:100%;
+  height:46px;
+  background:#f8fafc;
+  border:1.5px solid #e2e8f0;
+  border-radius:12px;
+  padding:0 14px;
+  font-size:14.5px;
+  font-weight:600;
+  color:#0f172a;
+  transition:all .2s;
+}
+.soft-input.with-icon{padding-left:36px}
+.soft-input:focus{outline:none;background:#fff;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.12)}
+
+.addr-select-row{display:grid;grid-template-columns:1.15fr 1.35fr;gap:10px}
+@media(max-width:520px){.addr-select-row{grid-template-columns:1fr}}
+
+/* NÚT 1-CHẠM GPS ƯU TIÊN SỐ 1 */
+.gps-priority-card{
+  background:linear-gradient(135deg,#eff6ff 0%,#f0fdf4 100%);
+  border:2px solid #3b82f6;
+  border-radius:16px;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  cursor:pointer;
+  transition:all .25s cubic-bezier(.2,.8,.2,1);
+  box-shadow:0 4px 14px rgba(59,130,246,.12);
+  position:relative;
+  overflow:hidden;
+  margin-bottom:12px;
+}
+.gps-priority-card:hover{
+  transform:translateY(-2px);
+  border-color:#2563eb;
+  box-shadow:0 8px 24px rgba(59,130,246,.2);
+}
+.gps-priority-card.active-gps{
+  background:linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%);
+  border-color:#10b981;
+  box-shadow:0 4px 16px rgba(16,185,129,.18);
+}
+.gpc-icon{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:#2563eb;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 4px 10px rgba(37,99,235,.25);
+  transition:all .2s;
+}
+.gps-priority-card.active-gps .gpc-icon{
+  background:#10b981;
+  box-shadow:0 4px 10px rgba(16,185,129,.25);
+}
+.gpc-body{flex:1}
+.gpc-title{
+  font-size:14.5px;
+  font-weight:800;
+  color:#0f172a;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  line-height:1.3;
+}
+.gpc-badge{
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+  background:#dbeafe;
+  color:#1e40af;
+  padding:2px 8px;
+  border-radius:99px;
+  border:1px solid #bfdbfe;
+}
+.gps-priority-card.active-gps .gpc-badge{
+  background:#d1fae5;
+  color:#065f46;
+  border-color:#a7f3d0;
+}
+.gpc-desc{
+  font-size:12px;
+  color:#475569;
+  font-weight:500;
+  margin-top:3px;
+  line-height:1.4;
+}
+.gpc-arrow{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:#ffffff;
+  border:1px solid #e2e8f0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:800;
+  color:#2563eb;
+  flex-shrink:0;
+  box-shadow:0 2px 6px rgba(0,0,0,.04);
+}
+.gps-priority-card.active-gps .gpc-arrow{
+  color:#10b981;
+}
+.field-sub-input{margin-top:8px}
+
+.soft-select{
+  width:100%;
+  height:46px;
+  background:#f8fafc;
+  border:1.5px solid #e2e8f0;
+  border-radius:12px;
+  padding:0 12px;
+  font-size:13.5px;
+  font-weight:700;
+  color:#0f172a;
+  cursor:pointer;
+  transition:all .2s;
+  appearance:auto;
+}
+.soft-select:focus{outline:none;background:#fff;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.12)}
+
+.time-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.time-chip{
+  background:#f8fafc;
+  border:1.5px solid #e2e8f0;
+  border-radius:14px;
+  padding:12px;
+  cursor:pointer;
+  text-align:left;
+  transition:all .2s;
+}
+.time-chip .tc-head{font-size:13.5px;font-weight:800;color:#1e293b;margin-bottom:2px}
+.time-chip .tc-sub{font-size:12px;color:#64748b;font-weight:500}
+.time-chip.act{background:#fef2f2;border-color:#ef4444;box-shadow:0 2px 8px rgba(239,68,68,0.1)}
+.time-chip.act .tc-head{color:#dc2626}
+.time-chip.act .tc-sub{color:#b91c1c}
+
+.slot-picker{display:none;margin-top:10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:10px}
+.slot-picker.show{display:block}
+.slot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.slot-btn{background:#fff;border:1px solid #cbd5e1;border-radius:10px;padding:8px 6px;font-size:12px;font-weight:700;color:#334155;cursor:pointer;text-align:center;transition:all .2s}
+.slot-btn.act{background:#1e293b;color:#fff;border-color:#1e293b}
+
+.map-action-col{display:flex;flex-direction:column}
+.map-panel{background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:14px;box-shadow:0 4px 16px rgba(15,23,42,0.03)}
+.map-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.map-title-wrap{display:flex;align-items:center;gap:6px}
+.map-badge-dot{width:8px;height:8px;border-radius:50%;background:#16a34a;display:inline-block}
+.map-title{font-size:13px;font-weight:800;color:#0f172a}
+.gps-btn{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:6px 12px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .2s}
+.gps-btn:hover{background:#dbeafe}
+.map-frame-wrap{position:relative;width:100%;height:185px;border-radius:14px;overflow:hidden;border:1px solid #e2e8f0;background:#e2e8f0}
+.map-frame-wrap iframe{width:100%;height:100%;border:0}
+.route-badge{margin-top:10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#475569;font-weight:600}
+.route-badge a{color:#dc2626;text-decoration:none;font-weight:700}
+
+.cta-call-btn{
+  width:100%;
+  margin-top:14px;
+  background:#d7262d;
+  color:#fff;
+  border:none;
+  border-radius:14px;
+  padding:14px;
+  font-size:15px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 6px 20px rgba(215,38,45,0.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:all .2s;
+}
+.cta-call-btn:hover{background:#b91c1c;transform:translateY(-1px)}
+.cta-call-btn svg{width:20px;height:20px}
+.security-note{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;font-size:11.5px;font-weight:600;color:#64748b}
+
+/* MÀN 2B (XÁC THỰC ZALO OTP) */
+.otp-wrap{max-width:540px;margin:0 auto;text-align:center}
+.zns-toast{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-left:5px solid #2563eb;
+  border-radius:16px;
+  padding:14px 16px;
+  text-align:left;
+  margin-bottom:16px;
+  font-size:13.5px;
+  box-shadow:0 2px 8px rgba(15,23,42,0.03);
+}
+.zns-head{display:flex;justify-content:space-between;align-items:center;font-weight:800;color:#0f172a;margin-bottom:6px}
+.otp-boxes{display:flex;justify-content:center;gap:12px;margin:16px 0}
+.otp-digit{
+  width:58px;
+  height:64px;
+  border:2px solid #cbd5e1;
+  border-radius:14px;
+  background:#ffffff;
+  font-size:26px;
+  font-weight:900;
+  color:#0f172a;
+  text-align:center;
+  transition:all .2s;
+}
+.otp-digit:focus{outline:none;border-color:#d7262d;box-shadow:0 0 0 3px rgba(215,38,45,0.15)}
+.timer-bar{display:flex;justify-content:center;align-items:center;gap:14px;font-size:13.5px;color:#64748b;margin-bottom:12px}
+.resend-btn{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:7px 14px;border-radius:99px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .2s}
+.resend-btn:disabled{opacity:.5;cursor:not-allowed}
+.err-msg{display:none;color:#dc2626;background:#fef2f2;border:1px solid #fecdd3;padding:9px 14px;border-radius:10px;font-size:13.5px;font-weight:700;margin-bottom:10px}
+
+.success-center{text-align:center;max-width:580px;margin:0 auto;padding:10px 0}
+.success-badge{width:64px;height:64px;border-radius:50%;background:#ecfdf5;color:#16a34a;border:2px solid #a7f3d0;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.success-badge svg{width:32px;height:32px}
+.worker-ticket{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px;margin:16px 0;text-align:left;font-size:14.5px;line-height:1.7;box-shadow:0 4px 16px rgba(15,23,42,0.03)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a href="index.html" class="brand">
+      <img src="logo_datphu.jpg" alt="Đất Phú" onerror="this.src='/datphu_logo.jpg'">
+      <div class="brand-t">
+        <h1>
+          <span>ĐẤT PHÚ — CỬA HÀNG VẬT TƯ &amp; DỊCH VỤ 6K</span>
+          <span class="badge-zns">Xác Thực Zalo</span>
+        </h1>
+        <p>TP. Tuy Hòa, Phú Yên • Cửa hàng bảo lãnh thợ &amp; vật tư chính hãng</p>
+      </div>
+    </a>
+
+    <div class="top-actions">
+      <a class="ghost-link" href="datphu_nearby_hub.html">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Bản đồ Cửa Hàng quanh đây</span>
+      </a>
+      <a class="hotline-pill" href="tel:0979991898">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72l-1.5 3.5a16 16 0 0 0 6 6l3.5-1.5a2 2 0 0 1 1.72 2z"/></svg>
+        <span>0979.991.898</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="stage-wrap">
+  <div class="kiosk-card">
+
+    <div class="progress-bar">
+      <div class="p-step act" id="pStep1" onclick="goToScreen(1)">
+        <span class="dot">1</span>
+        <span>Chọn hạng mục</span>
+      </div>
+      <div class="p-line"></div>
+      <div class="p-step" id="pStep2">
+        <span class="dot">2</span>
+        <span>Nhập SĐT &amp; Định vị</span>
+      </div>
+      <div class="p-line"></div>
+      <div class="p-step" id="pStepOtp">
+        <span class="dot">3</span>
+        <span>Xác thực Zalo OTP (4 số)</span>
+      </div>
+    </div>
+
+    <!-- MÀN 1: 4 CHỦ ĐỀ HÌNH ẢNH ĐỘC QUYỀN ĐẤT PHÚ -->
+    <section class="screen active" id="screen1">
+      <h2 class="hero-title">Hôm nay gia đình mình cần hỗ trợ hạng mục nào?</h2>
+      <p class="hero-sub">Chạm vào hình ảnh bên dưới — Hệ thống sẽ kết nối Cửa Hàng gần nhất có sẵn vật tư và thợ bảo lãnh</p>
+
+      <div class="theme-grid">
+        <div class="theme-card" onclick="pickService('DIEN_NUOC','Điện Nước & Thiết Bị Vệ Sinh','Sen vòi, bồn cầu, rò ống nước, chập điện, máy bơm','/img/theme_plumbing.svg')">
+          <div class="tc-visual">
+            <img src="/img/theme_plumbing.svg" alt="Điện nước và thiết bị vệ sinh">
+            <div class="tc-icon-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6a4 4 0 0 1 4 4v1"/><path d="M9 9h10l-1.5 3h-7z"/><line x1="11" y1="15" x2="10" y2="18"/><line x1="14" y1="15" x2="14" y2="19"/><line x1="17" y1="15" x2="18" y2="18"/><polygon points="6 13 3 18 6 18 5 22 9 16 6 16 6 13"/></svg>
+            </div>
+          </div>
+          <div class="tc-body">
+            <span class="tc-tag">Điện Nước &amp; Phòng Tắm</span>
+            <div class="tc-title">Điện Nước &amp; Thiết Bị Vệ Sinh</div>
+            <div class="tc-desc">Lắp sửa sen vòi, bồn cầu, chậu rửa, rò ống nước, máy bơm &amp; điện âm tường</div>
+          </div>
+        </div>
+
+        <div class="theme-card" onclick="pickService('VI_TINH','Sửa Chữa Vi Tính & Laptop','Cài Win, sửa máy tính, laptop, cứu dữ liệu, máy in & cấu hình WiFi','/img/theme_computer.svg')">
+          <div class="tc-visual">
+            <img src="/img/theme_computer.svg" alt="Sửa chữa vi tính và laptop">
+            <div class="tc-icon-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+          </div>
+          <div class="tc-body">
+            <span class="tc-tag" style="background:#eff6ff;color:#1d4ed8">Công Nghệ &amp; Tin Học</span>
+            <div class="tc-title">Sửa Chữa Vi Tính &amp; Laptop</div>
+            <div class="tc-desc">Cài Win, sửa máy tính bàn, laptop, cứu dữ liệu ổ cứng, máy in &amp; mạng WiFi gia đình</div>
+          </div>
+        </div>
+
+        <div class="theme-card" onclick="pickService('CAMERA','Lắp Đặt & Sửa Chữa Camera','Lắp camera IP/WiFi, sửa mất hình, đầu ghi hình, xem camera qua điện thoại','/img/theme_camera.svg')">
+          <div class="tc-visual">
+            <img src="/img/theme_camera.svg" alt="Camera quan sát và an ninh">
+            <div class="tc-icon-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>
+          </div>
+          <div class="tc-body">
+            <span class="tc-tag" style="background:#ecfdf5;color:#047857">An Ninh Gia Đình</span>
+            <div class="tc-title">Camera Quan Sát &amp; An Ninh</div>
+            <div class="tc-desc">Lắp đặt camera IP, WiFi ngoài trời, sửa mất tín hiệu, đầu ghi &amp; xem trên điện thoại</div>
+          </div>
+        </div>
+
+        <div class="theme-card" onclick="pickService('CHONG_THAM','Chống Thấm Sân Thượng & Sửa Nhà','Xử lý thấm sàn mái, sân thượng, nứt tường, gia cố mái tôn','/img/theme_waterproof.svg')">
+          <div class="tc-visual">
+            <img src="/img/theme_waterproof.svg" alt="Chống thấm sân thượng">
+            <div class="tc-icon-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5c0 0-5 5.4-5 8.8a5 5 0 0 0 10 0c0-3.4-5-8.8-5-8.8z"/><path d="M3 18l4-3h10l4 3"/><line x1="2" y1="21" x2="22" y2="21"/><line x1="8" y1="15" x2="6" y2="21"/><line x1="16" y1="15" x2="18" y2="21"/></svg>
+            </div>
+          </div>
+          <div class="tc-body">
+            <span class="tc-tag">Bảo Vệ Công Trình</span>
+            <div class="tc-title">Chống Thấm Sân Thượng &amp; Sửa Nhà</div>
+            <div class="tc-desc">Thi công chống thấm sàn mái, lát gạch sân thượng, xử lý nứt tường &amp; dột mái</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="extra-strip" onclick="pickService('CO_KHI','Cơ Khí Sắt &amp; Hàn Xì Cửa Cổng','Hàn xì cửa sắt, bản lề, mái hiên, lan can, hàng rào, cầu thang sắt','/img/theme_iron_welding.png')">
+        <div class="es-left">
+          <div class="es-ico" title="Thợ Hàn Cơ Khí Sắt Đất Phú">
+            <!-- Icon que hàn hồ quang & mặt nạ cơ khí sắt -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 4l-4 4"/>
+              <path d="M4 14l6-6"/>
+              <path d="M2 18l4-4"/>
+              <path d="M19 9l2-2"/>
+              <path d="M17 3l4 4"/>
+              <circle cx="17" cy="7" r="1.5" fill="#facc15" stroke="none"/>
+              <rect x="3" y="15" width="6" height="6" rx="1"/>
+              <path d="M9 18h12"/>
+              <path d="M15 12v9"/>
+              <path d="M21 15v6"/>
+            </svg>
+          </div>
+          <img src="/img/theme_iron_welding.png" alt="Thợ hàn cơ khí" class="es-thumb-preview" onerror="this.style.display='none'">
+          <div>
+            <div style="font-size:14.5px;font-weight:800;color:var(--blue);line-height:1.25">
+              Cần Thợ Cơ Khí Sắt, Hàn Xì Cửa Cổng &amp; Mái Che?
+            </div>
+            <div style="font-size:12px;color:var(--mut);font-weight:500;margin-top:2px">
+              Khung sắt, bản lề, lan can, hàng rào, mái che sân thượng tại TP. Tuy Hòa
+            </div>
+          </div>
+        </div>
+
+        <!-- Nút icon điều hướng nổi bật -->
+        <div class="es-nav-btn">
+          <span>Tìm Tiệm Cơ Khí Gần Nhất</span>
+          <div class="es-nav-arrow">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MÀN 2: THÔNG TIN KHÁCH HÀNG & ĐỊNH VỊ GỌI THỢ (LUỒNG 1 CỘT TỪ TRÊN XUỐNG) -->
+    <section class="screen" id="screen2">
+      <div class="form-flow-card">
+
+        <div class="top-back-bar">
+          <button type="button" class="btn-back" onclick="goToScreen(1)">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span>Đổi hạng mục khác</span>
+          </button>
+          <div class="selected-banner">
+            <img id="chosenServiceImg" src="/img/theme_plumbing.svg" alt="">
+            <b id="chosenServiceBadge">Điện Nước &amp; Thiết Bị Vệ Sinh</b>
+          </div>
+        </div>
+
+        <!-- Khung bảo đảm từ Cửa hàng -->
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#1e3a8a;line-height:1.4">
+          🛡️ <b>Cơ chế Cửa Hàng bảo lãnh:</b> Yêu cầu được chuyển tới <b>Cửa Hàng vật tư gần nhất</b>. Chủ tiệm trực tiếp xuất vật tư chính hãng và cử thợ ruột đến thi công &amp; bảo hành.
+        </div>
+
+        <!-- 1. HỌ VÀ TÊN -->
+        <div class="field-group">
+          <label class="field-label" for="cName">
+            <span style="display:flex;align-items:center"><span class="flow-step-badge">1</span> Họ và tên của Cô/Chú:</span>
+            <span class="field-hint">Xưng hô thân thiện</span>
+          </label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input class="soft-input with-icon" id="cName" value="Cô Lan" placeholder="Nhập tên của Cô/Chú (Ví dụ: Cô Lan, Chú Hùng)...">
+          </div>
+        </div>
+
+        <!-- 2. SỐ ĐIỆN THOẠI -->
+        <div class="field-group">
+          <label class="field-label" for="cPhone">
+            <span style="display:flex;align-items:center"><span class="flow-step-badge">2</span> Số điện thoại (Zalo / SMS):</span>
+            <span class="field-hint" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe">Nhận mã OTP</span>
+          </label>
+          <div class="input-wrap">
+            <span class="input-icon">📞</span>
+            <input class="soft-input with-icon" id="cPhone" type="tel" value="0979991898" placeholder="Nhập số điện thoại Zalo của bạn...">
+          </div>
+        </div>
+
+        <!-- 3. ĐỊA CHỈ NHÀ / TÊN ĐƯỜNG -->
+        <div class="field-group">
+          <label class="field-label" for="cAddressDetail">
+            <span style="display:flex;align-items:center"><span class="flow-step-badge">3</span> Địa chỉ nhà / Số nhà &amp; Tên đường:</span>
+            <span class="field-hint">TP. Tuy Hòa</span>
+          </label>
+          <div class="input-wrap">
+            <span class="input-icon">🏠</span>
+            <input class="soft-input with-icon" id="cAddressDetail" value="86 Lê Duẩn" placeholder="Ví dụ: 86 Lê Duẩn (gần ngã 4 Hùng Vương hoặc tiệm bánh kem)...">
+          </div>
+
+          <!-- Mở rộng chọn nhanh khu vực Tuy Hòa nếu muốn -->
+          <div style="margin-top:8px">
+            <details style="cursor:pointer">
+              <summary style="font-size:11.5px;font-weight:700;color:#64748b;padding:2px 0">
+                <span>Hoặc chọn nhanh theo mốc khu vực Tuy Hòa ▾</span>
+              </summary>
+              <div style="margin-top:8px">
+                <select id="cWardSelect" class="soft-select" style="font-size:13px">
+                  <option value="Phường 7 (Đại lộ Hùng Vương - Lê Duẩn)" data-lat="13.0892" data-lng="109.3095" selected>📍 Khu Ven Biển & Đại lộ Hùng Vương (P.7 - Tháp Nghinh Phong)</option>
+                  <option value="Khu Phố Trung Tâm (Chợ Tuy Hòa - Vincom - P.1, P.2)" data-lat="13.0840" data-lng="109.3110">📍 Khu Phố Trung Tâm (Chợ Tuy Hòa - Vincom - P.1, P.2)</option>
+                  <option value="Khu Phường 5 & Ga Tuy Hòa (Nguyễn Huệ)" data-lat="13.0915" data-lng="109.3130">📍 Khu Phường 5 (Nguyễn Huệ - Ga Tuy Hòa)</option>
+                  <option value="Khu Phường 4 (Lê Lợi - Duy Tân)" data-lat="13.0848" data-lng="109.3038">📍 Khu Phường 4 (Lê Lợi - Duy Tân)</option>
+                  <option value="Khu Bắc Tuy Hòa (Phường 9 - ĐH Xây Dựng)" data-lat="13.1010" data-lng="109.3028">📍 Khu Bắc Tuy Hòa (Phường 9 - KĐT Hùng Vương)</option>
+                  <option value="Khu Nam Sông Ba (Phú Đông, Phú Lâm, Phú Thạnh)" data-lat="13.0650" data-lng="109.3100">📍 Khu Nam Sông Ba (Phú Đông, Phú Lâm, Cầu Hùng Vương)</option>
+                  <option value="Khu Ngoại Thành (Bình Kiến, Hòa Kiến, An Phú)" data-lat="13.1250" data-lng="109.2850">📍 Khu Ngoại Thành (Bình Kiến, Hòa Kiến, An Phú)</option>
+                </select>
+              </div>
+            </details>
+          </div>
+
+          <!-- Hidden input lưu trữ toàn văn địa chỉ và tọa độ -->
+          <input type="hidden" id="cAddressText" value="86 Lê Duẩn, Phường 7, TP. Tuy Hòa">
+        </div>
+
+        <!-- 4. ĐỊNH VỊ ĐỊA CHỈ THỢ ĐẾN (GPS 1-CHẠM & BẢN ĐỒ TRỰC QUAN) -->
+        <div class="field-group">
+          <label class="field-label">
+            <span style="display:flex;align-items:center"><span class="flow-step-badge">4</span> Định vị địa chỉ Thợ đến:</span>
+            <span class="field-hint" style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0">🎯 Khuyên dùng GPS</span>
+          </label>
+
+          <!-- NÚT 1-CHẠM GPS ƯU TIÊN SỐ 1 -->
+          <div class="gps-priority-card" id="gpsOneTouchCard" onclick="locateMyGps()" title="Chạm để ghim vị trí chính xác của nhà bạn">
+            <div class="gpc-icon" id="gpcIcon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="22" y1="12" x2="18" y2="12"/>
+                <line x1="6" y1="12" x2="2" y2="12"/>
+                <line x1="12" y1="6" x2="12" y2="2"/>
+                <line x1="12" y1="22" x2="12" y2="18"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </div>
+            <div class="gpc-body">
+              <div class="gpc-title">
+                <span id="gpsTitleText">🎯 Chạm Định Vị Nhà Tôi (GPS 1-Chạm)</span>
+                <span class="gpc-badge" id="gpsBadgeText">Ưu Tiên Số 1</span>
+              </div>
+              <div class="gpc-desc" id="gpsDescText">
+                Tự động ghim tọa độ chính xác đến từng mét — Thợ mở Google Maps đi thẳng tới tận cổng, không cần biết phường xã sáp nhập
+              </div>
+            </div>
+            <div class="gpc-arrow" id="gpcArrow">➔</div>
+          </div>
+
+          <!-- Khung bản đồ trực quan lồng ngay bên dưới GPS -->
+          <div class="map-embed-container">
+            <div class="map-top">
+              <div class="map-title-wrap">
+                <span class="map-badge-dot"></span>
+                <span class="map-title">Bản đồ vệ tinh vị trí Thợ đến</span>
+              </div>
+              <button type="button" class="gps-btn" onclick="locateMyGps()">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+                <span>Cập nhật GPS</span>
+              </button>
+            </div>
+
+            <div class="map-frame-wrap">
+              <iframe id="osmMapFrame" src="https://www.openstreetmap.org/export/embed.html?bbox=109.2995%2C13.0812%2C109.3195%2C13.0972&amp;layer=mapnik&amp;marker=13.0892%2C109.3095" loading="lazy"></iframe>
+            </div>
+
+            <div class="route-badge">
+              <span id="gpsCoordLabel">📌 Tọa độ: 13.0892, 109.3095</span>
+              <a id="gmapRouteLink" href="https://www.google.com/maps/dir/?api=1&destination=13.0892,109.3095" target="_blank" rel="noopener">Mở trên Google Maps &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. THỜI GIAN MUỐN THỢ TỚI -->
+        <div class="field-group">
+          <label class="field-label">
+            <span style="display:flex;align-items:center"><span class="flow-step-badge">5</span> Thời gian muốn Thợ đến:</span>
+          </label>
+          <div class="time-row" id="timeBtns">
+            <button type="button" class="time-chip act" data-mode="URGENT">
+              <div class="tc-head">⚡ Cần Thợ Tới Gấp</div>
+              <div class="tc-sub">Có mặt sau 20 – 45 phút</div>
+            </button>
+            <button type="button" class="time-chip" data-mode="SLOT">
+              <div class="tc-head">📅 Hẹn Giờ Cụ Thể</div>
+              <div class="tc-sub">Chọn ca sáng, chiều, tối</div>
+            </button>
+          </div>
+
+          <div class="slot-picker" id="slotPicker">
+            <div class="slot-grid" id="slotBtns">
+              <button type="button" class="slot-btn act" data-slot="Buổi Sáng (08:00 - 11:00)">☀️ Sáng (8h – 11h)</button>
+              <button type="button" class="slot-btn" data-slot="Buổi Chiều (14:00 - 17:00)">🌤️ Chiều (14h – 17h)</button>
+              <button type="button" class="slot-btn" data-slot="Buổi Tối (18:00 - 20:30)">🌙 Tối (18h – 20h30)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. NÚT GỬI YÊU CẦU (ĐÍCH ĐẾN CUỐI CÙNG) -->
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f1f5f9">
+          <button type="button" class="cta-call-btn" onclick="requestZaloOtp()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span id="mainCtaText">Gửi Tới Cửa Hàng Gần Nhất — Nhận Mã Zalo OTP</span>
+          </button>
+          <div class="security-note">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#16a34a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Cửa hàng chịu trách nhiệm bảo hành • Vật tư chính hãng xuất kho</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MÀN 2B (BƯỚC 3): XÁC THỰC MÃ OTP 4 SỐ QUA ZALO ZNS ĐỂ CHỐNG SPAM/QUẤY RỐI -->
+    <section class="screen" id="screenOtp">
+      <div class="top-back-bar">
+        <button type="button" class="btn-back" onclick="goToScreen(2)">
+          <span>&larr; Sửa lại số điện thoại</span>
+        </button>
+        <div class="selected-banner">
+          <b style="padding-left:8px">🛡️ Bảo vệ danh tính Kín Kẽ OS</b>
+        </div>
+      </div>
+
+      <div class="otp-wrap">
+        <h2 class="hero-title" style="font-size:22px">Nhập Mã Xác Thực Zalo ZNS (4 chữ số)</h2>
+        <p class="hero-sub">Hệ thống đã gửi tin nhắn chứa mã OTP 4 số từ Zalo OA Đất Phú về số <b id="otpPhoneDisplay" style="color:var(--blue)">0979.***898</b></p>
+
+        <!-- HỘP MÔ PHỎNG TIN NHẮN ZALO ZNS ĐẾN ĐIỆN THOẠI KHÁCH HÀNG -->
+        <div class="zns-toast">
+          <div class="zns-head">
+            <span>💬 Tin nhắn Zalo ZNS (OA Đất Phú Core):</span>
+            <button type="button" onclick="autoFillDemoOtp()" style="background:var(--red);color:#fff;border:none;padding:4px 10px;border-radius:99px;font-size:12px;font-weight:800;cursor:pointer">Chạm tự điền mã</button>
+          </div>
+          <div id="znsMessagePreview" style="color:var(--txt);line-height:1.45"></div>
+        </div>
+
+        <div class="err-msg" id="otpErrBox"></div>
+
+        <!-- 4 Ô NHẬP SỐ OTP CỠ LỚN -->
+        <div class="otp-boxes">
+          <input class="otp-digit" id="otp1" maxlength="1" inputmode="numeric" oninput="moveOtpFocus(1)">
+          <input class="otp-digit" id="otp2" maxlength="1" inputmode="numeric" oninput="moveOtpFocus(2)">
+          <input class="otp-digit" id="otp3" maxlength="1" inputmode="numeric" oninput="moveOtpFocus(3)">
+          <input class="otp-digit" id="otp4" maxlength="1" inputmode="numeric" oninput="moveOtpFocus(4)">
+        </div>
+
+        <div class="timer-bar">
+          <span>⏳ Hiệu lực mã: <b id="otpTtlLabel" style="color:var(--red)">03:00</b></span>
+          <button type="button" class="resend-btn" id="btnResendOtp" disabled onclick="requestZaloOtp()">Gửi lại mã OTP (60s)</button>
+        </div>
+
+        <button type="button" class="cta-call-btn" onclick="verifyOtpAndDispatch()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span>Xác Nhận OTP &amp; Gọi Thợ Ngay</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- MÀN 3: XÁC THỰC THÀNH CÔNG & BẢO MẬT SỐ ĐIỆN THOẠI (MASKED PHONE) -->
+    <section class="screen" id="screen3">
+      <div class="success-center">
+        <div class="success-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h2 class="hero-title" id="doneTitle">Xác Thực Thành Công!</h2>
+        <p class="hero-sub" id="doneMsg" style="margin-bottom:0">Thợ 6K sẽ liên hệ xác nhận trong giây lát.</p>
+
+        <div class="worker-ticket" id="doneWorker"></div>
+
+        <button type="button" class="btn-back" onclick="goToScreen(1)" style="margin:0 auto">
+          &larr; Quay về màn hình chọn dịch vụ
+        </button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script>
+let selectedTrade='DIEN_NUOC';
+let selectedTitle='Điện Nước & Thiết Bị Vệ Sinh';
+let selectedDesc='Sen vòi, bồn cầu, rò ống nước, chập điện, máy bơm';
+let currentLat=13.0892;
+let currentLng=109.3095;
+let selectedMode='URGENT';
+let selectedSlot='Buổi Sáng (08:00 - 11:00)';
+let currentDemoOtp='';
+let otpTimerInterval=null;
+let ttlRemaining=180;
+let resendRemaining=60;
+
+let isGpsLocated = false;
+
+function updateMapPin(lat,lng,addrText){
+  currentLat=Number(Number(lat).toFixed(5));
+  currentLng=Number(Number(lng).toFixed(5));
+  if(addrText)document.getElementById('cAddressText').value=addrText;
+  const dLat=0.005,dLng=0.007;
+  const bbox=`${(currentLng-dLng).toFixed(4)}%2C${(currentLat-dLat).toFixed(4)}%2C${(currentLng+dLng).toFixed(4)}%2C${(currentLat+dLat).toFixed(4)}`;
+  document.getElementById('osmMapFrame').src=`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${currentLat}%2C${currentLng}`;
+  document.getElementById('gpsCoordLabel').textContent=`📌 Tọa độ: ${currentLat}, ${currentLng}`;
+  document.getElementById('gmapRouteLink').href=`https://www.google.com/maps/dir/?api=1&destination=${currentLat},${currentLng}`;
+}
+
+function locateMyGps(){
+  const card = document.getElementById('gpsOneTouchCard');
+  const title = document.getElementById('gpsTitleText');
+  const desc = document.getElementById('gpsDescText');
+  const badge = document.getElementById('gpsBadgeText');
+  const arrow = document.getElementById('gpcArrow');
+
+  if(title) title.innerHTML = '⏳ Đang quét vệ tinh lấy vị trí nhà tôi...';
+  if(desc) desc.textContent = 'Vui lòng nhấn "Cho phép" (Allow) trên trình duyệt để lấy tọa độ chính xác...';
+  if(badge) {
+    badge.textContent = 'ĐANG ĐỊNH VỊ...';
+    badge.style.background = '#fef3c7';
+    badge.style.color = '#92400e';
+  }
+  document.getElementById('gpsCoordLabel').textContent = '⏳ Đang kết nối GPS vệ tinh...';
+
+  const onGeoSuccess = (pos) => {
+    isGpsLocated = true;
+    const lat = Number(pos.coords.latitude.toFixed(5));
+    const lng = Number(pos.coords.longitude.toFixed(5));
+    const acc = Math.round(pos.coords.accuracy || 10);
+
+    if(card) card.classList.add('active-gps');
+    if(title) title.innerHTML = '✅ Đã Ghim Vị Trí Nhà Tôi Thành Công!';
+    if(desc) desc.innerHTML = `Độ chính xác: <b>~${acc}m</b> (Tọa độ: <b>${lat}, ${lng}</b>) • Thợ sẽ mở Google Maps chạy thẳng tới tận cổng`;
+    if(badge) {
+      badge.textContent = 'ĐÃ GHIM GPS';
+      badge.style.background = '#d1fae5';
+      badge.style.color = '#065f46';
+    }
+    if(arrow) arrow.innerHTML = '✓';
+
+    const detail = document.getElementById('cAddressDetail') ? document.getElementById('cAddressDetail').value.trim() : '';
+    const full = detail ? `${detail} (Tọa độ GPS: ${lat}, ${lng}, TP. Tuy Hòa)` : `Vị trí định vị GPS nhà tôi (${lat}, ${lng}, TP. Tuy Hòa)`;
+    document.getElementById('cAddressText').value = full;
+
+    updateMapPin(lat, lng, full);
+  };
+
+  const onGeoError = () => {
+    const lat = 13.0892;
+    const lng = 109.3095;
+    if(title) title.innerHTML = '📍 Đã Chọn Vị Trí Trung Tâm TP. Tuy Hòa';
+    if(desc) desc.innerHTML = 'Không bật được GPS tự động. Vui lòng ghi thêm số nhà/tên đường bên dưới hoặc chọn theo khu vực.';
+    if(badge) {
+      badge.textContent = 'VỊ TRÍ CHUẨN';
+      badge.style.background = '#e2e8f0';
+      badge.style.color = '#334155';
+    }
+    const detail = document.getElementById('cAddressDetail') ? document.getElementById('cAddressDetail').value.trim() : '';
+    const full = detail ? `${detail}, TP. Tuy Hòa` : `Khu vực Trung tâm TP. Tuy Hòa`;
+    document.getElementById('cAddressText').value = full;
+    updateMapPin(lat, lng, full);
+  };
+
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError, {
+      enableHighAccuracy: true,
+      timeout: 8000,
+      maximumAge: 0
+    });
+  } else {
+    onGeoError();
+  }
+}
+
+function goToScreen(step){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  if(step==='OTP'){
+    document.getElementById('screenOtp').classList.add('active');
+    document.getElementById('pStep1').classList.remove('act');
+    document.getElementById('pStep2').classList.remove('act');
+    document.getElementById('pStepOtp').classList.add('act');
+    return;
+  }
+  document.getElementById('screen'+step).classList.add('active');
+  document.getElementById('pStep1').classList.toggle('act',step===1);
+  document.getElementById('pStep2').classList.toggle('act',step===2);
+  document.getElementById('pStepOtp').classList.toggle('act',step===3);
+}
+
+function pickService(trade,title,desc,imgUrl){
+  selectedTrade=trade;
+  selectedTitle=title;
+  selectedDesc=desc;
+  document.getElementById('chosenServiceBadge').textContent=title;
+  document.getElementById('chosenServiceImg').src=imgUrl||'/img/theme_plumbing.svg';
+  goToScreen(2);
+}
+
+const wardSelect = document.getElementById('cWardSelect');
+const addrDetail = document.getElementById('cAddressDetail');
+
+function syncCustomerAddress(updatePin = true){
+  const wardName = wardSelect ? wardSelect.value : 'Phường 7';
+  const detail = addrDetail ? addrDetail.value.trim() : '';
+  const full = detail ? `${detail}, ${wardName}, TP. Tuy Hòa` : `${wardName}, TP. Tuy Hòa`;
+  document.getElementById('cAddressText').value = full;
+  if(updatePin && wardSelect){
+    const opt = wardSelect.options[wardSelect.selectedIndex];
+    const lat = opt ? opt.dataset.lat : 13.0892;
+    const lng = opt ? opt.dataset.lng : 109.3095;
+    updateMapPin(lat, lng, full);
+  }
+}
+
+if(wardSelect){
+  wardSelect.onchange = () => syncCustomerAddress(true);
+}
+if(addrDetail){
+  addrDetail.oninput = () => syncCustomerAddress(false);
+}
+
+document.querySelectorAll('#timeBtns .time-chip').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('#timeBtns .time-chip').forEach(b=>b.classList.remove('act'));
+    btn.classList.add('act');
+    selectedMode=btn.dataset.mode;
+    const picker=document.getElementById('slotPicker');
+    if(selectedMode==='SLOT') picker.classList.add('show');
+    else picker.classList.remove('show');
+  };
+});
+
+document.querySelectorAll('#slotBtns .slot-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('#slotBtns .slot-btn').forEach(b=>b.classList.remove('act'));
+    btn.classList.add('act');
+    selectedSlot=btn.dataset.slot;
+  };
+});
+
+function startOtpCountdown(ttlSec,resendSec){
+  clearInterval(otpTimerInterval);
+  ttlRemaining=ttlSec||180;
+  resendRemaining=resendSec||60;
+  const resendBtn=document.getElementById('btnResendOtp');
+  resendBtn.disabled=true;
+
+  otpTimerInterval=setInterval(()=>{
+    if(ttlRemaining>0) ttlRemaining--;
+    const m=String(Math.floor(ttlRemaining/60)).padStart(2,'0');
+    const s=String(ttlRemaining%60).padStart(2,'0');
+    document.getElementById('otpTtlLabel').textContent=`${m}:${s}`;
+
+    if(resendRemaining>0){
+      resendRemaining--;
+      resendBtn.textContent=`Gửi lại mã OTP (${resendRemaining}s)`;
+      resendBtn.disabled=true;
+    } else {
+      resendBtn.textContent='🔄 Gửi lại mã OTP ngay';
+      resendBtn.disabled=false;
+    }
+  },1000);
+}
+
+function moveOtpFocus(idx){
+  const val=document.getElementById('otp'+idx).value;
+  if(val&&idx<4) document.getElementById('otp'+(idx+1)).focus();
+}
+
+function autoFillDemoOtp(){
+  if(!currentDemoOtp)return;
+  [1,2,3,4].forEach((n,i)=>{
+    document.getElementById('otp'+n).value=currentDemoOtp[i]||'';
+  });
+}
+
+async function requestZaloOtp(){
+  const customerPhone=document.getElementById('cPhone').value;
+  const res=await fetch('/api/v1/sos/request-otp',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({customerPhone})
+  });
+  const d=await res.json();
+  if(!d.success){
+    alert(d.error||'Không thể gửi mã OTP');
+    return;
+  }
+  currentDemoOtp=String(d.demoOtpCode||'');
+  document.getElementById('otpPhoneDisplay').textContent=d.maskedPhone;
+  document.getElementById('znsMessagePreview').innerHTML=`"${d.znsTemplateMessage}"`;
+  document.getElementById('otpErrBox').style.display='none';
+  [1,2,3,4].forEach(n=>document.getElementById('otp'+n).value='');
+  goToScreen('OTP');
+  startOtpCountdown(d.ttlSeconds,d.resendCooldownSeconds);
+  setTimeout(()=>document.getElementById('otp1').focus(),150);
+}
+
+async function verifyOtpAndDispatch(){
+  const otpCode=[1,2,3,4].map(n=>document.getElementById('otp'+n).value).join('');
+  const addr=document.getElementById('cAddressText').value;
+  const preferredTimeSlot=selectedMode==='URGENT'?'Cần Thợ tới sớm (20 - 45 phút)':'Hẹn lịch: '+selectedSlot;
+
+  const res=await fetch('/api/v1/sos/dispatch',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      customerName:document.getElementById('cName').value,
+      customerPhone:document.getElementById('cPhone').value,
+      customerAddress:addr,
+      customerLat:currentLat,
+      customerLng:currentLng,
+      tradeCategory:selectedTrade,
+      urgencyLevel:selectedMode==='URGENT'?'URGENT_20_45M':'SCHEDULED_SLOT',
+      preferredTimeSlot,
+      issueDescription:selectedTitle+' — '+selectedDesc,
+      otpCode,
+      requireOtp:true,
+      sourceChannel:'ZALO_ZNS_VERIFIED_KIOSK'
+    })
+  });
+  const d=await res.json();
+  if(!d.success){
+    const errBox=document.getElementById('otpErrBox');
+    errBox.style.display='block';
+    errBox.textContent='⚠️ '+(d.error||'Mã OTP không đúng hoặc đã hết hạn. Vui lòng thử lại.');
+    return;
+  }
+  clearInterval(otpTimerInterval);
+  const t=d.ticket;
+  const gmapUrl=`https://www.google.com/maps/dir/?api=1&destination=${currentLat},${currentLng}`;
+  document.getElementById('doneTitle').textContent=`Xác Thực Thành Công! Mã Đơn #${t.ticketCode}`;
+  document.getElementById('doneMsg').textContent='Cửa hàng gần nhất đã tiếp nhận và đang cử thợ ruột liên hệ với bạn.';
+  document.getElementById('doneWorker').innerHTML=`
+    <div>🏬 <b>Điểm dịch vụ tiếp nhận:</b> <span style="color:var(--blue);font-weight:800">Cửa Hàng Vật Tư & Dịch Vụ Tuy Hòa (Bảo lãnh 6K)</span></div>
+    <div>👷 <b>Thợ ruột do Tiệm phân công:</b> <span style="color:var(--blue);font-weight:800">${t.assignedWorkerName}</span> (Cách nhà ${t.distanceKm} km)</div>
+    <div>📞 <b>Hotline Cửa Hàng bảo trợ:</b> <b style="color:var(--red)">${t.virtualSwitchboardExt || '0979.991.898'}</b> (SĐT Thợ: ${t.maskedWorkerPhone})</div>
+    <div>🛡️ <b>Cam kết:</b> Cửa hàng bảo hành thiết bị & bảo lãnh 100% chất lượng thi công</div>
+    <div>📍 <b>Định vị đã ghim cho thợ:</b> ${addr} (${currentLat}, ${currentLng})</div>
+    <div style="margin-top:8px"><a href="${gmapUrl}" target="_blank" style="display:inline-block;background:var(--blue);color:#fff;padding:7px 14px;border-radius:99px;text-decoration:none;font-size:14px;font-weight:800">🗺️ Mở Đường Đi Google Maps Cho Thợ &rarr;</a></div>
+  `;
+  goToScreen(3);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Lịch Thiên Văn & Sinh Kế Đất Phú - Hôm Nay • Hàng Tháng • Hàng Năm</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#d9232a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: #f1f5f9;
+      color: #000000;
+    }
+    
+    .super-bloc {
+      background-color: #ffffff;
+      border: 4px solid #d9232a;
+      box-shadow: 0 20px 45px rgba(217, 35, 42, 0.25);
+    }
+
+    /* SỐ NGÀY ÂM LỊCH SIÊU KHỔNG LỒ (ĐỎ ĐẤT PHÚ) */
+    .lunar-number-giant {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5rem;
+      line-height: 0.9;
+      font-weight: 900;
+      color: #d9232a;
+      letter-spacing: -0.05em;
+    }
+
+    @media (min-width: 640px) {
+      .lunar-number-giant {
+        font-size: 11.5rem;
+      }
+    }
+
+    .big-touch-btn {
+      min-height: 54px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      border-radius: 1.25rem;
+    }
+
+    @keyframes tearLeafAnim {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      50% { transform: translateY(35px) scale(0.96); opacity: 0.85; }
+      100% { transform: translateY(120px) scale(0.85); opacity: 0; }
+    }
+    .tearing { animation: tearLeafAnim 0.35s ease-out forwards; }
+  </style>
+</head>
+<body class="min-h-screen p-2.5 sm:p-5 flex flex-col items-center justify-between">
+
+  <div class="w-full max-w-2xl space-y-3">
+
+    <!-- CẢNH BÁO MƯA LŨ KHẨN CẤP -->
+    <div id="severeAlertBanner" class="hidden bg-[#d9232a] text-white p-4 rounded-2xl border-4 border-yellow-300 shadow-2xl flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-triangle-exclamation text-3xl text-yellow-300 shrink-0"></i>
+        <div>
+          <span class="font-black text-base uppercase block" id="alertTitle">CẢNH BÁO MƯA LŨ LỚN!</span>
+          <span id="alertDesc" class="font-bold text-sm text-yellow-100">Bà con hạ lưu sông Ba, Kỳ Lộ chú ý nước dâng nhanh!</span>
+        </div>
+      </div>
+      <button onclick="dismissAlert()" class="px-4 py-2 bg-white text-[#d9232a] font-black text-sm rounded-xl shrink-0 shadow">
+        ĐÃ XEM
+      </button>
+    </div>
+
+    <!-- THANH TIÊU ĐỀ ĐƠN GIẢN VỚI LOGO ĐẤT PHÚ -->
+    <header class="bg-white border-2 border-[#1b2a47] p-3 rounded-2xl shadow-sm flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <img src="img/logo_datphu_brand.jpg" alt="Logo Đất Phú" class="h-9 sm:h-11 w-auto object-contain" />
+        <div>
+          <h1 class="font-black text-base sm:text-lg text-[#1b2a47] tracking-tight leading-tight">
+            LỊCH SINH KẾ <span class="text-[#d9232a]">ĐẤT PHÚ</span>
+          </h1>
+          <p class="text-xs font-black text-[#d9232a]">★ SỐ ÂM LỊCH TO RÕ CHO BÀ CON ★</p>
+        </div>
+      </div>
+
+      <!-- CHỌN TIỂU VÙNG -->
+      <select id="selectLocation" onchange="changeLocation(this.value)" class="bg-slate-100 border-2 border-[#1b2a47] text-[#1b2a47] rounded-xl px-2.5 py-1.5 text-xs sm:text-sm font-black focus:outline-none">
+        <option value="tuy-hoa" selected>Tuy Hòa ⌵</option>
+        <option value="dong-xuan">Đồng Xuân ⌵</option>
+        <option value="song-cau">Sông Cầu ⌵</option>
+        <option value="song-hinh">Sông Hinh ⌵</option>
+      </select>
+    </header>
+
+    <!-- THANH ĐIỀU HƯỚNG 3 CHẾ ĐỘ: HÔM NAY • HÀNG THÁNG • HÀNG NĂM -->
+    <div class="grid grid-cols-3 gap-2 bg-white p-1.5 rounded-2xl border-2 border-[#1b2a47] shadow-sm">
+      <button onclick="switchView('day')" id="navBtnDay" class="py-2.5 rounded-xl font-black text-xs sm:text-sm bg-[#d9232a] text-white shadow flex items-center justify-center gap-1.5 transition">
+        <i class="fa-solid fa-calendar-day"></i> HÔM NAY
+      </button>
+      <button onclick="switchView('month')" id="navBtnMonth" class="py-2.5 rounded-xl font-black text-xs sm:text-sm text-[#1b2a47] hover:bg-slate-100 flex items-center justify-center gap-1.5 transition">
+        <i class="fa-solid fa-calendar-days"></i> HÀNG THÁNG
+      </button>
+      <button onclick="switchView('year')" id="navBtnYear" class="py-2.5 rounded-xl font-black text-xs sm:text-sm text-[#1b2a47] hover:bg-slate-100 flex items-center justify-center gap-1.5 transition">
+        <i class="fa-solid fa-calendar"></i> HÀNG NĂM
+      </button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BẢNG 1: HÔM NAY (TỜ BLOC NGÀY - SỐ ÂM LỊCH KHỔNG LỒ)          -->
+    <!-- ============================================================ -->
+    <section id="viewDaySection" class="space-y-3">
+      
+      <!-- WIDGET THỜI TIẾT & RADAR MƯA WINDOWS TUY HÒA -->
+      <div class="bg-[#1b4f8a] text-white p-3.5 sm:p-4 rounded-3xl shadow-md space-y-2.5 border-2 border-blue-900">
+        <div class="flex items-center justify-between text-xs font-bold">
+          <div class="flex items-center gap-1.5 text-sm sm:text-base font-black">
+            <i class="fa-solid fa-house"></i>
+            <span id="widgetLocationName">Tuy Hòa</span>
+          </div>
+          <div class="text-[11px] text-blue-200">
+            Vệ tinh Open-Meteo • 479 Bytes
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span id="weatherWidgetIcon" class="text-4xl sm:text-5xl">⛅</span>
+            <div class="flex items-start">
+              <span id="weatherWidgetTemp" class="text-5xl sm:text-6xl font-black font-mono leading-none">25</span>
+              <span class="text-2xl font-bold ml-1">°C</span>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <div class="inline-flex items-center gap-1 text-xs sm:text-sm font-black bg-blue-900/60 border border-blue-400/40 px-3 py-1.5 rounded-xl">
+              <span>💧 Vùng mưa gần nhất:</span>
+              <span id="rainDistanceText" class="text-yellow-300 font-black">14 km</span>
+            </div>
+            <div class="text-[11px] text-blue-200 mt-1 font-semibold" id="rainProximityDesc">
+              Vùng mưa thượng nguồn Chư Sê / Gia Lai
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TỜ BLOC NGÀY ĐẠI -->
+      <main id="blocLeaf" class="super-bloc rounded-3xl p-5 sm:p-7 relative transition-transform duration-300 space-y-3">
+        
+        <!-- DÒNG NGÀY DƯƠNG LỊCH: GỌN GÀNG MÀU XANH NAVY -->
+        <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-2.5 flex items-center justify-between text-sm sm:text-base font-black text-[#1b2a47]">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded-lg bg-[#1b2a47] text-white text-xs uppercase">DƯƠNG LỊCH</span>
+            <span id="leafSolarFull">THỨ HAI, 09 THÁNG 11 NĂM 2026</span>
+          </div>
+          <span class="text-xs font-bold text-slate-500 font-mono">GMT+7</span>
+        </div>
+
+        <!-- TỰA ĐỀ ÂM LỊCH -->
+        <div class="text-center pt-1">
+          <span class="inline-block px-4 py-1 rounded-full bg-red-100 text-[#d9232a] text-xs sm:text-sm font-black uppercase tracking-widest border border-red-200">
+            ★ NGÀY ÂM LỊCH CHÍNH (CHU KỲ MẶT TRĂNG) ★
+          </span>
+        </div>
+
+        <!-- SỐ NGÀY ÂM LỊCH CỰC ĐẠI -->
+        <div class="text-center py-1">
+          <div id="leafLunarDayNumber" class="lunar-number-giant select-none drop-shadow">
+            01
+          </div>
+          <div id="leafLunarDayText" class="text-2xl sm:text-3xl font-black text-[#d9232a] tracking-wide mt-1">
+            MÙNG 1 THÁNG 10
+          </div>
+          <div id="leafLunarYear" class="text-base font-black text-slate-800 mt-0.5">
+            NĂM BÍNH NGỌ
+          </div>
+        </div>
+
+        <!-- ĐƯỜNG PHÂN CÁCH ĐỎ RỰC -->
+        <div class="border-t-4 border-[#d9232a] my-2"></div>
+
+        <!-- THÔNG TIN THỦY TRIỀU THỰC TẾ -->
+        <div class="bg-slate-50 border-2 border-slate-300 rounded-2xl p-3.5 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">🌊</span>
+              <span class="text-sm sm:text-base font-black text-slate-900">CON NƯỚC:</span>
+            </div>
+            <span id="tideTextBig" class="font-black text-sm sm:text-base text-[#d9232a] uppercase">
+              NƯỚC RONG (Triều lớn, cá vào lộng)
+            </span>
+          </div>
+
+          <div class="flex items-center justify-between border-t border-slate-200 pt-2 text-xs sm:text-sm font-bold text-slate-700">
+            <span>Pha trăng: <strong id="moonPhaseSimple" class="text-slate-900">Điểm Sóc (Trăng tối 0.8%)</strong></span>
+            <span>Tiết khí: <strong id="solarTermSimple" class="text-[#1b2a47]">Lập Đông (225°)</strong></span>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- 3 NÚT ĐIỀU KHIỂN CỰC LỚN -->
+      <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
+        <button onclick="tearLeaf(-1)" class="big-touch-btn bg-[#1b2a47] text-white hover:bg-[#253b64] active:scale-95 transition shadow-lg flex items-center justify-center gap-1.5 border-2 border-blue-900">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>HÔM QUA</span>
+        </button>
+
+        <button onclick="goToToday()" class="big-touch-btn bg-[#d9232a] text-white hover:bg-[#b91c1c] active:scale-95 transition shadow-lg flex items-center justify-center gap-1 border-2 border-red-700">
+          <i class="fa-solid fa-rotate-right"></i>
+          <span>HÔM NAY</span>
+        </button>
+
+        <button onclick="tearLeaf(1)" class="big-touch-btn bg-[#1b2a47] text-white hover:bg-[#253b64] active:scale-95 transition shadow-lg flex items-center justify-center gap-1.5 border-2 border-blue-900">
+          <span>NGÀY MAI</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- BẢNG 2: HÀNG THÁNG (LƯỚI THÁNG SONG HÀNH - SỐ ÂM LỊCH TO RÕ)  -->
+    <!-- ============================================================ -->
+    <section id="viewMonthSection" class="hidden space-y-3">
+      <div class="bg-white border-4 border-[#1b2a47] rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
+        
+        <!-- Thanh điều hướng tháng -->
+        <div class="flex items-center justify-between pb-2 border-b-2 border-slate-200">
+          <button onclick="changeMonth(-1)" class="px-4 py-2 font-black text-base sm:text-lg bg-slate-100 rounded-xl hover:bg-slate-200 border border-slate-300">
+            ◀ Tháng Trước
+          </button>
+          <h3 id="monthViewTitle" class="text-xl sm:text-2xl font-black text-[#1b2a47] tracking-tight">
+            Tháng 11 / 2026
+          </h3>
+          <button onclick="changeMonth(1)" class="px-4 py-2 font-black text-base sm:text-lg bg-slate-100 rounded-xl hover:bg-slate-200 border border-slate-300">
+            Tháng Sau ▶
+          </button>
+        </div>
+
+        <div class="text-xs font-bold text-center text-slate-500">
+          ★ Số Đỏ ở giữa là Ngày Âm Lịch • Số xám nhỏ là Dương Lịch • Chạm vào ngày để xem chi tiết ★
+        </div>
+
+        <!-- Tiêu đề 7 Thứ -->
+        <div class="grid grid-cols-7 gap-1 text-center font-black text-xs sm:text-sm text-slate-700 pb-1">
+          <div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div class="text-[#1b2a47]">T7</div><div class="text-[#d9232a]">CN</div>
+        </div>
+
+        <!-- Lưới Ngày Trong Tháng -->
+        <div id="monthGridContainer" class="grid grid-cols-7 gap-1.5 text-center"></div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- BẢNG 3: HÀNG NĂM (MA TRẬN 12 THÁNG - TOÀN CẢNH CẢ NĂM)        -->
+    <!-- ============================================================ -->
+    <section id="viewYearSection" class="hidden space-y-3">
+      <div class="bg-white border-4 border-[#1b2a47] rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+        
+        <div class="flex items-center justify-between pb-2 border-b-2 border-slate-200">
+          <button onclick="changeYear(-1)" class="px-4 py-2 font-black text-base sm:text-lg bg-slate-100 rounded-xl hover:bg-slate-200 border border-slate-300">
+            ◀ Năm Trước
+          </button>
+          <div class="text-center">
+            <h3 id="yearViewTitle" class="text-2xl sm:text-3xl font-black text-[#d9232a] tracking-tight">
+              NĂM BÍNH NGỌ 2026
+            </h3>
+            <span id="yearLeapBadge" class="text-xs font-black px-3 py-0.5 rounded-full bg-blue-100 text-[#1b2a47] inline-block mt-0.5">
+              12 Tháng Âm Lịch Chuẩn
+            </span>
+          </div>
+          <button onclick="changeYear(1)" class="px-4 py-2 font-black text-base sm:text-lg bg-slate-100 rounded-xl hover:bg-slate-200 border border-slate-300">
+            Năm Sau ▶
+          </button>
+        </div>
+
+        <!-- Lưới 12 Tháng Trong Năm -->
+        <div id="yearMonthsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5"></div>
+
+      </div>
+    </section>
+
+    <!-- NÚT MỞ SỔ GIA ĐÌNH -->
+    <div class="flex items-center justify-center pt-1">
+      <button onclick="toggleMemorialModal()" class="px-5 py-2.5 rounded-2xl bg-white border-2 border-slate-300 font-black text-xs sm:text-sm text-slate-800 hover:bg-slate-100 transition shadow-sm flex items-center gap-2">
+        <i class="fa-solid fa-people-roof text-[#d9232a]"></i> Sổ Kỷ Niệm & Ngày Giỗ Gia Tiên
+      </button>
+    </div>
+
+    <!-- MODAL SỔ KỶ NIỆM GIA ĐÌNH -->
+    <div id="memorialModal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-3">
+      <div class="bg-white border-4 border-[#1b2a47] rounded-3xl p-5 w-full max-w-lg shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-2 border-b-2 border-slate-200">
+          <h3 class="text-lg font-black text-[#1b2a47]">SỔ KỶ NIỆM & GIỖ GIA ĐÌNH</h3>
+          <button onclick="toggleMemorialModal()" class="px-3 py-1 font-black text-lg text-red-600">ĐÓNG ✕</button>
+        </div>
+        <div id="memorialListContainer" class="space-y-2 text-sm"></div>
+        <div class="pt-2 border-t border-slate-200 flex justify-end">
+          <button onclick="toggleAddMemorialForm()" class="px-4 py-2 bg-[#d9232a] text-white font-black rounded-xl text-sm">
+            + Thêm Người Thân
+          </button>
+        </div>
+        <div id="addMemorialForm" class="hidden space-y-3 pt-3 border-t border-slate-200 text-sm">
+          <input type="text" id="inputMemName" placeholder="Họ tên người thân" class="w-full border-2 border-slate-300 rounded-xl p-2 font-bold">
+          <div class="grid grid-cols-2 gap-2">
+            <input type="number" id="inputMemDay" placeholder="Ngày mất (Âm lịch)" min="1" max="30" class="border-2 border-slate-300 rounded-xl p-2 font-bold">
+            <input type="number" id="inputMemMonth" placeholder="Tháng mất (Âm lịch)" min="1" max="12" class="border-2 border-slate-300 rounded-xl p-2 font-bold">
+          </div>
+          <button onclick="saveNewMemorial()" class="w-full py-2.5 bg-[#1b2a47] text-white font-black rounded-xl">Lưu Vào Sổ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- THANH TRẠNG THÁI AN NINH AI & VỆ TINH CANH LŨ -->
+    <footer class="pt-3 pb-4 text-center space-y-1.5">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border-2 border-slate-300 text-xs font-black text-slate-800 shadow-sm">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>Lá Chắn AI & Canh Lũ Thượng Nguồn: <strong class="text-emerald-700 font-extrabold">BẢO VỆ 24/7</strong></span>
+        <span class="text-slate-400">|</span>
+        <span class="text-[#1b2a47] font-mono text-[11px]">Zero-Trust RLS</span>
+      </div>
+      <div class="text-[11px] font-bold text-slate-600">
+        Bản quyền © 2026 CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ • Tuy Hòa, Phú Yên
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- JAVASCRIPT THIÊN VĂN & ĐIỀU HƯỚNG 3 BẢNG -->
+  <script>
+    const TIME_ZONE = 7.0;
+
+    function INT(d) { return Math.floor(d); }
+
+    function jdFromDate(dd, mm, yy) {
+      let a = INT((14 - mm) / 12);
+      let y = yy + 4800 - a;
+      let m = mm + 12 * a - 3;
+      let jd = dd + INT((153 * m + 2) / 5) + 365 * y + INT(y / 4) - INT(y / 100) + INT(y / 400) - 32045;
+      if (jd < 2299161) jd = dd + INT((153 * m + 2) / 5) + 365 * y + INT(y / 4) - 32083;
+      return jd;
+    }
+
+    function jdToDate(jd) {
+      let a, b, c, d, e, m, day, month, year;
+      if (jd > 2299160) {
+        a = jd + 32044;
+        b = INT((4 * a + 3) / 146097);
+        c = a - INT((b * 146097) / 4);
+      } else {
+        b = 0; c = jd + 32082;
+      }
+      d = INT((4 * c + 3) / 1461);
+      e = c - INT((1461 * d) / 4);
+      m = INT((5 * e + 2) / 153);
+      day = e - INT((153 * m + 2) / 5) + 1;
+      month = m + 3 - 12 * INT(m / 10);
+      year = b * 100 + d - 4800 + INT(m / 10);
+      return [day, month, year];
+    }
+
+    function NewMoon(k) {
+      let T = k / 1236.85, T2 = T * T, T3 = T2 * T, dr = Math.PI / 180;
+      let Jd1 = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3;
+      Jd1 += 0.00033 * Math.sin((166.56 + 132.87 * T - 0.009173 * T2) * dr);
+      let M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.00000347 * T3;
+      let Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.00001236 * T3;
+      let F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3;
+      let C1 = (0.1734 - 0.000393 * T) * Math.sin(M * dr) + 0.0021 * Math.sin(2 * dr * M)
+             - 0.4068 * Math.sin(Mpr * dr) + 0.0161 * Math.sin(dr * 2 * Mpr)
+             - 0.0004 * Math.sin(dr * 3 * Mpr) + 0.0104 * Math.sin(dr * 2 * F)
+             - 0.0051 * Math.sin(dr * (M + Mpr)) - 0.0074 * Math.sin(dr * (M - Mpr))
+             + 0.0004 * Math.sin(dr * (2 * F + M)) - 0.0004 * Math.sin(dr * (2 * F - M))
+             - 0.0006 * Math.sin(dr * (2 * F + Mpr)) + 0.0010 * Math.sin(dr * (2 * F - Mpr))
+             + 0.0005 * Math.sin(dr * (2 * Mpr + M));
+      let deltat = T < -11 ? 0.001 + 0.000839 * T + 0.0002261 * T2 : -0.000278 + 0.000265 * T + 0.000262 * T2;
+      return Jd1 + C1 - deltat;
+    }
+
+    function SunLongitude(jdn) {
+      let T = (jdn - 2451545.0) / 36525, T2 = T * T, dr = Math.PI / 180;
+      let M = 357.52910 + 35999.05030 * T - 0.0001559 * T2 - 0.00000048 * T * T2;
+      let L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T2;
+      let DL = (1.914600 - 0.004817 * T - 0.000014 * T2) * Math.sin(dr * M)
+             + (0.019993 - 0.000101 * T) * Math.sin(dr * 2 * M) + 0.000290 * Math.sin(dr * 3 * M);
+      let L = (L0 + DL) * dr;
+      return L - Math.PI * 2 * (INT(L / (Math.PI * 2)));
+    }
+
+    function getSunLongitude(dayNumber, timeZone) {
+      return SunLongitude(dayNumber - 0.5 - timeZone / 24.0);
+    }
+
+    function getNewMoonDay(k, timeZone) {
+      return INT(NewMoon(k) + 0.5 + timeZone / 24.0);
+    }
+
+    function getLunarMonth11(yy, timeZone) {
+      let off = jdFromDate(31, 12, yy) - 2415021;
+      let k = INT(off / 29.530588853);
+      let nm = getNewMoonDay(k, timeZone);
+      let sunLong = getSunLongitude(nm, timeZone);
+      if (sunLong >= Math.PI * 1.5) nm = getNewMoonDay(k - 1, timeZone);
+      return nm;
+    }
+
+    function getLeapMonthOffset(a11, timeZone) {
+      let k = INT(0.5 + (a11 - 2415021.076998695) / 29.530588853);
+      let last = 0, i = 1, arc = Math.PI / 6.0;
+      while (true) {
+        let d = getNewMoonDay(k + i, timeZone);
+        let sunLong = getSunLongitude(d, timeZone);
+        let current = INT(sunLong / arc);
+        if (current === last) return i;
+        last = current;
+        i++;
+        if (i > 14) break;
+      }
+      return i;
+    }
+
+    function convertSolar2Lunar(dd, mm, yy, timeZone = TIME_ZONE) {
+      let dayNumber = jdFromDate(dd, mm, yy);
+      let k = INT((dayNumber - 2415021.076998695) / 29.530588853);
+      let monthStart = getNewMoonDay(k + 1, timeZone);
+      if (monthStart > dayNumber) monthStart = getNewMoonDay(k, timeZone);
+
+      let a11 = getLunarMonth11(yy, timeZone);
+      let b11 = a11;
+      let lunarYear = yy;
+      if (a11 >= monthStart) {
+        lunarYear = yy - 1;
+        a11 = getLunarMonth11(yy - 1, timeZone);
+      } else {
+        b11 = getLunarMonth11(yy + 1, timeZone);
+      }
+      let lunarDay = dayNumber - monthStart + 1;
+      let diff = INT((monthStart - a11) / 29.0);
+      let lunarLeap = 0;
+      let lunarMonth = diff + 11;
+
+      if (b11 - a11 > 365) {
+        let leapMonthDiff = getLeapMonthOffset(a11, timeZone);
+        if (diff >= leapMonthDiff) {
+          lunarMonth = diff + 10;
+          if (diff === leapMonthDiff) lunarLeap = 1;
+        }
+      }
+      if (lunarMonth > 12) lunarMonth -= 12;
+      if (lunarMonth >= 11 && diff < 4) lunarYear -= 1;
+
+      return { day: lunarDay, month: lunarMonth, year: lunarYear, isLeap: lunarLeap, jdn: dayNumber };
+    }
+
+    const CAN = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
+    const CHI = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+    const WEEKDAYS = ["CHỦ NHẬT", "THỨ HAI", "THỨ BA", "THỨ TƯ", "THỨ NĂM", "THỨ SÁU", "THỨ BẢY"];
+
+    const LOCATIONS = {
+      "tuy-hoa": { name: "Tuy Hòa", lat: 13.088, lon: 109.313, rainDist: "14 km (Chư Sê)", rainDesc: "Vùng mưa thượng nguồn Chư Sê / Gia Lai" },
+      "dong-xuan": { name: "Đồng Xuân", lat: 13.385, lon: 109.050, rainDist: "8 km (Vân Canh)", rainDesc: "Vùng mưa nguồn sông Kỳ Lộ" },
+      "song-cau": { name: "Sông Cầu", lat: 13.480, lon: 109.220, rainDist: "22 km (Quy Nhơn)", rainDesc: "Gió Đông Bắc vùng Vịnh Xuân Đài" },
+      "song-hinh": { name: "Sông Hinh", lat: 12.920, lon: 109.000, rainDist: "11 km (Krông Năng)", rainDesc: "Mưa nguồn hồ thủy điện Sông Hinh" }
+    };
+
+    let currentLocationKey = "tuy-hoa";
+    let currentDate = new Date();
+    let currentView = "day"; // 'day' | 'month' | 'year'
+
+    // CHUYỂN ĐỔI 3 CHẾ ĐỘ: HÔM NAY • HÀNG THÁNG • HÀNG NĂM
+    function switchView(view) {
+      currentView = view;
+      document.getElementById("viewDaySection").classList.add("hidden");
+      document.getElementById("viewMonthSection").classList.add("hidden");
+      document.getElementById("viewYearSection").classList.add("hidden");
+
+      let btns = ["navBtnDay", "navBtnMonth", "navBtnYear"];
+      btns.forEach(id => {
+        document.getElementById(id).className = "py-2.5 rounded-xl font-black text-xs sm:text-sm text-[#1b2a47] hover:bg-slate-100 flex items-center justify-center gap-1.5 transition";
+      });
+
+      if (view === "day") {
+        document.getElementById("viewDaySection").classList.remove("hidden");
+        document.getElementById("navBtnDay").className = "py-2.5 rounded-xl font-black text-xs sm:text-sm bg-[#d9232a] text-white shadow flex items-center justify-center gap-1.5 transition";
+        renderBloc();
+      } else if (view === "month") {
+        document.getElementById("viewMonthSection").classList.remove("hidden");
+        document.getElementById("navBtnMonth").className = "py-2.5 rounded-xl font-black text-xs sm:text-sm bg-[#1b2a47] text-white shadow flex items-center justify-center gap-1.5 transition";
+        renderMonthView();
+      } else if (view === "year") {
+        document.getElementById("viewYearSection").classList.remove("hidden");
+        document.getElementById("navBtnYear").className = "py-2.5 rounded-xl font-black text-xs sm:text-sm bg-[#d9232a] text-white shadow flex items-center justify-center gap-1.5 transition";
+        renderYearView();
+      }
+    }
+
+    // THỜI TIẾT VỆ TINH
+    async function fetchSatelliteWeather() {
+      const loc = LOCATIONS[currentLocationKey];
+      document.getElementById("widgetLocationName").innerText = loc.name;
+      document.getElementById("rainDistanceText").innerText = loc.rainDist;
+      document.getElementById("rainProximityDesc").innerText = loc.rainDesc;
+
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,precipitation,wind_speed_10m&timezone=Asia%2FBangkok`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const cur = data.current;
+
+        document.getElementById("weatherWidgetTemp").innerText = `${cur.temperature_2m.toFixed(0)}`;
+        let icon = "⛅";
+        if (cur.precipitation > 15.0) icon = "⛈️";
+        else if (cur.precipitation > 0.1) icon = "🌧️";
+        document.getElementById("weatherWidgetIcon").innerText = icon;
+
+        if (cur.precipitation >= 20.0 || cur.wind_speed_10m >= 35.0) {
+          const banner = document.getElementById("severeAlertBanner");
+          banner.classList.remove("hidden");
+          document.getElementById("alertTitle").innerText = `CẢNH BÁO MƯA LŨ TẠI ${loc.name.toUpperCase()}!`;
+          document.getElementById("alertDesc").innerText = `Mưa đo được ${cur.precipitation} mm, gió ${cur.wind_speed_10m} km/h. Đề phòng nước sông dâng nhanh!`;
+        }
+      } catch (e) {
+        document.getElementById("weatherWidgetTemp").innerText = "25";
+      }
+    }
+
+    function dismissAlert() {
+      document.getElementById("severeAlertBanner").classList.add("hidden");
+    }
+
+    function changeLocation(key) {
+      currentLocationKey = key;
+      fetchSatelliteWeather();
+    }
+
+    // RENDER BẢNG 1: HÔM NAY (BLOC NGÀY)
+    function renderBloc() {
+      let d = currentDate.getDate();
+      let m = currentDate.getMonth() + 1;
+      let y = currentDate.getFullYear();
+      let wd = currentDate.getDay();
+
+      document.getElementById("leafSolarFull").innerText = `${WEEKDAYS[wd]}, ${d < 10 ? '0' : ''}${d} THÁNG ${m} NĂM ${y}`;
+
+      let lun = convertSolar2Lunar(d, m, y);
+      document.getElementById("leafLunarDayNumber").innerText = lun.day < 10 ? `0${lun.day}` : `${lun.day}`;
+      
+      let dayTitle = lun.day === 1 ? "MÙNG 1" : (lun.day === 15 ? "NGÀY RẰM 15" : `NGÀY ${lun.day}`);
+      document.getElementById("leafLunarDayText").innerText = `${dayTitle} THÁNG ${lun.month} ÂM LỊCH`;
+
+      let yearCan = CAN[(lun.year + 6) % 10];
+      let yearChi = CHI[(lun.year + 8) % 12];
+      document.getElementById("leafLunarYear").innerText = `NĂM ${yearCan.toUpperCase()} ${yearChi.toUpperCase()}`;
+
+      let isSpringTide = (lun.day >= 1 && lun.day <= 3) || (lun.day >= 14 && lun.day <= 17);
+      let isNeapTide = (lun.day >= 7 && lun.day <= 9) || (lun.day >= 22 && lun.day <= 24);
+
+      let tideStatus = "NƯỚC VỪA (Bình thường)";
+      if (isSpringTide) {
+        tideStatus = "NƯỚC RONG (Triều lớn, cá vào lộng)";
+      } else if (isNeapTide) {
+        tideStatus = "NƯỚC KÉM (Triều cạn, nước đứng)";
+      }
+      document.getElementById("tideTextBig").innerText = tideStatus;
+
+      let phaseAngle = (lun.day - 1) / 29.53058868;
+      let illum = Math.round((1 - Math.cos(phaseAngle * 2 * Math.PI)) / 2 * 100);
+      document.getElementById("moonPhaseSimple").innerText = lun.day === 1 ? "Điểm Sóc (0.8%)" : (lun.day === 15 ? "Trăng Rằm (100%)" : `${illum}% sáng`);
+
+      let sl = getSunLongitude(lun.jdn, TIME_ZONE) * 180 / Math.PI;
+      let termIndex = INT(sl / 15);
+      const SOLAR_TERMS = [
+        "Xuân Phân", "Thanh Minh", "Cốc Vũ", "Lập Hạ", "Tiểu Mãn", "Mang Chủng",
+        "Hạ Chí", "Tiểu Thử", "Đại Thử", "Lập Thu", "Xử Thử", "Bạch Lộ",
+        "Thu Phân", "Hàn Lộ", "Sương Giáng", "Lập Đông", "Tiểu Tuyết", "Đại Tuyết",
+        "Đông Chí", "Tiểu Hàn", "Đại Hàn", "Lập Xuân", "Vũ Thủy", "Kinh Trập"
+      ];
+      document.getElementById("solarTermSimple").innerText = `${SOLAR_TERMS[termIndex % 24]} (${Math.round(sl)}°)`;
+    }
+
+    function tearLeaf(delta) {
+      const leaf = document.getElementById("blocLeaf");
+      leaf.classList.add("tearing");
+      setTimeout(() => {
+        currentDate.setDate(currentDate.getDate() + delta);
+        renderBloc();
+        leaf.classList.remove("tearing");
+      }, 300);
+    }
+
+    function goToToday() {
+      currentDate = new Date();
+      if (currentView === "day") renderBloc();
+      else if (currentView === "month") renderMonthView();
+      else if (currentView === "year") renderYearView();
+    }
+
+    // RENDER BẢNG 2: HÀNG THÁNG (LƯỚI THÁNG SONG HÀNH)
+    function changeMonth(delta) {
+      currentDate.setMonth(currentDate.getMonth() + delta);
+      renderMonthView();
+    }
+
+    function renderMonthView() {
+      let month = currentDate.getMonth() + 1;
+      let year = currentDate.getFullYear();
+      let activeDay = currentDate.getDate();
+
+      document.getElementById("monthViewTitle").innerText = `Tháng ${month} / ${year}`;
+      let grid = document.getElementById("monthGridContainer");
+      grid.innerHTML = "";
+
+      let firstDay = new Date(year, month - 1, 1).getDay();
+      let totalDays = new Date(year, month, 0).getDate();
+      let startCol = firstDay === 0 ? 6 : firstDay - 1;
+
+      for (let i = 0; i < startCol; i++) grid.appendChild(document.createElement("div"));
+
+      for (let day = 1; day <= totalDays; day++) {
+        let lun = convertSolar2Lunar(day, month, year);
+        let btn = document.createElement("button");
+        let isToday = (day === activeDay && month === (new Date().getMonth() + 1) && year === new Date().getFullYear());
+        
+        btn.onclick = () => {
+          currentDate = new Date(year, month - 1, day);
+          switchView("day");
+        };
+
+        btn.className = `p-2 rounded-2xl border-2 flex flex-col items-center justify-between min-h-[64px] font-black transition ${
+          isToday ? 'bg-[#d9232a] text-white border-[#d9232a] shadow-lg' : 'border-slate-300 text-[#1b2a47] hover:bg-slate-100 hover:border-slate-400'
+        }`;
+
+        btn.innerHTML = `
+          <span class="text-[11px] ${isToday ? 'text-white' : 'text-slate-500'} font-mono">${day}</span>
+          <span class="text-xl sm:text-2xl font-black ${isToday ? 'text-white' : (lun.day === 1 || lun.day === 15 ? 'text-[#d9232a]' : 'text-[#1b2a47]')} leading-none">
+            ${lun.day}
+          </span>
+          <span class="text-[9px] ${isToday ? 'text-yellow-200' : 'text-slate-400'} font-bold">
+            ${lun.day === 1 ? `Th.${lun.month}` : ''}
+          </span>
+        `;
+        grid.appendChild(btn);
+      }
+    }
+
+    // RENDER BẢNG 3: HÀNG NĂM (MA TRẬN 12 THÁNG)
+    function changeYear(delta) {
+      currentDate.setFullYear(currentDate.getFullYear() + delta);
+      renderYearView();
+    }
+
+    function renderYearView() {
+      let y = currentDate.getFullYear();
+      let yearCan = CAN[(y + 6) % 10];
+      let yearChi = CHI[(y + 8) % 12];
+      document.getElementById("yearViewTitle").innerText = `NĂM ${yearCan.toUpperCase()} ${yearChi.toUpperCase()} • ${y}`;
+
+      let a11 = getLunarMonth11(y, TIME_ZONE);
+      let b11 = getLunarMonth11(y + 1, TIME_ZONE);
+      let isLeapYear = (b11 - a11 > 365);
+      document.getElementById("yearLeapBadge").innerText = isLeapYear ? "★ NĂM CÓ THÁNG NHUẬN (13 THÁNG ÂM) ★" : "12 Tháng Âm Lịch Tiêu Chuẩn";
+
+      let cont = document.getElementById("yearMonthsGrid");
+      cont.innerHTML = "";
+
+      for (let m = 1; m <= 12; m++) {
+        let card = document.createElement("button");
+        let isCurrentMonth = (m === (new Date().getMonth() + 1) && y === new Date().getFullYear());
+        
+        card.onclick = () => {
+          currentDate.setMonth(m - 1);
+          switchView("month");
+        };
+
+        card.className = `p-3.5 rounded-2xl border-2 text-left transition flex flex-col justify-between min-h-[90px] shadow-sm ${
+          isCurrentMonth ? 'bg-red-50 border-[#d9232a]' : 'bg-slate-50 border-slate-300 hover:bg-slate-100 hover:border-[#1b2a47]'
+        }`;
+
+        let totalDays = new Date(y, m, 0).getDate();
+        let firstLun = convertSolar2Lunar(1, m, y);
+        let endLun = convertSolar2Lunar(totalDays, m, y);
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="font-black text-sm text-[#1b2a47]">Tháng ${m}</span>
+              ${isCurrentMonth ? '<span class="text-[9px] bg-[#d9232a] text-white px-2 py-0.5 rounded-full font-bold">Hiện tại</span>' : ''}
+            </div>
+            <div class="text-xs font-bold text-slate-500 mt-1">${totalDays} ngày Dương</div>
+          </div>
+          <div class="text-[11px] font-black text-[#d9232a] mt-2 border-t border-slate-200 pt-1">
+            Âm: ${firstLun.day}/${firstLun.month} → ${endLun.day}/${endLun.month}
+          </div>
+        `;
+        cont.appendChild(card);
+      }
+    }
+
+    // SỔ GIA ĐÌNH
+    let memorials = JSON.parse(localStorage.getItem("datphu_neutral_memorials") || "[]");
+    if (memorials.length === 0) {
+      memorials = [
+        { id: 1, name: "Cụ Ông Thân Sinh", day: 15, month: 10 }
+      ];
+    }
+
+    function toggleMemorialModal() {
+      document.getElementById("memorialModal").classList.toggle("hidden");
+      renderMemorials();
+    }
+
+    function toggleAddMemorialForm() {
+      document.getElementById("addMemorialForm").classList.toggle("hidden");
+    }
+
+    function renderMemorials() {
+      const cont = document.getElementById("memorialListContainer");
+      cont.innerHTML = "";
+      memorials.forEach(m => {
+        let card = document.createElement("div");
+        card.className = "p-3 rounded-xl bg-slate-100 border-2 border-slate-300 flex items-center justify-between font-black";
+        card.innerHTML = `
+          <div>
+            <div class="text-[#1b2a47] text-base">${m.name}</div>
+            <div class="text-[#d9232a] text-xs">Ngày ${m.day} Tháng ${m.month} (Âm lịch)</div>
+          </div>
+          <button onclick="deleteMemorial(${m.id})" class="text-red-600 px-2 py-1 text-xs">Xóa</button>
+        `;
+        cont.appendChild(card);
+      });
+    }
+
+    function saveNewMemorial() {
+      let name = document.getElementById("inputMemName").value.trim();
+      let day = parseInt(document.getElementById("inputMemDay").value, 10);
+      let month = parseInt(document.getElementById("inputMemMonth").value, 10);
+      if (!name || isNaN(day) || isNaN(month)) return alert("Vui lòng điền đủ họ tên và ngày tháng âm lịch");
+      memorials.push({ id: Date.now(), name, day, month });
+      localStorage.setItem("datphu_neutral_memorials", JSON.stringify(memorials));
+      document.getElementById("inputMemName").value = "";
+      toggleAddMemorialForm();
+      renderMemorials();
+    }
+
+    function deleteMemorial(id) {
+      memorials = memorials.filter(x => x.id !== id);
+      localStorage.setItem("datphu_neutral_memorials", JSON.stringify(memorials));
+      renderMemorials();
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      renderBloc();
+      fetchSatelliteWeather();
+      setInterval(fetchSatelliteWeather, 30 * 60 * 1000);
+    });
+  </script>
+</body>
+</html>

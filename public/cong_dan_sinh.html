@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Đất Phú — Đặt Lịch Sửa Chữa, Bảo Trì & Mua Vật Tư Tại Nhà (Tuy Hòa)</title>
+<style>
+:root{
+  --bg:#f0f4f9;
+  --card:#ffffff;
+  --blue:#1e2260;
+  --blue-mid:#253085;
+  --blue-soft:#eef2ff;
+  --blue-bd:#c7d2fe;
+  --red:#d7262d;
+  --red-dark:#b91c22;
+  --red-soft:#fef2f2;
+  --red-bd:#fecaca;
+  --txt:#0f172a;
+  --mut:#475569;
+  --bd:#dbe3ef;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--txt);line-height:1.45}
+.topbar{
+  background:linear-gradient(90deg,var(--blue) 0%,var(--blue-mid) 70%,#2e1a36 100%);
+  color:#fff;
+  padding:10px 20px;
+  border-bottom:4px solid var(--red);
+  box-shadow:0 4px 14px rgba(30,34,96,.18);
+}
+.topbar-in{max-width:1220px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:38px;width:auto;border-radius:7px;background:#fff;padding:3px 6px}
+.brand-t h1{font-size:17px;font-weight:900;text-transform:uppercase}
+.brand-t p{font-size:12px;color:#dbeafe;margin-top:1px}
+.nav-links{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.nav-btn{background:rgba(255,255,255,.1);color:#fff;text-decoration:none;padding:7px 13px;border-radius:8px;font-size:12px;font-weight:700;border:1px solid rgba(255,255,255,.22)}
+.nav-btn.act{background:#fff;color:var(--blue)}
+.nav-btn.hotline{background:var(--red);border-color:#ff6b6b;font-weight:800}
+.container{max-width:1220px;margin:14px auto;padding:0 16px}
+.main-grid{display:grid;grid-template-columns:1.05fr 1.15fr;gap:16px;align-items:start}
+@media(max-width:920px){.main-grid{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1.5px solid var(--bd);border-radius:14px;padding:16px;box-shadow:0 6px 18px rgba(30,34,96,.06);margin-bottom:14px}
+.panel-red{border-top:4px solid var(--red)}
+.panel-blue{border-top:4px solid var(--blue)}
+.sec-head{font-size:15px;font-weight:900;color:var(--blue);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;text-transform:uppercase}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.svc-card{background:#f8fafc;border:1.5px solid var(--bd);border-radius:10px;padding:10px;cursor:pointer;text-align:left;transition:.15s}
+.svc-card b{display:block;font-size:13px;color:var(--blue)}
+.svc-card span{display:block;font-size:12px;color:var(--red);font-weight:800;margin-top:2px}
+.svc-card.act{background:var(--blue-soft);border:2px solid var(--blue);box-shadow:inset 4px 0 0 var(--red)}
+.fld{margin-bottom:9px}
+.fld label{display:block;font-size:11.5px;font-weight:800;color:var(--blue);margin-bottom:3px}
+.fld input,.fld select{width:100%;background:#f8fafc;border:1.5px solid #cbd5e1;color:var(--txt);padding:9px 11px;border-radius:8px;font-size:13px;font-weight:600}
+.fld-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.book-btn{width:100%;background:linear-gradient(90deg,var(--red) 0%,var(--red-dark) 100%);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 12px rgba(215,38,45,.3)}
+.toast{display:none;background:var(--blue-soft);border:1.5px solid var(--blue);border-left:5px solid var(--red);color:var(--blue);padding:12px;border-radius:11px;margin-bottom:14px;font-size:13px}
+.b-card{background:#f8fafc;border:1.5px solid var(--bd);border-left:5px solid var(--blue);border-radius:12px;padding:13px;margin-bottom:10px}
+.b-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.b-title{font-size:14.5px;font-weight:900;color:var(--blue)}
+.status-pill{font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;background:var(--blue-soft);color:var(--blue);border:1px solid var(--blue-bd)}
+.status-pill.reminded{background:var(--red-soft);color:var(--red);border-color:var(--red-bd)}
+.status-pill.done{background:var(--blue);color:#fff;border-color:var(--blue)}
+.steps-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:9px 0}
+.s-item{font-size:11px;text-align:center;padding:5px 4px;border-radius:7px;background:#fff;border:1px solid var(--bd);color:var(--mut)}
+.s-item.on{background:var(--blue-soft);border-color:var(--blue);color:var(--blue);font-weight:800}
+.act-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn-sm{border:none;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer}
+.btn-remind{background:var(--red-soft);color:var(--red);border:1px solid var(--red-bd)}
+.btn-qr{background:var(--red);color:#fff}
+.btn-b2b{background:var(--blue);color:#fff}
+.shop-card{background:#f8fafc;border:1px solid var(--bd);border-left:4px solid var(--red);border-radius:10px;padding:11px;margin-bottom:9px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.chip{background:#fff;border:1px solid var(--blue-bd);padding:4px 9px;border-radius:7px;font-size:12px;color:var(--blue)}
+.chip b{color:var(--red)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <img src="/datphu_logo.jpg" alt="Đất Phú" onerror="this.style.display='none'">
+      <div class="brand-t">
+        <h1>ĐẤT PHÚ — ĐẶT LỊCH BẢO TRÌ &amp; CỬA HÀNG VẬT TƯ TUY HÒA</h1>
+        <p>Chủ động chọn Ngày &amp; Khung giờ • Nhắc lịch Zalo trước 2 tiếng • Giá vật tư niêm yết</p>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-btn" href="/cuu-ho">🛠️ Gọi Cứu Hộ Nhanh</a>
+      <a class="nav-btn" href="/datphu_nearby_hub.html">📍 Tìm Thợ Quanh Đây</a>
+      <a class="nav-btn act" href="/khach">📅 Đặt Lịch &amp; Mua Vật Tư</a>
+      <a class="nav-btn hotline" href="tel:0979991898">📞 0979.991.898</a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div id="msgToast" class="toast"></div>
+
+  <div class="main-grid">
+    <div>
+      <div class="panel panel-red">
+        <div class="sec-head">
+          <span>📅 Đặt Lịch Hẹn Thợ Đến Bảo Trì / Lắp Đặt</span>
+          <span style="font-size:11px;color:var(--red)">GIỮ CHỖ &amp; NHẮC ZALO TRƯỚC 2H</span>
+        </div>
+
+        <div class="svc-grid" id="svcGrid">
+          <button type="button" class="svc-card act" data-val="DIEN_LANH|Bảo dưỡng máy lạnh & vệ sinh định kỳ|120000">
+            <b>❄️ Bảo dưỡng máy lạnh</b>
+            <span>Trọn gói: 120.000đ / máy</span>
+          </button>
+          <button type="button" class="svc-card" data-val="DIEN_NUOC|Kiểm tra hệ thống điện & ống nước định kỳ|100000">
+            <b>⚡ Kiểm tra điện &amp; nước</b>
+            <span>Trọn gói: 100.000đ / lần</span>
+          </button>
+          <button type="button" class="svc-card" data-val="DEN_NLMT|Lắp đặt / Bảo trì Đèn năng lượng mặt trời|120000">
+            <b>☀️ Lắp đặt Đèn năng lượng</b>
+            <span>Công lắp: 120.000đ / bộ</span>
+          </button>
+          <button type="button" class="svc-card" data-val="CHONG_THAM|Khảo sát & Xử lý chống thấm sân thượng|150000">
+            <b>🛠️ Chống thấm sân thượng</b>
+            <span>Công chuẩn: 150.000đ / ca</span>
+          </button>
+        </div>
+
+        <div class="fld fld-2">
+          <div>
+            <label>Chọn Ngày hẹn:</label>
+            <input type="date" id="bDate">
+          </div>
+          <div>
+            <label>Chọn Khung giờ thuận tiện:</label>
+            <select id="bSlot">
+              <option value="Sáng (08:30 - 10:00)">🕘 Sáng (08:30 – 10:00)</option>
+              <option value="Trưa (10:00 - 11:30)">🕙 Trưa (10:00 – 11:30)</option>
+              <option value="Chiều (14:00 - 15:30)">🕑 Chiều (14:00 – 15:30)</option>
+              <option value="Chiều muộn (15:30 - 17:00)">🕓 Chiều muộn (15:30 – 17:00)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fld fld-2">
+          <div>
+            <label>Tên gia đình / đơn vị:</label>
+            <input id="bName" value="Gia đình Anh Hải">
+          </div>
+          <div>
+            <label>Số điện thoại nhận tin Zalo:</label>
+            <input id="bPhone" type="tel" value="0913456789">
+          </div>
+        </div>
+
+        <div class="fld fld-2">
+          <div>
+            <label>Địa chỉ tại Tuy Hòa, Phú Yên:</label>
+            <input id="bAddr" value="195 Hùng Vương, Phường 7, Tuy Hòa">
+          </div>
+          <div>
+            <label>Hình thức thanh toán:</label>
+            <select id="bCustomerType">
+              <option value="HOUSEHOLD">🏠 Hộ gia đình (Quét mã QR)</option>
+              <option value="B2B_CONTRACT">🏢 Khách sạn / Công ty (Ghi công nợ)</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="book-btn" onclick="submitBooking()">📅 XÁC NHẬN ĐẶT LỊCH HẸN TRƯỚC</button>
+      </div>
+
+      <div class="panel panel-blue">
+        <div class="sec-head">
+          <span>🏪 Bảng Giá Vật Tư Chính Hãng Tại Cửa Hàng Đối Tác</span>
+        </div>
+        <div id="customerProducts"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel panel-blue">
+        <div class="sec-head">
+          <span>📋 Lịch Hẹn Của Gia Đình Bạn</span>
+          <span style="font-size:11px;color:var(--red)">THỢ ĐẾN ĐÚNG KHUNG GIỜ</span>
+        </div>
+        <div id="bookingsList"></div>
+      </div>
+
+      <div class="panel panel-red">
+        <div class="sec-head">
+          <span>🛡️ Sổ Bảo Hành Điện Tử Của Gia Đình</span>
+          <span style="font-size:11px;color:var(--blue)">TRA CỨU THEO SĐT</span>
+        </div>
+        <div id="customerWarranties"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const fmt=n=>Number(n||0).toLocaleString('vi-VN')+'đ';
+let selectedService='DIEN_LANH|Bảo dưỡng máy lạnh & vệ sinh định kỳ|120000';
+
+document.getElementById('bDate').value=new Date(Date.now()+86400000).toISOString().slice(0,10);
+
+document.querySelectorAll('.svc-card').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.svc-card').forEach(b=>b.classList.remove('act'));
+    btn.classList.add('act');
+    selectedService=btn.dataset.val;
+  };
+});
+
+async function submitBooking(){
+  const [serviceCategory,serviceTitle,fee]=selectedService.split('|');
+  const customerType=document.getElementById('bCustomerType').value;
+  const res=await fetch('/api/v1/booking/create',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      customerName:document.getElementById('bName').value,
+      customerPhone:document.getElementById('bPhone').value,
+      shippingAddress:document.getElementById('bAddr').value,
+      serviceCategory,
+      serviceTitle,
+      bookingDate:document.getElementById('bDate').value,
+      bookingSlot:document.getElementById('bSlot').value,
+      customerType,
+      paymentMethod:customerType==='B2B_CONTRACT'?'B2B_DEBT':'VIETQR',
+      estimatedLaborFee:Number(fee)
+    })
+  });
+  const d=await res.json();
+  if(d.success){
+    const toast=document.getElementById('msgToast');
+    toast.style.display='block';
+    toast.innerHTML=`
+      <div><b style="color:var(--red)">✅ Đặt Lịch Thành Công (#${d.booking.orderCode}):</b> Đã xếp lịch thợ <b>${d.booking.assignedWorkerName}</b> vào khung giờ <b>${d.booking.bookingSlot}</b> ngày <b>${d.booking.bookingDate}</b>.</div>
+      <div style="margin-top:4px">🔔 Hệ thống sẽ tự động gửi tin nhắn Zalo nhắc lịch cho gia đình bạn trước giờ hẹn 2 tiếng.</div>
+    `;
+    loadPortal();
+  }
+}
+
+async function sendReminder(orderCode){
+  const res=await fetch('/api/v1/booking/remind',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({orderCode})
+  });
+  const d=await res.json();
+  if(d.success){
+    const toast=document.getElementById('msgToast');
+    toast.style.display='block';
+    toast.innerHTML=`🔔 <b style="color:var(--red)">Tin nhắn Zalo nhắc lịch trước 2 tiếng:</b><br>${d.reminderMessage}`;
+    loadPortal();
+  }
+}
+
+async function completeBooking(orderCode,paymentMode){
+  const res=await fetch('/api/v1/booking/complete',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({orderCode,paymentMode})
+  });
+  const d=await res.json();
+  if(d.success){
+    const toast=document.getElementById('msgToast');
+    toast.style.display='block';
+    toast.innerHTML=`
+      <div>🎉 <b style="color:var(--red)">Hoàn Tất Lịch Hẹn #${orderCode}:</b> Đã kích hoạt Phiếu Bảo Hành <b>${d.warranty.warrantyCode}</b> (Hiệu lực 12 tháng) &amp; Hóa đơn số <b>#${d.einvoice.invoiceNumber}</b>!</div>
+    `;
+    loadPortal();
+  }
+}
+
+async function loadPortal(){
+  const res=await fetch('/api/v1/core6k/overview');
+  const d=await res.json();
+  if(!d.success)return;
+  const st=d.state;
+
+  document.getElementById('bookingsList').innerHTML=(st.ordersDp||[]).map(o=>{
+    const isDone=(o.bookingStatus==='completed'||o.currentKStage==='K6');
+    const isReminded=(o.reminder2hSent||isDone);
+    const pillCls=isDone?'status-pill done':(isReminded?'status-pill reminded':'status-pill');
+    const pillTxt=isDone?'✓ Đã hoàn thành & Bảo hành':(isReminded?'🔔 Đã nhắc lịch Zalo trước 2h':'📅 Đã giữ chỗ Thợ');
+    return `
+      <div class="b-card">
+        <div class="b-top">
+          <div class="b-title">${o.serviceTitle||'Bảo trì & Lắp đặt thiết bị'} (#${o.orderCode})</div>
+          <span class="${pillCls}">${pillTxt}</span>
+        </div>
+
+        <div style="font-size:13px;margin-top:5px">
+          🕒 <b>Thời gian hẹn:</b> <b style="color:var(--red)">${o.bookingSlot||'08:30 - 10:00'}</b> ngày <b>${o.bookingDate||'Hôm nay'}</b>
+        </div>
+        <div style="font-size:13px;margin-top:2px">
+          👷 <b>Thợ phụ trách:</b> <b style="color:var(--blue)">${o.assignedWorkerName||'Thợ Đất Phú'}</b> — 📞 <a href="tel:${o.assignedWorkerPhone||'0912345678'}" style="color:var(--red);font-weight:800">${o.assignedWorkerPhone||'0912345678'}</a>
+        </div>
+        <div style="font-size:12px;color:var(--mut);margin-top:2px">
+          📍 ${o.customerName} (${o.shippingAddress}) • Chi phí trọn gói: <b style="color:var(--red)">${fmt(o.grandTotal)}</b>
+        </div>
+
+        <div class="steps-bar">
+          <div class="s-item on">1. Đã chọn lịch</div>
+          <div class="s-item on">2. Đã xếp thợ</div>
+          <div class="s-item ${isReminded?'on':''}">3. Nhắc trước 2h</div>
+          <div class="s-item ${isDone?'on':''}">4. Đã nghiệm thu</div>
+        </div>
+
+        ${!isDone?`
+          <div class="act-row">
+            ${!o.reminder2hSent?`<button class="btn-sm btn-remind" onclick="sendReminder('${o.orderCode}')">🔔 Xem tin nhắc Zalo trước 2h</button>`:''}
+            <button class="btn-sm btn-qr" onclick="completeBooking('${o.orderCode}','VIETQR')">✅ Nghiệm thu &amp; Thanh toán QR</button>
+            <button class="btn-sm btn-b2b" onclick="completeBooking('${o.orderCode}','B2B_DEBT')">🏢 Nghiệm thu Công nợ Hợp đồng</button>
+          </div>
+        `:`<div style="font-size:12px;color:var(--blue);font-weight:800">✓ Công việc đã hoàn thành đúng hẹn và cấp phiếu bảo hành điện tử.</div>`}
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('customerProducts').innerHTML=st.digitalBooths.map(b=>`
+    <div class="shop-card">
+      <b style="color:var(--blue)">${b.boothName}</b>
+      <div style="font-size:12px;color:var(--mut)">📍 ${b.address} • ĐT: ${b.phone}</div>
+      <div class="chips">
+        ${(b.products||[]).map(p=>`<span class="chip">${p.productName}: <b>${fmt(p.listedPrice)}/${p.unit}</b> (BH ${p.warrantyMonths} tháng)</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('customerWarranties').innerHTML=st.digitalWarranties.slice(0,4).map(w=>`
+    <div class="shop-card" style="border-left:4px solid var(--blue)">
+      <div style="display:flex;justify-content:space-between">
+        <b style="color:var(--red)">✓ Mã bảo hành: ${w.warrantyCode}</b>
+        <span style="font-size:12px;color:var(--mut)">SĐT: ${w.customerPhone}</span>
+      </div>
+      <div style="font-size:13px;margin-top:3px;font-weight:700;color:var(--blue)">${w.serialOrScope}</div>
+      <div style="font-size:12px;color:var(--mut);margin-top:2px">Thợ bảo hành: ${w.workerName} • Có hiệu lực đến: ${new Date(w.expiresAt).toLocaleDateString('vi-VN')}</div>
+    </div>
+  `).join('');
+}
+
+loadPortal();
+</script>
+</body>
+</html>

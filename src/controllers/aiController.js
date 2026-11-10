@@ -74,7 +74,7 @@ async function handleAIChat(req, res, body = {}) {
       if (genAIClient) {
         const model = genAIClient.getGenerativeModel({
           model: 'gemini-3.5-flash',
-          systemInstruction: 'Bạn là Trợ lý AI Thông Minh Đất Phú POS (Hệ sinh thái Đất Phú 6K). Bạn hỗ trợ thu ngân lên đơn, kiểm tra tồn kho đa kho (ml/g đồ uống & Hộp/kg OCOP Đất Phú) và điều phối thợ kỹ thuật 6K. Luôn trả lời với phong cách Đất Phú nhanh gọn, chuyên nghiệp, hiếu khách.',
+          systemInstruction: 'Bạn là Trợ lý AI Thông Minh Đất Phú (Hệ sinh thái Đất Phú 6K tại Tuy Hòa, Phú Yên). Khi khách hàng cần gọi thợ hoặc cứu hộ kỹ thuật, luôn áp dụng nguyên tắc Quản trị kỳ vọng khách hàng: "Hệ thống đã chuyển yêu cầu của anh/chị tới thợ gần nhất. Thợ sẽ liên hệ trực tiếp để báo thời gian có mặt chính xác tại hiện trường (thường từ 20 - 45 phút với ca khẩn cấp, hoặc theo khung giờ hẹn trước của anh/chị)." Không hứa cứng 15 phút có mặt để tránh áp lực giao thông.',
           tools: datphuTools
         });
 
@@ -138,8 +138,8 @@ async function handleAIChat(req, res, body = {}) {
             trade: args.trade,
             workerName: isLanh ? 'Trần Quốc Hùng (Điện Lạnh Đất Phú)' : 'Nguyễn Văn Tùng (Thợ Điện Nước Đất Phú)',
             phone: isLanh ? '0987.654.321' : '0912.345.678',
-            eta: '15 phút',
-            replyText: `[AI Đất Phú] Đã điều phối thợ ${args.trade} tới hỗ trợ tại ${args.location || 'cửa hàng Đất Phú'} trong 15 phút!`
+            eta: '20 - 45 phút (Thợ gọi xác nhận ngay)',
+            replyText: `Hệ thống đã chuyển yêu cầu của anh/chị tới thợ gần nhất (${isLanh ? 'Trần Quốc Hùng' : 'Nguyễn Văn Tùng'}). Thợ sẽ liên hệ trực tiếp để báo thời gian có mặt chính xác tại hiện trường.`
           };
         }
 
@@ -196,8 +196,8 @@ async function handleAIChat(req, res, body = {}) {
       workerName: "Nguyễn Văn Tùng (Thợ Đất Phú 6K)",
       phone: "0912345678",
       trade: "Điện Nước & Lắp Máy Bơm",
-      eta: "15 phút",
-      replyText: "[AI Đất Phú] Đã phát hiện sự cố điện nước! Đề xuất Chú Tùng (Phường 7, Tuy Hòa) có mặt trong 15 phút."
+      eta: "20 - 45 phút (Thợ gọi xác nhận ngay)",
+      replyText: "Hệ thống đã chuyển yêu cầu của anh/chị tới thợ gần nhất (Chú Tùng - Phường 7, Tuy Hòa). Thợ sẽ liên hệ trực tiếp để báo thời gian có mặt chính xác tại hiện trường."
     };
   } else if (q.includes('tủ đông') || q.includes('tủ mát') || q.includes('máy lạnh') || q.includes('gas')) {
     responseType = "worker_dispatch";
@@ -207,8 +207,8 @@ async function handleAIChat(req, res, body = {}) {
       workerName: "Trần Quốc Hùng (Điện Lạnh Đất Phú 6K)",
       phone: "0987654321",
       trade: "Điện Lạnh & Tủ Đông",
-      eta: "20 phút",
-      replyText: "[AI Đất Phú] Đã phát hiện sự cố tủ mát/điện lạnh! Đề xuất Anh Hùng (Phường 5, Tuy Hòa) kiểm tra và bơm gas."
+      eta: "20 - 45 phút (Thợ gọi xác nhận ngay)",
+      replyText: "Hệ thống đã chuyển yêu cầu của anh/chị tới thợ gần nhất (Anh Hùng - Phường 5, Tuy Hòa). Thợ sẽ liên hệ trực tiếp để báo thời gian có mặt chính xác tại hiện trường."
     };
   } else {
     payload = {

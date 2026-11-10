@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Đất Phú — Màn Hình Dành Riêng Cho Chủ Quầy Vật Tư (Quầy Số K6)</title>
+  
+  <!-- PWA Manifest & App Icons -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1B2A6B">
+  <link rel="apple-touch-icon" href="logo_datphu.jpg">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Vue 3 CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <!-- Supabase JS v2 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            datphu: {
+              red: '#D32027',
+              redHover: '#b8181e',
+              redLight: '#fff1f2',
+              navy: '#1B2A6B',
+              navyDark: '#101a45',
+              navyLight: '#eff4ff',
+              gold: '#F59E0B',
+              goldLight: '#fef3c7',
+            }
+          },
+          boxShadow: {
+            'card': '0 4px 20px -2px rgba(27, 42, 107, 0.08)',
+            'floating': '0 12px 30px -4px rgba(16, 185, 129, 0.3)',
+            'navy-float': '0 12px 30px -4px rgba(27, 42, 107, 0.35)',
+          },
+          keyframes: {
+            marquee: {
+              '0%': { transform: 'translateX(100%)' },
+              '100%': { transform: 'translateX(-100%)' }
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(6px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            }
+          },
+          animation: {
+            marquee: 'marquee 18s linear infinite',
+            fadeIn: 'fadeIn 0.25s ease-out forwards',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    [v-cloak] { display: none; }
+  </style>
+</head>
+<body class="text-slate-800 antialiased font-sans">
+
+<div id="app" v-cloak class="w-full min-h-screen bg-slate-50 relative flex flex-col justify-between">
+
+  <div>
+    <!-- ======================== 1. THANH ĐIỀU PHỐI VÀ TIN NÓNG TINH GỌN (UNIFIED TOPBAR) ======================== -->
+    <div class="bg-slate-950 text-white text-[10px] px-3 sm:px-4 py-1.5 border-b border-slate-800 font-bold z-50 sticky top-0 shadow-md">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+        <!-- Vế Trái: Tin Nóng Quầy Số Vật Tư -->
+        <div class="flex items-center gap-2 flex-1 overflow-hidden whitespace-nowrap">
+          <span class="bg-emerald-400 text-slate-950 px-1.5 py-0.5 rounded font-black text-[9px] uppercase tracking-wider flex-shrink-0 flex items-center gap-1">
+            <i class="fa-solid fa-boxes-stacked text-emerald-950"></i> QUẦY SỐ B2B
+          </span>
+          <div class="inline-block animate-marquee font-bold text-emerald-200 text-[10px]">
+            🏪 Liên kết trực tiếp kho vật tư chính hãng Tuy Hòa • ⚡ Cấp vật tư lưu động lên xe thợ K6 • 🧾 Tự động tách dòng tiền VietQR Napas247 & Xuất HĐĐT NĐ 123!
+          </div>
+        </div>
+
+        <!-- Vế Phải: Lá Cờ Việt Nam • Chọn Vùng • Trạng Thái Trực Tuyến -->
+        <div class="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+          <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900 border border-amber-500/30 text-[9px] font-black text-amber-300 shadow-2xs select-none">
+            <svg class="w-4 h-2.5 rounded-xs shadow-xs overflow-hidden shrink-0 border border-red-500/40" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg">
+              <rect width="30" height="20" fill="#da251d"/>
+              <polygon points="15,4 17.06,10.34 23.73,10.34 18.33,14.26 20.4,20.6 15,16.68 9.6,20.6 11.67,14.26 6.27,10.34 12.94,10.34" fill="#ffff00"/>
+            </svg>
+            <span class="tracking-wider uppercase">Việt Nam</span>
+          </div>
+
+          <span class="bg-slate-900 text-amber-300 border border-amber-500/30 px-2.5 py-1 rounded-lg text-[9px] font-black hidden sm:flex items-center gap-1">
+            <i class="fa-solid fa-map-location-dot text-amber-400"></i>
+            <span>TP. Tuy Hòa (Phú Yên)</span>
+          </span>
+
+          <button 
+            type="button"
+            @click="loadBoothData"
+            class="bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-lg text-[9px] font-bold flex items-center gap-1 transition-all"
+            title="Đồng bộ tồn kho & sổ cái">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>Đồng Bộ Live</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== 2. HEADER ĐẤT PHÚ CHUẨN THẨM MỸ ======================== -->
+    <div class="bg-white/95 backdrop-blur-md border-b border-slate-100 sticky top-[29px] z-40 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+        <div class="flex items-center justify-between gap-2.5 flex-wrap">
+          
+          <!-- LOGO ĐẤT PHÚ CHUẨN GỐC -->
+          <div class="flex items-center gap-2 sm:gap-3">
+            <a href="index.html" class="flex items-center gap-2 sm:gap-2.5 cursor-pointer flex-shrink-0 select-none">
+              <img src="logo_datphu.jpg" alt="Logo Đất Phú" class="h-8 sm:h-9 object-contain drop-shadow-xs rounded">
+              <div class="leading-tight border-l border-slate-200 pl-2">
+                <div class="text-xs font-black text-slate-900 tracking-tight flex items-center gap-1">
+                  <span class="text-datphu-red">QUẦY SỐ VẬT TƯ K6</span>
+                  <span class="text-[8px] px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded font-extrabold uppercase">B2B Tuy Hòa</span>
+                </div>
+                <div class="text-[8px] text-slate-500 font-bold uppercase tracking-wider">TỒN KHO XE THỢ • ĐỐI SOÁT VIETQR • HĐĐT NĐ 123</div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Điều hướng nhanh giữa các cổng -->
+          <div class="flex items-center gap-2">
+            <a 
+              href="tho_6k_portal.html"
+              class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 px-3 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 transition-all">
+              <i class="fa-solid fa-screwdriver-wrench text-datphu-navy"></i>
+              <span class="hidden sm:inline">Trạm Thợ K6</span>
+            </a>
+
+            <button 
+              type="button"
+              @click="openAddMaterialModal()"
+              class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-3.5 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
+              <i class="fa-solid fa-circle-plus"></i>
+              <span>+ Thêm Vật Tư Niêm Yết</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== 3. NỘI DUNG CHÍNH QUẦY SỐ VẬT TƯ ======================== -->
+    <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-5 space-y-6">
+
+      <!-- ========================================================================= -->
+      <!-- BANNER HERO: MÀN HÌNH DÀNH RIÊNG CHO CHỦ QUẦY VẬT TƯ (QUẦY SỐ)           -->
+      <!-- ========================================================================= -->
+      <div class="bg-gradient-to-r from-emerald-800 via-teal-800 to-datphu-navy rounded-3xl p-5 sm:p-6 text-white shadow-floating relative overflow-hidden border border-emerald-500/30">
+        <!-- Họa tiết chìm trang trí -->
+        <div class="absolute -right-6 -bottom-8 text-white/10 text-9xl font-black pointer-events-none select-none">
+          <i class="fa-solid fa-store"></i>
+        </div>
+
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div class="space-y-2 max-w-2xl">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="bg-white text-emerald-900 text-[10px] sm:text-xs font-black uppercase tracking-wider px-3 py-1 rounded-xl shadow-sm flex items-center gap-1.5">
+                <i class="fa-solid fa-store text-emerald-600"></i> MÀN HÌNH DÀNH RIÊNG CHO CHỦ QUẦY VẬT TƯ (QUẦY SỐ)
+              </span>
+              <span class="bg-emerald-500/20 border border-emerald-300/30 text-emerald-200 text-[10px] font-bold px-2.5 py-1 rounded-xl flex items-center gap-1">
+                <i class="fa-solid fa-file-invoice-dollar text-amber-300"></i> Chuẩn Thuế NĐ 123/2020/NĐ-CP
+              </span>
+            </div>
+
+            <h1 class="text-lg sm:text-2xl font-black tracking-tight text-white leading-snug">
+              Quản Lý Giá Niêm Yết • Tồn Kho Vật Tư Cấp Cho Xe Thợ • Tự Động Nhận Tiền Hàng & Xuất HĐĐT
+            </h1>
+            <p class="text-xs text-emerald-100/90 leading-relaxed">
+              Mỗi khi Thợ 6K lắp đặt vật tư tại nhà khách và khách quét mã <b>VietQR Napas247</b>, hệ thống Sổ Cái Kép tự động tách <b>100% tiền vật tư chảy thẳng về tài khoản Quầy Số</b> và phát hành Hóa đơn điện tử có mã của Cơ quan Thuế.
+            </p>
+          </div>
+
+          <!-- 4 Thẻ Chỉ Số KPI Thời Gian Thực -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 shrink-0">
+            <div class="bg-black/25 backdrop-blur-xs border border-white/15 rounded-2xl p-3">
+              <div class="text-[10px] font-bold text-emerald-200 uppercase">Quầy Số Đang Mở</div>
+              <div class="text-lg sm:text-xl font-black text-white mt-0.5">{{ digitalBooths.length }} Quầy</div>
+              <div class="text-[9px] text-emerald-300 font-semibold">100% Đã xác thực MST</div>
+            </div>
+            <div class="bg-black/25 backdrop-blur-xs border border-white/15 rounded-2xl p-3">
+              <div class="text-[10px] font-bold text-emerald-200 uppercase">Tổng Tồn Kho Quầy</div>
+              <div class="text-lg sm:text-xl font-black text-amber-300 mt-0.5">{{ totalStockUnits }} SP</div>
+              <div class="text-[9px] text-emerald-300 font-semibold">{{ totalSkuCount }} Mã vật tư chuẩn K6</div>
+            </div>
+            <div class="bg-black/25 backdrop-blur-xs border border-white/15 rounded-2xl p-3">
+              <div class="text-[10px] font-bold text-emerald-200 uppercase">Tiền Hàng Đã Về Quầy</div>
+              <div class="text-base sm:text-lg font-black text-emerald-300 font-mono mt-0.5">+{{ formatCurrency(totalPayoutAmount) }}</div>
+              <div class="text-[9px] text-white/80 font-semibold">Tự động tách qua VietQR</div>
+            </div>
+            <div class="bg-black/25 backdrop-blur-xs border border-white/15 rounded-2xl p-3">
+              <div class="text-[10px] font-bold text-emerald-200 uppercase">HĐĐT Đã Phát Hành</div>
+              <div class="text-lg sm:text-xl font-black text-cyan-300 mt-0.5">{{ boothPayouts.length }} Hóa đơn</div>
+              <div class="text-[9px] text-white/80 font-semibold">VNPT • Viettel • MISA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- THANH TÌM KIẾM & BỘ LỌC NHANH THEO QUẦY SỐ                                -->
+      <!-- ========================================================================= -->
+      <div class="bg-white rounded-3xl p-3.5 sm:p-4 border border-slate-200/90 shadow-card flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <!-- Bộ lọc chọn Quầy Số -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+          <button 
+            type="button"
+            @click="selectedBoothFilter = 'ALL'"
+            :class="selectedBoothFilter === 'ALL' ? 'bg-datphu-navy text-white shadow-sm' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'"
+            class="px-3.5 py-2 rounded-2xl text-xs font-black flex items-center gap-1.5 shrink-0 transition-all">
+            <i class="fa-solid fa-layer-group text-amber-400"></i>
+            <span>Tất Cả Quầy Số ({{ digitalBooths.length }})</span>
+          </button>
+
+          <button 
+            v-for="b in digitalBooths" 
+            :key="b.boothCode"
+            type="button"
+            @click="selectedBoothFilter = b.boothCode"
+            :class="selectedBoothFilter === b.boothCode ? 'bg-emerald-700 text-white shadow-sm' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'"
+            class="px-3.5 py-2 rounded-2xl text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all">
+            <span class="font-mono font-black text-[10px] px-1.5 py-0.5 rounded bg-black/15">{{ b.boothCode }}</span>
+            <span class="truncate max-w-[180px]">{{ b.shortName || b.boothName }}</span>
+          </button>
+        </div>
+
+        <!-- Ô tìm kiếm tên vật tư / mã SKU -->
+        <div class="relative w-full md:w-80">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input 
+            v-model="searchQuery"
+            type="text" 
+            placeholder="Tìm vật tư (Aptomat, van đồng, đèn NLMT, Sika)..."
+            class="w-full pl-9 pr-8 py-2 rounded-2xl bg-slate-50 focus:bg-white border border-slate-200 text-xs font-bold text-slate-800 focus:outline-none focus:border-emerald-500 transition-all">
+          <button v-if="searchQuery" @click="searchQuery = ''" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- PHẦN 1: DANH MỤC HÀNG HÓA & TỒN KHO TẠI QUẦY (THIẾT KẾ THẺ CAO CẤP)        -->
+      <!-- ========================================================================= -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-black shadow-2xs">
+              <i class="fa-solid fa-box-open"></i>
+            </div>
+            <div>
+              <h2 class="text-sm sm:text-base font-black text-slate-900 uppercase tracking-tight">
+                1. DANH MỤC HÀNG HÓA & TỒN KHO TẠI QUẦY
+              </h2>
+              <p class="text-[11px] text-slate-500 font-medium">Giá niêm yết công khai • Tự động trừ tồn kho khi xuất cho xe thợ 6K</p>
+            </div>
+          </div>
+          <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full hidden sm:inline-flex items-center gap-1">
+            <i class="fa-solid fa-circle-check"></i> Đã đồng bộ bảng giá niêm yết K6
+          </span>
+        </div>
+
+        <!-- Danh sách các Quầy Số -->
+        <div class="space-y-5">
+          <div 
+            v-for="booth in filteredBooths" 
+            :key="booth.boothCode"
+            class="bg-white rounded-3xl border border-slate-200/90 shadow-card overflow-hidden transition-all hover:shadow-md">
+            
+            <!-- Header của từng Quầy Số -->
+            <div class="bg-gradient-to-r from-slate-900 via-datphu-navy to-slate-900 text-white p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div class="flex items-start sm:items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-slate-950 flex items-center justify-center text-xl font-black shadow-md shrink-0">
+                  <i :class="booth.icon || 'fa-solid fa-warehouse'"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-md font-mono tracking-wide">
+                      {{ booth.boothCode }}
+                    </span>
+                    <h3 class="text-sm sm:text-base font-black text-white leading-snug">
+                      {{ booth.boothName }}
+                    </h3>
+                  </div>
+
+                  <div class="flex items-center gap-x-3 gap-y-1 flex-wrap text-[11px] text-slate-300 mt-1 font-medium">
+                    <span class="flex items-center gap-1 text-emerald-300 font-bold">
+                      <i class="fa-solid fa-building-shield text-[10px]"></i> MST: {{ booth.taxCode }}
+                    </span>
+                    <span class="text-slate-600">•</span>
+                    <span class="flex items-center gap-1">
+                      <i class="fa-solid fa-location-dot text-rose-400 text-[10px]"></i> {{ booth.address }}
+                    </span>
+                    <span v-if="booth.ownerName" class="text-slate-600 hidden sm:inline">•</span>
+                    <span v-if="booth.ownerName" class="hidden sm:inline text-amber-200 font-semibold">
+                      Chủ quầy: {{ booth.ownerName }} ({{ booth.phone }})
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Huy hiệu Hóa đơn điện tử & Nút thêm vật tư vào quầy này -->
+              <div class="flex items-center gap-2 self-start md:self-center shrink-0">
+                <span class="bg-white/10 border border-white/20 text-cyan-200 text-[10px] font-extrabold px-2.5 py-1.5 rounded-xl flex items-center gap-1.5">
+                  <i class="fa-solid fa-file-shield text-cyan-400"></i>
+                  <span>HĐĐT: {{ booth.einvoiceProvider || 'VNPT_INVOICE' }}</span>
+                </span>
+                <button 
+                  type="button"
+                  @click="openAddMaterialModal(booth)"
+                  class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-[11px] px-3 py-1.5 rounded-xl shadow-xs transition-all active:scale-95 flex items-center gap-1">
+                  <i class="fa-solid fa-plus text-[10px]"></i>
+                  <span>Nhập Thêm Hàng</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Lưới Các Sản Phẩm Vật Tư Trong Quầy -->
+            <div class="p-4 sm:p-5 bg-slate-50/60">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <div 
+                  v-for="prod in booth.products" 
+                  :key="prod.skuCode"
+                  class="bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-emerald-400/70 transition-all flex flex-col justify-between group">
+                  
+                  <div>
+                    <!-- Hàng trên: Ảnh minh họa + Mã SKU + Bảo hành -->
+                    <div class="flex items-start gap-3">
+                      <img 
+                        :src="getProductImage(prod)" 
+                        :alt="prod.productName"
+                        class="w-16 h-16 rounded-xl object-cover border border-slate-100 shrink-0 group-hover:scale-105 transition-transform">
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                          <span class="text-[9px] font-black font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">
+                            🏷️ {{ prod.skuCode }}
+                          </span>
+                          <span class="text-[9px] font-bold bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200">
+                            BH {{ prod.warrantyMonths || 12 }} tháng
+                          </span>
+                        </div>
+
+                        <h4 class="text-xs sm:text-sm font-black text-slate-900 mt-1.5 leading-snug line-clamp-2" :title="prod.productName">
+                          {{ prod.productName }}
+                        </h4>
+                      </div>
+                    </div>
+
+                    <!-- Hàng giữa: Giá niêm yết & Tồn kho -->
+                    <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-baseline justify-between">
+                      <div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">Giá niêm yết chuẩn 6K</div>
+                        <div class="text-sm sm:text-base font-black text-datphu-red font-mono">
+                          {{ formatCurrency(prod.listedPrice) }}<span class="text-xs text-slate-500 font-sans font-bold">/{{ prod.unit }}</span>
+                        </div>
+                      </div>
+
+                      <div class="text-right">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">Tồn kho tại quầy</div>
+                        <div class="text-xs sm:text-sm font-black" :class="prod.stockQty > 15 ? 'text-emerald-700' : 'text-amber-600'">
+                          {{ prod.stockQty }} {{ prod.unit }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Hàng dưới: Điều chỉnh tồn kho nhanh & Cấp lên xe thợ -->
+                  <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-1 bg-slate-100 rounded-xl p-1 border border-slate-200">
+                      <button 
+                        type="button"
+                        @click="adjustStock(booth, prod, -1)"
+                        class="w-6 h-6 rounded-lg bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-600 font-black text-xs flex items-center justify-center shadow-2xs active:scale-90"
+                        title="Giảm 1 tồn kho">
+                        -
+                      </button>
+                      <span class="text-[11px] font-black font-mono px-2 text-slate-800">{{ prod.stockQty }}</span>
+                      <button 
+                        type="button"
+                        @click="adjustStock(booth, prod, 1)"
+                        class="w-6 h-6 rounded-lg bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-600 font-black text-xs flex items-center justify-center shadow-2xs active:scale-90"
+                        title="Tăng 1 tồn kho">
+                        +
+                      </button>
+                    </div>
+
+                    <button 
+                      type="button"
+                      @click="openDispatchToWorkerModal(booth, prod)"
+                      class="flex-1 py-1.5 px-2.5 rounded-xl bg-datphu-navy hover:bg-blue-800 text-white font-black text-[11px] flex items-center justify-center gap-1.5 shadow-2xs active:scale-95 transition-all">
+                      <i class="fa-solid fa-truck-fast text-amber-300 text-[10px]"></i>
+                      <span>Cấp Cho Xe Thợ</span>
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- PHẦN 2: TIỀN HÀNG ĐÃ TỰ ĐỘNG CHẢY VỀ QUẦY & HÓA ĐƠN ĐIỆN TỬ              -->
+      <!-- ========================================================================= -->
+      <div class="bg-gradient-to-br from-datphu-navy via-slate-950 to-slate-900 text-white rounded-3xl p-5 sm:p-6 shadow-2xl border-2 border-emerald-500/40 relative overflow-hidden space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center text-lg font-black">
+              <i class="fa-solid fa-file-invoice-dollar"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400">SỔ CÁI BÚT TOÁN KÉP • TỰ ĐỘNG TÁCH TIỀN VẬT TƯ</span>
+              </div>
+              <h2 class="text-sm sm:text-base font-black text-white mt-0.5">
+                🧾 2. TIỀN HÀNG ĐÃ TỰ ĐỘNG CHẢY VỀ QUẦY & HÓA ĐƠN ĐIỆN TỬ (NĐ 123)
+              </h2>
+            </div>
+          </div>
+
+          <span class="text-xs font-mono font-black bg-emerald-950/90 border border-emerald-500/40 text-emerald-300 px-3 py-1.5 rounded-xl self-start sm:self-center">
+            Tổng nhận: +{{ formatCurrency(totalPayoutAmount) }}
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <div 
+            v-for="(entry, idx) in boothPayouts" 
+            :key="idx"
+            class="bg-slate-900/90 border border-emerald-500/30 hover:border-emerald-400 rounded-2xl p-4 flex flex-col justify-between gap-3 transition-all">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="bg-emerald-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded font-mono">
+                    Đơn/Phiếu: #{{ entry.referenceCode }}
+                  </span>
+                  <span class="bg-slate-800 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-700 font-mono">
+                    {{ entry.accountOwnerId }}
+                  </span>
+                </div>
+                <p class="text-xs text-slate-200 font-bold mt-2 leading-relaxed">
+                  {{ entry.description }}
+                </p>
+              </div>
+
+              <div class="text-right shrink-0">
+                <div class="text-sm sm:text-base font-black text-emerald-400 font-mono">
+                  +{{ formatCurrency(entry.creditAmount) }}
+                </div>
+                <span class="text-[9px] text-emerald-300 bg-emerald-950 px-2 py-0.5 rounded-full border border-emerald-700 inline-block mt-1">
+                  ✓ Đã nổi tiền Napas247
+                </span>
+              </div>
+            </div>
+
+            <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+              <span><i class="fa-solid fa-receipt text-cyan-400 mr-1"></i> Mã HĐĐT: <b class="text-cyan-300 font-mono">{{ entry.einvoiceNo || ('HDDT-123-' + entry.referenceCode) }}</b></span>
+              <span class="text-emerald-400 font-bold">Đã kê khai thuế TT40</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================== FOOTER ĐẤT PHÚ ======================== -->
+  <footer class="bg-slate-950 text-slate-400 text-xs border-t border-slate-800 mt-10 py-6 px-4">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2.5">
+        <img src="logo_datphu.jpg" alt="Logo Đất Phú" class="h-7 object-contain rounded">
+        <div>
+          <div class="font-black text-white text-xs">ĐẤT PHÚ CORE • HỆ THỐNG QUẦY SỐ VẬT TƯ CHUẨN 6K TUY HÒA</div>
+          <div class="text-[10px] text-slate-500">MST: 4401020233 • Trụ sở: 21/146 Ngô Gia Tự, Phường 7, TP. Tuy Hòa, Phú Yên</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 text-[11px] font-bold">
+        <a href="index.html" class="text-amber-400 hover:underline">Chợ Phiên Tuy Hòa</a>
+        <span>•</span>
+        <a href="tho_6k_portal.html" class="text-cyan-400 hover:underline">Trạm Thợ Kỹ Thuật K6</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 1: THÊM VẬT TƯ NIÊM YẾT MỚI VÀO QUẦY SỐ                             -->
+  <!-- ========================================================================= -->
+  <div v-if="showAddModal" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-100 animate-fadeIn space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-sm">
+            <i class="fa-solid fa-box-open"></i>
+          </div>
+          <div>
+            <span class="text-[9px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full border border-emerald-200">
+              NIÊM YẾT GIÁ VẬT TƯ CHUẨN 6K
+            </span>
+            <h3 class="text-sm font-black text-slate-900 mt-0.5">Thêm Vật Tư Vào Quầy Số</h3>
+          </div>
+        </div>
+        <button @click="showAddModal = false" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-[11px] font-black text-slate-700 mb-1">Chọn Quầy Số nhận hàng *</label>
+          <select v-model="newMat.boothCode" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-900">
+            <option v-for="b in digitalBooths" :key="b.boothCode" :value="b.boothCode">
+              {{ b.boothCode }} — {{ b.boothName }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-black text-slate-700 mb-1">Tên vật tư / thiết bị chính hãng *</label>
+          <input v-model="newMat.productName" type="text" placeholder="VD: Ống nhựa chịu nhiệt PPR Bình Minh Phi 25" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-900">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-black text-slate-700 mb-1">Giá niêm yết (VNĐ) *</label>
+            <input v-model.number="newMat.listedPrice" type="number" placeholder="120000" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-900">
+          </div>
+          <div>
+            <label class="block text-[11px] font-black text-slate-700 mb-1">Đơn vị tính *</label>
+            <input v-model="newMat.unit" type="text" placeholder="cái / bộ / cuộn" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-900">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-black text-slate-700 mb-1">Số lượng tồn kho *</label>
+            <input v-model.number="newMat.stockQty" type="number" placeholder="30" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-900">
+          </div>
+          <div>
+            <label class="block text-[11px] font-black text-slate-700 mb-1">Bảo hành (Tháng)</label>
+            <input v-model.number="newMat.warrantyMonths" type="number" placeholder="12" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-900">
+          </div>
+        </div>
+
+        <button 
+          type="button"
+          @click="saveNewMaterial"
+          class="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs sm:text-sm shadow-md transition-all">
+          Lưu & Niêm Yết Lên Quầy Số
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 2: CẤP VẬT TƯ LƯU ĐỘNG LÊN XE THỢ 6K                                -->
+  <!-- ========================================================================= -->
+  <div v-if="showDispatchModal && selectedProductForWorker" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-100 animate-fadeIn space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <span class="text-[9px] font-black uppercase tracking-wider bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200">
+            PHIẾU XUẤT KHO TẠM ỨNG XE THỢ
+          </span>
+          <h3 class="text-sm font-black text-slate-900 mt-0.5">Cấp Vật Tư Cho Xe Thợ 6K</h3>
+        </div>
+        <button @click="showDispatchModal = false" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+          <div class="text-[10px] font-bold text-slate-500">{{ selectedBoothForWorker?.boothName }}</div>
+          <div class="font-black text-slate-900 text-xs sm:text-sm mt-0.5">{{ selectedProductForWorker.productName }}</div>
+          <div class="text-xs font-black text-datphu-red font-mono mt-1">
+            Giá niêm yết: {{ formatCurrency(selectedProductForWorker.listedPrice) }}/{{ selectedProductForWorker.unit }} (Tồn: {{ selectedProductForWorker.stockQty }})
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-black text-slate-700 mb-1">Chọn Thợ 6K nhận vật tư lên xe</label>
+          <select v-model="dispatchWorkerForm.workerName" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-900">
+            <option value="Chú Nguyễn Văn Tùng (THO-01 • Điện Nước)">Chú Nguyễn Văn Tùng (THO-01 • Điện Nước)</option>
+            <option value="Anh Phạm Quốc Bảo (THO-04 • Đèn NLMT)">Anh Phạm Quốc Bảo (THO-04 • Đèn NLMT)</option>
+            <option value="Anh Đặng Minh Tâm (THO-05 • Chống Thấm)">Anh Đặng Minh Tâm (THO-05 • Chống Thấm)</option>
+            <option value="Anh Võ Minh Khoa (THO-06 • Điện Nước)">Anh Võ Minh Khoa (THO-06 • Điện Nước)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-black text-slate-700 mb-1">Số lượng cấp lên xe thợ</label>
+          <input v-model.number="dispatchWorkerForm.qty" type="number" min="1" :max="selectedProductForWorker.stockQty" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-900">
+        </div>
+
+        <button 
+          type="button"
+          @click="confirmDispatchToWorker"
+          class="w-full py-3 rounded-2xl bg-datphu-navy hover:bg-blue-900 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2">
+          <i class="fa-solid fa-truck-ramp-box text-amber-300"></i>
+          <span>Xác Nhận Xuất Kho Lên Xe Thợ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const { createApp } = Vue;
+
+  createApp({
+    data() {
+      return {
+        selectedBoothFilter: 'ALL',
+        searchQuery: '',
+        showAddModal: false,
+        showDispatchModal: false,
+        selectedBoothForWorker: null,
+        selectedProductForWorker: null,
+        dispatchWorkerForm: {
+          workerName: 'Chú Nguyễn Văn Tùng (THO-01 • Điện Nước)',
+          qty: 2
+        },
+        newMat: {
+          boothCode: 'QUAY-TH-01',
+          productName: '',
+          listedPrice: 150000,
+          unit: 'cái',
+          stockQty: 25,
+          warrantyMonths: 12
+        },
+        digitalBooths: [
+          {
+            boothCode: 'QUAY-TH-01',
+            shortName: 'Kim Khí & Điện Nước Hòa Bình',
+            boothName: 'Quầy Số Kim Khí & Điện Nước Hòa Bình (Chuẩn 6K)',
+            taxCode: '4401020233-001',
+            ownerName: 'Nguyễn Hòa Bình',
+            phone: '02573.822.111',
+            address: '142 Trần Hưng Đạo, Phường 4, TP. Tuy Hòa, Phú Yên',
+            einvoiceProvider: 'VNPT_INVOICE',
+            icon: 'fa-solid fa-plug-circle-bolt',
+            products: [
+              {
+                skuCode: 'VT-DN-01',
+                productName: 'Aptomat chống giật Panasonic 32A chính hãng',
+                unit: 'cái',
+                listedPrice: 185000,
+                vatRate: 8,
+                stockQty: 48,
+                warrantyMonths: 24,
+                image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=300&q=80'
+              },
+              {
+                skuCode: 'VT-DN-02',
+                productName: 'Van giảm áp đồng phi 27 Bình Minh',
+                unit: 'cái',
+                listedPrice: 95000,
+                vatRate: 8,
+                stockQty: 85,
+                warrantyMonths: 12,
+                image: 'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?auto=format&fit=crop&w=300&q=80'
+              },
+              {
+                skuCode: 'VT-DN-04',
+                productName: 'Máy bơm tăng áp điện tử Panasonic 200W',
+                unit: 'máy',
+                listedPrice: 1650000,
+                vatRate: 8,
+                stockQty: 14,
+                warrantyMonths: 24,
+                image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=300&q=80'
+              }
+            ]
+          },
+          {
+            boothCode: 'QUAY-TH-02',
+            shortName: 'Đèn NLMT & Thiết Bị Xanh',
+            boothName: 'Quầy Số Đèn Năng Lượng Mặt Trời & Thiết Bị Xanh Đất Phú',
+            taxCode: '4401020233-002',
+            ownerName: 'Trần Thị Mai',
+            phone: '0977.478.899',
+            address: '21/146 Ngô Gia Tự, Phường 7, TP. Tuy Hòa, Phú Yên',
+            einvoiceProvider: 'VIETTEL_SINVOICE',
+            icon: 'fa-solid fa-solar-panel',
+            products: [
+              {
+                skuCode: 'VT-NL-01',
+                productName: 'Bộ đèn pha NLMT Rạng Đông 200W IP67',
+                unit: 'bộ',
+                listedPrice: 890000,
+                vatRate: 8,
+                stockQty: 32,
+                warrantyMonths: 24,
+                image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=300&q=80'
+              },
+              {
+                skuCode: 'VT-NL-03',
+                productName: 'Đèn đường NLMT liền thể 300W chống bão biển',
+                unit: 'bộ',
+                listedPrice: 1250000,
+                vatRate: 8,
+                stockQty: 20,
+                warrantyMonths: 36,
+                image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=300&q=80'
+              }
+            ]
+          },
+          {
+            boothCode: 'QUAY-TH-03',
+            shortName: 'Chống Thấm & Sơn Sika',
+            boothName: 'Quầy Số Vật Liệu Chống Thấm & Sơn Sika Tuy Hòa',
+            taxCode: '4401020233-003',
+            ownerName: 'Lê Quốc Khánh',
+            phone: '0914.777.888',
+            address: '26 Nguyễn Huệ, Phường 5, TP. Tuy Hòa, Phú Yên',
+            einvoiceProvider: 'MISA_MEINVOICE',
+            icon: 'fa-solid fa-paint-roller',
+            products: [
+              {
+                skuCode: 'VT-CT-01',
+                productName: 'Thùng keo chống thấm Sika Raintite 4kg',
+                unit: 'thùng',
+                listedPrice: 540000,
+                vatRate: 8,
+                stockQty: 40,
+                warrantyMonths: 18,
+                image: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=300&q=80'
+              }
+            ]
+          }
+        ],
+        boothPayouts: [
+          {
+            referenceCode: 'DP-1001',
+            accountOwnerId: 'QUAY-TH-02',
+            creditAmount: 961200,
+            einvoiceNo: 'C26TAA-001001',
+            description: 'Tự động tách tiền vật tư Bộ đèn pha NLMT Rạng Đông 200W IP67 (gồm VAT 8%) về Quầy Số Đèn NLMT Đất Phú'
+          },
+          {
+            referenceCode: 'YC-2001',
+            accountOwnerId: 'QUAY-TH-01',
+            creditAmount: 185000,
+            einvoiceNo: 'C26TAA-002001',
+            description: 'Hoàn trả tiền 01 Aptomat chống giật Panasonic 32A (Thợ Nguyễn Văn Tùng xuất từ xe thợ lắp cho khách P.7)'
+          }
+        ]
+      };
+    },
+    computed: {
+      totalSkuCount() {
+        return this.digitalBooths.reduce((acc, b) => acc + (b.products ? b.products.length : 0), 0);
+      },
+      totalStockUnits() {
+        return this.digitalBooths.reduce((acc, b) => {
+          return acc + (b.products || []).reduce((s, p) => s + Number(p.stockQty || 0), 0);
+        }, 0);
+      },
+      totalPayoutAmount() {
+        return this.boothPayouts.reduce((acc, e) => acc + Number(e.creditAmount || 0), 0);
+      },
+      filteredBooths() {
+        let list = this.digitalBooths;
+        if (this.selectedBoothFilter !== 'ALL') {
+          list = list.filter(b => b.boothCode === this.selectedBoothFilter);
+        }
+        const kw = this.searchQuery.trim().toLowerCase();
+        if (!kw) return list;
+
+        return list
+          .map(b => {
+            const matchedProducts = (b.products || []).filter(p =>
+              p.productName.toLowerCase().includes(kw) ||
+              p.skuCode.toLowerCase().includes(kw) ||
+              b.boothName.toLowerCase().includes(kw)
+            );
+            return { ...b, products: matchedProducts };
+          })
+          .filter(b => b.products.length > 0);
+      }
+    },
+    mounted() {
+      this.loadBoothData();
+    },
+    methods: {
+      formatCurrency(val) {
+        return Number(val || 0).toLocaleString('vi-VN') + 'đ';
+      },
+      getProductImage(prod) {
+        if (prod.image) return prod.image;
+        const sku = String(prod.skuCode || '').toUpperCase();
+        if (sku.includes('NL')) return 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=300&q=80';
+        if (sku.includes('CT')) return 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=300&q=80';
+        return 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=300&q=80';
+      },
+      async loadBoothData() {
+        try {
+          const res = await fetch('/api/v1/core6k/overview');
+          if (!res.ok) return;
+          const d = await res.json();
+          if (d && d.success && d.state) {
+            if (Array.isArray(d.state.digitalBooths) && d.state.digitalBooths.length > 0) {
+              this.digitalBooths = d.state.digitalBooths;
+            }
+            const ledger = (d.state.financialLedgerEntries || []).filter(e => e.accountType === 'BOOTH_PAYABLE');
+            if (ledger.length > 0) {
+              this.boothPayouts = ledger;
+            }
+          }
+        } catch (e) {
+          // Giữ dữ liệu mặc định chuẩn Tuy Hòa khi chạy độc lập
+        }
+      },
+      adjustStock(booth, prod, delta) {
+        const next = Math.max(0, Number(prod.stockQty || 0) + delta);
+        prod.stockQty = next;
+      },
+      openAddMaterialModal(booth) {
+        this.newMat = {
+          boothCode: booth ? booth.boothCode : 'QUAY-TH-01',
+          productName: '',
+          listedPrice: 150000,
+          unit: 'cái',
+          stockQty: 20,
+          warrantyMonths: 12
+        };
+        this.showAddModal = true;
+      },
+      saveNewMaterial() {
+        if (!this.newMat.productName.trim()) {
+          alert('Vui lòng nhập tên vật tư!');
+          return;
+        }
+        const target = this.digitalBooths.find(b => b.boothCode === this.newMat.boothCode);
+        if (target) {
+          const skuCode = 'VT-6K-' + Math.floor(10 + Math.random() * 89);
+          target.products.push({
+            skuCode,
+            productName: this.newMat.productName.trim(),
+            listedPrice: Number(this.newMat.listedPrice) || 100000,
+            unit: this.newMat.unit || 'cái',
+            stockQty: Number(this.newMat.stockQty) || 10,
+            warrantyMonths: Number(this.newMat.warrantyMonths) || 12
+          });
+        }
+        this.showAddModal = false;
+      },
+      openDispatchToWorkerModal(booth, prod) {
+        this.selectedBoothForWorker = booth;
+        this.selectedProductForWorker = prod;
+        this.dispatchWorkerForm.qty = 2;
+        this.showDispatchModal = true;
+      },
+      confirmDispatchToWorker() {
+        const qty = Number(this.dispatchWorkerForm.qty || 1);
+        if (this.selectedProductForWorker && qty > 0) {
+          this.selectedProductForWorker.stockQty = Math.max(0, this.selectedProductForWorker.stockQty - qty);
+          this.boothPayouts.unshift({
+            referenceCode: 'XK-' + Math.floor(1000 + Math.random() * 9000),
+            accountOwnerId: this.selectedBoothForWorker.boothCode,
+            creditAmount: qty * this.selectedProductForWorker.listedPrice,
+            einvoiceNo: 'C26TAA-' + Math.floor(100000 + Math.random() * 899999),
+            description: `Đã cấp ${qty} ${this.selectedProductForWorker.unit} [${this.selectedProductForWorker.productName}] lên xe của ${this.dispatchWorkerForm.workerName}`
+          });
+        }
+        this.showDispatchModal = false;
+      }
+    }
+  }).mount('#app');
+</script>
+</body>
+</html>

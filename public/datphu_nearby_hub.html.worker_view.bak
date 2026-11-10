@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Đất Phú — Tìm Thợ Sửa Chữa Quanh Đây (TP. Tuy Hòa)</title>
+  <link rel="apple-touch-icon" href="logo_datphu.jpg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: {
+            datphu: {
+              red: '#D32027',
+              navy: '#1B2A6B',
+              gold: '#F59E0B'
+            }
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(15, 23, 42, 0.06)',
+            'hover': '0 10px 25px -4px rgba(27, 42, 107, 0.12)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #F8FAFC; -webkit-tap-highlight-color: transparent; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .detail-drawer { display: none; }
+    .detail-drawer.open { display: block; }
+    .modal-bg { display: none; }
+    .modal-bg.open { display: flex; }
+  </style>
+</head>
+<body class="text-slate-800 antialiased font-sans min-h-screen flex flex-col justify-between">
+
+  <div>
+    <!-- ======================== HEADER TINH GỌN, SANG TRỌNG ======================== -->
+    <header class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-40 shadow-xs">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+        <!-- Logo Đất Phú chuẩn -->
+        <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+          <img src="logo_datphu.jpg" alt="Logo Đất Phú" class="h-9 object-contain rounded">
+          <div class="border-l border-slate-200 pl-2.5 leading-tight">
+            <div class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-1.5">
+              <span>TÌM THỢ QUANH ĐÂY</span>
+              <span class="text-[10px] px-2 py-0.5 bg-blue-50 text-datphu-navy rounded-full font-bold border border-blue-200">Chuẩn 6K</span>
+            </div>
+            <div class="text-[11px] text-slate-500 font-medium hidden sm:block">
+              Định vị thực tế Tuy Hòa • Giá niêm yết công khai
+            </div>
+          </div>
+        </a>
+
+        <!-- Nhóm nút góc phải -->
+        <div class="flex items-center gap-2">
+          <a href="tho_nhan_cuoc.html" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center gap-1.5 transition" title="Màn hình nhận cuốc thực tế dành cho Thợ">
+            <i class="fa-solid fa-motorcycle text-datphu-red"></i>
+            <span class="hidden md:inline">Thợ Nhận Cuốc</span>
+          </a>
+          <a href="tel:0979991898" class="px-3.5 py-2 rounded-xl bg-datphu-red hover:bg-red-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+            <i class="fa-solid fa-phone-volume"></i>
+            <span>0979.991.898</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ======================== KHUNG ĐIỀU KHIỂN GỌN GÀNG TRÊN 1 KHỐI ======================== -->
+    <main class="max-w-6xl mx-auto px-4 py-5 space-y-5">
+
+      <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-soft space-y-3.5">
+        <!-- Hàng 1: Nút 1-Chạm GPS (Ưu tiên số 1) + Chọn Vị Trí + Tìm kiếm + Bán kính -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 items-center">
+          <!-- Cột 1: Nút Gọi Thợ Ngay (3 cột) -->
+          <div class="md:col-span-3">
+            <a href="cuu_ho_20kb.html" class="w-full py-2.5 px-3 rounded-xl bg-datphu-red hover:bg-red-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition cursor-pointer">
+              <i class="fa-solid fa-phone-volume"></i>
+              <span>Gọi Thợ Ngay</span>
+            </a>
+            <!-- Input ẩn giữ tọa độ mặc định phục vụ tìm kiếm bán kính thợ -->
+            <input type="hidden" id="userWard" value="13.0892|109.3095|86 Lê Duẩn, P.7, TP. Tuy Hòa">
+          </div>
+
+          <!-- Ô Tìm kiếm (6 cột) -->
+          <div class="md:col-span-6 relative">
+            <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input id="kwInput" oninput="renderWorkers()" placeholder="Tìm tên thợ, mốc hoặc sự cố (điện nước, vi tính, camera, cơ khí)..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-datphu-navy transition">
+          </div>
+
+          <!-- Chọn Bán kính (3 cột) -->
+          <div class="md:col-span-3 flex items-center justify-between bg-slate-100 p-1 rounded-xl border border-slate-200/70">
+            <button class="rad-btn flex-1 py-1.5 rounded-lg text-xs font-bold text-slate-600 transition" id="rad-1" onclick="setRadius(1)">1km</button>
+            <button class="rad-btn act flex-1 py-1.5 rounded-lg text-xs font-bold bg-white text-datphu-navy shadow-xs transition" id="rad-3" onclick="setRadius(3)">3km</button>
+            <button class="rad-btn flex-1 py-1.5 rounded-lg text-xs font-bold text-slate-600 transition" id="rad-5" onclick="setRadius(5)">5km</button>
+            <button class="rad-btn flex-1 py-1.5 rounded-lg text-xs font-bold text-slate-600 transition" id="rad-10" onclick="setRadius(10)">10km</button>
+          </div>
+        </div>
+
+        <!-- Hàng 2: Thanh lọc ngành nghề gọn trên 1 dòng cuộn mượt -->
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-1 border-t border-slate-100">
+          <button class="f-chip act shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold bg-datphu-navy text-white shadow-xs transition" onclick="setTrade('',this)">
+            Tất cả thợ gần bạn
+          </button>
+          <button class="f-chip shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition" onclick="setTrade('DIEN_NUOC',this)">
+            ⚡ Điện & Nước
+          </button>
+          <button class="f-chip shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition" onclick="setTrade('VI_TINH',this)">
+            💻 Sửa Chữa Vi Tính
+          </button>
+          <button class="f-chip shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition" onclick="setTrade('CAMERA',this)">
+            📹 Camera & An Ninh
+          </button>
+          <button class="f-chip shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition" onclick="setTrade('CHONG_THAM',this)">
+            🏠 Chống thấm & Sửa nhà
+          </button>
+          <button class="f-chip shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition" onclick="setTrade('CO_KHI',this)">
+            🔩 Cơ khí sắt & Cửa
+          </button>
+        </div>
+      </div>
+
+      <!-- Thông báo đặt lịch: Thẻ Trạng Thái An Tâm Gọi Thợ (ẩn mặc định) -->
+      <div id="replyToast" class="hidden bg-white border-2 border-emerald-500/70 rounded-2xl p-4 sm:p-5 shadow-lg shadow-emerald-500/10 text-xs sm:text-sm text-slate-800 transition-all"></div>
+
+      <!-- Dòng trạng thái gọn nhẹ (không đóng khung rườm rà) -->
+      <div class="flex items-center justify-between px-1 text-xs text-slate-500">
+        <div id="radarStatus" class="font-semibold flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span>Đang quét vị trí Thợ 6K quanh bạn...</span>
+        </div>
+        <div class="hidden sm:flex items-center gap-1 text-[11px] text-slate-400 font-medium">
+          <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+          <span>Xác thực Zalo OTP • Bảo hành điện tử K6</span>
+        </div>
+      </div>
+
+      <!-- ======================== LƯỚI THẺ THỢ 6K THOÁNG ĐÃNG ======================== -->
+      <div id="workerList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+    </main>
+  </div>
+
+  <!-- ======================== FOOTER TỐI GIẢN ======================== -->
+  <footer class="bg-white border-t border-slate-200/80 mt-10 py-5 px-4 text-xs text-slate-500">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div class="font-bold text-slate-700">ĐẤT PHÚ CORE • Mạng lưới Thợ Kỹ Thuật 6K TP. Tuy Hòa, Phú Yên</div>
+      <div>Hotline hỗ trợ 24/7: <b class="text-datphu-red">0979.991.898</b></div>
+    </div>
+  </footer>
+
+  <!-- ======================== MODAL ĐẶT THỢ GỌN ĐẸP ======================== -->
+  <div class="modal-bg fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs items-center justify-center p-4" id="dispatchModal">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-100 max-h-[92vh] overflow-y-auto space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-3">
+          <div class="relative shrink-0">
+            <img id="mWorkerAvatar" src="" alt="Worker Avatar" class="w-12 h-12 rounded-2xl object-cover ring-2 ring-datphu-navy shadow-xs">
+            <span class="absolute -bottom-1 -right-1 text-xs">⭐</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">THỢ 6K TUY HÒA SẴN SÀNG</span>
+            </div>
+            <h3 id="mWorkerTitle" class="text-base font-extrabold text-slate-900 mt-0.5 leading-tight">Kết Nối Thợ Kỹ Thuật</h3>
+            <div id="mWorkerSub" class="text-xs text-slate-500 mt-0.5"></div>
+          </div>
+        </div>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-sm font-bold shrink-0">✕</button>
+      </div>
+
+      <!-- Bước 1: Nhập thông tin theo trình tự tự nhiên từ trên xuống dưới -->
+      <div id="modalStepForm" class="space-y-3.5 text-xs">
+        <!-- Khung thời gian phục vụ -->
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" id="mUrgentBtn" onclick="switchModalMode('URGENT')" class="p-2.5 rounded-xl border-2 border-datphu-red bg-red-50/60 text-datphu-red text-left font-bold transition">
+            <div class="flex items-center gap-1.5">
+              <span>🚨</span>
+              <span>Cần hỗ trợ ngay</span>
+            </div>
+            <div class="text-[10px] font-medium text-slate-500 mt-0.5">Có mặt sau 20 – 45 phút</div>
+          </button>
+          <button type="button" id="mBookBtn" onclick="switchModalMode('BOOKING')" class="p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-left font-bold transition">
+            <div class="flex items-center gap-1.5">
+              <span>📅</span>
+              <span>Đặt lịch hẹn trước</span>
+            </div>
+            <div class="text-[10px] font-medium text-slate-500 mt-0.5">Chọn khung giờ phù hợp</div>
+          </button>
+        </div>
+
+        <div id="mScheduleFields" style="display:none" class="pt-1">
+          <label class="block font-bold text-slate-700 mb-1">Chọn Ngày & Khung giờ hẹn:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <input type="date" id="mDate" class="px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 font-semibold">
+            <select id="mSlot" class="px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 font-semibold">
+              <option value="Sáng (08:30 - 10:00)">Sáng (08:30 – 10:00)</option>
+              <option value="Trưa (10:00 - 11:30)">Trưa (10:00 – 11:30)</option>
+              <option value="Chiều (14:00 - 15:30)">Chiều (14:00 – 15:30)</option>
+              <option value="Chiều muộn (15:30 - 17:00)">Chiều muộn (15:30 – 17:00)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 1. Họ và tên khách hàng -->
+        <div>
+          <label class="block font-bold text-slate-800 mb-1 flex items-center gap-1">
+            <span>👤 Họ tên Cô / Chú / Anh / Chị</span>
+            <span class="text-datphu-red">*</span>
+          </label>
+          <input id="mCustName" placeholder="Ví dụ: Gia đình Cô Lan, Chú Minh..." value="Gia đình Cô Lan" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white font-bold text-slate-900 focus:outline-none focus:border-datphu-navy text-xs sm:text-sm">
+        </div>
+
+        <!-- 2. Số điện thoại nhận Zalo OTP -->
+        <div>
+          <label class="block font-bold text-slate-800 mb-1 flex items-center justify-between">
+            <span class="flex items-center gap-1">
+              <span>📞 Số điện thoại nhận mã Zalo OTP</span>
+              <span class="text-datphu-red">*</span>
+            </span>
+            <span class="text-[10px] font-normal text-slate-400">🔒 Ẩn danh bảo mật</span>
+          </label>
+          <input id="mCustPhone" type="tel" placeholder="Ví dụ: 0979991898" value="0979991898" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white font-bold text-slate-900 focus:outline-none focus:border-datphu-navy text-xs sm:text-sm">
+        </div>
+
+        <!-- 3. Địa chỉ nhà đón thợ -->
+        <div>
+          <label class="block font-bold text-slate-800 mb-1 flex items-center justify-between">
+            <span class="flex items-center gap-1">
+              <span>📍 Địa chỉ đón Thợ tại Tuy Hòa</span>
+              <span class="text-datphu-red">*</span>
+            </span>
+            <button type="button" onclick="fillModalAddressWithGps()" class="text-[11px] font-bold text-datphu-navy hover:text-blue-700 flex items-center gap-1 bg-slate-100 hover:bg-slate-200 px-2 py-0.5 rounded-md transition">
+              <i class="fa-solid fa-crosshairs text-datphu-red"></i> 🎯 Ghim GPS
+            </button>
+          </label>
+          <input id="mCustAddress" placeholder="Số nhà, tên đường, phường ở TP. Tuy Hòa..." value="86 Lê Duẩn, Phường 7, TP. Tuy Hòa" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white font-semibold text-slate-900 focus:outline-none focus:border-datphu-navy text-xs sm:text-sm">
+        </div>
+
+        <!-- 4. Tình trạng hư hỏng cần hỗ trợ -->
+        <div>
+          <label class="block font-bold text-slate-800 mb-1 flex items-center gap-1">
+            <span>🛠️ Tình trạng hư hỏng (để thợ mang đúng đồ nghề)</span>
+          </label>
+          <input id="mIssue" placeholder="Ví dụ: Máy bơm kêu to nhưng không lên nước, chập điện..." value="Kiểm tra & sửa chữa thiết bị tại nhà" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white font-medium text-slate-900 focus:outline-none focus:border-datphu-navy text-xs sm:text-sm">
+        </div>
+
+        <!-- Cam kết 3 tiêu chí an tâm Đất Phú 6K (chống boom, chống cãi vã) -->
+        <div class="bg-emerald-50/80 border border-emerald-200/80 rounded-xl p-2.5 text-[11px] text-emerald-950 space-y-1">
+          <div class="flex items-center gap-1.5 font-bold text-emerald-900">
+            <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+            <span>Cam kết minh bạch 6K (Bảo vệ Khách & Thợ):</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[10px] text-slate-600 pl-4">
+            <div>✓ Khảo sát tận nơi 0đ</div>
+            <div>✓ Báo giá công trước khi làm</div>
+            <div>✓ Khách tự mua vật tư hoặc thợ mua hộ</div>
+            <div>✓ Thợ gọi trước 30s khi xuất phát</div>
+          </div>
+        </div>
+
+        <div id="mFormError" style="display:none" class="text-datphu-red font-bold text-xs"></div>
+
+        <button id="mRequestOtpBtn" onclick="requestZaloOtpForWorker()" class="w-full py-3 rounded-xl bg-datphu-red hover:bg-red-700 text-white font-extrabold text-xs sm:text-sm shadow-md shadow-red-500/20 transition flex items-center justify-center gap-2">
+          <span>🚀 Tiếp Tục • Nhận Mã Xác Thực Zalo (0đ)</span>
+        </button>
+      </div>
+
+      <!-- Bước 2: Nhập mã OTP -->
+      <div id="modalStepOtp" style="display:none" class="space-y-3 text-xs">
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-center">
+          <div class="font-bold text-slate-800">
+            Đã gửi mã OTP 4 số tới <span id="otpTargetPhone" class="text-datphu-red font-extrabold"></span>
+          </div>
+          <div class="text-[11px] text-slate-500 mt-0.5">
+            Hiệu lực còn lại: <b id="otpTimerText" class="text-datphu-red">03:00</b>
+          </div>
+        </div>
+
+        <div class="flex justify-center gap-2.5 py-1">
+          <input class="w-12 h-14 text-center text-xl font-extrabold text-datphu-navy bg-slate-50 border-2 border-slate-300 rounded-xl focus:border-datphu-red focus:outline-none" id="mOtp1" maxlength="1" inputmode="numeric" oninput="moveOtpFocus(1)">
+          <input class="w-12 h-14 text-center text-xl font-extrabold text-datphu-navy bg-slate-50 border-2 border-slate-300 rounded-xl focus:border-datphu-red focus:outline-none" id="mOtp2" maxlength="1" inputmode="numeric" oninput="moveOtpFocus(2)">
+          <input class="w-12 h-14 text-center text-xl font-extrabold text-datphu-navy bg-slate-50 border-2 border-slate-300 rounded-xl focus:border-datphu-red focus:outline-none" id="mOtp3" maxlength="1" inputmode="numeric" oninput="moveOtpFocus(3)">
+          <input class="w-12 h-14 text-center text-xl font-extrabold text-datphu-navy bg-slate-50 border-2 border-slate-300 rounded-xl focus:border-datphu-red focus:outline-none" id="mOtp4" maxlength="1" inputmode="numeric" oninput="moveOtpFocus(4)">
+        </div>
+
+        <div class="bg-slate-50 border border-dashed border-slate-300 rounded-xl p-3 text-center" id="zaloDemoBanner">
+          <div id="zaloDemoText" class="text-slate-600 text-[11px]"></div>
+          <button type="button" onclick="autoFillModalOtp()" class="mt-2 bg-datphu-navy text-white px-3 py-1.5 rounded-lg text-[11px] font-bold">
+            ✨ Tự điền mã OTP thử nghiệm
+          </button>
+        </div>
+
+        <div id="mOtpError" style="display:none" class="text-datphu-red font-bold text-center"></div>
+
+        <button onclick="verifyOtpAndDispatchWorker()" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm shadow-sm transition">
+          Xác Nhận & Kết Nối Thợ Ngay
+        </button>
+
+        <div class="flex justify-between pt-1 text-[11px] font-bold">
+          <button type="button" onclick="backToModalForm()" class="text-slate-500 hover:text-slate-800">← Đổi số điện thoại</button>
+          <button type="button" onclick="requestZaloOtpForWorker()" class="text-datphu-red hover:underline">Gửi lại mã OTP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+let currentRadius = 3;
+let currentTrade = '';
+let allWorkers = [];
+let selectedWorker = null;
+let modalMode = 'URGENT';
+let latestDemoOtp = '';
+let otpCountdownInterval = null;
+
+const FALLBACK_WORKERS = [
+  {
+    workerCode: 'THO-01',
+    fullName: 'Nguyễn Văn Tùng (Chú Tùng 6K)',
+    phone: '0912345678',
+    primaryTrade: 'DIEN_NUOC',
+    tradeLabel: 'Điện nước & Máy bơm tăng áp',
+    operatingWard: 'Phường 7, TP. Tuy Hòa',
+    ratingAvg: 4.95,
+    completedJobsCount: 128,
+    experienceYears: 15,
+    distanceKm: 0.14,
+    selfPublishedInspectionFee: 0,
+    baseFee: 120000,
+    avatar: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=200&q=80',
+    selfPublishedRateCard: [
+      { serviceName: 'Khảo sát & kiểm tra tại nhà', priceLabel: '0đ (Miễn phí)' },
+      { serviceName: 'Xử lý chập điện, nhảy CB, vòi nước', priceLabel: '120.000đ – 180.000đ' }
+    ],
+    vehicleInventory: [
+      { itemName: 'Aptomat Panasonic 32A', unitPrice: 185000, unit: 'cái' },
+      { itemName: 'Van đồng Bình Minh 27', unitPrice: 95000, unit: 'cái' }
+    ]
+  },
+  {
+    workerCode: 'THO-06',
+    fullName: 'Võ Minh Khoa (Khoa Điện Nước)',
+    phone: '0968112299',
+    primaryTrade: 'DIEN_NUOC',
+    tradeLabel: 'Điện nước dân sinh & Thiết bị vệ sinh',
+    operatingWard: 'Phường 5, TP. Tuy Hòa',
+    ratingAvg: 4.86,
+    completedJobsCount: 52,
+    experienceYears: 4,
+    distanceKm: 0.26,
+    selfPublishedInspectionFee: 0,
+    baseFee: 80000,
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+    selfPublishedRateCard: [
+      { serviceName: 'Kiểm tra & báo giá tại chỗ', priceLabel: '0đ (Miễn phí)' },
+      { serviceName: 'Sửa bóng đèn, công tắc, vòi xịt, phao nước', priceLabel: '80.000đ – 120.000đ' }
+    ],
+    vehicleInventory: [
+      { itemName: 'Aptomat Panasonic 32A', unitPrice: 180000, unit: 'cái' }
+    ]
+  },
+  {
+    workerCode: 'THO-02',
+    fullName: 'Trần Hoàng Nam (Nam Vi Tính & IT)',
+    phone: '0979991898',
+    primaryTrade: 'VI_TINH',
+    tradeLabel: 'Sửa máy tính, laptop, máy in & mạng WiFi',
+    operatingWard: 'Phường 4, TP. Tuy Hòa',
+    ratingAvg: 4.98,
+    completedJobsCount: 215,
+    experienceYears: 9,
+    distanceKm: 0.65,
+    selfPublishedInspectionFee: 0,
+    baseFee: 100000,
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+    selfPublishedRateCard: [
+      { serviceName: 'Kiểm tra máy tính, laptop tại nhà', priceLabel: '0đ (Miễn phí)' },
+      { serviceName: 'Cài Win, vệ sinh laptop, sửa lỗi phần mềm', priceLabel: '100.000đ – 150.000đ' }
+    ],
+    vehicleInventory: [
+      { itemName: 'Ổ cứng SSD Kingston 256GB', unitPrice: 550000, unit: 'cái' },
+      { itemName: 'Cục phát WiFi Totolink băng tần kép', unitPrice: 380000, unit: 'bộ' }
+    ]
+  },
+  {
+    workerCode: 'THO-04',
+    fullName: 'Phạm Quốc Bảo (Bảo Camera An Ninh)',
+    phone: '0935667788',
+    primaryTrade: 'CAMERA',
+    tradeLabel: 'Lắp đặt camera IP/WiFi & Đầu ghi hình',
+    operatingWard: 'Phường 9, TP. Tuy Hòa',
+    ratingAvg: 4.92,
+    completedJobsCount: 76,
+    experienceYears: 7,
+    distanceKm: 1.15,
+    selfPublishedInspectionFee: 0,
+    baseFee: 120000,
+    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80',
+    selfPublishedRateCard: [
+      { serviceName: 'Khảo sát góc nhìn an ninh tại nhà', priceLabel: '0đ (Miễn phí)' },
+      { serviceName: 'Lắp đặt camera / cài app xem điện thoại', priceLabel: '120.000đ – 180.000đ' }
+    ],
+    vehicleInventory: [
+      { itemName: 'Camera Imou xoay 360 độ 2K chính hãng', unitPrice: 650000, unit: 'bộ' },
+      { itemName: 'Thẻ nhớ chuyên dụng Sandisk 64GB', unitPrice: 150000, unit: 'thẻ' }
+    ]
+  },
+  {
+    workerCode: 'THO-05',
+    fullName: 'Đặng Minh Tâm (Tâm Chống Thấm)',
+    phone: '0944556677',
+    primaryTrade: 'CHONG_THAM',
+    tradeLabel: 'Chống thấm sân thượng & Sửa nhà',
+    operatingWard: 'Phường 2, TP. Tuy Hòa',
+    ratingAvg: 4.88,
+    completedJobsCount: 63,
+    experienceYears: 14,
+    distanceKm: 1.42,
+    selfPublishedInspectionFee: 0,
+    baseFee: 150000,
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+    selfPublishedRateCard: [
+      { serviceName: 'Khảo sát vết thấm & báo giá', priceLabel: '0đ (Miễn phí nếu thi công)' },
+      { serviceName: 'Chống thấm khe tường / mái tôn Sika', priceLabel: '150.000đ – 300.000đ' }
+    ],
+    vehicleInventory: [
+      { itemName: 'Thùng keo Sika Raintite 4kg', unitPrice: 540000, unit: 'thùng' }
+    ]
+  },
+  {
+    workerCode: 'THO-07',
+    fullName: 'Lê Văn Hùng (Hùng Cơ Khí Sắt)',
+    phone: '0938223344',
+    primaryTrade: 'CO_KHI',
+    tradeLabel: 'Cơ khí sắt, hàn xì cửa cổng & mái hiên',
+    operatingWard: 'Phường 7, TP. Tuy Hòa',
+    ratingAvg: 4.93,
+    completedJobsCount: 88,
+    experienceYears: 11,
+    distanceKm: 0.85,
+    selfPublishedInspectionFee: 0,
+    baseFee: 150000,
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
+    selfPublishedRateCard: [
+      { serviceName: 'Khảo sát cửa cổng, khung sắt tại nhà', priceLabel: '0đ (Miễn phí)' },
+      { serviceName: 'Hàn xì bản lề, gia cố cửa sắt, mái che', priceLabel: '150.000đ – 300.000đ' }
+    ],
+    vehicleInventory: [
+      { itemName: 'Bản lề cối chịu lực 32mm', unitPrice: 85000, unit: 'cặp' }
+    ]
+  }
+];
+
+const fmt = n => Number(n || 0).toLocaleString('vi-VN') + 'đ';
+document.getElementById('mDate').value = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
+
+function getWorkerAvatar(w) {
+  if (w.avatar) return w.avatar;
+  const code = String(w.workerCode || '');
+  if (code.includes('01')) return 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=200&q=80';
+  if (code.includes('06')) return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80';
+  if (code.includes('02')) return 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80';
+  return 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80';
+}
+
+function maskPhoneDisplay(phone) {
+  const clean = String(phone || '').replace(/[^0-9]/g, '');
+  if (clean.length < 7) return '0979.***898';
+  return clean.slice(0, 4) + '.***' + clean.slice(-3);
+}
+
+function detectUserGps() {
+  const btn = document.getElementById('btnGpsNearby');
+  const txt = document.getElementById('btnGpsText');
+  const ico = document.getElementById('btnGpsIcon');
+
+  if (txt) txt.textContent = 'Đang Định Vị...';
+  if (ico) ico.className = 'fa-solid fa-spinner fa-spin text-amber-300';
+
+  if (!navigator.geolocation) {
+    if (txt) txt.textContent = 'Định Vị Nhà Tôi';
+    if (ico) ico.className = 'fa-solid fa-crosshairs text-amber-300 animate-pulse';
+    alert('Trình duyệt không hỗ trợ GPS, hệ thống giữ vị trí trung tâm TP. Tuy Hòa.');
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(pos => {
+    const lat = pos.coords.latitude.toFixed(4);
+    const lng = pos.coords.longitude.toFixed(4);
+    const sel = document.getElementById('userWard');
+    if (sel) {
+      if (sel.tagName === 'SELECT') {
+        const opt = document.createElement('option');
+        opt.value = `${lat}|${lng}|Tọa độ GPS (${lat}, ${lng}), TP. Tuy Hòa`;
+        opt.textContent = `🎯 Nhà Tôi (GPS: ${lat}, ${lng})`;
+        sel.prepend(opt);
+        sel.selectedIndex = 0;
+      } else {
+        sel.value = `${lat}|${lng}|Tọa độ GPS (${lat}, ${lng}), TP. Tuy Hòa`;
+      }
+    }
+
+    if (txt) txt.textContent = '✅ Đã Ghim Nhà Tôi';
+    if (ico) ico.className = 'fa-solid fa-check text-white';
+    if (btn) {
+      btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+      btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+    }
+
+    fetchNearbyWorkers();
+  }, () => {
+    if (txt) txt.textContent = 'Định Vị Nhà Tôi';
+    if (ico) ico.className = 'fa-solid fa-crosshairs text-amber-300 animate-pulse';
+    fetchNearbyWorkers();
+  }, {
+    enableHighAccuracy: true,
+    timeout: 8000,
+    maximumAge: 0
+  });
+}
+
+async function fetchNearbyWorkers() {
+  try {
+    const [lat, lng] = document.getElementById('userWard').value.split('|');
+    const url = `/api/v1/core6k/workers?lat=${lat}&lng=${lng}&radiusKm=${currentRadius}&trade=${encodeURIComponent(currentTrade)}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Offline');
+    const d = await res.json();
+    allWorkers = (d.workers && d.workers.length) ? d.workers : FALLBACK_WORKERS;
+  } catch (e) {
+    allWorkers = FALLBACK_WORKERS.filter(w => !currentTrade || w.primaryTrade === currentTrade);
+  }
+  renderWorkers();
+}
+
+function toggleCardDetail(workerCode) {
+  const el = document.getElementById('drawer-' + workerCode);
+  if (el) el.classList.toggle('open');
+}
+
+function renderWorkers() {
+  const kw = document.getElementById('kwInput').value.toLowerCase().trim();
+  const filtered = allWorkers.filter(w => {
+    if (!kw) return true;
+    const invText = (w.vehicleInventory || []).map(i => i.itemName).join(' ').toLowerCase();
+    return w.fullName.toLowerCase().includes(kw) || w.tradeLabel.toLowerCase().includes(kw) || invText.includes(kw);
+  });
+
+  document.getElementById('radarStatus').innerHTML = `
+    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+    <span>Tìm thấy <b class="text-slate-900">${filtered.length} Thợ 6K</b> trong bán kính <b class="text-datphu-navy">${currentRadius}km</b></span>
+  `;
+
+  if (filtered.length === 0) {
+    document.getElementById('workerList').innerHTML = `
+      <div class="col-span-full bg-white rounded-2xl p-8 text-center border border-slate-200/80 text-slate-500 text-sm">
+        Không tìm thấy thợ phù hợp trong bán kính ${currentRadius}km. Hãy bấm chọn bán kính <b>5km</b> hoặc <b>10km</b> phía trên.
+      </div>
+    `;
+    return;
+  }
+
+  document.getElementById('workerList').innerHTML = filtered.map(w => {
+    const rateCard = w.selfPublishedRateCard || [];
+    const firstService = rateCard[1] || rateCard[0] || { serviceName: 'Công sửa chữa cơ bản', priceLabel: fmt(w.baseFee) };
+    const avatar = getWorkerAvatar(w);
+    const maskedPhone = maskPhoneDisplay(w.phone);
+
+    return `
+    <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-soft hover:shadow-hover hover:border-slate-300 transition flex flex-col justify-between">
+      <div>
+        <!-- Đầu thẻ: Ảnh + Tên + Khoảng cách gọn đẹp -->
+        <div class="flex items-start gap-3">
+          <img src="${avatar}" alt="${w.fullName}" class="w-14 h-14 rounded-2xl object-cover border border-slate-100 shrink-0">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <h3 class="text-sm font-extrabold text-slate-900 truncate" title="${w.fullName}">${w.fullName}</h3>
+              <span class="shrink-0 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70">
+                ${w.distanceKm || '0.5'} km
+              </span>
+            </div>
+            <div class="text-xs font-bold text-datphu-navy mt-0.5 truncate">${w.tradeLabel}</div>
+            <div class="flex items-center gap-2 text-[11px] text-slate-500 mt-1">
+              <span class="text-amber-500 font-bold">★ ${w.ratingAvg}</span>
+              <span>•</span>
+              <span class="truncate">${w.operatingWard}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hộp giá 2 dòng tinh gọn -->
+        <div class="mt-3.5 bg-slate-50 rounded-xl p-3 border border-slate-100 space-y-1.5 text-xs">
+          <div class="flex items-center justify-between">
+            <span class="text-slate-500 font-medium">Khảo sát tại nhà:</span>
+            <span class="font-bold text-emerald-700">${w.selfPublishedInspectionFee ? fmt(w.selfPublishedInspectionFee) : 'Miễn phí (0đ)'}</span>
+          </div>
+          <div class="flex items-center justify-between pt-1.5 border-t border-slate-200/60">
+            <span class="text-slate-600 font-medium truncate pr-2">${firstService.serviceName}:</span>
+            <span class="font-extrabold text-datphu-red shrink-0">${firstService.priceLabel}</span>
+          </div>
+
+          <button type="button" onclick="toggleCardDetail('${w.workerCode}')" class="w-full pt-1.5 text-[11px] font-bold text-slate-500 hover:text-datphu-navy flex items-center justify-center gap-1">
+            <span>Xem chi tiết bảng giá & vật tư</span>
+            <i class="fa-solid fa-chevron-down text-[9px]"></i>
+          </button>
+
+          <div class="detail-drawer pt-2 mt-2 border-t border-slate-200/70 space-y-1.5 text-[11px]" id="drawer-${w.workerCode}">
+            ${rateCard.map(r => `
+              <div class="flex justify-between text-slate-600">
+                <span>• ${r.serviceName}</span>
+                <b class="text-slate-900 ml-2 shrink-0">${r.priceLabel}</b>
+              </div>
+            `).join('')}
+            <div class="pt-1 font-bold text-slate-700">Vật tư mang sẵn trên xe:</div>
+            <div class="flex flex-wrap gap-1">
+              ${(w.vehicleInventory || []).map(i => `
+                <span class="bg-white border border-slate-200 px-2 py-0.5 rounded-md text-[10px] text-slate-700">
+                  ${i.itemName}: <b class="text-datphu-red">${fmt(i.unitPrice)}</b>
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chân thẻ -->
+      <div class="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+        <span class="text-[11px] font-semibold text-slate-500">
+          <i class="fa-solid fa-phone text-slate-400 mr-1"></i>${maskedPhone}
+        </span>
+        <button onclick="openDispatchModal('${w.workerCode}')" class="px-4 py-2 rounded-xl bg-datphu-navy hover:bg-datphu-red text-white text-xs font-extrabold shadow-xs transition">
+          Chọn Thợ Này
+        </button>
+      </div>
+    </div>
+    `;
+  }).join('');
+}
+
+function setRadius(r) {
+  currentRadius = r;
+  [1, 3, 5, 10].forEach(v => {
+    const btn = document.getElementById('rad-' + v);
+    if (v === r) {
+      btn.className = 'rad-btn act flex-1 py-1.5 rounded-lg text-xs font-bold bg-white text-datphu-navy shadow-xs transition';
+    } else {
+      btn.className = 'rad-btn flex-1 py-1.5 rounded-lg text-xs font-bold text-slate-600 transition';
+    }
+  });
+  fetchNearbyWorkers();
+}
+
+function setTrade(t, btn) {
+  currentTrade = t;
+  document.querySelectorAll('.f-chip').forEach(c => {
+    c.className = 'f-chip shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition';
+  });
+  btn.className = 'f-chip act shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold bg-datphu-navy text-white shadow-xs transition';
+  fetchNearbyWorkers();
+}
+
+function openDispatchModal(workerCode) {
+  selectedWorker = allWorkers.find(w => w.workerCode === workerCode);
+  if (!selectedWorker) return;
+  const avatarEl = document.getElementById('mWorkerAvatar');
+  if (avatarEl) {
+    avatarEl.src = selectedWorker.avatarUrl || 'https://images.unsplash.com/photo-1541888946425-d0fbb18f15f7?auto=format&fit=crop&w=120&q=80';
+    avatarEl.alt = selectedWorker.fullName;
+  }
+  document.getElementById('mWorkerTitle').textContent = selectedWorker.fullName;
+  document.getElementById('mWorkerSub').textContent = `${selectedWorker.tradeLabel} • Cách bạn ${selectedWorker.distanceKm || 0.5}km`;
+  
+  const wardEl = document.getElementById('userWard');
+  if (wardEl && wardEl.value) {
+    const parts = wardEl.value.split('|');
+    if (parts[2]) {
+      const addrEl = document.getElementById('mCustAddress');
+      if (addrEl && !addrEl.value) {
+        addrEl.value = parts[2];
+      }
+    }
+  }
+
+  document.getElementById('mIssue').value = `Cần hỗ trợ: ${selectedWorker.tradeLabel}`;
+  document.getElementById('modalStepForm').style.display = 'block';
+  document.getElementById('modalStepOtp').style.display = 'none';
+  document.getElementById('mFormError').style.display = 'none';
+  document.getElementById('mOtpError').style.display = 'none';
+  switchModalMode('URGENT');
+  document.getElementById('dispatchModal').classList.add('open');
+}
+
+function fillModalAddressWithGps() {
+  const addrInput = document.getElementById('mCustAddress');
+  if (!addrInput) return;
+  addrInput.placeholder = 'Đang định vị vệ tinh...';
+  if (!navigator.geolocation) {
+    addrInput.value = '86 Lê Duẩn, Phường 7, TP. Tuy Hòa';
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const lat = pos.coords.latitude.toFixed(5);
+      const lng = pos.coords.longitude.toFixed(5);
+      addrInput.value = `Ghim GPS (${lat}, ${lng}) • TP. Tuy Hòa, Phú Yên`;
+    },
+    () => {
+      addrInput.value = '86 Lê Duẩn, Phường 7, TP. Tuy Hòa';
+    },
+    { timeout: 7000 }
+  );
+}
+
+function closeModal() {
+  document.getElementById('dispatchModal').classList.remove('open');
+  if (otpCountdownInterval) clearInterval(otpCountdownInterval);
+}
+
+function backToModalForm() {
+  document.getElementById('modalStepForm').style.display = 'block';
+  document.getElementById('modalStepOtp').style.display = 'none';
+}
+
+function switchModalMode(mode) {
+  modalMode = mode;
+  const uBtn = document.getElementById('mUrgentBtn');
+  const bBtn = document.getElementById('mBookBtn');
+  if (mode === 'URGENT') {
+    uBtn.className = 'p-2.5 rounded-xl border-2 border-datphu-red bg-red-50/60 text-datphu-red text-left font-bold transition';
+    bBtn.className = 'p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-left font-bold transition';
+  } else {
+    bBtn.className = 'p-2.5 rounded-xl border-2 border-datphu-navy bg-blue-50/60 text-datphu-navy text-left font-bold transition';
+    uBtn.className = 'p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-left font-bold transition';
+  }
+  document.getElementById('mScheduleFields').style.display = (mode === 'BOOKING') ? 'block' : 'none';
+}
+
+function moveOtpFocus(idx) {
+  const cur = document.getElementById('mOtp' + idx);
+  if (cur && cur.value && idx < 4) {
+    document.getElementById('mOtp' + (idx + 1)).focus();
+  }
+}
+
+function autoFillModalOtp() {
+  if (!latestDemoOtp) return;
+  const digits = String(latestDemoOtp).split('');
+  [1, 2, 3, 4].forEach((n, i) => {
+    document.getElementById('mOtp' + n).value = digits[i] || '';
+  });
+}
+
+function startModalOtpTimer(seconds) {
+  if (otpCountdownInterval) clearInterval(otpCountdownInterval);
+  let rem = seconds;
+  const el = document.getElementById('otpTimerText');
+  otpCountdownInterval = setInterval(() => {
+    rem--;
+    if (rem <= 0) {
+      clearInterval(otpCountdownInterval);
+      el.textContent = 'Đã hết hạn';
+      return;
+    }
+    const m = String(Math.floor(rem / 60)).padStart(2, '0');
+    const s = String(rem % 60).padStart(2, '0');
+    el.textContent = `${m}:${s}`;
+  }, 1000);
+}
+
+async function requestZaloOtpForWorker() {
+  const customerName = document.getElementById('mCustName').value.trim();
+  const customerPhone = document.getElementById('mCustPhone').value.trim();
+  const customerAddress = document.getElementById('mCustAddress').value.trim();
+  const errEl = document.getElementById('mFormError');
+  errEl.style.display = 'none';
+
+  if (!customerName) {
+    errEl.textContent = 'Vui lòng nhập Họ tên của Cô/Chú/Anh/Chị.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!customerPhone || customerPhone.length < 9) {
+    errEl.textContent = 'Vui lòng nhập số điện thoại hợp lệ (9 - 11 chữ số).';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!customerAddress) {
+    errEl.textContent = 'Vui lòng nhập địa chỉ nhà đón Thợ.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/v1/sos/request-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ customerPhone, customerName })
+    });
+    const d = await res.json();
+    if (!d.success) {
+      errEl.textContent = d.error || 'Vui lòng kiểm tra lại số điện thoại.';
+      errEl.style.display = 'block';
+      return;
+    }
+    latestDemoOtp = d.demoOtpCode || '6868';
+    document.getElementById('otpTargetPhone').textContent = d.maskedPhone || customerPhone;
+    document.getElementById('zaloDemoText').textContent = d.znsTemplateMessage || `Mã OTP thử nghiệm: ${latestDemoOtp}`;
+  } catch (e) {
+    latestDemoOtp = '6868';
+    document.getElementById('otpTargetPhone').textContent = customerPhone;
+    document.getElementById('zaloDemoText').textContent = `Mã OTP thử nghiệm: 6868`;
+  }
+
+  [1, 2, 3, 4].forEach(n => document.getElementById('mOtp' + n).value = '');
+  document.getElementById('modalStepForm').style.display = 'none';
+  document.getElementById('modalStepOtp').style.display = 'block';
+  startModalOtpTimer(180);
+  document.getElementById('mOtp1').focus();
+}
+
+let dispatchRingInterval = null;
+let currentDispatchState = {
+  worker: null,
+  addr: '',
+  ticketCode: '',
+  isUrgent: true,
+  secondsLeft: 35
+};
+
+function startDispatchFlow(worker, addr, ticketCode, isUrgent) {
+  if (dispatchRingInterval) clearInterval(dispatchRingInterval);
+  currentDispatchState = {
+    worker,
+    addr,
+    ticketCode: ticketCode || ('YC-' + Math.floor(1000 + Math.random() * 9000)),
+    isUrgent,
+    secondsLeft: 35 // Đếm lùi 35s chờ thợ nhấc máy
+  };
+
+  const box = document.getElementById('replyToast');
+  box.classList.remove('hidden');
+  renderRingingState();
+  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  // Bộ đếm chuông gọi thợ
+  dispatchRingInterval = setInterval(() => {
+    currentDispatchState.secondsLeft--;
+    const timerEl = document.getElementById('ringTimerCount');
+    if (timerEl) {
+      timerEl.textContent = currentDispatchState.secondsLeft + 's';
+    }
+
+    // Mô phỏng thợ nhận cuốc thực tế sau khi chuông reo (ở giây thứ 16)
+    if (currentDispatchState.secondsLeft === 16) {
+      clearInterval(dispatchRingInterval);
+      renderAcceptedState();
+      return;
+    }
+
+    if (currentDispatchState.secondsLeft <= 0) {
+      clearInterval(dispatchRingInterval);
+      renderTimeoutState();
+    }
+  }, 1000);
+}
+
+function renderRingingState() {
+  const { worker, addr, ticketCode, secondsLeft } = currentDispatchState;
+  const avatar = worker.avatar || worker.avatarUrl || 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=200&q=80';
+  const box = document.getElementById('replyToast');
+  
+  box.className = "relative overflow-hidden bg-gradient-to-r from-amber-50 via-orange-50/40 to-white border-2 border-amber-400 rounded-2xl p-4 sm:p-5 shadow-lg shadow-amber-500/10 text-xs sm:text-sm text-slate-800 transition-all";
+  
+  box.innerHTML = `
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-amber-200/80">
+      <div class="flex items-center gap-2.5">
+        <span class="relative flex h-3.5 w-3.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-500"></span>
+        </span>
+        <span class="text-xs font-bold uppercase tracking-wider text-amber-950 bg-amber-200/90 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-xs">
+          <i class="fa-solid fa-phone-volume text-amber-700 animate-bounce"></i>
+          Đang phát chuông ưu tiên tới Bác thợ...
+        </span>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-500 self-end sm:self-auto">
+        <span class="text-[11px] text-amber-900 font-mono bg-amber-100/90 px-2 py-0.5 rounded font-bold">
+          ⏳ Chờ thợ nhấc máy: <span id="ringTimerCount" class="text-amber-800 font-extrabold text-sm">${secondsLeft}s</span>
+        </span>
+        <button onclick="dismissDispatchCard()" class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-200/80 text-slate-400 hover:text-slate-700 transition" title="Đóng">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <div class="pt-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="flex items-start sm:items-center gap-3.5">
+        <div class="relative shrink-0">
+          <img src="${avatar}" alt="${worker.fullName}" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-amber-400 shadow-sm">
+          <span class="absolute -bottom-1 -right-1 text-base">📲</span>
+        </div>
+        <div>
+          <h4 class="text-base font-extrabold text-slate-900 leading-tight">
+            ${worker.fullName}
+          </h4>
+          <p class="text-xs text-slate-600 mt-0.5">
+            <span class="text-amber-800 font-bold">${worker.tradeLabel || 'Thợ kỹ thuật 6K'}</span>
+            • <span class="text-slate-500">Cách nhà bạn ${worker.distanceKm || '0.5'}km</span>
+          </p>
+          <div class="text-xs text-amber-950 mt-1.5 bg-amber-100/80 border border-amber-200/80 px-2.5 py-1 rounded-lg leading-relaxed">
+            💬 <i>Vì thợ thường đang bận tay thi công trên công trình, hệ thống đang đổ chuông điện thoại/Zalo để bác thợ mở máy nhận việc.</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full md:w-auto flex flex-col sm:flex-row md:flex-col gap-2 shrink-0">
+        <a href="tel:${worker.phone || '0979991898'}" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm transition">
+          <i class="fa-solid fa-phone"></i>
+          <span>Khách bấm gọi luôn cho Bác thợ</span>
+        </a>
+        <button onclick="renderAcceptedState()" class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl font-medium text-xs transition">
+          <i class="fa-solid fa-circle-check text-emerald-600"></i>
+          <span>Thợ đã nghe máy / Nhận cuốc</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-3.5 pt-3 border-t border-amber-200/60 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-600">
+      <div class="flex items-center gap-1.5 text-slate-600">
+        <i class="fa-solid fa-location-dot text-datphu-red"></i>
+        <span>Điểm hẹn: <b>${addr}</b></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="switchNextWorker()" class="text-amber-800 hover:text-amber-950 underline font-semibold">
+          🔁 Đổi sang thợ gần nhất kế tiếp
+        </button>
+        <span class="text-slate-300">|</span>
+        <span class="text-slate-500 font-mono">Mã: #${ticketCode}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderAcceptedState() {
+  if (dispatchRingInterval) clearInterval(dispatchRingInterval);
+  const { worker, addr, ticketCode, isUrgent } = currentDispatchState;
+  const timeText = isUrgent ? 'Khoảng 20 – 30 phút' : 'Theo lịch hẹn bạn chọn';
+  const avatar = worker.avatar || worker.avatarUrl || 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=200&q=80';
+  const box = document.getElementById('replyToast');
+  
+  box.className = "relative overflow-hidden bg-gradient-to-r from-emerald-50 via-teal-50/40 to-white border-2 border-emerald-500 rounded-2xl p-4 sm:p-5 shadow-lg shadow-emerald-500/10 text-xs sm:text-sm text-slate-800 transition-all";
+  
+  box.innerHTML = `
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-emerald-100">
+      <div class="flex items-center gap-2.5">
+        <span class="relative flex h-3.5 w-3.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
+        </span>
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/90 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-xs">
+          <i class="fa-solid fa-circle-check text-emerald-600"></i>
+          Bác thợ đã nhận cuốc • Đang chuẩn bị đồ nghề
+        </span>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-500 self-end sm:self-auto">
+        <span class="text-[11px] text-slate-500 font-mono bg-slate-100 px-2 py-0.5 rounded">Mã hẹn: #${ticketCode}</span>
+        <button onclick="dismissDispatchCard()" class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-200/80 text-slate-400 hover:text-slate-700 transition" title="Đóng">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <div class="pt-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="flex items-start sm:items-center gap-3.5">
+        <div class="relative shrink-0">
+          <img src="${avatar}" alt="${worker.fullName}" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-emerald-500 shadow-sm">
+          <span class="absolute -bottom-1 -right-1 text-base">🏍️</span>
+        </div>
+        <div>
+          <h4 class="text-base font-extrabold text-slate-900 leading-tight">
+            ${worker.fullName}
+          </h4>
+          <p class="text-xs text-slate-600 mt-0.5">
+            <span class="text-emerald-700 font-bold">${worker.tradeLabel || 'Thợ kỹ thuật 6K'}</span>
+            • <span class="text-slate-500">Cách nhà bạn ${worker.distanceKm || '0.5'}km</span>
+          </p>
+          <div class="text-xs text-emerald-900 font-medium mt-1.5 flex items-center gap-1.5 bg-emerald-50 border border-emerald-200/70 px-2.5 py-1 rounded-lg">
+            <i class="fa-solid fa-phone-volume text-emerald-600 animate-bounce"></i>
+            <span>Bác thợ sẽ gọi xác nhận với bạn trong <b>3 – 5 phút</b> tới</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full md:w-auto bg-slate-50/90 border border-slate-200/70 rounded-xl p-3 text-xs space-y-1.5 shrink-0">
+        <div class="flex items-center gap-1.5 text-slate-700">
+          <i class="fa-solid fa-location-dot text-datphu-red"></i>
+          <span>Điểm hẹn: <b class="text-slate-900">${addr}</b></span>
+        </div>
+        <div class="flex items-center gap-1.5 text-slate-700">
+          <i class="fa-solid fa-clock text-blue-600"></i>
+          <span>Dự kiến có mặt: <b class="text-blue-800">${timeText}</b></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-3.5 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-600">
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="flex items-center gap-1 text-emerald-700 font-bold">
+          <i class="fa-solid fa-circle-check text-emerald-600"></i> Khảo sát tận nơi 0đ
+        </span>
+        <span class="flex items-center gap-1 text-slate-700 font-medium">
+          <i class="fa-solid fa-circle-check text-emerald-600"></i> Nhận công thuần túy, khách duyệt mới làm
+        </span>
+        <span class="flex items-center gap-1 text-slate-700 font-medium">
+          <i class="fa-solid fa-circle-check text-emerald-600"></i> Khách tự mua vật tư hoặc thợ mua hộ
+        </span>
+      </div>
+      <div class="text-slate-500 text-[11px]">
+        Cần hỗ trợ gấp? Hotline: <a href="tel:0979991898" class="font-bold text-datphu-red hover:underline">0979.991.898</a>
+      </div>
+    </div>
+  `;
+}
+
+function renderTimeoutState() {
+  if (dispatchRingInterval) clearInterval(dispatchRingInterval);
+  const { worker, ticketCode } = currentDispatchState;
+  const avatar = worker.avatar || worker.avatarUrl || 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=200&q=80';
+  const box = document.getElementById('replyToast');
+  
+  box.className = "relative overflow-hidden bg-gradient-to-r from-red-50 via-orange-50/50 to-white border-2 border-orange-400 rounded-2xl p-4 sm:p-5 shadow-lg shadow-orange-500/10 text-xs sm:text-sm text-slate-800 transition-all";
+  
+  box.innerHTML = `
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-orange-200">
+      <div class="flex items-center gap-2.5">
+        <span class="text-base">⚠️</span>
+        <span class="text-xs font-bold uppercase tracking-wider text-orange-900 bg-orange-100 px-3 py-1 rounded-full">
+          Bác thợ dường như đang bận tay chưa kịp nghe máy
+        </span>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-500 self-end sm:self-auto">
+        <span class="text-[11px] text-slate-500 font-mono bg-slate-100 px-2 py-0.5 rounded">Mã: #${ticketCode}</span>
+        <button onclick="dismissDispatchCard()" class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-200/80 text-slate-400 hover:text-slate-700 transition" title="Đóng">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <div class="pt-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="flex items-start sm:items-center gap-3.5">
+        <div class="relative shrink-0 grayscale opacity-80">
+          <img src="${avatar}" alt="${worker.fullName}" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-slate-300 shadow-sm">
+          <span class="absolute -bottom-1 -right-1 text-base">⏳</span>
+        </div>
+        <div>
+          <h4 class="text-base font-extrabold text-slate-900 leading-tight">
+            ${worker.fullName} <span class="text-xs text-slate-500 font-normal">(Chưa nhấc máy)</span>
+          </h4>
+          <p class="text-xs text-slate-600 mt-0.5">
+            Đất Phú cam kết <b>không để quý khách phải chờ đợi lâu</b> khi nhà đang gặp trục trặc!
+          </p>
+          <p class="text-xs text-orange-950 mt-1.5 font-medium">
+            Quý khách hãy bấm chuyển sang Thợ gần nhất kế tiếp hoặc gọi Tổng đài điều phối ngay lập tức.
+          </p>
+        </div>
+      </div>
+
+      <div class="w-full md:w-auto flex flex-col sm:flex-row md:flex-col gap-2 shrink-0">
+        <button onclick="switchNextWorker()" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-900 rounded-xl font-bold text-xs shadow-sm transition">
+          <i class="fa-solid fa-rotate"></i>
+          <span>Chuyển sang Thợ gần nhất kế tiếp</span>
+        </button>
+        <a href="tel:0979991898" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-datphu-red hover:bg-red-700 text-white rounded-xl font-bold text-xs shadow-sm transition">
+          <i class="fa-solid fa-headset"></i>
+          <span>Gọi Tổng Đài Điều Phối Gấp: 0979.991.898</span>
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+function dismissDispatchCard() {
+  if (dispatchRingInterval) clearInterval(dispatchRingInterval);
+  const box = document.getElementById('replyToast');
+  if (box) box.classList.add('hidden');
+}
+
+function switchNextWorker() {
+  if (dispatchRingInterval) clearInterval(dispatchRingInterval);
+  const currentCode = currentDispatchState.worker ? currentDispatchState.worker.workerCode : '';
+  const nextWorker = allWorkers.find(w => w.workerCode !== currentCode) || allWorkers[0];
+  if (nextWorker) {
+    selectedWorker = nextWorker;
+    startDispatchFlow(nextWorker, currentDispatchState.addr, currentDispatchState.ticketCode, currentDispatchState.isUrgent);
+  }
+}
+
+async function verifyOtpAndDispatchWorker() {
+  if (!selectedWorker) return;
+  const otpCode = [1, 2, 3, 4].map(n => document.getElementById('mOtp' + n).value.trim()).join('');
+  const errEl = document.getElementById('mOtpError');
+  errEl.style.display = 'none';
+
+  if (otpCode.length !== 4) {
+    errEl.textContent = 'Vui lòng nhập đủ 4 chữ số OTP.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const [lat, lng] = document.getElementById('userWard').value.split('|');
+  const customerName = document.getElementById('mCustName').value.trim();
+  const customerPhone = document.getElementById('mCustPhone').value.trim();
+  const customerAddress = document.getElementById('mCustAddress').value.trim() || '86 Lê Duẩn, Phường 7, TP. Tuy Hòa';
+  const issueDescription = document.getElementById('mIssue').value.trim();
+
+  try {
+    const res = await fetch('/api/v1/sos/dispatch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        preferredWorkerId: selectedWorker.workerCode,
+        tradeCategory: selectedWorker.primaryTrade,
+        customerName,
+        customerPhone,
+        otpCode,
+        requireOtp: true,
+        customerAddress,
+        customerLat: Number(lat),
+        customerLng: Number(lng),
+        urgencyLevel: modalMode === 'URGENT' ? 'URGENT_20_45M' : 'SCHEDULED_SLOT',
+        preferredTimeSlot: modalMode === 'URGENT' ? 'Khẩn cấp (20 - 45 phút)' : `${document.getElementById('mDate').value} • ${document.getElementById('mSlot').value}`,
+        issueDescription,
+        sourceChannel: 'NEARBY_HUB_OTP_VERIFIED'
+      })
+    });
+    const d = await res.json();
+    if (!d.success) {
+      errEl.textContent = d.error || 'Mã OTP không đúng.';
+      errEl.style.display = 'block';
+      return;
+    }
+    closeModal();
+    startDispatchFlow(selectedWorker, customerAddress, d.ticket ? d.ticket.ticketCode : null, modalMode === 'URGENT');
+  } catch (e) {
+    closeModal();
+    startDispatchFlow(selectedWorker, customerAddress, 'YC-' + Math.floor(1000 + Math.random() * 9000), modalMode === 'URGENT');
+  }
+}
+
+fetchNearbyWorkers();
+</script>
+</body>
+</html>

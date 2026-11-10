@@ -1,0 +1,85 @@
+[
+  {
+    "incidentId": "SEC_THREAT_1794275113493",
+    "timestamp": "2026-11-10T01:45:13.493Z",
+    "ip": "::1",
+    "method": "GET",
+    "path": "/api/calendar/today",
+    "threatScore": 85,
+    "action": "BLOCKED_AND_QUARANTINED",
+    "threats": [
+      {
+        "type": "SQL_INJECTION",
+        "desc": "Bình luận SQL hoặc hàm thử tải thời gian",
+        "score": 85
+      }
+    ],
+    "sampleSnippet": "/api/calendar/today ?region=tuy_hoa%27%20OR%201=1;-- {} node"
+  },
+  {
+    "incidentId": "SEC_THREAT_1794275021454",
+    "timestamp": "2026-11-10T01:43:41.454Z",
+    "ip": "192.168.1.99",
+    "method": "POST",
+    "path": "/api/pos/orders",
+    "threatScore": 90,
+    "action": "BLOCKED_AND_QUARANTINED",
+    "threats": [
+      {
+        "type": "XSS_ATTACK",
+        "desc": "Chèn mã kịch bản Script độc hại",
+        "score": 90
+      },
+      {
+        "type": "XSS_ATTACK",
+        "desc": "Khai thác thực thi mã DOM/Cookie",
+        "score": 85
+      }
+    ],
+    "sampleSnippet": "/api/pos/orders  {\"customerNote\":\"<script>document.cookie</script>\"} "
+  },
+  {
+    "incidentId": "SEC_THREAT_1794275021453",
+    "timestamp": "2026-11-10T01:43:41.453Z",
+    "ip": "185.220.101.5",
+    "method": "GET",
+    "path": "/api/calendar/../../etc/passwd",
+    "threatScore": 95,
+    "action": "BLOCKED_AND_QUARANTINED",
+    "threats": [
+      {
+        "type": "PATH_TRAVERSAL",
+        "desc": "Thăm dò tệp tin nhạy cảm của hệ điều hành",
+        "score": 95
+      }
+    ],
+    "sampleSnippet": "/api/calendar/../../etc/passwd  {} "
+  },
+  {
+    "incidentId": "SEC_THREAT_1794275021451",
+    "timestamp": "2026-11-10T01:43:41.451Z",
+    "ip": "45.33.32.156",
+    "method": "POST",
+    "path": "/api/memorial/records",
+    "threatScore": 95,
+    "action": "BLOCKED_AND_QUARANTINED",
+    "threats": [
+      {
+        "type": "SQL_INJECTION",
+        "desc": "Tấn công vượt quyền xác thực SQL",
+        "score": 90
+      },
+      {
+        "type": "SQL_INJECTION",
+        "desc": "Thao túng truy vấn cơ sở dữ liệu",
+        "score": 95
+      },
+      {
+        "type": "SQL_INJECTION",
+        "desc": "Bình luận SQL hoặc hàm thử tải thời gian",
+        "score": 85
+      }
+    ],
+    "sampleSnippet": "/api/memorial/records  {\"familyHead\":\"' OR 1=1; DROP TABLE memorial_records;--\"} "
+  }
+]

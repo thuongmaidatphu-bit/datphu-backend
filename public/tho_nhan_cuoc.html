@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Đất Phú — Ứng Dụng Nhận Cuốc Thợ 6K Tuy Hòa</title>
+  
+  <!-- Tailwind CSS & Font Awesome 6 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            datphu: {
+              red: '#D32027',
+              redDark: '#B3141A',
+              navy: '#1B2A6B',
+              navyDark: '#101A45',
+              gold: '#F59E0B'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(211, 32, 39, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 18px rgba(211, 32, 39, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(211, 32, 39, 0); }
+    }
+    .pulse-ring {
+      animation: pulseRing 1.8s infinite;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen pb-24 select-none">
+
+  <!-- ======================== THANH ĐIỀU HƯỚNG TRÊN CÙNG ======================== -->
+  <header class="sticky top-0 z-40 bg-datphu-navy text-white px-4 py-3 shadow-md">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <img id="workerAvatar" src="https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=120&q=80" alt="Avatar" class="w-10 h-10 rounded-full object-cover ring-2 ring-amber-400">
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 id="workerName" class="font-extrabold text-sm leading-tight">Nguyễn Văn Tùng (Chú Tùng)</h1>
+            <span class="text-[10px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.2 rounded">6K</span>
+          </div>
+          <div class="text-[11px] text-blue-200">
+            <span id="workerTrade">Điện nước & Máy bơm</span> • P.7, Tuy Hòa
+          </div>
+        </div>
+      </div>
+
+      <!-- Công tắc Bật/Tắt nhận cuốc -->
+      <button id="toggleOnlineBtn" onclick="toggleOnlineStatus()" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-black transition-all bg-emerald-500 text-white shadow-xs">
+        <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+        <span id="onlineStatusText">ĐANG BẬT</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======================== THANH THỐNG KÊ NHANH TRONG NGÀY ======================== -->
+  <div class="max-w-md mx-auto px-4 mt-3">
+    <div class="bg-white rounded-2xl p-3.5 shadow-xs border border-slate-200 flex items-center justify-between text-xs">
+      <div>
+        <div class="text-[11px] text-slate-500 font-medium">Thu nhập hôm nay (3 ca)</div>
+        <div class="text-base font-black text-emerald-700">420.000đ</div>
+      </div>
+      <div class="h-7 w-px bg-slate-200"></div>
+      <div>
+        <div class="text-[11px] text-slate-500 font-medium">Bán kính quét cuốc</div>
+        <div class="text-sm font-extrabold text-datphu-navy flex items-center gap-1">
+          <i class="fa-solid fa-radar text-amber-500"></i>
+          <span>1.5 km (Nội thành)</span>
+        </div>
+      </div>
+      <div class="h-7 w-px bg-slate-200"></div>
+      <div>
+        <div class="text-[11px] text-slate-500 font-medium">Đánh giá 6K</div>
+        <div class="text-sm font-extrabold text-amber-600 flex items-center gap-0.5">
+          <i class="fa-solid fa-star text-xs"></i>
+          <span>4.95</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="max-w-md mx-auto px-4 mt-4 space-y-4">
+
+    <!-- ======================== POP-UP CHUÔNG BÁO CUỐC MỚI (INCOMING CALL) ======================== -->
+    <div id="incomingJobBox" class="bg-gradient-to-b from-red-600 to-datphu-red text-white rounded-3xl p-5 shadow-2xl pulse-ring border-2 border-red-300 transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-red-400/80">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-yellow-300 animate-ping"></span>
+          <span class="text-xs font-black uppercase tracking-wider bg-red-800/80 px-2.5 py-0.5 rounded-full">
+            🚨 CÓ CUỐC MỚI CÁCH BẠN 350M!
+          </span>
+        </div>
+        <div class="text-xs font-mono font-bold bg-yellow-400 text-slate-950 px-2 py-0.5 rounded-full">
+          ⏳ Còn <span id="countdownSec" class="font-black text-sm">30</span>s
+        </div>
+      </div>
+
+      <!-- Thông tin cuốc khẩn cấp -->
+      <div class="pt-4 space-y-3">
+        <div class="bg-white/10 rounded-2xl p-3 backdrop-blur-xs border border-white/20">
+          <div class="text-[11px] text-red-200 uppercase tracking-wide font-extrabold">Điểm đến nhà khách:</div>
+          <div class="text-base font-black text-white mt-0.5 flex items-start gap-1.5">
+            <i class="fa-solid fa-location-dot text-yellow-300 mt-1 shrink-0"></i>
+            <span id="jobCustomerAddress">86 Lê Duẩn, Phường 7, TP. Tuy Hòa</span>
+          </div>
+          <div class="text-[11px] text-yellow-200 font-semibold mt-1 flex items-center gap-3">
+            <span>📍 Cách bạn: <b>0.35 km</b> (~3 phút chạy xe)</span>
+            <span>⏱️ <b>Khẩn cấp (20 – 45p)</b></span>
+          </div>
+        </div>
+
+        <div class="bg-white/10 rounded-2xl p-3 backdrop-blur-xs border border-white/20">
+          <div class="text-[11px] text-red-200 uppercase tracking-wide font-extrabold">Sự cố khách mô tả:</div>
+          <div id="jobIssueDesc" class="text-sm font-bold text-yellow-100 mt-0.5">
+            "Máy bơm tăng áp kêu to rù rù nhưng không lên nước, có mùi khét nhẹ"
+          </div>
+          <div class="text-[11px] text-white/90 mt-1 flex items-center gap-2">
+            <span>👤 Khách: <b id="jobCustomerName">Gia đình Cô Lan</b></span>
+            <span>• Mã: <b id="jobTicketCode">#YC-4173</b></span>
+          </div>
+        </div>
+
+        <!-- Cam kết thợ được bảo vệ -->
+        <div class="text-[11px] text-red-100 bg-red-900/60 p-2.5 rounded-xl flex items-center justify-between">
+          <span class="flex items-center gap-1.5">
+            <i class="fa-solid fa-shield-halved text-yellow-400"></i>
+            <span>Công khởi điểm: <b>120k – 180k</b> (Khách duyệt mới làm)</span>
+          </span>
+          <span class="text-yellow-300 font-bold">0% Phí Sàn</span>
+        </div>
+      </div>
+
+      <!-- 2 NÚT BẤM TO BẢN -->
+      <div class="grid grid-cols-2 gap-3 mt-4 pt-2">
+        <button onclick="declineIncomingJob()" class="py-3 px-3 bg-red-900/80 hover:bg-red-950 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 transition">
+          <i class="fa-solid fa-xmark"></i>
+          <span>Bận tay (Từ chối)</span>
+        </button>
+
+        <button onclick="acceptIncomingJob()" class="py-3 px-3 bg-yellow-400 hover:bg-yellow-300 text-slate-950 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95 transition">
+          <i class="fa-solid fa-phone-volume text-red-600 animate-bounce"></i>
+          <span>NHẬN CUỐC NGAY</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ======================== GIAO DIỆN KHI ĐÃ NHẬN CUỐC (ACTIVE JOB) ======================== -->
+    <div id="activeJobBox" class="hidden bg-white rounded-3xl p-5 shadow-lg border-2 border-emerald-500 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+          <span class="text-xs font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
+            ĐÃ NHẬN CUỐC • ĐANG THỰC HIỆN
+          </span>
+        </div>
+        <span id="activeJobCode" class="text-xs font-mono font-bold text-slate-500">#YC-4173</span>
+      </div>
+
+      <!-- Quy tắc 30s chống boom hàng: Gọi điện cho khách trước khi nổ máy xe -->
+      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 space-y-2">
+        <div class="flex items-center gap-1.5 text-xs font-extrabold text-amber-900">
+          <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+          <span>QUY TẮC VÀNG CHỐNG BOOM HÀNG:</span>
+        </div>
+        <p class="text-xs text-amber-950 leading-relaxed">
+          Bác Tùng bấm gọi cho khách 30 giây xác nhận nhà có người đón rồi mới nổ máy xe chạy qua nhé!
+        </p>
+        <a id="btnCallCustomer" href="tel:0979991898" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition">
+          <i class="fa-solid fa-phone"></i>
+          <span>BẤM GỌI CHO CÔ LAN (0979.xxx.898)</span>
+        </a>
+      </div>
+
+      <!-- Địa chỉ & Nút mở Google Maps chỉ đường -->
+      <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200 space-y-2">
+        <div class="text-[11px] text-slate-500 font-bold uppercase">Địa chỉ nhà khách:</div>
+        <div class="font-extrabold text-slate-900 text-sm flex items-start gap-1.5">
+          <i class="fa-solid fa-location-dot text-datphu-red mt-1"></i>
+          <span id="activeJobAddress">86 Lê Duẩn, Phường 7, TP. Tuy Hòa</span>
+        </div>
+        <div class="text-xs text-slate-600">
+          Sự cố: <b id="activeJobIssue" class="text-slate-800">Máy bơm kêu to rù rù không lên nước</b>
+        </div>
+        <a id="btnGmapDirect" href="https://maps.google.com" target="_blank" class="w-full py-2.5 bg-datphu-navy hover:bg-blue-900 text-white rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition">
+          <i class="fa-solid fa-diamond-turn-right text-amber-400"></i>
+          <span>MỞ GOOGLE MAPS DẪN ĐƯỜNG TỚI CỔNG</span>
+        </a>
+      </div>
+
+      <!-- 4 Bước Thực Hiện Hiện Trường 6K -->
+      <div class="space-y-2 pt-1">
+        <div class="text-xs font-black text-slate-800 flex items-center gap-1.5">
+          <i class="fa-solid fa-list-check text-datphu-navy"></i>
+          <span>TIẾN TRÌNH THỰC HIỆN CA 6K:</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <button id="stepMoveBtn" onclick="setJobStage('K2')" class="p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-800 font-bold text-left">
+            <div>1. 🏍️ Đang di chuyển</div>
+            <div class="text-[10px] font-normal text-slate-500">Khách thấy xe bạn</div>
+          </button>
+          <button id="stepArriveBtn" onclick="setJobStage('K3')" class="p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 font-bold text-left">
+            <div>2. 📍 Đã tới nơi</div>
+            <div class="text-[10px] font-normal text-slate-500">Khảo sát tận nhà 0đ</div>
+          </button>
+        </div>
+
+        <!-- Báo giá động trước khi đụng mỏ lết (Tránh cãi vã) -->
+        <div class="bg-blue-50/70 border border-blue-200 rounded-2xl p-3 space-y-2 text-xs">
+          <div class="font-extrabold text-blue-950 flex items-center justify-between">
+            <span>3. BÁO GIÁ TRƯỚC KHI VẶN ỐC (0Đ KHẢO SÁT)</span>
+            <span class="text-[10px] bg-blue-200 text-blue-900 px-2 py-0.5 rounded-md font-bold">Khách duyệt mới làm</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 mb-0.5">Tiền công thợ (đ):</label>
+              <input type="number" id="qLaborFee" value="150000" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-bold text-slate-900">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 mb-0.5">Tiền vật tư (đ):</label>
+              <input type="number" id="qPartsFee" value="80000" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 font-bold text-slate-900">
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 mb-0.5">Vật tư thay (Khách tự mua hoặc thợ mua hộ):</label>
+            <input id="qPartsNote" value="Thay tụ đề máy bơm 30uF dây đồng" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-slate-900 text-[11px]">
+          </div>
+          <div class="flex gap-2 pt-1">
+            <button onclick="sendQuickQuote()" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs">
+              📲 Bắn Báo Giá Sang Zalo Khách
+            </button>
+            <a href="https://maps.google.com/?q=tiem+dien+nuoc+tuy+hoa" target="_blank" class="shrink-0 px-2.5 py-2 bg-white border border-slate-300 rounded-xl font-bold text-[11px] text-slate-700 flex items-center gap-1">
+              <i class="fa-solid fa-store text-emerald-600"></i> Tiệm vật tư
+            </a>
+          </div>
+        </div>
+
+        <!-- Nghiệm thu & Thu tiền hoàn tất -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2 text-xs">
+          <div class="font-extrabold text-slate-900">4. NGHIỆM THU & THU TIỀN HOÀN TẤT:</div>
+          <div class="flex gap-2">
+            <input type="text" id="custVerifyOtp" placeholder="Mã 4 số khách đọc (ví dụ: 6868)" maxlength="4" class="w-1/2 px-3 py-2 rounded-xl border border-slate-300 font-mono font-black text-center text-sm">
+            <button onclick="completeJobSuccess()" class="w-1/2 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-xs shadow-sm">
+              ✅ THU TIỀN & XONG
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== NÚT MÔ PHỎNG PHÁT CUỐC MỚI ĐỂ THỬ NGHIỆM ======================== -->
+    <div class="bg-white rounded-2xl p-4 border border-dashed border-slate-300 text-center space-y-2">
+      <div class="text-xs font-bold text-slate-700">🎮 Khu Vực Trải Nghiệm & Thử Nghiệm:</div>
+      <p class="text-[11px] text-slate-500">
+        Bấm nút dưới đây để mô phỏng một khách hàng tại Tuy Hòa vừa đặt cuốc khẩn cấp (có chuông reo và đếm lùi).
+      </p>
+      <div class="flex flex-wrap gap-2 justify-center">
+        <button onclick="simulateNewIncomingJob('DIEN_NUOC')" class="px-3.5 py-2 bg-datphu-red hover:bg-red-700 text-white rounded-xl font-black text-xs shadow-sm flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-bell"></i>
+          <span>Thử Phát Cuốc Điện Nước</span>
+        </button>
+        <button onclick="simulateNewIncomingJob('CO_KHI')" class="px-3.5 py-2 bg-datphu-navy hover:bg-blue-900 text-white rounded-xl font-black text-xs shadow-sm flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-wrench"></i>
+          <span>Thử Phát Cuốc Cơ Khí</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ======================== ĐỔI HỒ SƠ THỢ (SWITCH PROFILE) ======================== -->
+    <div class="bg-white rounded-2xl p-3.5 border border-slate-200 text-xs flex items-center justify-between">
+      <span class="text-slate-600 font-medium">Đang đăng nhập:</span>
+      <select id="workerProfileSelect" onchange="switchWorkerProfile()" class="bg-slate-50 border border-slate-300 font-bold text-slate-800 rounded-lg px-2 py-1 text-xs">
+        <option value="THO-01">Chú Tùng (Điện Nước)</option>
+        <option value="THO-02">Tuấn Anh (Vi Tính/Laptop)</option>
+        <option value="THO-03">Chú Hùng (Cơ Khí Sắt)</option>
+        <option value="THO-04">Bảo An (Camera An Ninh)</option>
+        <option value="THO-05">Minh Tâm (Chống Thấm)</option>
+      </select>
+    </div>
+
+  </main>
+
+  <!-- ======================== THANH ĐIỀU HƯỚNG DƯỚI ĐÁY DÀNH CHO THỢ ======================== -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 py-2 px-4 shadow-lg z-30">
+    <div class="max-w-md mx-auto grid grid-cols-4 gap-1 text-center text-[10px] font-bold text-slate-500">
+      <a href="tho_nhan_cuoc.html" class="text-datphu-red flex flex-col items-center gap-0.5">
+        <i class="fa-solid fa-motorcycle text-base"></i>
+        <span>Nhận Cuốc</span>
+      </a>
+      <a href="datphu_nearby_hub.html" class="hover:text-datphu-navy flex flex-col items-center gap-0.5">
+        <i class="fa-solid fa-map-location-dot text-base"></i>
+        <span>Bản Đồ 6K</span>
+      </a>
+      <a href="app_tho_6k.html" class="hover:text-datphu-navy flex flex-col items-center gap-0.5">
+        <i class="fa-solid fa-store text-base"></i>
+        <span>Gian Hàng</span>
+      </a>
+      <a href="tel:0979991898" class="hover:text-datphu-navy flex flex-col items-center gap-0.5">
+        <i class="fa-solid fa-headset text-base text-datphu-navy"></i>
+        <span>Tổng Đài</span>
+      </a>
+    </div>
+  </nav>
+
+  <script>
+    // ======================== DỮ LIỆU THỢ ========================
+    const WORKER_DATA = {
+      'THO-01': {
+        name: 'Nguyễn Văn Tùng (Chú Tùng)',
+        trade: 'Điện nước & Máy bơm',
+        avatar: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=120&q=80'
+      },
+      'THO-02': {
+        name: 'Tuấn Anh (IT Tuy Hòa)',
+        trade: 'Sửa máy tính & Laptop',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80'
+      },
+      'THO-03': {
+        name: 'Võ Minh Hùng (Hùng Sắt)',
+        trade: 'Cơ khí sắt & Cửa cuốn',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80'
+      },
+      'THO-04': {
+        name: 'Trần Bảo An (An Camera)',
+        trade: 'Camera quan sát & An ninh',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80'
+      },
+      'THO-05': {
+        name: 'Đặng Minh Tâm (Tâm Chống Thấm)',
+        trade: 'Chống thấm sàn & Mái tôn',
+        avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=120&q=80'
+      }
+    };
+
+    let isOnline = true;
+    let countdownInterval = null;
+    let currentCountdown = 30;
+    let currentJob = {
+      ticketCode: 'YC-4173',
+      customerName: 'Gia đình Cô Lan',
+      customerPhone: '0979.991.898',
+      customerAddress: '86 Lê Duẩn, Phường 7, TP. Tuy Hòa',
+      issue: 'Máy bơm tăng áp kêu to rù rù nhưng không lên nước, có mùi khét nhẹ',
+      distanceKm: 0.35,
+      lat: 13.0910,
+      lng: 109.3140
+    };
+
+    // ======================== WEB AUDIO API (Ringtone Generator) ========================
+    let audioCtx = null;
+    let ringInterval = null;
+
+    function playRingtone() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        audioCtx = new AudioCtx();
+
+        function toneBurst() {
+          if (!audioCtx) return;
+          const osc1 = audioCtx.createOscillator();
+          const osc2 = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          osc1.type = 'sine';
+          osc2.type = 'sine';
+          osc1.frequency.value = 480;
+          osc2.frequency.value = 440;
+
+          gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.1);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc1.start();
+          osc2.start();
+          osc1.stop(audioCtx.currentTime + 1.1);
+          osc2.stop(audioCtx.currentTime + 1.1);
+        }
+
+        toneBurst();
+        ringInterval = setInterval(toneBurst, 2600);
+      } catch (e) {
+        console.warn('Audio autoplay restriction:', e);
+      }
+    }
+
+    function stopRingtone() {
+      if (ringInterval) {
+        clearInterval(ringInterval);
+        ringInterval = null;
+      }
+      if (audioCtx) {
+        try { audioCtx.close(); } catch (e) {}
+        audioCtx = null;
+      }
+    }
+
+    // ======================== QUẢN LÝ CUỐC ========================
+    function startCountdown() {
+      if (countdownInterval) clearInterval(countdownInterval);
+      currentCountdown = 30;
+      document.getElementById('countdownSec').textContent = currentCountdown;
+
+      playRingtone();
+
+      countdownInterval = setInterval(() => {
+        currentCountdown--;
+        document.getElementById('countdownSec').textContent = currentCountdown;
+        if (currentCountdown <= 0) {
+          clearInterval(countdownInterval);
+          stopRingtone();
+          declineIncomingJob(true);
+        }
+      }, 1000);
+    }
+
+    function acceptIncomingJob() {
+      stopRingtone();
+      if (countdownInterval) clearInterval(countdownInterval);
+
+      // Chuyển sang màn hình ca đang thực hiện
+      document.getElementById('incomingJobBox').classList.add('hidden');
+      const activeBox = document.getElementById('activeJobBox');
+      activeBox.classList.remove('hidden');
+
+      // Điền thông tin ca
+      document.getElementById('activeJobCode').textContent = '#' + currentJob.ticketCode;
+      document.getElementById('activeJobAddress').textContent = currentJob.customerAddress;
+      document.getElementById('activeJobIssue').textContent = currentJob.issue;
+      document.getElementById('btnCallCustomer').href = 'tel:' + currentJob.customerPhone.replace(/[^0-9]/g, '');
+      document.getElementById('btnGmapDirect').href = `https://www.google.com/maps/dir/?api=1&destination=${currentJob.lat},${currentJob.lng}`;
+
+      activeBox.scrollIntoView({ behavior: 'smooth' });
+
+      // Gọi API backend nhận việc nếu có
+      try {
+        fetch('/api/dispatch/accept', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ jobId: currentJob.ticketCode, workerId: document.getElementById('workerProfileSelect').value })
+        });
+      } catch (e) {}
+    }
+
+    function declineIncomingJob(isTimeout = false) {
+      stopRingtone();
+      if (countdownInterval) clearInterval(countdownInterval);
+      document.getElementById('incomingJobBox').classList.add('hidden');
+      if (isTimeout) {
+        alert('Đã hết 30 giây. Hệ thống đã tự động chuyển cuốc cho thợ dự phòng kế tiếp để tránh khách bị lỡ việc.');
+      } else {
+        alert('Đã từ chối cuốc. Hệ thống đã chuyển cuốc cho thợ khác quanh khu vực.');
+      }
+    }
+
+    function setJobStage(stage) {
+      const sMove = document.getElementById('stepMoveBtn');
+      const sArrive = document.getElementById('stepArriveBtn');
+      if (stage === 'K2') {
+        sMove.className = 'p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-800 font-bold text-left';
+        sArrive.className = 'p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 font-bold text-left';
+        alert('Đã cập nhật: Bạn đang xuất phát di chuyển tới nhà khách.');
+      } else {
+        sArrive.className = 'p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-800 font-bold text-left';
+        sMove.className = 'p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 font-bold text-left';
+        alert('Đã cập nhật: Đã tới nơi, bắt đầu khảo sát hiện trường miễn phí 0đ.');
+      }
+    }
+
+    function sendQuickQuote() {
+      const labor = Number(document.getElementById('qLaborFee').value || 0).toLocaleString('vi-VN');
+      const parts = Number(document.getElementById('qPartsFee').value || 0).toLocaleString('vi-VN');
+      const note = document.getElementById('qPartsNote').value;
+      alert(`ĐÃ GỬI BÁO GIÁ SANG KHÁCH HÀNG:\n• Tiền công thợ: ${labor}đ\n• Tiền vật tư: ${parts}đ (${note})\nKhách duyệt trên điện thoại thì bạn mới bắt đầu làm nhé!`);
+    }
+
+    function completeJobSuccess() {
+      const otp = document.getElementById('custVerifyOtp').value.trim();
+      if (!otp) {
+        alert('Vui lòng hỏi khách mã 4 số nghiệm thu (ví dụ 6868) để hoàn tất ca!');
+        return;
+      }
+      alert('🎉 CHÚC MỪNG BÁC THỢ!\nCa làm #YC-4173 đã nghiệm thu thành công.\nTiền công đã được ghi nhận vào ví thợ Đất Phú. 0% chiết khấu sàn!');
+      document.getElementById('activeJobBox').classList.add('hidden');
+    }
+
+    function simulateNewIncomingJob(trade) {
+      const rand = Math.floor(1000 + Math.random() * 9000);
+      if (trade === 'CO_KHI') {
+        currentJob = {
+          ticketCode: 'CK-' + rand,
+          customerName: 'Anh Minh (Cửa hàng Tạp Hóa)',
+          customerPhone: '0988.777.666',
+          customerAddress: '142 Nguyễn Huệ, Phường 5, TP. Tuy Hòa',
+          issue: 'Cửa sắt kéo bị kẹt bạc đạn, rách bản lề không đóng lại được',
+          distanceKm: 0.6,
+          lat: 13.0945,
+          lng: 109.3112
+        };
+      } else {
+        currentJob = {
+          ticketCode: 'YC-' + rand,
+          customerName: 'Gia đình Cô Lan',
+          customerPhone: '0979.991.898',
+          customerAddress: '86 Lê Duẩn, Phường 7, TP. Tuy Hòa',
+          issue: 'Máy bơm tăng áp kêu to rù rù nhưng không lên nước, có mùi khét nhẹ',
+          distanceKm: 0.35,
+          lat: 13.0910,
+          lng: 109.3140
+        };
+      }
+
+      document.getElementById('jobTicketCode').textContent = '#' + currentJob.ticketCode;
+      document.getElementById('jobCustomerAddress').textContent = currentJob.customerAddress;
+      document.getElementById('jobIssueDesc').textContent = `"${currentJob.issue}"`;
+      document.getElementById('jobCustomerName').textContent = currentJob.customerName;
+
+      document.getElementById('activeJobBox').classList.add('hidden');
+      document.getElementById('incomingJobBox').classList.remove('hidden');
+      startCountdown();
+      document.getElementById('incomingJobBox').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function switchWorkerProfile() {
+      const code = document.getElementById('workerProfileSelect').value;
+      const w = WORKER_DATA[code];
+      if (!w) return;
+      document.getElementById('workerName').textContent = w.name;
+      document.getElementById('workerTrade').textContent = w.trade;
+      document.getElementById('workerAvatar').src = w.avatar;
+    }
+
+    function toggleOnlineStatus() {
+      isOnline = !isOnline;
+      const btn = document.getElementById('toggleOnlineBtn');
+      const txt = document.getElementById('onlineStatusText');
+      if (isOnline) {
+        btn.className = 'flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-black transition-all bg-emerald-500 text-white shadow-xs';
+        txt.textContent = 'ĐANG BẬT';
+      } else {
+        btn.className = 'flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-black transition-all bg-slate-600 text-slate-200 shadow-xs';
+        txt.textContent = 'ĐANG TẮT';
+        stopRingtone();
+        if (countdownInterval) clearInterval(countdownInterval);
+        document.getElementById('incomingJobBox').classList.add('hidden');
+      }
+    }
+
+    // Tự động phát chuông cuốc mẫu khi mở trang để thợ xem ngay giao diện
+    window.addEventListener('DOMContentLoaded', () => {
+      startCountdown();
+    });
+  </script>
+</body>
+</html>

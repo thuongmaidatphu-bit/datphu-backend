@@ -26,6 +26,8 @@ const procurementRoutes = require('./modules/procurement/procurementRoutes');
 const supplyChainRoutes = require('./modules/supply_chain/supplyChainRoutes');
 const exportRoutes = require('./modules/export/exportRoutes');
 const financeRoutes = require('./modules/finance/financeRoutes');
+const core6kRoutes = require('./modules/core6k/core6kRoutes');
+const calendarRoutes = require('./modules/calendar/calendarRoutes');
 
 // 2. NẠP CÁC PHÂN HỆ HẠ TẦNG ĐÁM MÂY & ĐIỀU HÀNH
 const webhookController = require('./controllers/webhookController');
@@ -33,6 +35,8 @@ const aiController = require('./controllers/aiController');
 const apiKeyController = require('./controllers/apiKeyController');
 const maintenanceController = require('./controllers/maintenanceController');
 const cloudGateway = require('./core/cloudGateway');
+const aiSecurityShield = require('./core/aiSecurityShield');
+const jobsSentinel = require('./jobs');
 
 const PORT = process.env.PORT || 5000;
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
@@ -86,6 +90,36 @@ const server = http.createServer(async (req, res) => {
   const body = ['POST', 'PUT', 'PATCH'].includes(req.method) ? await parseBody(req) : {};
 
   // ========================================================================
+  // LÁ CHẮN AN NINH AI THỜI GIAN THỰC (AI CYBER-SECURITY SHIELD)
+  // Tự động chặn SQLi, XSS, Path Traversal, Bot Spam và cách ly IP tấn công
+  // ========================================================================
+  const securityCheck = aiSecurityShield.inspectRequest(req, pathname, body, parsedUrl);
+  if (!securityCheck.allowed) {
+    res.writeHead(403, { 'Content-Type': 'application/json; charset=utf-8' });
+    return res.end(JSON.stringify({
+      success: false,
+      blocked: true,
+      reason: securityCheck.reason,
+      incidentId: securityCheck.incidentId
+    }));
+  }
+
+  // API Giám sát An ninh AI thời gian thực
+  if (pathname === '/api/security/status' && req.method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    return res.end(JSON.stringify({
+      success: true,
+      data: aiSecurityShield.getSecurityDashboard()
+    }));
+  }
+
+  if (pathname === '/api/security/unban' && req.method === 'POST') {
+    const unbanResult = aiSecurityShield.unbanIP(body.ip);
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    return res.end(JSON.stringify(unbanResult));
+  }
+
+  // ========================================================================
   // 0. BỐN CỔNG CHÍNH ĐÁM MÂY SUPABASE (DATABASE, AUTH, STORAGE, REALTIME)
   // ========================================================================
   if (pathname === '/api/cloud/status' && req.method === 'GET') {
@@ -124,6 +158,16 @@ const server = http.createServer(async (req, res) => {
   // ========================================================================
   // ĐIỀU HƯỚNG QUA 4 MODULE NGHIỆP VỤ CỐT LÕI
   // ========================================================================
+
+  // MODULE: LỊCH THIÊN VĂN SINH KẾ (src/modules/calendar/)
+  if (await calendarRoutes.handle(pathname, req, res, body, sseClients, parsedUrl)) {
+    return;
+  }
+
+  // GIAI ĐOẠN 1: ĐẤT PHÚ CORE (2026 - 2027) - 6K KÍN KẼ OS, REDIS GEO, CỔNG 20KB & SỔ CÁI KÉP
+  if (await core6kRoutes.handle(pathname, req, res, body, sseClients, parsedUrl)) {
+    return;
+  }
 
   // GIAI ĐOẠN 1: THU MUA ĐẦU VÀO & NHÀ CUNG CẤP (src/modules/procurement/)
   if (await procurementRoutes.handle(pathname, req, res, body, sseClients, parsedUrl)) {
@@ -280,7 +324,12 @@ const server = http.createServer(async (req, res) => {
   if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
     const ext = path.extname(fullPath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-    res.writeHead(200, { 'Content-Type': contentType });
+    res.writeHead(200, {
+      'Content-Type': contentType,
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
     return fs.createReadStream(fullPath).pipe(res);
   }
 
@@ -297,9 +346,14 @@ if (require.main === module) {
     console.log(`- 2. Module POS (Bán Hàng & Tồn Kho):     http://localhost:${PORT}/api/pos/products`);
     console.log(`- 3. Module Dispatch (Cứu Hộ Thợ 6K):    http://localhost:${PORT}/api/nearby/workers`);
     console.log(`- 4. Module Tax Invoice (HĐĐT NĐ 123):   http://localhost:${PORT}/api/tax/invoices`);
-    console.log(`- Cổng Hệ Sinh Thái Đất Phú Chợ Phiên:              http://localhost:${PORT}/index.html`);
+    console.log(`- 5. Lịch Thiên Văn & Sinh Kế Duyên Hải: http://localhost:${PORT}/lich_thien_van_sinh_ke.html`);
+    console.log(`- 6. Canh Lũ & Sổ Giỗ (Sentinel Jobs):   http://localhost:${PORT}/api/jobs/status`);
+    console.log(`- Cổng Hệ Sinh Thái Đất Phú Chợ Phiên:   http://localhost:${PORT}/index.html`);
     console.log(`- Trung Tâm Cấu Hình Bảo Trì & Nâng Cấp: http://localhost:${PORT}/datphu_maintenance.html`);
     console.log("=================================================================");
+
+    // KÍCH HOẠT TIẾN TRÌNH TỰ ĐỘNG CANH LŨ THƯỢNG NGUỒN & NHẮC SỔ GIỖ GIA TỘC
+    jobsSentinel.startAll(sseClients);
   });
 }
 
