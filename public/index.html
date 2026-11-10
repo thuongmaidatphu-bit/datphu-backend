@@ -86,7 +86,14 @@
     }
 
     /* Bloc Leaf ở chế độ ban đêm: Nền đen saphir viền hoàng kim phát sáng */
-    body.night-mode .super-bloc {
+    body.night-mode 
+    /* ẨN HOÀN TOÀN CỤM THIÊN VĂN THEO YÊU CẦU NGƯỜI DÙNG */
+    #leafTideBox,
+    #khanhLichHeader {
+      display: none !important;
+    }
+  
+    .super-bloc {
       background: linear-gradient(180deg, #0b0f19 0%, #111827 50%, #070a12 100%) !important;
       border-color: #ca8a04 !important;
       box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(250, 204, 21, 0.25) !important;
@@ -737,7 +744,7 @@
         </div>
 
         <!-- ĐÀI THIÊN VĂN MẶT TRĂNG 3D & THỦY TRIỀU SINH KẾ ĐẤT PHÚ (THEO ẢNH GIÁO DỤC SỐ & NASA) -->
-        <div id="leafTideBox" class="hidden">
+        <div id="leafTideBox" style="display: none !important;" class="hidden">
           
           <!-- Bầu trời đêm sâu thẳm với bụi sao thiên hà & mây bạc lãng đãng (theo ảnh 2 & 4) -->
           <div class="pointer-events-none absolute inset-0 opacity-40">
@@ -2534,7 +2541,7 @@
           lunarYear.className = "text-base font-black text-white mt-0.5 uppercase tracking-wider drop-shadow";
         }
         if (divider) divider.className = "border-t-4 border-amber-400 my-2 shadow";
-        if (tideBox) tideBox.className = "bg-red-950/60 border-2 border-amber-400/50 rounded-2xl p-3.5 space-y-2 text-amber-100";
+        if (tideBox) tideBox.style.display = "none";
         return;
       }
 
@@ -2555,7 +2562,7 @@
         if (lunarDayText) lunarDayText.className = "text-2xl sm:text-3xl font-black text-amber-900 tracking-wide mt-1";
         if (lunarYear) lunarYear.className = "text-base font-black text-amber-950 mt-0.5";
         if (divider) divider.className = "border-t-4 border-amber-500 my-2";
-        if (tideBox) tideBox.className = "bg-amber-50/50 border-2 border-amber-200 rounded-2xl p-3.5 space-y-2 text-amber-950";
+        if (tideBox) tideBox.style.display = "none";
         return;
       }
 
@@ -2573,7 +2580,7 @@
         if (lunarDayText) lunarDayText.className = "text-2xl sm:text-3xl font-black text-purple-900 tracking-wide mt-1";
         if (lunarYear) lunarYear.className = "text-base font-black text-purple-950 mt-0.5";
         if (divider) divider.className = "border-t-4 border-purple-600 my-2";
-        if (tideBox) tideBox.className = "bg-purple-50/50 border-2 border-purple-200 rounded-2xl p-3.5 space-y-2 text-purple-950";
+        if (tideBox) tideBox.style.display = "none";
         return;
       }
 
@@ -2591,7 +2598,7 @@
         if (lunarDayText) lunarDayText.className = "text-2xl sm:text-3xl font-black text-emerald-800 tracking-wide mt-1";
         if (lunarYear) lunarYear.className = "text-base font-black text-emerald-950 mt-0.5";
         if (divider) divider.className = "border-t-4 border-emerald-600 my-2";
-        if (tideBox) tideBox.className = "bg-emerald-50/50 border-2 border-emerald-200 rounded-2xl p-3.5 space-y-2 text-emerald-950";
+        if (tideBox) tideBox.style.display = "none";
         return;
       }
 
@@ -2611,7 +2618,7 @@
       if (lunarDayText) lunarDayText.className = "text-2xl sm:text-3xl font-black text-[#d9232a] tracking-wide mt-1";
       if (lunarYear) lunarYear.className = "text-base font-black text-slate-800 mt-0.5";
       if (divider) divider.className = "border-t-4 border-[#d9232a] my-2";
-      if (tideBox) tideBox.className = "bg-slate-50 border-2 border-slate-300 rounded-2xl p-3.5 space-y-2 text-slate-900";
+      if (tideBox) tideBox.style.display = "none";
     }
 
     
