@@ -217,6 +217,24 @@
         </button>
       </div>
 
+      <!-- 3 TIỆN ÍCH DÂN SINH ĐẤT PHÚ (GIỌNG NÓI • CÀI ĐẶT • CHIA SẺ ZALO) -->
+      <div class="grid grid-cols-3 gap-2 pt-1.5">
+        <button id="btnSpeakCalendar" onclick="speakTodayCalendar()" class="py-2.5 px-1 sm:px-2 bg-[#1b2a47] text-white rounded-2xl border-2 border-yellow-400 shadow-md font-black text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1 hover:bg-[#273d66] active:scale-95 transition">
+          <i class="fa-solid fa-volume-high text-yellow-300 text-base"></i>
+          <span>ĐỌC LỊCH</span>
+        </button>
+
+        <button onclick="installPwaApp()" class="py-2.5 px-1 sm:px-2 bg-white text-[#1b2a47] rounded-2xl border-2 border-[#1b2a47] shadow-md font-black text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1 hover:bg-slate-100 active:scale-95 transition">
+          <i class="fa-solid fa-mobile-screen-button text-[#d9232a] text-base"></i>
+          <span>CÀI VÀO MÁY</span>
+        </button>
+
+        <button onclick="shareZaloGreeting()" class="py-2.5 px-1 sm:px-2 bg-[#0068ff] text-white rounded-2xl border-2 border-blue-400 shadow-md font-black text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1 hover:bg-[#0052cc] active:scale-95 transition">
+          <i class="fa-solid fa-share-nodes text-yellow-300 text-base"></i>
+          <span>GỬI ZALO</span>
+        </button>
+      </div>
+
     </section>
 
     <!-- ============================================================ -->
@@ -752,6 +770,135 @@
       memorials = memorials.filter(x => x.id !== id);
       localStorage.setItem("datphu_neutral_memorials", JSON.stringify(memorials));
       renderMemorials();
+    }
+
+    // ============================================================
+    // 3 TIỆN ÍCH DÂN SINH: ĐỌC GIỌNG NÓI • CÀI MÀN HÌNH • GỬI ZALO
+    // ============================================================
+    let isSpeaking = false;
+    function speakTodayCalendar() {
+      if (!('speechSynthesis' in window)) {
+        alert("Thiết bị hoặc trình duyệt của bạn chưa hỗ trợ tính năng đọc giọng nói.");
+        return;
+      }
+      if (isSpeaking) {
+        window.speechSynthesis.cancel();
+        isSpeaking = false;
+        updateSpeakBtn(false);
+        return;
+      }
+
+      let d = currentDate.getDate();
+      let m = currentDate.getMonth() + 1;
+      let y = currentDate.getFullYear();
+      let [lunarDay, lunarMonth, lunarYear, isLeap] = convertSolar2Lunar(d, m, y, TIME_ZONE);
+      let lunarStr = lunarDay < 10 ? `Mùng ${lunarDay}` : `Ngày ${lunarDay}`;
+      let dayName = getDayOfWeek(d, m, y);
+      let canChiDay = getCanChiDay(d, m, y);
+      let temp = document.getElementById("weatherWidgetTemp")?.innerText || "25";
+      let locName = document.getElementById("widgetLocationName")?.innerText || "Tuy Hòa";
+      let tide = (lunarDay >= 1 && lunarDay <= 3) || (lunarDay >= 14 && lunarDay <= 17) ? "kỳ nước rong, triều cường dâng lớn" : "kỳ nước kém, con nước êm";
+
+      let text = `Hôm nay là ${dayName}, ngày ${d} tháng ${m} năm ${y} dương lịch. ` +
+                 `Nhằm ngày ${lunarStr} tháng ${lunarMonth} âm lịch, ngày ${canChiDay}. ` +
+                 `Khu vực ${locName} nhiệt độ khoảng ${temp} độ C. Hiện tại là ${tide}. ` +
+                 `Lịch Đất Phú kính chúc bà con một ngày mới dồi dào sức khỏe, gia đạo bình an và vạn sự như ý!`;
+
+      let utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'vi-VN';
+      utter.rate = 0.95;
+      utter.pitch = 1.0;
+
+      let voices = window.speechSynthesis.getVoices();
+      let viVoice = voices.find(v => v.lang.startsWith('vi') || v.lang.includes('VIE'));
+      if (viVoice) utter.voice = viVoice;
+
+      utter.onstart = () => { isSpeaking = true; updateSpeakBtn(true); };
+      utter.onend = () => { isSpeaking = false; updateSpeakBtn(false); };
+      utter.onerror = () => { isSpeaking = false; updateSpeakBtn(false); };
+
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    }
+
+    function updateSpeakBtn(speaking) {
+      let btn = document.getElementById("btnSpeakCalendar");
+      if (!btn) return;
+      if (speaking) {
+        btn.innerHTML = '<i class="fa-solid fa-volume-xmark text-yellow-300 animate-pulse text-base"></i><span>DỪNG ĐỌC</span>';
+        btn.classList.add("bg-[#b91c1c]");
+      } else {
+        btn.innerHTML = '<i class="fa-solid fa-volume-high text-yellow-300 text-base"></i><span>ĐỌC LỊCH</span>';
+        btn.classList.remove("bg-[#b91c1c]");
+      }
+    }
+
+    // PWA: Cài đặt ra màn hình chính
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    function installPwaApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            showToast("Đã thêm Lịch Đất Phú ra màn hình chính!");
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          alert("Để cài Lịch ra màn hình chính iPhone:\n1. Bấm nút Chia sẻ (biểu tượng mũi tên lên ở đáy màn hình Safari)\n2. Chọn 'Thêm vào MH chính' (Add to Home Screen).");
+        } else {
+          alert("Để cài Lịch ra màn hình điện thoại:\nBấm vào nút 3 chấm góc trên trình duyệt Chrome/Cốc Cốc -> Chọn 'Cài đặt ứng dụng' hoặc 'Thêm vào màn hình chính'.");
+        }
+      }
+    }
+
+    // Gửi lời chúc Zalo
+    function shareZaloGreeting() {
+      let d = currentDate.getDate();
+      let m = currentDate.getMonth() + 1;
+      let y = currentDate.getFullYear();
+      let [lunarDay, lunarMonth] = convertSolar2Lunar(d, m, y, TIME_ZONE);
+      let lunarStr = lunarDay < 10 ? `Mùng ${lunarDay}` : `Ngày ${lunarDay}`;
+      let dayName = getDayOfWeek(d, m, y);
+
+      let text = `🌸 Chúc bạn và gia đình một ngày ${dayName} bình an, mạnh khỏe và vạn sự như ý!\n` +
+                 `📅 Hôm nay: ${d}/${m}/${y} Dương lịch (Nhằm ${lunarStr} Tháng ${lunarMonth} Âm lịch)\n` +
+                 `👉 Xem con nước và lịch hôm nay tại: https://datphu-backend.vercel.app`;
+
+      if (navigator.share) {
+        navigator.share({
+          title: `Lịch Đất Phú - ${dayName} (${lunarStr} Tháng ${lunarMonth} Âm)`,
+          text: text,
+          url: 'https://datphu-backend.vercel.app'
+        }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast("Đã sao chép lời chúc! Hãy dán vào Zalo để gửi cho người thân.");
+        }).catch(() => {
+          alert("Nội dung lời chúc gửi Zalo:\n\n" + text);
+        });
+      }
+    }
+
+    // Toast thông báo nhỏ
+    function showToast(msg) {
+      let toast = document.getElementById("datphuToast");
+      if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "datphuToast";
+        toast.className = "fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-[#1b2a47] text-white px-5 py-3 rounded-2xl shadow-2xl border-2 border-yellow-400 font-bold text-xs sm:text-sm text-center max-w-xs transition-opacity duration-300";
+        document.body.appendChild(toast);
+      }
+      toast.innerText = msg;
+      toast.style.opacity = "1";
+      setTimeout(() => { toast.style.opacity = "0"; }, 3500);
     }
 
     window.addEventListener("DOMContentLoaded", () => {
