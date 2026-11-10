@@ -5,13 +5,20 @@
  */
 const https = require('https');
 const server = require('../src/server');
+const wisdomHandler = require('./wisdom');
 
 module.exports = (req, res) => {
   const reqUrl = req.url || '';
   const parsed = new URL(reqUrl, 'http://localhost');
+
+  // 1. CỔNG AI MINH TRIẾT NHÂN LOẠI GEMINI (CÓ CACHE)
+  if (reqUrl.includes('/api/wisdom')) {
+    return wisdomHandler(req, res);
+  }
+
   const q = parsed.searchParams.get('q') || '';
 
-  // 1. CỔNG PHÁT ÂM THANH GIỌNG NÓI TTS TIẾNG VIỆT (STREAMING MP3)
+  // 2. CỔNG PHÁT ÂM THANH GIỌNG NÓI TTS TIẾNG VIỆT (STREAMING MP3)
   if (reqUrl.includes('tts') || q) {
     const textToSpeak = q || 'Lịch Đất Phú';
     const ttsUrl = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=' + encodeURIComponent(textToSpeak);
