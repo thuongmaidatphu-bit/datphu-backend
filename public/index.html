@@ -572,6 +572,12 @@
           <span id="dayNightText" class="hidden sm:inline">BAN NGÀY</span>
         </button>
 
+        <!-- NÚT ÂM NHẠC TRỊ LIỆU & CHỮA LÀNH TÂM HỒN -->
+        <button id="healingHeaderBtn" onclick="toggleHealingSanctuaryModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-teal-500 bg-teal-50 hover:bg-teal-100 text-teal-900 flex items-center gap-1.5 text-xs font-black shadow-sm transition active:scale-95" title="Không gian âm nhạc trị liệu & Chữa lành tâm bệnh">
+          <span class="text-sm">🌿</span>
+          <span class="hidden sm:inline">CHỮA LÀNH</span>
+        </button>
+
         <!-- CHỌN TIỂU VÙNG HOẶC ĐỂ AI TỰ QUAN SÁT -->
         <select id="selectLocation" onchange="changeLocation(this.value)" class="bg-slate-100 border-2 border-[#1b2a47] text-[#1b2a47] rounded-xl px-2.5 py-1.5 text-xs sm:text-sm font-black focus:outline-none max-w-[130px] sm:max-w-none truncate" title="Chọn vị trí hoặc để AI tự động nhận diện">
           <option value="auto">✨ AI Tự Nhận Diện ⌵</option>
@@ -682,6 +688,92 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- KHÔNG GIAN ÂM NHẠC TRỊ LIỆU & CHỮA LÀNH TÂM BỆNH THEO NGỮ CẢNH (CONTEXT-AWARE HEALING) -->
+      <div id="healingContextCard" class="bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-900 text-white p-3.5 sm:p-4 rounded-3xl border-2 border-teal-500/40 shadow-xl space-y-3 relative overflow-hidden transition-all duration-300">
+        <!-- Đốm sáng hào quang chữa lành nhẹ dịu -->
+        <div class="pointer-events-none absolute -top-10 -right-10 w-36 h-36 bg-teal-400/15 rounded-full blur-2xl"></div>
+        <div class="pointer-events-none absolute -bottom-10 -left-10 w-36 h-36 bg-emerald-400/15 rounded-full blur-2xl"></div>
+
+        <!-- HÀNG 1: TIÊU ĐỀ & NGỮ CẢNH THỜI GIAN HIỆN TẠI -->
+        <div class="flex items-center justify-between text-xs font-black pb-1 border-b border-teal-800/40">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-[10px] uppercase tracking-wider font-black shadow-sm flex items-center gap-1">
+              <span>🌿</span> ÂM NHẠC TRỊ LIỆU
+            </span>
+            <span id="healingTimeContextBadge" class="text-teal-200 text-[11px] truncate">
+              🌙 Đêm An Lành (396 Hz)
+            </span>
+          </div>
+
+          <button onclick="toggleHealingSanctuaryModal()" class="text-amber-300 hover:text-amber-200 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition">
+            <i class="fa-solid fa-spa text-[10px]"></i> Liệu pháp sâu
+          </button>
+        </div>
+
+        <!-- HÀNG 2: LỜI VỖ VỀ CHỮA LÀNH TRỰC DIỆN -->
+        <div class="p-2.5 bg-slate-950/60 rounded-2xl border border-teal-500/25 flex items-center justify-between gap-3">
+          <div class="space-y-0.5 flex-1 min-w-0">
+            <div class="text-[10px] text-teal-300 font-bold flex items-center gap-1">
+              <i class="fa-solid fa-heart text-rose-400"></i> Lời Vỗ Về Thân Tâm:
+            </div>
+            <p id="healingAffirmationText" class="text-xs text-slate-200 italic font-medium leading-relaxed truncate sm:whitespace-normal">
+              "Bạn đã vất vả nhiều rồi, hãy thả lỏng và cho phép mình được nghỉ ngơi. Mọi chuyện rồi sẽ bình an."
+            </p>
+          </div>
+          <button id="btnQuickPlayHealing" onclick="toggleQuickHealingSound()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-black text-xs shadow-md active:scale-95 transition shrink-0 flex items-center gap-1.5" title="Bật âm thanh chữa lành theo ngữ cảnh hiện tại">
+            <span id="quickPlayHealingIcon">▶️</span>
+            <span id="quickPlayHealingText">Xoa Dịu</span>
+          </button>
+        </div>
+
+        <!-- HÀNG 3: CÁC NGỮ CẢNH TÂM BỆNH CẦN CHỮA LÀNH TỨC THÌ -->
+        <div class="space-y-1.5">
+          <div class="text-[10px] font-black text-slate-300 uppercase tracking-wider flex items-center justify-between">
+            <span>Chọn Ngữ Cảnh Bạn Cần Xoa Dịu:</span>
+            <span class="text-[9px] text-teal-400 font-normal">Tần số Solfeggio & Tự nhiên</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-center">
+            <button onclick="playHealingPreset('anxiety')" id="presetBtn_anxiety" class="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs">🌿</span>
+                <span class="text-[9px] font-mono text-teal-300">396Hz</span>
+              </div>
+              <div class="font-black text-[11px] text-white">Xua Lo Âu</div>
+              <div class="text-[9px] text-slate-400 truncate">Giảm bồn chồn</div>
+            </button>
+
+            <button onclick="playHealingPreset('burnout')" id="presetBtn_burnout" class="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs">🕊️</span>
+                <span class="text-[9px] font-mono text-emerald-300">528Hz</span>
+              </div>
+              <div class="font-black text-[11px] text-white">Giải Stress</div>
+              <div class="text-[9px] text-slate-400 truncate">Hồi phục kiệt sức</div>
+            </button>
+
+            <button onclick="playHealingPreset('sadness')" id="presetBtn_sadness" class="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs">🕯️</span>
+                <span class="text-[9px] font-mono text-cyan-300">639Hz</span>
+              </div>
+              <div class="font-black text-[11px] text-white">Xoa Buồn Bã</div>
+              <div class="text-[9px] text-slate-400 truncate">Hàn gắn cô đơn</div>
+            </button>
+
+            <button onclick="playHealingPreset('sleep')" id="presetBtn_sleep" class="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-teal-500/30 text-left transition active:scale-95 space-y-0.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs">🌙</span>
+                <span class="text-[9px] font-mono text-indigo-300">432Hz</span>
+              </div>
+              <div class="font-black text-[11px] text-white">Ngủ Ngon</div>
+              <div class="text-[9px] text-slate-400 truncate">Xua Overthinking</div>
+            </button>
+          </div>
+        </div>
+
       </div>
 
       <!-- HUB TIỆN ÍCH DÀNH CHO NGƯỜI TRẺ (GEN Z & YOUTH FOCUS) -->
@@ -1519,6 +1611,119 @@
         <div class="p-3 sm:p-4 pt-2.5 border-t-2 border-slate-100 shrink-0 bg-white z-10">
           <button onclick="toggleSettingsCenterModal()" class="w-full py-2.5 sm:py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-black text-xs sm:text-sm shadow-md active:scale-95 transition">
             ĐÃ LƯU • HOÀN TẤT
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MODAL KHÔNG GIAN ÂM NHẠC TRỊ LIỆU & VÒNG TRÒN HƠI THỞ CHỮA LÀNH TÂM HỒN -->
+    <div id="healingSanctuaryModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+      <div id="healingSanctuaryCard" class="bg-gradient-to-b from-slate-900 via-teal-950 to-slate-950 border-2 border-teal-500/50 rounded-3xl w-full max-w-lg shadow-2xl flex flex-col max-h-[92vh] overflow-hidden text-white relative">
+        
+        <!-- HEADER CỐ ĐỊNH -->
+        <div class="p-4 sm:p-5 pb-3 border-b border-teal-800/40 flex items-center justify-between shrink-0 bg-slate-950/70 backdrop-blur z-10">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-teal-400 to-emerald-600 text-white font-black text-xl flex items-center justify-center shadow-lg ring-2 ring-teal-300/40 shrink-0">
+              <span>🌿</span>
+            </div>
+            <div>
+              <h3 class="text-base sm:text-lg font-black text-white leading-tight">ÂM NHẠC TRỊ LIỆU & HƠI THỞ</h3>
+              <p class="text-[11px] font-bold text-teal-300">Chữa lành tâm bệnh • Xoa dịu lo âu, áp lực & cô đơn</p>
+            </div>
+          </div>
+          <button onclick="toggleHealingSanctuaryModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 font-black text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95 text-sm" title="Đóng">✕</button>
+        </div>
+
+        <!-- THÂN MODAL CUỘN -->
+        <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1">
+          
+          <!-- PHẦN 1: VÒNG TRÒN HƠI THỞ SINH HỌC 4-7-8 TRỰC QUAN -->
+          <div class="p-4 bg-slate-950/80 border border-teal-500/30 rounded-2xl text-center space-y-3 relative overflow-hidden">
+            <div class="text-[11px] font-black text-teal-300 uppercase tracking-wider flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-lungs text-cyan-400"></i> Bài Thở Sinh Học 4 - 7 - 8 (Xoa Dịu Thần Kinh)
+            </div>
+
+            <!-- VÒNG TRÒN NỞ RA THU VÀO -->
+            <div class="relative w-40 h-40 mx-auto flex items-center justify-center my-2">
+              <div id="breathingOuterGlow" class="absolute inset-0 rounded-full bg-teal-500/20 blur-xl transition-all duration-1000 scale-100"></div>
+              <div id="breathingBubble" class="w-32 h-32 rounded-full border-4 border-teal-400 bg-gradient-to-tr from-teal-700 to-emerald-500 flex flex-col items-center justify-center shadow-2xl transition-all duration-1000 transform scale-90">
+                <span id="breathingPhaseText" class="text-xs font-black uppercase tracking-wider text-white">SẴN SÀNG</span>
+                <span id="breathingTimerNumber" class="text-2xl font-black font-mono text-amber-300 mt-0.5">4s</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-2">
+              <button id="btnBreathingToggle" onclick="toggleBreathingExercise()" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs shadow active:scale-95 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-play text-[10px]"></i>
+                <span id="breathingBtnLabel">Bắt đầu tập thở</span>
+              </button>
+              <span id="breathingCyclesCompleted" class="text-[11px] text-teal-300 font-bold hidden">
+                0 nhịp thở
+              </span>
+            </div>
+            <p class="text-[10px] text-slate-400 leading-relaxed italic">
+              Khi lo âu hay mất ngủ: Hít vào 4 giây qua mũi • Giữ 7 giây • Thở chậm 8 giây qua miệng.
+            </p>
+          </div>
+
+          <!-- PHẦN 2: CHỌN TẦN SỐ SOLFEGGIO CHỮA LÀNH KHOA HỌC -->
+          <div class="p-3.5 bg-slate-950/80 border border-teal-500/30 rounded-2xl space-y-2.5">
+            <div class="text-[11px] font-black text-slate-200 uppercase tracking-wider flex items-center justify-between">
+              <span>Tần Số Sóng Âm Sinh Học (Solfeggio)</span>
+              <span class="text-teal-400 text-[10px] font-bold">Thuần khiết Web Audio</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 text-center text-xs">
+              <button onclick="selectSolfeggioFrequency(174)" id="solfeggioBtn_174" class="p-2 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 transition active:scale-95 space-y-0.5">
+                <div class="font-mono font-black text-teal-300">174 Hz</div>
+                <div class="text-[10px] text-slate-300">Giảm đau mỏi</div>
+              </button>
+              <button onclick="selectSolfeggioFrequency(396)" id="solfeggioBtn_396" class="p-2 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 transition active:scale-95 space-y-0.5">
+                <div class="font-mono font-black text-teal-300">396 Hz</div>
+                <div class="text-[10px] text-slate-300">Xua sợ hãi</div>
+              </button>
+              <button onclick="selectSolfeggioFrequency(432)" id="solfeggioBtn_432" class="p-2 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 transition active:scale-95 space-y-0.5">
+                <div class="font-mono font-black text-teal-300">432 Hz</div>
+                <div class="text-[10px] text-slate-300">Tĩnh tại sâu</div>
+              </button>
+              <button onclick="selectSolfeggioFrequency(528)" id="solfeggioBtn_528" class="p-2 rounded-xl border border-teal-500 bg-teal-950 text-teal-300 transition active:scale-95 space-y-0.5 ring-2 ring-teal-400/40">
+                <div class="font-mono font-black text-amber-300">528 Hz</div>
+                <div class="text-[10px] text-teal-200 font-bold">Tái tạo kỳ diệu</div>
+              </button>
+              <button onclick="selectSolfeggioFrequency(639)" id="solfeggioBtn_639" class="p-2 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 transition active:scale-95 space-y-0.5">
+                <div class="font-mono font-black text-teal-300">639 Hz</div>
+                <div class="text-[10px] text-slate-300">Hàn gắn cô đơn</div>
+              </button>
+              <button onclick="selectSolfeggioFrequency(852)" id="solfeggioBtn_852" class="p-2 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 transition active:scale-95 space-y-0.5">
+                <div class="font-mono font-black text-teal-300">852 Hz</div>
+                <div class="text-[10px] text-slate-300">Thanh lọc tâm trí</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- PHẦN 3: TÙY CHỌN HẸN GIỜ TỰ TẮT -->
+          <div class="p-3 bg-slate-950/80 border border-teal-500/30 rounded-2xl flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-stopwatch text-amber-400"></i> Hẹn giờ tắt:
+            </span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="setHealingSleepTimer(15)" id="healingTimer_15" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[11px] font-bold">15p</button>
+              <button onclick="setHealingSleepTimer(30)" id="healingTimer_30" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[11px] font-bold">30p</button>
+              <button onclick="setHealingSleepTimer(60)" id="healingTimer_60" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[11px] font-bold">60p</button>
+              <button onclick="setHealingSleepTimer(0)" id="healingTimer_0" class="px-2.5 py-1 rounded-lg bg-teal-900 border border-teal-500 text-[11px] font-black text-teal-200">♾️</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FOOTER CỐ ĐỊNH -->
+        <div class="p-3 sm:p-4 border-t border-teal-800/40 shrink-0 bg-slate-950/80 flex items-center justify-between gap-3">
+          <div class="text-[11px] text-slate-400 font-medium">
+            Tâm bình an • Trí sáng suốt • Thân khỏe mạnh
+          </div>
+          <button onclick="toggleHealingSanctuaryModal()" class="px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white rounded-xl font-black text-xs shadow active:scale-95 transition shrink-0">
+            HOÀN TẤT
           </button>
         </div>
 
@@ -6126,6 +6331,374 @@
       }
     }
 
+    // =========================================================================
+    // HỆ THỐNG ÂM NHẠC TRỊ LIỆU, TẦN SỐ SOLFEGGIO & CHỮA LÀNH TÂM BỆNH
+    // =========================================================================
+    let solfeggioOsc1 = null;
+    let solfeggioOsc2 = null;
+    let solfeggioSub = null;
+    let solfeggioGain = null;
+    let isSolfeggioActive = false;
+    let currentSolfeggioFreq = 528;
+    let healingSleepTimeout = null;
+
+    // VÒNG TRÒN HƠI THỞ 4-7-8
+    let isBreathingActive = false;
+    let breathingPhase = 0; // 0: inhale (4s), 1: hold (7s), 2: exhale (8s)
+    let breathingSecondsLeft = 4;
+    let breathingInterval = null;
+    let breathingCompletedCycles = 0;
+
+    const HEALING_AFFIRMATIONS = [
+      "Bạn đã vất vả nhiều rồi, hãy thả lỏng và cho phép mình được nghỉ ngơi. Mọi chuyện rồi sẽ bình an.",
+      "Nỗi buồn như một cơn mưa rào, qua đi rồi trời sẽ lại ngát xanh. Trái tim bạn xứng đáng được yêu thương.",
+      "Không sao cả nếu hôm nay chưa hoàn hảo. Ngày mai mặt trời xứ nẫu vẫn sẽ mọc, biển vẫn trong lành.",
+      "Hít một hơi thật sâu... Bạn đang an toàn ở đây, ngay phút giây này.",
+      "Hãy buông bỏ những điều không thể thay đổi, giữ lại cho mình một khoảng lặng dịu êm."
+    ];
+
+    function detectCurrentHealingContext() {
+      const hour = new Date().getHours();
+      if (hour >= 5 && hour < 9) {
+        return {
+          title: "🌅 Ban Mai Tươi Mới (528 Hz)",
+          freq: 528,
+          quote: "Một ngày mới bắt đầu, hãy mở rộng lòng đón nhận ánh nắng và những điều may mắn lành thiện."
+        };
+      } else if (hour >= 9 && hour < 14) {
+        return {
+          title: "☀️ Tĩnh Tâm Giữa Ngày (432 Hz)",
+          freq: 432,
+          quote: "Dừng lại một nhịp, thở sâu và buông lỏng đôi vai. Mọi áp lực rồi sẽ được hóa giải."
+        };
+      } else if (hour >= 14 && hour < 18) {
+        return {
+          title: "🌇 Hoàng Hôn Buông Xả (639 Hz)",
+          freq: 639,
+          quote: "Khép lại những bộn bề, gửi mệt mỏi theo gió biển Tuy Hòa. Trái tim bạn xứng đáng được vỗ về."
+        };
+      } else {
+        return {
+          title: "🌙 Đêm An Lành (396 Hz)",
+          freq: 396,
+          quote: "Bạn đã vất vả nhiều rồi, hãy thả lỏng và cho phép mình được nghỉ ngơi. Mọi chuyện rồi sẽ bình an."
+        };
+      }
+    }
+
+    function updateHealingContextDisplay() {
+      const ctx = detectCurrentHealingContext();
+      const badge = document.getElementById("healingTimeContextBadge");
+      const quote = document.getElementById("healingAffirmationText");
+      if (badge) badge.innerText = ctx.title;
+      if (quote) quote.innerText = `"${ctx.quote}"`;
+    }
+
+    function toggleHealingSanctuaryModal() {
+      const modal = document.getElementById("healingSanctuaryModal");
+      if (!modal) return;
+      if (modal.classList.contains("hidden")) {
+        modal.classList.remove("hidden");
+        updateHealingContextDisplay();
+      } else {
+        modal.classList.add("hidden");
+        if (isBreathingActive) stopBreathingExercise();
+      }
+    }
+
+    function toggleQuickHealingSound() {
+      if (isSolfeggioActive) {
+        stopSolfeggioSound();
+        showToast("⏹️ Đã dừng âm thanh chữa lành");
+      } else {
+        const ctx = detectCurrentHealingContext();
+        playSolfeggioSound(ctx.freq);
+        showToast("🌿 Đang xoa dịu thân tâm: " + ctx.title);
+      }
+    }
+
+    function playHealingPreset(presetKey) {
+      let freq = 528;
+      let toastMsg = "";
+
+      // Bỏ highlight các nút preset khác
+      ['anxiety', 'burnout', 'sadness', 'sleep'].forEach(k => {
+        const btn = document.getElementById("presetBtn_" + k);
+        if (btn) btn.classList.remove("ring-2", "ring-teal-400", "bg-teal-950");
+      });
+
+      const activeBtn = document.getElementById("presetBtn_" + presetKey);
+      if (activeBtn) activeBtn.classList.add("ring-2", "ring-teal-400", "bg-teal-950");
+
+      if (presetKey === "anxiety") {
+        freq = 396;
+        toastMsg = "🌿 Tần số 396Hz: Giải phóng lo âu, bồn chồn & bất an";
+      } else if (presetKey === "burnout") {
+        freq = 528;
+        toastMsg = "🕊️ Tần số 528Hz: Tái tạo năng lượng & giải tỏa stress kiệt sức";
+      } else if (presetKey === "sadness") {
+        freq = 639;
+        toastMsg = "🕯️ Tần số 639Hz: Hàn gắn nỗi buồn, sự cô đơn & tổn thương tình cảm";
+      } else if (presetKey === "sleep") {
+        freq = 432;
+        toastMsg = "🌙 Tần số 432Hz: Dẹp tan overthinking, ru êm giấc ngủ";
+      }
+
+      selectSolfeggioFrequency(freq);
+      showToast(toastMsg);
+    }
+
+    function selectSolfeggioFrequency(freq) {
+      currentSolfeggioFreq = freq;
+
+      [174, 396, 432, 528, 639, 852].forEach(f => {
+        const btn = document.getElementById("solfeggioBtn_" + f);
+        if (!btn) return;
+        if (f === freq) {
+          btn.className = "p-2 rounded-xl border border-teal-500 bg-teal-950 text-teal-300 transition active:scale-95 space-y-0.5 ring-2 ring-teal-400/40";
+        } else {
+          btn.className = "p-2 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 transition active:scale-95 space-y-0.5 text-slate-300";
+        }
+      });
+
+      playSolfeggioSound(freq);
+    }
+
+    function playSolfeggioSound(freq) {
+      stopSolfeggioSound();
+
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        if (!ambientCtx) ambientCtx = new AudioContextClass();
+        if (ambientCtx.state === "suspended") ambientCtx.resume();
+
+        const now = ambientCtx.currentTime;
+
+        // Tạo 2 sóng sin có độ lệch 1.5Hz tạo nhịp rung sinh học (Binaural Beats)
+        solfeggioOsc1 = ambientCtx.createOscillator();
+        solfeggioOsc2 = ambientCtx.createOscillator();
+        solfeggioSub = ambientCtx.createOscillator();
+        solfeggioGain = ambientCtx.createGain();
+
+        solfeggioOsc1.type = "sine";
+        solfeggioOsc1.frequency.setValueAtTime(freq, now);
+
+        solfeggioOsc2.type = "sine";
+        solfeggioOsc2.frequency.setValueAtTime(freq + 1.6, now);
+
+        solfeggioSub.type = "sine";
+        solfeggioSub.frequency.setValueAtTime(freq * 0.5, now);
+
+        // Hòa âm ấm áp, êm dịu không chói tai
+        const g1 = ambientCtx.createGain();
+        const g2 = ambientCtx.createGain();
+        const gSub = ambientCtx.createGain();
+
+        g1.gain.setValueAtTime(0.08, now);
+        g2.gain.setValueAtTime(0.06, now);
+        gSub.gain.setValueAtTime(0.04, now);
+
+        solfeggioOsc1.connect(g1);
+        solfeggioOsc2.connect(g2);
+        solfeggioSub.connect(gSub);
+
+        g1.connect(solfeggioGain);
+        g2.connect(solfeggioGain);
+        gSub.connect(solfeggioGain);
+
+        solfeggioGain.gain.setValueAtTime(0.0001, now);
+        solfeggioGain.gain.linearRampToValueAtTime(0.14, now + 1.2);
+
+        solfeggioGain.connect(ambientCtx.destination);
+
+        solfeggioOsc1.start(now);
+        solfeggioOsc2.start(now);
+        solfeggioSub.start(now);
+
+        isSolfeggioActive = true;
+        updateHealingButtonsUI();
+
+      } catch (e) {
+        console.warn("Không thể phát solfeggio:", e);
+      }
+    }
+
+    function stopSolfeggioSound() {
+      if (solfeggioGain && ambientCtx) {
+        try {
+          solfeggioGain.gain.linearRampToValueAtTime(0.0001, ambientCtx.currentTime + 0.8);
+        } catch (e) {}
+      }
+      setTimeout(() => {
+        if (solfeggioOsc1) { try { solfeggioOsc1.stop(); } catch(e){} solfeggioOsc1.disconnect(); solfeggioOsc1 = null; }
+        if (solfeggioOsc2) { try { solfeggioOsc2.stop(); } catch(e){} solfeggioOsc2.disconnect(); solfeggioOsc2 = null; }
+        if (solfeggioSub) { try { solfeggioSub.stop(); } catch(e){} solfeggioSub.disconnect(); solfeggioSub = null; }
+        isSolfeggioActive = false;
+        updateHealingButtonsUI();
+      }, 850);
+    }
+
+    function updateHealingButtonsUI() {
+      const qIcon = document.getElementById("quickPlayHealingIcon");
+      const qText = document.getElementById("quickPlayHealingText");
+      const qBtn = document.getElementById("btnQuickPlayHealing");
+      const headerBtn = document.getElementById("healingHeaderBtn");
+
+      if (qIcon && qText && qBtn) {
+        if (isSolfeggioActive) {
+          qIcon.innerText = "⏹️";
+          qText.innerText = "Đang Phát";
+          qBtn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-black text-xs shadow-md active:scale-95 transition shrink-0 flex items-center gap-1.5 animate-pulse";
+        } else {
+          qIcon.innerText = "▶️";
+          qText.innerText = "Xoa Dịu";
+          qBtn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-black text-xs shadow-md active:scale-95 transition shrink-0 flex items-center gap-1.5";
+        }
+      }
+
+      if (headerBtn) {
+        if (isSolfeggioActive) {
+          headerBtn.className = "px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-teal-400 bg-teal-600 text-white flex items-center gap-1.5 text-xs font-black shadow transition active:scale-95 animate-pulse";
+        } else {
+          headerBtn.className = "px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-teal-500 bg-teal-50 hover:bg-teal-100 text-teal-900 flex items-center gap-1.5 text-xs font-black shadow-sm transition active:scale-95";
+        }
+      }
+    }
+
+    // BÀI TẬP THỞ 4-7-8
+    function toggleBreathingExercise() {
+      if (isBreathingActive) {
+        stopBreathingExercise();
+      } else {
+        startBreathingExercise();
+      }
+    }
+
+    function startBreathingExercise() {
+      isBreathingActive = true;
+      breathingPhase = 0; // Inhale
+      breathingSecondsLeft = 4;
+      breathingCompletedCycles = 0;
+
+      const btn = document.getElementById("btnBreathingToggle");
+      const label = document.getElementById("breathingBtnLabel");
+      const badge = document.getElementById("breathingCyclesCompleted");
+
+      if (btn) btn.className = "px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs shadow active:scale-95 transition flex items-center gap-1.5";
+      if (label) label.innerText = "Dừng tập thở";
+      if (badge) {
+        badge.classList.remove("hidden");
+        badge.innerText = "0 nhịp hoàn thành";
+      }
+
+      applyBreathingPhaseUI();
+
+      if (breathingInterval) clearInterval(breathingInterval);
+      breathingInterval = setInterval(() => {
+        breathingSecondsLeft--;
+        const num = document.getElementById("breathingTimerNumber");
+        if (num) num.innerText = breathingSecondsLeft + "s";
+
+        if (breathingSecondsLeft <= 0) {
+          // Chuyển phase
+          if (breathingPhase === 0) {
+            // Từ Inhale (4s) sang Hold (7s)
+            breathingPhase = 1;
+            breathingSecondsLeft = 7;
+          } else if (breathingPhase === 1) {
+            // Từ Hold (7s) sang Exhale (8s)
+            breathingPhase = 2;
+            breathingSecondsLeft = 8;
+            if (ambientCtx) playSingleGlassChime(ambientCtx, 1567.98, ambientCtx.currentTime, 0.05);
+          } else {
+            // Từ Exhale (8s) sang Inhale mới (4s)
+            breathingPhase = 0;
+            breathingSecondsLeft = 4;
+            breathingCompletedCycles++;
+            if (badge) badge.innerText = `${breathingCompletedCycles} nhịp hoàn thành`;
+          }
+          applyBreathingPhaseUI();
+        }
+      }, 1000);
+    }
+
+    function applyBreathingPhaseUI() {
+      const bubble = document.getElementById("breathingBubble");
+      const phaseText = document.getElementById("breathingPhaseText");
+      const num = document.getElementById("breathingTimerNumber");
+      const glow = document.getElementById("breathingOuterGlow");
+
+      if (!bubble || !phaseText || !num) return;
+      num.innerText = breathingSecondsLeft + "s";
+
+      if (breathingPhase === 0) {
+        phaseText.innerText = "HÍT VÀO...";
+        phaseText.className = "text-xs font-black uppercase tracking-wider text-teal-100";
+        bubble.className = "w-32 h-32 rounded-full border-4 border-cyan-300 bg-gradient-to-tr from-cyan-600 to-teal-500 flex flex-col items-center justify-center shadow-2xl transition-all duration-1000 transform scale-125";
+        if (glow) glow.className = "absolute inset-0 rounded-full bg-cyan-400/30 blur-2xl transition-all duration-1000 scale-125";
+      } else if (breathingPhase === 1) {
+        phaseText.innerText = "GIỮ HƠI...";
+        phaseText.className = "text-xs font-black uppercase tracking-wider text-amber-200";
+        bubble.className = "w-32 h-32 rounded-full border-4 border-amber-300 bg-gradient-to-tr from-teal-700 to-amber-700 flex flex-col items-center justify-center shadow-2xl transition-all duration-500 transform scale-125 ring-4 ring-amber-400/40";
+        if (glow) glow.className = "absolute inset-0 rounded-full bg-amber-400/25 blur-2xl transition-all duration-500 scale-125";
+      } else {
+        phaseText.innerText = "THỞ RA...";
+        phaseText.className = "text-xs font-black uppercase tracking-wider text-slate-200";
+        bubble.className = "w-32 h-32 rounded-full border-4 border-teal-500 bg-gradient-to-tr from-slate-800 to-teal-900 flex flex-col items-center justify-center shadow-2xl transition-all duration-1000 transform scale-90";
+        if (glow) glow.className = "absolute inset-0 rounded-full bg-teal-500/15 blur-xl transition-all duration-1000 scale-90";
+      }
+    }
+
+    function stopBreathingExercise() {
+      isBreathingActive = false;
+      if (breathingInterval) {
+        clearInterval(breathingInterval);
+        breathingInterval = null;
+      }
+
+      const btn = document.getElementById("btnBreathingToggle");
+      const label = document.getElementById("breathingBtnLabel");
+      const bubble = document.getElementById("breathingBubble");
+      const phaseText = document.getElementById("breathingPhaseText");
+      const num = document.getElementById("breathingTimerNumber");
+      const glow = document.getElementById("breathingOuterGlow");
+
+      if (btn) btn.className = "px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs shadow active:scale-95 transition flex items-center gap-1.5";
+      if (label) label.innerText = "Bắt đầu tập thở";
+      if (bubble) bubble.className = "w-32 h-32 rounded-full border-4 border-teal-400 bg-gradient-to-tr from-teal-700 to-emerald-500 flex flex-col items-center justify-center shadow-2xl transition-all duration-1000 transform scale-90";
+      if (phaseText) phaseText.innerText = "SẴN SÀNG";
+      if (num) num.innerText = "4s";
+      if (glow) glow.className = "absolute inset-0 rounded-full bg-teal-500/20 blur-xl transition-all duration-1000 scale-100";
+    }
+
+    function setHealingSleepTimer(minutes) {
+      if (healingSleepTimeout) {
+        clearTimeout(healingSleepTimeout);
+        healingSleepTimeout = null;
+      }
+
+      [0, 15, 30, 60].forEach(m => {
+        const btn = document.getElementById("healingTimer_" + m);
+        if (!btn) return;
+        if (m === minutes) {
+          btn.className = "px-2.5 py-1 rounded-lg bg-teal-900 border border-teal-500 text-[11px] font-black text-teal-200 ring-2 ring-teal-400/40";
+        } else {
+          btn.className = "px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[11px] font-bold text-slate-300";
+        }
+      });
+
+      if (minutes > 0) {
+        showToast("🌙 Đã hẹn giờ tắt âm thanh chữa lành sau " + minutes + " phút. Chúc bạn một giấc ngủ thật an yên!");
+        healingSleepTimeout = setTimeout(() => {
+          stopSolfeggioSound();
+          showToast("🌙 Đã hoàn tất buổi trị liệu thân tâm. Chúc bạn luôn an lạc!");
+        }, minutes * 60 * 1000);
+      } else {
+        showToast("♾️ Âm thanh chữa lành sẽ phát liên tục không giới hạn");
+      }
+    }
+
     function initYouthThemeMode() {
       const mode = localStorage.getItem("datphu_lifestyle_mode") || "youth";
       applyAppThemeMode(mode);
@@ -6137,6 +6710,7 @@
     window.addEventListener("DOMContentLoaded", () => {
       initSoundMode();
       initYouthThemeMode();
+      updateHealingContextDisplay();
       initDayNightMode();
       initUserMemoryStreak();
       init3DBlocTilt();
