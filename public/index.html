@@ -2467,6 +2467,21 @@
       }
     }
 
+    // GỌI CỔNG TRÍ TUỆ NHÂN LOẠI GEMINI (CÓ CACHE BẢO TOÀN TOKEN)
+    async function fetchGeminiWisdom(locationName, weatherStatus) {
+      try {
+        const url = `/api/wisdom?location=${encodeURIComponent(locationName)}&weather=${encodeURIComponent(weatherStatus)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const greetingEl = document.getElementById("aiEmotionalGreeting");
+        if (data && data.wisdom && greetingEl) {
+          greetingEl.innerText = data.wisdom;
+        }
+      } catch (e) {
+        // Giữ nguyên câu chúc mặc định nếu đang mất kết nối
+      }
+    }
+
     // THỜI TIẾT VỆ TINH DÂN SINH ĐẤT PHÚ
     async function fetchSatelliteWeather() {
       const loc = (currentLocationKey === "custom" && customGeoLocation)
@@ -2540,6 +2555,9 @@
         if (document.getElementById("weatherStatusDesc")) {
           document.getElementById("weatherStatusDesc").innerText = statusText;
         }
+
+        // Gọi Trí tuệ Nhân tạo Gemini để lấy lời chúc minh triết độc bản (có Cache)
+        fetchGeminiWisdom(loc.name, statusText);
 
         if (cur.precipitation >= 20.0 || cur.wind_speed_10m >= 35.0) {
           const banner = document.getElementById("severeAlertBanner");
