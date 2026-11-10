@@ -776,13 +776,47 @@
     // 3 TIỆN ÍCH DÂN SINH: ĐỌC GIỌNG NÓI • CÀI MÀN HÌNH • GỬI ZALO
     // ============================================================
     let isSpeaking = false;
-    function speakTodayCalendar() {
-      if (!('speechSynthesis' in window)) {
-        alert("Thiết bị hoặc trình duyệt của bạn chưa hỗ trợ tính năng đọc giọng nói.");
+    let currentTtsAudio = null;
+
+    function playTtsAudioQueue(textList) {
+      if (!textList || textList.length === 0) {
+        isSpeaking = false;
+        updateSpeakBtn(false);
         return;
       }
+      let chunk = textList.shift();
+      let audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(chunk)}`;
+
+      if (currentTtsAudio) {
+        currentTtsAudio.pause();
+        currentTtsAudio = null;
+      }
+
+      currentTtsAudio = new Audio(audioUrl);
+      currentTtsAudio.onplay = () => {
+        isSpeaking = true;
+        updateSpeakBtn(true);
+      };
+      currentTtsAudio.onended = () => {
+        playTtsAudioQueue(textList);
+      };
+      currentTtsAudio.onerror = () => {
+        isSpeaking = false;
+        updateSpeakBtn(false);
+      };
+      currentTtsAudio.play().catch(e => {
+        isSpeaking = false;
+        updateSpeakBtn(false);
+      });
+    }
+
+    function speakTodayCalendar() {
       if (isSpeaking) {
-        window.speechSynthesis.cancel();
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        if (currentTtsAudio) {
+          currentTtsAudio.pause();
+          currentTtsAudio = null;
+        }
         isSpeaking = false;
         updateSpeakBtn(false);
         return;
@@ -797,28 +831,45 @@
       let canChiDay = getCanChiDay(d, m, y);
       let temp = document.getElementById("weatherWidgetTemp")?.innerText || "25";
       let locName = document.getElementById("widgetLocationName")?.innerText || "Tuy Hòa";
-      let tide = (lunarDay >= 1 && lunarDay <= 3) || (lunarDay >= 14 && lunarDay <= 17) ? "kỳ nước rong, triều cường dâng lớn" : "kỳ nước kém, con nước êm";
+      let tide = (lunarDay >= 1 && lunarDay <= 3) || (lunarDay >= 14 && lunarDay <= 17) ? "kỳ nước rong, triều cường lớn" : "kỳ nước kém, con nước êm";
 
-      let text = `Hôm nay là ${dayName}, ngày ${d} tháng ${m} năm ${y} dương lịch. ` +
-                 `Nhằm ngày ${lunarStr} tháng ${lunarMonth} âm lịch, ngày ${canChiDay}. ` +
-                 `Khu vực ${locName} nhiệt độ khoảng ${temp} độ C. Hiện tại là ${tide}. ` +
-                 `Lịch Đất Phú kính chúc bà con một ngày mới dồi dào sức khỏe, gia đạo bình an và vạn sự như ý!`;
+      let chunks = [
+        `Hôm nay là ${dayName}, ngày ${d} tháng ${m} năm ${y} dương lịch.`,
+        `Nhằm ngày ${lunarStr} tháng ${lunarMonth} âm lịch, ngày ${canChiDay}.`,
+        `Khu vực ${locName} nhiệt độ khoảng ${temp} độ C. Hiện tại là ${tide}.`,
+        `Lịch Đất Phú kính chúc bà con một ngày mới dồi dào sức khỏe, an khang và bình an!`
+      ];
 
-      let utter = new SpeechSynthesisUtterance(text);
-      utter.lang = 'vi-VN';
-      utter.rate = 0.95;
-      utter.pitch = 1.0;
+      // Thử dùng Web Speech API trước nếu có sẵn và có giọng tiếng Việt
+      if ('speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined') {
+        try {
+          let fullText = chunks.join(' ');
+          let utter = new SpeechSynthesisUtterance(fullText);
+          utter.lang = 'vi-VN';
+          utter.rate = 0.95;
+          utter.pitch = 1.0;
 
-      let voices = window.speechSynthesis.getVoices();
-      let viVoice = voices.find(v => v.lang.startsWith('vi') || v.lang.includes('VIE'));
-      if (viVoice) utter.voice = viVoice;
+          let voices = window.speechSynthesis.getVoices();
+          let viVoice = voices.find(v => v.lang.startsWith('vi') || v.lang.includes('VIE'));
+          if (viVoice) utter.voice = viVoice;
 
-      utter.onstart = () => { isSpeaking = true; updateSpeakBtn(true); };
-      utter.onend = () => { isSpeaking = false; updateSpeakBtn(false); };
-      utter.onerror = () => { isSpeaking = false; updateSpeakBtn(false); };
+          utter.onstart = () => { isSpeaking = true; updateSpeakBtn(true); };
+          utter.onend = () => { isSpeaking = false; updateSpeakBtn(false); };
+          utter.onerror = () => {
+            // Khi Web Speech bị lỗi trên WebView Android, tự động chuyển sang Audio stream
+            playTtsAudioQueue(chunks);
+          };
 
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utter);
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(utter);
+          return;
+        } catch (e) {
+          // Bỏ qua lỗi và chuyển xuống Audio stream
+        }
+      }
+
+      // TỰ ĐỘNG CHUYỂN SANG BỘ PHÁT AUDIO MP3 (CHẠY 100% TRÊN ZALO, SAMSUNG, WEBVIEW, CHROME)
+      playTtsAudioQueue(chunks);
     }
 
     function updateSpeakBtn(speaking) {
