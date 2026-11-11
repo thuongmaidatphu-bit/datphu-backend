@@ -735,6 +735,35 @@
 </head>
 <body class="min-h-[100dvh] p-1 sm:p-5 flex flex-col items-center justify-between">
 
+  <!-- ========================================================================= -->
+  <!-- BẢO VẬT MỸ THUẬT HOA SEN: NỀN HOA SEN NƯỚC TĨNH THỨC (ZEN LOTUS WATERMARK) -->
+  <!-- ========================================================================= -->
+  <div id="zenLotusCanvasBg" class="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none" style="opacity: 0.05;" aria-hidden="true">
+    <!-- Đóa sen nở thanh tịnh góc trên bên phải -->
+    <svg class="absolute -top-16 -right-16 w-80 h-80 sm:w-[32rem] sm:h-[32rem] text-rose-500" viewBox="0 0 100 100" fill="currentColor">
+      <path d="M50 5 C45 20 38 35 38 50 C38 65 45 75 50 75 C55 75 62 65 62 50 C62 35 55 20 50 5 Z"/>
+      <path d="M50 75 C38 75 25 65 20 50 C16 38 25 28 32 30 C38 32 44 55 50 75 Z" opacity="0.85"/>
+      <path d="M50 75 C62 75 75 65 80 50 C84 38 75 28 68 30 C62 32 56 55 50 75 Z" opacity="0.85"/>
+      <path d="M50 75 C34 75 15 62 10 46 C6 32 18 20 28 24 C36 27 42 56 50 75 Z" opacity="0.65"/>
+      <path d="M50 75 C66 75 85 62 90 46 C94 32 82 20 72 24 C64 27 58 56 50 75 Z" opacity="0.65"/>
+      <ellipse cx="50" cy="72" rx="12" ry="4" fill="#fbbf24"/>
+    </svg>
+    <!-- Đóa sen nở góc dưới bên trái -->
+    <svg class="absolute -bottom-20 -left-16 w-72 h-72 sm:w-[26rem] sm:h-[26rem] text-amber-500" viewBox="0 0 100 100" fill="currentColor">
+      <path d="M50 10 C46 22 40 35 40 48 C40 60 46 70 50 70 C54 70 60 60 60 48 C60 35 54 22 50 10 Z"/>
+      <path d="M50 70 C40 70 28 62 24 50 C20 40 28 32 34 34 C40 36 45 54 50 70 Z" opacity="0.85"/>
+      <path d="M50 70 C60 70 72 62 76 50 C80 40 72 32 66 34 C60 36 55 54 50 70 Z" opacity="0.85"/>
+      <ellipse cx="50" cy="68" rx="10" ry="3" fill="#f59e0b"/>
+    </svg>
+    <!-- Vòng tròn sóng nước thiền tịnh đồng tâm -->
+    <svg class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl text-emerald-700/40" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="0.35">
+      <circle cx="100" cy="100" r="35" stroke-dasharray="2 3"/>
+      <circle cx="100" cy="100" r="65" stroke-dasharray="3 4"/>
+      <circle cx="100" cy="100" r="95" stroke-dasharray="4 5"/>
+    </svg>
+  </div>
+
+
   <div class="w-full max-w-2xl px-1 sm:px-0 space-y-2.5 sm:space-y-3 mx-auto">
 
     <!-- THÔNG BÁO CHẾ ĐỘ NGOẠI TUYẾN PWA OFFLINE-FIRST -->
@@ -767,11 +796,28 @@
         <img src="img/logo_datphu_brand.jpg" alt="Logo Đất Phú" class="h-9 sm:h-11 max-w-[140px] sm:max-w-[160px] object-contain rounded-lg shadow-sm" />
         <div class="hidden md:block border-l border-slate-300 pl-3">
           <div class="text-[11px] font-black text-[#1b2a47] uppercase tracking-wider">Lịch Dân Sinh Đất Phú</div>
-          <div class="text-[9px] text-slate-500 font-bold">Vạn Sự An Nhiên • Nghĩa Tình Xứ Nẫu</div>
+          <div class="text-[9px] text-slate-500 font-bold flex items-center gap-1"><span>Vạn Sự An Nhiên</span><span>•</span><span class="text-rose-600 font-extrabold flex items-center gap-0.5">Tâm Sáng Như Sen <span class="text-xs">🪷</span></span></div>
         </div>
       </div>
 
       <!-- NÚT BÁNH RĂNG CÀI ĐẶT & TIỆN ÍCH TRUNG TÂM -->
+      <!-- NÚT ĐÓA SEN TỈNH THỨC TRÊN HEADER -->
+      <button id="headerLotusWisdomBtn" onclick="openLotusWisdomModal()" class="px-2.5 sm:px-3.5 py-2 rounded-xl border-2 border-rose-300/80 bg-gradient-to-r from-rose-50 via-pink-50 to-amber-50 hover:from-rose-100 hover:to-amber-100 text-rose-950 flex items-center gap-1.5 text-xs font-black shadow-sm transition active:scale-95 group" title="Bấm để nhận thông điệp Đóa Sen Tỉnh Thức & Thở Cùng Sen">
+        <svg viewBox="0 0 48 48" class="w-4 h-4 sm:w-5 sm:h-5 shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-transform drop-shadow-xs" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="headerLotus_p" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#e11d48"/><stop offset="60%" stop-color="#fb7185"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
+            <linearGradient id="headerLotus_s" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#be123c"/><stop offset="70%" stop-color="#f43f5e"/><stop offset="100%" stop-color="#fecdd3"/></linearGradient>
+          </defs>
+          <path d="M 24 38 C 17 38 7 32 4 23 C 2 17 5 13 8 13 C 12 13 18 24 24 38 Z" fill="url(#headerLotus_s)" opacity="0.9"/>
+          <path d="M 24 38 C 31 38 41 32 44 23 C 46 17 43 13 40 13 C 36 13 30 24 24 38 Z" fill="url(#headerLotus_s)" opacity="0.9"/>
+          <path d="M 24 4 C 21 11 18 20 18 30 C 18 38 21 43 24 43 C 27 43 30 38 30 30 C 30 20 27 11 24 4 Z" fill="url(#headerLotus_p)"/>
+          <path d="M 24 40 C 18 40 10 33 8 20 C 7 12 13 8 16 9 C 20 10 22 26 24 40 Z" fill="url(#headerLotus_p)"/>
+          <path d="M 24 40 C 30 40 38 33 40 20 C 41 12 35 8 32 9 C 28 10 26 26 24 40 Z" fill="url(#headerLotus_p)"/>
+          <circle cx="24" cy="38" r="2.5" fill="#facc15"/>
+        </svg>
+        <span class="bg-gradient-to-r from-rose-700 via-pink-600 to-amber-700 bg-clip-text text-transparent font-black tracking-wide">TÂM SEN</span>
+      </button>
+
       <button id="settingsGearBtn" onclick="toggleSettingsCenterModal()" class="px-3 sm:px-4 py-2 rounded-xl border-2 border-indigo-500 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white flex items-center gap-2 text-xs font-black shadow-md transition active:scale-95 group" title="Cài đặt âm nhạc, niệm Phật, phong cách & tiện ích">
         <i class="fa-solid fa-gear text-sm group-hover:rotate-90 transition-transform duration-300"></i>
         <span>CÀI ĐẶT</span>
@@ -950,9 +996,9 @@
 
             <!-- Tên thương hiệu dập nổi trên nẹp -->
             <div class="text-[10px] sm:text-xs font-black tracking-widest text-amber-950 uppercase flex items-center gap-1.5 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
-              <i class="fa-solid fa-crown text-amber-800 text-[10px]"></i>
-              <span>LỊCH BLOC ĐẤT PHÚ • TRUYỀN THỐNG 3D</span>
-              <i class="fa-solid fa-crown text-amber-800 text-[10px]"></i>
+              <span class="text-rose-700 text-xs sm:text-sm animate-pulse">🪷</span>
+              <span>LỊCH BLOC ĐẤT PHÚ • LIÊN HOA AN LẠC</span>
+              <span class="text-rose-700 text-xs sm:text-sm animate-pulse">🪷</span>
             </div>
 
             <!-- Ốc đồng mạ bóng bên phải -->
@@ -1469,6 +1515,53 @@
           <span class="tracking-wide">NGÀY MAI</span>
           <i class="fa-solid fa-arrow-right text-sm text-blue-200"></i>
         </button>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- BẢO VẬT MỸ THUẬT: THẺ ĐÓA SEN TỈNH THỨC & AN NHIÊN MỖI NGÀY -->
+      <!-- ========================================================================= -->
+      <div id="mindfulLotusCard" class="bg-gradient-to-r from-rose-50/95 via-amber-50/90 to-emerald-50/95 p-3 sm:p-4 rounded-3xl border-2 border-rose-200/90 shadow-sm space-y-2.5 relative overflow-hidden transition-all duration-300">
+        <!-- Ánh hào quang đóa sen dịu êm -->
+        <div class="pointer-events-none absolute -top-8 -right-8 w-28 h-28 bg-rose-400/15 rounded-full blur-xl"></div>
+        <div class="pointer-events-none absolute -bottom-8 -left-8 w-28 h-28 bg-amber-400/15 rounded-full blur-xl"></div>
+
+        <div class="relative z-10 flex items-center justify-between gap-2 flex-wrap">
+          <div class="flex items-center gap-2">
+            <!-- Đóa Sen Vàng Hồng Lấp Lánh -->
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-500 via-pink-500 to-amber-400 flex items-center justify-center shadow-xs shrink-0 ring-2 ring-rose-200/80">
+              <span class="text-base select-none">🪷</span>
+            </div>
+            <div>
+              <div class="text-[11px] font-black uppercase tracking-wider text-rose-950 flex items-center gap-1.5">
+                <span>Đóa Sen Tỉnh Thức</span>
+                <span class="text-[9px] px-1.5 py-0.2 bg-rose-200/70 text-rose-800 font-extrabold rounded-full">An Nhiên Mỗi Ngày</span>
+              </div>
+              <div class="text-[9px] text-slate-600 font-medium">Gần bùn chẳng nhiễm ô • Giữ tâm trong sáng</div>
+            </div>
+          </div>
+
+          <!-- 2 Nút tương tác: Xin lời khuyên & Tập thở -->
+          <div class="flex items-center gap-1.5">
+            <button onclick="drawRandomLotusWisdom(true)" class="px-2.5 py-1.5 rounded-full bg-white/90 hover:bg-white text-rose-700 border border-rose-300 shadow-xs text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1" title="Bấm để nhận một lời khuyên an lạc từ tinh thần hoa sen">
+              <span>🪷</span>
+              <span>Đổi Lời Khuyên</span>
+            </button>
+            <button onclick="openLotusBreathingModal()" class="px-2.5 py-1.5 rounded-full bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-700 hover:to-amber-700 text-white shadow-xs text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1" title="Mở bài tập thở hoa sen (4-7-8) giúp xua tan âu lo, ngủ ngon giấc">
+              <span>🧘</span>
+              <span>Thở Cùng Sen</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Khung hiển thị câu danh ngôn tinh thần hoa sen -->
+        <div id="lotusDailyQuoteBox" onclick="drawRandomLotusWisdom(true)" class="cursor-pointer relative z-10 bg-white/85 backdrop-blur-xs p-2.5 sm:p-3 rounded-2xl border border-rose-200/70 text-center shadow-xs hover:border-rose-400 transition-all duration-300 group" title="Bấm để đổi câu lời khuyên khác">
+          <div id="lotusDailyQuoteText" class="text-xs sm:text-sm font-bold text-slate-800 italic transition-opacity duration-200">
+            "Gần bùn mà chẳng hôi tanh mùi bùn — Biến nghịch cảnh thành dưỡng chất để kiên cường vươn lên."
+          </div>
+          <div id="lotusDailyQuoteAuthor" class="text-[10px] text-rose-600 font-extrabold mt-1">
+            — Tinh Thần Đóa Sen Tỉnh Thức (Chạm để đổi lời khuyên)
+          </div>
+        </div>
       </div>
 
       <!-- ========================================================================= -->
@@ -10510,8 +10603,8 @@
     <div class="pointer-events-auto bg-[#0a0f1d]/95 backdrop-blur-xl border-2 border-amber-400/80 shadow-2xl rounded-full p-1 sm:p-1.5 flex items-center gap-0.5 sm:gap-2 max-w-full">
       <!-- Không Gian 1: Lịch Dân Sinh -->
       <button onclick="switchMasterSpace('calendar')" id="masterNav_calendar" class="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full font-black text-[11px] sm:text-xs transition flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow-md whitespace-nowrap active:scale-95">
-        <i class="fa-solid fa-calendar-day text-xs sm:text-sm"></i>
-        <span>Lịch Dân Sinh</span>
+        <span class="text-xs sm:text-sm">🪷</span>
+        <span>Lịch Liên Hoa</span>
       </button>
       
       <!-- Không Gian 2: Thiền Âm 4K -->
@@ -10543,6 +10636,398 @@
       </button>
     </div>
   </nav>
+
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 1: THÔNG ĐIỆP ĐÓA SEN TỈNH THỨC (LOTUS WISDOM DIALOG) -->
+  <!-- ========================================================================= -->
+  <div id="lotusWisdomModal" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 select-none">
+    <div class="bg-gradient-to-b from-white via-rose-50/40 to-amber-50/40 w-full max-w-lg rounded-3xl border-2 border-rose-300 shadow-2xl p-5 sm:p-6 space-y-4 relative overflow-hidden animate-fade-in max-h-[92vh] flex flex-col justify-between">
+      <!-- Ánh sáng trang trí nền -->
+      <div class="pointer-events-none absolute -top-12 -right-12 w-44 h-44 bg-rose-400/20 rounded-full blur-2xl"></div>
+      <div class="pointer-events-none absolute -bottom-12 -left-12 w-44 h-44 bg-amber-400/20 rounded-full blur-2xl"></div>
+
+      <!-- Header modal -->
+      <div class="relative z-10 flex items-center justify-between border-b border-rose-200/80 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-500 via-pink-500 to-amber-400 flex items-center justify-center shadow-md text-xl">
+            🪷
+          </div>
+          <div>
+            <h3 class="text-sm sm:text-base font-black text-rose-950 uppercase tracking-wide">Đóa Sen Tỉnh Thức</h3>
+            <p class="text-[10px] sm:text-[11px] text-slate-600 font-medium">Nuôi dưỡng bình an • Chuyển hóa nghịch cảnh</p>
+          </div>
+        </div>
+        <button onclick="closeLotusWisdomModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-rose-100 text-slate-500 hover:text-rose-700 flex items-center justify-center transition active:scale-95 text-sm font-black">
+          ✕
+        </button>
+      </div>
+
+      <!-- Nội dung chính: Đóa Sen & Lời Khai Sáng -->
+      <div class="relative z-10 space-y-3.5 my-auto text-center py-2 overflow-y-auto">
+        <!-- Biểu tượng đóa sen nở to trang trọng -->
+        <div class="flex justify-center">
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-rose-100 via-pink-50 to-amber-100 flex items-center justify-center border-2 border-rose-300/80 shadow-inner group">
+            <svg viewBox="0 0 48 48" class="w-14 h-14 sm:w-16 sm:h-16 drop-shadow-md animate-pulse">
+              <defs>
+                <linearGradient id="modalLotus_petal" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#be123c"/><stop offset="60%" stop-color="#f43f5e"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
+                <linearGradient id="modalLotus_side" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#881337"/><stop offset="70%" stop-color="#e11d48"/><stop offset="100%" stop-color="#fecdd3"/></linearGradient>
+                <radialGradient id="modalLotus_core" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#ca8a04"/></radialGradient>
+              </defs>
+              <path d="M 24 38 C 17 38 7 32 4 23 C 2 17 5 13 8 13 C 12 13 18 24 24 38 Z" fill="url(#modalLotus_side)" opacity="0.95"/>
+              <path d="M 24 38 C 31 38 41 32 44 23 C 46 17 43 13 40 13 C 36 13 30 24 24 38 Z" fill="url(#modalLotus_side)" opacity="0.95"/>
+              <path d="M 24 40 C 18 40 10 33 8 20 C 7 12 13 8 16 9 C 20 10 22 26 24 40 Z" fill="url(#modalLotus_petal)"/>
+              <path d="M 24 40 C 30 40 38 33 40 20 C 41 12 35 8 32 9 C 28 10 26 26 24 40 Z" fill="url(#modalLotus_petal)"/>
+              <path d="M 24 4 C 21 11 18 20 18 30 C 18 38 21 43 24 43 C 27 43 30 38 30 30 C 30 20 27 11 24 4 Z" fill="url(#modalLotus_petal)"/>
+              <ellipse cx="24" cy="38" rx="6" ry="2.2" fill="url(#modalLotus_core)"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Khung câu thông điệp lớn -->
+        <div class="bg-white/90 p-4 sm:p-5 rounded-2xl border border-rose-200/90 shadow-sm space-y-2">
+          <div id="modalLotusQuoteHeading" class="text-xs font-black uppercase tracking-wider text-rose-700">
+            Thông Điệp Khai Sáng Hôm Nay
+          </div>
+          <div id="modalLotusQuoteBody" class="text-sm sm:text-base font-bold text-slate-800 leading-relaxed italic">
+            "Không có bùn thì không có sen. Nghịch cảnh chính là chất liệu tôi luyện lòng kiên định và tâm từ bi."
+          </div>
+          <div id="modalLotusQuoteMeaning" class="text-xs text-slate-600 font-medium pt-2 border-t border-rose-100 text-left">
+            💡 <strong>Ý nghĩa thực hành:</strong> Khi gặp chuyện không như ý, hãy hít thở sâu, xem đó là thử thách để ta trưởng thành hơn, không oán trách, giữ nụ cười và hành động chân chính.
+          </div>
+        </div>
+      </div>
+
+      <!-- Nút hành động chân modal -->
+      <div class="relative z-10 pt-2 flex items-center justify-between gap-2 border-t border-rose-200/80">
+        <button onclick="drawRandomLotusWisdom(true)" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-rose-500 via-pink-600 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm shadow-md transition active:scale-95 flex items-center justify-center gap-1.5">
+          <span>🪷</span>
+          <span>Bốc Quẻ Sen Khác</span>
+        </button>
+        <button onclick="closeLotusWisdomModal(); openLotusBreathingModal();" class="py-2.5 px-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs sm:text-sm transition active:scale-95 flex items-center gap-1.5">
+          <span>🧘</span>
+          <span>Thở Cùng Sen</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 2: THIỀN THỞ ĐÓA SEN 4-7-8 (MINDFUL LOTUS BREATHING) -->
+  <!-- ========================================================================= -->
+  <div id="lotusBreathingModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 select-none">
+    <div class="bg-gradient-to-b from-slate-950 via-[#13111c] to-[#0a0f1d] w-full max-w-md rounded-3xl border-2 border-rose-500/50 shadow-2xl p-5 sm:p-6 space-y-4 relative overflow-hidden flex flex-col items-center justify-between min-h-[500px]">
+      <!-- Hào quang nền -->
+      <div id="lotusBreathingAura" class="pointer-events-none absolute inset-0 bg-radial from-rose-500/20 via-transparent to-transparent transition-all duration-1000"></div>
+
+      <!-- Header modal thở -->
+      <div class="w-full flex items-center justify-between relative z-10 border-b border-rose-900/40 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🪷</span>
+          <div>
+            <h3 class="text-sm font-black text-rose-300 uppercase tracking-wider">Thiền Thở Đóa Sen (4-7-8)</h3>
+            <p class="text-[10px] text-slate-400">An dịu nhịp tim • Xua tan lo âu • Giấc ngủ ngon</p>
+          </div>
+        </div>
+        <button onclick="closeLotusBreathingModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95 text-sm font-bold">
+          ✕
+        </button>
+      </div>
+
+      <!-- ĐÓA SEN NỞ CO THEO NHỊP THỞ -->
+      <div class="relative z-10 flex flex-col items-center justify-center my-auto space-y-6">
+        <!-- Vòng tròn hào quang & Hoa sen SVG tương tác -->
+        <div class="relative flex items-center justify-center w-56 h-56 sm:w-64 sm:h-64">
+          <!-- Vòng đệm sóng nước -->
+          <div id="lotusBreatheRing" class="absolute inset-0 rounded-full border-2 border-rose-400/40 transition-all duration-1000 scale-75 opacity-50"></div>
+          
+          <!-- Đóa sen SVG chuyển động scale -->
+          <div id="lotusBreatheFlower" class="w-40 h-40 sm:w-44 sm:h-44 transition-transform duration-1000 ease-in-out transform scale-75 flex items-center justify-center drop-shadow-[0_0_25px_rgba(244,63,94,0.4)]">
+            <svg viewBox="0 0 48 48" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="breatheLotus_center" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#e11d48"/><stop offset="50%" stop-color="#fb7185"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
+                <linearGradient id="breatheLotus_side" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#be123c"/><stop offset="60%" stop-color="#f43f5e"/><stop offset="100%" stop-color="#fecdd3"/></linearGradient>
+                <radialGradient id="breatheLotus_core" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#ca8a04"/></radialGradient>
+              </defs>
+              <path d="M 24 38 C 17 38 7 32 4 23 C 2 17 5 13 8 13 C 12 13 18 24 24 38 Z" fill="url(#breatheLotus_side)" opacity="0.95"/>
+              <path d="M 24 38 C 31 38 41 32 44 23 C 46 17 43 13 40 13 C 36 13 30 24 24 38 Z" fill="url(#breatheLotus_side)" opacity="0.95"/>
+              <path d="M 24 40 C 18 40 10 33 8 20 C 7 12 13 8 16 9 C 20 10 22 26 24 40 Z" fill="url(#breatheLotus_side)"/>
+              <path d="M 24 40 C 30 40 38 33 40 20 C 41 12 35 8 32 9 C 28 10 26 26 24 40 Z" fill="url(#breatheLotus_side)"/>
+              <path d="M 24 42 C 20 42 14 34 14 18 C 14 10 20 6 22 6 C 24 7 24 26 24 42 Z" fill="url(#breatheLotus_center)"/>
+              <path d="M 24 42 C 28 42 34 34 34 18 C 34 10 28 6 26 6 C 24 7 24 26 24 42 Z" fill="url(#breatheLotus_center)"/>
+              <path d="M 24 4 C 21 11 18 20 18 30 C 18 38 21 43 24 43 C 27 43 30 38 30 30 C 30 20 27 11 24 4 Z" fill="url(#breatheLotus_center)"/>
+              <ellipse cx="24" cy="40" rx="6" ry="2.2" fill="url(#breatheLotus_core)"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- CHỮ HƯỚNG DẪN NHỊP THỞ -->
+        <div class="text-center space-y-1">
+          <div id="lotusBreathePhaseText" class="text-base sm:text-lg font-black tracking-widest text-rose-300 uppercase animate-pulse">
+            SẴN SÀNG THỞ CÙNG SEN
+          </div>
+          <div id="lotusBreatheCountdown" class="text-3xl sm:text-4xl font-extrabold text-amber-300 font-mono">
+            4s
+          </div>
+          <div id="lotusBreatheSubText" class="text-[11px] sm:text-xs text-slate-400 font-medium">
+            Hít vào thật sâu qua mũi, bụng phình to
+          </div>
+        </div>
+      </div>
+
+      <!-- Nút bắt đầu / tạm dừng -->
+      <div class="relative z-10 w-full flex items-center justify-center gap-3 pt-2 border-t border-rose-950/60">
+        <button id="lotusBreatheToggleBtn" onclick="toggleLotusBreathingSession()" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-rose-500 via-pink-600 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm shadow-lg transition active:scale-95 flex items-center gap-2">
+          <i id="lotusBreatheIcon" class="fa-solid fa-play"></i>
+          <span id="lotusBreatheBtnLabel">BẮT ĐẦU THỞ (4-7-8)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- SCRIPT QUẢN LÝ HỆ THỐNG MỸ THUẬT HOA SEN & TỈNH THỨC -->
+  <!-- ========================================================================= -->
+  <script>
+    // Kho 24 Lời Khuyên Tỉnh Thức Tinh Thần Đóa Sen
+    const LOTUS_WISDOM_COLLECTION = [
+      {
+        quote: "Gần bùn mà chẳng hôi tanh mùi bùn — Biến nghịch cảnh thành dưỡng chất để kiên cường vươn lên.",
+        meaning: "Khó khăn thử thách không đến để vùi dập bạn, mà để bồi đắp nội lực và lòng kiên định."
+      },
+      {
+        quote: "Nước đọng lá sen, lăn tròn rồi trượt mất — Đừng giữ muộn phiền hay lời thị phi trong tâm trí.",
+        meaning: "Học cách buông xả nhẹ nhàng. Điều gì đã qua thì buông tay, giữ tâm an ổn như giọt sương rơi khỏi phiến lá."
+      },
+      {
+        quote: "Hoa và quả đồng thời — Khi bạn khởi một ý niệm thiện lành, quả phúc an lạc đã nở ngay hiện tại.",
+        meaning: "Đừng đợi ngày mai mới hạnh phúc. Ngay lúc này hãy mỉm cười và nói một lời từ hòa."
+      },
+      {
+        quote: "Hành trực tâm ngay — Thân cọng sen mọc thẳng đứng từ đáy bùn, không cong queo, không luồn cúi.",
+        meaning: "Sống chân thành, giữ trọn chữ tín và đạo đức dù cuộc đời có nhiều cám dỗ."
+      },
+      {
+        quote: "Hương sen thanh khiết — Tỏa hương thầm lặng, làm dịu mát cả một vùng hồ oi ả giữa trưa hè.",
+        meaning: "Sự tử tế không cần ồn ào khoa trương. Năng lượng bình an của bạn tự khắc tưới mát cho những người quanh bạn."
+      },
+      {
+        quote: "Trừng thanh lắng đục — Nơi nào sen mọc, nơi đó nước bùn dần lắng cặn và trở nên trong veo.",
+        meaning: "Người có tâm tĩnh lặng đi đến đâu cũng hóa giải xung đột, mang lại hòa khí cho gia đình và bè bạn."
+      },
+      {
+        quote: "Kiên nhẫn đợi duyên — Hạt sen có thể nằm sâu trong đất hàng trăm năm, đợi đủ nắng ấm là trổ mầm.",
+        meaning: "Đừng nôn nóng với kết quả. Hãy kiên trì chăm sóc hạt giống thiện lành mỗi ngày, duyên lành sẽ tới."
+      },
+      {
+        quote: "Tâm sen vị đắng mà trị lành bệnh — Lời nói chân thật tuy khó nghe nhưng giúp ta tỉnh ngộ.",
+        meaning: "Lắng nghe lời góp ý chân thành với tâm khiêm cung để ngày một hoàn thiện bản thân."
+      },
+      {
+        quote: "Bất nhiễm trần ai — Bùn lầy vây bọc bên ngoài, nhưng bên trong sen luôn giữ nguyên phẩm chất tinh khôi.",
+        meaning: "Ngoại cảnh có thể ồn ào, hỗn loạn, nhưng bạn luôn có quyền chọn giữ tâm mình bình lặng."
+      },
+      {
+        quote: "Đài sen nâng bước Như Lai — Nền tảng của giác ngộ chính là sự thuần tịnh và từ bi vô lượng.",
+        meaning: "Thương yêu vô điều kiện và không phán xét là chiếc chìa khóa mở toang cánh cửa hạnh phúc."
+      },
+      {
+        quote: "Lá sen chở che búp nụ — Tình thương gia đình và xóm giềng luôn là bến đỗ vững chãi nhất.",
+        meaning: "Trân trọng ông bà, cha mẹ và những người thân yêu đang ở bên cạnh bạn hôm nay."
+      },
+      {
+        quote: "Sớm mai sen hé nụ — Một ngày mới là một cơ hội mới để yêu thương và bắt đầu lại.",
+        meaning: "Hãy buông bỏ những muộn phiền của hôm qua, đón ánh bình minh bằng nụ cười tươi tắn."
+      }
+    ];
+
+    // Bốc ngẫu nhiên lời khuyên hoa sen
+    function drawRandomLotusWisdom(announce) {
+      const idx = Math.floor(Math.random() * LOTUS_WISDOM_COLLECTION.length);
+      const item = LOTUS_WISDOM_COLLECTION[idx];
+
+      const qText = document.getElementById("lotusDailyQuoteText");
+      if (qText) {
+        qText.style.opacity = "0.2";
+        setTimeout(() => {
+          qText.textContent = '"' + item.quote + '"';
+          qText.style.opacity = "1";
+        }, 150);
+      }
+
+      const mBody = document.getElementById("modalLotusQuoteBody");
+      const mMeaning = document.getElementById("modalLotusQuoteMeaning");
+      if (mBody) mBody.textContent = '"' + item.quote + '"';
+      if (mMeaning) mMeaning.innerHTML = '💡 <strong>Ý nghĩa thực hành:</strong> ' + item.meaning;
+
+      if (announce && window.showToastNotification) {
+        window.showToastNotification("🪷 Đóa Sen Tỉnh Thức: " + item.quote.slice(0, 48) + "...", "info");
+      }
+    }
+
+    // Mở / Đóng Modal Thông Điệp Sen
+    function openLotusWisdomModal() {
+      const modal = document.getElementById("lotusWisdomModal");
+      if (modal) {
+        modal.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+        drawRandomLotusWisdom(false);
+      }
+    }
+
+    function closeLotusWisdomModal() {
+      const modal = document.getElementById("lotusWisdomModal");
+      if (modal) {
+        modal.classList.add("hidden");
+        document.body.style.overflow = "";
+      }
+    }
+
+    // =========================================================================
+    // THIỀN THỞ ĐÓA SEN 4-7-8 LOGIC (MINDFUL LOTUS BREATHING)
+    // =========================================================================
+    let lotusBreatheInterval = null;
+    let lotusBreatheActive = false;
+    let lotusBreathePhase = 0; // 0: inhale (4s), 1: hold (7s), 2: exhale (8s)
+    let lotusBreatheRemaining = 4;
+
+    function playLotusSingingBowl(freq, dur) {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        if (!ambientCtx) ambientCtx = new AudioCtx();
+        if (ambientCtx.state === 'suspended') ambientCtx.resume();
+
+        const osc = ambientCtx.createOscillator();
+        const gain = ambientCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq || 528, ambientCtx.currentTime); // 528Hz Solfeggio Love & Healing
+
+        gain.gain.setValueAtTime(0.001, ambientCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.2, ambientCtx.currentTime + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ambientCtx.currentTime + (dur || 2.5));
+
+        osc.connect(gain);
+        gain.connect(ambientCtx.destination);
+        osc.start();
+        osc.stop(ambientCtx.currentTime + (dur || 2.5));
+      } catch (e) {}
+    }
+
+    function openLotusBreathingModal() {
+      const modal = document.getElementById("lotusBreathingModal");
+      if (modal) {
+        modal.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+        resetLotusBreathingUI();
+      }
+    }
+
+    function closeLotusBreathingModal() {
+      const modal = document.getElementById("lotusBreathingModal");
+      if (modal) {
+        modal.classList.add("hidden");
+        document.body.style.overflow = "";
+      }
+      stopLotusBreathingSession();
+    }
+
+    function resetLotusBreathingUI() {
+      const pText = document.getElementById("lotusBreathePhaseText");
+      const cText = document.getElementById("lotusBreatheCountdown");
+      const sText = document.getElementById("lotusBreatheSubText");
+      const flower = document.getElementById("lotusBreatheFlower");
+      const ring = document.getElementById("lotusBreatheRing");
+
+      if (pText) pText.textContent = "SẴN SÀNG THỞ CÙNG SEN";
+      if (cText) cText.textContent = "4s";
+      if (sText) sText.textContent = "Hít vào thật sâu qua mũi, bụng phình to";
+      if (flower) flower.style.transform = "scale(0.75)";
+      if (ring) { ring.style.transform = "scale(0.75)"; ring.style.borderColor = "rgba(244, 63, 94, 0.4)"; }
+    }
+
+    function toggleLotusBreathingSession() {
+      if (lotusBreatheActive) {
+        stopLotusBreathingSession();
+      } else {
+        startLotusBreathingSession();
+      }
+    }
+
+    function startLotusBreathingSession() {
+      lotusBreatheActive = true;
+      const btnLabel = document.getElementById("lotusBreatheBtnLabel");
+      const icon = document.getElementById("lotusBreatheIcon");
+      if (btnLabel) btnLabel.textContent = "TẠM DỪNG THỞ";
+      if (icon) icon.className = "fa-solid fa-pause";
+
+      lotusBreathePhase = 0; // Bắt đầu bằng Hít vào (4s)
+      lotusBreatheRemaining = 4;
+      updateLotusBreathePhaseUI();
+
+      if (lotusBreatheInterval) clearInterval(lotusBreatheInterval);
+      lotusBreatheInterval = setInterval(() => {
+        lotusBreatheRemaining--;
+        const cText = document.getElementById("lotusBreatheCountdown");
+        if (cText) cText.textContent = lotusBreatheRemaining + "s";
+
+        if (lotusBreatheRemaining <= 0) {
+          // Chuyển giai đoạn tiếp theo
+          lotusBreathePhase = (lotusBreathePhase + 1) % 3;
+          if (lotusBreathePhase === 0) lotusBreatheRemaining = 4; // Hít vào 4s
+          else if (lotusBreathePhase === 1) lotusBreatheRemaining = 7; // Giữ hơi 7s
+          else if (lotusBreathePhase === 2) lotusBreatheRemaining = 8; // Thở ra 8s
+
+          updateLotusBreathePhaseUI();
+        }
+      }, 1000);
+    }
+
+    function stopLotusBreathingSession() {
+      lotusBreatheActive = false;
+      if (lotusBreatheInterval) {
+        clearInterval(lotusBreatheInterval);
+        lotusBreatheInterval = null;
+      }
+      const btnLabel = document.getElementById("lotusBreatheBtnLabel");
+      const icon = document.getElementById("lotusBreatheIcon");
+      if (btnLabel) btnLabel.textContent = "TIẾP TỤC THỞ (4-7-8)";
+      if (icon) icon.className = "fa-solid fa-play";
+    }
+
+    function updateLotusBreathePhaseUI() {
+      const pText = document.getElementById("lotusBreathePhaseText");
+      const cText = document.getElementById("lotusBreatheCountdown");
+      const sText = document.getElementById("lotusBreatheSubText");
+      const flower = document.getElementById("lotusBreatheFlower");
+      const ring = document.getElementById("lotusBreatheRing");
+
+      if (cText) cText.textContent = lotusBreatheRemaining + "s";
+
+      if (lotusBreathePhase === 0) {
+        // Giai đoạn 1: HÍT VÀO (4s) - Sen nở to
+        if (pText) { pText.textContent = "🌸 HÍT VÀO NĂNG LƯỢNG AN LÀNH (4S)"; pText.className = "text-base sm:text-lg font-black tracking-widest text-rose-300 uppercase"; }
+        if (sText) sText.textContent = "Hít vào từ từ qua mũi, đưa khí xuống đan điền, bụng nở to";
+        if (flower) flower.style.transform = "scale(1.28)";
+        if (ring) { ring.style.transform = "scale(1.35)"; ring.style.borderColor = "rgba(251, 113, 133, 0.8)"; }
+        playLotusSingingBowl(528, 2.0); // 528Hz chuông thiền
+      } else if (lotusBreathePhase === 1) {
+        // Giai đoạn 2: GIỮ TÂM TĨNH LẶNG (7s) - Sen tỏa sáng đứng yên
+        if (pText) { pText.textContent = "✨ GIỮ TÂM TĨNH LẶNG (7S)"; pText.className = "text-base sm:text-lg font-black tracking-widest text-amber-300 uppercase"; }
+        if (sText) sText.textContent = "Nín thở nhẹ nhàng, thư giãn cơ mặt, quan sát tâm an định";
+        if (flower) flower.style.transform = "scale(1.22)";
+        if (ring) { ring.style.transform = "scale(1.25)"; ring.style.borderColor = "rgba(250, 204, 21, 0.8)"; }
+        playLotusSingingBowl(432, 1.5); // 432Hz tự nhiên
+      } else if (lotusBreathePhase === 2) {
+        // Giai đoạn 3: THỞ RA BUÔNG XẢ (8s) - Sen từ từ khép lại
+        if (pText) { pText.textContent = "🍃 THỞ RA BUÔNG XẢ ÂU LO (8S)"; pText.className = "text-base sm:text-lg font-black tracking-widest text-emerald-300 uppercase"; }
+        if (sText) sText.textContent = "Thở ra chầm chậm qua miệng, thả trôi mọi muộn phiền, bụng xẹp xuống";
+        if (flower) flower.style.transform = "scale(0.72)";
+        if (ring) { ring.style.transform = "scale(0.75)"; ring.style.borderColor = "rgba(52, 211, 153, 0.6)"; }
+        playLotusSingingBowl(396, 2.5); // 396Hz xua tan sợ hãi, lo âu
+      }
+    }
+  </script>
 
 </body>
 </html>
