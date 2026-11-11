@@ -5720,7 +5720,7 @@
           ${m.notes ? `<div class="text-[11px] text-slate-500 font-semibold pt-0.5"><i class="fa-solid fa-note-sticky text-amber-500 mr-1"></i>Lời dặn: <span class="text-slate-700">${m.notes}</span></div>` : ''}
 
           <div class="pt-1 flex items-center justify-end">
-            <button onclick="shareMemorialInvitation(${m.id})" class="px-3 py-1.5 bg-[#0068ff] hover:bg-[#0052cc] text-white font-black text-xs rounded-xl shadow transition flex items-center gap-1.5 active:scale-95">
+            <button onclick="shareMemorialInvitation(${m.id})" class="px-3.5 py-2 bg-gradient-to-r from-[#0068ff] via-[#007afc] to-[#0055d4] hover:brightness-110 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition flex items-center gap-1.5 active:scale-95" title="Bấm để chia sẻ thư mời giỗ qua Zalo cho gia đình">
               <i class="fa-solid fa-paper-plane text-yellow-300"></i> Báo Giỗ Qua Zalo
             </button>
           </div>
@@ -5729,28 +5729,67 @@
       });
     }
 
-    function shareMemorialInvitation(id) {
+    async function shareMemorialInvitation(id) {
       const m = memorials.find(x => x.id === id);
       if (!m) return;
       const currentYear = currentDate.getFullYear();
-      let sol = convertLunar2Solar(m.day, m.month, currentYear);
+      let sol = (typeof convertLunar2Solar === 'function') ? convertLunar2Solar(m.day, m.month, currentYear) : null;
       if (!sol) sol = convertLunar2Solar(m.day, m.month, currentYear + 1);
       const solDate = new Date(sol.year, sol.month - 1, sol.day);
-      const weekday = WEEKDAYS[solDate.getDay()];
+      const wd = solDate.getDay();
+      const weekday = (typeof WEEKDAYS !== 'undefined' && WEEKDAYS[wd]) ? WEEKDAYS[wd] : (wd === 0 ? "Chủ Nhật" : "Thứ " + (wd + 1));
       const lunarStr = m.day < 10 ? `Mùng ${m.day}` : `Ngày ${m.day}`;
 
-      const text = `🕯️ THÔNG BÁO NGÀY GIỖ GIA TIÊN 🕯️\n\n` +
-                   `Kính gửi cô bác, anh chị em và con cháu trong gia đình:\n` +
-                   `Nhằm ngày ${lunarStr} Tháng ${m.month} Âm Lịch (tức ${weekday}, ngày ${sol.day}/${sol.month}/${sol.year} Dương lịch) ` +
-                   `là ngày chính giỗ của ${m.relation ? m.relation : 'Người thân'} (${m.name}).\n` +
-                   (m.burial ? `📍 Nơi an táng: ${m.burial}\n` : '') +
-                   (m.notes ? `📝 Dặn dò: ${m.notes}\n` : '') +
-                   `Kính mời gia đình cùng tề tựu dâng nén hương thơm tưởng nhớ và sum họp ấm cúng!\n\n` +
-                   `👉 Xem ngày giỗ và lịch tại: https://datphu-backend.vercel.app`;
+      const text = `🕯️ THÔNG BÁO GIỖ GIA TIÊN - HIẾU NGHĨA GIA TỘC 🕯️\n\n` +
+                   `Kính gửi cô bác, anh chị em và con cháu trong gia đình, dòng tộc:\n\n` +
+                   `Nhằm ngày: ${lunarStr} Tháng ${m.month} Âm Lịch\n` +
+                   `(Tức: ${weekday}, ngày ${sol.day}/${sol.month}/${sol.year} Dương Lịch)\n\n` +
+                   `Là ngày LỄ CHÍNH GIỖ của: ${m.relation ? m.relation.toUpperCase() : 'NGƯỜI THÂN'} (${m.name}).\n` +
+                   (m.burial ? `📍 Nơi an táng / Mộ phần: ${m.burial}\n` : '') +
+                   (m.notes ? `🥣 Lời dặn / Mâm cúng: ${m.notes}\n` : '') +
+                   `⏰ Thời gian tề tựu: Buổi sáng ngày chính giỗ\n\n` +
+                   `Kính mời toàn thể gia quyến cùng tề tựu dâng nén hương thơm tưởng nhớ tiên tổ và sum họp bữa cơm gia đình ấm cúng!\n\n` +
+                   `👉 Xem ngày giỗ và Lịch Dân Sinh Đất Phú tại:\nhttps://datphu-backend.vercel.app`;
 
-      const prevEl = document.getElementById("zaloPreviewText");
-      if (prevEl) prevEl.innerText = text;
-      toggleZaloModal();
+      // 1. Tự động sao chép thư mời vào bộ nhớ tạm (Clipboard)
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch (e) {}
+      }
+
+      // 2. Chia sẻ 1 chạm thông minh: Nếu thiết bị có Web Share API (Android, iOS)
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: `Thông Báo Giỗ ${m.name}`,
+            text: text,
+            url: "https://datphu-backend.vercel.app"
+          });
+          if (window.showToastNotification) {
+            window.showToastNotification("✅ Đã chia sẻ thư mời giỗ qua Zalo thành công!", "success");
+          } else if (typeof showToast === 'function') {
+            showToast("✅ Đã chia sẻ thư mời giỗ thành công!");
+          }
+          return;
+        } catch (err) {
+          if (err.name !== 'AbortError') console.warn('Share error:', err);
+        }
+      }
+
+      // 3. Fallback mở modal Zalo chuyên dụng với thư mời đã điền sẵn
+      if (typeof setZaloText === 'function') {
+        setZaloText(text);
+      }
+      if (typeof toggleZaloModal === 'function') {
+        toggleZaloModal(text);
+      }
+
+      if (window.showToastNotification) {
+        window.showToastNotification("✅ Đã sao chép Thư Mời Giỗ! Bạn chỉ cần Dán (Paste) để gửi Zalo.", "success");
+      } else if (typeof showToast === 'function') {
+        showToast("✅ Đã sao chép Thư Mời Giỗ! Dán gửi Zalo ngay.");
+      }
     }
 
     function saveNewMemorial() {
