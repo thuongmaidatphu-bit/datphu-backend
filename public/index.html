@@ -2141,6 +2141,14 @@
                   <p id="healingAffirmationText" class="text-xs text-slate-200 italic font-medium leading-relaxed">
                     "Bạn đã vất vả nhiều rồi, hãy thả lỏng và cho phép mình được nghỉ ngơi. Mọi chuyện rồi sẽ bình an."
                   </p>
+                  <!-- THANH TRẠNG THÁI PHÁT LIÊN TỤC VÀ ĐỒNG HỒ THỜI GIAN -->
+                  <div id="zenPlayStatusRow" class="hidden flex items-center gap-2 pt-1 text-[10px] text-emerald-300 font-bold">
+                    <span class="inline-flex items-center gap-1 text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-500/30">
+                      <i class="fa-solid fa-clock text-[9px]"></i> <span id="zenLiveTimerText">00:00</span>
+                    </span>
+                    <span>•</span>
+                    <span class="text-teal-300 font-medium">Bản nhạc vô tận • Đang tấu liên tục không ngắt</span>
+                  </div>
                 </div>
                 <button id="btnQuickPlayHealing" onclick="toggleQuickHealingSound()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 via-emerald-600 to-teal-700 hover:from-teal-600 hover:to-emerald-700 text-white font-black text-xs shadow-lg active:scale-95 transition shrink-0 flex items-center gap-1.5 border border-teal-300/40" title="Bật âm nhạc tĩnh tâm chữa lành">
                   <span id="quickPlayHealingIcon" class="flex items-center"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-current"><polygon points="6 4 20 12 6 20 6 4"/></svg></span>
@@ -2204,6 +2212,16 @@
                     <div class="text-[9px] text-slate-400 leading-tight">Đêm Trăng Mái Chùa</div>
                   </button>
                 </div>
+              </div>
+
+              <!-- DÒNG THÔNG TIN BẢN NHẠC VÔ TẬN & NÚT CHỌN BÀI THIỀN DÀI -->
+              <div class="p-2 rounded-xl bg-slate-950/60 border border-teal-500/20 flex items-center justify-between text-[10px] sm:text-[11px] text-slate-300 relative z-10">
+                <span class="text-slate-400 italic flex items-center gap-1">
+                  <i class="fa-solid fa-infinity text-teal-400 text-xs"></i> Bản nhạc tự động biến tấu vô tận, nghe bao lâu tùy thích.
+                </span>
+                <button onclick="switchSettingsTab('ringtone')" class="font-black text-amber-300 hover:text-amber-200 flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-950/70 border border-amber-500/30 transition active:scale-95 shadow-xs" title="Chuyển sang máy nghe pháp và các bài thiền dài phòng thu 15-30 phút">
+                  <i class="fa-solid fa-compact-disc text-amber-400"></i> <span>108 Bài Thiền Dài</span>
+                </button>
               </div>
 
               <!-- HÀNG 4: THANH CHỈNH ÂM LƯỢNG NHẠC THIỀN NHANH -->
@@ -8255,6 +8273,9 @@
     let zenNatureGain = null;
     let zenDroneGain = null;
     let zenDroneOscs = [];
+    let zenElapsedSeconds = 0;
+    let zenElapsedInterval = null;
+    let zenLastMelodyIdx = 2;
 
     const zenPresetConfigs = {
       anxiety: {
@@ -8262,7 +8283,7 @@
         name: "Khúc Sen Tĩnh Lặng",
         freq: 396,
         subFreq: 198,
-        scale: [349.23, 392.00, 440.00, 523.25, 587.33],
+        scale: [349.23, 392.00, 440.00, 523.25, 587.33, 698.46],
         chimes: [1174.66, 1318.51, 1567.98, 1760.00],
         bowlInterval: 14000,
         badge: '<i class="fa-solid fa-spa text-emerald-400 mr-1.5"></i>Khúc Sen Tĩnh Lặng (396 Hz)',
@@ -8276,7 +8297,7 @@
         scale: [293.66, 349.23, 392.00, 440.00, 523.25, 587.33],
         chimes: [1174.66, 1396.91, 1567.98, 1760.00, 2093.00],
         useFlute: true,
-        bowlInterval: 16000,
+        bowlInterval: 15000,
         badge: '<i class="fa-solid fa-wind text-teal-300 mr-1.5"></i>Sáo Trúc & Suối Nguồn (528 Hz)',
         quote: "Hãy thả lỏng đôi vai, hít một hơi thật sâu. Bạn đã cống hiến hết mình hôm nay rồi, giờ là lúc tâm trí được nghỉ ngơi."
       },
@@ -8306,6 +8327,12 @@
       }
     };
 
+    function formatZenTimer(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+    }
+
     function setZenMusicVolume(vol) {
       zenMasterVolume = vol;
       if (zenMasterGainNode && ambientCtx) {
@@ -8325,7 +8352,7 @@
       });
     }
 
-    function playPluckedZenNote(ctx, freq, startTime, duration = 3.2, gainLevel = 0.07) {
+    function playPluckedZenNote(ctx, freq, startTime, duration = 3.2, gainLevel = 0.09) {
       try {
         if (!ctx) return;
         const osc1 = ctx.createOscillator();
@@ -8340,7 +8367,7 @@
 
         const effGain = gainLevel * (zenMasterGainNode ? 1.0 : zenMasterVolume);
         gain.gain.setValueAtTime(0.0001, startTime);
-        gain.gain.linearRampToValueAtTime(effGain, startTime + 0.02);
+        gain.gain.linearRampToValueAtTime(effGain, startTime + 0.025);
         gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
 
         osc1.connect(gain);
@@ -8384,7 +8411,7 @@
       const melLabel = document.getElementById("zenCurrentMelodyLabel");
       if (badgeEl) badgeEl.innerHTML = cfg.badge;
       if (melLabel) {
-        melLabel.innerHTML = "🌸 Đang phát: " + cfg.name;
+        melLabel.innerHTML = "🌸 Đang tấu: " + cfg.name;
         melLabel.classList.remove("hidden");
       }
       if (quoteEl) {
@@ -8409,23 +8436,30 @@
         zenMasterGainNode.gain.linearRampToValueAtTime(zenMasterVolume, now + 1.2);
         zenMasterGainNode.connect(ambientCtx.destination);
 
-        // 1. TẦNG SÓNG NỀN AN LẠC (Drone Warmth)
+        // 1. TẦNG SÓNG NỀN AN LẠC ẤM ÁP (Audible Drone Bed)
         zenDroneGain = ambientCtx.createGain();
-        zenDroneGain.gain.setValueAtTime(0.045, now);
+        zenDroneGain.gain.setValueAtTime(0.08, now);
         zenDroneGain.connect(zenMasterGainNode);
 
         const oscFundamental = ambientCtx.createOscillator();
         const oscSub = ambientCtx.createOscillator();
+        const oscFifth = ambientCtx.createOscillator();
+
         oscFundamental.type = "sine";
         oscFundamental.frequency.setValueAtTime(cfg.freq, now);
         oscSub.type = "sine";
         oscSub.frequency.setValueAtTime(cfg.subFreq, now);
+        oscFifth.type = "sine";
+        oscFifth.frequency.setValueAtTime(cfg.freq * 1.5, now); // Quãng năm hòa âm ấm áp
 
         oscFundamental.connect(zenDroneGain);
         oscSub.connect(zenDroneGain);
+        oscFifth.connect(zenDroneGain);
+
         oscFundamental.start(now);
         oscSub.start(now);
-        zenDroneOscs = [oscFundamental, oscSub];
+        oscFifth.start(now);
+        zenDroneOscs = [oscFundamental, oscSub, oscFifth];
 
         // 2. TẦNG ÂM THANH THIÊN NHIÊN (Sóng biển / Mưa nhẹ / Suối reo)
         const bufferSize = ambientCtx.sampleRate * 4;
@@ -8437,7 +8471,7 @@
           b0 = 0.99765 * b0 + w * 0.0990460;
           b1 = 0.96300 * b1 + w * 0.2965164;
           b2 = 0.57000 * b2 + w * 1.0526913;
-          data[i] = (b0 + b1 + b2 + w * 0.1848) * 0.04;
+          data[i] = (b0 + b1 + b2 + w * 0.1848) * 0.045;
         }
         zenNatureSource = ambientCtx.createBufferSource();
         zenNatureSource.buffer = noiseBuffer;
@@ -8446,17 +8480,17 @@
         const natureFilter = ambientCtx.createBiquadFilter();
         if (cfg.isOcean) {
           natureFilter.type = "lowpass";
-          natureFilter.frequency.setValueAtTime(380, now);
+          natureFilter.frequency.setValueAtTime(420, now);
         } else if (cfg.isRain) {
           natureFilter.type = "bandpass";
           natureFilter.frequency.setValueAtTime(750, now);
         } else {
           natureFilter.type = "lowpass";
-          natureFilter.frequency.setValueAtTime(480, now);
+          natureFilter.frequency.setValueAtTime(520, now);
         }
 
         zenNatureGain = ambientCtx.createGain();
-        zenNatureGain.gain.setValueAtTime(0.08, now);
+        zenNatureGain.gain.setValueAtTime(0.09, now);
         zenNatureSource.connect(natureFilter);
         natureFilter.connect(zenNatureGain);
         zenNatureGain.connect(zenMasterGainNode);
@@ -8466,36 +8500,38 @@
         function triggerBowl() {
           if (!isZenMusicPlaying || !ambientCtx) return;
           if (typeof playTibetanSingingBowl === "function") {
-            playTibetanSingingBowl(ambientCtx, cfg.freq, ambientCtx.currentTime, 7.5, 0.14);
+            playTibetanSingingBowl(ambientCtx, cfg.freq, ambientCtx.currentTime, 7.8, 0.15);
           }
         }
         triggerBowl();
         zenBowlTimer = setInterval(triggerBowl, cfg.bowlInterval);
 
-        // 4. GIAI ĐIỆU NGŨ CUNG THIỀN AN NHIÊN (Generative Calming Melody)
-        function triggerMelodyMotif() {
+        // 4. GIAI ĐIỆU NGŨ CUNG THIỀN TUÔN CHẢY LIÊN TỤC (Continuous Flowing Melody)
+        function triggerMelodyStream() {
           if (!isZenMusicPlaying || !ambientCtx) return;
           const curr = ambientCtx.currentTime;
           const scale = cfg.scale;
-          const n1 = scale[Math.floor(Math.random() * scale.length)];
-          const n2 = scale[Math.floor(Math.random() * scale.length)];
+
+          // Chuyển bước liền mạch (Step-wise motion) như nghệ nhân thổi sáo / gảy đàn tranh
+          const step = (Math.random() < 0.5 ? 1 : -1) * (Math.random() < 0.25 ? 2 : 1);
+          zenLastMelodyIdx = (zenLastMelodyIdx + step + scale.length) % scale.length;
+          const noteFreq = scale[zenLastMelodyIdx];
+
+          // Nốt ngân dài 2.8s - 3.6s
+          const noteDuration = 2.6 + Math.random() * 1.0;
 
           if (cfg.useFlute && typeof playBambooFluteNote === "function") {
-            playBambooFluteNote(ambientCtx, n1, curr + 0.1, 2.8, 0.08);
-            if (Math.random() > 0.4) {
-              playBambooFluteNote(ambientCtx, n2, curr + 2.2, 2.5, 0.07);
-            }
+            playBambooFluteNote(ambientCtx, noteFreq, curr, noteDuration, 0.11);
           } else {
-            playPluckedZenNote(ambientCtx, n1, curr + 0.1, 3.2, 0.08);
-            if (Math.random() > 0.35) {
-              playPluckedZenNote(ambientCtx, n2, curr + 1.2, 3.0, 0.07);
-            }
+            playPluckedZenNote(ambientCtx, noteFreq, curr, noteDuration, 0.095);
           }
 
-          const nextDelay = 3800 + Math.random() * 2800;
-          zenMelodyTimer = setTimeout(triggerMelodyMotif, nextDelay);
+          // NỐT TIẾP THEO BẮT ĐẦU SAU 1.4s - 1.9s (NỐT CŨ VẪN ĐANG NGÂN VANG GỐI ĐẦU NỐT MỚI)
+          // ĐẢM BẢO HOÀN TOÀN KHÔNG CÓ KHOẢNG LẶNG NGẮT QUÃNG!
+          const nextDelay = 1450 + Math.random() * 500;
+          zenMelodyTimer = setTimeout(triggerMelodyStream, nextDelay);
         }
-        zenMelodyTimer = setTimeout(triggerMelodyMotif, 1800);
+        zenMelodyTimer = setTimeout(triggerMelodyStream, 300);
 
         // 5. CHUÔNG GIÓ KOSHI LENG KENG THƯA THỚT
         function triggerChime() {
@@ -8503,18 +8539,28 @@
           if (typeof playSingleGlassChime === "function") {
             const chimes = cfg.chimes;
             const note = chimes[Math.floor(Math.random() * chimes.length)];
-            playSingleGlassChime(ambientCtx, note, ambientCtx.currentTime, 0.05 + Math.random() * 0.03);
+            playSingleGlassChime(ambientCtx, note, ambientCtx.currentTime, 0.06);
           }
-          const nextChime = 4200 + Math.random() * 4500;
+          const nextChime = 3800 + Math.random() * 3800;
           zenChimeTimer = setTimeout(triggerChime, nextChime);
         }
-        zenChimeTimer = setTimeout(triggerChime, 3200);
+        zenChimeTimer = setTimeout(triggerChime, 2200);
+
+        // 6. ĐỒNG HỒ ĐẾM THỜI GIAN PHÁT TRỰC TUYẾN
+        zenElapsedSeconds = 0;
+        if (zenElapsedInterval) clearInterval(zenElapsedInterval);
+        zenElapsedInterval = setInterval(() => {
+          if (!isZenMusicPlaying) return;
+          zenElapsedSeconds++;
+          const tText = document.getElementById("zenLiveTimerText");
+          if (tText) tText.innerText = formatZenTimer(zenElapsedSeconds);
+        }, 1000);
 
         isZenMusicPlaying = true;
         isSolfeggioActive = true;
         updateZenMusicUI();
         if (window.showToast) {
-          showToast("🌸 Đang phát Âm Nhạc Tĩnh Tâm: " + cfg.name);
+          showToast("🌸 Đang tấu liên tục khúc nhạc tĩnh tâm: " + cfg.name);
         }
 
       } catch (e) {
@@ -8532,6 +8578,7 @@
       if (zenBowlTimer) { clearInterval(zenBowlTimer); zenBowlTimer = null; }
       if (zenMelodyTimer) { clearTimeout(zenMelodyTimer); zenMelodyTimer = null; }
       if (zenChimeTimer) { clearTimeout(zenChimeTimer); zenChimeTimer = null; }
+      if (zenElapsedInterval) { clearInterval(zenElapsedInterval); zenElapsedInterval = null; }
 
       setTimeout(() => {
         zenDroneOscs.forEach(osc => {
@@ -8563,6 +8610,7 @@
       const qBtn = document.getElementById("btnQuickPlayHealing");
       const viz = document.getElementById("zenVisualizerMini");
       const aura = document.getElementById("healingAuraGlow");
+      const statusRow = document.getElementById("zenPlayStatusRow");
 
       if (qIcon && qText && qBtn) {
         if (isZenMusicPlaying) {
@@ -8575,12 +8623,14 @@
           qBtn.className = "px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-black text-xs shadow-lg active:scale-95 transition shrink-0 flex items-center gap-1.5 ring-2 ring-rose-400/50";
           if (viz) viz.classList.remove("hidden");
           if (aura) aura.className = "pointer-events-none absolute -top-12 -right-12 w-48 h-48 bg-teal-400/40 rounded-full blur-3xl transition-all duration-1000 animate-pulse";
+          if (statusRow) statusRow.classList.remove("hidden");
         } else {
           qIcon.innerHTML = '<svg viewBox="0 0 24 24" class="w-4 h-4 fill-current"><polygon points="6 4 20 12 6 20 6 4"/></svg>';
           qText.innerText = "Tĩnh Tâm";
           qBtn.className = "px-4 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 via-emerald-600 to-teal-700 hover:from-teal-600 hover:to-emerald-700 text-white font-black text-xs shadow-lg active:scale-95 transition shrink-0 flex items-center gap-1.5 border border-teal-300/40";
           if (viz) viz.classList.add("hidden");
           if (aura) aura.className = "pointer-events-none absolute -top-12 -right-12 w-44 h-44 bg-teal-400/20 rounded-full blur-3xl transition-all duration-1000";
+          if (statusRow) statusRow.classList.add("hidden");
         }
       }
     }
