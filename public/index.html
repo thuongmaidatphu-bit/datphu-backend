@@ -2490,6 +2490,40 @@
                 <div class="w-full pt-1">
                   <input type="range" id="dharmaSeekbar" min="0" max="100" value="0" oninput="seekDharmaAudio(this.value)" class="w-full h-1.5 bg-emerald-950 rounded-lg appearance-none cursor-pointer accent-emerald-400" />
                 </div>
+
+                <!-- THANH TIỆN ÍCH PHỤ TRỢ: TỐC ĐỘ, LỜI KINH, MÕ NHỊP ĐỆM -->
+                <div class="flex items-center justify-between pt-1 border-t border-emerald-950 text-[10px] text-emerald-400/80">
+                  <!-- Đổi tốc độ tụng -->
+                  <div class="flex items-center gap-1 font-mono">
+                    <span class="text-slate-500">TỐC ĐỘ:</span>
+                    <button onclick="cycleDharmaSpeed()" id="btnDharmaSpeed" class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-bold border border-emerald-800 hover:bg-emerald-900 active:scale-95 transition" title="Đổi tốc độ tụng: 0.75x, 1.0x, 1.25x">1.0x Chuẩn</button>
+                  </div>
+
+                  <!-- Xem Lời Kinh Chữ To -->
+                  <button onclick="toggleDharmaLyricsDrawer()" id="btnToggleLyrics" class="px-2 py-0.5 rounded bg-emerald-950 text-yellow-300 font-bold border border-emerald-800 hover:bg-emerald-900 active:scale-95 transition flex items-center gap-1" title="Mở bản chữ to lời kinh để đọc theo">
+                    <i class="fa-solid fa-book-open text-[9px]"></i>
+                    <span id="labelLyricsToggle">Xem Lời Kinh</span>
+                  </button>
+
+                  <!-- Bật/Tắt Mõ Gõ Đệm Nhịp -->
+                  <button onclick="toggleDharmaMetronome()" id="btnDharmaMetronome" class="px-2 py-0.5 rounded bg-emerald-950 text-amber-300 font-bold border border-emerald-800 hover:bg-emerald-900 active:scale-95 transition flex items-center gap-1" title="Gõ mõ đệm theo nhịp khi nghe">
+                    <span>📿 Mõ Đệm:</span>
+                    <span id="labelDharmaMetronome" class="text-emerald-400 font-bold">BẬT</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- BẢN CHỮ TO LỜI KINH TỰ ĐỘNG CHẠY (LYRICS & MANTRA SCRIPT VIEWER) -->
+              <div id="dharmaLyricsDrawer" class="hidden p-3.5 rounded-2xl bg-gradient-to-b from-[#1b1208] to-[#0f0a04] border-2 border-amber-400/50 shadow-inner space-y-2 text-center transition-all duration-300">
+                <div class="flex items-center justify-between pb-1.5 border-b border-amber-500/20 text-xs text-amber-300">
+                  <span class="font-black flex items-center gap-1.5">
+                    <i class="fa-solid fa-scroll text-amber-400"></i> Lời Kinh & Pháp Âm Tụng Theo:
+                  </span>
+                  <button onclick="toggleDharmaLyricsDrawer()" class="text-slate-400 hover:text-white text-xs">✕ Đóng</button>
+                </div>
+                <div id="dharmaLyricsContent" class="text-sm sm:text-base font-bold text-yellow-200 leading-relaxed max-h-40 overflow-y-auto custom-modal-scroll p-1 font-serif">
+                  <!-- Nội dung lời kinh chữ to tự động nạp theo bài -->
+                </div>
               </div>
 
               <!-- CỤM NÚT ĐIỀU KHIỂN PHÁT NHẠC (PLAYER CONTROLS) -->
@@ -2558,6 +2592,16 @@
                 <div class="flex items-center justify-between text-xs font-bold text-amber-300 pb-1 border-b border-amber-500/20">
                   <span>Mục Lục Thẻ Nhớ Số (<span id="dharmaTrackCount">6</span> bài):</span>
                   <span class="text-[10px] text-amber-400/80">Chạm bài nào phát bài đó</span>
+                </div>
+
+                <!-- BỘ LỌC PHÂN LOẠI CHỦ ĐỀ NHANH (TOPIC FILTER PILLS) -->
+                <div class="flex items-center gap-1 overflow-x-auto py-1 no-scrollbar text-[10px] font-bold">
+                  <button onclick="filterDharmaCategory('all')" id="filterTab_all" class="px-2.5 py-1 rounded-full bg-amber-500 text-slate-950 font-black shadow whitespace-nowrap transition active:scale-95">Tất Cả</button>
+                  <button onclick="filterDharmaCategory('niem_phat')" id="filterTab_niem_phat" class="px-2.5 py-1 rounded-full bg-slate-900 hover:bg-slate-800 text-amber-200 border border-amber-500/30 whitespace-nowrap transition active:scale-95">Niệm Phật</button>
+                  <button onclick="filterDharmaCategory('kinh_chu')" id="filterTab_kinh_chu" class="px-2.5 py-1 rounded-full bg-slate-900 hover:bg-slate-800 text-amber-200 border border-amber-500/30 whitespace-nowrap transition active:scale-95">Kinh & Chú</button>
+                  <button onclick="filterDharmaCategory('thien_tra')" id="filterTab_thien_tra" class="px-2.5 py-1 rounded-full bg-slate-900 hover:bg-slate-800 text-amber-200 border border-amber-500/30 whitespace-nowrap transition active:scale-95">Thiền Trà</button>
+                  <button onclick="filterDharmaCategory('the_nho')" id="filterTab_the_nho" class="px-2.5 py-1 rounded-full bg-slate-900 hover:bg-slate-800 text-amber-200 border border-amber-500/30 whitespace-nowrap transition active:scale-95">Thẻ Của Tôi</button>
+                  <button onclick="filterDharmaCategory('yeu_thich')" id="filterTab_yeu_thich" class="px-2.5 py-1 rounded-full bg-slate-900 hover:bg-slate-800 text-amber-200 border border-amber-500/30 whitespace-nowrap transition active:scale-95">⭐ Yêu Thích</button>
                 </div>
 
                 <div id="dharmaPlaylistContainer" class="space-y-1.5 max-h-48 overflow-y-auto custom-modal-scroll pr-1 text-xs">
@@ -8806,7 +8850,30 @@
 // =========================================================================
     // TÚI PHÁP ÂM & MÁY NIỆM PHẬT THẺ NHỚ SỐ (DHARMA AUDIO VAULT & SD PLAYER)
     // =========================================================================
+    // LỜI KINH MẪU ĐẦY ĐỦ CHO TỪNG BÀI
+    const DHARMA_LYRICS_MAP = {
+      1: "Nam Mô A Di Đà Phật\nNam Mô A Di Đà Phật\nNam Mô A Di Đà Phật\n\nNguyện đem công đức này\nHướng về khắp tất cả\nĐệ tử và chúng sinh\nĐều trọn thành Phật đạo.",
+      2: "NAM MÔ ĐẠI BI HỘI THƯỢNG PHẬT BỒ TÁT (3 lần)\n\nThiên thủ thiên nhãn vô ngại đại bi tâm đà la ni.\nNam mô hắc ra đát na đá ra dạ da.\nNam mô a rị da, bà lô kiết đế, thước bát ra da, bồ đề tát đỏa bà da, ma ha tát đỏa bà da, ma ha ca lô ni ca da.\nÁn, tát bàn ra phạt duệ, số đát na đát tỏa.\nNam mô tất kiết lật đỏa y mông a rị da, bà lô kiết đế thất Phật ra lăng đà bà.\nNam mô na ra cẩn trì, hê rị ma ha bàn đà sa mế, tát bà a tha đậu du bằng, a thệ dựng, tát bà tát đa, na ma bà tát đa, na ma bà già, ma phạt đạt đậu, đát điệt tha.\nÁn, a bà lô hê, lô ca đế, ca ra đế, di hê rị, ma ha bồ đề tát đỏa, tát bà tát bà, ma ra ma ra, ma hê ma hê rị đà dựng, cu lô cu lô kiết mông, độ lô độ lô phạt xà da đế, ma ha phạt xà da đế, đà ra đà ra, địa rị ni, thất Phật ra da, giá ra giá ra, mạ mạ phạt ma ra, mục đế lệ, y hê y hê, thất na thất na, a ra sâm Phật ra xá lợi, phạt sa phạt sâm, Phật ra xá da, hô lô hô lô ma ra, hô lô hô lô hê rị, ta ra ta ra, tất rị tất rị, tô rô tô rô, bồ đề dạ bồ đề dạ, bồ đà dạ bồ đà dạ, di đế rị dạ, na ra cẩn trì, địa rị sắc ni na, ba dạ ma na, ta bà ha.",
+      3: "Nam Mô Đại Từ Đại Bi Cứu Khổ Cứu Nạn Linh Cảm Ứng Quán Thế Âm Bồ Tát\n\nNguyện tiêu ba chướng trừ phiền não\nNguyện đắc trí tuệ thật sáng ngời\nNguyện khắp tội chướng thảy tiêu trừ\nĐời đời thường hành Bồ Tát đạo.",
+      4: "Nam Mô Dược Sư Lưu Ly Quang Vương Phật\nNam Mô Tiêu Tai Diên Thọ Dược Sư Phật\n\nÁn bệ sát thệ, bệ sát thệ, bệ sát xã, tam một yết đế tát bà ha.\nCầu cho thân tâm an lạc, bệnh tật tiêu trừ, vạn sự cát tường hanh thông.",
+      5: "Hồng trần như mộng, gió thoảng mây trôi\nMột thoáng nhân sinh, an nhiên giữa đời\nTiếng chuông ngân sớm, lắng đọng tâm tư\nBuông hết sầu lo, tìm về bến giác.\n(Ca Nhạc Sĩ Nhật Phong Lãng • Sóng Não 432Hz)",
+      6: "Mở lên là thấy an yên\nLòng nhẹ như mây, tâm dịu như thiền\nThở vào tâm tĩnh lặng\nThở ra miệng mỉm cười\nAn trú trong hiện tại\nGiờ phút đẹp tuyệt vời.\n(Thiền Sen Trúc)"
+    };
+
+    let dharmaCurrentCategory = 'all';
+    let dharmaFavorites = new Set([1, 2]); // Mặc định yêu thích bài 1 và 2
+    let dharmaPlaybackSpeed = 1.0;
+    let isDharmaMetronomeActive = true;
+    let isLyricsDrawerOpen = false;
+
     const DHARMA_DEFAULT_PLAYLIST = [
+      { id: 1, title: "1. Nam Mô A Di Đà Phật", artist: "Đạo Tràng Đất Phú • Điệu Tịnh Độ", category: "niem_phat", type: "synth", synthType: "adida" },
+      { id: 2, title: "2. Chú Đại Bi (Phạn Âm 21 Biến)", artist: "Ban Tụng Niệm Cổ Truyền", category: "kinh_chu", type: "synth", synthType: "daibi" },
+      { id: 3, title: "3. Nam Mô Quán Thế Âm Bồ Tát", artist: "Cứu Khổ Cứu Nạn • Tiếng Chuông Ngân", category: "niem_phat", type: "synth", synthType: "quanam" },
+      { id: 4, title: "4. Kinh Dược Sư Lưu Ly Quang", artist: "Cầu An Sức Khỏe Thân Tâm", category: "kinh_chu", type: "synth", synthType: "duocsu" },
+      { id: 5, title: "5. Hồng Trần Như Mộng", artist: "Ca Nhạc Sĩ Nhật Phong Lãng (432Hz)", category: "thien_tra", type: "synth", synthType: "hong_tran" },
+      { id: 6, title: "6. Mở Lên Là Thấy An Yên", artist: "Kênh Thiền Sen Trúc • Tĩnh Tâm", category: "thien_tra", type: "synth", synthType: "zen_rain" }
+    ];
       { id: 1, title: "1. Nam Mô A Di Đà Phật", artist: "Đạo Tràng Đất Phú • Điệu Tịnh Độ", type: "synth", synthType: "adida" },
       { id: 2, title: "2. Chú Đại Bi (Phạn Âm 21 Biến)", artist: "Ban Tụng Niệm Cổ Truyền", type: "synth", synthType: "daibi" },
       { id: 3, title: "3. Nam Mô Quán Thế Âm Bồ Tát", artist: "Cứu Khổ Cứu Nạn • Tiếng Chuông Ngân", type: "synth", synthType: "quanam" },
@@ -8871,15 +8938,37 @@
       const countEl = document.getElementById("dharmaTrackCount");
       if (!container) return;
 
-      if (countEl) countEl.innerText = dharmaPlaylist.length;
+      // Lọc danh sách theo Category được chọn
+      let filtered = dharmaPlaylist;
+      if (dharmaCurrentCategory === 'niem_phat') {
+        filtered = dharmaPlaylist.filter(t => t.category === 'niem_phat');
+      } else if (dharmaCurrentCategory === 'kinh_chu') {
+        filtered = dharmaPlaylist.filter(t => t.category === 'kinh_chu');
+      } else if (dharmaCurrentCategory === 'thien_tra') {
+        filtered = dharmaPlaylist.filter(t => t.category === 'thien_tra');
+      } else if (dharmaCurrentCategory === 'the_nho') {
+        filtered = dharmaPlaylist.filter(t => t.type === 'file');
+      } else if (dharmaCurrentCategory === 'yeu_thich') {
+        filtered = dharmaPlaylist.filter(t => dharmaFavorites.has(t.id));
+      }
+
+      if (countEl) countEl.innerText = filtered.length;
       container.innerHTML = "";
 
-      dharmaPlaylist.forEach((track, idx) => {
-        const isCurrent = (idx === currentDharmaTrackIdx);
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="text-center py-4 text-slate-500 text-[11px] italic">Chưa có bài nào trong danh mục này</div>`;
+        return;
+      }
+
+      filtered.forEach((track) => {
+        const originalIdx = dharmaPlaylist.findIndex(t => t.id === track.id);
+        const isCurrent = (originalIdx === currentDharmaTrackIdx);
+        const isFav = dharmaFavorites.has(track.id);
+
         const item = document.createElement("div");
         item.className = "p-2 rounded-xl border flex items-center justify-between cursor-pointer transition active:scale-98 " +
           (isCurrent ? "bg-amber-950/80 border-amber-400 text-yellow-300 font-black shadow-md" : "bg-black/40 border-amber-500/20 text-slate-300 hover:bg-amber-950/40 hover:text-white");
-        item.onclick = () => selectAndPlayDharmaTrack(idx);
+        item.onclick = () => selectAndPlayDharmaTrack(originalIdx);
 
         item.innerHTML = `
           <div class="flex items-center gap-2 truncate">
@@ -8890,6 +8979,10 @@
             </div>
           </div>
           <div class="shrink-0 flex items-center gap-1.5">
+            <!-- Nút Yêu Thích -->
+            <button onclick="toggleDharmaFavorite(${track.id}, event)" class="p-1 text-xs hover:scale-110 transition active:scale-90" title="Đánh dấu yêu thích">
+              <i class="${isFav ? 'fa-solid fa-star text-yellow-400 drop-shadow' : 'fa-regular fa-star text-slate-500'}"></i>
+            </button>
             ${isCurrent && isDharmaPlaying ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>' : ''}
             <span class="text-[10px] px-2 py-0.5 rounded-lg ${isCurrent ? 'bg-amber-500 text-slate-950 font-black' : 'bg-slate-800 text-slate-400'}">${isCurrent && isDharmaPlaying ? 'Đang phát' : 'Phát'}</span>
           </div>
@@ -8925,6 +9018,7 @@
       }
 
       renderDharmaPlaylistUI();
+      if (isLyricsDrawerOpen) updateDharmaLyricsDisplay();
       syncMediaSessionMetadata(track);
     }
 
@@ -9142,7 +9236,7 @@
           clearInterval(chantLoopInterval);
           return;
         }
-        if (ambientCtx && ambientCtx.state === "running") {
+        if (ambientCtx && ambientCtx.state === "running" && isDharmaMetronomeActive) {
           playWoodBlockSound(ambientCtx, ambientCtx.currentTime, 0.25);
         }
       }, 1200);
