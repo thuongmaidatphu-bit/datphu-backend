@@ -1743,8 +1743,8 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-base sm:text-lg font-black text-slate-900 leading-tight">CÀI ĐẶT & TIỆN ÍCH</h3>
-              <p class="text-[11px] font-bold text-slate-500">Trung tâm điều hành âm thanh, phong cách & tiện ích</p>
+              <h3 class="text-base sm:text-lg font-black text-slate-900 leading-tight">TIỆN ÍCH BÁ TÁNH & CÀI ĐẶT</h3>
+              <p class="text-[11px] font-bold text-slate-500">Tràng Hạt Niệm Phật • Sổ Giỗ • Phong Thủy & Trợ Năng</p>
             </div>
           </div>
           <button onclick="toggleSettingsCenterModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 font-black text-slate-700 flex items-center justify-center transition active:scale-95 text-sm" title="Đóng">✕</button>
@@ -1764,7 +1764,7 @@
             <span class="text-[11px] sm:text-xs">Trị Liệu</span>
           </button>
 
-          <!-- TAB 2: CHUÔNG ÂM -->
+          <!-- TAB 2: NIỆM PHẬT & CHUÔNG -->
           <button id="tabBtn_ringtone" onclick="switchSettingsTab('ringtone')" class="py-2 px-1 rounded-xl text-center transition flex flex-col sm:flex-row items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 hover:bg-white/60 font-bold">
             <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 drop-shadow-xs">
               <defs><linearGradient id="tabBell" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs>
@@ -1772,7 +1772,7 @@
               <path d="M10 20 C10 21.1 10.9 22 12 22 C13.1 22 14 21.1 14 20" stroke="#b45309" stroke-width="1.8" stroke-linecap="round" fill="none"/>
               <circle cx="12" cy="11" r="1.8" fill="#fef08a"/>
             </svg>
-            <span class="text-[11px] sm:text-xs">Chuông Âm</span>
+            <span class="text-[11px] sm:text-xs">Niệm Phật</span>
           </button>
 
           <!-- TAB 3: GEN Z HUB -->
@@ -1786,7 +1786,7 @@
             <span class="text-[11px] sm:text-xs">Gen Z</span>
           </button>
 
-          <!-- TAB 4: GIAO DIỆN -->
+          <!-- TAB 4: PHONG THỦY & TIỆN ÍCH -->
           <button id="tabBtn_system" onclick="switchSettingsTab('system')" class="py-2 px-1 rounded-xl text-center transition flex flex-col sm:flex-row items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 hover:bg-white/60 font-bold">
             <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 drop-shadow-xs">
               <defs><linearGradient id="tabSys" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient></defs>
@@ -1795,7 +1795,7 @@
               <rect x="3" y="13" width="8" height="8" rx="2" fill="url(#tabSys)" opacity="0.75"/>
               <rect x="13" y="13" width="8" height="8" rx="2" fill="url(#tabSys)"/>
             </svg>
-            <span class="text-[11px] sm:text-xs">Giao Diện</span>
+            <span class="text-[11px] sm:text-xs">Phong Thủy</span>
           </button>
         </div>
 
@@ -2204,6 +2204,61 @@
 
           <!-- ================= TAB 2: 🔔 CHUÔNG & NIỆM PHẬT ================= -->
           <div id="tabContent_ringtone" class="space-y-3 hidden">
+            <!-- TRÀNG HẠT BỒ ĐỀ NIỆM PHẬT AI (DIGITAL MALA 108 HẠT) -->
+            <div id="digitalMalaCard" class="bg-gradient-to-b from-[#1a140a] to-[#2b1f0c] text-white p-4 rounded-2xl border-2 border-amber-500/60 shadow-lg space-y-3 relative overflow-hidden">
+              <div class="flex items-center justify-between pb-2 border-b border-amber-600/30">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 flex items-center justify-center text-slate-950 font-black text-sm shadow">
+                    📿
+                  </div>
+                  <div>
+                    <div class="text-xs sm:text-sm font-black text-amber-300">Tràng Hạt Bồ Đề Niệm Phật AI</div>
+                    <div class="text-[10px] text-amber-200/80 font-medium">Đếm hạt chánh niệm • Tiếng mõ thiền môn 100% Offline</div>
+                  </div>
+                </div>
+                <button onclick="resetMalaCounter()" class="text-[10px] font-bold text-amber-400 hover:text-amber-200 flex items-center gap-1 active:scale-95 transition" title="Đặt lại vòng đếm">
+                  <i class="fa-solid fa-rotate-left"></i> Đếm Lại
+                </button>
+              </div>
+
+              <!-- KHU VỰC HIỂN THỊ BỘ ĐẾM 108 HẠT -->
+              <div class="text-center py-1 space-y-1">
+                <div class="text-[11px] font-bold text-amber-200/90 flex items-center justify-center gap-1.5">
+                  <span id="malaCurrentMantraLabel">Nam Mô A Di Đà Phật</span>
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                </div>
+                <div class="flex items-baseline justify-center gap-1 font-mono">
+                  <span id="malaBeadCount" class="text-3xl sm:text-4xl font-black text-yellow-300 drop-shadow">0</span>
+                  <span class="text-base sm:text-lg font-bold text-amber-400/80">/ 108 Hạt</span>
+                </div>
+                <div class="text-[10px] text-amber-300/80 font-medium">
+                  Chu kỳ: <strong id="malaCycleCount" class="text-white font-bold">Vòng 1</strong> • Tích lũy hôm nay: <strong id="malaTotalToday" class="text-yellow-300 font-bold">0</strong> câu
+                </div>
+              </div>
+
+              <!-- NÚT BẤM CHẠM NIỆM TO BẢN THÂN THIỆN -->
+              <button id="btnTouchMalaBead" onclick="touchMalaBead()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-sm shadow-xl active:scale-98 transition flex items-center justify-center gap-2.5 border-2 border-yellow-200">
+                <span class="text-lg">📿</span>
+                <span>CHẠM ĐỂ NIỆM MỘT CÂU</span>
+                <i class="fa-solid fa-bell text-xs opacity-75"></i>
+              </button>
+
+              <!-- CHỌN ÂM THANH MÕ GỖ HOẶC KHÁNH ĐỒNG -->
+              <div class="flex items-center justify-between text-[11px] font-bold text-amber-200 pt-1">
+                <span class="flex items-center gap-1">
+                  <i class="fa-solid fa-music text-amber-400"></i> Âm Thanh Khi Chạm:
+                </span>
+                <div class="flex items-center gap-1">
+                  <button id="malaSound_wood" onclick="setMalaSound('wood')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-black text-[10px] shadow transition">
+                    Mõ Gỗ Thiền
+                  </button>
+                  <button id="malaSound_bell" onclick="setMalaSound('bell')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-amber-300 hover:text-white font-bold text-[10px] transition border border-amber-500/40">
+                    Khánh Đồng
+                  </button>
+                </div>
+              </div>
+            </div>
+
             
             <!-- CÔNG TẮC BẬT / TẮT TỔNG -->
             <div class="flex items-center justify-between p-3 bg-slate-50 border-2 border-slate-200 rounded-2xl">
@@ -2372,62 +2427,7 @@
               </select>
             </div>
 
-            <!-- TRÀNG HẠT BỒ ĐỀ NIỆM PHẬT AI (DIGITAL MALA 108 HẠT) -->
-            <div id="digitalMalaCard" class="bg-gradient-to-b from-[#1a140a] to-[#2b1f0c] text-white p-4 rounded-2xl border-2 border-amber-500/60 shadow-lg space-y-3 relative overflow-hidden">
-              <div class="flex items-center justify-between pb-2 border-b border-amber-600/30">
-                <div class="flex items-center gap-2">
-                  <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 flex items-center justify-center text-slate-950 font-black text-sm shadow">
-                    📿
-                  </div>
-                  <div>
-                    <div class="text-xs sm:text-sm font-black text-amber-300">Tràng Hạt Bồ Đề Niệm Phật AI</div>
-                    <div class="text-[10px] text-amber-200/80 font-medium">Đếm hạt chánh niệm • Tiếng mõ thiền môn 100% Offline</div>
-                  </div>
-                </div>
-                <button onclick="resetMalaCounter()" class="text-[10px] font-bold text-amber-400 hover:text-amber-200 flex items-center gap-1 active:scale-95 transition" title="Đặt lại vòng đếm">
-                  <i class="fa-solid fa-rotate-left"></i> Đếm Lại
-                </button>
-              </div>
-
-              <!-- KHU VỰC HIỂN THỊ BỘ ĐẾM 108 HẠT -->
-              <div class="text-center py-1 space-y-1">
-                <div class="text-[11px] font-bold text-amber-200/90 flex items-center justify-center gap-1.5">
-                  <span id="malaCurrentMantraLabel">Nam Mô A Di Đà Phật</span>
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
-                </div>
-                <div class="flex items-baseline justify-center gap-1 font-mono">
-                  <span id="malaBeadCount" class="text-3xl sm:text-4xl font-black text-yellow-300 drop-shadow">0</span>
-                  <span class="text-base sm:text-lg font-bold text-amber-400/80">/ 108 Hạt</span>
-                </div>
-                <div class="text-[10px] text-amber-300/80 font-medium">
-                  Chu kỳ: <strong id="malaCycleCount" class="text-white font-bold">Vòng 1</strong> • Tích lũy hôm nay: <strong id="malaTotalToday" class="text-yellow-300 font-bold">0</strong> câu
-                </div>
-              </div>
-
-              <!-- NÚT BẤM CHẠM NIỆM TO BẢN THÂN THIỆN -->
-              <button id="btnTouchMalaBead" onclick="touchMalaBead()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-sm shadow-xl active:scale-98 transition flex items-center justify-center gap-2.5 border-2 border-yellow-200">
-                <span class="text-lg">📿</span>
-                <span>CHẠM ĐỂ NIỆM MỘT CÂU</span>
-                <i class="fa-solid fa-bell text-xs opacity-75"></i>
-              </button>
-
-              <!-- CHỌN ÂM THANH MÕ GỖ HOẶC KHÁNH ĐỒNG -->
-              <div class="flex items-center justify-between text-[11px] font-bold text-amber-200 pt-1">
-                <span class="flex items-center gap-1">
-                  <i class="fa-solid fa-music text-amber-400"></i> Âm Thanh Khi Chạm:
-                </span>
-                <div class="flex items-center gap-1">
-                  <button id="malaSound_wood" onclick="setMalaSound('wood')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-black text-[10px] shadow transition">
-                    Mõ Gỗ Thiền
-                  </button>
-                  <button id="malaSound_bell" onclick="setMalaSound('bell')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-amber-300 hover:text-white font-bold text-[10px] transition border border-amber-500/40">
-                    Khánh Đồng
-                  </button>
-                </div>
-              </div>
             </div>
-
-          </div>
 
           <!-- ================= TAB 3: KHÔNG GIAN GEN Z ================= -->
           <div id="tabContent_youth" class="space-y-4 hidden">
@@ -2665,8 +2665,8 @@
               <button onclick="toggleSettingsCenterModal(); toggleMemorialModal();" class="p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-sm">
                 <i class="fa-solid fa-people-roof text-red-500"></i> Sổ Giỗ Gia Tiên
               </button>
-              <button onclick="toggleSettingsCenterModal(); installPwaApp();" class="p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-sm">
-                <i class="fa-solid fa-mobile-screen-button text-blue-500"></i> Cài Về Màn Hình
+              <button onclick="toggleSettingsCenterModal(); toggleSpiritualCalendarModal();" class="p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-sm">
+                <i class="fa-solid fa-scroll text-amber-600"></i> Lễ Tiết & Phong Tục
               </button>
             </div>
 
