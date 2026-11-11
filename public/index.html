@@ -601,9 +601,27 @@
 
     .eq-bar {
       width: 3.5px;
+      height: 6px;
       border-radius: 9999px;
       background: linear-gradient(180deg, #fef08a 0%, #f59e0b 50%, #ef4444 100%);
-      transition: height 0.15s ease;
+      opacity: 0.6;
+      transition: height 0.2s ease, opacity 0.2s ease;
+    }
+    .eq-bar:nth-child(1) { height: 6px; }
+    .eq-bar:nth-child(2) { height: 10px; }
+    .eq-bar:nth-child(3) { height: 15px; }
+    .eq-bar:nth-child(4) { height: 8px; }
+    .eq-bar:nth-child(5) { height: 18px; }
+    .eq-bar:nth-child(6) { height: 12px; }
+    .eq-bar:nth-child(7) { height: 16px; }
+    .eq-bar:nth-child(8) { height: 9px; }
+    .eq-bar:nth-child(9) { height: 14px; }
+    .eq-bar:nth-child(10) { height: 20px; }
+    .eq-bar:nth-child(11) { height: 11px; }
+    .eq-bar:nth-child(12) { height: 7px; }
+
+    .eq-active .eq-bar {
+      opacity: 1;
     }
 
     .eq-active .eq-bar:nth-child(1) { animation: eqWave 0.8s ease-in-out infinite 0.1s; }
@@ -618,6 +636,22 @@
     .eq-active .eq-bar:nth-child(10) { animation: eqWave 0.95s ease-in-out infinite 0.12s; }
     .eq-active .eq-bar:nth-child(11) { animation: eqWave 0.75s ease-in-out infinite 0.28s; }
     .eq-active .eq-bar:nth-child(12) { animation: eqWave 1.05s ease-in-out infinite 0.08s; }
+
+    /* Thanh cuộn hoàng gia mảnh mai, sang trọng cho Trung Tâm Nghe Nhìn */
+    .custom-modal-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-modal-scroll::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 8px;
+    }
+    .custom-modal-scroll::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #f59e0b, #d97706);
+      border-radius: 8px;
+    }
+    .custom-modal-scroll::-webkit-scrollbar-thumb:hover {
+      background: #fbbf24;
+    }
 </style>
 </head>
 <body class="min-h-screen p-2.5 sm:p-5 flex flex-col items-center justify-between">
@@ -8414,11 +8448,11 @@
   <!-- ========================================================================= -->
   <!-- MODAL: TRUNG TÂM NGHE NHÌN ĐẤT PHÚ (AUDIOVISUAL SANCTUARY & CINEMA 4K) -->
   <!-- ========================================================================= -->
-  <div id="mediaSanctuaryModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2.5 sm:p-4">
-    <div class="bg-gradient-to-b from-[#0a0f1d] via-[#111827] to-[#050811] border-2 sm:border-4 border-amber-400/80 rounded-3xl p-4 sm:p-6 w-full max-w-2xl shadow-2xl text-white space-y-4 max-h-[94vh] overflow-y-auto">
+  <div id="mediaSanctuaryModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-gradient-to-b from-[#0a0f1d] via-[#111827] to-[#050811] border-2 sm:border-4 border-amber-400/80 rounded-3xl p-3.5 sm:p-5 w-full max-w-2xl shadow-2xl text-white space-y-3 sm:space-y-3.5 max-h-[94vh] overflow-y-auto custom-modal-scroll">
       
       <!-- HEADER RẠP CHIẾU -->
-      <div class="flex items-center justify-between pb-3 border-b border-amber-400/30">
+      <div class="flex items-center justify-between pb-2.5 border-b border-amber-400/30">
         <div class="flex items-center gap-2.5">
           <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 via-rose-500 to-indigo-600 p-2 text-white flex items-center justify-center shadow-md shrink-0">
             <i class="fa-solid fa-photo-film text-xl"></i>
@@ -8435,7 +8469,7 @@
       <div class="space-y-2">
         <div class="relative rounded-2xl overflow-hidden media-showcase-frame bg-slate-950 group">
           <!-- Ảnh Showcase chính (Bức ảnh Tết Đoàn Viên 3 Thế Hệ do người dùng upload) -->
-          <img id="mediaShowcaseImg" src="img/tet_sum_vay_dat_phu.jpg" alt="Tác Phẩm Nghệ Thuật" class="w-full h-56 sm:h-72 object-cover object-center transition-all duration-500" />
+          <img id="mediaShowcaseImg" src="img/tet_sum_vay_dat_phu.jpg" alt="Tác Phẩm Nghệ Thuật" class="w-full h-48 sm:h-64 object-cover object-center transition-all duration-500" />
           
           <!-- Hào quang mờ tối ở đáy ảnh để chữ đọc rõ ràng -->
           <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none"></div>
