@@ -1,13 +1,16 @@
 // =========================================================================
 // SERVICE WORKER: LỊCH DÂN SINH & VĂN HÓA ĐẤT PHÚ (OFFLINE-FIRST PWA)
 // =========================================================================
-const CACHE_NAME = 'datphu-pwa-v2';
+const CACHE_NAME = 'datphu-pwa-v3';
 
 const CORE_PRECACHE_URLS = [
   '/',
   '/index.html',
   '/manifest.json',
   '/img/logo_datphu_brand.jpg',
+  '/img/logo_hoa_sen_real.png',
+  '/img/lotus_lagoon_real_dawn.jpg',
+  '/img/lotus_throne_cinematic_3d.jpg',
   '/img/lao_dong_nu_cuoi_cong_trinh.jpg',
   '/img/lao_dong_mong_cong_trinh.jpg',
   '/img/lao_dong_lat_da_san_chua.jpg',

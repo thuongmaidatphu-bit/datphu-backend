@@ -11,6 +11,8 @@
   <meta name="format-detection" content="telephone=no">
   <title>Lịch Thiên Văn & Sinh Kế Đất Phú - Hôm Nay • Hàng Tháng • Hàng Năm</title>
   
+    <link rel="icon" type="image/png" href="img/logo_hoa_sen_real.png">
+  <link rel="apple-touch-icon" href="img/logo_hoa_sen_real.png">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#d9232a">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -10307,7 +10309,10 @@
         if (mediaModal && mediaModal.classList.contains("hidden")) toggleMediaSanctuaryModal();
       } else if (space === 'utility') {
         if (mediaModal && !mediaModal.classList.contains("hidden")) toggleMediaSanctuaryModal();
-        if (settingsModal && settingsModal.classList.contains("hidden")) toggleSettingsCenterModal();
+        if (settingsModal && settingsModal.classList.contains("hidden")) {
+          toggleSettingsCenterModal();
+          if (typeof switchSettingsTab === "function") switchSettingsTab('ringtone');
+        }
       }
       updateMasterNavUI(space);
     }
@@ -10869,9 +10874,9 @@
       </button>
 
       <!-- Không Gian 3: Tiện Ích Bá Tánh -->
-      <button onclick="switchMasterSpace('utility')" id="masterNav_utility" class="px-2 sm:px-3.5 py-1.5 sm:py-2 rounded-full font-bold text-[11px] sm:text-xs transition flex items-center gap-1 sm:gap-2 text-slate-300 hover:text-white hover:bg-white/10 whitespace-nowrap active:scale-95">
-        <i class="fa-solid fa-boxes-stacked text-xs sm:text-sm text-cyan-400"></i>
-        <span>Tiện Ích</span>
+      <button onclick="switchMasterSpace('utility')" id="masterNav_utility" class="px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full font-bold text-[11px] sm:text-xs transition flex items-center gap-1 sm:gap-2 text-slate-300 hover:text-white hover:bg-white/10 whitespace-nowrap active:scale-95" title="Mở Không Gian Chuỗi Hạt 108, Niệm Phật AI & Tiện Ích">
+        <i class="fa-solid fa-hands-praying text-xs sm:text-sm text-amber-400"></i>
+        <span>Niệm Phật & Tiện Ích</span>
       </button>
     </div>
   </nav>
