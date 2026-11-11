@@ -8592,7 +8592,11 @@
 
         r2AudioElement.addEventListener("timeupdate", onR2TimeUpdate);
         r2AudioElement.addEventListener("play", () => { isR2Playing = true; updateR2PlayerUI(); });
-        r2AudioElement.addEventListener("pause", () => { isR2Playing = false; updateR2PlayerUI(); });
+        r2AudioElement.addEventListener("pause", () => { 
+          isR2Playing = false; 
+          updateR2PlayerUI(); 
+          if ('mediaSession' in navigator) navigator.mediaSession.playbackState = "paused";
+        });
         r2AudioElement.addEventListener("ended", onR2TrackEnded);
       }
     }
@@ -8610,6 +8614,17 @@
       if (durEl) durEl.innerText = formatZenTimer(Math.floor(dur));
       if (seekEl && dur > 0) {
         seekEl.value = (curr / dur) * 100;
+      }
+
+      // Cập nhật thanh tiến độ chạy ngầm trên màn hình khóa điện thoại
+      if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession && dur > 0) {
+        try {
+          navigator.mediaSession.setPositionState({
+            duration: dur,
+            playbackRate: r2AudioElement.playbackRate || 1.0,
+            position: curr
+          });
+        } catch(e) {}
       }
     }
 
@@ -8714,11 +8729,34 @@
       if (!('mediaSession' in navigator) || !track) return;
       navigator.mediaSession.metadata = new MediaMetadata({
         title: track.title,
-        artist: track.artist + " (Bản Quyền Đất Phú)",
+        artist: track.artist + " • Bản Quyền Đất Phú",
         album: "Âm Nhạc Tĩnh Tâm An Lạc (Cloudflare R2 Master)",
         artwork: [
+          { src: "img/logo_hoa_sen_real.png", sizes: "96x96", type: "image/png" },
+          { src: "img/logo_hoa_sen_real.png", sizes: "192x192", type: "image/png" },
           { src: "img/logo_hoa_sen_real.png", sizes: "512x512", type: "image/png" }
         ]
+      });
+
+      navigator.mediaSession.playbackState = "playing";
+
+      // Đăng ký toàn bộ phím điều khiển trên màn hình khóa (Android / iOS Lockscreen Widget)
+      navigator.mediaSession.setActionHandler('play', () => {
+        if (r2AudioElement) { r2AudioElement.play(); isR2Playing = true; updateR2PlayerUI(); }
+      });
+      navigator.mediaSession.setActionHandler('pause', () => {
+        if (r2AudioElement) { r2AudioElement.pause(); isR2Playing = false; updateR2PlayerUI(); }
+      });
+      navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+        skipR2Audio(-(details.seekOffset || 15));
+      });
+      navigator.mediaSession.setActionHandler('seekforward', (details) => {
+        skipR2Audio(details.seekOffset || 15);
+      });
+      navigator.mediaSession.setActionHandler('seekto', (details) => {
+        if (details.seekTime && r2AudioElement) {
+          r2AudioElement.currentTime = details.seekTime;
+        }
       });
     }
 
