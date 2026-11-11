@@ -8712,6 +8712,131 @@
     }
 
     
+    
+    // =========================================================================
+    // YOUTUBE-GRADE CINEMA ENGINE (INVISIBLE UI, GESTURES & AMBILIGHT GLOW)
+    // =========================================================================
+    let cinemaHudTimeout = null;
+    let isCinemaHudVisible = true;
+    let lastTapTimestamp = 0;
+    let lastTapX = 0;
+    let slideshowProgressInterval = null;
+    let slideshowCurrentElapsed = 0;
+
+    const ARTWORK_AMBIENT_COLORS = {
+      tet_sum_vay: 'rgba(245, 158, 11, 0.45)', // Vàng ấm sum vầy
+      lao_dong_nu_cuoi: 'rgba(251, 191, 36, 0.4)', // Nắng tươi thợ xây
+      lao_dong_mong: 'rgba(16, 185, 129, 0.4)', // Xanh non đỉnh đồi
+      lao_dong_lat_da: 'rgba(5, 150, 105, 0.4)', // Ngọc thạch sân chùa
+      tu_bo_chua_1: 'rgba(217, 119, 6, 0.45)', // Đèn đêm tổ đình
+      tu_bo_chua_2: 'rgba(202, 138, 4, 0.4)', // Sư tử đá uy nghiêm
+      ganh_da_dia: 'rgba(6, 182, 212, 0.45)', // Sóng biển Gành Đá
+      mui_dien: 'rgba(244, 63, 94, 0.45)', // Rạng đông Mũi Điện
+      thap_nhan: 'rgba(234, 88, 12, 0.45)' // Đất nung Tháp Nhạn
+    };
+
+    function updateCinemaAmbientGlow(artId) {
+      const glow = document.getElementById("mediaLargeScreenAmbientGlow");
+      if (!glow) return;
+      const col = ARTWORK_AMBIENT_COLORS[artId] || 'rgba(245, 158, 11, 0.35)';
+      glow.style.backgroundColor = col;
+      glow.style.boxShadow = '0 0 65px ' + col;
+    }
+
+    function showCinemaHud() {
+      isCinemaHudVisible = true;
+      const elements = document.querySelectorAll(".cinema-hud-element");
+      elements.forEach(el => {
+        el.style.opacity = "1";
+        el.style.pointerEvents = "auto";
+      });
+      const vig = document.getElementById("cinemaVignette");
+      if (vig) vig.style.opacity = "1";
+
+      resetCinemaHudTimeout();
+    }
+
+    function hideCinemaHud() {
+      // Chỉ tự ẩn khi rạp chiếu đang mở
+      isCinemaHudVisible = false;
+      const elements = document.querySelectorAll(".cinema-hud-element");
+      elements.forEach(el => {
+        el.style.opacity = "0";
+        el.style.pointerEvents = "none";
+      });
+      const vig = document.getElementById("cinemaVignette");
+      if (vig) vig.style.opacity = "0.2";
+    }
+
+    function resetCinemaHudTimeout() {
+      clearTimeout(cinemaHudTimeout);
+      cinemaHudTimeout = setTimeout(() => {
+        hideCinemaHud();
+      }, 3500); // Tự động ẩn sau 3.5 giây như YouTube
+    }
+
+    function handleCinemaScreenClick(e) {
+      const now = Date.now();
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const isRightSide = clickX > (rect.width / 2);
+
+      // Phát hiện chạm đúp (Double Tap trong vòng 320ms)
+      if (now - lastTapTimestamp < 320 && Math.abs(clickX - lastTapX) < 80) {
+        // Double tap: chuyển tranh như YouTube tua video!
+        if (isRightSide) {
+          flashYtRipple('right');
+          changeShowcaseArt(1);
+        } else {
+          flashYtRipple('left');
+          changeShowcaseArt(-1);
+        }
+        showCinemaHud();
+        lastTapTimestamp = 0;
+        return;
+      }
+
+      lastTapTimestamp = now;
+      lastTapX = clickX;
+
+      // Single click: Bật / Tắt thanh điều khiển
+      if (isCinemaHudVisible) {
+        hideCinemaHud();
+      } else {
+        showCinemaHud();
+      }
+    }
+
+    function flashYtRipple(side) {
+      const el = document.getElementById(side === 'right' ? 'ytRippleRight' : 'ytRippleLeft');
+      if (!el) return;
+      el.style.opacity = "1";
+      el.style.transform = "translateY(-50%) scale(1.15)";
+      setTimeout(() => {
+        el.style.opacity = "0";
+        el.style.transform = "translateY(-50%) scale(0.75)";
+      }, 450);
+    }
+
+    function updateSlideshowProgressBar(percent) {
+      const bar = document.getElementById("ytSlideshowProgressBar");
+      if (bar) bar.style.width = percent + "%";
+    }
+
+    // Gắn lắng nghe chuyển động chuột trên màn hình lớn
+    document.addEventListener("DOMContentLoaded", () => {
+      const frame = document.getElementById("mediaLargeScreenFrame");
+      if (frame) {
+        frame.addEventListener("mousemove", () => {
+          showCinemaHud();
+        });
+        frame.addEventListener("mouseleave", () => {
+          clearTimeout(cinemaHudTimeout);
+          cinemaHudTimeout = setTimeout(hideCinemaHud, 1200);
+        });
+      }
+    });
+
     // ĐIỀU KHIỂN TOÀN MÀN HÌNH RẠP CHIẾU 4K (FULLSCREEN THEATER API)
     function toggleCinemaFullscreen() {
       const frame = document.getElementById("mediaLargeScreenFrame");
@@ -8769,6 +8894,8 @@
       if (poemEl) poemEl.innerText = `"${art.poem}"`;
       if (catEl) catEl.innerText = art.category;
       if (counterEl) counterEl.innerText = `${idx + 1} / ${SHOWCASE_ARTWORKS.length}`;
+      updateCinemaAmbientGlow(art.id);
+      showCinemaHud();
 
       // Update thumb button styles
       for (let i = 0; i < SHOWCASE_ARTWORKS.length; i++) {
@@ -8826,15 +8953,29 @@
       }
 
       clearInterval(artSlideshowTimer);
+      clearInterval(slideshowProgressInterval);
+      slideshowCurrentElapsed = 0;
+      updateSlideshowProgressBar(0);
+
+      slideshowProgressInterval = setInterval(() => {
+        slideshowCurrentElapsed += 100;
+        const pct = Math.min(100, (slideshowCurrentElapsed / 7000) * 100);
+        updateSlideshowProgressBar(pct);
+      }, 100);
+
       artSlideshowTimer = setInterval(() => {
+        slideshowCurrentElapsed = 0;
+        updateSlideshowProgressBar(0);
         changeShowcaseArt(1);
-      }, 7000); // Đổi ảnh mỗi 7 giây
+      }, 7000);
       showToast("Đang tự động trình chiếu nghệ thuật & hòa tấu âm thanh");
     }
 
     function stopArtSlideshow() {
       isSlideshowPlaying = false;
       clearInterval(artSlideshowTimer);
+      clearInterval(slideshowProgressInterval);
+      updateSlideshowProgressBar(0);
       const icon = document.getElementById("slideshowPlayIcon");
       const text = document.getElementById("slideshowPlayText");
       if (icon) icon.className = "fa-solid fa-play text-amber-300 text-[10px]";
@@ -10440,56 +10581,76 @@
       <div id="mediaTabContent_art" class="space-y-3">
 <!-- TẦNG 1: MÀN HÌNH CHIẾU NGHỆ THUẬT & NHIẾP ẢNH 4K (THỊ GIÁC) -->
       <div class="space-y-2">
-        <div id="mediaLargeScreenFrame" class="relative rounded-2xl sm:rounded-3xl overflow-hidden media-showcase-frame bg-slate-950 group w-full h-72 sm:h-96 md:h-[440px] lg:h-[500px] transition-all duration-500 select-none">
-          <!-- Ảnh Showcase Màn Hình Lớn 4K -->
-          <img id="mediaShowcaseImg" src="img/tet_sum_vay_dat_phu.jpg" alt="Tác Phẩm Nghệ Thuật" class="w-full h-full object-cover object-center transition-all duration-700 group-hover:scale-102" />
-          
-          <!-- Hào quang điện ảnh mờ tối đa tầng để chữ đọc sắc nét -->
-          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/15 pointer-events-none"></div>
+        <div class="relative w-full">
+          <!-- HIỆU ỨNG ÁNH SÁNG HẮT VIỀN YOUTUBE (AMBIENT MODE / AMBILIGHT GLOW) -->
+          <div id="mediaLargeScreenAmbientGlow" class="absolute -inset-3 sm:-inset-6 rounded-3xl bg-amber-500/30 blur-3xl pointer-events-none transition-all duration-1000 -z-10 opacity-75"></div>
 
-          <!-- NÚT ĐIỀU HƯỚNG TRƯỚC / SAU CỠ LỚN (CINEMA NAV ARROWS) -->
-          <button onclick="changeShowcaseArt(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-black/60 hover:bg-amber-500 hover:text-slate-950 text-white flex items-center justify-center transition-all duration-200 shadow-xl border border-white/20 hover:border-amber-400 group-hover:scale-105 active:scale-95" title="Bức tranh trước">
-            <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
-          </button>
-          <button onclick="changeShowcaseArt(1)" class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-black/60 hover:bg-amber-500 hover:text-slate-950 text-white flex items-center justify-center transition-all duration-200 shadow-xl border border-white/20 hover:border-amber-400 group-hover:scale-105 active:scale-95" title="Bức tranh tiếp theo">
-            <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
-          </button>
+          <div id="mediaLargeScreenFrame" class="relative rounded-2xl sm:rounded-3xl overflow-hidden media-showcase-frame bg-slate-950 group w-full h-72 sm:h-96 md:h-[450px] lg:h-[520px] transition-all duration-500 select-none cursor-pointer" onclick="handleCinemaScreenClick(event)">
+            <!-- Ảnh Showcase Màn Hình Lớn 4K -->
+            <img id="mediaShowcaseImg" src="img/tet_sum_vay_dat_phu.jpg" alt="Tác Phẩm Nghệ Thuật" class="w-full h-full object-cover object-center transition-all duration-700" />
+            
+            <!-- Hào quang điện ảnh mờ tối đa tầng -->
+            <div id="cinemaVignette" class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-black/20 pointer-events-none transition-opacity duration-500"></div>
 
-          <!-- THANH CÔNG CỤ TRÊN ĐỈNH MÀN HÌNH LỚN -->
-          <div class="absolute top-3 inset-x-3.5 flex items-center justify-between pointer-events-none">
-            <!-- Huy hiệu phân loại & Đếm tranh -->
-            <div class="flex items-center gap-2 pointer-events-auto">
-              <span id="showcaseBadgeCategory" class="px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-xs uppercase shadow-md border border-amber-300">
-                TẾT ĐOÀN VIÊN 4K
-              </span>
-              <span id="showcaseCounter" class="px-2.5 py-1 rounded-full bg-black/70 border border-white/30 text-amber-300 font-black text-xs shadow-md">
-                1 / 9
-              </span>
+            <!-- HIỆU ỨNG GÕ ĐÚP YOUTUBE (DOUBLE TAP RIPPLE FEEDBACK) -->
+            <div id="ytRippleLeft" class="absolute left-8 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-white/25 backdrop-blur-xs text-white flex flex-col items-center justify-center opacity-0 pointer-events-none transition-all duration-300 scale-75 z-30 shadow-2xl border border-white/40">
+              <i class="fa-solid fa-angles-left text-2xl drop-shadow"></i>
+              <span class="text-[9px] font-black uppercase mt-1 tracking-wider drop-shadow">Tranh Trước</span>
+            </div>
+            <div id="ytRippleRight" class="absolute right-8 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-white/25 backdrop-blur-xs text-white flex flex-col items-center justify-center opacity-0 pointer-events-none transition-all duration-300 scale-75 z-30 shadow-2xl border border-white/40">
+              <i class="fa-solid fa-angles-right text-2xl drop-shadow"></i>
+              <span class="text-[9px] font-black uppercase mt-1 tracking-wider drop-shadow">Tranh Kế</span>
             </div>
 
-            <!-- Nút Tự Động Chiếu & Nút Toàn Màn Hình -->
-            <div class="flex items-center gap-2 pointer-events-auto">
-              <button id="btnToggleSlideshow" onclick="toggleArtSlideshow()" class="px-3 py-1.5 rounded-xl bg-black/75 hover:bg-black/95 border border-white/25 text-white text-xs font-bold shadow-lg flex items-center gap-1.5 transition active:scale-95" title="Tự động chuyển tranh sau mỗi 7 giây">
-                <i id="slideshowPlayIcon" class="fa-solid fa-play text-amber-300 text-xs"></i>
-                <span id="slideshowPlayText">Tự Động Chiếu</span>
-              </button>
-              <button onclick="toggleCinemaFullscreen()" class="px-3 py-1.5 rounded-xl bg-black/75 hover:bg-amber-500 hover:text-slate-950 border border-white/25 text-amber-300 text-xs font-bold shadow-lg flex items-center gap-1.5 transition active:scale-95" title="Xem tràn viền toàn màn hình">
-                <i class="fa-solid fa-expand text-xs"></i>
-                <span class="hidden sm:inline">Toàn Màn Hình</span>
-              </button>
-            </div>
-          </div>
+            <!-- NÚT ĐIỀU HƯỚNG TRƯỚC / SAU CỠ LỚN (CINEMA NAV ARROWS - TỰ ẨN NHƯ YOUTUBE) -->
+            <button onclick="event.stopPropagation(); changeShowcaseArt(-1)" id="cinemaHudNavLeft" class="cinema-hud-element absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-black/60 hover:bg-amber-500 hover:text-slate-950 text-white flex items-center justify-center transition-all duration-300 shadow-xl border border-white/20 hover:border-amber-400 group-hover:scale-105 active:scale-95 z-20" title="Bức tranh trước">
+              <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
+            </button>
+            <button onclick="event.stopPropagation(); changeShowcaseArt(1)" id="cinemaHudNavRight" class="cinema-hud-element absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-black/60 hover:bg-amber-500 hover:text-slate-950 text-white flex items-center justify-center transition-all duration-300 shadow-xl border border-white/20 hover:border-amber-400 group-hover:scale-105 active:scale-95 z-20" title="Bức tranh tiếp theo">
+              <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
+            </button>
 
-          <!-- CHÚ THÍCH ĐIỆN ẢNH VÀNG HOÀNG KIM Ở ĐÁY MÀN HÌNH LỚN -->
-          <div class="absolute bottom-3 sm:bottom-4 inset-x-4 sm:inset-x-6 text-left space-y-1 pointer-events-none">
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-              <div id="showcaseTitle" class="text-base sm:text-xl md:text-2xl font-black text-yellow-300 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] tracking-tight">
-                ĐẠI GIA ĐÌNH ĐẤT PHÚ SUM VẦY ĐÓN TẾT CỔ TRUYỀN
+            <!-- THANH CÔNG CỤ TRÊN ĐỈNH MÀN HÌNH LỚN (TỰ ẨN NHƯ YOUTUBE) -->
+            <div id="cinemaHudTop" class="cinema-hud-element absolute top-3 inset-x-3.5 flex items-center justify-between pointer-events-none transition-all duration-300 z-20">
+              <!-- Huy hiệu phân loại & Đếm tranh -->
+              <div class="flex items-center gap-2 pointer-events-auto">
+                <span id="showcaseBadgeCategory" class="px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-xs uppercase shadow-md border border-amber-300">
+                  TẾT ĐOÀN VIÊN 4K
+                </span>
+                <span id="showcaseCounter" class="px-2.5 py-1 rounded-full bg-black/70 border border-white/30 text-amber-300 font-black text-xs shadow-md">
+                  1 / 9
+                </span>
+              </div>
+
+              <!-- Nút Tự Động Chiếu & Nút Toàn Màn Hình -->
+              <div class="flex items-center gap-2 pointer-events-auto">
+                <button id="btnToggleSlideshow" onclick="event.stopPropagation(); toggleArtSlideshow()" class="px-3 py-1.5 rounded-xl bg-black/75 hover:bg-black/95 border border-white/25 text-white text-xs font-bold shadow-lg flex items-center gap-1.5 transition active:scale-95" title="Tự động chuyển tranh sau mỗi 7 giây">
+                  <i id="slideshowPlayIcon" class="fa-solid fa-play text-amber-300 text-xs"></i>
+                  <span id="slideshowPlayText">Tự Động Chiếu</span>
+                </button>
+                <button onclick="event.stopPropagation(); toggleCinemaFullscreen()" class="px-3 py-1.5 rounded-xl bg-black/75 hover:bg-amber-500 hover:text-slate-950 border border-white/25 text-amber-300 text-xs font-bold shadow-lg flex items-center gap-1.5 transition active:scale-95" title="Xem tràn viền toàn màn hình">
+                  <i class="fa-solid fa-expand text-xs"></i>
+                  <span class="hidden sm:inline">Toàn Màn Hình</span>
+                </button>
               </div>
             </div>
-            <div id="showcasePoem" class="text-xs sm:text-sm text-amber-100/95 font-medium italic drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] line-clamp-2 max-w-3xl leading-relaxed">
-              "Con cháu quây quần mừng thọ ông bà, nụ cười rạng rỡ bên phong bao lì xì đỏ, cành mai vàng rực rỡ và mâm ngũ quả nồng ấm nghĩa tình."
+
+            <!-- CHÚ THÍCH ĐIỆN ẢNH VÀNG HOÀNG KIM Ở ĐÁY MÀN HÌNH LỚN -->
+            <div id="cinemaHudBottom" class="cinema-hud-element absolute bottom-3 sm:bottom-4 inset-x-4 sm:inset-x-6 text-left space-y-1 pointer-events-none transition-all duration-300 z-20">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                <div id="showcaseTitle" class="text-base sm:text-xl md:text-2xl font-black text-yellow-300 drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] tracking-tight">
+                  ĐẠI GIA ĐÌNH ĐẤT PHÚ SUM VẦY ĐÓN TẾT CỔ TRUYỀN
+                </div>
+              </div>
+              <div id="showcasePoem" class="text-xs sm:text-sm text-amber-100/95 font-medium italic drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] line-clamp-2 max-w-3xl leading-relaxed">
+                "Con cháu quây quần mừng thọ ông bà, nụ cười rạng rỡ bên phong bao lì xì đỏ, cành mai vàng rực rỡ và mâm ngũ quả nồng ấm nghĩa tình."
+              </div>
+            </div>
+
+            <!-- THANH TIẾN ĐỘ YOUTUBE KHI TỰ ĐỘNG TRÌNH CHIẾU -->
+            <div class="absolute bottom-0 inset-x-0 h-1 bg-black/40 overflow-hidden pointer-events-none z-20">
+              <div id="ytSlideshowProgressBar" class="h-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 w-0 transition-all duration-200"></div>
             </div>
           </div>
         </div>
