@@ -6422,14 +6422,594 @@
     let currentSettingsTab = 'healing';
 
     
-    let currentEntertainmentTab = 'art';
+    /* ========================================================================
+       📻 KHÔNG GIAN ÂM NHẠC & RADIO QUÊ HƯƠNG ĐẤT PHÚ
+       - Dân ca bài chòi, hò khoan Nam Trung Bộ
+       - Radio tản văn Lòng Người Viễn Xứ & Tại Chỗ
+       - Nhạc trữ tình hoài niệm, sáo trúc, đàn bầu
+       - Ngâm thơ & tự sự vỗ về giấc ngủ
+       - Tự động chuyển bài (Continuous Play), Hẹn giờ ngủ (Sleep Timer)
+       - Âm thanh ngũ cung dân gian chạy offline 100% khi mất mạng
+       ======================================================================== */
+
+    const HOMETOWN_DEFAULT_PLAYLIST = [
+      // 1. DÂN CA & BÀI CHÒI MIỀN TRUNG
+      {
+        id: "bc_1",
+        title: "Hô Bài Chòi Xứ Nẫu: Hội Xuân Đất Phú",
+        artist: "Đoàn Nghệ Thuật Dân Gian Miền Trung",
+        category: "baichoi",
+        categoryName: "Dân Ca & Bài Chòi",
+        duration: "04:30",
+        type: "synth_folk",
+        synthMode: "baichoi",
+        desc: "Tiếng hô giòn giã mở đầu ngày hội làng, thắm đượm tình làng nghĩa xóm."
+      },
+      {
+        id: "bc_2",
+        title: "Hò Khoan Miền Trung & Khúc Ca Sông Ba",
+        artist: "Nghệ Nhân Làng Chài & Thợ Cày Đất Phú",
+        category: "baichoi",
+        categoryName: "Dân Ca & Bài Chòi",
+        duration: "05:15",
+        type: "synth_folk",
+        synthMode: "hokhoan",
+        desc: "Điệu hò sông nước dạt dào, gắn liền với mồ hôi và chuyến bè xuôi ngược."
+      },
+      {
+        id: "bc_3",
+        title: "Dân Ca Nam Trung Bộ: Lý Ngựa Ô & Lý Chiều Chiều",
+        artist: "Tiếng Hát Quê Nhà Xứ Quảng - Phú Yên",
+        category: "baichoi",
+        categoryName: "Dân Ca & Bài Chòi",
+        duration: "04:50",
+        type: "synth_folk",
+        synthMode: "lynguao",
+        desc: "Làn điệu dân ca thanh bình rộn ràng bên rặng tre đầu làng."
+      },
+      {
+        id: "bc_4",
+        title: "Vọng Cổ Hoài Niệm: Nhớ Quê Hương & Tình Mẹ",
+        artist: "Tiếng Đàn Kìm & Câu Ca Mộc Mạc",
+        category: "baichoi",
+        categoryName: "Dân Ca & Bài Chòi",
+        duration: "06:10",
+        type: "synth_folk",
+        synthMode: "vongco",
+        desc: "Khúc ca cổ thấm đượm nỗi nhớ cội nguồn của người con xa xứ."
+      },
+
+      // 2. RADIO LÒNG NGƯỜI VIỄN XỨ & TẠI CHỖ
+      {
+        id: "rd_1",
+        title: "Radio Đêm Khuya: Tiếng Mưa Trên Mái Tôn & Nỗi Niềm Đất Cằn",
+        artist: "Giọng Đọc Tản Văn • Đất Phú Radio",
+        category: "radio",
+        categoryName: "Radio Viễn Xứ",
+        duration: "07:20",
+        type: "synth_radio",
+        synthMode: "rain_radio",
+        desc: "Xoa dịu những âu lo mùa bão gió, tìm lại sự an lòng giữa đất trời."
+      },
+      {
+        id: "rd_2",
+        title: "Tản Văn Dân Sinh: Biết Co Biết Duỗi - Vượt Qua Gian Khó",
+        artist: "Chuyện Đời Thường Của Bà Con Miền Trung",
+        category: "radio",
+        categoryName: "Radio Viễn Xứ",
+        duration: "06:05",
+        type: "synth_radio",
+        synthMode: "meditation_radio",
+        desc: "Triết lý sống kiên cường như bụi tre trước giông bão."
+      },
+      {
+        id: "rd_3",
+        title: "Kể Chuyện Làng Xưa: Nửa Gói Mì & Bát Cơm Chia Đôi",
+        artist: "Ký Ức Đồng Bào Sau Cơn Đại Lũ",
+        category: "radio",
+        categoryName: "Radio Viễn Xứ",
+        duration: "08:15",
+        type: "synth_radio",
+        synthMode: "story_radio",
+        desc: "Ấm lòng nghĩa xóm tình làng những ngày nước lũ ngập nóc nhà."
+      },
+
+      // 3. NHẠC TRỮ TÌNH & HOÀI NIỆM
+      {
+        id: "tt_1",
+        title: "Khúc Ca Đất Phú: Tình Người Sông Ba & Tháp Nhạn",
+        artist: "Hòa Tấu Nhạc Cụ Dân Tộc Ngũ Cung",
+        category: "trutinh",
+        categoryName: "Nhạc Trữ Tình",
+        duration: "05:40",
+        type: "synth_folk",
+        synthMode: "songba",
+        desc: "Giai điệu mênh mang sóng nước dòng Đà Rằng hiền hòa."
+      },
+      {
+        id: "tt_2",
+        title: "Mưa Chiều Miền Trung: Tiếng Đàn Tranh Ru Lòng Viễn Xứ",
+        artist: "Độc Tấu Đàn Tranh Trầm Ấm",
+        category: "trutinh",
+        categoryName: "Nhạc Trữ Tình",
+        duration: "06:30",
+        type: "synth_folk",
+        synthMode: "dantranh",
+        desc: "Lắng nghe giọt mưa rơi êm đềm bên hiên nhà buổi hoàng hôn."
+      },
+      {
+        id: "tt_3",
+        title: "Tiếng Sáo Trúc Bên Luống Cày Nghỉ Trưa",
+        artist: "Sáo Nứa Dân Gian & Tiếng Gió Đồng",
+        category: "trutinh",
+        categoryName: "Nhạc Trữ Tình",
+        duration: "04:45",
+        type: "synth_folk",
+        synthMode: "saotruc",
+        desc: "Tiếng sáo thanh thoát xua tan oi ả, mang lại giấc ngủ trưa thanh thản."
+      },
+
+      // 4. NGÂM THƠ & TỰ SỰ
+      {
+        id: "nt_1",
+        title: "Ngâm Thơ: Đất Quê Mẹ & Cội Nguồn Bão Gió",
+        artist: "Giọng Ngâm Thơ Trầm Lắng Xứ Trầm Hương",
+        category: "ngamtho",
+        categoryName: "Ngâm Thơ & Tự Sự",
+        duration: "05:00",
+        type: "synth_radio",
+        synthMode: "poetry",
+        desc: "Những vần thơ thương đôi bàn tay mẹ chai sần vì sương gió."
+      },
+      {
+        id: "nt_2",
+        title: "Tiếng Võng Trưa Hè: Lời Ru Đất Mẹ Nuôi Ta Lớn",
+        artist: "Khúc Hát Ru Dân Gian Cổ Truyền",
+        category: "ngamtho",
+        categoryName: "Ngâm Thơ & Tự Sự",
+        duration: "05:35",
+        type: "synth_radio",
+        synthMode: "lullaby",
+        desc: "Khúc ru ngọt ngào đưa con người về ký ức tuổi thơ thanh bình."
+      }
+    ];
+
+    let hometownPlaylist = [...HOMETOWN_DEFAULT_PLAYLIST];
+    let currentHometownTrackIdx = 0;
+    let isHometownPlaying = false;
+    let hometownCurrentFilter = "all";
+    let hometownRepeatMode = "continuous"; // 'continuous', 'one', 'shuffle'
+    let hometownSleepTimerMinutes = 0;
+    let hometownSleepTimerInterval = null;
+    let hometownSynthOscillators = [];
+    let hometownSynthGainNode = null;
+    let hometownVisualizerInterval = null;
+
+    function initHometownRadioPlayer() {
+      try {
+        const savedTracks = localStorage.getItem("datphu_custom_hometown_tracks");
+        if (savedTracks) {
+          const parsed = JSON.parse(savedTracks);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            hometownPlaylist = [...HOMETOWN_DEFAULT_PLAYLIST, ...parsed];
+          }
+        }
+      } catch(e) {}
+
+      renderHometownPlaylistUI();
+      updateHometownPlayerLCD();
+      setupHometownAudioElement();
+    }
+
+    function setupHometownAudioElement() {
+      const audioEl = document.getElementById("hometownRadioAudioElement");
+      if (!audioEl) return;
+
+      audioEl.ontimeupdate = () => {
+        const cur = audioEl.currentTime || 0;
+        const dur = audioEl.duration || 1;
+        const pct = Math.min(100, (cur / dur) * 100);
+        const sb = document.getElementById("hometownSeekbar");
+        if (sb) sb.value = pct;
+        const curEl = document.getElementById("hometownCurrentTime");
+        if (curEl) curEl.innerText = formatTimeSec(cur);
+        const durEl = document.getElementById("hometownTotalDuration");
+        if (durEl && !isNaN(dur) && dur > 0) durEl.innerText = formatTimeSec(dur);
+      };
+
+      audioEl.onended = () => {
+        if (hometownRepeatMode === "one") {
+          audioEl.currentTime = 0;
+          audioEl.play().catch(() => {});
+        } else if (hometownRepeatMode === "shuffle") {
+          const rand = Math.floor(Math.random() * hometownPlaylist.length);
+          playHometownTrackByIndex(rand);
+        } else {
+          nextHometownTrack();
+        }
+      };
+
+      audioEl.onerror = () => {
+        const track = hometownPlaylist[currentHometownTrackIdx];
+        if (track && track.url) {
+          if (window.showToastNotification) {
+            window.showToastNotification("Đang chuyển sang giai điệu ngũ cung mộc mạc (Offline)", "info");
+          }
+          startHometownOfflineSynth(track);
+        }
+      };
+    }
+
+    function renderHometownPlaylistUI() {
+      const container = document.getElementById("hometownPlaylistContainer");
+      if (!container) return;
+
+      const filtered = (hometownCurrentFilter === "all") 
+        ? hometownPlaylist 
+        : hometownPlaylist.filter(t => t.category === hometownCurrentFilter);
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="text-center py-6 text-slate-400 text-xs italic">Chưa có bài hát nào trong danh mục này.</div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map((track) => {
+        const actualIdx = hometownPlaylist.findIndex(t => t.id === track.id);
+        const isActive = (actualIdx === currentHometownTrackIdx);
+        
+        let iconCls = "fa-music";
+        if (track.category === "baichoi") iconCls = "fa-microphone-lines text-amber-400";
+        else if (track.category === "radio") iconCls = "fa-radio text-rose-400";
+        else if (track.category === "trutinh") iconCls = "fa-guitar text-emerald-400";
+        else if (track.category === "ngamtho") iconCls = "fa-book-open text-sky-400";
+
+        return `
+          <div onclick="playHometownTrackByIndex(${actualIdx})" class="p-2.5 sm:p-3 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center justify-between gap-3 ${
+            isActive 
+              ? 'bg-gradient-to-r from-amber-500/25 via-amber-400/15 to-transparent border-amber-400/90 shadow-md ring-1 ring-amber-400/40' 
+              : 'bg-black/40 border-amber-500/20 hover:bg-white/5 hover:border-amber-400/40'
+          }">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-8 h-8 rounded-xl ${isActive ? 'bg-amber-400 text-slate-950 font-black' : 'bg-white/10 text-amber-300'} flex items-center justify-center shrink-0 shadow-xs text-xs">
+                ${isActive && isHometownPlaying ? '<i class="fa-solid fa-volume-high animate-pulse"></i>' : '<i class="fa-solid ' + iconCls + '"></i>'}
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs sm:text-sm font-bold truncate ${isActive ? 'text-amber-300' : 'text-slate-100'}">
+                  ${track.title}
+                </div>
+                <div class="text-[10px] sm:text-[11px] text-slate-400 truncate flex items-center gap-2 mt-0.5">
+                  <span>${track.artist}</span>
+                  <span>•</span>
+                  <span class="text-amber-300/80">${track.categoryName}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-[11px] font-mono text-slate-400">${track.duration || '05:00'}</span>
+              <button class="w-7 h-7 rounded-full ${isActive ? 'bg-amber-400 text-slate-950' : 'bg-white/10 text-slate-300'} flex items-center justify-center text-xs shadow-xs">
+                <i class="fa-solid ${isActive && isHometownPlaying ? 'fa-pause' : 'fa-play'} ml-0.5"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function updateHometownPlayerLCD() {
+      const track = hometownPlaylist[currentHometownTrackIdx];
+      if (!track) return;
+
+      const titleEl = document.getElementById("hometownTrackTitle");
+      if (titleEl) titleEl.innerText = track.title;
+
+      const artistEl = document.getElementById("hometownTrackArtist");
+      if (artistEl) artistEl.innerText = track.artist + (track.desc ? " • " + track.desc : "");
+
+      const catBadge = document.getElementById("hometownTrackCategoryBadge");
+      if (catBadge) catBadge.innerText = track.categoryName || "DÂN CA BÀI CHÒI";
+
+      const playIcon = document.getElementById("hometownPlayIcon");
+      if (playIcon) {
+        playIcon.className = isHometownPlaying ? "fa-solid fa-pause" : "fa-solid fa-play ml-0.5";
+      }
+
+      const durEl = document.getElementById("hometownTotalDuration");
+      if (durEl) durEl.innerText = track.duration || "04:30";
+    }
+
+    function togglePlayHometownTrack() {
+      if (isHometownPlaying) {
+        pauseHometownTrack();
+      } else {
+        playHometownTrackByIndex(currentHometownTrackIdx);
+      }
+    }
+
+    function playHometownTrackByIndex(idx) {
+      if (idx < 0 || idx >= hometownPlaylist.length) return;
+      currentHometownTrackIdx = idx;
+      const track = hometownPlaylist[idx];
+      isHometownPlaying = true;
+
+      if (typeof isDharmaPlaying !== 'undefined' && isDharmaPlaying && typeof stopDharmaPlayback === 'function') {
+        stopDharmaPlayback();
+      }
+
+      const audioEl = document.getElementById("hometownRadioAudioElement");
+      if (track.url && audioEl) {
+        stopHometownOfflineSynth();
+        audioEl.src = track.url;
+        audioEl.play().catch(() => {
+          startHometownOfflineSynth(track);
+        });
+      } else {
+        if (audioEl) audioEl.pause();
+        startHometownOfflineSynth(track);
+      }
+
+      startHometownVisualizer();
+      updateHometownPlayerLCD();
+      renderHometownPlaylistUI();
+    }
+
+    function pauseHometownTrack() {
+      isHometownPlaying = false;
+      const audioEl = document.getElementById("hometownRadioAudioElement");
+      if (audioEl) audioEl.pause();
+      stopHometownOfflineSynth();
+      stopHometownVisualizer();
+      updateHometownPlayerLCD();
+      renderHometownPlaylistUI();
+    }
+
+    function nextHometownTrack() {
+      let nextIdx = (currentHometownTrackIdx + 1) % hometownPlaylist.length;
+      playHometownTrackByIndex(nextIdx);
+    }
+
+    function prevHometownTrack() {
+      let prevIdx = (currentHometownTrackIdx - 1 + hometownPlaylist.length) % hometownPlaylist.length;
+      playHometownTrackByIndex(prevIdx);
+    }
+
+    function rewindHometown10s() {
+      const audioEl = document.getElementById("hometownRadioAudioElement");
+      if (audioEl && audioEl.currentTime) {
+        audioEl.currentTime = Math.max(0, audioEl.currentTime - 10);
+      }
+    }
+
+    function forwardHometown10s() {
+      const audioEl = document.getElementById("hometownRadioAudioElement");
+      if (audioEl && audioEl.currentTime) {
+        audioEl.currentTime = Math.min(audioEl.duration || 300, audioEl.currentTime + 10);
+      }
+    }
+
+    function handleHometownSeek(val) {
+      const audioEl = document.getElementById("hometownRadioAudioElement");
+      if (audioEl && audioEl.duration) {
+        audioEl.currentTime = (val / 100) * audioEl.duration;
+      }
+    }
+
+    function setHometownVolume(val) {
+      const audioEl = document.getElementById("hometownRadioAudioElement");
+      if (audioEl) audioEl.volume = parseFloat(val);
+      if (hometownSynthGainNode && window.hometownAudioContext) {
+        hometownSynthGainNode.gain.setValueAtTime(parseFloat(val) * 0.25, window.hometownAudioContext.currentTime);
+      }
+    }
+
+    function cycleHometownRepeatMode() {
+      const modes = ["continuous", "one", "shuffle"];
+      const labels = {
+        continuous: "Liên Tục",
+        one: "Lặp 1 Bài",
+        shuffle: "Ngẫu Nhiên"
+      };
+      const curIdx = modes.indexOf(hometownRepeatMode);
+      hometownRepeatMode = modes[(curIdx + 1) % modes.length];
+      const txt = document.getElementById("hometownRepeatText");
+      if (txt) txt.innerText = labels[hometownRepeatMode];
+      if (window.showToastNotification) {
+        window.showToastNotification("Chế độ phát: " + labels[hometownRepeatMode], "info");
+      }
+    }
+
+    function cycleHometownSleepTimer() {
+      const timerOptions = [0, 15, 30, 45, 60];
+      const curIdx = timerOptions.indexOf(hometownSleepTimerMinutes);
+      hometownSleepTimerMinutes = timerOptions[(curIdx + 1) % timerOptions.length];
+
+      if (hometownSleepTimerInterval) {
+        clearInterval(hometownSleepTimerInterval);
+        hometownSleepTimerInterval = null;
+      }
+
+      const badge = document.getElementById("hometownSleepBadge");
+      const badgeText = document.getElementById("hometownSleepTimerText");
+      const btnText = document.getElementById("hometownSleepBtnText");
+
+      if (hometownSleepTimerMinutes > 0) {
+        if (badge) badge.classList.remove("hidden");
+        if (badgeText) badgeText.innerText = hometownSleepTimerMinutes + "p";
+        if (btnText) btnText.innerText = "Hẹn " + hometownSleepTimerMinutes + "p";
+
+        if (window.showToastNotification) {
+          window.showToastNotification("Đã hẹn giờ tắt sau " + hometownSleepTimerMinutes + " phút ngủ ngon", "info");
+        }
+
+        let secondsRemaining = hometownSleepTimerMinutes * 60;
+        hometownSleepTimerInterval = setInterval(() => {
+          secondsRemaining--;
+          if (badgeText) {
+            const m = Math.floor(secondsRemaining / 60);
+            badgeText.innerText = m + "p";
+          }
+          if (secondsRemaining <= 0) {
+            clearInterval(hometownSleepTimerInterval);
+            hometownSleepTimerInterval = null;
+            pauseHometownTrack();
+            if (badge) badge.classList.add("hidden");
+            if (btnText) btnText.innerText = "Hẹn Giờ";
+            hometownSleepTimerMinutes = 0;
+            if (window.showToastNotification) {
+              window.showToastNotification("Hết giờ hẹn: Đã tự động tắt đài để bạn an giấc", "info");
+            }
+          }
+        }, 1000);
+      } else {
+        if (badge) badge.classList.add("hidden");
+        if (btnText) btnText.innerText = "Hẹn Giờ";
+        if (window.showToastNotification) {
+          window.showToastNotification("Đã tắt chế độ hẹn giờ ngủ", "info");
+        }
+      }
+    }
+
+    function filterHometownPlaylist(cat) {
+      hometownCurrentFilter = cat;
+      const cats = ["all", "baichoi", "radio", "trutinh", "ngamtho"];
+      cats.forEach(c => {
+        const btn = document.getElementById("hometownCatBtn_" + c);
+        if (btn) {
+          if (c === cat) {
+            btn.className = "px-3 py-1.5 rounded-xl font-black transition whitespace-nowrap bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow-xs active:scale-95";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-xl font-bold transition whitespace-nowrap bg-white/10 hover:bg-white/20 text-slate-200 active:scale-95";
+          }
+        }
+      });
+      renderHometownPlaylistUI();
+    }
+
+    function addCustomHometownTrack() {
+      const input = document.getElementById("hometownCustomUrlInput");
+      if (!input || !input.value.trim()) {
+        if (window.showToastNotification) window.showToastNotification("Vui lòng dán link MP3 hoặc Audio", "warning");
+        return;
+      }
+
+      const url = input.value.trim();
+      const newTrack = {
+        id: "custom_" + Date.now(),
+        title: "Khúc Ca Quê Hương Tự Chọn",
+        artist: "Bộ Sưu Tập Gia Đình Đất Phú",
+        category: "trutinh",
+        categoryName: "Nhạc Gia Đình",
+        duration: "04:30",
+        type: "audio_url",
+        url: url,
+        desc: "Bài hát do bạn bổ sung vào đài phát thanh gia đình."
+      };
+
+      hometownPlaylist.unshift(newTrack);
+      try {
+        const customOnly = hometownPlaylist.filter(t => t.id.startsWith("custom_"));
+        localStorage.setItem("datphu_custom_hometown_tracks", JSON.stringify(customOnly));
+      } catch(e) {}
+
+      input.value = "";
+      renderHometownPlaylistUI();
+      playHometownTrackByIndex(0);
+      if (window.showToastNotification) window.showToastNotification("Đã thêm bài hát vào danh sách phát!", "success");
+    }
+
+    // ================= BỘ TỔNG HỢP ÂM THANH NGŨ CUNG VIỆT NAM (OFFLINE WEB AUDIO) =================
+    function startHometownOfflineSynth(track) {
+      stopHometownOfflineSynth();
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        if (!window.hometownAudioContext) {
+          window.hometownAudioContext = new AudioContextClass();
+        }
+        const ctx = window.hometownAudioContext;
+        if (ctx.state === 'suspended') ctx.resume();
+
+        hometownSynthGainNode = ctx.createGain();
+        hometownSynthGainNode.gain.setValueAtTime(0.18, ctx.currentTime);
+        hometownSynthGainNode.connect(ctx.destination);
+
+        const pentatonicFrequencies = [174.61, 196.00, 233.08, 261.63, 293.66, 349.23, 392.00, 466.16];
+        
+        const osc = ctx.createOscillator();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(pentatonicFrequencies[0], ctx.currentTime);
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(800, ctx.currentTime);
+
+        osc.connect(filter);
+        filter.connect(hometownSynthGainNode);
+        osc.start();
+        hometownSynthOscillators.push(osc);
+
+        let noteStep = 0;
+        const melodyInterval = setInterval(() => {
+          if (!isHometownPlaying || !hometownSynthOscillators.length) {
+            clearInterval(melodyInterval);
+            return;
+          }
+          const freq = pentatonicFrequencies[noteStep % pentatonicFrequencies.length];
+          osc.frequency.setTargetAtTime(freq, ctx.currentTime, 0.4);
+          noteStep++;
+        }, 3200);
+
+      } catch(e) {}
+    }
+
+    function stopHometownOfflineSynth() {
+      if (hometownSynthOscillators.length) {
+        hometownSynthOscillators.forEach(osc => {
+          try { osc.stop(); osc.disconnect(); } catch(e) {}
+        });
+        hometownSynthOscillators = [];
+      }
+      if (hometownSynthGainNode) {
+        try { hometownSynthGainNode.disconnect(); } catch(e) {}
+        hometownSynthGainNode = null;
+      }
+    }
+
+    function startHometownVisualizer() {
+      stopHometownVisualizer();
+      hometownVisualizerInterval = setInterval(() => {
+        if (!isHometownPlaying) return;
+        for (let i = 1; i <= 5; i++) {
+          const bar = document.getElementById("radioEq" + i);
+          if (bar) {
+            const h = Math.floor(Math.random() * 22) + 4;
+            bar.style.height = h + "px";
+          }
+        }
+      }, 250);
+    }
+
+    function stopHometownVisualizer() {
+      if (hometownVisualizerInterval) {
+        clearInterval(hometownVisualizerInterval);
+        hometownVisualizerInterval = null;
+      }
+      for (let i = 1; i <= 5; i++) {
+        const bar = document.getElementById("radioEq" + i);
+        if (bar) bar.style.height = "6px";
+      }
+    }
+
+    let currentEntertainmentTab = 'radio';
 
     function switchEntertainmentTab(tab) {
       currentEntertainmentTab = tab;
+      const radioContent = document.getElementById("tabContent_radio");
       const artContent = document.getElementById("mediaTabContent_art");
       const healingContent = document.getElementById("tabContent_healing");
       const ringtoneContent = document.getElementById("tabContent_ringtone");
 
+      const btnRadio = document.getElementById("mediaTabBtn_radio");
       const btnArt = document.getElementById("mediaTabBtn_art");
       const btnHealing = document.getElementById("mediaTabBtn_healing");
       const btnRingtone = document.getElementById("mediaTabBtn_ringtone");
@@ -6437,10 +7017,15 @@
       const activeBtnCls = "py-1.5 px-3 rounded-xl text-center transition flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow font-black active:scale-95 text-[11px] sm:text-xs";
       const idleBtnCls = "py-1.5 px-3 rounded-xl text-center transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10 font-bold active:scale-95 text-[11px] sm:text-xs";
 
+      if (btnRadio) btnRadio.className = (tab === 'radio') ? activeBtnCls : idleBtnCls;
       if (btnArt) btnArt.className = (tab === 'art') ? activeBtnCls : idleBtnCls;
       if (btnHealing) btnHealing.className = (tab === 'healing') ? activeBtnCls : idleBtnCls;
       if (btnRingtone) btnRingtone.className = (tab === 'ringtone') ? activeBtnCls : idleBtnCls;
 
+      if (radioContent) {
+        if (tab === 'radio') radioContent.classList.remove("hidden");
+        else radioContent.classList.add("hidden");
+      }
       if (artContent) {
         if (tab === 'art') artContent.classList.remove("hidden");
         else artContent.classList.add("hidden");
@@ -6454,7 +7039,9 @@
         else ringtoneContent.classList.add("hidden");
       }
 
-      if (tab === 'healing') {
+      if (tab === 'radio') {
+        initHometownRadioPlayer();
+      } else if (tab === 'healing') {
         updateAmbientButtonsUI();
         updateHealingContextDisplay();
       } else if (tab === 'ringtone') {
@@ -6463,6 +7050,7 @@
         updateRingtoneModalUI();
       }
     }
+
 
     function switchSettingsTab(tabName) {
       if (tabName === 'healing' || tabName === 'ringtone') {
@@ -8890,6 +9478,7 @@
       if (!modal) return;
       modal.classList.toggle("hidden");
       if (!modal.classList.contains("hidden")) {
+        switchEntertainmentTab(currentEntertainmentTab || 'radio');
         renderArtThumbnails();
         selectShowcaseArt(currentArtIndex);
         syncAudiovisualPlayerUI();
@@ -10587,8 +11176,12 @@
         </div>
 
         <!-- BỘ CHUYỂN KÊNH TINH TẾ (CINEMA CHANNEL POD) -->
-        <div class="flex items-center gap-1.5 p-1 bg-slate-950/90 border border-amber-400/40 rounded-2xl self-start sm:self-auto shadow-inner text-xs font-black">
-          <button id="mediaTabBtn_art" onclick="switchEntertainmentTab('art')" class="py-1.5 px-3 rounded-xl text-center transition flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow font-black active:scale-95 text-[11px] sm:text-xs">
+        <div class="flex items-center gap-1.5 p-1 bg-slate-950/90 border border-amber-400/40 rounded-2xl self-start sm:self-auto shadow-inner text-xs font-black overflow-x-auto max-w-full">
+          <button id="mediaTabBtn_radio" onclick="switchEntertainmentTab('radio')" class="py-1.5 px-3 rounded-xl text-center transition flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow font-black active:scale-95 text-[11px] sm:text-xs">
+            <i class="fa-solid fa-radio text-amber-950"></i>
+            <span>Radio Quê Hương</span>
+          </button>
+          <button id="mediaTabBtn_art" onclick="switchEntertainmentTab('art')" class="py-1.5 px-3 rounded-xl text-center transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10 font-bold active:scale-95 text-[11px] sm:text-xs">
             <i class="fa-solid fa-film"></i>
             <span>Rạp Chiếu 4K</span>
           </button>
@@ -10604,8 +11197,172 @@
         </div>
       </div>
 
-      <!-- NỘI DUNG TAB 1: NGHỆ THUẬT 4K -->
-      <div id="mediaTabContent_art" class="space-y-3">
+            <!-- ================= TAB 0: 📻 RADIO & ÂM NHẠC QUÊ HƯƠNG ================= -->
+      <div id="tabContent_radio" class="space-y-3">
+        <!-- KHỐI MÀN HÌNH ĐÀI RADIO CỔ ĐIỂN MỘC MẠC (HOMETOWN RADIO CONSOLE) -->
+        <div class="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-amber-500/80 shadow-2xl bg-gradient-to-b from-[#231508] via-[#160d05] to-[#0a0502] p-3.5 sm:p-5 text-white select-none">
+          <!-- Hiệu ứng vân gỗ & ánh đèn radio cổ điển -->
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(245,158,11,0.2)_0%,rgba(0,0,0,0.85)_80%)] pointer-events-none"></div>
+
+          <!-- Đỉnh Console: Tên Đài & Tín Hiệu Sóng -->
+          <div class="relative z-10 flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-amber-500/30">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+              <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-radio"></i> ĐÀI PHÁT THANH QUÊ HƯƠNG ĐẤT PHÚ
+              </span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <span id="hometownLiveBadge" class="px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-300 font-mono text-[10px] font-bold">
+                📻 SÓNG DÂN SINH
+              </span>
+              <span id="hometownSleepBadge" class="hidden px-2 py-0.5 rounded-full bg-indigo-900/70 border border-indigo-400 text-indigo-200 text-[10px] font-bold flex items-center gap-1">
+                <i class="fa-solid fa-moon text-indigo-300"></i> <span id="hometownSleepTimerText">30p</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- MÀN HÌNH LCD RADIO ẤM ÁP -->
+          <div class="relative z-10 mt-3 p-3.5 sm:p-4 rounded-2xl bg-black/60 border border-amber-400/30 shadow-inner flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="space-y-1 min-w-0 flex-1">
+              <div class="flex items-center gap-2">
+                <span id="hometownTrackCategoryBadge" class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 shadow-xs">
+                  DÂN CA BÀI CHÒI
+                </span>
+                <span id="hometownAudioFormatBadge" class="text-[10px] text-amber-200/80 font-mono">
+                  HQ Audio • Tự Động Chuyển Bài
+                </span>
+              </div>
+              
+              <div id="hometownTrackTitle" class="text-base sm:text-xl font-black text-amber-300 truncate tracking-wide drop-shadow-[0_2px_8px_rgba(245,158,11,0.5)]">
+                Hô Bài Chòi Xứ Nẫu: Hội Xuân Đất Phú
+              </div>
+              
+              <div id="hometownTrackArtist" class="text-xs text-amber-100/80 font-medium truncate italic">
+                Đoàn Nghệ Thuật Dân Gian Miền Trung • Đậm Đà Tình Quê Hương
+              </div>
+            </div>
+
+            <!-- Sóng âm thanh Visualizer hoài niệm -->
+            <div class="flex items-end gap-1 h-8 shrink-0 self-center sm:self-auto py-1 px-2 rounded-lg bg-amber-950/40 border border-amber-500/20">
+              <span class="w-1 bg-amber-400 rounded-full transition-all duration-300 h-3" id="radioEq1"></span>
+              <span class="w-1 bg-amber-300 rounded-full transition-all duration-300 h-6" id="radioEq2"></span>
+              <span class="w-1 bg-amber-500 rounded-full transition-all duration-300 h-4" id="radioEq3"></span>
+              <span class="w-1 bg-yellow-400 rounded-full transition-all duration-300 h-7" id="radioEq4"></span>
+              <span class="w-1 bg-amber-200 rounded-full transition-all duration-300 h-5" id="radioEq5"></span>
+            </div>
+          </div>
+
+          <!-- THANH TIẾN TRÌNH & THỜI GIAN PHÁT -->
+          <div class="relative z-10 mt-3 space-y-1">
+            <div class="flex items-center justify-between text-[11px] font-mono text-amber-200/80">
+              <span id="hometownCurrentTime">00:00</span>
+              <span id="hometownTotalDuration">04:30</span>
+            </div>
+            <input type="range" id="hometownSeekbar" min="0" max="100" value="0" step="0.1" oninput="handleHometownSeek(this.value)" class="w-full accent-amber-400 h-1.5 bg-amber-950/80 rounded-lg cursor-pointer">
+          </div>
+
+          <!-- BỘ NÚT ĐIỀU KHIỂN RADIO CHÍNH -->
+          <div class="relative z-10 mt-4 flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-amber-500/30">
+            <!-- Cụm Tua / Phát / Chuyển bài -->
+            <div class="flex items-center gap-2 sm:gap-3 mx-auto sm:mx-0">
+              <!-- Bài trước -->
+              <button onclick="prevHometownTrack()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-white/20 text-amber-200 flex items-center justify-center transition active:scale-95" title="Bài trước">
+                <i class="fa-solid fa-backward-step"></i>
+              </button>
+              
+              <!-- Tua lùi 10s -->
+              <button onclick="rewindHometown10s()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 text-amber-200/80 flex items-center justify-center text-xs transition active:scale-95" title="Lùi 10 giây">
+                <i class="fa-solid fa-rotate-left"></i>
+              </button>
+
+              <!-- Nút PHÁT / TẠM DỪNG Chính -->
+              <button id="hometownPlayPauseBtn" onclick="togglePlayHometownTrack()" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-300 text-slate-950 flex items-center justify-center text-lg sm:text-xl font-black shadow-lg shadow-amber-500/30 hover:scale-105 transition active:scale-95 border-2 border-yellow-100" title="Phát / Tạm dừng">
+                <i class="fa-solid fa-play ml-0.5" id="hometownPlayIcon"></i>
+              </button>
+
+              <!-- Tua tới 10s -->
+              <button onclick="forwardHometown10s()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 text-amber-200/80 flex items-center justify-center text-xs transition active:scale-95" title="Tua tới 10 giây">
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
+
+              <!-- Bài tiếp theo -->
+              <button onclick="nextHometownTrack()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-white/20 text-amber-200 flex items-center justify-center transition active:scale-95" title="Bài tiếp theo">
+                <i class="fa-solid fa-forward-step"></i>
+              </button>
+            </div>
+
+            <!-- Cụm Hẹn giờ tắt ngủ & Lặp bài & Âm lượng -->
+            <div class="flex items-center gap-2 sm:gap-3 mx-auto sm:mx-0">
+              <!-- Nút Lặp / Ngẫu nhiên -->
+              <button id="hometownRepeatBtn" onclick="cycleHometownRepeatMode()" class="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-200 text-xs font-bold transition flex items-center gap-1 active:scale-95" title="Chế độ phát">
+                <i class="fa-solid fa-repeat text-[11px]"></i>
+                <span id="hometownRepeatText" class="text-[10px]">Liên Tục</span>
+              </button>
+
+              <!-- Nút Hẹn giờ tắt ngủ -->
+              <button id="hometownSleepBtn" onclick="cycleHometownSleepTimer()" class="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-200 text-xs font-bold transition flex items-center gap-1 active:scale-95" title="Hẹn giờ tắt khi ngủ">
+                <i class="fa-solid fa-moon text-indigo-300 text-[11px]"></i>
+                <span id="hometownSleepBtnText" class="text-[10px]">Hẹn Giờ</span>
+              </button>
+
+              <!-- Thanh chỉnh Âm lượng -->
+              <div class="hidden sm:flex items-center gap-1.5 bg-black/40 px-2.5 py-1 rounded-xl border border-amber-500/20">
+                <i class="fa-solid fa-volume-high text-xs text-amber-300"></i>
+                <input type="range" id="hometownVolumeSlider" min="0" max="1" step="0.05" value="0.8" oninput="setHometownVolume(this.value)" class="w-16 accent-amber-400 h-1 bg-amber-950 rounded cursor-pointer">
+              </div>
+            </div>
+          </div>
+
+          <!-- Audio Element phát radio -->
+          <audio id="hometownRadioAudioElement" class="hidden" preload="auto"></audio>
+        </div>
+
+        <!-- 4 BỘ LỌC DANH MỤC THEO ĐÚNG BẢN PHÁC THẢO CỦA BẠN -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
+          <button id="hometownCatBtn_all" onclick="filterHometownPlaylist('all')" class="px-3 py-1.5 rounded-xl font-black transition whitespace-nowrap bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow-xs active:scale-95">
+            🌟 Tất Cả
+          </button>
+          <button id="hometownCatBtn_baichoi" onclick="filterHometownPlaylist('baichoi')" class="px-3 py-1.5 rounded-xl font-bold transition whitespace-nowrap bg-white/10 hover:bg-white/20 text-slate-200 active:scale-95">
+            🎵 Dân Ca & Bài Chòi
+          </button>
+          <button id="hometownCatBtn_radio" onclick="filterHometownPlaylist('radio')" class="px-3 py-1.5 rounded-xl font-bold transition whitespace-nowrap bg-white/10 hover:bg-white/20 text-slate-200 active:scale-95">
+            📻 Radio Viễn Xứ & Tại Chỗ
+          </button>
+          <button id="hometownCatBtn_trutinh" onclick="filterHometownPlaylist('trutinh')" class="px-3 py-1.5 rounded-xl font-bold transition whitespace-nowrap bg-white/10 hover:bg-white/20 text-slate-200 active:scale-95">
+            🌿 Nhạc Trữ Tình Hoài Niệm
+          </button>
+          <button id="hometownCatBtn_ngamtho" onclick="filterHometownPlaylist('ngamtho')" class="px-3 py-1.5 rounded-xl font-bold transition whitespace-nowrap bg-white/10 hover:bg-white/20 text-slate-200 active:scale-95">
+            📖 Ngâm Thơ & Tự Sự
+          </button>
+        </div>
+
+        <!-- DANH SÁCH BÀI HÁT / RADIO ĐẬM ĐÀ TÌNH NGHĨA (PLAYLIST ITEMS) -->
+        <div class="space-y-2 max-h-[360px] overflow-y-auto pr-1 custom-modal-scroll" id="hometownPlaylistContainer">
+          <!-- Các item được render động qua hàm renderHometownPlaylistUI() -->
+        </div>
+
+        <!-- KHỐI DÁN LINK NHẠC TÙY CHỌN CHO CON CHÁU / GIA ĐÌNH -->
+        <div class="p-3 rounded-2xl bg-slate-900/80 border border-amber-500/30 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-plus-circle text-amber-400 text-base"></i>
+            <div>
+              <span class="font-bold text-amber-200">Thêm bài hát / Link Radio yêu thích:</span>
+              <p class="text-[10px] text-slate-400">Dán đường dẫn MP3 hoặc stream để phát trên đài</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 flex-1 sm:max-w-md">
+            <input type="text" id="hometownCustomUrlInput" placeholder="Dán link audio (ví dụ: https://.../bai_ca_que_huong.mp3)" class="flex-1 bg-black/60 border border-amber-500/40 rounded-xl px-2.5 py-1.5 text-white placeholder-slate-500 text-xs focus:outline-hidden focus:border-amber-400">
+            <button onclick="addCustomHometownTrack()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-black whitespace-nowrap hover:from-amber-400 hover:to-yellow-500 active:scale-95 shadow">
+              Thêm
+            </button>
+          </div>
+        </div>
+      </div>
+
+<!-- NỘI DUNG TAB 1: NGHỆ THUẬT 4K -->
+      <div id="mediaTabContent_art" class="space-y-3 hidden">
 <!-- TẦNG 1: MÀN HÌNH CHIẾU NGHỆ THUẬT & NHIẾP ẢNH 4K (THỊ GIÁC) -->
       <div class="space-y-2">
         <div class="relative w-full">
