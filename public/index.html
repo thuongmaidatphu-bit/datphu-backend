@@ -2406,7 +2406,7 @@
 
     <!-- MODAL GỬI LỜI CHÚC DÂN SINH ĐẤT PHÚ (NÂNG CẤP HOÀNG KIM & ZALO CHUYÊN DỤNG) -->
     <div id="zaloShareModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 modal-mobile-app">
-      <div class="bg-gradient-to-b from-white via-amber-50/25 to-sky-50/30 border-2 border-amber-300/90 rounded-3xl p-5 sm:p-6 w-full max-w-lg shadow-2xl space-y-4 max-h-[94vh] overflow-y-auto">
+      <div class="bg-gradient-to-b from-white via-amber-50/25 to-sky-50/30 border-2 border-amber-300/90 rounded-3xl p-4 sm:p-5 w-full max-w-lg shadow-2xl space-y-3.5 max-h-[92vh] overflow-y-auto no-scrollbar custom-modal-scroll">
         
         <!-- Header Hoàng Kim & Zalo -->
         <div class="flex items-center justify-between pb-3.5 border-b border-amber-200/80">
@@ -2461,7 +2461,7 @@
           </div>
 
           <!-- Textarea cho phép xem và sửa linh hoạt -->
-          <textarea id="zaloPreviewText" rows="7" class="w-full text-xs sm:text-sm text-slate-800 font-medium leading-relaxed p-3 bg-gradient-to-b from-amber-50/20 to-sky-50/20 border border-amber-200/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0068ff]/40 resize-y shadow-xs font-sans placeholder-slate-400" placeholder="Đang tạo lời chúc ý nghĩa..."></textarea>
+          <textarea id="zaloPreviewText" rows="5" class="w-full text-xs sm:text-sm text-slate-800 font-medium leading-relaxed p-3 bg-gradient-to-b from-amber-50/20 to-sky-50/20 border border-amber-200/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0068ff]/40 resize-y shadow-xs font-sans placeholder-slate-400 no-scrollbar" placeholder="Đang tạo lời chúc ý nghĩa..."></textarea>
           
           <div class="flex items-center justify-between text-[10px] text-slate-400 font-medium px-1">
             <span>✨ Bạn có thể tự do gõ thêm tên người nhận</span>
@@ -6074,15 +6074,27 @@
     }
 
     function generateFormattedZaloWish(cat = 'an_khang', pickNext = false) {
-      let d = currentDate.getDate();
-      let m = currentDate.getMonth() + 1;
-      let y = currentDate.getFullYear();
-      let lun = convertSolar2Lunar(d, m, y, TIME_ZONE);
+      const dateObj = (typeof currentDate !== 'undefined' && currentDate instanceof Date) ? currentDate : new Date();
+      let d = dateObj.getDate();
+      let m = dateObj.getMonth() + 1;
+      let y = dateObj.getFullYear();
+      let tz = (typeof TIME_ZONE !== 'undefined') ? TIME_ZONE : 7.0;
+      let lun = (typeof convertSolar2Lunar === 'function') ? convertSolar2Lunar(d, m, y, tz) : { day: d, month: m, year: y };
       let lunarDay = lun.day;
       let lunarMonth = lun.month;
       let lunarStr = lunarDay < 10 ? ("Mùng " + lunarDay) : ("Ngày " + lunarDay);
-      let dayName = getDayOfWeek(d, m, y);
-      let canChiDay = (typeof getCanChiDay === 'function') ? getCanChiDay(d, m, y) : '';
+      
+      let wd = dateObj.getDay();
+      let dayName = (typeof WEEKDAYS !== 'undefined' && Array.isArray(WEEKDAYS) && WEEKDAYS[wd]) 
+                    ? WEEKDAYS[wd] 
+                    : (wd === 0 ? "Chủ Nhật" : "Thứ " + (wd + 1));
+      
+      let canChiDay = "";
+      if (typeof CAN !== 'undefined' && typeof CHI !== 'undefined' && lun.jdn) {
+        let dayCan = CAN[(lun.jdn + 9) % 10];
+        let dayChi = CHI[(lun.jdn + 1) % 12];
+        if (dayCan && dayChi) canChiDay = dayCan + " " + dayChi;
+      }
 
       // Tự động ưu tiên danh mục ngày đặc biệt nếu chưa chỉ định
       if (!cat) {
@@ -6090,22 +6102,15 @@
         else cat = 'an_khang';
       }
 
-      const list = ZALO_WISH_CATALOG[cat] || ZALO_WISH_CATALOG['an_khang'];
+      const list = (typeof ZALO_WISH_CATALOG !== 'undefined' && ZALO_WISH_CATALOG[cat]) ? ZALO_WISH_CATALOG[cat] : (ZALO_WISH_CATALOG ? ZALO_WISH_CATALOG['an_khang'] : []);
+      if (!list || list.length === 0) return "Kính chúc bạn và gia quyến một ngày mới an lành, vạn sự như ý!";
+      
       if (pickNext) {
         currentZaloWishIdx = (currentZaloWishIdx + 1) % list.length;
       } else {
         currentZaloWishIdx = Math.floor(Math.random() * list.length);
       }
       const wishQuote = list[currentZaloWishIdx];
-
-      // Giờ hoàng đạo đẹp trong ngày
-      let auspStr = "";
-      if (typeof CAN_CHI_12_HOURS !== 'undefined' && Array.isArray(CAN_CHI_12_HOURS)) {
-        auspStr = CAN_CHI_12_HOURS
-          .filter(item => item.type === "Hoàng Đạo")
-          .map(item => item.name.replace("Giờ ", ""))
-          .join(", ");
-      }
 
       let headerTitle = "🌸 LỜI CHÚC DÂN SINH - LỊCH ĐẤT PHÚ 🌸";
       if (lunarDay === 1) headerTitle = "🧧 LỜI CHÚC MÙNG 1 ĐẦU THÁNG - ĐÓN TÀI HÁI LỘC 🧧";
@@ -6116,7 +6121,6 @@
                  '\"' + wishQuote + '\"\n\n' +
                  "📅 Hôm nay: " + dayName + ", ngày " + d + "/" + m + "/" + y + " Dương lịch\n" +
                  "🌙 Âm lịch: " + lunarStr + " Tháng " + lunarMonth + (canChiDay ? (" (Ngày " + canChiDay + ")") : "") + "\n" +
-                 (auspStr ? ("✨ Giờ Hoàng Đạo đẹp: " + auspStr + "\n") : "") +
                  "👉 Xem Lịch Dân Sinh & Con Nước tại: https://datphu-backend.vercel.app";
 
       return text;
@@ -6152,7 +6156,8 @@
       const modal = document.getElementById("zaloShareModal");
       if (!modal) return;
       modal.classList.remove("hidden");
-      selectZaloCategory(category);
+      currentZaloCategory = category || 'an_khang';
+      selectZaloCategory(currentZaloCategory);
       
       // Lắng nghe sự kiện gõ ký tự để cập nhật đếm số lượng
       const el = document.getElementById("zaloPreviewText");
@@ -6167,13 +6172,10 @@
       if (!modal) return;
       if (modal.classList.contains("hidden")) {
         modal.classList.remove("hidden");
-        if (presetText) {
+        if (typeof presetText === 'string' && presetText.trim()) {
           setZaloText(presetText);
         } else {
-          const cur = getZaloText().trim();
-          if (!cur) {
-            openZaloGreetingModal(currentZaloCategory || 'an_khang');
-          }
+          openZaloGreetingModal(currentZaloCategory || 'an_khang');
         }
       } else {
         modal.classList.add("hidden");
