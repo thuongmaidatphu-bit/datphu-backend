@@ -1353,37 +1353,57 @@
         <!-- (BÌNH MINH - TRƯA NẮNG - HOÀNG HÔN - ĐÊM TRĂNG) -->
         <!-- ========================================================================= -->
         <div class="space-y-2 pt-1 select-none">
-          <!-- THANH CHỌN 2 PHONG CÁCH: SEN THIÊN NHIÊN & SEN VÀNG CUNG ĐÌNH -->
-          <div class="flex items-center justify-center gap-1.5 sm:gap-2 mb-1.5 select-none">
-            <button onclick="setLotusStyle('nature')" id="lotusStyleBtn_nature" class="px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-emerald-400 bg-gradient-to-r from-emerald-600 to-teal-600 text-white ring-2 ring-emerald-300" title="Phong cách Đầm Sen Thiên Nhiên chụp thực tế sống động">
-              <div class="w-4 h-4 rounded-full overflow-hidden border border-white/80 shrink-0">
-                <img src="img/logo_hoa_sen_real.png" alt="Sen" class="w-full h-full object-cover" />
-              </div>
-              <span>Sen Hồ Thiên Nhiên</span>
-            </button>
-            <button onclick="setLotusStyle('imperial')" id="lotusStyleBtn_imperial" class="px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-amber-300 bg-white/90 text-amber-900 hover:bg-amber-50 opacity-80" title="Phong cách Tòa Sen Đồng & Hoàng Kim 3D Cung Đình">
-              <i class="fa-solid fa-crown text-amber-600 text-xs"></i>
-              <span>Sen Vàng Cung Đình</span>
-            </button>
-          </div>
+          <!-- BỘ ĐIỀU KHIỂN TỨ THỜI & PHONG CÁCH TÒA SEN 3D CAO CẤP -->
+          <div class="max-w-md mx-auto mb-2 p-2 sm:p-2.5 rounded-2xl bg-white/95 backdrop-blur-md border-2 border-amber-300/80 shadow-[0_4px_16px_rgba(217,119,6,0.12)] space-y-2 select-none">
+            
+            <!-- HÀNG 1: 2 PHONG CÁCH SEN (SEGMENTED SWITCHER HOÀNG GIA) -->
+            <div class="grid grid-cols-2 gap-1.5 p-1 bg-amber-50/80 rounded-xl border border-amber-200/90 text-xs font-black shadow-inner">
+              <button onclick="setLotusStyle('nature')" id="lotusStyleBtn_nature" class="py-2 px-2.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 shadow-sm bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white ring-2 ring-emerald-300/80 active:scale-95" title="Đầm Sen Thiên Nhiên chụp thực tế sống động">
+                <div class="w-4 h-4 rounded-full overflow-hidden border border-white/80 shrink-0 shadow-2xs">
+                  <img src="img/logo_hoa_sen_real.png" alt="Sen" class="w-full h-full object-cover" />
+                </div>
+                <span class="truncate">Sen Hồ Thiên Nhiên</span>
+              </button>
 
-          <!-- THANH CHUYỂN ĐỔI 4 BẦU KHÍ QUYỂN TỨ THỜI (INTERACTIVE ATMOSPHERE SWITCHER) -->
-          <div class="flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap px-1">
-            <button onclick="setLotusAtmosphere('dawn')" id="atmoBtn_dawn" class="atmo-btn px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-pink-300 bg-pink-100/90 text-pink-900 shadow-xs" title="Bầu khí quyển Bình Minh sương mai">
-              <i class="fa-solid fa-cloud-sun text-rose-500 text-xs"></i><span>Bình Minh</span>
-            </button>
-            <button onclick="setLotusAtmosphere('noon')" id="atmoBtn_noon" class="atmo-btn px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-amber-300 bg-white/80 text-amber-900 hover:bg-amber-50" title="Bầu khí quyển Nắng Trưa rực rỡ">
-              <i class="fa-solid fa-sun text-amber-500 text-xs"></i><span>Nắng Trưa</span>
-            </button>
-            <button onclick="setLotusAtmosphere('sunset')" id="atmoBtn_sunset" class="atmo-btn px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-orange-300 bg-white/80 text-orange-900 hover:bg-orange-50" title="Bầu khí quyển Hoàng Hôn ráng đỏ">
-              <i class="fa-solid fa-cloud-sun text-orange-500 text-xs"></i><span>Hoàng Hôn</span>
-            </button>
-            <button onclick="setLotusAtmosphere('night')" id="atmoBtn_night" class="atmo-btn px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-emerald-300 bg-white/80 text-emerald-950 hover:bg-emerald-50" title="Bầu khí quyển Đêm Trăng dạ quang tĩnh lặng">
-              <i class="fa-solid fa-moon text-emerald-600 text-xs"></i><span>Đêm Trăng</span>
-            </button>
-            <button onclick="setLotusAtmosphere('auto')" id="atmoBtn_auto" class="atmo-btn px-2 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-slate-300 bg-slate-100 text-slate-700" title="Tự động đổi theo giờ thực tế của điện thoại">
-              <i class="fa-solid fa-clock-rotate-left text-slate-500 text-[11px]"></i><span>Tự Động</span>
-            </button>
+              <button onclick="setLotusStyle('imperial')" id="lotusStyleBtn_imperial" class="py-2 px-2.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 text-amber-900 hover:text-amber-950 hover:bg-white/60 active:scale-95 font-bold" title="Tòa Sen Đồng & Hoàng Kim Cung Đình 3D">
+                <i class="fa-solid fa-crown text-amber-600 text-xs"></i>
+                <span class="truncate">Sen Vàng Cung Đình</span>
+              </button>
+            </div>
+
+            <!-- HÀNG 2: 5 BẦU KHÍ QUYỂN TỨ THỜI (5 NẤC THỜI GIAN TUYỆT ĐẸP) -->
+            <div class="grid grid-cols-5 gap-1 text-[10px] sm:text-[11px] font-black text-center">
+              <!-- Bình Minh -->
+              <button onclick="setLotusAtmosphere('dawn')" id="atmoBtn_dawn" class="atmo-btn py-1.5 px-0.5 rounded-xl border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 border-rose-300 bg-rose-50 text-rose-900 font-black shadow-2xs ring-2 ring-rose-400 active:scale-95" title="Bình Minh sương mai (05h - 11h)">
+                <i class="fa-solid fa-cloud-sun text-rose-500 text-xs"></i>
+                <span class="truncate">Bình Minh</span>
+              </button>
+
+              <!-- Nắng Trưa -->
+              <button onclick="setLotusAtmosphere('noon')" id="atmoBtn_noon" class="atmo-btn py-1.5 px-0.5 rounded-xl border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 border-slate-200 bg-white/80 hover:bg-amber-50 text-slate-700 active:scale-95 font-bold" title="Nắng Trưa rực rỡ (11h - 17h)">
+                <i class="fa-solid fa-sun text-amber-500 text-xs"></i>
+                <span class="truncate">Nắng Trưa</span>
+              </button>
+
+              <!-- Hoàng Hôn -->
+              <button onclick="setLotusAtmosphere('sunset')" id="atmoBtn_sunset" class="atmo-btn py-1.5 px-0.5 rounded-xl border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 border-slate-200 bg-white/80 hover:bg-orange-50 text-slate-700 active:scale-95 font-bold" title="Hoàng Hôn ráng đỏ (17h - 19h30)">
+                <i class="fa-solid fa-cloud-sun text-orange-500 text-xs"></i>
+                <span class="truncate">Hoàng Hôn</span>
+              </button>
+
+              <!-- Đêm Trăng -->
+              <button onclick="setLotusAtmosphere('night')" id="atmoBtn_night" class="atmo-btn py-1.5 px-0.5 rounded-xl border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 border-slate-200 bg-white/80 hover:bg-indigo-50 text-slate-700 active:scale-95 font-bold" title="Đêm Trăng dạ quang (19h30 - 05h)">
+                <i class="fa-solid fa-moon text-indigo-500 text-xs"></i>
+                <span class="truncate">Đêm Trăng</span>
+              </button>
+
+              <!-- Tự Động -->
+              <button onclick="setLotusAtmosphere('auto')" id="atmoBtn_auto" class="atmo-btn py-1.5 px-0.5 rounded-xl border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 border-slate-200 bg-white/80 hover:bg-slate-100 text-slate-700 active:scale-95 font-bold" title="Tự động đổi theo giờ thực tế đồng hồ">
+                <i class="fa-solid fa-clock-rotate-left text-slate-500 text-xs"></i>
+                <span class="truncate">Tự Động</span>
+              </button>
+            </div>
+
           </div>
 
           <!-- SÂN KHẤU TÒA SEN 3D TỨ THỜI (LOTUS THRONE 3D STAGE) -->
@@ -11611,35 +11631,65 @@
   <script>
     let currentLotusStyle = localStorage.getItem("datphu_lotus_style") || "nature";
 
+    function playZenChimeTouch(freq = 528) {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.36);
+      } catch(e) {}
+    }
+
     function setLotusStyle(style, save) {
       if (save !== false) {
         currentLotusStyle = style;
         localStorage.setItem("datphu_lotus_style", style);
+        playZenChimeTouch(style === "nature" ? 432 : 528);
       }
 
       const stage = document.getElementById("lotusThroneStage");
+      const backdrop = document.getElementById("lotusNatureBackdrop");
+
       if (stage) {
         stage.classList.remove("style-nature", "style-imperial");
         stage.classList.add("style-" + style);
       }
 
-      // Cập nhật nút phong cách
+      // Cập nhật trạng thái nút phong cách
       const btnNature = document.getElementById("lotusStyleBtn_nature");
       const btnImperial = document.getElementById("lotusStyleBtn_imperial");
 
+      const activeNature = "py-2 px-2.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 shadow-sm bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white ring-2 ring-emerald-300/80 active:scale-95 font-black";
+      const idleNature = "py-2 px-2.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 text-emerald-950 hover:bg-white/60 active:scale-95 font-bold";
+
+      const activeImperial = "py-2 px-2.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 shadow-sm bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-slate-950 ring-2 ring-amber-300/80 active:scale-95 font-black";
+      const idleImperial = "py-2 px-2.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 text-amber-900 hover:text-amber-950 hover:bg-white/60 active:scale-95 font-bold";
+
       if (btnNature && btnImperial) {
         if (style === "nature") {
-          btnNature.className = "px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-emerald-400 bg-gradient-to-r from-emerald-600 to-teal-600 text-white ring-2 ring-emerald-300 scale-105";
-          btnImperial.className = "px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-amber-300 bg-white/90 text-amber-900 hover:bg-amber-50 opacity-70";
+          btnNature.className = activeNature;
+          btnImperial.className = idleImperial;
         } else {
-          btnImperial.className = "px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-amber-400 bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-black ring-2 ring-amber-300 scale-105";
-          btnNature.className = "px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-emerald-300 bg-white/90 text-emerald-900 hover:bg-emerald-50 opacity-70";
+          btnNature.className = idleNature;
+          btnImperial.className = activeImperial;
         }
       }
 
+      // Áp dụng lại bối cảnh theo phong cách
+      setLotusAtmosphere(currentLotusAtmoMode, false);
+
       if (save !== false && window.showToastNotification) {
-        const name = (style === "nature") ? "🌿 Phong cách Sen Hồ Thiên Nhiên Sống Động" : "⚜️ Phong cách Sen Vàng Cung Đình 3D";
-        window.showToastNotification(name, "info");
+        const msg = (style === "nature") ? "🌿 Đã chuyển sang Sen Hồ Thiên Nhiên Sống Động" : "👑 Đã chuyển sang Sen Vàng Cung Đình 3D";
+        window.showToastNotification(msg, "info");
       }
     }
 
@@ -11657,26 +11707,65 @@
       if (save !== false) {
         currentLotusAtmoMode = mode;
         localStorage.setItem("datphu_lotus_atmosphere", mode);
+        playZenChimeTouch(528);
       }
 
       const effectiveAtmo = (mode === "auto") ? getAutoLotusAtmosphere() : mode;
       const stage = document.getElementById("lotusThroneStage");
+      const backdrop = document.getElementById("lotusNatureBackdrop");
+
       if (stage) {
         stage.classList.remove("atmo-dawn", "atmo-noon", "atmo-sunset", "atmo-night");
         stage.classList.add("atmo-" + effectiveAtmo);
       }
 
-      // Cập nhật trạng thái các nút chọn bầu khí quyển
+      // NÂNG CẤP HÌNH NỀN & BẦU KHÍ QUYỂN THỰC TẾ
+      if (backdrop) {
+        if (currentLotusStyle === "imperial") {
+          backdrop.style.backgroundImage = "url('img/lotus_throne_cinematic_3d.jpg')";
+          backdrop.style.opacity = "0.45";
+          backdrop.style.filter = "brightness(1.05) saturate(1.2) contrast(1.05)";
+        } else {
+          // Sen hồ thiên nhiên thay đổi ảnh theo buổi
+          if (effectiveAtmo === "dawn") {
+            backdrop.style.backgroundImage = "url('img/lotus_lagoon_real_dawn.jpg')";
+            backdrop.style.opacity = "0.48";
+            backdrop.style.filter = "brightness(1.05) saturate(1.18) contrast(1.02)";
+          } else if (effectiveAtmo === "noon") {
+            backdrop.style.backgroundImage = "url('img/lotus_lagoon_sky_noon.jpg')";
+            backdrop.style.opacity = "0.52";
+            backdrop.style.filter = "brightness(1.15) saturate(1.25) contrast(1.05)";
+          } else if (effectiveAtmo === "sunset") {
+            backdrop.style.backgroundImage = "url('img/lotus_lagoon_real_dawn.jpg')";
+            backdrop.style.opacity = "0.45";
+            backdrop.style.filter = "brightness(0.92) saturate(1.4) hue-rotate(-22deg) sepia(0.28)";
+          } else if (effectiveAtmo === "night") {
+            backdrop.style.backgroundImage = "url('img/lotus_throne_cinematic_3d.jpg')";
+            backdrop.style.opacity = "0.55";
+            backdrop.style.filter = "brightness(0.65) saturate(0.85) hue-rotate(185deg) contrast(1.2)";
+          }
+        }
+      }
+
+      // Cập nhật trạng thái 5 nút chọn bầu khí quyển
       const modes = ["dawn", "noon", "sunset", "night", "auto"];
+      const activeCls = {
+        dawn: "atmo-btn py-1.5 px-0.5 rounded-xl border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 border-rose-300 bg-rose-50 text-rose-950 font-black shadow-2xs ring-2 ring-rose-400 active:scale-95",
+        noon: "atmo-btn py-1.5 px-0.5 rounded-xl border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 border-amber-300 bg-amber-50 text-amber-950 font-black shadow-2xs ring-2 ring-amber-400 active:scale-95",
+        sunset: "atmo-btn py-1.5 px-0.5 rounded-xl border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 border-orange-300 bg-orange-50 text-orange-950 font-black shadow-2xs ring-2 ring-orange-400 active:scale-95",
+        night: "atmo-btn py-1.5 px-0.5 rounded-xl border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 border-indigo-300 bg-indigo-50 text-indigo-950 font-black shadow-2xs ring-2 ring-indigo-400 active:scale-95",
+        auto: "atmo-btn py-1.5 px-0.5 rounded-xl border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 border-slate-400 bg-slate-100 text-slate-900 font-black shadow-2xs ring-2 ring-slate-400 active:scale-95"
+      };
+
+      const idleCls = "atmo-btn py-1.5 px-0.5 rounded-xl border transition-all duration-200 flex flex-col items-center justify-center gap-0.5 border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 active:scale-95 font-bold";
+
       modes.forEach(m => {
         const btn = document.getElementById("atmoBtn_" + m);
         if (btn) {
           if (m === mode) {
-            btn.classList.add("ring-2", "ring-rose-500", "scale-105", "font-black");
-            btn.classList.remove("opacity-70");
+            btn.className = activeCls[m];
           } else {
-            btn.classList.remove("ring-2", "ring-rose-500", "scale-105");
-            btn.classList.add("opacity-70");
+            btn.className = idleCls;
           }
         }
       });
@@ -11686,11 +11775,11 @@
 
       if (save !== false && window.showToastNotification) {
         const names = {
-          dawn: "🌅 Bình Minh (Sương Mai Hồ Sen)",
-          noon: "☀️ Nắng Trưa (Sen Vàng Mãn Khai)",
-          sunset: "🌇 Hoàng Hôn (Ráng Chiều Đầm Sen)",
-          night: "🌙 Đêm Trăng (Dạ Quang Tĩnh Lặng)",
-          auto: "🔄 Tự Động Theo Thời Gian Thực"
+          dawn: "🌅 Bình Minh: Sương Mai Hồ Sen (05h - 11h)",
+          noon: "☀️ Nắng Trưa: Sen Vàng Mãn Khai (11h - 17h)",
+          sunset: "🌇 Hoàng Hôn: Ráng Chiều Đầm Sen (17h - 19h30)",
+          night: "🌙 Đêm Trăng: Dạ Quang Tĩnh Lặng (19h30 - 05h)",
+          auto: "⏱️ Tự Động: Đang theo giờ thực tế (" + effectiveAtmo.toUpperCase() + ")"
         };
         window.showToastNotification("Tòa Sen 3D: " + (names[mode] || mode), "info");
       }
