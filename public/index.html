@@ -737,6 +737,15 @@
 
   <div class="w-full max-w-2xl px-1 sm:px-0 space-y-2.5 sm:space-y-3 mx-auto">
 
+    <!-- THÔNG BÁO CHẾ ĐỘ NGOẠI TUYẾN PWA OFFLINE-FIRST -->
+    <div id="pwaOfflineIndicator" class="hidden bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-900 border-2 border-emerald-500/70 text-emerald-200 text-xs px-3.5 py-2 rounded-2xl flex items-center justify-between shadow-md transition">
+      <div class="flex items-center gap-2 font-bold">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>🌿 Chế Độ Ngoại Tuyến (Offline-First): Đang xem Lịch & Niệm Phật không cần Internet</span>
+      </div>
+      <span class="text-[10px] bg-emerald-900/80 px-2 py-0.5 rounded-full text-emerald-300 font-mono font-bold">OFFLINE</span>
+    </div>
+
     <!-- THÔNG TIN THỜI TIẾT ĐÁNG CHÚ Ý (DỮ LIỆU THAM KHẢO) -->
     <div id="severeAlertBanner" class="hidden bg-[#1b2a47] text-white p-3.5 sm:p-4 rounded-2xl border-2 border-yellow-400 shadow-md flex items-center justify-between gap-3">
       <div class="flex items-center gap-3">
@@ -2924,6 +2933,10 @@
 
         <!-- Nút thêm người thân -->
         <div class="pt-2 border-t border-slate-200 flex items-center justify-between">
+          <button id="btnMemorialNotify" onclick="toggleMemorialNotifications()" class="px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-black rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95" title="Bật/Tắt chuông thông báo nhắc giỗ trước 3 ngày">
+            <i id="memorialNotifyIcon" class="fa-solid fa-bell text-amber-600"></i>
+            <span id="memorialNotifyText">Bật Nhắc Giỗ</span>
+          </button>
           <button onclick="toggleAddMemorialForm()" id="btnAddMemorialToggle" class="px-3.5 py-2 bg-[#d9232a] hover:bg-[#b91c1c] text-white font-black rounded-xl text-xs sm:text-sm shadow transition flex items-center gap-1.5">
             <i class="fa-solid fa-plus"></i> Thêm Người Thân
           </button>
