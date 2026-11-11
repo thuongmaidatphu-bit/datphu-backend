@@ -1892,7 +1892,7 @@
         </div>
 
         <!-- THÂN MODAL CUỘN: CHỨA NỘI DUNG 4 TABS -->
-        <div id="settingsModalScrollBody" class="p-3.5 sm:p-5 overflow-y-auto space-y-4 flex-1 custom-modal-scroll">
+        <div id="settingsModalScrollBody" class="p-3.5 sm:p-5 pb-8 overflow-y-auto space-y-4 flex-1 custom-modal-scroll">
           
           <!-- ================= TAB 4: 🛠️ GIAO DIỆN & TIỆN ÍCH DÂN SINH ================= -->
           <div id="tabContent_system" class="space-y-4">
@@ -2032,25 +2032,19 @@
               </select>
             </div>
 
-            <!-- THÔNG TIN ÂM NHẠC & TRỊ LIỆU -->
-            <div class="p-3 bg-teal-50 border-2 border-teal-300 rounded-2xl flex items-center justify-between">
+            <!-- LỐI TẮT SANG KÊNH GIẢI TRÍ -->
+            <div class="p-3 bg-gradient-to-r from-amber-50 to-teal-50 border-2 border-amber-300/80 rounded-2xl flex items-center justify-between shadow-xs">
               <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 p-1.5 text-white shrink-0 shadow-xs flex items-center justify-center">
-                  <!-- SVG Hoa Sen Ngọc Bích Ánh Kim -->
-                  <svg viewBox="0 0 24 24" class="w-full h-full">
-                    <path d="M12 2 C10.5 6 9 10 12 17 C15 10 13.5 6 12 2Z" fill="#ffffff"/>
-                    <path d="M7 6 C5.5 10 6.5 14 12 17 C9 13 8 9 7 6Z" fill="#a7f3d0"/>
-                    <path d="M17 6 C18.5 10 17.5 14 12 17 C15 13 16 9 17 6Z" fill="#a7f3d0"/>
-                    <circle cx="12" cy="13.5" r="1.5" fill="#fde047"/>
-                  </svg>
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-500 p-1.5 text-slate-950 shrink-0 shadow-xs flex items-center justify-center">
+                  <i class="fa-solid fa-clapperboard text-sm"></i>
                 </div>
                 <div>
-                  <div class="text-xs font-black text-teal-950">Không Gian Âm Nhạc & Trị Liệu</div>
-                  <div class="text-[10px] text-teal-700 font-semibold">Đã chuyển vào Tab Trị Liệu để trang chủ luôn thoáng đãng</div>
+                  <div class="text-xs font-black text-slate-900">Âm Nhạc, Trị Liệu & Niệm Phật</div>
+                  <div class="text-[10px] text-slate-600 font-semibold">Đã được gom gọn vào mục <strong>Kênh Giải Trí</strong> dưới đáy màn hình</div>
                 </div>
               </div>
-              <button onclick="switchSettingsTab('healing')" class="px-3.5 py-1.5 rounded-xl font-black text-xs bg-teal-600 hover:bg-teal-700 text-white shadow active:scale-95 transition">
-                Mở Xem
+              <button onclick="toggleSettingsCenterModal(); toggleMediaSanctuaryModal();" class="px-3 py-1.5 rounded-xl font-black text-xs bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 shadow-sm active:scale-95 transition shrink-0 flex items-center gap-1">
+                <span>Mở Ngay</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
               </button>
             </div>
 
