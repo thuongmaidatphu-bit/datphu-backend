@@ -584,6 +584,40 @@
       transform-origin: center center;
       animation: balanceSwing 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
+
+    /* TRUNG TÂM NGHE NHÌN ĐẤT PHÚ (AUDIOVISUAL SANCTUARY) */
+    .media-showcase-frame {
+      box-shadow: 
+        0 16px 40px -10px rgba(0, 0, 0, 0.7),
+        0 0 25px rgba(245, 158, 11, 0.25),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(250, 204, 21, 0.6);
+    }
+
+    @keyframes eqWave {
+      0%, 100% { height: 4px; }
+      50% { height: 24px; }
+    }
+
+    .eq-bar {
+      width: 3.5px;
+      border-radius: 9999px;
+      background: linear-gradient(180deg, #fef08a 0%, #f59e0b 50%, #ef4444 100%);
+      transition: height 0.15s ease;
+    }
+
+    .eq-active .eq-bar:nth-child(1) { animation: eqWave 0.8s ease-in-out infinite 0.1s; }
+    .eq-active .eq-bar:nth-child(2) { animation: eqWave 0.6s ease-in-out infinite 0.25s; }
+    .eq-active .eq-bar:nth-child(3) { animation: eqWave 0.9s ease-in-out infinite 0.15s; }
+    .eq-active .eq-bar:nth-child(4) { animation: eqWave 0.7s ease-in-out infinite 0.3s; }
+    .eq-active .eq-bar:nth-child(5) { animation: eqWave 1.1s ease-in-out infinite 0.05s; }
+    .eq-active .eq-bar:nth-child(6) { animation: eqWave 0.5s ease-in-out infinite 0.2s; }
+    .eq-active .eq-bar:nth-child(7) { animation: eqWave 0.85s ease-in-out infinite 0.35s; }
+    .eq-active .eq-bar:nth-child(8) { animation: eqWave 1.0s ease-in-out infinite 0.18s; }
+    .eq-active .eq-bar:nth-child(9) { animation: eqWave 0.65s ease-in-out infinite 0.4s; }
+    .eq-active .eq-bar:nth-child(10) { animation: eqWave 0.95s ease-in-out infinite 0.12s; }
+    .eq-active .eq-bar:nth-child(11) { animation: eqWave 0.75s ease-in-out infinite 0.28s; }
+    .eq-active .eq-bar:nth-child(12) { animation: eqWave 1.05s ease-in-out infinite 0.08s; }
 </style>
 </head>
 <body class="min-h-screen p-2.5 sm:p-5 flex flex-col items-center justify-between">
@@ -1411,6 +1445,40 @@
             </svg>
           </div>
           <span class="tracking-tight leading-tight">Gửi Zalo</span>
+        </button>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- BANNER DANH DỰ: TRUNG TÂM NGHE NHÌN ĐẤT PHÚ (THÍNH GIÁC TRỊ LIỆU & THỊ GIÁC 4K) -->
+      <!-- ========================================================================= -->
+      <div class="pt-1">
+        <button onclick="toggleMediaSanctuaryModal()" class="w-full p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-amber-600 via-rose-700 to-indigo-950 hover:from-amber-500 hover:via-rose-600 hover:to-indigo-900 text-white font-black shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-between gap-3 group border-2 border-amber-300/40 active:scale-98 relative overflow-hidden" title="Mở Rạp Chiếu & Không Gian Nghe Nhìn Đất Phú">
+          <div class="pointer-events-none absolute -top-8 -right-8 w-32 h-32 bg-yellow-400/20 rounded-full blur-xl group-hover:scale-125 transition-transform"></div>
+          
+          <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <!-- Icon 3D Máy Quay & Tai Nghe -->
+            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-600 p-2 text-slate-950 flex items-center justify-center shrink-0 shadow-md group-hover:rotate-6 transition-transform">
+              <svg viewBox="0 0 24 24" class="w-full h-full fill-current">
+                <path d="M4 4h10a2 2 0 0 1 2 2v2.5l4-2.5v12l-4-2.5V18a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
+                <circle cx="9" cy="12" r="2.5" fill="#ca8a04"/>
+              </svg>
+            </div>
+            <div class="text-left min-w-0">
+              <div class="text-xs sm:text-sm font-black text-amber-200 tracking-wide uppercase flex items-center gap-1.5 truncate">
+                <span>TRUNG TÂM NGHE NHÌN ĐẤT PHÚ</span>
+                <span class="px-1.5 py-0.2 bg-red-600 text-white text-[9px] rounded-full font-black animate-pulse">4K • LIVE</span>
+              </div>
+              <div class="text-[10px] sm:text-[11px] text-amber-100/90 font-medium truncate">
+                Âm Thanh Trị Liệu • Phim Ảnh Nghệ Thuật • Tết Đoàn Viên
+              </div>
+            </div>
+          </div>
+
+          <!-- Nút bấm Khám Phá -->
+          <div class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-black text-xs shadow-sm group-hover:bg-amber-300 transition">
+            <span>MỞ RẠP CHIẾU</span>
+            <i class="fa-solid fa-play text-[10px]"></i>
+          </div>
         </button>
       </div>
 
@@ -7893,6 +7961,198 @@
     if (document.readyState === "complete" || document.readyState === "interactive") {
       requestAnimationFrame(updateLiveClock3DEngine);
     }
+
+    // =========================================================================
+    // HỆ THỐNG TRUNG TÂM NGHE NHÌN ĐẤT PHÚ (AUDIOVISUAL SANCTUARY ENGINE)
+    // =========================================================================
+    const SHOWCASE_ARTWORKS = [
+      {
+        id: "tet_sum_vay",
+        category: "TẾT ĐOÀN VIÊN 4K",
+        title: "ĐẠI GIA ĐÌNH ĐẤT PHÚ SUM VẦY ĐÓN TẾT CỔ TRUYỀN",
+        poem: "Con cháu quây quần mừng thọ ông bà, nụ cười rạng rỡ bên phong bao lì xì đỏ, cành mai vàng rực rỡ và mâm ngũ quả nồng ấm nghĩa tình.",
+        img: "img/tet_sum_vay_dat_phu.jpg",
+        sound: "bamboo_flute"
+      },
+      {
+        id: "ganh_da_dia",
+        category: "KỲ QUAN THIÊN NHIÊN",
+        title: "GÀNH ĐÁ ĐĨA - TUYỆT TÁC DUNG NHAM TRIỆU NĂM BIỂN ĐÔNG",
+        poem: "Trăm ngàn cột đá bazan lục lăng đen tuyền xếp tầng kiên cường, sóng đại dương vỗ về ngàn năm ru bờ đá Tuy An bất tử.",
+        img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+        sound: "ocean"
+      },
+      {
+        id: "mui_dien",
+        category: "ĐỊA ĐẦU TỔ QUỐC",
+        title: "HẢI ĐĂNG MŨI ĐIỆN - NƠI ĐÓN BÌNH MINH ĐẦU TIÊN CỦA VIỆT NAM",
+        poem: "Ngọn hải đăng đứng sừng sững trên vách đá Bãi Môn, đón tia nắng sớm đầu tiên của đất trời soi sáng hải trình con thuyền vươn khơi.",
+        img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+        sound: "muidien_dawn"
+      },
+      {
+        id: "thap_nhan",
+        category: "DI TÍCH LỊCH SỬ",
+        title: "THÁP NHẠN NGÀN NĂM SOI BÓNG DÒNG SÔNG BA",
+        poem: "Bóng tháp Chăm trầm mặc trong chiều hoàng hôn Tuy Hòa, dòng sông Đà Rằng chở nặng phù sa nuôi dưỡng hạt ngọc lúa vàng Đất Phú.",
+        img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=1200&q=80",
+        sound: "bach_thach"
+      }
+    ];
+
+    let currentArtIndex = 0;
+    let isSlideshowPlaying = false;
+    let artSlideshowTimer = null;
+
+    function toggleMediaSanctuaryModal() {
+      const modal = document.getElementById("mediaSanctuaryModal");
+      if (!modal) return;
+      modal.classList.toggle("hidden");
+      if (!modal.classList.contains("hidden")) {
+        syncAudiovisualPlayerUI();
+      } else {
+        stopArtSlideshow();
+      }
+    }
+
+    function selectShowcaseArt(idx) {
+      if (idx < 0 || idx >= SHOWCASE_ARTWORKS.length) return;
+      currentArtIndex = idx;
+      const art = SHOWCASE_ARTWORKS[idx];
+
+      const imgEl = document.getElementById("mediaShowcaseImg");
+      const titleEl = document.getElementById("showcaseTitle");
+      const poemEl = document.getElementById("showcasePoem");
+      const catEl = document.getElementById("showcaseBadgeCategory");
+
+      if (imgEl) {
+        imgEl.style.opacity = "0.3";
+        setTimeout(() => {
+          imgEl.src = art.img;
+          imgEl.style.opacity = "1";
+        }, 180);
+      }
+
+      if (titleEl) titleEl.innerText = art.title;
+      if (poemEl) poemEl.innerText = `"${art.poem}"`;
+      if (catEl) catEl.innerText = art.category;
+
+      // Highlight thumb button
+      for (let i = 0; i < SHOWCASE_ARTWORKS.length; i++) {
+        const btn = document.getElementById("thumbArt_" + i);
+        if (btn) {
+          if (i === idx) {
+            btn.className = "p-1.5 rounded-xl border-2 border-amber-400 bg-amber-950/60 text-amber-200 transition font-black scale-102";
+          } else {
+            btn.className = "p-1.5 rounded-xl border border-slate-700 bg-slate-900/60 text-slate-400 hover:border-slate-500 transition font-bold";
+          }
+        }
+      }
+
+      // Tự động chuyển âm thanh tương ứng nếu đang mở rạp chiếu
+      if (isAmbientPlaying) {
+        playAmbientSound(art.sound);
+      }
+    }
+
+    function changeShowcaseArt(delta) {
+      let next = currentArtIndex + delta;
+      if (next < 0) next = SHOWCASE_ARTWORKS.length - 1;
+      if (next >= SHOWCASE_ARTWORKS.length) next = 0;
+      selectShowcaseArt(next);
+    }
+
+    function toggleArtSlideshow() {
+      if (isSlideshowPlaying) {
+        stopArtSlideshow();
+      } else {
+        startArtSlideshow();
+      }
+    }
+
+    function startArtSlideshow() {
+      isSlideshowPlaying = true;
+      const icon = document.getElementById("slideshowPlayIcon");
+      const text = document.getElementById("slideshowPlayText");
+      if (icon) icon.className = "fa-solid fa-pause text-amber-300 text-[10px]";
+      if (text) text.innerText = "Dừng Chiếu";
+
+      if (!isAmbientPlaying) {
+        toggleMediaMasterPlay();
+      }
+
+      clearInterval(artSlideshowTimer);
+      artSlideshowTimer = setInterval(() => {
+        changeShowcaseArt(1);
+      }, 7000); // Đổi ảnh mỗi 7 giây
+      showToast("Đang tự động trình chiếu nghệ thuật & hòa tấu âm thanh");
+    }
+
+    function stopArtSlideshow() {
+      isSlideshowPlaying = false;
+      clearInterval(artSlideshowTimer);
+      const icon = document.getElementById("slideshowPlayIcon");
+      const text = document.getElementById("slideshowPlayText");
+      if (icon) icon.className = "fa-solid fa-play text-amber-300 text-[10px]";
+      if (text) text.innerText = "Tự Động Chiếu";
+    }
+
+    function toggleMediaMasterPlay() {
+      if (isAmbientPlaying) {
+        stopAmbientSound();
+      } else {
+        const art = SHOWCASE_ARTWORKS[currentArtIndex];
+        playAmbientSound(art ? art.sound : "zen_rain");
+      }
+      syncAudiovisualPlayerUI();
+    }
+
+    function syncAudiovisualPlayerUI() {
+      const playIcon = document.getElementById("mediaMasterPlayIcon");
+      const eqEl = document.getElementById("mediaEqVisualizer");
+      const nowTitle = document.getElementById("mediaNowPlayingTitle");
+      const nowSub = document.getElementById("mediaNowPlayingSub");
+
+      if (isAmbientPlaying) {
+        if (playIcon) playIcon.className = "fa-solid fa-pause text-sm";
+        if (eqEl) eqEl.classList.add("eq-active");
+      } else {
+        if (playIcon) playIcon.className = "fa-solid fa-play text-sm ml-0.5";
+        if (eqEl) eqEl.classList.remove("eq-active");
+      }
+
+      // Highlight active track in grid
+      ['zen_rain', 'bamboo_flute', 'bach_thach', 'ocean', 'deo_ca', 'muidien_dawn'].forEach(k => {
+        const btn = document.getElementById("mediaTrack_" + k);
+        if (btn) {
+          if (currentAmbientTrack === k && isAmbientPlaying) {
+            btn.classList.add("border-amber-400", "bg-amber-950/70", "ring-2", "ring-amber-400/50");
+          } else {
+            btn.classList.remove("border-amber-400", "bg-amber-950/70", "ring-2", "ring-amber-400/50");
+          }
+        }
+      });
+    }
+
+    function shareMediaShowcaseZalo() {
+      const art = SHOWCASE_ARTWORKS[currentArtIndex];
+      const text = `Kính gửi bạn tác phẩm nghệ thuật Đất Phú:\n\n"${art.title}"\n${art.poem}\n\nMời bạn cùng thưởng thức tại: https://datphu-backend.vercel.app`;
+      const url = "https://zalo.me/share?url=" + encodeURIComponent("https://datphu-backend.vercel.app") + "&text=" + encodeURIComponent(text);
+      window.open(url, "_blank");
+    }
+
+    // Đăng ký hook đồng bộ với trình phát âm thanh chung
+    const originalPlayAmbientSound = window.playAmbientSound || playAmbientSound;
+    window.playAmbientSound = function(trackKey) {
+      originalPlayAmbientSound(trackKey);
+      syncAudiovisualPlayerUI();
+    };
+
+    const originalStopAmbientSound = window.stopAmbientSound || stopAmbientSound;
+    window.stopAmbientSound = function() {
+      originalStopAmbientSound();
+      syncAudiovisualPlayerUI();
+    };
 </script>
 
   <!-- ========================================================================= -->
@@ -8029,6 +8289,166 @@
         </button>
         <button onclick="toggleClockMasterModal()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-md transition">
           Đóng Lại
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: TRUNG TÂM NGHE NHÌN ĐẤT PHÚ (AUDIOVISUAL SANCTUARY & CINEMA 4K) -->
+  <!-- ========================================================================= -->
+  <div id="mediaSanctuaryModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2.5 sm:p-4">
+    <div class="bg-gradient-to-b from-[#0a0f1d] via-[#111827] to-[#050811] border-2 sm:border-4 border-amber-400/80 rounded-3xl p-4 sm:p-6 w-full max-w-2xl shadow-2xl text-white space-y-4 max-h-[94vh] overflow-y-auto">
+      
+      <!-- HEADER RẠP CHIẾU -->
+      <div class="flex items-center justify-between pb-3 border-b border-amber-400/30">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 via-rose-500 to-indigo-600 p-2 text-white flex items-center justify-center shadow-md shrink-0">
+            <i class="fa-solid fa-photo-film text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-yellow-300 leading-tight">TRUNG TÂM NGHE NHÌN ĐẤT PHÚ</h3>
+            <p class="text-[11px] font-bold text-amber-200">Rạp chiếu nghệ thuật • Hòa tấu 6 không gian âm thanh xứ Nẫu</p>
+          </div>
+        </div>
+        <button onclick="toggleMediaSanctuaryModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition">✕</button>
+      </div>
+
+      <!-- TẦNG 1: MÀN HÌNH CHIẾU NGHỆ THUẬT & NHIẾP ẢNH 4K (THỊ GIÁC) -->
+      <div class="space-y-2">
+        <div class="relative rounded-2xl overflow-hidden media-showcase-frame bg-slate-950 group">
+          <!-- Ảnh Showcase chính (Bức ảnh Tết Đoàn Viên 3 Thế Hệ do người dùng upload) -->
+          <img id="mediaShowcaseImg" src="img/tet_sum_vay_dat_phu.jpg" alt="Tác Phẩm Nghệ Thuật" class="w-full h-56 sm:h-72 object-cover object-center transition-all duration-500" />
+          
+          <!-- Hào quang mờ tối ở đáy ảnh để chữ đọc rõ ràng -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none"></div>
+
+          <!-- Nút điều hướng ảnh Trước / Sau -->
+          <button onclick="changeShowcaseArt(-1)" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center transition opacity-80 hover:opacity-100 shadow">
+            <i class="fa-solid fa-chevron-left text-xs"></i>
+          </button>
+          <button onclick="changeShowcaseArt(1)" class="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center transition opacity-80 hover:opacity-100 shadow">
+            <i class="fa-solid fa-chevron-right text-xs"></i>
+          </button>
+
+          <!-- Huy hiệu phân loại & Nút Tự Động Trình Chiếu -->
+          <div class="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+            <span id="showcaseBadgeCategory" class="px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] uppercase shadow-sm">
+              TẾT ĐOÀN VIÊN 4K
+            </span>
+          </div>
+
+          <button id="btnToggleSlideshow" onclick="toggleArtSlideshow()" class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-xl bg-black/70 hover:bg-black/90 border border-white/20 text-white text-[11px] font-bold shadow flex items-center gap-1.5 transition">
+            <i id="slideshowPlayIcon" class="fa-solid fa-play text-amber-300 text-[10px]"></i>
+            <span id="slideshowPlayText">Tự Động Chiếu</span>
+          </button>
+
+          <!-- Chú thích tác phẩm nghệ thuật dưới đáy ảnh -->
+          <div class="absolute bottom-2.5 inset-x-3 text-left space-y-0.5">
+            <div id="showcaseTitle" class="text-sm sm:text-base font-black text-yellow-300 drop-shadow-md">
+              ĐẠI GIA ĐÌNH ĐẤT PHÚ SUM VẦY ĐÓN TẾT CỔ TRUYỀN
+            </div>
+            <div id="showcasePoem" class="text-[11px] text-amber-100/90 font-medium italic drop-shadow-sm line-clamp-2">
+              "Con cháu quây quần mừng thọ ông bà, nụ cười rạng rỡ bên phong bao lì xì đỏ, cành mai vàng rực rỡ và mâm ngũ quả nồng ấm nghĩa tình."
+            </div>
+          </div>
+        </div>
+
+        <!-- Thanh danh sách 4 tác phẩm thu nhỏ để bấm chọn nhanh -->
+        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px] font-bold">
+          <button onclick="selectShowcaseArt(0)" id="thumbArt_0" class="p-1.5 rounded-xl border-2 border-amber-400 bg-amber-950/60 text-amber-200 transition">
+            1. Tết Đoàn Viên
+          </button>
+          <button onclick="selectShowcaseArt(1)" id="thumbArt_1" class="p-1.5 rounded-xl border border-slate-700 bg-slate-900/60 text-slate-400 hover:border-slate-500 transition">
+            2. Gành Đá Đĩa
+          </button>
+          <button onclick="selectShowcaseArt(2)" id="thumbArt_2" class="p-1.5 rounded-xl border border-slate-700 bg-slate-900/60 text-slate-400 hover:border-slate-500 transition">
+            3. Hải Đăng Mũi Điện
+          </button>
+          <button onclick="selectShowcaseArt(3)" id="thumbArt_3" class="p-1.5 rounded-xl border border-slate-700 bg-slate-900/60 text-slate-400 hover:border-slate-500 transition">
+            4. Tháp Nhạn Sông Ba
+          </button>
+        </div>
+      </div>
+
+      <!-- TẦNG 2: BẢN HÒA TẤU THÍNH GIÁC & SÓNG ÂM 3D (THÍNH GIÁC) -->
+      <div class="p-3.5 bg-slate-900/90 border-2 border-amber-400/40 rounded-2xl space-y-3">
+        
+        <!-- Hàng Sóng Âm Equalizer & Tên Bản Nhạc Đang Phát -->
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+          <div class="flex items-center gap-2 min-w-0">
+            <!-- 12 Cột Sóng Âm Equalizer Nhảy Múa -->
+            <div id="mediaEqVisualizer" class="flex items-end gap-1 h-6 shrink-0 px-2 py-1 bg-black/40 rounded-lg border border-slate-800">
+              <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+              <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+              <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+            </div>
+            <div class="min-w-0">
+              <div id="mediaNowPlayingTitle" class="text-xs sm:text-sm font-black text-white truncate">
+                Đang Phát: Thiền Mưa & Chuông Gió Tây Tạng (432Hz)
+              </div>
+              <div id="mediaNowPlayingSub" class="text-[10px] text-teal-300 font-semibold truncate">
+                Tần số Solfeggio • Sóng âm định tâm xoa dịu thần kinh
+              </div>
+            </div>
+          </div>
+
+          <!-- Nút Phát / Dừng Chính Của Rạp Chiếu -->
+          <button id="mediaMasterPlayBtn" onclick="toggleMediaMasterPlay()" class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 flex items-center justify-center font-black shadow-md hover:scale-105 active:scale-95 transition shrink-0">
+            <i id="mediaMasterPlayIcon" class="fa-solid fa-play text-sm ml-0.5"></i>
+          </button>
+        </div>
+
+        <!-- LƯỚI 6 KHÔNG GIAN ÂM THANH XỨ NẪU ĐỂ CHỌN NHANH -->
+        <div class="space-y-1">
+          <div class="text-[10px] font-black uppercase text-amber-300/80 flex items-center justify-between">
+            <span>6 Không Gian Âm Thanh Đặc Trưng:</span>
+            <span class="text-[9px] text-slate-400 font-normal">Web Audio 100% Offline</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs font-bold">
+            <button onclick="playAmbientSound('zen_rain')" id="mediaTrack_zen_rain" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-teal-500/30 text-left transition flex items-center gap-1.5 text-teal-200">
+              <i class="fa-solid fa-cloud-rain text-teal-400 text-xs shrink-0"></i>
+              <span class="truncate text-[11px]">Thiền Mưa & Chuông</span>
+            </button>
+            <button onclick="playAmbientSound('bamboo_flute')" id="mediaTrack_bamboo_flute" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition flex items-center gap-1.5 text-slate-300">
+              <i class="fa-solid fa-wind text-emerald-400 text-xs shrink-0"></i>
+              <span class="truncate text-[11px]">Sáo Trúc Đất Phú</span>
+            </button>
+            <button onclick="playAmbientSound('bach_thach')" id="mediaTrack_bach_thach" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition flex items-center gap-1.5 text-slate-300">
+              <i class="fa-solid fa-bell text-amber-400 text-xs shrink-0"></i>
+              <span class="truncate text-[11px]">Chuông Bạch Thạch</span>
+            </button>
+            <button onclick="playAmbientSound('ocean')" id="mediaTrack_ocean" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition flex items-center gap-1.5 text-slate-300">
+              <i class="fa-solid fa-water text-cyan-400 text-xs shrink-0"></i>
+              <span class="truncate text-[11px]">Sóng Biển Gành Đá</span>
+            </button>
+            <button onclick="playAmbientSound('deo_ca')" id="mediaTrack_deo_ca" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition flex items-center gap-1.5 text-slate-300">
+              <i class="fa-solid fa-tree text-green-400 text-xs shrink-0"></i>
+              <span class="truncate text-[11px]">Gió Thông Đèo Cả</span>
+            </button>
+            <button onclick="playAmbientSound('muidien_dawn')" id="mediaTrack_muidien_dawn" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition flex items-center gap-1.5 text-slate-300">
+              <i class="fa-solid fa-sun text-yellow-400 text-xs shrink-0"></i>
+              <span class="truncate text-[11px]">Bình Minh Mũi Điện</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- THANH ĐIỀU CHỈNH ÂM LƯỢNG MỊN MÀNG -->
+        <div class="flex items-center gap-3 pt-1">
+          <i class="fa-solid fa-volume-low text-slate-400 text-xs"></i>
+          <input type="range" id="mediaMasterVolume" min="5" max="100" value="80" oninput="setAmbientMasterVolume(this.value)" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-400" />
+          <i class="fa-solid fa-volume-high text-amber-400 text-xs"></i>
+        </div>
+      </div>
+
+      <!-- FOOTER ĐIỀU KHIỂN & ĐÓNG -->
+      <div class="pt-2 border-t border-slate-800 flex items-center justify-between gap-2">
+        <button onclick="shareMediaShowcaseZalo()" class="px-4 py-2 rounded-xl bg-[#0068ff] hover:bg-[#0052cc] text-white font-black text-xs shadow transition flex items-center gap-1.5 active:scale-95">
+          <i class="fa-solid fa-paper-plane text-yellow-300"></i> Chia Sẻ Tác Phẩm
+        </button>
+        <button onclick="toggleMediaSanctuaryModal()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow transition">
+          Đóng Rạp Chiếu
         </button>
       </div>
 
