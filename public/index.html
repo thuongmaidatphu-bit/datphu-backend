@@ -6438,8 +6438,8 @@
       const btnHealing = document.getElementById("mediaTabBtn_healing");
       const btnRingtone = document.getElementById("mediaTabBtn_ringtone");
 
-      const activeBtnCls = "py-2 px-1 rounded-xl text-center transition flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow font-black";
-      const idleBtnCls = "py-2 px-1 rounded-xl text-center transition flex items-center justify-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10 font-bold";
+      const activeBtnCls = "py-1.5 px-3 rounded-xl text-center transition flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow font-black active:scale-95 text-[11px] sm:text-xs";
+      const idleBtnCls = "py-1.5 px-3 rounded-xl text-center transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10 font-bold active:scale-95 text-[11px] sm:text-xs";
 
       if (btnArt) btnArt.className = (tab === 'art') ? activeBtnCls : idleBtnCls;
       if (btnHealing) btnHealing.className = (tab === 'healing') ? activeBtnCls : idleBtnCls;
@@ -8711,6 +8711,26 @@
       }
     }
 
+    
+    // ĐIỀU KHIỂN TOÀN MÀN HÌNH RẠP CHIẾU 4K (FULLSCREEN THEATER API)
+    function toggleCinemaFullscreen() {
+      const frame = document.getElementById("mediaLargeScreenFrame");
+      if (!frame) return;
+      if (!document.fullscreenElement) {
+        if (frame.requestFullscreen) {
+          frame.requestFullscreen().catch(() => {});
+        } else if (frame.webkitRequestFullscreen) {
+          frame.webkitRequestFullscreen();
+        } else if (frame.msRequestFullscreen) {
+          frame.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+    }
+
     function toggleMediaSanctuaryModal() {
       const modal = document.getElementById("mediaSanctuaryModal");
       if (!modal) return;
@@ -10378,62 +10398,97 @@
   <!-- MODAL: TRUNG TÂM NGHE NHÌN ĐẤT PHÚ (AUDIOVISUAL SANCTUARY & CINEMA 4K) -->
   <!-- ========================================================================= -->
   <div id="mediaSanctuaryModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 modal-mobile-app">
-    <div class="bg-gradient-to-b from-[#0a0f1d] via-[#111827] to-[#050811] border-2 sm:border-4 border-amber-400/80 rounded-3xl p-3.5 sm:p-5 w-full max-w-2xl shadow-2xl text-white space-y-3 sm:space-y-3.5 max-h-[94vh] overflow-y-auto custom-modal-scroll">
+    <div class="bg-gradient-to-b from-[#080c16] via-[#0f172a] to-[#04060c] border-2 sm:border-3 border-amber-400/90 rounded-3xl p-3 sm:p-5 w-full max-w-4xl lg:max-w-5xl shadow-2xl text-white space-y-3 max-h-[95vh] overflow-y-auto custom-modal-scroll">
       
-      <!-- HEADER RẠP CHIẾU -->
-      <div class="flex items-center justify-between pb-2.5 border-b border-amber-400/30">
-        <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 via-rose-500 to-indigo-600 p-2 text-white flex items-center justify-center shadow-md shrink-0">
-            <i class="fa-solid fa-photo-film text-xl"></i>
+      <!-- HEADER RẠP CHIẾU MÀN HÌNH LỚN & BỘ ĐỔI KÊNH HOÀNG KIM -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2.5 border-b border-amber-400/30">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 via-rose-500 to-indigo-600 p-2 text-white flex items-center justify-center shadow-md shrink-0 border border-amber-300">
+              <i class="fa-solid fa-photo-film text-lg"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <h3 class="text-base sm:text-lg font-black text-yellow-300 leading-tight">KÊNH GIẢI TRÍ ĐẤT PHÚ</h3>
+                <span class="text-[9px] font-black bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">Màn Hình Lớn 4K</span>
+              </div>
+              <p class="text-[11px] font-bold text-amber-200/90">Rạp Chiếu Nghệ Thuật • Máy Niệm Phật Số • Âm Nhạc Trị Liệu</p>
+            </div>
           </div>
-          <div>
-            <h3 class="text-base sm:text-lg font-black text-yellow-300 leading-tight">KÊNH GIẢI TRÍ & NGHỆ THUẬT ĐẤT PHÚ</h3>
-            <p class="text-[11px] font-bold text-amber-200">9 Tác Phẩm Nghệ Thuật 4K • Hòa Tấu Âm Nhạc & Thiên Nhiên Đất Phú</p>
-          </div>
+          <button onclick="toggleMediaSanctuaryModal()" class="sm:hidden w-8 h-8 rounded-full bg-white/10 hover:bg-rose-500/20 text-slate-300 flex items-center justify-center transition">✕</button>
         </div>
-        <button onclick="toggleMediaSanctuaryModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition">✕</button>
+
+        <!-- BỘ CHUYỂN KÊNH TINH TẾ (CINEMA CHANNEL POD) -->
+        <div class="flex items-center gap-1.5 p-1 bg-slate-950/90 border border-amber-400/40 rounded-2xl self-start sm:self-auto shadow-inner text-xs font-black">
+          <button id="mediaTabBtn_art" onclick="switchEntertainmentTab('art')" class="py-1.5 px-3 rounded-xl text-center transition flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow font-black active:scale-95 text-[11px] sm:text-xs">
+            <i class="fa-solid fa-film"></i>
+            <span>Rạp Chiếu 4K</span>
+          </button>
+          <button id="mediaTabBtn_ringtone" onclick="switchEntertainmentTab('ringtone')" class="py-1.5 px-3 rounded-xl text-center transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10 font-bold active:scale-95 text-[11px] sm:text-xs">
+            <i class="fa-solid fa-dharmachakra text-amber-400"></i>
+            <span>Nhạc Phật Giáo</span>
+          </button>
+          <button id="mediaTabBtn_healing" onclick="switchEntertainmentTab('healing')" class="py-1.5 px-3 rounded-xl text-center transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10 font-bold active:scale-95 text-[11px] sm:text-xs">
+            <i class="fa-solid fa-spa text-teal-400"></i>
+            <span>Trị Liệu</span>
+          </button>
+          <button onclick="toggleMediaSanctuaryModal()" class="hidden sm:flex w-7 h-7 rounded-full bg-white/10 hover:bg-rose-500/30 text-slate-300 items-center justify-center transition ml-1" title="Đóng rạp chiếu">✕</button>
+        </div>
       </div>
 
       <!-- NỘI DUNG TAB 1: NGHỆ THUẬT 4K -->
       <div id="mediaTabContent_art" class="space-y-3">
 <!-- TẦNG 1: MÀN HÌNH CHIẾU NGHỆ THUẬT & NHIẾP ẢNH 4K (THỊ GIÁC) -->
       <div class="space-y-2">
-        <div class="relative rounded-2xl overflow-hidden media-showcase-frame bg-slate-950 group">
-          <!-- Ảnh Showcase chính (Bức ảnh Tết Đoàn Viên 3 Thế Hệ do người dùng upload) -->
-          <img id="mediaShowcaseImg" src="img/tet_sum_vay_dat_phu.jpg" alt="Tác Phẩm Nghệ Thuật" class="w-full h-48 sm:h-64 object-cover object-center transition-all duration-500" />
+        <div id="mediaLargeScreenFrame" class="relative rounded-2xl sm:rounded-3xl overflow-hidden media-showcase-frame bg-slate-950 group w-full h-72 sm:h-96 md:h-[440px] lg:h-[500px] transition-all duration-500 select-none">
+          <!-- Ảnh Showcase Màn Hình Lớn 4K -->
+          <img id="mediaShowcaseImg" src="img/tet_sum_vay_dat_phu.jpg" alt="Tác Phẩm Nghệ Thuật" class="w-full h-full object-cover object-center transition-all duration-700 group-hover:scale-102" />
           
-          <!-- Hào quang mờ tối ở đáy ảnh để chữ đọc rõ ràng -->
-          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none"></div>
+          <!-- Hào quang điện ảnh mờ tối đa tầng để chữ đọc sắc nét -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/15 pointer-events-none"></div>
 
-          <!-- Nút điều hướng ảnh Trước / Sau -->
-          <button onclick="changeShowcaseArt(-1)" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center transition opacity-80 hover:opacity-100 shadow">
-            <i class="fa-solid fa-chevron-left text-xs"></i>
+          <!-- NÚT ĐIỀU HƯỚNG TRƯỚC / SAU CỠ LỚN (CINEMA NAV ARROWS) -->
+          <button onclick="changeShowcaseArt(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-black/60 hover:bg-amber-500 hover:text-slate-950 text-white flex items-center justify-center transition-all duration-200 shadow-xl border border-white/20 hover:border-amber-400 group-hover:scale-105 active:scale-95" title="Bức tranh trước">
+            <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
           </button>
-          <button onclick="changeShowcaseArt(1)" class="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center transition opacity-80 hover:opacity-100 shadow">
-            <i class="fa-solid fa-chevron-right text-xs"></i>
+          <button onclick="changeShowcaseArt(1)" class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-black/60 hover:bg-amber-500 hover:text-slate-950 text-white flex items-center justify-center transition-all duration-200 shadow-xl border border-white/20 hover:border-amber-400 group-hover:scale-105 active:scale-95" title="Bức tranh tiếp theo">
+            <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
           </button>
 
-          <!-- Huy hiệu phân loại & Nút Tự Động Trình Chiếu -->
-          <div class="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-            <span id="showcaseBadgeCategory" class="px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] uppercase shadow-sm">
-              TẾT ĐOÀN VIÊN 4K
-            </span>
-            <span id="showcaseCounter" class="px-2 py-0.5 rounded-full bg-black/60 border border-white/20 text-amber-300 font-black text-[10px] shadow-sm">
-              1 / 9
-            </span>
+          <!-- THANH CÔNG CỤ TRÊN ĐỈNH MÀN HÌNH LỚN -->
+          <div class="absolute top-3 inset-x-3.5 flex items-center justify-between pointer-events-none">
+            <!-- Huy hiệu phân loại & Đếm tranh -->
+            <div class="flex items-center gap-2 pointer-events-auto">
+              <span id="showcaseBadgeCategory" class="px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-xs uppercase shadow-md border border-amber-300">
+                TẾT ĐOÀN VIÊN 4K
+              </span>
+              <span id="showcaseCounter" class="px-2.5 py-1 rounded-full bg-black/70 border border-white/30 text-amber-300 font-black text-xs shadow-md">
+                1 / 9
+              </span>
+            </div>
+
+            <!-- Nút Tự Động Chiếu & Nút Toàn Màn Hình -->
+            <div class="flex items-center gap-2 pointer-events-auto">
+              <button id="btnToggleSlideshow" onclick="toggleArtSlideshow()" class="px-3 py-1.5 rounded-xl bg-black/75 hover:bg-black/95 border border-white/25 text-white text-xs font-bold shadow-lg flex items-center gap-1.5 transition active:scale-95" title="Tự động chuyển tranh sau mỗi 7 giây">
+                <i id="slideshowPlayIcon" class="fa-solid fa-play text-amber-300 text-xs"></i>
+                <span id="slideshowPlayText">Tự Động Chiếu</span>
+              </button>
+              <button onclick="toggleCinemaFullscreen()" class="px-3 py-1.5 rounded-xl bg-black/75 hover:bg-amber-500 hover:text-slate-950 border border-white/25 text-amber-300 text-xs font-bold shadow-lg flex items-center gap-1.5 transition active:scale-95" title="Xem tràn viền toàn màn hình">
+                <i class="fa-solid fa-expand text-xs"></i>
+                <span class="hidden sm:inline">Toàn Màn Hình</span>
+              </button>
+            </div>
           </div>
 
-          <button id="btnToggleSlideshow" onclick="toggleArtSlideshow()" class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-xl bg-black/70 hover:bg-black/90 border border-white/20 text-white text-[11px] font-bold shadow flex items-center gap-1.5 transition">
-            <i id="slideshowPlayIcon" class="fa-solid fa-play text-amber-300 text-[10px]"></i>
-            <span id="slideshowPlayText">Tự Động Chiếu</span>
-          </button>
-
-          <!-- Chú thích tác phẩm nghệ thuật dưới đáy ảnh -->
-          <div class="absolute bottom-2.5 inset-x-3 text-left space-y-0.5">
-            <div id="showcaseTitle" class="text-sm sm:text-base font-black text-yellow-300 drop-shadow-md">
-              ĐẠI GIA ĐÌNH ĐẤT PHÚ SUM VẦY ĐÓN TẾT CỔ TRUYỀN
+          <!-- CHÚ THÍCH ĐIỆN ẢNH VÀNG HOÀNG KIM Ở ĐÁY MÀN HÌNH LỚN -->
+          <div class="absolute bottom-3 sm:bottom-4 inset-x-4 sm:inset-x-6 text-left space-y-1 pointer-events-none">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <div id="showcaseTitle" class="text-base sm:text-xl md:text-2xl font-black text-yellow-300 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] tracking-tight">
+                ĐẠI GIA ĐÌNH ĐẤT PHÚ SUM VẦY ĐÓN TẾT CỔ TRUYỀN
+              </div>
             </div>
-            <div id="showcasePoem" class="text-[11px] text-amber-100/90 font-medium italic drop-shadow-sm line-clamp-2">
+            <div id="showcasePoem" class="text-xs sm:text-sm text-amber-100/95 font-medium italic drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)] line-clamp-2 max-w-3xl leading-relaxed">
               "Con cháu quây quần mừng thọ ông bà, nụ cười rạng rỡ bên phong bao lì xì đỏ, cành mai vàng rực rỡ và mâm ngũ quả nồng ấm nghĩa tình."
             </div>
           </div>
@@ -10941,6 +10996,44 @@
 
           <!-- ================= TAB 2: 🔔 CHUÔNG & NIỆM PHẬT ================= -->
           <div id="tabContent_ringtone" class="space-y-3 hidden">
+            <!-- MÀN HÌNH LỚN ĐẠI BẢO ĐIỆN PHẬT GIÁO (LARGE SCREEN BUDDHIST SANCTUARY) -->
+            <div class="relative w-full h-44 sm:h-64 rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-amber-400/80 shadow-2xl bg-gradient-to-b from-[#1b1004] via-[#2a1a08] to-[#120a02] p-4 flex flex-col justify-between select-none">
+              <!-- Hào quang Phật pháp chuyển động -->
+              <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(245,158,11,0.25)_0%,rgba(0,0,0,0.8)_85%)] pointer-events-none"></div>
+              
+              <!-- Đỉnh màn hình: Huy hiệu & Trạng thái phát -->
+              <div class="relative z-10 flex items-center justify-between">
+                <span class="px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-black text-xs uppercase shadow flex items-center gap-1.5 border border-yellow-200">
+                  <i class="fa-solid fa-dharmachakra"></i> ĐẠI BẢO ĐIỆN PHÁP ÂM
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full bg-black/70 border border-amber-400/40 text-amber-300 font-mono text-[11px] font-bold">
+                  100% OFFLINE
+                </span>
+              </div>
+
+              <!-- Tâm màn hình lớn: Câu Niệm Phật Chữ Vàng Hoàng Cung Khổng Lồ -->
+              <div class="relative z-10 text-center space-y-1.5 py-2">
+                <div class="text-[10px] sm:text-xs text-amber-300/80 uppercase tracking-widest font-bold">
+                  ✨ Vạn Pháp Quy Tâm • Thân Tâm Thanh Tịnh ✨
+                </div>
+                <div id="dharmaLargeScreenMantra" class="text-xl sm:text-3xl md:text-4xl font-black text-yellow-300 tracking-wide drop-shadow-[0_2px_12px_rgba(234,179,8,0.6)] font-sans">
+                  NAM MÔ A DI ĐÀ PHẬT
+                </div>
+                <div id="dharmaLargeScreenSub" class="text-xs sm:text-sm text-amber-200/90 font-medium italic">
+                  "Niệm một câu Phật, phước sanh vô lượng; lạy một đức Phật, tội diệt hà sa."
+                </div>
+              </div>
+
+              <!-- Đáy màn hình lớn: Điều khiển nhanh -->
+              <div class="relative z-10 flex items-center justify-between pt-1 border-t border-amber-500/30 text-xs">
+                <span class="text-amber-200 font-bold flex items-center gap-1.5">
+                  <i class="fa-solid fa-circle-play text-amber-400"></i> Đang tụng: <strong id="dharmaLargeScreenTrackTitle" class="text-yellow-300">Nam Mô A Di Đà Phật</strong>
+                </span>
+                <button onclick="toggleDharmaPlayback()" class="px-3 py-1 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition active:scale-95 flex items-center gap-1">
+                  <i class="fa-solid fa-play text-[10px]"></i> Bật / Dừng
+                </button>
+              </div>
+            </div>
             <!-- TRÀNG HẠT BỒ ĐỀ NIỆM PHẬT AI (DIGITAL MALA 108 HẠT) -->
             <div id="digitalMalaCard" class="bg-gradient-to-b from-[#1a140a] to-[#2b1f0c] text-white p-4 rounded-2xl border-2 border-amber-500/60 shadow-lg space-y-3 relative overflow-hidden">
               <div class="flex items-center justify-between pb-2 border-b border-amber-600/30">
