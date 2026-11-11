@@ -1469,7 +1469,7 @@
                 <span class="px-1.5 py-0.2 bg-red-600 text-white text-[9px] rounded-full font-black animate-pulse">4K • LIVE</span>
               </div>
               <div class="text-[10px] sm:text-[11px] text-amber-100/90 font-medium truncate">
-                Âm Thanh Trị Liệu • Phim Ảnh Nghệ Thuật • Tết Đoàn Viên
+                Âm Thanh Trị Liệu • Phim Ảnh 4K • Lao Động Dân Sinh & Chốn Thiền Môn
               </div>
             </div>
           </div>
@@ -7968,15 +7968,69 @@
     const SHOWCASE_ARTWORKS = [
       {
         id: "tet_sum_vay",
+        tab: "culture",
         category: "TẾT ĐOÀN VIÊN 4K",
+        shortTitle: "Tết Đoàn Viên",
         title: "ĐẠI GIA ĐÌNH ĐẤT PHÚ SUM VẦY ĐÓN TẾT CỔ TRUYỀN",
         poem: "Con cháu quây quần mừng thọ ông bà, nụ cười rạng rỡ bên phong bao lì xì đỏ, cành mai vàng rực rỡ và mâm ngũ quả nồng ấm nghĩa tình.",
         img: "img/tet_sum_vay_dat_phu.jpg",
         sound: "bamboo_flute"
       },
       {
+        id: "lao_dong_nu_cuoi",
+        tab: "labor",
+        category: "NỤ CƯỜI LAO ĐỘNG",
+        shortTitle: "Nụ Cười Thợ Xây",
+        title: "NỤ CƯỜI RẠNG RỠ CỦA NGƯỜI THỢ XÂY ĐẤT PHÚ",
+        poem: "Chung sức chung lòng đẩy xe vữa nặng nghĩa tình, mồ hôi ướt đẫm nhưng nụ cười hồn hậu thắp sáng cả công trình sườn non.",
+        img: "img/lao_dong_nu_cuoi_cong_trinh.jpg",
+        sound: "muidien_dawn"
+      },
+      {
+        id: "lao_dong_mong",
+        tab: "labor",
+        category: "KIẾN THIẾT CÔNG TRÌNH",
+        shortTitle: "Đổ Móng Đồi Cao",
+        title: "ĐỔ MÓNG CÔNG TRÌNH TRÊN ĐỈNH ĐỒI CAO XỨ NẪU",
+        poem: "Cốt thép vững chãi, móng sâu dựng xây tương lai kiên cố, phóng tầm mắt ngút ngàn thung lũng mây trắng và dãy núi Đất Phú trùng điệp.",
+        img: "img/lao_dong_mong_cong_trinh.jpg",
+        sound: "deo_ca"
+      },
+      {
+        id: "lao_dong_lat_da",
+        tab: "labor",
+        category: "BÀN TAY TÀI HOA",
+        shortTitle: "Lát Đá Sân Chùa",
+        title: "TỶ MỶ TỪNG VIÊN ĐÁ LÁT NỀN KHUÔN VIÊN DI TÍCH",
+        poem: "Bàn tay chai sạn nắn nót từng phiến đá tự nhiên, từng mạch vữa thẳng tắp làm đẹp cảnh sắc tôn nghiêm quê nhà.",
+        img: "img/lao_dong_lat_da_san_chua.jpg",
+        sound: "bamboo_flute"
+      },
+      {
+        id: "tu_bo_chua_1",
+        tab: "labor",
+        category: "CÔNG ĐỨC THIỀN MÔN",
+        shortTitle: "Trùng Tu Đêm I",
+        title: "ÁNH ĐÈN ĐÊM TRÙNG TU CHỐN TỔ ĐÌNH THANH TỊNH",
+        poem: "Giàn giáo vươn cao trong đêm tĩnh mịch, từng ống thép kiên cố nâng đỡ mái chùa cổ chở che Phật tử thập phương.",
+        img: "img/tu_bo_chua_co_dem_1.jpg",
+        sound: "bach_thach"
+      },
+      {
+        id: "tu_bo_chua_2",
+        tab: "labor",
+        category: "HỘ TRÌ TAM BẢO",
+        shortTitle: "Bảo Điện Đêm II",
+        title: "SƯ TỬ ĐÁ UY NGHIÊM CANH GIỮ BẢO ĐIỆN KIẾN THIẾT",
+        poem: "Ánh đèn đêm soi rọi chốn từ bi, vật tư kiên cố sẵn sàng cho ngày đại trùng tu tôn nghiêm bảo tự.",
+        img: "img/tu_bo_chua_co_dem_2.jpg",
+        sound: "zen_rain"
+      },
+      {
         id: "ganh_da_dia",
+        tab: "culture",
         category: "KỲ QUAN THIÊN NHIÊN",
+        shortTitle: "Gành Đá Đĩa",
         title: "GÀNH ĐÁ ĐĨA - TUYỆT TÁC DUNG NHAM TRIỆU NĂM BIỂN ĐÔNG",
         poem: "Trăm ngàn cột đá bazan lục lăng đen tuyền xếp tầng kiên cường, sóng đại dương vỗ về ngàn năm ru bờ đá Tuy An bất tử.",
         img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
@@ -7984,7 +8038,9 @@
       },
       {
         id: "mui_dien",
+        tab: "culture",
         category: "ĐỊA ĐẦU TỔ QUỐC",
+        shortTitle: "Mũi Điện Sớm",
         title: "HẢI ĐĂNG MŨI ĐIỆN - NƠI ĐÓN BÌNH MINH ĐẦU TIÊN CỦA VIỆT NAM",
         poem: "Ngọn hải đăng đứng sừng sững trên vách đá Bãi Môn, đón tia nắng sớm đầu tiên của đất trời soi sáng hải trình con thuyền vươn khơi.",
         img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
@@ -7992,7 +8048,9 @@
       },
       {
         id: "thap_nhan",
+        tab: "culture",
         category: "DI TÍCH LỊCH SỬ",
+        shortTitle: "Tháp Nhạn Sông Ba",
         title: "THÁP NHẠN NGÀN NĂM SOI BÓNG DÒNG SÔNG BA",
         poem: "Bóng tháp Chăm trầm mặc trong chiều hoàng hôn Tuy Hòa, dòng sông Đà Rằng chở nặng phù sa nuôi dưỡng hạt ngọc lúa vàng Đất Phú.",
         img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=1200&q=80",
@@ -8001,14 +8059,52 @@
     ];
 
     let currentArtIndex = 0;
+    let currentArtFilter = "all";
     let isSlideshowPlaying = false;
     let artSlideshowTimer = null;
+
+    function renderArtThumbnails() {
+      const container = document.getElementById("showcaseArtThumbsList");
+      if (!container) return;
+      container.innerHTML = SHOWCASE_ARTWORKS.map((art, idx) => {
+        const isVisible = (currentArtFilter === 'all' || art.tab === currentArtFilter);
+        if (!isVisible) return '';
+        const isAct = idx === currentArtIndex;
+        return `
+          <button onclick="selectShowcaseArt(${idx})" id="thumbArt_${idx}" class="px-2.5 py-1.5 rounded-xl border ${isAct ? 'border-amber-400 bg-amber-950/80 text-amber-200 ring-1 ring-amber-400/50 shadow-md font-black' : 'border-slate-800 bg-slate-900/60 text-slate-400 hover:border-slate-600 hover:text-slate-200 font-bold'} text-[11px] shrink-0 transition flex items-center gap-1.5">
+            <span class="w-4 h-4 rounded-full ${isAct ? 'bg-amber-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-400 font-bold'} flex items-center justify-center text-[9px]">${idx + 1}</span>
+            <span class="whitespace-nowrap">${art.shortTitle}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function filterArtTab(filterKey) {
+      currentArtFilter = filterKey;
+      ['all', 'labor', 'culture'].forEach(k => {
+        const pill = document.getElementById("artFilterPill_" + k);
+        if (pill) {
+          if (k === filterKey) {
+            pill.className = "px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-black text-[11px] shadow transition shrink-0";
+          } else {
+            pill.className = "px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-bold text-[11px] transition shrink-0 border border-slate-700 flex items-center gap-1";
+          }
+        }
+      });
+      renderArtThumbnails();
+      const firstMatch = SHOWCASE_ARTWORKS.findIndex(a => filterKey === 'all' || a.tab === filterKey);
+      if (firstMatch !== -1) {
+        selectShowcaseArt(firstMatch);
+      }
+    }
 
     function toggleMediaSanctuaryModal() {
       const modal = document.getElementById("mediaSanctuaryModal");
       if (!modal) return;
       modal.classList.toggle("hidden");
       if (!modal.classList.contains("hidden")) {
+        renderArtThumbnails();
+        selectShowcaseArt(currentArtIndex);
         syncAudiovisualPlayerUI();
       } else {
         stopArtSlideshow();
@@ -8024,6 +8120,7 @@
       const titleEl = document.getElementById("showcaseTitle");
       const poemEl = document.getElementById("showcasePoem");
       const catEl = document.getElementById("showcaseBadgeCategory");
+      const counterEl = document.getElementById("showcaseCounter");
 
       if (imgEl) {
         imgEl.style.opacity = "0.3";
@@ -8036,15 +8133,22 @@
       if (titleEl) titleEl.innerText = art.title;
       if (poemEl) poemEl.innerText = `"${art.poem}"`;
       if (catEl) catEl.innerText = art.category;
+      if (counterEl) counterEl.innerText = `${idx + 1} / ${SHOWCASE_ARTWORKS.length}`;
 
-      // Highlight thumb button
+      // Update thumb button styles
       for (let i = 0; i < SHOWCASE_ARTWORKS.length; i++) {
         const btn = document.getElementById("thumbArt_" + i);
         if (btn) {
+          const numSpan = btn.querySelector("span:first-child");
           if (i === idx) {
-            btn.className = "p-1.5 rounded-xl border-2 border-amber-400 bg-amber-950/60 text-amber-200 transition font-black scale-102";
+            btn.className = "px-2.5 py-1.5 rounded-xl border border-amber-400 bg-amber-950/80 text-amber-200 ring-1 ring-amber-400/50 shadow-md font-black text-[11px] shrink-0 transition flex items-center gap-1.5";
+            if (numSpan) numSpan.className = "w-4 h-4 rounded-full bg-amber-400 text-slate-950 font-black flex items-center justify-center text-[9px]";
+            try {
+              btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            } catch(e) {}
           } else {
-            btn.className = "p-1.5 rounded-xl border border-slate-700 bg-slate-900/60 text-slate-400 hover:border-slate-500 transition font-bold";
+            btn.className = "px-2.5 py-1.5 rounded-xl border border-slate-800 bg-slate-900/60 text-slate-400 hover:border-slate-600 hover:text-slate-200 font-bold text-[11px] shrink-0 transition flex items-center gap-1.5";
+            if (numSpan) numSpan.className = "w-4 h-4 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-[9px]";
           }
         }
       }
@@ -8056,10 +8160,15 @@
     }
 
     function changeShowcaseArt(delta) {
-      let next = currentArtIndex + delta;
-      if (next < 0) next = SHOWCASE_ARTWORKS.length - 1;
-      if (next >= SHOWCASE_ARTWORKS.length) next = 0;
-      selectShowcaseArt(next);
+      let filtered = SHOWCASE_ARTWORKS.map((a, i) => ({ ...a, originalIndex: i }))
+        .filter(a => currentArtFilter === 'all' || a.tab === currentArtFilter);
+      if (filtered.length === 0) return;
+      let currPos = filtered.findIndex(a => a.originalIndex === currentArtIndex);
+      if (currPos === -1) currPos = 0;
+      let nextPos = currPos + delta;
+      if (nextPos < 0) nextPos = filtered.length - 1;
+      if (nextPos >= filtered.length) nextPos = 0;
+      selectShowcaseArt(filtered[nextPos].originalIndex);
     }
 
     function toggleArtSlideshow() {
@@ -8153,6 +8262,13 @@
       originalStopAmbientSound();
       syncAudiovisualPlayerUI();
     };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderArtThumbnails();
+    });
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      renderArtThumbnails();
+    }
 </script>
 
   <!-- ========================================================================= -->
@@ -8309,7 +8425,7 @@
           </div>
           <div>
             <h3 class="text-base sm:text-lg font-black text-yellow-300 leading-tight">TRUNG TÂM NGHE NHÌN ĐẤT PHÚ</h3>
-            <p class="text-[11px] font-bold text-amber-200">Rạp chiếu nghệ thuật • Hòa tấu 6 không gian âm thanh xứ Nẫu</p>
+            <p class="text-[11px] font-bold text-amber-200">9 Tác Phẩm Nghệ Thuật 4K • Hòa tấu 6 Không Gian Âm Thanh Đất Phú</p>
           </div>
         </div>
         <button onclick="toggleMediaSanctuaryModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition">✕</button>
@@ -8337,6 +8453,9 @@
             <span id="showcaseBadgeCategory" class="px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] uppercase shadow-sm">
               TẾT ĐOÀN VIÊN 4K
             </span>
+            <span id="showcaseCounter" class="px-2 py-0.5 rounded-full bg-black/60 border border-white/20 text-amber-300 font-black text-[10px] shadow-sm">
+              1 / 9
+            </span>
           </div>
 
           <button id="btnToggleSlideshow" onclick="toggleArtSlideshow()" class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-xl bg-black/70 hover:bg-black/90 border border-white/20 text-white text-[11px] font-bold shadow flex items-center gap-1.5 transition">
@@ -8355,20 +8474,24 @@
           </div>
         </div>
 
-        <!-- Thanh danh sách 4 tác phẩm thu nhỏ để bấm chọn nhanh -->
-        <div class="grid grid-cols-4 gap-1.5 text-center text-[10px] font-bold">
-          <button onclick="selectShowcaseArt(0)" id="thumbArt_0" class="p-1.5 rounded-xl border-2 border-amber-400 bg-amber-950/60 text-amber-200 transition">
-            1. Tết Đoàn Viên
-          </button>
-          <button onclick="selectShowcaseArt(1)" id="thumbArt_1" class="p-1.5 rounded-xl border border-slate-700 bg-slate-900/60 text-slate-400 hover:border-slate-500 transition">
-            2. Gành Đá Đĩa
-          </button>
-          <button onclick="selectShowcaseArt(2)" id="thumbArt_2" class="p-1.5 rounded-xl border border-slate-700 bg-slate-900/60 text-slate-400 hover:border-slate-500 transition">
-            3. Hải Đăng Mũi Điện
-          </button>
-          <button onclick="selectShowcaseArt(3)" id="thumbArt_3" class="p-1.5 rounded-xl border border-slate-700 bg-slate-900/60 text-slate-400 hover:border-slate-500 transition">
-            4. Tháp Nhạn Sông Ba
-          </button>
+        <!-- BỘ LỌC DANH MỤC TÁC PHẨM -->
+        <div class="flex items-center justify-between gap-1 pt-1">
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+            <button id="artFilterPill_all" onclick="filterArtTab('all')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-black text-[11px] shadow transition shrink-0">
+              Tất Cả (9)
+            </button>
+            <button id="artFilterPill_labor" onclick="filterArtTab('labor')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-bold text-[11px] transition shrink-0 border border-slate-700 flex items-center gap-1">
+              <i class="fa-solid fa-trowel-bricks text-amber-400 text-[10px]"></i> Lao Động & Trùng Tu (5)
+            </button>
+            <button id="artFilterPill_culture" onclick="filterArtTab('culture')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-bold text-[11px] transition shrink-0 border border-slate-700 flex items-center gap-1">
+              <i class="fa-solid fa-heart text-rose-400 text-[10px]"></i> Tết & Thắng Cảnh (4)
+            </button>
+          </div>
+        </div>
+
+        <!-- DẢI THUMBNAIL TÁC PHẨM CUỘN NGANG THỜI THƯỢNG -->
+        <div id="showcaseArtThumbsList" class="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-thin scrollbar-thumb-amber-500/40">
+          <!-- Rendered dynamically by renderArtThumbnails() -->
         </div>
       </div>
 
