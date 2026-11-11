@@ -771,25 +771,11 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-1.5 sm:gap-2">
-        <!-- NÚT TOÀN MÀN HÌNH (FULLSCREEN APP) -->
-        <button id="appFullscreenBtn" onclick="toggleAppFullscreen()" class="px-2 sm:px-2.5 py-1.5 rounded-xl border border-emerald-500 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 flex items-center gap-1 text-[11px] font-black shadow-sm transition active:scale-95" title="Toàn Màn Hình Điện Thoại & Trình Duyệt">
-          <i id="appFullscreenIcon" class="fa-solid fa-expand text-xs text-emerald-700"></i>
-          <span id="appFullscreenText" class="hidden sm:inline">TOÀN MÀN HÌNH</span>
-        </button>
-
-        <!-- NÚT CHUYỂN ĐỔI GIAO DIỆN BAN NGÀY / BAN ĐÊM (ÁNH NẮNG / TRĂNG SAO) -->
-        <button id="dayNightToggleBtn" onclick="toggleDayNightMode()" class="px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-amber-400 bg-amber-50 hover:bg-amber-100 text-amber-950 flex items-center gap-1.5 text-xs font-black shadow-sm transition active:scale-95" title="Bấm để chuyển đổi giao diện Ban Ngày / Ban Đêm">
-          <span id="dayNightIcon" class="text-sm">☀️</span>
-          <span id="dayNightText" class="hidden sm:inline">BAN NGÀY</span>
-        </button>
-
-        <!-- NÚT BÁNH RĂNG CÀI ĐẶT & TIỆN ÍCH TRUNG TÂM -->
-        <button id="settingsGearBtn" onclick="toggleSettingsCenterModal()" class="px-2.5 sm:px-3.5 py-1.5 rounded-xl border-2 border-indigo-500 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white flex items-center gap-1.5 text-xs font-black shadow-md transition active:scale-95 group" title="Cài đặt âm nhạc, nhạc chuông, phong cách & tiện ích">
-          <i class="fa-solid fa-gear text-sm group-hover:rotate-90 transition-transform duration-300"></i>
-          <span>CÀI ĐẶT</span>
-        </button>
-      </div>
+      <!-- NÚT BÁNH RĂNG CÀI ĐẶT & TIỆN ÍCH TRUNG TÂM -->
+      <button id="settingsGearBtn" onclick="toggleSettingsCenterModal()" class="px-3 sm:px-4 py-2 rounded-xl border-2 border-indigo-500 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white flex items-center gap-2 text-xs font-black shadow-md transition active:scale-95 group" title="Cài đặt âm nhạc, niệm Phật, phong cách & tiện ích">
+        <i class="fa-solid fa-gear text-sm group-hover:rotate-90 transition-transform duration-300"></i>
+        <span>CÀI ĐẶT</span>
+      </button>
     </header>
 
     <!-- THANH ĐIỀU HƯỚNG 3 CHẾ ĐỘ: HÔM NAY • HÀNG THÁNG • HÀNG NĂM -->
@@ -1482,97 +1468,6 @@
         <button onclick="tearLeaf(1)" class="big-touch-btn btn-3d-blue text-white flex items-center justify-center gap-1.5" title="Xem ngày mai">
           <span class="tracking-wide">NGÀY MAI</span>
           <i class="fa-solid fa-arrow-right text-sm text-blue-200"></i>
-        </button>
-      </div>
-
-      <!-- 4 TIỆN ÍCH DÂN SINH NGHĨA TÌNH ĐẤT PHÚ (ICON RIÊNG BIỆT ĐỘC BẢN) -->
-      <div class="grid grid-cols-4 gap-2 pt-1.5">
-        <!-- 1. ĐỌC LỊCH GIỌNG NÓI TRUYỀN CẢM & CHỌN CHUÔNG -->
-        <div class="relative group">
-          <button id="btnSpeakCalendar" onclick="speakTodayCalendar()" class="w-full action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-amber-400 hover:bg-amber-50/50 flex flex-col items-center justify-center gap-1.5 active:scale-95 transition" title="Nghe giọng đọc ngày tháng, lời chúc & nhạc chuông">
-            <div class="icon-bubble w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-100 to-amber-200 text-amber-800 flex items-center justify-center group-hover:scale-110 transition shadow-xs border border-amber-300/40">
-              <!-- SVG Loa Phát Thanh Dân Sinh Mạ Đồng -->
-              <svg viewBox="0 0 24 24" class="w-5 h-5 drop-shadow-xs">
-                <defs>
-                  <linearGradient id="gradHorn" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#fbbf24"/>
-                    <stop offset="60%" stop-color="#d97706"/>
-                    <stop offset="100%" stop-color="#92400e"/>
-                  </linearGradient>
-                </defs>
-                <path d="M11 5 L6 9 H2 V15 H6 L11 19 V5 Z" fill="url(#gradHorn)"/>
-                <path d="M15 9.5 C16.2 10.5 16.2 13.5 15 14.5" stroke="#d97706" stroke-width="2" stroke-linecap="round" fill="none"/>
-                <path d="M18.5 7 C21 9.5 21 14.5 18.5 17" stroke="#b45309" stroke-width="2" stroke-linecap="round" fill="none"/>
-              </svg>
-            </div>
-            <span class="tracking-tight leading-tight">Đọc Lịch</span>
-          </button>
-          <!-- Nút đổi kiểu chuông và niệm Phật nhỏ gọn tinh tế -->
-          <button onclick="event.stopPropagation(); toggleRingtoneModal()" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-amber-950 flex items-center justify-center text-[9px] shadow border border-white transition active:scale-90" title="Cài đặt nhạc chuông đọc lịch & niệm Phật">
-            <i class="fa-solid fa-sliders"></i>
-          </button>
-        </div>
-
-        <!-- 2. SỔ GIỖ GIA TIÊN (UỐNG NƯỚC NHỚ NGUỒN) -->
-        <button onclick="toggleMemorialModal()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-red-400 hover:bg-red-50/50 flex flex-col items-center justify-center gap-1.5 active:scale-95 transition group" title="Sổ giỗ gia tiên tưởng nhớ cội nguồn">
-          <div class="icon-bubble w-9 h-9 rounded-2xl bg-gradient-to-br from-red-100 to-rose-200 text-[#d9232a] flex items-center justify-center group-hover:scale-110 transition shadow-xs border border-red-300/40">
-            <!-- SVG Mái Ngói Đình Làng & Cuốn Gia Phả Hoàng Gia -->
-            <svg viewBox="0 0 24 24" class="w-5 h-5 drop-shadow-xs">
-              <defs>
-                <linearGradient id="gradTempleRoof" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#ef4444"/>
-                  <stop offset="100%" stop-color="#991b1b"/>
-                </linearGradient>
-              </defs>
-              <path d="M1 9 C4 8.5 8 5.5 12 3 C16 5.5 20 8.5 23 9 C20 8 16 6 12 6 C8 6 4 8 1 9 Z" fill="#facc15"/>
-              <path d="M3 10 C6 9 9 7.5 12 7.5 C15 7.5 18 9 21 10 L19 14 H5 L3 10 Z" fill="url(#gradTempleRoof)"/>
-              <rect x="6" y="14" width="2.2" height="7" fill="#d97706" rx="0.4"/>
-              <rect x="15.8" y="14" width="2.2" height="7" fill="#d97706" rx="0.4"/>
-              <rect x="9.5" y="14.5" width="5" height="6.5" fill="#fef08a" rx="1"/>
-              <line x1="2" y1="21" x2="22" y2="21" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <span class="tracking-tight leading-tight">Sổ Gia Tiên</span>
-        </button>
-
-        <!-- 3. CÀI LỊCH RA MÀN HÌNH CHÍNH (PWA) -->
-        <button onclick="installPwaApp()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-blue-400 hover:bg-blue-50/50 flex flex-col items-center justify-center gap-1.5 active:scale-95 transition group" title="Cài ứng dụng ra màn hình chính để mở xem mỗi ngày">
-          <div class="icon-bubble w-9 h-9 rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-200 text-[#1b2a47] flex items-center justify-center group-hover:scale-110 transition shadow-xs border border-blue-300/40">
-            <!-- SVG Điện Thoại Mở Tờ Bloc Đất Phú -->
-            <svg viewBox="0 0 24 24" class="w-5 h-5 drop-shadow-xs">
-              <defs>
-                <linearGradient id="gradPhoneIcon" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#38bdf8"/>
-                  <stop offset="100%" stop-color="#0284c7"/>
-                </linearGradient>
-              </defs>
-              <rect x="4" y="2" width="16" height="20" rx="3.5" fill="url(#gradPhoneIcon)"/>
-              <rect x="6" y="4.5" width="12" height="15" rx="1.8" fill="#ffffff"/>
-              <rect x="7.5" y="6" width="9" height="12" rx="1.2" fill="#d9232a"/>
-              <circle cx="12" cy="11.5" r="2.2" fill="#fef08a"/>
-              <rect x="7.5" y="6" width="9" height="2" rx="0.5" fill="#facc15"/>
-            </svg>
-          </div>
-          <span class="tracking-tight leading-tight">Cài Lịch</span>
-        </button>
-
-        <!-- 4. GỬI LỜI CHÚC QUA ZALO -->
-        <button onclick="shareZaloGreeting()" class="action-card-btn py-2.5 px-1 bg-white border-2 border-slate-200 rounded-2xl shadow-sm font-black text-[11px] sm:text-xs text-slate-800 hover:border-emerald-400 hover:bg-emerald-50/50 flex flex-col items-center justify-center gap-1.5 active:scale-95 transition group" title="Gửi thiệp chúc bình an ngày mới qua Zalo">
-          <div class="icon-bubble w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-200 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition shadow-xs border border-emerald-300/40">
-            <!-- SVG Cánh Én Mùa Xuân & Thiệp Hồng An Nhiên -->
-            <svg viewBox="0 0 24 24" class="w-5 h-5 drop-shadow-xs">
-              <defs>
-                <linearGradient id="gradEnv" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#34d399"/>
-                  <stop offset="100%" stop-color="#059669"/>
-                </linearGradient>
-              </defs>
-              <rect x="3" y="6" width="18" height="13" rx="2.5" fill="url(#gradEnv)"/>
-              <path d="M3 7 L12 13 L21 7" fill="none" stroke="#a7f3d0" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M12 2 C13 4 15 5 18 4 C15.5 6 14.5 8 13.5 10 C12.5 8 11.5 6 9 4 C12 5 11 4 12 2 Z" fill="#fde047"/>
-            </svg>
-          </div>
-          <span class="tracking-tight leading-tight">Gửi Zalo</span>
         </button>
       </div>
 
@@ -2616,6 +2511,102 @@
 
           <!-- ================= TAB 4: 🛠️ GIAO DIỆN & TIỆN ÍCH DÂN SINH ================= -->
           <div id="tabContent_system" class="space-y-4 hidden">
+            
+            <!-- KHỐI 1: CHẾ ĐỘ HIỂN THỊ & ÁNH SÁNG (BAN NGÀY / BAN ĐÊM & TOÀN MÀN HÌNH) -->
+            <div class="p-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl space-y-2.5">
+              <div class="text-xs font-black text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-display text-indigo-600"></i> Hiển Thị & Toàn Màn Hình:
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <!-- Nút Chuyển Đổi Ban Ngày / Ban Đêm -->
+                <button id="dayNightToggleBtn" onclick="toggleDayNightMode()" class="p-3 rounded-2xl border-2 border-amber-400 bg-white hover:bg-amber-50 text-slate-900 flex flex-col justify-between gap-2 shadow-sm transition active:scale-95 text-left">
+                  <div class="flex items-center justify-between">
+                    <span id="dayNightIcon" class="text-2xl">☀️</span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">GIAO DIỆN</span>
+                  </div>
+                  <div>
+                    <div id="dayNightText" class="font-black text-xs sm:text-sm text-slate-900">BAN NGÀY</div>
+                    <div class="text-[10px] text-slate-500 leading-tight">Chạm để chuyển Trời Tối / Ánh Sáng</div>
+                  </div>
+                </button>
+
+                <!-- Nút Toàn Màn Hình (Fullscreen App) -->
+                <button id="appFullscreenBtn" onclick="toggleAppFullscreen()" class="p-3 rounded-2xl border-2 border-emerald-500 bg-white hover:bg-emerald-50 text-slate-900 flex flex-col justify-between gap-2 shadow-sm transition active:scale-95 text-left">
+                  <div class="flex items-center justify-between">
+                    <i id="appFullscreenIcon" class="fa-solid fa-expand text-2xl text-emerald-600"></i>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 font-bold">APP MODE</span>
+                  </div>
+                  <div>
+                    <div id="appFullscreenText" class="font-black text-xs sm:text-sm text-slate-900">TOÀN MÀN HÌNH</div>
+                    <div class="text-[10px] text-slate-500 leading-tight">Giấu thanh URL, mở rộng tràn viền</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- KHỐI 2: 4 TIỆN ÍCH DÂN SINH ĐẶC TRƯNG ĐẤT PHÚ -->
+            <div class="p-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl space-y-2.5">
+              <div class="text-xs font-black text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-boxes-stacked text-amber-600"></i> Tiện Ích Dân Sinh & Đạo Hiếu:
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <!-- Sổ Giỗ Gia Tiên -->
+                <button onclick="toggleMemorialModal()" class="p-3 rounded-2xl border-2 border-red-200 bg-white hover:border-red-400 hover:bg-red-50/50 flex flex-col justify-between gap-2 shadow-sm transition active:scale-95 text-left">
+                  <div class="flex items-center justify-between">
+                    <div class="w-8 h-8 rounded-xl bg-red-100 text-[#d9232a] flex items-center justify-center text-sm font-black shadow-xs">
+                      🏛️
+                    </div>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-red-100 text-red-900 font-bold">GIA TỘC</span>
+                  </div>
+                  <div>
+                    <div class="font-black text-xs sm:text-sm text-slate-900">Sổ Gia Tiên</div>
+                    <div class="text-[10px] text-slate-500 leading-tight">Nhắc giỗ tổ tiên, đổi ngày âm dương</div>
+                  </div>
+                </button>
+
+                <!-- Đọc Lịch Bằng Giọng Nói -->
+                <button id="btnSpeakCalendar" onclick="speakTodayCalendar()" class="p-3 rounded-2xl border-2 border-amber-200 bg-white hover:border-amber-400 hover:bg-amber-50/50 flex flex-col justify-between gap-2 shadow-sm transition active:scale-95 text-left">
+                  <div class="flex items-center justify-between">
+                    <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-sm font-black shadow-xs">
+                      📢
+                    </div>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">GIỌNG NÓI</span>
+                  </div>
+                  <div>
+                    <div class="font-black text-xs sm:text-sm text-slate-900">Đọc Lịch Dân Sinh</div>
+                    <div class="text-[10px] text-slate-500 leading-tight">Phát thanh to rõ ngày giờ tốt xấu</div>
+                  </div>
+                </button>
+
+                <!-- Cài Đặt Ứng Dụng PWA -->
+                <button onclick="installPwaApp()" class="p-3 rounded-2xl border-2 border-blue-200 bg-white hover:border-blue-400 hover:bg-blue-50/50 flex flex-col justify-between gap-2 shadow-sm transition active:scale-95 text-left">
+                  <div class="flex items-center justify-between">
+                    <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center text-sm font-black shadow-xs">
+                      📲
+                    </div>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-900 font-bold">PWA APP</span>
+                  </div>
+                  <div>
+                    <div class="font-black text-xs sm:text-sm text-slate-900">Cài Ra Màn Hình</div>
+                    <div class="text-[10px] text-slate-500 leading-tight">Dùng như App độc lập không viền URL</div>
+                  </div>
+                </button>
+
+                <!-- Gửi Lời Chúc Zalo -->
+                <button onclick="shareZaloGreeting()" class="p-3 rounded-2xl border-2 border-emerald-200 bg-white hover:border-emerald-400 hover:bg-emerald-50/50 flex flex-col justify-between gap-2 shadow-sm transition active:scale-95 text-left">
+                  <div class="flex items-center justify-between">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-sm font-black shadow-xs">
+                      💌
+                    </div>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 font-bold">ZALO</span>
+                  </div>
+                  <div>
+                    <div class="font-black text-xs sm:text-sm text-slate-900">Gửi Lời Chúc Zalo</div>
+                    <div class="text-[10px] text-slate-500 leading-tight">Tạo thiệp chúc lành gửi người thân</div>
+                  </div>
+                </button>
+              </div>
+            </div>
             
             <!-- PHONG CÁCH TRẢI NGHIỆM -->
             <div class="space-y-2">
