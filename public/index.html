@@ -8664,6 +8664,36 @@
         poem: "Bóng tháp Chăm trầm mặc trong chiều hoàng hôn Tuy Hòa, dòng sông Đà Rằng chở nặng phù sa nuôi dưỡng hạt ngọc lúa vàng Đất Phú.",
         img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=1200&q=80",
         sound: "bach_thach"
+      },
+      {
+        id: "bat_com_nghia_tinh",
+        tab: "charity",
+        category: "TÌNH THƯƠNG & NHÂN ÁI",
+        shortTitle: "Bát Cơm Nghĩa Tình",
+        title: "BÁT CƠM NGHĨA TÌNH - ẤM ÁP TẤM LÒNG NGƯỜI ĐẤT PHÚ",
+        poem: "Một miếng khi đói bằng một gói khi no. Bát cơm sẻ nửa lúc ngặt nghèo, trao nhau ánh mắt ân tình làm ấm lòng người con xứ Nẫu.",
+        img: "img/tet_sum_vay_dat_phu.jpg",
+        sound: "bamboo_flute"
+      },
+      {
+        id: "vong_tay_nhan_ai",
+        tab: "charity",
+        category: "BÀN TAY NÂNG ĐỠ",
+        shortTitle: "Vòng Tay Nhân Ái",
+        title: "VÒNG TAY NHÂN ÁI - NÂNG BƯỚC EM THƠ VƯỢT KHÓ",
+        poem: "Thương người như thể thương thân. Gom từng trang sách, manh áo ấm trao em thơ vùng cao, chắp cánh cho những ước mơ vươn xa.",
+        img: "img/lao_dong_nu_cuoi_cong_trinh.jpg",
+        sound: "zen_rain"
+      },
+      {
+        id: "chu_hieu_lam_dau",
+        tab: "charity",
+        category: "ĐẠO NGHĨA SINH THÀNH",
+        shortTitle: "Chữ Hiếu Chữ Tình",
+        title: "CHỮ HIẾU LÀM ĐẦU - TRI ÂN DƯỠNG DỤC CỦA CHA MẸ",
+        poem: "Đi khắp thế gian không ai tốt bằng Mẹ, gánh nặng cuộc đời không ai khổ bằng Cha. Sống trọn tình thương, hiếu kính song thân là cội nguồn của muôn điều phước đức.",
+        img: "img/tet_sum_vay_dat_phu.jpg",
+        sound: "bach_thach"
       }
     ];
 
@@ -8693,7 +8723,7 @@
 
     function filterArtTab(filterKey) {
       currentArtFilter = filterKey;
-      ['all', 'labor', 'culture'].forEach(k => {
+      ['all', 'charity', 'labor', 'culture'].forEach(k => {
         const pill = document.getElementById("artFilterPill_" + k);
         if (pill) {
           if (k === filterKey) {
@@ -8732,7 +8762,10 @@
       tu_bo_chua_2: 'rgba(202, 138, 4, 0.4)', // Sư tử đá uy nghiêm
       ganh_da_dia: 'rgba(6, 182, 212, 0.45)', // Sóng biển Gành Đá
       mui_dien: 'rgba(244, 63, 94, 0.45)', // Rạng đông Mũi Điện
-      thap_nhan: 'rgba(234, 88, 12, 0.45)' // Đất nung Tháp Nhạn
+      thap_nhan: 'rgba(234, 88, 12, 0.45)', // Đất nung Tháp Nhạn
+      bat_com_nghia_tinh: 'rgba(236, 72, 153, 0.45)', // Hồng sen nhân ái
+      vong_tay_nhan_ai: 'rgba(244, 63, 94, 0.45)', // Đỏ hồng yêu thương
+      chu_hieu_lam_dau: 'rgba(245, 158, 11, 0.45)' // Vàng ấm hiếu nghĩa
     };
 
     function updateCinemaAmbientGlow(artId) {
@@ -10659,7 +10692,10 @@
         <div class="flex items-center justify-between gap-1 pt-1">
           <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
             <button id="artFilterPill_all" onclick="filterArtTab('all')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-black text-[11px] shadow transition shrink-0">
-              Tất Cả (9)
+              Tất Cả (12)
+            </button>
+            <button id="artFilterPill_charity" onclick="filterArtTab('charity')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-bold text-[11px] transition shrink-0 border border-slate-700 flex items-center gap-1">
+              <i class="fa-solid fa-hand-holding-heart text-pink-400 text-[10px]"></i> Tình Thương & Nhân Ái (3)
             </button>
             <button id="artFilterPill_labor" onclick="filterArtTab('labor')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-bold text-[11px] transition shrink-0 border border-slate-700 flex items-center gap-1">
               <i class="fa-solid fa-trowel-bricks text-amber-400 text-[10px]"></i> Lao Động & Trùng Tu (5)
