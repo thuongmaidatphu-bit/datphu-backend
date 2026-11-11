@@ -2129,6 +2129,55 @@
                 </div>
               </div>
 
+              <!-- THANH CHỌN CHẾ ĐỘ PHÁT NHẠC: ĐÁM MÂY CLOUDFLARE R2 & THIỀN SINH HỌC -->
+              <div class="flex items-center justify-between gap-1.5 p-1 bg-slate-950/80 rounded-2xl border border-teal-500/30 text-[10px] sm:text-xs relative z-10">
+                <div class="flex items-center gap-1 flex-1">
+                  <button onclick="setZenAudioMode('cloud_r2')" id="zenModeBtn_cloud_r2" class="flex-1 py-1.5 px-2 rounded-xl font-black transition active:scale-95 flex items-center justify-center gap-1.5 shadow-sm bg-gradient-to-r from-amber-600 to-orange-600 text-white border border-amber-300">
+                    <i class="fa-solid fa-cloud text-[11px]"></i>
+                    <span>Đám Mây R2 (Dài 15–60p)</span>
+                  </button>
+                  <button onclick="setZenAudioMode('synth')" id="zenModeBtn_synth" class="flex-1 py-1.5 px-2 rounded-xl font-bold transition active:scale-95 flex items-center justify-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-900 opacity-80">
+                    <i class="fa-solid fa-infinity text-[11px]"></i>
+                    <span>Dòng Chảy Tự Động (Vô Tận)</span>
+                  </button>
+                </div>
+                <button onclick="openR2CloudSettingsModal()" class="px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/40 text-[11px] font-black transition active:scale-95 flex items-center gap-1 shrink-0" title="Cấu hình bộ nhớ lưu trữ đám mây Cloudflare R2">
+                  <i class="fa-solid fa-gear text-[10px]"></i>
+                  <span class="hidden sm:inline">Cài Đặt R2</span>
+                </button>
+              </div>
+
+              <!-- KHỐI ĐIỀU KHIỂN PHÁT NHẠC ĐÁM MÂY CLOUDFLARE R2 (TIẾN ĐỘ, TUA BÀI) -->
+              <div id="zenCloudR2PlayerPanel" class="p-3 bg-slate-950/85 rounded-2xl border border-amber-500/30 space-y-2 relative z-10 shadow-md">
+                <div class="flex items-center justify-between text-xs font-bold text-amber-200">
+                  <div class="flex items-center gap-1.5 truncate">
+                    <i class="fa-solid fa-music text-amber-400 text-xs"></i>
+                    <span id="r2PlayingTrackTitle" class="truncate font-black">Khúc Sen Tĩnh Lặng (396Hz) - Bản Dài 30 Phút</span>
+                  </div>
+                  <span id="r2TimeDisplay" class="text-[11px] font-mono text-amber-300 shrink-0">
+                    <span id="r2CurrentTime">00:00</span> / <span id="r2TotalDuration">30:00</span>
+                  </span>
+                </div>
+
+                <div class="relative flex items-center">
+                  <input type="range" id="r2AudioSeekBar" min="0" max="100" value="0" oninput="seekR2Audio(this.value)" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-400" />
+                </div>
+
+                <div class="flex items-center justify-between pt-1">
+                  <div class="flex items-center gap-2">
+                    <button onclick="skipR2Audio(-15)" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 text-[10px] font-bold active:scale-95 transition" title="Lùi lại 15 giây">
+                      <i class="fa-solid fa-rotate-left mr-0.5"></i> -15s
+                    </button>
+                    <button onclick="skipR2Audio(15)" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 text-[10px] font-bold active:scale-95 transition" title="Tua tới 15 giây">
+                      +15s <i class="fa-solid fa-rotate-right ml-0.5"></i>
+                    </button>
+                  </div>
+                  <div class="text-[10px] text-slate-400 italic">
+                    <i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i>Cloudflare R2 • 0$ Băng Thông
+                  </div>
+                </div>
+              </div>
+
               <!-- HÀNG 2: LỜI VỖ VỀ THÂN TÂM & NÚT PHÁT NHẠC TĨNH TÂM -->
               <div class="p-3 bg-slate-950/75 rounded-2xl border border-teal-500/30 flex items-center justify-between gap-3 relative z-10 shadow-inner">
                 <div class="space-y-1 flex-1 min-w-0">
@@ -3339,6 +3388,62 @@
           </button>
         </div>
 
+      </div>
+    </div>
+
+    <!-- MODAL CẤU HÌNH BỘ NHỚ ĐÁM MÂY CLOUDFLARE R2 -->
+    <div id="r2CloudSettingsModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 select-none">
+      <div class="bg-gradient-to-b from-slate-950 via-[#0e1626] to-[#070b14] w-full max-w-lg rounded-3xl border-2 border-amber-500/50 shadow-2xl p-5 sm:p-6 space-y-4 relative overflow-hidden text-white max-h-[92vh] overflow-y-auto custom-modal-scroll">
+        <div class="flex items-center justify-between border-b border-amber-900/40 pb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-md">
+              <i class="fa-solid fa-cloud text-sm"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-amber-300 uppercase tracking-wider">Cấu Hình Đám Mây Cloudflare R2</h3>
+              <p class="text-[10px] text-slate-400">Lưu trữ nhạc thiền dài 15 - 60 phút • Miễn phí 10GB • Không giới hạn băng thông</p>
+            </div>
+          </div>
+          <button onclick="closeR2CloudSettingsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95 text-sm font-bold">✕</button>
+        </div>
+
+        <div class="p-3 bg-amber-950/40 border border-amber-500/30 rounded-2xl space-y-1.5 text-xs">
+          <div class="font-black text-amber-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-info"></i> Hướng Dẫn 3 Bước Tạo Kho Đám Mây Cloudflare R2:
+          </div>
+          <ol class="list-decimal list-inside space-y-1 text-slate-300 text-[11px] leading-relaxed">
+            <li>Truy cập <a href="https://dash.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-cyan-400 underline font-bold">dash.cloudflare.com</a> → Chọn mục <b>R2</b> → Bấm <b>Create bucket</b> (ví dụ: <code class="text-amber-300">datphu-audio</code>).</li>
+            <li>Vào tab <b>Settings</b> của bucket → <b>Public Access</b> → Bấm <b>Enable</b> trên <i>R2.dev subdomain</i> (nhận link dạng <code class="text-amber-300 font-mono text-[10px]">https://pub-xxxxxx.r2.dev</code>).</li>
+            <li>Tải các file MP3 bài thiền dài của bạn lên bucket, rồi dán link bucket vào ô bên dưới!</li>
+          </ol>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-amber-200 mb-1">
+              <i class="fa-solid fa-link text-amber-400 mr-1"></i> Đường dẫn Bucket Công Khai (Public R2 URL):
+            </label>
+            <input type="text" id="r2BucketUrlInput" placeholder="https://pub-xxxxxx.r2.dev/" class="w-full bg-slate-900 border border-amber-500/40 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 font-mono" />
+            <p class="text-[10px] text-slate-400 mt-1">Hệ thống sẽ tự động ghép tên file nhạc vào sau đường dẫn này để phát trực tiếp.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900/80 rounded-2xl border border-slate-800 space-y-1.5 text-[11px]">
+            <div class="font-bold text-slate-300">Tên các file nhạc mẫu được khuyến nghị đặt trong bucket:</div>
+            <ul class="space-y-1 font-mono text-[10px] text-amber-300/90 list-disc list-inside">
+              <li><span class="text-slate-300">Xua Lo Âu (30p):</span> khuc_sen_tinh_lang_396hz_30p.mp3</li>
+              <li><span class="text-slate-300">Giải Stress (45p):</span> sao_truc_suoi_nguon_528hz_45p.mp3</li>
+              <li><span class="text-slate-300">Xoa Buồn Bã (60p):</span> song_bien_tuy_hoa_639hz_60p.mp3</li>
+              <li><span class="text-slate-300">Ngủ Ngon (60p):</span> dem_trang_mai_chua_432hz_60p.mp3</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+          <button onclick="closeR2CloudSettingsModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition active:scale-95">Đóng</button>
+          <button onclick="saveR2CloudSettings()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white text-xs font-black shadow-lg transition active:scale-95 flex items-center gap-1.5">
+            <i class="fa-solid fa-check"></i> Lưu Cấu Hình R2
+          </button>
+        </div>
       </div>
     </div>
 
@@ -8262,6 +8367,223 @@
       toggleSettingsCenterModal('healing');
     }
 
+    let zenAudioMode = localStorage.getItem("datphu_zen_audio_mode") || "cloud_r2";
+    let r2BucketBaseUrl = localStorage.getItem("datphu_r2_bucket_url") || "https://pub-datphu-audio.r2.dev/";
+    let r2AudioElement = null;
+    let isR2Playing = false;
+    let currentR2Preset = "burnout";
+
+    const r2PresetTracks = {
+      anxiety: {
+        title: "Khúc Sen Tĩnh Lặng (396Hz) - Bản Dài 30 Phút",
+        fileName: "khuc_sen_tinh_lang_396hz_30p.mp3",
+        durationSec: 1800,
+        durationText: "30:00",
+        fallbackUrl: "https://archive.org/download/zen-meditation-singing-bowl-396hz/zen_singing_bowl_30min.mp3"
+      },
+      burnout: {
+        title: "Sáo Trúc & Suối Nguồn (528Hz) - Bản Dài 45 Phút",
+        fileName: "sao_truc_suoi_nguon_528hz_45p.mp3",
+        durationSec: 2700,
+        durationText: "45:00",
+        fallbackUrl: "https://archive.org/download/zen-flute-water-528hz/zen_flute_stream_45min.mp3"
+      },
+      sadness: {
+        title: "Sóng Biển Tuy Hòa (639Hz) - Bản Dài 60 Phút",
+        fileName: "song_bien_tuy_hoa_639hz_60p.mp3",
+        durationSec: 3600,
+        durationText: "60:00",
+        fallbackUrl: "https://archive.org/download/tuy-hoa-ocean-waves-639hz/ocean_waves_60min.mp3"
+      },
+      sleep: {
+        title: "Đêm Trăng Mái Chùa (432Hz) - Bản Dài 60 Phút",
+        fileName: "dem_trang_mai_chua_432hz_60p.mp3",
+        durationSec: 3600,
+        durationText: "60:00",
+        fallbackUrl: "https://archive.org/download/temple-bell-rain-432hz/temple_rain_60min.mp3"
+      }
+    };
+
+    function initR2AudioElement() {
+      if (!r2AudioElement) {
+        r2AudioElement = document.getElementById("r2AudioStreamElement");
+        if (!r2AudioElement) {
+          r2AudioElement = document.createElement("audio");
+          r2AudioElement.id = "r2AudioStreamElement";
+          r2AudioElement.preload = "auto";
+          document.body.appendChild(r2AudioElement);
+        }
+
+        r2AudioElement.addEventListener("timeupdate", onR2TimeUpdate);
+        r2AudioElement.addEventListener("play", () => { isR2Playing = true; updateR2PlayerUI(); });
+        r2AudioElement.addEventListener("pause", () => { isR2Playing = false; updateR2PlayerUI(); });
+        r2AudioElement.addEventListener("ended", onR2TrackEnded);
+      }
+    }
+
+    function onR2TimeUpdate() {
+      if (!r2AudioElement) return;
+      const curr = r2AudioElement.currentTime || 0;
+      const dur = r2AudioElement.duration || (r2PresetTracks[currentR2Preset]?.durationSec || 1800);
+      const currEl = document.getElementById("r2CurrentTime");
+      const durEl = document.getElementById("r2TotalDuration");
+      const seekEl = document.getElementById("r2AudioSeekBar");
+
+      if (currEl) currEl.innerText = formatZenTimer(Math.floor(curr));
+      if (durEl) durEl.innerText = formatZenTimer(Math.floor(dur));
+      if (seekEl && dur > 0) {
+        seekEl.value = (curr / dur) * 100;
+      }
+    }
+
+    function onR2TrackEnded() {
+      isR2Playing = false;
+      updateR2PlayerUI();
+      if (window.showToast) showToast("🌙 Đã hoàn tất bản nhạc thiền đám mây R2. Chúc bạn an lạc!");
+    }
+
+    function seekR2Audio(percent) {
+      if (!r2AudioElement || !r2AudioElement.duration) return;
+      r2AudioElement.currentTime = (percent / 100) * r2AudioElement.duration;
+    }
+
+    function skipR2Audio(seconds) {
+      if (!r2AudioElement) return;
+      const dur = r2AudioElement.duration || 3600;
+      r2AudioElement.currentTime = Math.max(0, Math.min(dur, r2AudioElement.currentTime + seconds));
+    }
+
+    function setZenAudioMode(mode) {
+      zenAudioMode = mode;
+      localStorage.setItem("datphu_zen_audio_mode", mode);
+
+      const r2Panel = document.getElementById("zenCloudR2PlayerPanel");
+      const btnCloud = document.getElementById("zenModeBtn_cloud_r2");
+      const btnSynth = document.getElementById("zenModeBtn_synth");
+
+      if (mode === "cloud_r2") {
+        if (r2Panel) r2Panel.classList.remove("hidden");
+        if (btnCloud) {
+          btnCloud.className = "flex-1 py-1.5 px-2 rounded-xl font-black transition active:scale-95 flex items-center justify-center gap-1.5 shadow-sm bg-gradient-to-r from-amber-600 to-orange-600 text-white border border-amber-300";
+        }
+        if (btnSynth) {
+          btnSynth.className = "flex-1 py-1.5 px-2 rounded-xl font-bold transition active:scale-95 flex items-center justify-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-900 opacity-80";
+        }
+        stopZenPeaceMusic();
+      } else {
+        if (r2Panel) r2Panel.classList.add("hidden");
+        if (btnSynth) {
+          btnSynth.className = "flex-1 py-1.5 px-2 rounded-xl font-black transition active:scale-95 flex items-center justify-center gap-1.5 shadow-sm bg-gradient-to-r from-teal-600 to-emerald-600 text-white border border-teal-300";
+        }
+        if (btnCloud) {
+          btnCloud.className = "flex-1 py-1.5 px-2 rounded-xl font-bold transition active:scale-95 flex items-center justify-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-900 opacity-80";
+        }
+        if (r2AudioElement) r2AudioElement.pause();
+      }
+    }
+
+    function playR2PresetTrack(presetKey) {
+      initR2AudioElement();
+      currentR2Preset = presetKey;
+      const track = r2PresetTracks[presetKey] || r2PresetTracks.burnout;
+
+      // Cập nhật tên bài trên player
+      const titleEl = document.getElementById("r2PlayingTrackTitle");
+      const durEl = document.getElementById("r2TotalDuration");
+      if (titleEl) titleEl.innerText = track.title;
+      if (durEl) durEl.innerText = track.durationText;
+
+      // Cập nhật quote và badge
+      const cfg = zenPresetConfigs[presetKey] || zenPresetConfigs.anxiety;
+      const quoteEl = document.getElementById("healingAffirmationText");
+      const badgeEl = document.getElementById("healingTimeContextBadge");
+      const melLabel = document.getElementById("zenCurrentMelodyLabel");
+      if (badgeEl) badgeEl.innerHTML = cfg.badge;
+      if (melLabel) {
+        melLabel.innerHTML = "☁️ Đám Mây R2: " + track.title;
+        melLabel.classList.remove("hidden");
+      }
+      if (quoteEl) {
+        quoteEl.classList.add("transition-all", "duration-200", "opacity-0");
+        setTimeout(() => {
+          quoteEl.innerText = '"' + cfg.quote + '"';
+          quoteEl.classList.remove("opacity-0");
+        }, 120);
+      }
+
+      // Nguồn phát: R2 Bucket hoặc Fallback
+      let streamUrl = r2BucketBaseUrl + track.fileName;
+      r2AudioElement.src = streamUrl;
+
+      r2AudioElement.onerror = () => {
+        console.warn("R2 Stream không phản hồi, chuyển sang fallback URL");
+        r2AudioElement.src = track.fallbackUrl;
+        r2AudioElement.play().catch(() => {});
+      };
+
+      r2AudioElement.play().then(() => {
+        isR2Playing = true;
+        updateR2PlayerUI();
+        if (window.showToast) showToast("☁️ Đang phát bản nhạc thiền R2 dài: " + track.title);
+        syncR2MediaSession(track);
+      }).catch(err => {
+        console.warn("Không thể phát R2 audio:", err);
+      });
+    }
+
+    function syncR2MediaSession(track) {
+      if (!('mediaSession' in navigator) || !track) return;
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: track.title,
+        artist: "Lịch Dân Sinh Đất Phú (Cloudflare R2 Master)",
+        album: "Âm Nhạc Tĩnh Tâm An Lạc",
+        artwork: [
+          { src: "img/logo_hoa_sen_real.png", sizes: "512x512", type: "image/png" }
+        ]
+      });
+    }
+
+    function toggleR2AudioPlayback() {
+      initR2AudioElement();
+      if (!r2AudioElement.src) {
+        playR2PresetTrack(currentR2Preset);
+        return;
+      }
+      if (r2AudioElement.paused) {
+        r2AudioElement.play();
+        isR2Playing = true;
+      } else {
+        r2AudioElement.pause();
+        isR2Playing = false;
+      }
+      updateR2PlayerUI();
+    }
+
+    function openR2CloudSettingsModal() {
+      const modal = document.getElementById("r2CloudSettingsModal");
+      if (modal) {
+        modal.classList.remove("hidden");
+        const urlInput = document.getElementById("r2BucketUrlInput");
+        if (urlInput) urlInput.value = r2BucketBaseUrl;
+      }
+    }
+
+    function closeR2CloudSettingsModal() {
+      const modal = document.getElementById("r2CloudSettingsModal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    function saveR2CloudSettings() {
+      const urlInput = document.getElementById("r2BucketUrlInput");
+      if (urlInput && urlInput.value.trim()) {
+        r2BucketBaseUrl = urlInput.value.trim();
+        if (!r2BucketBaseUrl.endsWith("/")) r2BucketBaseUrl += "/";
+        localStorage.setItem("datphu_r2_bucket_url", r2BucketBaseUrl);
+        if (window.showToast) showToast("☁️ Đã lưu cấu hình Cloudflare R2 thành công!");
+      }
+      closeR2CloudSettingsModal();
+    }
+
     let isZenMusicPlaying = false;
     let zenMusicPreset = "anxiety";
     let zenMasterVolume = 0.6;
@@ -8636,21 +8958,29 @@
     }
 
     function toggleQuickHealingSound() {
-      if (isZenMusicPlaying) {
-        stopZenPeaceMusic();
-        if (window.showToast) showToast("⏹️ Đã dừng âm nhạc tĩnh tâm");
+      if (zenAudioMode === "cloud_r2") {
+        toggleR2AudioPlayback();
       } else {
-        const ctx = detectCurrentHealingContext();
-        let targetPreset = "anxiety";
-        if (ctx.freq === 528) targetPreset = "burnout";
-        else if (ctx.freq === 639) targetPreset = "sadness";
-        else if (ctx.freq === 432) targetPreset = "sleep";
-        playZenPeaceMusic(targetPreset);
+        if (isZenMusicPlaying) {
+          stopZenPeaceMusic();
+          if (window.showToast) showToast("⏹️ Đã dừng âm nhạc tĩnh tâm");
+        } else {
+          const ctx = detectCurrentHealingContext();
+          let targetPreset = "anxiety";
+          if (ctx.freq === 528) targetPreset = "burnout";
+          else if (ctx.freq === 639) targetPreset = "sadness";
+          else if (ctx.freq === 432) targetPreset = "sleep";
+          playZenPeaceMusic(targetPreset);
+        }
       }
     }
 
     function playHealingPreset(presetKey) {
-      playZenPeaceMusic(presetKey);
+      if (zenAudioMode === "cloud_r2") {
+        playR2PresetTrack(presetKey);
+      } else {
+        playZenPeaceMusic(presetKey);
+      }
     }
 
     function selectSolfeggioFrequency(freq) {
