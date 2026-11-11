@@ -733,7 +733,8 @@
     }
 
     /* ========================================================================= */
-    /* MỸ THUẬT ĐÓA SEN ĐỘNG 3D CHUYỂN ĐỔI 4 BUỔI TRONG NGÀY (4 ATMOSPHERES) */
+    /* ========================================================================= */
+    /* 2 PHONG CÁCH MỸ THUẬT: SEN THIÊN NHIÊN & SEN VÀNG CUNG ĐÌNH 3D */
     /* ========================================================================= */
     .lotus-throne-stage {
       position: relative;
@@ -743,69 +744,55 @@
       perspective: 1200px;
       transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 12px 28px -6px rgba(0,0,0,0.18);
-      border: 2px solid rgba(217, 119, 6, 0.4);
     }
 
-    /* 4 Bầu Khí Quyển Tứ Thời */
-    .lotus-throne-stage.atmo-dawn {
-      background: linear-gradient(180deg, #fdf2f8 0%, #ffedd5 35%, #fef3c7 65%, #ecfdf5 100%);
-      border-color: rgba(244, 63, 94, 0.5);
-      box-shadow: 0 10px 25px -5px rgba(244, 63, 94, 0.2), inset 0 1px 3px rgba(255,255,255,0.8);
+    /* Phong Cách 1: Sen Hồ Thiên Nhiên (Photorealistic Nature) */
+    .lotus-throne-stage.style-nature {
+      border: 2px solid rgba(16, 185, 129, 0.5);
     }
-    .lotus-throne-stage.atmo-noon {
-      background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 30%, #fef9c3 65%, #d1fae5 100%);
-      border-color: rgba(234, 179, 8, 0.6);
-      box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.25), inset 0 1px 3px rgba(255,255,255,0.8);
+    .lotus-throne-stage.style-nature .nature-only {
+      display: block !important;
     }
-    .lotus-throne-stage.atmo-sunset {
-      background: linear-gradient(180deg, #4c0519 0%, #9a3412 35%, #ea580c 70%, #1e1b4b 100%);
-      border-color: rgba(249, 115, 22, 0.7);
-      box-shadow: 0 10px 30px -5px rgba(234, 88, 12, 0.35);
-    }
-    .lotus-throne-stage.atmo-night {
-      background: linear-gradient(180deg, #030712 0%, #0f172a 35%, #1e1b4b 70%, #064e3b 100%);
-      border-color: rgba(52, 211, 153, 0.5);
-      box-shadow: 0 10px 30px -5px rgba(16, 185, 129, 0.25);
+    .lotus-throne-stage.style-nature .imperial-only {
+      display: none !important;
     }
 
-    /* Đổi màu chữ theo buổi */
-    .atmo-sunset #leafLunarDayText,
-    .atmo-sunset #leafLunarYear,
-    .atmo-sunset #lotusThroneSubTitle {
-      color: #fed7aa !important;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    /* Phong Cách 2: Sen Vàng Cung Đình (Imperial 3D Bronze & Gold) */
+    .lotus-throne-stage.style-imperial {
+      border: 2px solid rgba(217, 119, 6, 0.5);
     }
-    .atmo-night #leafLunarDayText,
-    .atmo-night #leafLunarYear,
-    .atmo-night #lotusThroneSubTitle {
-      color: #a7f3d0 !important;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+    .lotus-throne-stage.style-imperial .nature-only {
+      display: none !important;
+    }
+    .lotus-throne-stage.style-imperial .imperial-only {
+      display: block !important;
     }
 
-    /* Hiệu ứng thở của Đài Sen 3D */
-    .lotus-pedestal-anim {
-      animation: lotusThroneBreathe 5s ease-in-out infinite;
-      transform-origin: center bottom;
-    }
-    @keyframes lotusThroneBreathe {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-3.5px) scale(1.018); }
-    }
-
-    /* Hạt lơ lửng tứ thời (Mist, Sunbeams, Twilight dust, Fireflies) */
-    .lotus-particle {
+    /* Lớp Nền Thiên Nhiên Sống Động */
+    .nature-bg-layer {
       position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      animation: lotusParticleFloat 4s ease-in-out infinite;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 0.8s ease, filter 0.8s ease;
+      z-index: 0;
     }
-    @keyframes lotusParticleFloat {
-      0% { transform: translateY(20px) scale(0.6); opacity: 0; }
-      50% { opacity: 0.8; }
-      100% { transform: translateY(-45px) scale(1.1); opacity: 0; }
+    .style-nature .nature-bg-layer {
+      opacity: 0.38;
+      filter: saturate(1.2) contrast(1.05);
+    }
+    .style-imperial .nature-bg-layer {
+      opacity: 0;
     }
 
-    /* Số Lịch 3D Hoàng Kim Sơn Mài */
+    /* Hạt Sương Mai & Gân Cánh Sen Tự Nhiên */
+    .lotus-dew-drop {
+      position: absolute;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.95), rgba(255,255,255,0.4) 60%, transparent 80%);
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    }
+
     .lotus-lunar-number-3d {
       font-size: clamp(4.5rem, 15vw, 7.5rem);
       font-weight: 900;
@@ -1371,6 +1358,16 @@
         <!-- (BÌNH MINH - TRƯA NẮNG - HOÀNG HÔN - ĐÊM TRĂNG) -->
         <!-- ========================================================================= -->
         <div class="space-y-2 pt-1 select-none">
+          <!-- THANH CHỌN 2 PHONG CÁCH: SEN THIÊN NHIÊN & SEN VÀNG CUNG ĐÌNH -->
+          <div class="flex items-center justify-center gap-1.5 sm:gap-2 mb-1.5 select-none">
+            <button onclick="setLotusStyle('nature')" id="lotusStyleBtn_nature" class="px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-emerald-400 bg-gradient-to-r from-emerald-600 to-teal-600 text-white" title="Phong cách Đầm Sen Thiên Nhiên chụp thực tế sống động">
+              <span>🌿</span><span>Sen Hồ Thiên Nhiên</span>
+            </button>
+            <button onclick="setLotusStyle('imperial')" id="lotusStyleBtn_imperial" class="px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-amber-300 bg-white/90 text-amber-900 hover:bg-amber-50" title="Phong cách Tòa Sen Đồng & Hoàng Kim 3D Cung Đình">
+              <span>⚜️</span><span>Sen Vàng Cung Đình</span>
+            </button>
+          </div>
+
           <!-- THANH CHUYỂN ĐỔI 4 BẦU KHÍ QUYỂN TỨ THỜI (INTERACTIVE ATMOSPHERE SWITCHER) -->
           <div class="flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap px-1">
             <button onclick="setLotusAtmosphere('dawn')" id="atmoBtn_dawn" class="atmo-btn px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-pink-300 bg-pink-100/80 text-pink-900 shadow-xs" title="Bầu khí quyển Bình Minh sương mai">
@@ -1391,7 +1388,13 @@
           </div>
 
           <!-- SÂN KHẤU TÒA SEN 3D TỨ THỜI (LOTUS THRONE 3D STAGE) -->
-          <div id="lotusThroneStage" class="lotus-throne-stage atmo-dawn relative text-center">
+          <div id="lotusThroneStage" class="lotus-throne-stage atmo-dawn style-nature relative text-center">
+            
+            <!-- LỚP NỀN HỒ SEN THỰC TẾ (PHOTOREALISTIC LAGOON BACKDROP) -->
+            <div id="lotusNatureBackdrop" class="nature-bg-layer" style="background-image: url('img/lotus_lagoon_real_dawn.jpg');"></div>
+            
+            <!-- LỚP SƯƠNG MÙ BAY NHẸ (MIST LAYER) -->
+            <div class="nature-only absolute inset-0 pointer-events-none bg-gradient-to-t from-white/40 via-transparent to-transparent z-0"></div>
             
             <!-- VẦNG HÀO QUANG & HẠT LƠ LỬNG (PARTICLES) -->
             <div id="lotusParticlesContainer" class="absolute inset-0 pointer-events-none overflow-hidden z-0">
@@ -1448,8 +1451,21 @@
 
               </div>
 
-              <!-- ĐÀI SEN ĐỒNG & HOÀNG KIM 3D NÂNG ĐỠ (LOTUS THRONE PEDESTAL) -->
-              <div class="relative -mt-4 sm:-mt-6 z-10 lotus-pedestal-anim flex justify-center">
+              <!-- ĐÀI SEN: CHUYỂN ĐỔI GIỮA THIÊN NHIÊN & CUNG ĐÌNH -->
+              <!-- [PHONG CÁCH 1]: HOA SEN & GƯƠNG SEN THẬT NGOÀI ĐỜI -->
+              <div class="nature-only relative -mt-5 sm:-mt-8 z-10 lotus-pedestal-anim flex items-center justify-center">
+                <div class="relative flex items-center justify-center">
+                  <!-- Đóa sen nở thật có gương sen và nhụy vàng sống động -->
+                  <img src="img/lotus_flower_real_bloom.png" alt="Đóa Sen Hồ Tuy Hòa Sống Động" class="w-56 sm:w-72 max-w-full h-auto object-contain drop-shadow-2xl select-none" />
+                  <!-- Giọt sương mai long lanh đọng mép cánh -->
+                  <div class="lotus-dew-drop w-3 h-3 top-4 left-12"></div>
+                  <div class="lotus-dew-drop w-2 h-2 top-8 right-16"></div>
+                  <div class="lotus-dew-drop w-2.5 h-2.5 bottom-6 left-20"></div>
+                </div>
+              </div>
+
+              <!-- [PHONG CÁCH 2]: ĐÀI SEN ĐỒNG & HOÀNG KIM 3D CUNG ĐÌNH -->
+              <div class="imperial-only relative -mt-4 sm:-mt-6 z-10 lotus-pedestal-anim flex justify-center">
                 <div class="w-64 sm:w-80 h-16 sm:h-20 drop-shadow-xl">
                   <svg viewBox="0 0 320 80" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
                     <defs>
@@ -11253,6 +11269,40 @@
   <!-- SCRIPT ĐIỀU KHIỂN TỨ THỜI (BÌNH MINH - TRƯA - HOÀNG HÔN - ĐÊM TRĂNG) -->
   <!-- ========================================================================= -->
   <script>
+    let currentLotusStyle = localStorage.getItem("datphu_lotus_style") || "nature";
+
+    function setLotusStyle(style, save) {
+      if (save !== false) {
+        currentLotusStyle = style;
+        localStorage.setItem("datphu_lotus_style", style);
+      }
+
+      const stage = document.getElementById("lotusThroneStage");
+      if (stage) {
+        stage.classList.remove("style-nature", "style-imperial");
+        stage.classList.add("style-" + style);
+      }
+
+      // Cập nhật nút phong cách
+      const btnNature = document.getElementById("lotusStyleBtn_nature");
+      const btnImperial = document.getElementById("lotusStyleBtn_imperial");
+
+      if (btnNature && btnImperial) {
+        if (style === "nature") {
+          btnNature.className = "px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-emerald-400 bg-gradient-to-r from-emerald-600 to-teal-600 text-white ring-2 ring-emerald-300 scale-105";
+          btnImperial.className = "px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-amber-300 bg-white/90 text-amber-900 hover:bg-amber-50 opacity-70";
+        } else {
+          btnImperial.className = "px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-amber-400 bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-black ring-2 ring-amber-300 scale-105";
+          btnNature.className = "px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-emerald-300 bg-white/90 text-emerald-900 hover:bg-emerald-50 opacity-70";
+        }
+      }
+
+      if (save !== false && window.showToastNotification) {
+        const name = (style === "nature") ? "🌿 Phong cách Sen Hồ Thiên Nhiên Sống Động" : "⚜️ Phong cách Sen Vàng Cung Đình 3D";
+        window.showToastNotification(name, "info");
+      }
+    }
+
     let currentLotusAtmoMode = localStorage.getItem("datphu_lotus_atmosphere") || "auto";
 
     function getAutoLotusAtmosphere() {
@@ -11323,6 +11373,7 @@
 
     // Khởi động bầu khí quyển ban đầu
     document.addEventListener("DOMContentLoaded", function() {
+      setLotusStyle(currentLotusStyle, false);
       setLotusAtmosphere(currentLotusAtmoMode, false);
       // Tự động kiểm tra cập nhật mỗi phút nếu đang ở chế độ auto
       setInterval(() => {
