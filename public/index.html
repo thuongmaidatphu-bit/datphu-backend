@@ -822,7 +822,22 @@
       filter: drop-shadow(0 4px 14px rgba(251, 191, 36, 0.7));
     }
 
-</style>
+
+    /* Triệt tiêu hoàn toàn thanh cuộn xám xấu xí của Windows / Webkit / Firefox */
+    .no-scrollbar::-webkit-scrollbar,
+    #showcaseArtThumbsList::-webkit-scrollbar,
+    .overflow-x-auto::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    .no-scrollbar,
+    #showcaseArtThumbsList {
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+    }
+
+    </style>
 </head>
 <body class="min-h-[100dvh] p-1 sm:p-5 flex flex-col items-center justify-between">
   <!-- ========================================================================= -->
@@ -8665,9 +8680,12 @@
         if (!isVisible) return '';
         const isAct = idx === currentArtIndex;
         return `
-          <button onclick="selectShowcaseArt(${idx})" id="thumbArt_${idx}" class="px-2.5 py-1.5 rounded-xl border ${isAct ? 'border-amber-400 bg-amber-950/80 text-amber-200 ring-1 ring-amber-400/50 shadow-md font-black' : 'border-slate-800 bg-slate-900/60 text-slate-400 hover:border-slate-600 hover:text-slate-200 font-bold'} text-[11px] shrink-0 transition flex items-center gap-1.5">
-            <span class="w-4 h-4 rounded-full ${isAct ? 'bg-amber-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-400 font-bold'} flex items-center justify-center text-[9px]">${idx + 1}</span>
-            <span class="whitespace-nowrap">${art.shortTitle}</span>
+          <button onclick="selectShowcaseArt(${idx})" id="thumbArt_${idx}" class="py-1 px-1.5 sm:px-2 rounded-xl border ${isAct ? 'border-amber-400 bg-gradient-to-r from-amber-950/90 to-amber-900/80 text-amber-200 ring-1 ring-amber-400/60 shadow-md font-black scale-102' : 'border-slate-800 bg-slate-900/80 text-slate-400 hover:border-slate-600 hover:text-slate-200 font-bold'} text-[11px] shrink-0 transition-all flex items-center gap-1.5 group active:scale-95">
+            <div class="relative w-6 h-6 sm:w-7 sm:h-7 rounded-lg overflow-hidden border ${isAct ? 'border-amber-300' : 'border-slate-700'} shrink-0 shadow-xs">
+              <img src="${art.img}" alt="${art.shortTitle}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+              <span class="absolute bottom-0 right-0 px-1 py-0.2 rounded-tl bg-black/80 text-amber-300 text-[8px] font-black">${idx + 1}</span>
+            </div>
+            <span class="whitespace-nowrap tracking-tight">${art.shortTitle}</span>
           </button>
         `;
       }).join('');
@@ -8736,16 +8754,16 @@
       for (let i = 0; i < SHOWCASE_ARTWORKS.length; i++) {
         const btn = document.getElementById("thumbArt_" + i);
         if (btn) {
-          const numSpan = btn.querySelector("span:first-child");
+          const thumbFrame = btn.querySelector("div");
           if (i === idx) {
-            btn.className = "px-2.5 py-1.5 rounded-xl border border-amber-400 bg-amber-950/80 text-amber-200 ring-1 ring-amber-400/50 shadow-md font-black text-[11px] shrink-0 transition flex items-center gap-1.5";
-            if (numSpan) numSpan.className = "w-4 h-4 rounded-full bg-amber-400 text-slate-950 font-black flex items-center justify-center text-[9px]";
+            btn.className = "py-1 px-1.5 sm:px-2 rounded-xl border border-amber-400 bg-gradient-to-r from-amber-950/90 to-amber-900/80 text-amber-200 ring-1 ring-amber-400/60 shadow-md font-black scale-102 text-[11px] shrink-0 transition-all flex items-center gap-1.5 group active:scale-95";
+            if (thumbFrame) thumbFrame.className = "relative w-6 h-6 sm:w-7 sm:h-7 rounded-lg overflow-hidden border border-amber-300 shrink-0 shadow-xs";
             try {
               btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             } catch(e) {}
           } else {
-            btn.className = "px-2.5 py-1.5 rounded-xl border border-slate-800 bg-slate-900/60 text-slate-400 hover:border-slate-600 hover:text-slate-200 font-bold text-[11px] shrink-0 transition flex items-center gap-1.5";
-            if (numSpan) numSpan.className = "w-4 h-4 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-[9px]";
+            btn.className = "py-1 px-1.5 sm:px-2 rounded-xl border border-slate-800 bg-slate-900/80 text-slate-400 hover:border-slate-600 hover:text-slate-200 font-bold text-[11px] shrink-0 transition-all flex items-center gap-1.5 group active:scale-95";
+            if (thumbFrame) thumbFrame.className = "relative w-6 h-6 sm:w-7 sm:h-7 rounded-lg overflow-hidden border border-slate-700 shrink-0 shadow-xs";
           }
         }
       }
@@ -10469,75 +10487,71 @@
         </div>
 
         <!-- DẢI THUMBNAIL TÁC PHẨM CUỘN NGANG THỜI THƯỢNG -->
-        <div id="showcaseArtThumbsList" class="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-thin scrollbar-thumb-amber-500/40">
+        <div id="showcaseArtThumbsList" class="flex items-center gap-1.5 overflow-x-auto py-1.5 no-scrollbar scroll-smooth">
           <!-- Rendered dynamically by renderArtThumbnails() -->
         </div>
       </div>
 
       <!-- TẦNG 2: BẢN HÒA TẤU THÍNH GIÁC & SÓNG ÂM 3D (THÍNH GIÁC) -->
-      <div class="p-3.5 bg-slate-900/90 border-2 border-amber-400/40 rounded-2xl space-y-3">
+      <div class="p-3 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-2 border-amber-400/40 rounded-2xl space-y-2 shadow-lg">
         
         <!-- Hàng Sóng Âm Equalizer & Tên Bản Nhạc Đang Phát -->
-        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <div class="flex items-center justify-between gap-2">
           <div class="flex items-center gap-2 min-w-0">
             <!-- 12 Cột Sóng Âm Equalizer Nhảy Múa -->
-            <div id="mediaEqVisualizer" class="flex items-end gap-1 h-6 shrink-0 px-2 py-1 bg-black/40 rounded-lg border border-slate-800">
+            <div id="mediaEqVisualizer" class="flex items-end gap-0.5 h-6 shrink-0 px-1.5 py-1 bg-black/50 rounded-lg border border-slate-800">
               <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
               <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
               <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
             </div>
             <div class="min-w-0">
-              <div id="mediaNowPlayingTitle" class="text-xs sm:text-sm font-black text-white truncate">
-                Đang Phát: Thiền Mưa & Chuông Gió Tây Tạng (432Hz)
+              <div class="flex items-center gap-1.5">
+                <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono text-[9px] font-bold border border-amber-500/30">4K SOUNDTRACK</span>
+                <span id="mediaNowPlayingTitle" class="text-xs sm:text-sm font-black text-white truncate">
+                  Đang Phát: Thiền Mưa & Chuông Gió Tây Tạng (432Hz)
+                </span>
               </div>
-              <div id="mediaNowPlayingSub" class="text-[10px] text-teal-300 font-semibold truncate">
+              <div id="mediaNowPlayingSub" class="text-[10px] text-teal-300 font-medium truncate">
                 Tần số Solfeggio • Sóng âm định tâm xoa dịu thần kinh
               </div>
             </div>
           </div>
 
           <!-- Nút Phát / Dừng Chính Của Rạp Chiếu -->
-          <button id="mediaMasterPlayBtn" onclick="toggleMediaMasterPlay()" class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 flex items-center justify-center font-black shadow-md hover:scale-105 active:scale-95 transition shrink-0">
-            <i id="mediaMasterPlayIcon" class="fa-solid fa-play text-sm ml-0.5"></i>
+          <button id="mediaMasterPlayBtn" onclick="toggleMediaMasterPlay()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 flex items-center justify-center font-black shadow-md hover:scale-105 active:scale-95 transition shrink-0" title="Bật / Tắt hòa tấu âm thanh">
+            <i id="mediaMasterPlayIcon" class="fa-solid fa-play text-xs sm:text-sm ml-0.5"></i>
           </button>
         </div>
 
-        <!-- LƯỚI 6 KHÔNG GIAN ÂM THANH XỨ NẪU ĐỂ CHỌN NHANH -->
-        <div class="space-y-1">
-          <div class="text-[10px] font-black uppercase text-amber-300/80 flex items-center justify-between">
-            <span>6 Không Gian Âm Thanh Đặc Trưng:</span>
-            <span class="text-[9px] text-slate-400 font-normal">Web Audio 100% Offline</span>
-          </div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs font-bold">
-            <button onclick="playAmbientSound('zen_rain')" id="mediaTrack_zen_rain" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-teal-500/30 text-left transition flex items-center gap-1.5 text-teal-200">
-              <i class="fa-solid fa-cloud-rain text-teal-400 text-xs shrink-0"></i>
-              <span class="truncate text-[11px]">Thiền Mưa & Chuông</span>
-            </button>
-            <button onclick="playAmbientSound('bamboo_flute')" id="mediaTrack_bamboo_flute" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition flex items-center gap-1.5 text-slate-300">
-              <i class="fa-solid fa-wind text-emerald-400 text-xs shrink-0"></i>
-              <span class="truncate text-[11px]">Sáo Trúc Đất Phú</span>
-            </button>
-            <button onclick="playAmbientSound('bach_thach')" id="mediaTrack_bach_thach" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition flex items-center gap-1.5 text-slate-300">
-              <i class="fa-solid fa-bell text-amber-400 text-xs shrink-0"></i>
-              <span class="truncate text-[11px]">Chuông Bạch Thạch</span>
-            </button>
-            <button onclick="playAmbientSound('ocean')" id="mediaTrack_ocean" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition flex items-center gap-1.5 text-slate-300">
-              <i class="fa-solid fa-water text-cyan-400 text-xs shrink-0"></i>
-              <span class="truncate text-[11px]">Sóng Biển Gành Đá</span>
-            </button>
-            <button onclick="playAmbientSound('deo_ca')" id="mediaTrack_deo_ca" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition flex items-center gap-1.5 text-slate-300">
-              <i class="fa-solid fa-tree text-green-400 text-xs shrink-0"></i>
-              <span class="truncate text-[11px]">Gió Thông Đèo Cả</span>
-            </button>
-            <button onclick="playAmbientSound('muidien_dawn')" id="mediaTrack_muidien_dawn" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-left transition flex items-center gap-1.5 text-slate-300">
-              <i class="fa-solid fa-sun text-yellow-400 text-xs shrink-0"></i>
-              <span class="truncate text-[11px]">Bình Minh Mũi Điện</span>
-            </button>
-          </div>
+        <!-- DẢI 6 KHÔNG GIAN ÂM THANH XỨ NẪU CUỘN NGANG MƯỢT MÀ (NO SCROLLBAR) -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+          <button onclick="playAmbientSound('zen_rain')" id="mediaTrack_zen_rain" class="px-2.5 py-1 rounded-xl bg-slate-800/90 hover:bg-slate-700/80 border border-teal-500/30 transition flex items-center gap-1.5 text-teal-200 shrink-0 text-[11px] font-bold">
+            <i class="fa-solid fa-cloud-rain text-teal-400 text-[10px]"></i>
+            <span class="whitespace-nowrap">Thiền Mưa & Chuông</span>
+          </button>
+          <button onclick="playAmbientSound('bamboo_flute')" id="mediaTrack_bamboo_flute" class="px-2.5 py-1 rounded-xl bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700 transition flex items-center gap-1.5 text-slate-300 shrink-0 text-[11px] font-bold">
+            <i class="fa-solid fa-wind text-emerald-400 text-[10px]"></i>
+            <span class="whitespace-nowrap">Sáo Trúc Đất Phú</span>
+          </button>
+          <button onclick="playAmbientSound('bach_thach')" id="mediaTrack_bach_thach" class="px-2.5 py-1 rounded-xl bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700 transition flex items-center gap-1.5 text-slate-300 shrink-0 text-[11px] font-bold">
+            <i class="fa-solid fa-bell text-amber-400 text-[10px]"></i>
+            <span class="whitespace-nowrap">Chuông Bạch Thạch</span>
+          </button>
+          <button onclick="playAmbientSound('ocean')" id="mediaTrack_ocean" class="px-2.5 py-1 rounded-xl bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700 transition flex items-center gap-1.5 text-slate-300 shrink-0 text-[11px] font-bold">
+            <i class="fa-solid fa-water text-cyan-400 text-[10px]"></i>
+            <span class="whitespace-nowrap">Sóng Biển Gành Đá</span>
+          </button>
+          <button onclick="playAmbientSound('deo_ca')" id="mediaTrack_deo_ca" class="px-2.5 py-1 rounded-xl bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700 transition flex items-center gap-1.5 text-slate-300 shrink-0 text-[11px] font-bold">
+            <i class="fa-solid fa-tree text-green-400 text-[10px]"></i>
+            <span class="whitespace-nowrap">Gió Thông Đèo Cả</span>
+          </button>
+          <button onclick="playAmbientSound('muidien_dawn')" id="mediaTrack_muidien_dawn" class="px-2.5 py-1 rounded-xl bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700 transition flex items-center gap-1.5 text-slate-300 shrink-0 text-[11px] font-bold">
+            <i class="fa-solid fa-sun text-yellow-400 text-[10px]"></i>
+            <span class="whitespace-nowrap">Bình Minh Mũi Điện</span>
+          </button>
         </div>
 
-              </div>
-
+      </div>
       <!-- NỘI DUNG TAB 2 (TRỊ LIỆU) VÀ TAB 3 (NIỆM PHẬT) ĐƯỢC CHUYỂN VÀO KÊNH GIẢI TRÍ -->
       <!-- ================= TAB 1: 🌿 TRỊ LIỆU & THIỀN ================= -->
           <div id="tabContent_healing" class="space-y-4 hidden">
