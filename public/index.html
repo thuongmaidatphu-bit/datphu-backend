@@ -3452,42 +3452,53 @@
     // 3. AI Tự Động Định Vị Vị Trí Ngầm (Mà Người Dùng Không Ngờ)
     async function triggerAutoAIObserver(forceUserPrompt = false) {
       const icon = document.getElementById("aiObserverIcon");
-      if (icon) icon.className = "fa-solid fa-spinner fa-spin text-amber-300";
-
-      // Kiểm tra bộ nhớ đã lưu vị trí trước đó nếu không bị ép làm mới
-      const savedLoc = localStorage.getItem("datphu_saved_location_key");
-      if (savedLoc && LOCATIONS[savedLoc] && !forceUserPrompt) {
-        currentLocationKey = savedLoc;
-        const select = document.getElementById("selectLocation");
-        if (select) select.value = savedLoc;
-        await fetchSatelliteWeather();
-        if (icon) icon.className = "fa-solid fa-location-dot text-amber-300";
-        return;
+      const badge = document.getElementById("aiAutoBadge");
+      if (icon) icon.className = "fa-solid fa-satellite-dish fa-spin text-amber-300";
+      if (badge) {
+        badge.innerText = "ĐANG DÒ...";
+        badge.className = "text-[9px] px-1.5 py-0.5 rounded-full bg-amber-500 text-white font-black uppercase tracking-wider animate-pulse shadow-xs";
       }
 
-      // Thử dùng định vị GPS nếu người dùng cho phép
+      const setBadgeState = (isGps) => {
+        if (icon) icon.className = isGps ? "fa-solid fa-location-crosshairs text-emerald-300" : "fa-solid fa-location-dot text-amber-300";
+        if (badge) {
+          badge.innerText = isGps ? "GPS" : "TỰ ĐỘNG";
+          badge.className = isGps 
+            ? "text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-600 text-white font-black uppercase tracking-wider shadow-xs"
+            : "text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-500/80 text-white font-black uppercase tracking-wider shadow-xs";
+        }
+      };
+
+      // 1. Nếu trình duyệt hỗ trợ Geolocation: Luôn ưu tiên quét GPS thực tế của thiết bị
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           async (pos) => {
             const { latitude, longitude } = pos.coords;
-            await resolveCoordinatesToLocation(latitude, longitude);
-            if (icon) icon.className = "fa-solid fa-location-dot text-amber-300";
+            await resolveCoordinatesToLocation(latitude, longitude, true);
+            setBadgeState(true);
+            const currentLoc = (currentLocationKey === "custom" && customGeoLocation) 
+                              ? customGeoLocation 
+                              : (LOCATIONS[currentLocationKey] || LOCATIONS["tuy-hoa"]);
+            if (forceUserPrompt && window.showToastNotification) {
+              const tempEl = document.getElementById("weatherWidgetTemp");
+              const tempStr = tempEl ? (tempEl.innerText + "°C") : "";
+              window.showToastNotification(`🛰️ Đã cập nhật vị trí thiết bị: ${currentLoc.name} ${tempStr ? ('• ' + tempStr) : ''}`, "success");
+            }
           },
           async (err) => {
-            // Nếu không cấp GPS, tự động định vị bằng IP ngầm
+            console.warn("GPS không khả dụng hoặc bị từ chối, chuyển sang dò mạng IP:", err.message);
             await detectLocationByIP();
-            if (icon) icon.className = "fa-solid fa-location-dot text-amber-300";
+            setBadgeState(false);
           },
-          { timeout: 5000, maximumAge: 600000 }
+          { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 }
         );
       } else {
-        await detectLocationByIP();
-        if (icon) icon.className = "fa-solid fa-location-dot text-amber-300";
+        detectLocationByIP().then(() => setBadgeState(false));
       }
     }
 
-    // Tìm vị trí tương ứng từ tọa độ GPS
-    async function resolveCoordinatesToLocation(lat, lon) {
+    // Phân giải tọa độ GPS thực tế ra địa danh và cập nhật thời tiết vệ tinh
+    async function resolveCoordinatesToLocation(lat, lon, isFromGps = false) {
       let nearestKey = "tuy-hoa";
       let minDistance = 999999;
 
@@ -3499,84 +3510,84 @@
         }
       }
 
-      // Nếu gần dưới ~65km (khoảng 0.6 độ kinh vĩ), dùng điểm mốc này
-      if (minDistance < 0.6) {
+      // Nếu gần dưới ~25km (khoảng 0.23 độ kinh vĩ), dùng điểm mốc huyện thị Đất Phú
+      if (minDistance < 0.23) {
         currentLocationKey = nearestKey;
+        customGeoLocation = null;
         localStorage.setItem("datphu_saved_location_key", nearestKey);
         const select = document.getElementById("selectLocation");
         if (select) select.value = nearestKey;
       } else {
-        // Tọa độ tùy chỉnh hoàn toàn (ở tỉnh khác hoặc ngoài danh mục)
+        // Tọa độ thực tế ở các tỉnh thành khác: Gọi API Reverse Geocode tiếng Việt chính xác
         try {
           const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=vi`);
           const geo = await res.json();
-          const placeName = geo.locality || geo.city || geo.principalSubdivision || "Vị trí của bạn";
+          let placeName = geo.city || geo.locality || geo.principalSubdivision;
+          if (!placeName && geo.localityInfo && geo.localityInfo.administrative) {
+            const admin = geo.localityInfo.administrative.find(a => a.adminLevel === 2 || a.adminLevel === 3 || a.adminLevel === 4);
+            if (admin) placeName = admin.name;
+          }
+          if (!placeName) placeName = "Vị trí của bạn";
+
           customGeoLocation = {
-            name: `📍 ${placeName}`,
+            name: placeName,
             region: "other",
             lat: lat,
             lon: lon,
-            rainDist: "Đang quét vệ tinh",
-            rainDesc: "AI tự động quan sát thời tiết tại chỗ"
+            rainDist: "Thời tiết thực",
+            rainDesc: `Tọa độ vệ tinh: ${lat.toFixed(2)}°, ${lon.toFixed(2)}°`
           };
           currentLocationKey = "custom";
         } catch (e) {
           currentLocationKey = nearestKey;
+          customGeoLocation = null;
         }
       }
       await fetchSatelliteWeather();
     }
 
-    // Tự động nhận diện Tỉnh qua IP (Hoàn toàn âm thầm, không cần hỏi)
+    // Tự động nhận diện Vị trí thiết bị qua mạng IP (khi GPS tắt)
     async function detectLocationByIP() {
+      let resolved = false;
+
+      // Kênh 1: ipwho.is (rất nhanh, chuẩn xác tại Việt Nam, không giới hạn)
       try {
-        const res = await fetch("https://ipapi.co/json/");
+        const res = await fetch("https://ipwho.is/");
         const ipData = await res.json();
-        const city = (ipData.city || "").toLowerCase();
-        const region = (ipData.region || "").toLowerCase();
-
-        let matchedKey = "tuy-hoa";
-        if (city.includes("ho chi minh") || region.includes("ho chi minh") || city.includes("saigon")) {
-          matchedKey = "tphcm";
-        } else if (city.includes("hanoi") || region.includes("hanoi")) {
-          matchedKey = "ha-noi";
-        } else if (city.includes("da nang")) {
-          matchedKey = "da-nang";
-        } else if (city.includes("pleiku") || region.includes("gia lai")) {
-          matchedKey = "gia-lai";
-        } else if (city.includes("buon ma thuot") || region.includes("dak lak")) {
-          matchedKey = "dak-lak";
-        } else if (city.includes("nha trang") || region.includes("khanh hoa")) {
-          matchedKey = "khanh-hoa";
-        } else if (city.includes("quy nhon") || region.includes("binh dinh")) {
-          matchedKey = "binh-dinh";
-        } else if (city.includes("can tho")) {
-          matchedKey = "can-tho";
-        } else if (city.includes("binh duong")) {
-          matchedKey = "binh-duong";
-        } else if (city.includes("dong nai") || city.includes("bien hoa")) {
-          matchedKey = "dong-nai";
+        if (ipData && ipData.success !== false && ipData.latitude && ipData.longitude) {
+          await resolveCoordinatesToLocation(ipData.latitude, ipData.longitude, false);
+          resolved = true;
         }
-
-        currentLocationKey = matchedKey;
-        const select = document.getElementById("selectLocation");
-        if (select) select.value = matchedKey;
       } catch (e) {
-        // Giữ mặc định Tuy Hòa nếu mất mạng
+        console.warn("Kênh ipwho.is gặp lỗi:", e);
       }
-      await fetchSatelliteWeather();
+
+      // Kênh 2: ipapi.co (dự phòng)
+      if (!resolved) {
+        try {
+          const res = await fetch("https://ipapi.co/json/");
+          const ipData = await res.json();
+          if (ipData && ipData.latitude && ipData.longitude) {
+            await resolveCoordinatesToLocation(ipData.latitude, ipData.longitude, false);
+            resolved = true;
+          }
+        } catch (e) {
+          console.warn("Kênh ipapi.co gặp lỗi:", e);
+        }
+      }
+
+      // Kênh 3: Điểm đã lưu hoặc mặc định Tuy Hòa
+      if (!resolved) {
+        const savedLoc = localStorage.getItem("datphu_saved_location_key");
+        currentLocationKey = (savedLoc && LOCATIONS[savedLoc]) ? savedLoc : "tuy-hoa";
+        await fetchSatelliteWeather();
+      }
     }
 
-    // CHUYỂN ĐỔI 3 CHẾ ĐỘ: HÔM NAY • HÀNG THÁNG • HÀNG NĂM
-    
-    // QUẢN LÝ GIAO DIỆN BAN NGÀY / BAN ĐÊM (THỜI GIAN THỰC & CHỦ ĐỘNG)
-    let isNightMode = false;
-
+    // Khởi tạo chế độ Ngày / Đêm theo múi giờ sinh học thực tế
     function initDayNightMode() {
       const currentHour = new Date().getHours();
-      // Đúng 18:00 (6h chiều) đến 05:59 sáng: TỰ ĐỘNG CHUYỂN SANG TRỜI TỐI / BAN ĐÊM
       const isNightTime = (currentHour >= 18 || currentHour < 6);
-
       const sessionManualTheme = sessionStorage.getItem("datphu_session_manual_theme");
       if (sessionManualTheme) {
         isNightMode = (sessionManualTheme === "night");
@@ -3635,7 +3646,7 @@
         if (text) text.innerText = "Giao Diện Ban Ngày";
       }
     }
-  
+
     function switchView(view) {
       currentView = view;
       document.getElementById("viewDaySection").classList.add("hidden");
@@ -3677,7 +3688,6 @@
       }
     }
 
-    // THỜI TIẾT VỆ TINH DÂN SINH ĐẤT PHÚ
     async function fetchSatelliteWeather() {
       const loc = (currentLocationKey === "custom" && customGeoLocation)
                   ? customGeoLocation
