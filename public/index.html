@@ -2,7 +2,13 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Lịch Đất Phú">
+  <meta name="application-name" content="Lịch Đất Phú">
+  <meta name="format-detection" content="telephone=no">
   <title>Lịch Thiên Văn & Sinh Kế Đất Phú - Hôm Nay • Hàng Tháng • Hàng Năm</title>
   
   <link rel="manifest" href="manifest.json">
@@ -17,10 +23,61 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@800;900&display=swap" rel="stylesheet">
 
   <style>
+    /* SAFE-AREA INSETS & FULL-SCREEN MOBILE APP IMMERSION */
+    :root {
+      --sat: env(safe-area-inset-top, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px);
+      --sar: env(safe-area-inset-right, 0px);
+    }
+
+    html {
+      height: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+
     body {
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       background-color: #f1f5f9;
       color: #000000;
+      min-height: 100dvh;
+      min-height: -webkit-fill-available;
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      padding-top: max(0.4rem, var(--sat));
+      padding-bottom: max(5.5rem, calc(var(--sab) + 4.5rem));
+      padding-left: max(0.2rem, var(--sal));
+      padding-right: max(0.2rem, var(--sar));
+    }
+
+    /* FULL-SCREEN NATIVE APP MODAL PRESENTATION ON MOBILE PHONES */
+    @media (max-width: 639px) {
+      .modal-mobile-app {
+        padding: 0 !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+      }
+      .modal-mobile-app > div {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        height: 100% !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+        border-radius: 0 !important;
+        border-left: 0 !important;
+        border-right: 0 !important;
+        border-bottom: 0 !important;
+        margin: 0 !important;
+        padding-top: max(0.75rem, var(--sat)) !important;
+        padding-bottom: max(1rem, var(--sab)) !important;
+        padding-left: max(0.75rem, var(--sal)) !important;
+        padding-right: max(0.75rem, var(--sar)) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow-y: auto !important;
+      }
     }
     
     
@@ -676,9 +733,9 @@
     }
 </style>
 </head>
-<body class="min-h-screen p-2.5 sm:p-5 pb-20 flex flex-col items-center justify-between">
+<body class="min-h-[100dvh] p-1 sm:p-5 flex flex-col items-center justify-between">
 
-  <div class="w-full max-w-2xl space-y-3">
+  <div class="w-full max-w-2xl px-1 sm:px-0 space-y-2.5 sm:space-y-3 mx-auto">
 
     <!-- THÔNG TIN THỜI TIẾT ĐÁNG CHÚ Ý (DỮ LIỆU THAM KHẢO) -->
     <div id="severeAlertBanner" class="hidden bg-[#1b2a47] text-white p-3.5 sm:p-4 rounded-2xl border-2 border-yellow-400 shadow-md flex items-center justify-between gap-3">
@@ -706,6 +763,12 @@
       </div>
 
       <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- NÚT TOÀN MÀN HÌNH (FULLSCREEN APP) -->
+        <button id="appFullscreenBtn" onclick="toggleAppFullscreen()" class="px-2 sm:px-2.5 py-1.5 rounded-xl border border-emerald-500 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 flex items-center gap-1 text-[11px] font-black shadow-sm transition active:scale-95" title="Toàn Màn Hình Điện Thoại & Trình Duyệt">
+          <i id="appFullscreenIcon" class="fa-solid fa-expand text-xs text-emerald-700"></i>
+          <span id="appFullscreenText" class="hidden sm:inline">TOÀN MÀN HÌNH</span>
+        </button>
+
         <!-- NÚT CHUYỂN ĐỔI GIAO DIỆN BAN NGÀY / BAN ĐÊM (ÁNH NẮNG / TRĂNG SAO) -->
         <button id="dayNightToggleBtn" onclick="toggleDayNightMode()" class="px-2.5 sm:px-3 py-1.5 rounded-xl border-2 border-amber-400 bg-amber-50 hover:bg-amber-100 text-amber-950 flex items-center gap-1.5 text-xs font-black shadow-sm transition active:scale-95" title="Bấm để chuyển đổi giao diện Ban Ngày / Ban Đêm">
           <span id="dayNightIcon" class="text-sm">☀️</span>
@@ -1722,7 +1785,7 @@
     <!-- ============================================================ -->
     <!-- TRUNG TÂM CÀI ĐẶT & TIỆN ÍCH HỢP NHẤT 4 TRONG 1 (4-TAB MODAL) -->
     <!-- ============================================================ -->
-    <div id="settingsCenterModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-2.5 sm:p-4">
+    <div id="settingsCenterModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-2.5 sm:p-4 modal-mobile-app">
       <div id="settingsCenterCard" class="bg-white border-2 sm:border-4 border-indigo-600 rounded-3xl w-full max-w-xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden">
         
         <!-- HEADER CỐ ĐỊNH -->
@@ -2688,7 +2751,7 @@
     </div>
 
     <!-- MODAL HƯỚNG DẪN CÀI ĐẶT RA MÀN HÌNH CHÍNH (PWA) -->
-    <div id="installGuideModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3.5">
+    <div id="installGuideModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3.5 modal-mobile-app">
       <div class="bg-white border-4 border-[#1b2a47] rounded-3xl p-5 w-full max-w-md shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
         
         <!-- Header Modal -->
@@ -2777,7 +2840,7 @@
     </div>
 
     <!-- MODAL GỬI LỜI CHÚC QUA ZALO -->
-    <div id="zaloShareModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3.5">
+    <div id="zaloShareModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3.5 modal-mobile-app">
       <div class="bg-white border-4 border-[#0068ff] rounded-3xl p-5 w-full max-w-md shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
         <div class="flex items-center justify-between pb-3 border-b-2 border-slate-200">
           <div class="flex items-center gap-2.5">
@@ -2814,7 +2877,7 @@
     </div>
 
     <!-- MODAL SỔ KỶ NIỆM GIA ĐÌNH -->
-    <div id="memorialModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3">
+    <div id="memorialModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 modal-mobile-app">
       <div class="bg-white border-4 border-[#1b2a47] rounded-3xl p-5 w-full max-w-lg shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
         
         <!-- Header -->
@@ -2938,7 +3001,7 @@
     
   
   <!-- MODAL: BẢNG THIÊN VĂN HỌC MẶT TRĂNG, BẠCH ĐẠO & 12 CHÒM SAO HOÀNG ĐẠO (ẢNH 1, 2, 3, 4, 5) -->
-  <div id="moonCycleModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md">
+  <div id="moonCycleModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/85 backdrop-blur-md modal-mobile-app">
     <div class="bg-gradient-to-b from-[#030712] via-[#0b132b] to-[#111827] text-white w-full max-w-3xl rounded-3xl border-2 border-cyan-400/80 shadow-2xl p-5 sm:p-6 space-y-4 max-h-[92vh] overflow-y-auto">
       
       <!-- Tiêu đề modal -->
@@ -3290,7 +3353,7 @@
   </div>
   
   <!-- MODAL: PHÙ ĐIÊU MỸ THUẬT & TRANH PHONG THỦY ĐẤT PHÚ (THEO 4 ẢNH THỰC TẾ) -->
-  <div id="artGalleryModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/80 backdrop-blur-sm">
+  <div id="artGalleryModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/80 backdrop-blur-sm modal-mobile-app">
     <div class="bg-gradient-to-b from-[#1b1014] via-[#2a131b] to-[#12080c] text-white w-full max-w-xl rounded-3xl border-2 border-amber-400/80 shadow-2xl p-5 sm:p-6 space-y-4 max-h-[90vh] overflow-y-auto">
       
       <!-- Tiêu đề modal -->
@@ -3421,7 +3484,7 @@
   </div>
   
   <!-- MODAL HÁI LỘC ĐẦU NĂM & BAO LÌ XÌ MAY MẮN -->
-    <div id="luckyEnvelopeModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3.5">
+    <div id="luckyEnvelopeModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3.5 modal-mobile-app">
       <div class="bg-gradient-to-b from-[#b91c1c] via-[#d9232a] to-[#991b1b] border-4 border-amber-300 rounded-3xl p-5 sm:p-6 w-full max-w-sm shadow-2xl text-center space-y-4 text-white relative overflow-hidden">
         
         <!-- Pháo hoa trang trí góc -->
@@ -3465,7 +3528,7 @@
     </div>
   
     <!-- MODAL LỄ TIẾT, VÍA MẪU & BA ĐẠI SỰ ĐẤT PHÚ -->
-    <div id="spiritualModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3">
+    <div id="spiritualModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 modal-mobile-app">
       <div class="bg-white border-4 border-purple-900 rounded-3xl p-5 w-full max-w-lg shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
         
         <!-- Header -->
@@ -6722,6 +6785,8 @@
         if (typeof isBreathingActive !== 'undefined' && isBreathingActive) {
           stopBreathingExercise();
         }
+        const mediaM = document.getElementById("mediaSanctuaryModal");
+        if (!mediaM || mediaM.classList.contains("hidden")) updateMasterNavUI('calendar');
       }
     }
 
@@ -8322,6 +8387,8 @@
         syncAudiovisualPlayerUI();
       } else {
         stopArtSlideshow();
+        const setM = document.getElementById("settingsCenterModal");
+        if (!setM || setM.classList.contains("hidden")) updateMasterNavUI('calendar');
       }
     }
 
@@ -8689,6 +8756,48 @@
     // =========================================================================
     let currentMasterSpace = "calendar";
 
+    // TOÀN MÀN HÌNH ĐIỆN THOẠI & TRÌNH DUYỆT (FULLSCREEN APP API)
+    function toggleAppFullscreen() {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        const docEl = document.documentElement;
+        if (docEl.requestFullscreen) {
+          docEl.requestFullscreen().catch(err => console.log('Fullscreen error:', err));
+        } else if (docEl.webkitRequestFullscreen) {
+          docEl.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(err => console.log('Exit fullscreen error:', err));
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      }
+      setTimeout(updateFullscreenBtnState, 150);
+    }
+
+    function updateFullscreenBtnState() {
+      const isFS = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      const icon = document.getElementById("appFullscreenIcon");
+      const text = document.getElementById("appFullscreenText");
+      if (icon) {
+        icon.className = isFS ? "fa-solid fa-compress text-xs text-amber-300" : "fa-solid fa-expand text-xs text-emerald-700";
+      }
+      if (text) {
+        text.innerText = isFS ? "THU NHỎ" : "TOÀN MÀN HÌNH";
+      }
+      const btn = document.getElementById("appFullscreenBtn");
+      if (btn) {
+        if (isFS) {
+          btn.className = "px-2 sm:px-2.5 py-1.5 rounded-xl border border-amber-400 bg-amber-950/80 text-amber-200 flex items-center gap-1 text-[11px] font-black shadow-sm transition active:scale-95";
+        } else {
+          btn.className = "px-2 sm:px-2.5 py-1.5 rounded-xl border border-emerald-500 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 flex items-center gap-1 text-[11px] font-black shadow-sm transition active:scale-95";
+        }
+      }
+    }
+
+    document.addEventListener("fullscreenchange", updateFullscreenBtnState);
+    document.addEventListener("webkitfullscreenchange", updateFullscreenBtnState);
+
     function switchMasterSpace(space) {
       currentMasterSpace = space;
       const mediaModal = document.getElementById("mediaSanctuaryModal");
@@ -8749,7 +8858,7 @@
   <!-- ========================================================================= -->
   <!-- MODAL ĐỒNG HỒ CƠ KHÍ & THIÊN VĂN CAN CHI 3D ĐẤT PHÚ (CHUYỂN ĐỘNG THỜI GIAN THỰC) -->
   <!-- ========================================================================= -->
-  <div id="clockMasterModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3">
+  <div id="clockMasterModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 modal-mobile-app">
     <div class="bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#090d16] border-2 sm:border-4 border-amber-400/80 rounded-3xl p-4 sm:p-6 w-full max-w-lg shadow-2xl text-white space-y-4 max-h-[92vh] overflow-y-auto">
       
       <!-- Header Modal -->
@@ -8889,7 +8998,7 @@
   <!-- ========================================================================= -->
   <!-- MODAL: TRUNG TÂM NGHE NHÌN ĐẤT PHÚ (AUDIOVISUAL SANCTUARY & CINEMA 4K) -->
   <!-- ========================================================================= -->
-  <div id="mediaSanctuaryModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4">
+  <div id="mediaSanctuaryModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 modal-mobile-app">
     <div class="bg-gradient-to-b from-[#0a0f1d] via-[#111827] to-[#050811] border-2 sm:border-4 border-amber-400/80 rounded-3xl p-3.5 sm:p-5 w-full max-w-2xl shadow-2xl text-white space-y-3 sm:space-y-3.5 max-h-[94vh] overflow-y-auto custom-modal-scroll">
       
       <!-- HEADER RẠP CHIẾU -->
@@ -9100,23 +9209,23 @@
   <!-- ========================================================================= -->
   <!-- THANH ĐIỀU HƯỚNG 3 KHÔNG GIAN BẬC THẦY (MASTER SPACE DOCK) -->
   <!-- ========================================================================= -->
-  <nav class="fixed bottom-3.5 inset-x-0 z-40 flex justify-center px-3 pointer-events-none">
-    <div class="pointer-events-auto bg-[#0a0f1d]/95 backdrop-blur-xl border-2 border-amber-400/70 shadow-2xl rounded-full p-1.5 flex items-center gap-1 sm:gap-2">
+  <nav class="fixed bottom-[max(0.6rem,env(safe-area-inset-bottom,0px))] inset-x-0 z-40 flex justify-center px-2 pointer-events-none">
+    <div class="pointer-events-auto bg-[#0a0f1d]/95 backdrop-blur-xl border-2 border-amber-400/80 shadow-2xl rounded-full p-1 sm:p-1.5 flex items-center gap-0.5 sm:gap-2 max-w-full">
       <!-- Không Gian 1: Lịch Dân Sinh -->
-      <button onclick="switchMasterSpace('calendar')" id="masterNav_calendar" class="px-3.5 sm:px-4 py-2 rounded-full font-black text-xs transition flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow-md">
-        <i class="fa-solid fa-calendar-day text-sm"></i>
+      <button onclick="switchMasterSpace('calendar')" id="masterNav_calendar" class="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full font-black text-[11px] sm:text-xs transition flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow-md whitespace-nowrap active:scale-95">
+        <i class="fa-solid fa-calendar-day text-xs sm:text-sm"></i>
         <span>Lịch Dân Sinh</span>
       </button>
       
       <!-- Không Gian 2: Thiền Âm 4K -->
-      <button onclick="switchMasterSpace('media')" id="masterNav_media" class="px-3 sm:px-3.5 py-2 rounded-full font-bold text-xs transition flex items-center gap-1.5 sm:gap-2 text-slate-300 hover:text-white hover:bg-white/10">
-        <i class="fa-solid fa-lotus text-sm text-rose-400"></i>
+      <button onclick="switchMasterSpace('media')" id="masterNav_media" class="px-2 sm:px-3.5 py-1.5 sm:py-2 rounded-full font-bold text-[11px] sm:text-xs transition flex items-center gap-1 sm:gap-2 text-slate-300 hover:text-white hover:bg-white/10 whitespace-nowrap active:scale-95">
+        <i class="fa-solid fa-lotus text-xs sm:text-sm text-rose-400"></i>
         <span>Thiền Âm 4K</span>
       </button>
 
       <!-- Không Gian 3: Tiện Ích Bá Tánh -->
-      <button onclick="switchMasterSpace('utility')" id="masterNav_utility" class="px-3 sm:px-3.5 py-2 rounded-full font-bold text-xs transition flex items-center gap-1.5 sm:gap-2 text-slate-300 hover:text-white hover:bg-white/10">
-        <i class="fa-solid fa-boxes-stacked text-sm text-cyan-400"></i>
+      <button onclick="switchMasterSpace('utility')" id="masterNav_utility" class="px-2 sm:px-3.5 py-1.5 sm:py-2 rounded-full font-bold text-[11px] sm:text-xs transition flex items-center gap-1 sm:gap-2 text-slate-300 hover:text-white hover:bg-white/10 whitespace-nowrap active:scale-95">
+        <i class="fa-solid fa-boxes-stacked text-xs sm:text-sm text-cyan-400"></i>
         <span>Tiện Ích</span>
       </button>
     </div>
