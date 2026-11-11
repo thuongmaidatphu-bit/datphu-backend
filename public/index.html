@@ -2436,7 +2436,140 @@
               </div>
             </div>
 
-            <!-- TÙY CHỌN CÂU NIỆM PHẬT MỞ ĐẦU -->
+<!-- ========================================================================= -->
+            <!-- TÚI PHÁP ÂM & MÁY NIỆM PHẬT THẺ NHỚ SỐ (DHARMA AUDIO VAULT & SD PLAYER) -->
+            <!-- ========================================================================= -->
+            <div id="dharmaAudioVaultCard" class="bg-gradient-to-b from-[#140e06] via-[#1a1309] to-[#0c0803] text-white p-4 rounded-3xl border-2 border-amber-500/60 shadow-xl space-y-3 relative overflow-hidden">
+              
+              <!-- Header Máy Tụng Kinh Số -->
+              <div class="flex items-center justify-between pb-2.5 border-b border-amber-600/30">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-400 to-yellow-600 flex items-center justify-center text-slate-950 font-black text-sm shadow-md border border-amber-300/40">
+                    📻
+                  </div>
+                  <div>
+                    <div class="text-xs sm:text-sm font-black text-yellow-300">Túi Pháp Âm & Máy Niệm Phật Số</div>
+                    <div class="text-[10px] text-amber-200/80 font-medium">Lưu trữ thẻ nhớ • Hẹn giờ tắt đêm • Nghe Offline 100%</div>
+                  </div>
+                </div>
+                
+                <!-- Nút Nạp File từ Máy / Thẻ Nhớ -->
+                <label class="cursor-pointer px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-200 text-[11px] font-bold flex items-center gap-1 active:scale-95 transition" title="Tải file MP3 từ thẻ nhớ hoặc máy điện thoại của bạn vào ứng dụng">
+                  <i class="fa-solid fa-file-arrow-up text-amber-400"></i>
+                  <span>+ Nạp File</span>
+                  <input type="file" id="dharmaFileInput" accept="audio/*" multiple class="hidden" onchange="handleDharmaFileUpload(event)" />
+                </label>
+              </div>
+
+              <!-- MÀN HÌNH LCD LED MÁY TỤNG KINH (VINTAGE DIGITAL CHANTING SCREEN) -->
+              <div class="p-3 rounded-2xl bg-[#090d09] border-2 border-emerald-900/60 shadow-inner flex flex-col justify-between gap-1.5 relative overflow-hidden">
+                <!-- Đèn báo trạng thái LED -->
+                <div class="flex items-center justify-between text-[10px] font-mono font-bold text-emerald-400/90 pb-1 border-b border-emerald-950">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="dharmaPlayStatusDot"></span>
+                    <span id="dharmaTrackNumberBadge">TRACK 001</span>
+                    <span id="dharmaRepeatBadge" class="text-[9px] bg-emerald-950 px-1.5 py-0.2 rounded border border-emerald-800">LẶP BÀI</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span id="dharmaTimerBadge" class="text-yellow-400">⏱️ VÔ TẬN</span>
+                    <span id="dharmaTimeCurrent">00:00</span> / <span id="dharmaTimeDuration">00:00</span>
+                  </div>
+                </div>
+
+                <!-- Tên bài đang phát to rõ cho người lớn tuổi -->
+                <div class="py-1">
+                  <div id="dharmaCurrentTitle" class="text-sm sm:text-base font-black text-emerald-300 truncate drop-shadow">
+                    1. Nam Mô A Di Đà Phật (Thiền Môn Trầm Hùng)
+                  </div>
+                  <div id="dharmaCurrentArtist" class="text-[10px] text-emerald-400/70 font-medium">
+                    Đạo Tràng Đất Phú • Điệu Tịnh Độ
+                  </div>
+                </div>
+
+                <!-- Thanh tiến trình bài hát (Seekbar) -->
+                <div class="w-full pt-1">
+                  <input type="range" id="dharmaSeekbar" min="0" max="100" value="0" oninput="seekDharmaAudio(this.value)" class="w-full h-1.5 bg-emerald-950 rounded-lg appearance-none cursor-pointer accent-emerald-400" />
+                </div>
+              </div>
+
+              <!-- CỤM NÚT ĐIỀU KHIỂN PHÁT NHẠC (PLAYER CONTROLS) -->
+              <div class="flex items-center justify-between gap-2 pt-0.5">
+                <!-- Nút Lặp / Chế độ phát -->
+                <button onclick="toggleDharmaRepeatMode()" id="btnDharmaRepeat" class="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-amber-300 text-xs font-bold border border-amber-500/30 flex items-center gap-1 active:scale-95 transition" title="Chuyển chế độ lặp">
+                  <i id="dharmaRepeatIcon" class="fa-solid fa-repeat"></i>
+                  <span id="dharmaRepeatLabel" class="text-[10px]">Lặp 1</span>
+                </button>
+
+                <!-- Tua lùi bài trước -->
+                <button onclick="prevDharmaTrack()" class="w-10 h-10 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-amber-200 flex items-center justify-center text-sm border border-amber-500/40 shadow active:scale-95 transition" title="Bài trước">
+                  <i class="fa-solid fa-backward-step"></i>
+                </button>
+
+                <!-- Nút Play / Pause To Bản -->
+                <button onclick="toggleDharmaPlayback()" id="btnDharmaPlay" class="w-14 h-14 rounded-full bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 flex items-center justify-center text-xl font-black shadow-2xl border-2 border-yellow-200 active:scale-95 transition">
+                  <i id="dharmaPlayIcon" class="fa-solid fa-play ml-0.5"></i>
+                </button>
+
+                <!-- Tua tới bài sau -->
+                <button onclick="nextDharmaTrack()" class="w-10 h-10 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-amber-200 flex items-center justify-center text-sm border border-amber-500/40 shadow active:scale-95 transition" title="Bài tiếp theo">
+                  <i class="fa-solid fa-forward-step"></i>
+                </button>
+
+                <!-- Nút Hẹn Giờ Tự Tắt Đêm -->
+                <button onclick="cycleDharmaSleepTimer()" id="btnDharmaTimer" class="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-yellow-300 text-xs font-bold border border-amber-500/30 flex items-center gap-1 active:scale-95 transition" title="Hẹn giờ tự tắt khi ngủ">
+                  <i class="fa-solid fa-moon"></i>
+                  <span id="dharmaTimerLabel" class="text-[10px]">Hẹn Giờ</span>
+                </button>
+              </div>
+
+              <!-- BÀN PHÍM SỐ BẤM BÀI NHƯ MÁY TỤNG KINH (VIRTUAL NUMBER PAD) -->
+              <div class="p-2.5 bg-[#0a0703]/90 rounded-2xl border border-amber-500/30 space-y-2">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-black text-amber-300 flex items-center gap-1.5 text-[11px]">
+                    <i class="fa-solid fa-calculator text-amber-400"></i> Bấm Số Chọn Bài Nhanh:
+                  </span>
+                  <div class="flex items-center gap-1 font-mono">
+                    <span class="text-[10px] text-slate-400">Số đã gõ:</span>
+                    <span id="dharmaKeypadInput" class="text-yellow-400 font-bold bg-amber-950/80 px-2 py-0.5 rounded border border-amber-500/40 tracking-widest min-w-[36px] text-center">---</span>
+                    <button onclick="clearDharmaKeypad()" class="text-[9px] text-rose-400 hover:text-rose-300 ml-1 px-1">Xóa</button>
+                  </div>
+                </div>
+
+                <!-- Lưới 10 số (0-9) cùng phím Phát bài -->
+                <div class="grid grid-cols-6 gap-1 sm:gap-1.5 text-xs font-black">
+                  <button onclick="pressDharmaDigit(1)" class="py-2 bg-slate-800/90 hover:bg-slate-700 text-amber-100 rounded-xl border border-amber-500/20 active:scale-90 transition">1</button>
+                  <button onclick="pressDharmaDigit(2)" class="py-2 bg-slate-800/90 hover:bg-slate-700 text-amber-100 rounded-xl border border-amber-500/20 active:scale-90 transition">2</button>
+                  <button onclick="pressDharmaDigit(3)" class="py-2 bg-slate-800/90 hover:bg-slate-700 text-amber-100 rounded-xl border border-amber-500/20 active:scale-90 transition">3</button>
+                  <button onclick="pressDharmaDigit(4)" class="py-2 bg-slate-800/90 hover:bg-slate-700 text-amber-100 rounded-xl border border-amber-500/20 active:scale-90 transition">4</button>
+                  <button onclick="pressDharmaDigit(5)" class="py-2 bg-slate-800/90 hover:bg-slate-700 text-amber-100 rounded-xl border border-amber-500/20 active:scale-90 transition">5</button>
+                  <button onclick="pressDharmaDigit(6)" class="py-2 bg-slate-800/90 hover:bg-slate-700 text-amber-100 rounded-xl border border-amber-500/20 active:scale-90 transition">6</button>
+                  <button onclick="pressDharmaDigit(7)" class="py-2 bg-slate-800/90 hover:bg-slate-700 text-amber-100 rounded-xl border border-amber-500/20 active:scale-90 transition">7</button>
+                  <button onclick="pressDharmaDigit(8)" class="py-2 bg-slate-800/90 hover:bg-slate-700 text-amber-100 rounded-xl border border-amber-500/20 active:scale-90 transition">8</button>
+                  <button onclick="pressDharmaDigit(9)" class="py-2 bg-slate-800/90 hover:bg-slate-700 text-amber-100 rounded-xl border border-amber-500/20 active:scale-90 transition">9</button>
+                  <button onclick="pressDharmaDigit(0)" class="py-2 bg-slate-800/90 hover:bg-slate-700 text-amber-100 rounded-xl border border-amber-500/20 active:scale-90 transition">0</button>
+                  <button onclick="executeDharmaKeypadJump()" class="col-span-2 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl shadow active:scale-95 transition flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-play text-[10px]"></i> Phát Số
+                  </button>
+                </div>
+              </div>
+
+              <!-- DANH SÁCH BÀI TỤNG TRONG THẺ NHỚ SỐ (MỤC LỤC TRỰC QUAN) -->
+              <div class="space-y-1.5 pt-1">
+                <div class="flex items-center justify-between text-xs font-bold text-amber-300 pb-1 border-b border-amber-500/20">
+                  <span>Mục Lục Thẻ Nhớ Số (<span id="dharmaTrackCount">6</span> bài):</span>
+                  <span class="text-[10px] text-amber-400/80">Chạm bài nào phát bài đó</span>
+                </div>
+
+                <div id="dharmaPlaylistContainer" class="space-y-1.5 max-h-48 overflow-y-auto custom-modal-scroll pr-1 text-xs">
+                  <!-- Sẽ được render động qua javascript -->
+                </div>
+              </div>
+
+              <!-- Audio Element ẩn hỗ trợ phát mọi định dạng âm thanh -->
+              <audio id="dharmaAudioElement" class="hidden" preload="auto"></audio>
+            </div>
+
+                        <!-- TÙY CHỌN CÂU NIỆM PHẬT MỞ ĐẦU -->
             <div id="buddhistMantraOptions" class="p-3.5 bg-amber-50/90 border-2 border-amber-300 rounded-2xl space-y-2">
               <label class="text-xs font-black text-amber-950 flex items-center gap-1.5">
                 <i class="fa-solid fa-dharmachakra text-amber-600"></i> Câu Niệm Phật & Tâm Nguyện Mở Đầu:
@@ -6788,6 +6921,7 @@
     function switchSettingsTab(tabName) {
       if (tabName === 'ringtone') {
         setTimeout(init3DMalaCanvas, 80);
+        setTimeout(initDharmaPlayer, 100);
       }
       currentSettingsTab = tabName;
       const tabs = ['healing', 'ringtone', 'youth', 'system'];
@@ -8669,6 +8803,392 @@
 
     const MALA_TOTAL_BEADS = 108;
 
+// =========================================================================
+    // TÚI PHÁP ÂM & MÁY NIỆM PHẬT THẺ NHỚ SỐ (DHARMA AUDIO VAULT & SD PLAYER)
+    // =========================================================================
+    const DHARMA_DEFAULT_PLAYLIST = [
+      { id: 1, title: "1. Nam Mô A Di Đà Phật", artist: "Đạo Tràng Đất Phú • Điệu Tịnh Độ", type: "synth", synthType: "adida" },
+      { id: 2, title: "2. Chú Đại Bi (Phạn Âm 21 Biến)", artist: "Ban Tụng Niệm Cổ Truyền", type: "synth", synthType: "daibi" },
+      { id: 3, title: "3. Nam Mô Quán Thế Âm Bồ Tát", artist: "Cứu Khổ Cứu Nạn • Tiếng Chuông Ngân", type: "synth", synthType: "quanam" },
+      { id: 4, title: "4. Kinh Dược Sư Lưu Ly Quang", artist: "Cầu An Sức Khỏe Thân Tâm", type: "synth", synthType: "duocsu" },
+      { id: 5, title: "5. Hồng Trần Như Mộng", artist: "Ca Nhạc Sĩ Nhật Phong Lãng (432Hz)", type: "synth", synthType: "hong_tran" },
+      { id: 6, title: "6. Mở Lên Là Thấy An Yên", artist: "Kênh Thiền Sen Trúc • Tĩnh Tâm", type: "synth", synthType: "zen_rain" }
+    ];
+
+    let dharmaPlaylist = [...DHARMA_DEFAULT_PLAYLIST];
+    let currentDharmaTrackIdx = 0;
+    let isDharmaPlaying = false;
+    let dharmaRepeatMode = 'one'; // 'one', 'all', 'none'
+    let dharmaSleepTimerMinutes = 0;
+    let dharmaSleepTimerInterval = null;
+    let dharmaKeypadBuffer = "";
+    let dharmaSynthNode = null;
+
+    function initDharmaPlayer() {
+      // Load user saved tracks from localStorage if any
+      try {
+        const savedTracks = localStorage.getItem("datphu_user_dharma_tracks");
+        if (savedTracks) {
+          const parsed = JSON.parse(savedTracks);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            dharmaPlaylist = [...DHARMA_DEFAULT_PLAYLIST, ...parsed];
+          }
+        }
+      } catch(e) {}
+
+      renderDharmaPlaylistUI();
+      updateDharmaPlayerLCD();
+      setupMediaSessionHandlers();
+
+      // Hook audio element events
+      const audioEl = document.getElementById("dharmaAudioElement");
+      if (audioEl) {
+        audioEl.ontimeupdate = () => {
+          const cur = audioEl.currentTime || 0;
+          const dur = audioEl.duration || 1;
+          const pct = Math.min(100, (cur / dur) * 100);
+          const sb = document.getElementById("dharmaSeekbar");
+          if (sb && !isMalaDragging) sb.value = pct;
+          const curEl = document.getElementById("dharmaTimeCurrent");
+          if (curEl) curEl.innerText = formatTimeSec(cur);
+          const durEl = document.getElementById("dharmaTimeDuration");
+          if (durEl && !isNaN(dur)) durEl.innerText = formatTimeSec(dur);
+        };
+
+        audioEl.onended = () => {
+          if (dharmaRepeatMode === 'one') {
+            audioEl.currentTime = 0;
+            audioEl.play().catch(() => {});
+          } else {
+            nextDharmaTrack();
+          }
+        };
+      }
+    }
+
+    function renderDharmaPlaylistUI() {
+      const container = document.getElementById("dharmaPlaylistContainer");
+      const countEl = document.getElementById("dharmaTrackCount");
+      if (!container) return;
+
+      if (countEl) countEl.innerText = dharmaPlaylist.length;
+      container.innerHTML = "";
+
+      dharmaPlaylist.forEach((track, idx) => {
+        const isCurrent = (idx === currentDharmaTrackIdx);
+        const item = document.createElement("div");
+        item.className = "p-2 rounded-xl border flex items-center justify-between cursor-pointer transition active:scale-98 " +
+          (isCurrent ? "bg-amber-950/80 border-amber-400 text-yellow-300 font-black shadow-md" : "bg-black/40 border-amber-500/20 text-slate-300 hover:bg-amber-950/40 hover:text-white");
+        item.onclick = () => selectAndPlayDharmaTrack(idx);
+
+        item.innerHTML = `
+          <div class="flex items-center gap-2 truncate">
+            <span class="w-6 text-center font-mono text-[10px] ${isCurrent ? 'text-amber-400 font-bold' : 'text-slate-500'}">${String(track.id).padStart(3, '0')}</span>
+            <div class="truncate">
+              <div class="text-xs truncate ${isCurrent ? 'font-black text-yellow-300' : 'font-bold'}">${track.title}</div>
+              <div class="text-[9px] ${isCurrent ? 'text-amber-200/80' : 'text-slate-500'} truncate">${track.artist}</div>
+            </div>
+          </div>
+          <div class="shrink-0 flex items-center gap-1.5">
+            ${isCurrent && isDharmaPlaying ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>' : ''}
+            <span class="text-[10px] px-2 py-0.5 rounded-lg ${isCurrent ? 'bg-amber-500 text-slate-950 font-black' : 'bg-slate-800 text-slate-400'}">${isCurrent && isDharmaPlaying ? 'Đang phát' : 'Phát'}</span>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function updateDharmaPlayerLCD() {
+      const track = dharmaPlaylist[currentDharmaTrackIdx] || dharmaPlaylist[0];
+      if (!track) return;
+
+      const numEl = document.getElementById("dharmaTrackNumberBadge");
+      const titleEl = document.getElementById("dharmaCurrentTitle");
+      const artistEl = document.getElementById("dharmaCurrentArtist");
+      const dotEl = document.getElementById("dharmaPlayStatusDot");
+      const playIcon = document.getElementById("dharmaPlayIcon");
+
+      if (numEl) numEl.innerText = "TRACK " + String(track.id).padStart(3, '0');
+      if (titleEl) titleEl.innerText = track.title;
+      if (artistEl) artistEl.innerText = track.artist;
+
+      if (dotEl) {
+        if (isDharmaPlaying) {
+          dotEl.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+        } else {
+          dotEl.className = "w-2 h-2 rounded-full bg-slate-600";
+        }
+      }
+
+      if (playIcon) {
+        playIcon.className = isDharmaPlaying ? "fa-solid fa-pause ml-0" : "fa-solid fa-play ml-0.5";
+      }
+
+      renderDharmaPlaylistUI();
+      syncMediaSessionMetadata(track);
+    }
+
+    function toggleDharmaPlayback() {
+      if (isDharmaPlaying) {
+        pauseDharmaAudio();
+      } else {
+        playDharmaAudio();
+      }
+    }
+
+    function playDharmaAudio() {
+      const track = dharmaPlaylist[currentDharmaTrackIdx];
+      if (!track) return;
+
+      isDharmaPlaying = true;
+      const audioEl = document.getElementById("dharmaAudioElement");
+
+      if (track.type === "file" && track.url && audioEl) {
+        stopDharmaSynth();
+        audioEl.src = track.url;
+        audioEl.play().catch(e => console.warn("Audio play err:", e));
+      } else {
+        // Preset synth tracks
+        if (audioEl) audioEl.pause();
+        startDharmaSynthTrack(track.synthType);
+      }
+
+      updateDharmaPlayerLCD();
+    }
+
+    function pauseDharmaAudio() {
+      isDharmaPlaying = false;
+      const audioEl = document.getElementById("dharmaAudioElement");
+      if (audioEl) audioEl.pause();
+      stopDharmaSynth();
+      updateDharmaPlayerLCD();
+    }
+
+    function selectAndPlayDharmaTrack(idx) {
+      if (idx < 0 || idx >= dharmaPlaylist.length) return;
+      currentDharmaTrackIdx = idx;
+      playDharmaAudio();
+      showToast("Đang phát: " + dharmaPlaylist[idx].title);
+    }
+
+    function nextDharmaTrack() {
+      currentDharmaTrackIdx = (currentDharmaTrackIdx + 1) % dharmaPlaylist.length;
+      playDharmaAudio();
+    }
+
+    function prevDharmaTrack() {
+      currentDharmaTrackIdx = (currentDharmaTrackIdx - 1 + dharmaPlaylist.length) % dharmaPlaylist.length;
+      playDharmaAudio();
+    }
+
+    function toggleDharmaRepeatMode() {
+      const label = document.getElementById("dharmaRepeatLabel");
+      const badge = document.getElementById("dharmaRepeatBadge");
+
+      if (dharmaRepeatMode === 'one') {
+        dharmaRepeatMode = 'all';
+        if (label) label.innerText = "Lặp All";
+        if (badge) badge.innerText = "LẶP TẤT CẢ";
+        showToast("Chế độ: Lặp lại toàn bộ danh sách");
+      } else if (dharmaRepeatMode === 'all') {
+        dharmaRepeatMode = 'none';
+        if (label) label.innerText = "Tuần Tự";
+        if (badge) badge.innerText = "TUẦN TỰ";
+        showToast("Chế độ: Phát tuần tự một lượt");
+      } else {
+        dharmaRepeatMode = 'one';
+        if (label) label.innerText = "Lặp 1";
+        if (badge) badge.innerText = "LẶP BÀI";
+        showToast("Chế độ: Lặp lại liên tục bài hiện tại");
+      }
+    }
+
+    function cycleDharmaSleepTimer() {
+      const label = document.getElementById("dharmaTimerLabel");
+      const badge = document.getElementById("dharmaTimerBadge");
+
+      if (dharmaSleepTimerInterval) {
+        clearInterval(dharmaSleepTimerInterval);
+        dharmaSleepTimerInterval = null;
+      }
+
+      if (dharmaSleepTimerMinutes === 0) {
+        dharmaSleepTimerMinutes = 15;
+      } else if (dharmaSleepTimerMinutes === 15) {
+        dharmaSleepTimerMinutes = 30;
+      } else if (dharmaSleepTimerMinutes === 30) {
+        dharmaSleepTimerMinutes = 60;
+      } else if (dharmaSleepTimerMinutes === 60) {
+        dharmaSleepTimerMinutes = 90;
+      } else {
+        dharmaSleepTimerMinutes = 0;
+      }
+
+      if (dharmaSleepTimerMinutes > 0) {
+        if (label) label.innerText = dharmaSleepTimerMinutes + "p";
+        if (badge) badge.innerText = "⏱️ " + dharmaSleepTimerMinutes + " PHÚT";
+        showToast("Đã hẹn giờ tự tắt sau " + dharmaSleepTimerMinutes + " phút");
+
+        let remainingSec = dharmaSleepTimerMinutes * 60;
+        dharmaSleepTimerInterval = setInterval(() => {
+          remainingSec--;
+          if (badge) {
+            const m = Math.floor(remainingSec / 60);
+            const s = remainingSec % 60;
+            badge.innerText = "⏱️ " + String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0');
+          }
+          if (remainingSec <= 0) {
+            clearInterval(dharmaSleepTimerInterval);
+            dharmaSleepTimerInterval = null;
+            dharmaSleepTimerMinutes = 0;
+            pauseDharmaAudio();
+            if (badge) badge.innerText = "⏱️ ĐÃ TẮT";
+            if (label) label.innerText = "Hẹn Giờ";
+            showToast("Đã hết giờ hẹn niệm Phật. Chúc bạn an giấc!");
+          }
+        }, 1000);
+      } else {
+        if (label) label.innerText = "Hẹn Giờ";
+        if (badge) badge.innerText = "⏱️ VÔ TẬN";
+        showToast("Đã hủy hẹn giờ tắt. Phát liên tục vô tận.");
+      }
+    }
+
+    // BÀN PHÍM SỐ BẤM BÀI NHANH
+    function pressDharmaDigit(digit) {
+      if (dharmaKeypadBuffer.length >= 3) dharmaKeypadBuffer = "";
+      dharmaKeypadBuffer += String(digit);
+      updateDharmaKeypadDisplay();
+    }
+
+    function clearDharmaKeypad() {
+      dharmaKeypadBuffer = "";
+      updateDharmaKeypadDisplay();
+    }
+
+    function updateDharmaKeypadDisplay() {
+      const el = document.getElementById("dharmaKeypadInput");
+      if (el) el.innerText = dharmaKeypadBuffer || "---";
+    }
+
+    function executeDharmaKeypadJump() {
+      if (!dharmaKeypadBuffer) return;
+      const num = parseInt(dharmaKeypadBuffer, 10);
+      dharmaKeypadBuffer = "";
+      updateDharmaKeypadDisplay();
+
+      const targetIdx = dharmaPlaylist.findIndex(t => t.id === num);
+      if (targetIdx !== -1) {
+        selectAndPlayDharmaTrack(targetIdx);
+      } else {
+        showToast("Không tìm thấy bài số " + num + " trong Thẻ Nhớ Số");
+      }
+    }
+
+    // Nạp file từ thẻ nhớ/máy người dùng
+    function handleDharmaFileUpload(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+
+      const newTracks = [];
+      let nextId = dharmaPlaylist.length > 0 ? Math.max(...dharmaPlaylist.map(t => t.id)) + 1 : 1;
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const url = URL.createObjectURL(file);
+        const cleanName = file.name.replace(/\.[^/.]+$/, "");
+        newTracks.push({
+          id: nextId++,
+          title: cleanName,
+          artist: "Thẻ Nhớ Cá Nhân (" + Math.round(file.size / 1024 / 1024 * 10) / 10 + "MB)",
+          type: "file",
+          url: url
+        });
+      }
+
+      dharmaPlaylist = [...dharmaPlaylist, ...newTracks];
+      renderDharmaPlaylistUI();
+      showToast("Đã nạp thành công " + newTracks.length + " bài từ thẻ nhớ của bạn!");
+
+      // Tự động phát bài vừa nạp
+      selectAndPlayDharmaTrack(dharmaPlaylist.length - newTracks.length);
+    }
+
+    // SYNTHESIZED SOUNDSCAPES FOR PRESET CHANTS
+    function startDharmaSynthTrack(type) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!ambientCtx) ambientCtx = new AudioCtx();
+      if (ambientCtx.state === "suspended") ambientCtx.resume();
+
+      stopDharmaSynth();
+
+      // Sử dụng procedural ambient audio engine sẵn có trong ứng dụng
+      if (type === "hong_tran") {
+        setAmbientTrack("hong_tran");
+      } else if (type === "zen_rain") {
+        setAmbientTrack("zen_rain");
+      } else {
+        // Chanting drone & periodic woodblock resonance
+        playProceduralChantLoop(type);
+      }
+    }
+
+    let chantLoopInterval = null;
+    function playProceduralChantLoop(type) {
+      if (chantLoopInterval) clearInterval(chantLoopInterval);
+      chantLoopInterval = setInterval(() => {
+        if (!isDharmaPlaying) {
+          clearInterval(chantLoopInterval);
+          return;
+        }
+        if (ambientCtx && ambientCtx.state === "running") {
+          playWoodBlockSound(ambientCtx, ambientCtx.currentTime, 0.25);
+        }
+      }, 1200);
+    }
+
+    function stopDharmaSynth() {
+      if (chantLoopInterval) {
+        clearInterval(chantLoopInterval);
+        chantLoopInterval = null;
+      }
+    }
+
+    function seekDharmaAudio(val) {
+      const audioEl = document.getElementById("dharmaAudioElement");
+      if (audioEl && audioEl.duration) {
+        audioEl.currentTime = (val / 100) * audioEl.duration;
+      }
+    }
+
+    function formatTimeSec(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0');
+    }
+
+    function setupMediaSessionHandlers() {
+      if (!('mediaSession' in navigator)) return;
+      navigator.mediaSession.setActionHandler('play', playDharmaAudio);
+      navigator.mediaSession.setActionHandler('pause', pauseDharmaAudio);
+      navigator.mediaSession.setActionHandler('previoustrack', prevDharmaTrack);
+      navigator.mediaSession.setActionHandler('nexttrack', nextDharmaTrack);
+    }
+
+    function syncMediaSessionMetadata(track) {
+      if (!('mediaSession' in navigator) || !track) return;
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: track.title,
+        artist: track.artist,
+        album: "Lịch Dân Sinh & Túi Pháp Âm Đất Phú",
+        artwork: [
+          { src: "img/logo_datphu_brand.jpg", sizes: "512x512", type: "image/jpeg" }
+        ]
+      });
+    }
+
+    
     function init3DMalaCanvas() {
       malaCanvas = document.getElementById("mala3DCanvas");
       if (!malaCanvas) return;
@@ -9514,6 +10034,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       syncMemorialNotifyBtnUI();
       setTimeout(init3DMalaCanvas, 600);
+      setTimeout(initDharmaPlayer, 700);
       setTimeout(checkUpcomingMemorialNotifications, 2500);
     });
 
