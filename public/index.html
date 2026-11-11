@@ -731,6 +731,106 @@
     .custom-modal-scroll::-webkit-scrollbar-thumb:hover {
       background: #fbbf24;
     }
+
+    /* ========================================================================= */
+    /* MỸ THUẬT ĐÓA SEN ĐỘNG 3D CHUYỂN ĐỔI 4 BUỔI TRONG NGÀY (4 ATMOSPHERES) */
+    /* ========================================================================= */
+    .lotus-throne-stage {
+      position: relative;
+      border-radius: 2rem;
+      padding: 1rem 0.75rem 1.25rem 0.75rem;
+      overflow: hidden;
+      perspective: 1200px;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 12px 28px -6px rgba(0,0,0,0.18);
+      border: 2px solid rgba(217, 119, 6, 0.4);
+    }
+
+    /* 4 Bầu Khí Quyển Tứ Thời */
+    .lotus-throne-stage.atmo-dawn {
+      background: linear-gradient(180deg, #fdf2f8 0%, #ffedd5 35%, #fef3c7 65%, #ecfdf5 100%);
+      border-color: rgba(244, 63, 94, 0.5);
+      box-shadow: 0 10px 25px -5px rgba(244, 63, 94, 0.2), inset 0 1px 3px rgba(255,255,255,0.8);
+    }
+    .lotus-throne-stage.atmo-noon {
+      background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 30%, #fef9c3 65%, #d1fae5 100%);
+      border-color: rgba(234, 179, 8, 0.6);
+      box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.25), inset 0 1px 3px rgba(255,255,255,0.8);
+    }
+    .lotus-throne-stage.atmo-sunset {
+      background: linear-gradient(180deg, #4c0519 0%, #9a3412 35%, #ea580c 70%, #1e1b4b 100%);
+      border-color: rgba(249, 115, 22, 0.7);
+      box-shadow: 0 10px 30px -5px rgba(234, 88, 12, 0.35);
+    }
+    .lotus-throne-stage.atmo-night {
+      background: linear-gradient(180deg, #030712 0%, #0f172a 35%, #1e1b4b 70%, #064e3b 100%);
+      border-color: rgba(52, 211, 153, 0.5);
+      box-shadow: 0 10px 30px -5px rgba(16, 185, 129, 0.25);
+    }
+
+    /* Đổi màu chữ theo buổi */
+    .atmo-sunset #leafLunarDayText,
+    .atmo-sunset #leafLunarYear,
+    .atmo-sunset #lotusThroneSubTitle {
+      color: #fed7aa !important;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    .atmo-night #leafLunarDayText,
+    .atmo-night #leafLunarYear,
+    .atmo-night #lotusThroneSubTitle {
+      color: #a7f3d0 !important;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+    }
+
+    /* Hiệu ứng thở của Đài Sen 3D */
+    .lotus-pedestal-anim {
+      animation: lotusThroneBreathe 5s ease-in-out infinite;
+      transform-origin: center bottom;
+    }
+    @keyframes lotusThroneBreathe {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-3.5px) scale(1.018); }
+    }
+
+    /* Hạt lơ lửng tứ thời (Mist, Sunbeams, Twilight dust, Fireflies) */
+    .lotus-particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: lotusParticleFloat 4s ease-in-out infinite;
+    }
+    @keyframes lotusParticleFloat {
+      0% { transform: translateY(20px) scale(0.6); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-45px) scale(1.1); opacity: 0; }
+    }
+
+    /* Số Lịch 3D Hoàng Kim Sơn Mài */
+    .lotus-lunar-number-3d {
+      font-size: clamp(4.5rem, 15vw, 7.5rem);
+      font-weight: 900;
+      line-height: 0.95;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: linear-gradient(180deg, #ef4444 0%, #b91c1c 45%, #7f1d1d 80%, #450a0a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 8px rgba(120, 20, 20, 0.45));
+      position: relative;
+      z-index: 20;
+    }
+    .atmo-sunset .lotus-lunar-number-3d {
+      background: linear-gradient(180deg, #fdba74 0%, #ea580c 45%, #9a3412 80%, #450a0a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 12px rgba(234, 88, 12, 0.6));
+    }
+    .atmo-night .lotus-lunar-number-3d {
+      background: linear-gradient(180deg, #fef08a 0%, #fbbf24 40%, #b45309 80%, #78350f 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 14px rgba(251, 191, 36, 0.7));
+    }
+
 </style>
 </head>
 <body class="min-h-[100dvh] p-1 sm:p-5 flex flex-col items-center justify-between">
@@ -1266,23 +1366,142 @@
           </button>
         </div>
 
-        <!-- TỰA ĐỀ ÂM LỊCH -->
-        <div class="text-center pt-1">
-          <span id="leafLunarBadge" class="inline-block px-4 py-1 rounded-full bg-red-100 text-[#d9232a] text-xs sm:text-sm font-black uppercase tracking-widest border border-red-200">
-            ★ NGÀY ÂM LỊCH CHÍNH (CHU KỲ MẶT TRĂNG) ★
-          </span>
-        </div>
+        <!-- ========================================================================= -->
+        <!-- KIỆT TÁC MỸ THUẬT: TÒA SEN ĐỘNG 3D CHUYỂN ĐỔI 4 BUỔI TRONG NGÀY -->
+        <!-- (BÌNH MINH - TRƯA NẮNG - HOÀNG HÔN - ĐÊM TRĂNG) -->
+        <!-- ========================================================================= -->
+        <div class="space-y-2 pt-1 select-none">
+          <!-- THANH CHUYỂN ĐỔI 4 BẦU KHÍ QUYỂN TỨ THỜI (INTERACTIVE ATMOSPHERE SWITCHER) -->
+          <div class="flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap px-1">
+            <button onclick="setLotusAtmosphere('dawn')" id="atmoBtn_dawn" class="atmo-btn px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-pink-300 bg-pink-100/80 text-pink-900 shadow-xs" title="Bầu khí quyển Bình Minh sương mai">
+              <span>🌅</span><span>Bình Minh</span>
+            </button>
+            <button onclick="setLotusAtmosphere('noon')" id="atmoBtn_noon" class="atmo-btn px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-amber-300 bg-white/80 text-amber-900 hover:bg-amber-50" title="Bầu khí quyển Nắng Trưa rực rỡ">
+              <span>☀️</span><span>Nắng Trưa</span>
+            </button>
+            <button onclick="setLotusAtmosphere('sunset')" id="atmoBtn_sunset" class="atmo-btn px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-orange-300 bg-white/80 text-orange-900 hover:bg-orange-50" title="Bầu khí quyển Hoàng Hôn ráng đỏ">
+              <span>🌇</span><span>Hoàng Hôn</span>
+            </button>
+            <button onclick="setLotusAtmosphere('night')" id="atmoBtn_night" class="atmo-btn px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-emerald-300 bg-white/80 text-emerald-950 hover:bg-emerald-50" title="Bầu khí quyển Đêm Trăng dạ quang tĩnh lặng">
+              <span>🌙</span><span>Đêm Trăng</span>
+            </button>
+            <button onclick="setLotusAtmosphere('auto')" id="atmoBtn_auto" class="atmo-btn px-2 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-slate-300 bg-slate-100 text-slate-700" title="Tự động đổi theo giờ thực tế của điện thoại">
+              <span>🔄</span><span>Tự Động</span>
+            </button>
+          </div>
 
-        <!-- SỐ NGÀY ÂM LỊCH CỰC ĐẠI -->
-        <div class="text-center py-1">
-          <div id="leafLunarDayNumber" class="lunar-number-giant select-none drop-shadow">
-            01
-          </div>
-          <div id="leafLunarDayText" class="text-2xl sm:text-3xl font-black text-[#d9232a] tracking-wide mt-1">
-            MÙNG 1 THÁNG 10
-          </div>
-          <div id="leafLunarYear" class="text-base font-black text-slate-800 mt-0.5">
-            NĂM BÍNH NGỌ
+          <!-- SÂN KHẤU TÒA SEN 3D TỨ THỜI (LOTUS THRONE 3D STAGE) -->
+          <div id="lotusThroneStage" class="lotus-throne-stage atmo-dawn relative text-center">
+            
+            <!-- VẦNG HÀO QUANG & HẠT LƠ LỬNG (PARTICLES) -->
+            <div id="lotusParticlesContainer" class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+              <div class="lotus-particle w-2 h-2 bg-rose-400/60 top-1/2 left-1/4" style="animation-delay: 0s;"></div>
+              <div class="lotus-particle w-3 h-3 bg-amber-300/60 top-2/3 left-3/4" style="animation-delay: 1.2s;"></div>
+              <div class="lotus-particle w-2.5 h-2.5 bg-emerald-300/50 top-1/3 left-1/2" style="animation-delay: 2.1s;"></div>
+              <div class="lotus-particle w-1.5 h-1.5 bg-white/80 top-3/4 left-1/5" style="animation-delay: 2.8s;"></div>
+            </div>
+
+            <!-- VÒM CUNG HOA SEN VÀNG ĐỒNG 3D (GOLDEN LOTUS WREATH ARCH) -->
+            <div class="relative z-10 mx-auto max-w-xs sm:max-w-md pt-1 pb-1">
+              
+              <!-- TỰA ĐỀ ÂM LỊCH CUNG ĐÌNH -->
+              <div class="mb-2">
+                <span id="leafLunarBadge" class="inline-block px-3.5 sm:px-4 py-1 rounded-full bg-white/80 backdrop-blur-xs text-rose-800 text-[11px] sm:text-xs font-black uppercase tracking-widest border border-rose-300 shadow-xs">
+                  ★ NGÀY ÂM LỊCH CHÍNH (CHU KỲ MẶT TRĂNG) ★
+                </span>
+              </div>
+
+              <!-- KHỐI VÒM CUNG NÂNG ĐỠ SỐ NGÀY -->
+              <div class="relative flex items-center justify-center">
+                
+                <!-- Búp Sen Vàng Chạm Nổi Bên Trái -->
+                <div class="hidden xs:block absolute -left-2 sm:left-4 top-1/2 -translate-y-1/2 w-8 sm:w-11 pointer-events-none z-10 drop-shadow-md">
+                  <svg viewBox="0 0 40 60" fill="none" class="w-full h-full">
+                    <defs>
+                      <linearGradient id="lotusArchGoldL" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#fef08a"/><stop offset="50%" stop-color="#d97706"/><stop offset="100%" stop-color="#78350f"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M 20 5 C 10 20 5 35 12 50 C 18 42 22 25 20 5 Z" fill="url(#lotusArchGoldL)"/>
+                    <path d="M 20 5 C 25 18 35 32 30 50 C 22 45 20 25 20 5 Z" fill="url(#lotusArchGoldL)"/>
+                    <path d="M 20 5 C 16 20 18 38 20 55 C 22 38 24 20 20 5 Z" fill="#fbbf24"/>
+                    <path d="M 20 55 Q 15 58, 10 52" stroke="#b45309" stroke-width="2"/>
+                  </svg>
+                </div>
+
+                <!-- SỐ NGÀY LỊCH CỰC ĐẠI NẰM GIỮA ĐÀI SEN -->
+                <div class="relative z-20 py-1">
+                  <div id="leafLunarDayNumber" class="lotus-lunar-number-3d select-none">
+                    01
+                  </div>
+                </div>
+
+                <!-- Búp Sen Vàng Chạm Nổi Bên Phải -->
+                <div class="hidden xs:block absolute -right-2 sm:right-4 top-1/2 -translate-y-1/2 w-8 sm:w-11 pointer-events-none z-10 drop-shadow-md transform scale-x-[-1]">
+                  <svg viewBox="0 0 40 60" fill="none" class="w-full h-full">
+                    <path d="M 20 5 C 10 20 5 35 12 50 C 18 42 22 25 20 5 Z" fill="url(#lotusArchGoldL)"/>
+                    <path d="M 20 5 C 25 18 35 32 30 50 C 22 45 20 25 20 5 Z" fill="url(#lotusArchGoldL)"/>
+                    <path d="M 20 5 C 16 20 18 38 20 55 C 22 38 24 20 20 5 Z" fill="#fbbf24"/>
+                    <path d="M 20 55 Q 15 58, 10 52" stroke="#b45309" stroke-width="2"/>
+                  </svg>
+                </div>
+
+              </div>
+
+              <!-- ĐÀI SEN ĐỒNG & HOÀNG KIM 3D NÂNG ĐỠ (LOTUS THRONE PEDESTAL) -->
+              <div class="relative -mt-4 sm:-mt-6 z-10 lotus-pedestal-anim flex justify-center">
+                <div class="w-64 sm:w-80 h-16 sm:h-20 drop-shadow-xl">
+                  <svg viewBox="0 0 320 80" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="pedestalBronze" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#fde68a"/><stop offset="35%" stop-color="#b45309"/><stop offset="85%" stop-color="#78350f"/><stop offset="100%" stop-color="#451a03"/>
+                      </linearGradient>
+                      <linearGradient id="pedestalGold" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff"/><stop offset="40%" stop-color="#fde047"/><stop offset="80%" stop-color="#ca8a04"/><stop offset="100%" stop-color="#854d0e"/>
+                      </linearGradient>
+                      <linearGradient id="pedestalPink" x1="0%" y1="100%" x2="0%" y2="0%">
+                        <stop offset="0%" stop-color="#be123c"/><stop offset="60%" stop-color="#fb7185"/><stop offset="100%" stop-color="#fff1f2"/>
+                      </linearGradient>
+                    </defs>
+                    
+                    <!-- Lớp cánh sen nở úp tầng đáy -->
+                    <path d="M 30 55 C 80 75 240 75 290 55 C 260 78 60 78 30 55 Z" fill="#451a03" opacity="0.6"/>
+                    <path d="M 40 45 C 80 65 130 65 160 55 C 110 65 70 60 40 45 Z" fill="url(#pedestalBronze)"/>
+                    <path d="M 280 45 C 240 65 190 65 160 55 C 210 65 250 60 280 45 Z" fill="url(#pedestalBronze)"/>
+
+                    <!-- Cánh sen chính tỏa rộng hai bên (Tòa Sen Cung Đình) -->
+                    <path d="M 60 35 C 40 20 30 45 65 52 C 90 48 110 40 60 35 Z" fill="url(#pedestalBronze)"/>
+                    <path d="M 260 35 C 280 20 290 45 255 52 C 230 48 210 40 260 35 Z" fill="url(#pedestalBronze)"/>
+                    <path d="M 85 28 C 65 15 55 40 95 48 C 120 42 135 35 85 28 Z" fill="url(#pedestalGold)"/>
+                    <path d="M 235 28 C 255 15 265 40 225 48 C 200 42 185 35 235 28 Z" fill="url(#pedestalGold)"/>
+
+                    <!-- Tầng cánh sen trung tâm đỡ sát số lịch -->
+                    <path d="M 115 22 C 100 8 95 35 125 42 C 145 38 150 28 115 22 Z" fill="url(#pedestalPink)"/>
+                    <path d="M 205 22 C 220 8 225 35 195 42 C 175 38 170 28 205 22 Z" fill="url(#pedestalPink)"/>
+                    <path d="M 160 12 C 140 22 135 40 160 46 C 185 40 180 22 160 12 Z" fill="url(#pedestalGold)"/>
+
+                    <!-- Sóng nước mặt hồ phản chiếu ánh sen -->
+                    <ellipse cx="160" cy="62" rx="110" ry="6" fill="#fef08a" opacity="0.3"/>
+                    <line x1="70" y1="65" x2="250" y2="65" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+                    <line x1="100" y1="69" x2="220" y2="69" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" opacity="0.35"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- DÒNG CHỮ ÂM LỊCH NỔI BẬT DƯỚI TÒA SEN -->
+              <div class="relative z-10 pt-1">
+                <div id="leafLunarDayText" class="text-2xl sm:text-3xl font-black text-rose-700 tracking-wide transition-colors">
+                  MÙNG 1 THÁNG 10
+                </div>
+                <div id="leafLunarYear" class="text-sm sm:text-base font-black text-slate-800 transition-colors mt-0.5">
+                  NĂM BÍNH NGỌ
+                </div>
+                <div id="lotusThroneSubTitle" class="text-[10px] text-amber-800/80 font-bold tracking-widest uppercase mt-1">
+                  — TÒA SEN ĐẤT PHÚ • LIÊN HOA CÁT TƯỜNG —
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
 
@@ -11026,6 +11245,96 @@
         if (ring) { ring.style.transform = "scale(0.75)"; ring.style.borderColor = "rgba(52, 211, 153, 0.6)"; }
         playLotusSingingBowl(396, 2.5); // 396Hz xua tan sợ hãi, lo âu
       }
+    }
+  </script>
+
+
+  <!-- ========================================================================= -->
+  <!-- SCRIPT ĐIỀU KHIỂN TỨ THỜI (BÌNH MINH - TRƯA - HOÀNG HÔN - ĐÊM TRĂNG) -->
+  <!-- ========================================================================= -->
+  <script>
+    let currentLotusAtmoMode = localStorage.getItem("datphu_lotus_atmosphere") || "auto";
+
+    function getAutoLotusAtmosphere() {
+      const hour = new Date().getHours();
+      if (hour >= 5 && hour < 11) return "dawn";      // 05h - 11h: Bình Minh
+      if (hour >= 11 && hour < 17) return "noon";     // 11h - 17h: Nắng Trưa
+      if (hour >= 17 && hour < 19.5) return "sunset"; // 17h - 19h30: Hoàng Hôn
+      return "night";                                 // 19h30 - 05h: Đêm Trăng
+    }
+
+    function setLotusAtmosphere(mode, save) {
+      if (save !== false) {
+        currentLotusAtmoMode = mode;
+        localStorage.setItem("datphu_lotus_atmosphere", mode);
+      }
+
+      const effectiveAtmo = (mode === "auto") ? getAutoLotusAtmosphere() : mode;
+      const stage = document.getElementById("lotusThroneStage");
+      if (stage) {
+        stage.classList.remove("atmo-dawn", "atmo-noon", "atmo-sunset", "atmo-night");
+        stage.classList.add("atmo-" + effectiveAtmo);
+      }
+
+      // Cập nhật trạng thái các nút chọn bầu khí quyển
+      const modes = ["dawn", "noon", "sunset", "night", "auto"];
+      modes.forEach(m => {
+        const btn = document.getElementById("atmoBtn_" + m);
+        if (btn) {
+          if (m === mode) {
+            btn.classList.add("ring-2", "ring-rose-500", "scale-105", "font-black");
+            btn.classList.remove("opacity-70");
+          } else {
+            btn.classList.remove("ring-2", "ring-rose-500", "scale-105");
+            btn.classList.add("opacity-70");
+          }
+        }
+      });
+
+      // Cập nhật màu sắc các hạt lơ lửng theo buổi
+      updateLotusParticles(effectiveAtmo);
+
+      if (save !== false && window.showToastNotification) {
+        const names = {
+          dawn: "🌅 Bình Minh (Sương Mai Hồ Sen)",
+          noon: "☀️ Nắng Trưa (Sen Vàng Mãn Khai)",
+          sunset: "🌇 Hoàng Hôn (Ráng Chiều Đầm Sen)",
+          night: "🌙 Đêm Trăng (Dạ Quang Tĩnh Lặng)",
+          auto: "🔄 Tự Động Theo Thời Gian Thực"
+        };
+        window.showToastNotification("Tòa Sen 3D: " + (names[mode] || mode), "info");
+      }
+    }
+
+    function updateLotusParticles(atmo) {
+      const container = document.getElementById("lotusParticlesContainer");
+      if (!container) return;
+
+      let colors = [];
+      if (atmo === "dawn") colors = ["bg-rose-400/70", "bg-pink-300/60", "bg-amber-200/60", "bg-white/80"];
+      else if (atmo === "noon") colors = ["bg-amber-400/80", "bg-yellow-300/70", "bg-sky-300/60", "bg-white/90"];
+      else if (atmo === "sunset") colors = ["bg-orange-500/80", "bg-rose-500/70", "bg-amber-400/80", "bg-purple-400/60"];
+      else if (atmo === "night") colors = ["bg-emerald-400/80", "bg-teal-300/70", "bg-amber-200/90", "bg-white/90"];
+
+      container.innerHTML = colors.map((c, i) => 
+        '<div class="lotus-particle w-' + (i % 2 === 0 ? '2' : '3') + ' h-' + (i % 2 === 0 ? '2' : '3') + ' ' + c + ' left-[' + (15 + i * 22) + '%] top-[' + (30 + (i % 3) * 20) + '%]" style="animation-delay: ' + (i * 0.8) + 's; animation-duration: ' + (3.5 + i * 0.5) + 's;"></div>'
+      ).join("");
+    }
+
+    // Khởi động bầu khí quyển ban đầu
+    document.addEventListener("DOMContentLoaded", function() {
+      setLotusAtmosphere(currentLotusAtmoMode, false);
+      // Tự động kiểm tra cập nhật mỗi phút nếu đang ở chế độ auto
+      setInterval(() => {
+        if (currentLotusAtmoMode === "auto") {
+          setLotusAtmosphere("auto", false);
+        }
+      }, 60000);
+    });
+
+    // Kích hoạt ngay lập tức nếu DOM đã tải
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      setLotusAtmosphere(currentLotusAtmoMode, false);
     }
   </script>
 
