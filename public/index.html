@@ -2309,6 +2309,41 @@
               </div>
 
               <!-- NÚT BẤM CHẠM NIỆM TO BẢN THÂN THIỆN -->
+              <!-- NÚT BẬT TRỢ LÝ NIỆM PHẬT AI GIỌNG NÓI (RẢNH TAY) -->
+              <div class="space-y-2">
+                <button id="btnVoiceChantingToggle" onclick="toggleVoiceChanting()" class="w-full py-2.5 px-3 rounded-2xl border-2 border-emerald-400 bg-emerald-950/70 hover:bg-emerald-900/80 text-emerald-100 font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition active:scale-95">
+                  <i id="voiceChantingMicIcon" class="fa-solid fa-microphone text-emerald-400 text-sm"></i>
+                  <span id="voiceChantingBtnText">BẬT TRỢ LÝ NIỆM PHẬT AI GIỌNG NÓI (RẢNH TAY)</span>
+                </button>
+
+                <!-- BANNER TRẠNG THÁI AI ĐANG LẮNG NGHE & LIVE TRANSCRIPT -->
+                <div id="voiceChantingLivePanel" class="hidden p-2.5 rounded-xl bg-black/60 border border-emerald-400/50 text-xs space-y-1.5 transition">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-emerald-300 font-bold text-[11px]">
+                      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                      <span id="voiceEngineLabel">AI Đang Lắng Nghe Bạn Niệm...</span>
+                    </div>
+                    <!-- Bộ đo âm lượng nhịp tụng (Microphone VU level) -->
+                    <div class="flex items-center gap-1">
+                      <span class="text-[9px] text-emerald-400 font-mono">ÂM LỰC:</span>
+                      <div class="w-14 h-2 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-emerald-500/40">
+                        <div id="voiceEnergyBar" class="h-full bg-gradient-to-r from-emerald-400 to-yellow-400 rounded-full transition-all duration-75" style="width: 10%"></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="p-2 bg-emerald-950/60 rounded-lg border border-emerald-500/30 flex items-center gap-2 text-yellow-200">
+                    <span class="text-sm">🪷</span>
+                    <span id="voiceLiveTranscript" class="italic font-bold truncate">"Nam Mô A Di Đà Phật..."</span>
+                  </div>
+                  
+                  <div class="flex items-center justify-between text-[10px] text-emerald-200/80 pt-0.5">
+                    <span>⚡ Bạn chỉ cần cất tiếng niệm, chuỗi hạt sẽ tự động lần</span>
+                    <span id="voiceChantCountBadge" class="bg-emerald-900/80 px-2 py-0.5 rounded text-emerald-300 font-mono font-bold">0 câu AI</span>
+                  </div>
+                </div>
+              </div>
+
               <button id="btnTouchMalaBead" onclick="touchMalaBead()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-sm shadow-xl active:scale-98 transition flex items-center justify-center gap-2.5 border-2 border-yellow-200">
                 <span class="text-lg">📿</span>
                 <span>CHẠM ĐỂ NIỆM MỘT CÂU</span>
