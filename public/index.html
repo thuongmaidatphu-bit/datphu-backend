@@ -2308,6 +2308,26 @@
                 </div>
               </div>
 
+              <!-- KHUNG CHIẾU CHUỖI HẠT BỒ ĐỀ 3D TƯƠNG TÁC (INTERACTIVE 3D MALA WHEEL) -->
+              <div class="relative w-full h-44 sm:h-52 flex items-center justify-center my-2 select-none overflow-hidden rounded-2xl bg-gradient-to-b from-[#140e06] via-[#1c1308] to-[#0a0703] border-2 border-amber-500/50 shadow-inner group">
+                <canvas id="mala3DCanvas" class="w-full h-full cursor-pointer touch-none" title="Chạm hoặc vuốt chuỗi hạt để lần hạt"></canvas>
+                
+                <!-- Overlay tâm vòng tràng hạt: Hiển thị hạt thứ mấy & hướng dẫn vuốt/chạm -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                  <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#1b1206]/85 border-2 border-amber-400/60 backdrop-blur-xs flex flex-col items-center justify-center shadow-2xl p-1">
+                    <span class="text-[9px] font-black text-amber-300 tracking-wider uppercase">Hạt Thứ</span>
+                    <span id="malaCenterBeadNum" class="text-2xl sm:text-3xl font-black text-yellow-300 font-mono drop-shadow">0</span>
+                    <span class="text-[9px] text-amber-300/80 font-bold">/ 108 BIẾN</span>
+                  </div>
+                </div>
+
+                <div class="absolute bottom-1.5 inset-x-0 flex justify-center pointer-events-none">
+                  <span class="text-[10px] text-amber-300/80 font-semibold bg-black/60 px-3 py-0.5 rounded-full border border-amber-500/30">
+                    👆 Chạm hoặc vuốt chuỗi hạt 3D để lần từng hạt
+                  </span>
+                </div>
+              </div>
+
               <!-- NÚT BẤM CHẠM NIỆM TO BẢN THÂN THIỆN -->
               <!-- NÚT BẬT TRỢ LÝ NIỆM PHẬT AI GIỌNG NÓI (RẢNH TAY) -->
               <div class="space-y-2">
@@ -6775,6 +6795,9 @@
     let currentSettingsTab = 'healing';
 
     function switchSettingsTab(tabName) {
+      if (tabName === 'ringtone') {
+        setTimeout(init3DMalaCanvas, 80);
+      }
       currentSettingsTab = tabName;
       const tabs = ['healing', 'ringtone', 'youth', 'system'];
       tabs.forEach(t => {
@@ -8641,7 +8664,488 @@
       } catch(e) {}
     }
 
-    function touchMalaBead() {
+// =========================================================================
+    // RENDERER CHUỖI HẠT BỒ ĐỀ 3D TƯƠNG TÁC (INTERACTIVE 3D MALA WHEEL)
+    // =========================================================================
+    let malaCanvas = null;
+    let malaCtx = null;
+    let malaCurrentAngle = 0;
+    let malaTargetAngle = 0;
+    let isMalaDragging = false;
+    let malaDragStartX = 0;
+    let malaDragStartAngle = 0;
+    let malaAnimId = null;
+
+    const MALA_TOTAL_BEADS = 108;
+
+    function init3DMalaCanvas() {
+      malaCanvas = document.getElementById("mala3DCanvas");
+      if (!malaCanvas) return;
+      malaCtx = malaCanvas.getContext("2d");
+
+      function resizeMalaCanvas() {
+        if (!malaCanvas) return;
+        const rect = malaCanvas.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+        const dpr = window.devicePixelRatio || 1;
+        malaCanvas.width = rect.width * dpr;
+        malaCanvas.height = rect.height * dpr;
+        if (malaCtx) {
+          malaCtx.resetTransform ? malaCtx.resetTransform() : malaCtx.setTransform(1, 0, 0, 1, 0, 0);
+          malaCtx.scale(dpr, dpr);
+        }
+      }
+
+      resizeMalaCanvas();
+      window.addEventListener("resize", resizeMalaCanvas);
+
+      function onPointerDown(e) {
+        isMalaDragging = true;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        malaDragStartX = clientX;
+        malaDragStartAngle = malaTargetAngle;
+      }
+
+      function onPointerMove(e) {
+        if (!isMalaDragging) return;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const deltaX = clientX - malaDragStartX;
+        const angleDelta = (deltaX / 140) * (Math.PI / 18);
+        malaTargetAngle = malaDragStartAngle + angleDelta;
+      }
+
+      function onPointerUp(e) {
+        if (!isMalaDragging) return;
+        isMalaDragging = false;
+
+        const step = (2 * Math.PI) / MALA_TOTAL_BEADS;
+        const beadIndex = Math.round(malaTargetAngle / step);
+        malaTargetAngle = beadIndex * step;
+
+        const diff = Math.abs(malaTargetAngle - malaDragStartAngle);
+        if (diff < step * 0.3) {
+          touchMalaBead();
+        }
+      }
+
+      malaCanvas.onmousedown = onPointerDown;
+      window.addEventListener("mousemove", onPointerMove);
+      window.addEventListener("mouseup", onPointerUp);
+
+      malaCanvas.ontouchstart = onPointerDown;
+      window.addEventListener("touchmove", onPointerMove, { passive: true });
+      window.addEventListener("touchend", onPointerUp, { passive: true });
+
+      syncMala3DAngle();
+
+      if (!malaAnimId) {
+        render3DMalaLoop();
+      }
+    }
+
+    function syncMala3DAngle() {
+      const step = (2 * Math.PI) / MALA_TOTAL_BEADS;
+      malaTargetAngle = -malaBeadCount * step;
+      const centerEl = document.getElementById("malaCenterBeadNum");
+      if (centerEl) centerEl.innerText = malaBeadCount;
+    }
+
+    function render3DMalaLoop() {
+      malaCurrentAngle += (malaTargetAngle - malaCurrentAngle) * 0.14;
+      draw3DMala();
+      malaAnimId = requestAnimationFrame(render3DMalaLoop);
+    }
+
+    function draw3DMala() {
+      if (!malaCanvas || !malaCtx) return;
+      const rect = malaCanvas.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+      if (w === 0 || h === 0) return;
+
+      malaCtx.clearRect(0, 0, w, h);
+
+      const cx = w / 2;
+      const cy = h / 2 - 4;
+      const rx = Math.min(w * 0.40, 160);
+      const ry = Math.min(h * 0.38, 70);
+
+      // Dây Sợi Tơ Vàng Kim kết nối chuỗi tràng hạt
+      malaCtx.beginPath();
+      malaCtx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+      malaCtx.strokeStyle = "rgba(180, 83, 9, 0.45)";
+      malaCtx.lineWidth = 3;
+      malaCtx.stroke();
+
+      const beads = [];
+      const step = (Math.PI * 2) / MALA_TOTAL_BEADS;
+
+      for (let i = 0; i < MALA_TOTAL_BEADS; i++) {
+        const theta = malaCurrentAngle + i * step + Math.PI / 2;
+        const x = cx + rx * Math.cos(theta);
+        const y = cy + ry * Math.sin(theta);
+        const z = Math.sin(theta);
+        beads.push({ index: i, x, y, z, theta });
+      }
+
+      // Sắp xếp vẽ các hạt phía xa trước, phía gần sau
+      beads.sort((a, b) => a.z - b.z);
+
+      beads.forEach(bead => {
+        const isGuruBead = (bead.index === 0);
+        const isActive = (bead.index === (malaBeadCount % MALA_TOTAL_BEADS));
+
+        const depthFactor = (bead.z + 1) / 2;
+        const baseR = isGuruBead ? 14 : 7.5;
+        const r = baseR * (0.65 + 0.65 * depthFactor);
+
+        // Đổ bóng 3D
+        malaCtx.save();
+        malaCtx.beginPath();
+        malaCtx.ellipse(bead.x, bead.y + r * 0.4, r * 1.05, r * 0.45, 0, 0, Math.PI * 2);
+        malaCtx.fillStyle = "rgba(0, 0, 0, " + (0.35 + 0.35 * depthFactor) + ")";
+        malaCtx.fill();
+        malaCtx.restore();
+
+        // Quầng sáng Hoàng Kim bao quanh hạt đang niệm
+        if (isActive) {
+          malaCtx.save();
+          malaCtx.beginPath();
+          malaCtx.arc(bead.x, bead.y, r * 1.8, 0, Math.PI * 2);
+          const haloGrad = malaCtx.createRadialGradient(bead.x, bead.y, r * 0.8, bead.x, bead.y, r * 1.8);
+          haloGrad.addColorStop(0, "rgba(250, 204, 21, 0.65)");
+          haloGrad.addColorStop(1, "rgba(250, 204, 21, 0)");
+          malaCtx.fillStyle = haloGrad;
+          malaCtx.fill();
+          malaCtx.restore();
+        }
+
+        // Tạo vân khối cầu 3D với dải gradient ánh sáng
+        malaCtx.save();
+        malaCtx.beginPath();
+        malaCtx.arc(bead.x, bead.y, r, 0, Math.PI * 2);
+
+        const grad = malaCtx.createRadialGradient(
+          bead.x - r * 0.32, bead.y - r * 0.32, r * 0.08,
+          bead.x, bead.y, r
+        );
+
+        if (isGuruBead) {
+          // Hạt Mẫu - Sơn Mài Đỏ Hoàng Kim
+          grad.addColorStop(0, "#fef08a");
+          grad.addColorStop(0.25, "#dc2626");
+          grad.addColorStop(0.7, "#991b1b");
+          grad.addColorStop(1, "#450a0a");
+        } else if (isActive) {
+          // Hạt Đang Niệm - Bồ Đề Phát Quang
+          grad.addColorStop(0, "#ffffff");
+          grad.addColorStop(0.2, "#fde047");
+          grad.addColorStop(0.65, "#ca8a04");
+          grad.addColorStop(1, "#713f12");
+        } else {
+          // Hạt Bồ Đề Cổ Mật - Sắc Nâu Hổ Phách
+          grad.addColorStop(0, "#fef3c7");
+          grad.addColorStop(0.25, "#d97706");
+          grad.addColorStop(0.7, "#854d0e");
+          grad.addColorStop(1, "#3f2008");
+        }
+
+        malaCtx.fillStyle = grad;
+        malaCtx.fill();
+
+        // Điểm phản chiếu ánh sáng (Specular Highlight)
+        malaCtx.beginPath();
+        malaCtx.arc(bead.x - r * 0.28, bead.y - r * 0.28, r * 0.22, 0, Math.PI * 2);
+        malaCtx.fillStyle = "rgba(255, 255, 255, 0.65)";
+        malaCtx.fill();
+
+        // Vẽ Tua Rua Chỉ Đỏ nếu là Hạt Mẫu ở phía trước
+        if (isGuruBead && bead.z > -0.2) {
+          drawSacredTassel(malaCtx, bead.x, bead.y, r, depthFactor);
+        }
+
+        malaCtx.restore();
+      });
+    }
+
+    function drawSacredTassel(ctx, x, y, r, depth) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x - r * 0.6, y + r * 0.7);
+      ctx.lineTo(x + r * 0.6, y + r * 0.7);
+      ctx.lineTo(x, y + r * 1.3);
+      ctx.closePath();
+      ctx.fillStyle = "#ca8a04";
+      ctx.fill();
+
+      const tasselLen = 22 * (0.7 + 0.5 * depth);
+      ctx.beginPath();
+      ctx.moveTo(x, y + r * 1.3);
+      ctx.lineTo(x - 5, y + r * 1.3 + tasselLen);
+      ctx.lineTo(x + 5, y + r * 1.3 + tasselLen);
+      ctx.closePath();
+      const tasselGrad = ctx.createLinearGradient(x, y + r * 1.3, x, y + r * 1.3 + tasselLen);
+      tasselGrad.addColorStop(0, "#dc2626");
+      tasselGrad.addColorStop(1, "#7f1d1d");
+      ctx.fillStyle = tasselGrad;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // =========================================================================
+    // TRỢ LÝ NIỆM PHẬT AI BẰNG GIỌNG NÓI (VOICE AI MALA COUNTER)
+    // =========================================================================
+    let isVoiceChantingActive = false;
+    let speechRecognizer = null;
+    let audioVADContext = null;
+    let audioVADSource = null;
+    let audioVADAnalyser = null;
+    let audioVADInterval = null;
+    let voiceChantsRecognized = 0;
+    let lastChantTimestamp = 0;
+    const MIN_CHANT_CADENCE_MS = 650;
+
+    function toggleVoiceChanting() {
+      if (isVoiceChantingActive) {
+        stopVoiceChanting();
+        showToast("Đã tắt Trợ lý Niệm Phật AI giọng nói");
+      } else {
+        startVoiceChanting();
+      }
+    }
+
+    function startVoiceChanting() {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        if (!ambientCtx) ambientCtx = new AudioCtx();
+        if (ambientCtx.state === "suspended") ambientCtx.resume();
+      }
+
+      isVoiceChantingActive = true;
+      updateVoiceChantingUI(true);
+
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (SpeechRec) {
+        try {
+          speechRecognizer = new SpeechRec();
+          speechRecognizer.lang = 'vi-VN';
+          speechRecognizer.continuous = true;
+          speechRecognizer.interimResults = true;
+          speechRecognizer.maxAlternatives = 3;
+
+          speechRecognizer.onstart = () => {
+            updateVoiceEngineLabel("AI Đang Lắng Nghe Tiếng Niệm Của Bạn...");
+          };
+
+          speechRecognizer.onresult = (event) => {
+            let interimTranscript = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+              const res = event.results[i];
+              const text = res[0].transcript.trim();
+              if (res.isFinal) {
+                evaluateChantUtterance(text, true);
+              } else {
+                interimTranscript += text;
+                evaluateChantUtterance(interimTranscript, false);
+              }
+            }
+          };
+
+          speechRecognizer.onerror = (e) => {
+            console.warn('SpeechRecognition notice:', e.error);
+            if (e.error === 'network' || e.error === 'not-allowed') {
+              initAudioVADFallback();
+            }
+          };
+
+          speechRecognizer.onend = () => {
+            if (isVoiceChantingActive) {
+              try { speechRecognizer.start(); } catch(err) {}
+            }
+          };
+
+          speechRecognizer.start();
+          showToast("📿 Trợ lý AI đang lắng nghe tiếng niệm Phật của bạn...");
+        } catch(err) {
+          console.warn("SpeechRec start failed:", err);
+        }
+      }
+
+      initAudioVADFallback();
+    }
+
+    function stopVoiceChanting() {
+      isVoiceChantingActive = false;
+      updateVoiceChantingUI(false);
+
+      if (speechRecognizer) {
+        try {
+          speechRecognizer.onend = null;
+          speechRecognizer.stop();
+        } catch(e) {}
+        speechRecognizer = null;
+      }
+
+      if (audioVADInterval) {
+        clearInterval(audioVADInterval);
+        audioVADInterval = null;
+      }
+
+      if (audioVADSource) {
+        try {
+          audioVADSource.mediaStream.getTracks().forEach(t => t.stop());
+        } catch(e) {}
+        audioVADSource = null;
+      }
+    }
+
+    function evaluateChantUtterance(rawText, isFinal) {
+      if (!isVoiceChantingActive) return;
+      const now = Date.now();
+      if (now - lastChantTimestamp < MIN_CHANT_CADENCE_MS) return;
+
+      const t = rawText.toLowerCase();
+      const chantKeywords = /(a\s*di\s*đà|a\s*di\s*da|phật|phat|quán\s*thế\s*âm|quan\s*the\s*am|bồ\s*tát|bo\s*tat|bổn\s*sư|bon\s*su|thích\s*ca|thich\s*ca|án\s*ma\s*ni|hồng|nam\s*mô|nam\s*mo|đà\s*phật)/i;
+
+      if (chantKeywords.test(t)) {
+        lastChantTimestamp = now;
+        voiceChantsRecognized++;
+
+        let displayPhrase = rawText;
+        if (displayPhrase.length > 32) displayPhrase = displayPhrase.substring(0, 32) + "...";
+        updateLiveTranscriptDisplay(displayPhrase);
+
+        triggerMalaAdvanceFromVoice();
+      }
+    }
+
+    function triggerMalaAdvanceFromVoice() {
+      touchMalaBead();
+
+      const countEl = document.getElementById("malaBeadCount");
+      if (countEl) {
+        countEl.classList.add("text-amber-200", "scale-110");
+        setTimeout(() => countEl.classList.remove("text-amber-200", "scale-110"), 200);
+      }
+
+      const badge = document.getElementById("voiceChantCountBadge");
+      if (badge) {
+        badge.innerText = voiceChantsRecognized + " câu AI";
+      }
+    }
+
+    function updateLiveTranscriptDisplay(phrase) {
+      const trEl = document.getElementById("voiceLiveTranscript");
+      if (trEl) {
+        trEl.innerText = '"' + phrase + '"';
+      }
+    }
+
+    function updateVoiceEngineLabel(label) {
+      const el = document.getElementById("voiceEngineLabel");
+      if (el) el.innerText = label;
+    }
+
+    let vadEnergyAboveThreshold = false;
+
+    function initAudioVADFallback() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+
+      navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        .then((stream) => {
+          if (!isVoiceChantingActive) {
+            stream.getTracks().forEach(t => t.stop());
+            return;
+          }
+
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return;
+          if (!audioVADContext) audioVADContext = new AudioCtx();
+          if (audioVADContext.state === "suspended") audioVADContext.resume();
+
+          audioVADSource = audioVADContext.createMediaStreamSource(stream);
+          audioVADAnalyser = audioVADContext.createAnalyser();
+          audioVADAnalyser.fftSize = 256;
+          audioVADSource.connect(audioVADAnalyser);
+
+          const bufferLength = audioVADAnalyser.frequencyBinCount;
+          const dataArray = new Uint8Array(bufferLength);
+
+          audioVADInterval = setInterval(() => {
+            if (!isVoiceChantingActive || !audioVADAnalyser) return;
+            audioVADAnalyser.getByteFrequencyData(dataArray);
+
+            let sum = 0;
+            for (let i = 0; i < bufferLength; i++) {
+              sum += dataArray[i];
+            }
+            const average = sum / bufferLength;
+            const pct = Math.min(100, Math.round((average / 60) * 100));
+
+            const bar = document.getElementById("voiceEnergyBar");
+            if (bar) bar.style.width = Math.max(5, pct) + "%";
+
+            const VAD_THRESHOLD = 32;
+            const now = Date.now();
+
+            if (average > VAD_THRESHOLD && !vadEnergyAboveThreshold) {
+              vadEnergyAboveThreshold = true;
+              if (!speechRecognizer || !window.SpeechRecognition) {
+                if (now - lastChantTimestamp >= MIN_CHANT_CADENCE_MS) {
+                  lastChantTimestamp = now;
+                  voiceChantsRecognized++;
+                  updateLiveTranscriptDisplay("Âm ba niệm Phật...");
+                  triggerMalaAdvanceFromVoice();
+                }
+              }
+            } else if (average <= VAD_THRESHOLD * 0.7) {
+              vadEnergyAboveThreshold = false;
+            }
+          }, 80);
+        })
+        .catch((err) => {
+          console.warn("Microphone notice:", err);
+          updateVoiceEngineLabel("Chưa cấp quyền Mic để nghe niệm");
+        });
+    }
+
+    function updateVoiceChantingUI(active) {
+      const btn = document.getElementById("btnVoiceChantingToggle");
+      const icon = document.getElementById("voiceChantingMicIcon");
+      const text = document.getElementById("voiceChantingBtnText");
+      const panel = document.getElementById("voiceChantingLivePanel");
+
+      if (active) {
+        if (btn) {
+          btn.className = "w-full py-2.5 px-3 rounded-2xl border-2 border-rose-500 bg-rose-950/80 hover:bg-rose-900 text-rose-100 font-black text-xs sm:text-sm shadow-lg flex items-center justify-center gap-2 transition active:scale-95 animate-pulse";
+        }
+        if (icon) {
+          icon.className = "fa-solid fa-microphone-slash text-rose-300 text-sm";
+        }
+        if (text) {
+          text.innerText = "DỪNG TRỢ LÝ NIỆM PHẬT AI (ĐANG NGHE)";
+        }
+        if (panel) {
+          panel.classList.remove("hidden");
+        }
+      } else {
+        if (btn) {
+          btn.className = "w-full py-2.5 px-3 rounded-2xl border-2 border-emerald-400 bg-emerald-950/70 hover:bg-emerald-900/80 text-emerald-100 font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition active:scale-95";
+        }
+        if (icon) {
+          icon.className = "fa-solid fa-microphone text-emerald-400 text-sm";
+        }
+        if (text) {
+          text.innerText = "BẬT TRỢ LÝ NIỆM PHẬT AI GIỌNG NÓI (RẢNH TAY)";
+        }
+        if (panel) {
+          panel.classList.add("hidden");
+        }
+      }
+    }
+
+        function touchMalaBead() {
       malaBeadCount++;
       malaTotalToday++;
       localStorage.setItem('datphu_mala_total', malaTotalToday.toString());
@@ -9018,6 +9522,7 @@
     // Đồng bộ trạng thái khi tải trang
     document.addEventListener("DOMContentLoaded", () => {
       syncMemorialNotifyBtnUI();
+      setTimeout(init3DMalaCanvas, 600);
       setTimeout(checkUpcomingMemorialNotifications, 2500);
     });
 
