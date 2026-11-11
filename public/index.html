@@ -637,7 +637,29 @@
     .eq-active .eq-bar:nth-child(11) { animation: eqWave 0.75s ease-in-out infinite 0.28s; }
     .eq-active .eq-bar:nth-child(12) { animation: eqWave 1.05s ease-in-out infinite 0.08s; }
 
-    /* Thanh cuộn hoàng gia mảnh mai, sang trọng cho Trung Tâm Nghe Nhìn */
+    /* TÙY CHỌN SẮC MÀU PHONG THỦY BLOC */
+    .super-bloc.color-red {
+      background: linear-gradient(180deg, #8b0000 0%, #b91c1c 45%, #7f1d1d 100%) !important;
+    }
+    .super-bloc.color-gold {
+      background: linear-gradient(180deg, #78350f 0%, #b45309 45%, #451a03 100%) !important;
+    }
+    .super-bloc.color-emerald {
+      background: linear-gradient(180deg, #064e3b 0%, #047857 45%, #022c22 100%) !important;
+    }
+    .super-bloc.color-purple {
+      background: linear-gradient(180deg, #3b0764 0%, #6b21a8 45%, #1e1b4b 100%) !important;
+    }
+
+    /* TĂNG CỠ CHỮ TRỢ NĂNG NGƯỜI LỚN TUỔI */
+    body.font-scale-large #blocLeaf {
+      zoom: 1.08;
+    }
+    body.font-scale-xlarge #blocLeaf {
+      zoom: 1.18;
+    }
+
+        /* Thanh cuộn hoàng gia mảnh mai, sang trọng cho Trung Tâm Nghe Nhìn */
     .custom-modal-scroll::-webkit-scrollbar {
       width: 6px;
     }
@@ -1811,7 +1833,7 @@
         </div>
 
         <!-- THÂN MODAL CUỘN: CHỨA NỘI DUNG 4 TABS -->
-        <div id="settingsModalScrollBody" class="p-3.5 sm:p-5 overflow-y-auto space-y-4 flex-1">
+        <div id="settingsModalScrollBody" class="p-3.5 sm:p-5 overflow-y-auto space-y-4 flex-1 custom-modal-scroll">
           
           <!-- ================= TAB 1: 🌿 TRỊ LIỆU & THIỀN ================= -->
           <div id="tabContent_healing" class="space-y-4">
@@ -2383,6 +2405,61 @@
               </select>
             </div>
 
+            <!-- TRÀNG HẠT BỒ ĐỀ NIỆM PHẬT AI (DIGITAL MALA 108 HẠT) -->
+            <div id="digitalMalaCard" class="bg-gradient-to-b from-[#1a140a] to-[#2b1f0c] text-white p-4 rounded-2xl border-2 border-amber-500/60 shadow-lg space-y-3 relative overflow-hidden">
+              <div class="flex items-center justify-between pb-2 border-b border-amber-600/30">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 flex items-center justify-center text-slate-950 font-black text-sm shadow">
+                    📿
+                  </div>
+                  <div>
+                    <div class="text-xs sm:text-sm font-black text-amber-300">Tràng Hạt Bồ Đề Niệm Phật AI</div>
+                    <div class="text-[10px] text-amber-200/80 font-medium">Đếm hạt chánh niệm • Tiếng mõ thiền môn 100% Offline</div>
+                  </div>
+                </div>
+                <button onclick="resetMalaCounter()" class="text-[10px] font-bold text-amber-400 hover:text-amber-200 flex items-center gap-1 active:scale-95 transition" title="Đặt lại vòng đếm">
+                  <i class="fa-solid fa-rotate-left"></i> Đếm Lại
+                </button>
+              </div>
+
+              <!-- KHU VỰC HIỂN THỊ BỘ ĐẾM 108 HẠT -->
+              <div class="text-center py-1 space-y-1">
+                <div class="text-[11px] font-bold text-amber-200/90 flex items-center justify-center gap-1.5">
+                  <span id="malaCurrentMantraLabel">Nam Mô A Di Đà Phật</span>
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                </div>
+                <div class="flex items-baseline justify-center gap-1 font-mono">
+                  <span id="malaBeadCount" class="text-3xl sm:text-4xl font-black text-yellow-300 drop-shadow">0</span>
+                  <span class="text-base sm:text-lg font-bold text-amber-400/80">/ 108 Hạt</span>
+                </div>
+                <div class="text-[10px] text-amber-300/80 font-medium">
+                  Chu kỳ: <strong id="malaCycleCount" class="text-white font-bold">Vòng 1</strong> • Tích lũy hôm nay: <strong id="malaTotalToday" class="text-yellow-300 font-bold">0</strong> câu
+                </div>
+              </div>
+
+              <!-- NÚT BẤM CHẠM NIỆM TO BẢN THÂN THIỆN -->
+              <button id="btnTouchMalaBead" onclick="touchMalaBead()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-sm shadow-xl active:scale-98 transition flex items-center justify-center gap-2.5 border-2 border-yellow-200">
+                <span class="text-lg">📿</span>
+                <span>CHẠM ĐỂ NIỆM MỘT CÂU</span>
+                <i class="fa-solid fa-bell text-xs opacity-75"></i>
+              </button>
+
+              <!-- CHỌN ÂM THANH MÕ GỖ HOẶC KHÁNH ĐỒNG -->
+              <div class="flex items-center justify-between text-[11px] font-bold text-amber-200 pt-1">
+                <span class="flex items-center gap-1">
+                  <i class="fa-solid fa-music text-amber-400"></i> Âm Thanh Khi Chạm:
+                </span>
+                <div class="flex items-center gap-1">
+                  <button id="malaSound_wood" onclick="setMalaSound('wood')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-black text-[10px] shadow transition">
+                    Mõ Gỗ Thiền
+                  </button>
+                  <button id="malaSound_bell" onclick="setMalaSound('bell')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-amber-300 hover:text-white font-bold text-[10px] transition border border-amber-500/40">
+                    Khánh Đồng
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <!-- ================= TAB 3: KHÔNG GIAN GEN Z ================= -->
@@ -2552,6 +2629,67 @@
               </div>
               <button onclick="switchSettingsTab('healing')" class="px-3.5 py-1.5 rounded-xl font-black text-xs bg-teal-600 hover:bg-teal-700 text-white shadow active:scale-95 transition">
                 Mở Xem
+              </button>
+            </div>
+
+            <!-- CỠ CHỮ TO RÕ CHO NGƯỜI LỚN TUỔI -->
+            <div class="p-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl space-y-2">
+              <div class="flex items-center justify-between">
+                <label class="text-xs font-black text-slate-800 flex items-center gap-1.5">
+                  <i class="fa-solid fa-magnifying-glass-plus text-indigo-600"></i> Cỡ Chữ Hiển Thị (Trợ Năng Người Lớn Tuổi):
+                </label>
+                <span id="fontScaleBadge" class="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">Chuẩn (100%)</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2">
+                <button onclick="setAppFontSize('normal')" id="btnFontScale_normal" class="py-2 px-1 rounded-xl bg-indigo-600 text-white font-black text-xs shadow transition text-center border border-indigo-500">
+                  Chuẩn (100%)
+                </button>
+                <button onclick="setAppFontSize('large')" id="btnFontScale_large" class="py-2 px-1 rounded-xl bg-white text-slate-700 hover:bg-slate-100 font-bold text-xs transition text-center border border-slate-300">
+                  To (115%)
+                </button>
+                <button onclick="setAppFontSize('xlarge')" id="btnFontScale_xlarge" class="py-2 px-1 rounded-xl bg-white text-slate-700 hover:bg-slate-100 font-bold text-xs transition text-center border border-slate-300">
+                  Rất To (130%)
+                </button>
+              </div>
+            </div>
+
+            <!-- CHỌN MÀU PHONG THỦY TỜ LỊCH BLOC -->
+            <div class="p-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl space-y-2">
+              <label class="text-xs font-black text-slate-800 flex items-center gap-1.5">
+                <i class="fa-solid fa-palette text-amber-600"></i> Sắc Màu Phong Thủy Tờ Lịch Bloc:
+              </label>
+              <div class="grid grid-cols-4 gap-2 text-center text-[10px] font-bold">
+                <!-- Đỏ Chu Sa -->
+                <button onclick="setBlocColorTheme('red')" id="btnColor_red" class="p-2 rounded-xl bg-red-800 text-white font-black ring-2 ring-indigo-500 shadow transition flex flex-col items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-red-500 border border-white"></span>
+                  <span>Đỏ Chu Sa</span>
+                </button>
+                <!-- Vàng Hoàng Kim -->
+                <button onclick="setBlocColorTheme('gold')" id="btnColor_gold" class="p-2 rounded-xl bg-white text-amber-950 hover:bg-amber-50 border border-slate-300 transition flex flex-col items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-amber-400 border border-amber-600"></span>
+                  <span>Hoàng Kim</span>
+                </button>
+                <!-- Xanh Ngọc Bích -->
+                <button onclick="setBlocColorTheme('emerald')" id="btnColor_emerald" class="p-2 rounded-xl bg-white text-emerald-950 hover:bg-emerald-50 border border-slate-300 transition flex flex-col items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-emerald-500 border border-emerald-700"></span>
+                  <span>Ngọc Bích</span>
+                </button>
+                <!-- Tím Thiền Môn -->
+                <button onclick="setBlocColorTheme('purple')" id="btnColor_purple" class="p-2 rounded-xl bg-white text-purple-950 hover:bg-purple-50 border border-slate-300 transition flex flex-col items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-purple-600 border border-purple-800"></span>
+                  <span>Tím Thiền</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- HIỆU ỨNG BỤI VÀNG / HOA MAI LUNG LINH -->
+            <div class="p-3 bg-slate-50 border-2 border-slate-200 rounded-2xl flex items-center justify-between">
+              <div>
+                <div class="text-xs font-black text-slate-800">Bụi Vàng & Cánh Hoa Rơi</div>
+                <div class="text-[10px] text-slate-500">Hiệu ứng hạt sáng lung linh mang lại sinh khí may mắn</div>
+              </div>
+              <button id="toggleGoldParticlesBtn" onclick="toggleGoldParticles()" class="px-3.5 py-1.5 rounded-xl font-black text-xs bg-amber-600 text-white shadow active:scale-95 transition">
+                ĐANG BẬT ✨
               </button>
             </div>
 
@@ -8200,6 +8338,7 @@
         }
       });
       renderArtThumbnails();
+      initSettingsUpgrades();
       const firstMatch = SHOWCASE_ARTWORKS.findIndex(a => filterKey === 'all' || a.tab === filterKey);
       if (firstMatch !== -1) {
         selectShowcaseArt(firstMatch);
@@ -8384,6 +8523,192 @@
       originalStopAmbientSound();
       syncAudiovisualPlayerUI();
     };
+
+    // =========================================================================
+    // TRỢ NĂNG NIỆM PHẬT & TRÀNG HẠT BỒ ĐỀ AI (DIGITAL MALA ENGINE)
+    // =========================================================================
+    let malaBeadCount = 0;
+    let malaCycleCount = 1;
+    let malaTotalToday = parseInt(localStorage.getItem('datphu_mala_total') || '0', 10);
+    let malaSoundType = localStorage.getItem('datphu_mala_sound') || 'wood';
+
+    function playWoodBlockSound(ctx, time, vol = 0.28) {
+      if (!ctx) return;
+      try {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(760, time);
+        osc.frequency.exponentialRampToValueAtTime(420, time + 0.06);
+
+        filter.type = "bandpass";
+        filter.frequency.setValueAtTime(800, time);
+        filter.Q.setValueAtTime(3.8, time);
+
+        gain.gain.setValueAtTime(vol, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.075);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(time);
+        osc.stop(time + 0.08);
+      } catch(e) {}
+    }
+
+    function touchMalaBead() {
+      malaBeadCount++;
+      malaTotalToday++;
+      localStorage.setItem('datphu_mala_total', malaTotalToday.toString());
+
+      if (navigator.vibrate) {
+        try { navigator.vibrate(22); } catch(e) {}
+      }
+
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        if (!ambientCtx) ambientCtx = new AudioCtx();
+        if (ambientCtx.state === "suspended") ambientCtx.resume();
+        const now = ambientCtx.currentTime;
+
+        if (malaSoundType === "wood") {
+          playWoodBlockSound(ambientCtx, now, 0.32);
+        } else {
+          playSingleGlassChime(ambientCtx, 1318.51, now, 0.12);
+        }
+
+        if (malaBeadCount >= 108) {
+          malaBeadCount = 0;
+          malaCycleCount++;
+          playBachThachBell(ambientCtx, now + 0.1, 8.0, 0.22);
+          showToast(`🙏 Viên Mãn Chu Kỳ ${malaCycleCount - 1} (108 Hạt) • Hồi Hướng Công Đức`);
+        }
+      }
+
+      updateMalaUI();
+
+      const btn = document.getElementById("btnTouchMalaBead");
+      if (btn) {
+        btn.classList.add("scale-95");
+        setTimeout(() => btn.classList.remove("scale-95"), 100);
+      }
+    }
+
+    function resetMalaCounter() {
+      malaBeadCount = 0;
+      updateMalaUI();
+      showToast("Đã đặt lại vòng tràng hạt");
+    }
+
+    function setMalaSound(type) {
+      malaSoundType = type;
+      localStorage.setItem('datphu_mala_sound', type);
+      const woodBtn = document.getElementById("malaSound_wood");
+      const bellBtn = document.getElementById("malaSound_bell");
+      if (type === "wood") {
+        if (woodBtn) woodBtn.className = "px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-black text-[10px] shadow transition";
+        if (bellBtn) bellBtn.className = "px-2.5 py-1 rounded-lg bg-slate-800 text-amber-300 hover:text-white font-bold text-[10px] transition border border-amber-500/40";
+      } else {
+        if (woodBtn) woodBtn.className = "px-2.5 py-1 rounded-lg bg-slate-800 text-amber-300 hover:text-white font-bold text-[10px] transition border border-amber-500/40";
+        if (bellBtn) bellBtn.className = "px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-black text-[10px] shadow transition";
+      }
+    }
+
+    function updateMalaUI() {
+      const beadEl = document.getElementById("malaBeadCount");
+      const cycleEl = document.getElementById("malaCycleCount");
+      const totalEl = document.getElementById("malaTotalToday");
+      const mantraLabel = document.getElementById("malaCurrentMantraLabel");
+
+      if (beadEl) beadEl.innerText = malaBeadCount;
+      if (cycleEl) cycleEl.innerText = `Vòng ${malaCycleCount}`;
+      if (totalEl) totalEl.innerText = malaTotalToday;
+
+      const sel = document.getElementById("selectMantraType");
+      if (sel && mantraLabel) {
+        mantraLabel.innerText = sel.options[sel.selectedIndex].text.split(" (")[0];
+      }
+    }
+
+    // =========================================================================
+    // NÂNG CẤP GIAO DIỆN: CỠ CHỮ & SẮC MÀU PHONG THỦY BLOC
+    // =========================================================================
+    function setAppFontSize(scale) {
+      document.body.classList.remove("font-scale-large", "font-scale-xlarge");
+      if (scale === "large") document.body.classList.add("font-scale-large");
+      if (scale === "xlarge") document.body.classList.add("font-scale-xlarge");
+
+      localStorage.setItem("datphu_font_scale", scale);
+
+      ['normal', 'large', 'xlarge'].forEach(s => {
+        const btn = document.getElementById("btnFontScale_" + s);
+        if (btn) {
+          if (s === scale) {
+            btn.className = "py-2 px-1 rounded-xl bg-indigo-600 text-white font-black text-xs shadow transition text-center border border-indigo-500";
+          } else {
+            btn.className = "py-2 px-1 rounded-xl bg-white text-slate-700 hover:bg-slate-100 font-bold text-xs transition text-center border border-slate-300";
+          }
+        }
+      });
+
+      const badge = document.getElementById("fontScaleBadge");
+      if (badge) {
+        const labels = { normal: "Chuẩn (100%)", large: "To (115%)", xlarge: "Rất To (130%)" };
+        badge.innerText = labels[scale] || "Chuẩn (100%)";
+      }
+    }
+
+    function setBlocColorTheme(color) {
+      const leaf = document.getElementById("blocLeaf");
+      if (leaf) {
+        leaf.classList.remove("color-red", "color-gold", "color-emerald", "color-purple");
+        if (color !== "red") {
+          leaf.classList.add("color-" + color);
+        }
+      }
+      localStorage.setItem("datphu_bloc_color", color);
+
+      ['red', 'gold', 'emerald', 'purple'].forEach(c => {
+        const btn = document.getElementById("btnColor_" + c);
+        if (btn) {
+          if (c === color) {
+            btn.classList.add("ring-2", "ring-indigo-500", "font-black");
+          } else {
+            btn.classList.remove("ring-2", "ring-indigo-500", "font-black");
+          }
+        }
+      });
+    }
+
+    function toggleGoldParticles() {
+      const isEnabled = localStorage.getItem("datphu_gold_particles") !== "off";
+      const nextState = isEnabled ? "off" : "on";
+      localStorage.setItem("datphu_gold_particles", nextState);
+      const btn = document.getElementById("toggleGoldParticlesBtn");
+      if (btn) {
+        if (nextState === "on") {
+          btn.className = "px-3.5 py-1.5 rounded-xl font-black text-xs bg-amber-600 text-white shadow active:scale-95 transition";
+          btn.innerText = "ĐANG BẬT ✨";
+          showToast("Đã bật bụi vàng lung linh");
+        } else {
+          btn.className = "px-3.5 py-1.5 rounded-xl font-black text-xs bg-slate-300 text-slate-700 shadow active:scale-95 transition";
+          btn.innerText = "ĐANG TẮT";
+          showToast("Đã tắt bụi vàng");
+        }
+      }
+    }
+
+    function initSettingsUpgrades() {
+      updateMalaUI();
+      setMalaSound(malaSoundType);
+      const savedScale = localStorage.getItem("datphu_font_scale") || "normal";
+      setAppFontSize(savedScale);
+      const savedColor = localStorage.getItem("datphu_bloc_color") || "red";
+      setBlocColorTheme(savedColor);
+    }
 
     document.addEventListener("DOMContentLoaded", () => {
       renderArtThumbnails();
