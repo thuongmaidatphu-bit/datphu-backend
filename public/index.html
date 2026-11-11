@@ -8866,6 +8866,127 @@
       }
     };
 
+    // =========================================================================
+    // PWA OFFLINE-FIRST SERVICE WORKER & MEMORIAL NOTIFICATIONS
+    // =========================================================================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => {
+            console.log('✓ Lịch Đất Phú PWA ServiceWorker sẵn sàng:', reg.scope);
+          })
+          .catch(err => {
+            console.warn('Lịch Đất Phú ServiceWorker error:', err);
+          });
+      });
+    }
+
+    // Theo dõi trạng thái Mạng (Online / Offline)
+    function updateNetworkStatusUI() {
+      const banner = document.getElementById("pwaOfflineIndicator");
+      if (!banner) return;
+      if (!navigator.onLine) {
+        banner.classList.remove("hidden");
+      } else {
+        banner.classList.add("hidden");
+      }
+    }
+    window.addEventListener('online', updateNetworkStatusUI);
+    window.addEventListener('offline', updateNetworkStatusUI);
+    document.addEventListener('DOMContentLoaded', updateNetworkStatusUI);
+
+    // Chuông thông báo nhắc giỗ gia tiên tự động (Web Notifications API)
+    function isMemorialNotificationEnabled() {
+      return localStorage.getItem('datphu_memorial_notify') === 'true' && ('Notification' in window) && Notification.permission === 'granted';
+    }
+
+    function syncMemorialNotifyBtnUI() {
+      const btn = document.getElementById("btnMemorialNotify");
+      const icon = document.getElementById("memorialNotifyIcon");
+      const text = document.getElementById("memorialNotifyText");
+      if (!btn || !icon || !text) return;
+
+      const enabled = isMemorialNotificationEnabled();
+      if (enabled) {
+        btn.className = "px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-500 font-black rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95";
+        icon.className = "fa-solid fa-bell text-emerald-600";
+        text.innerText = "Đã Bật Nhắc Giỗ";
+      } else {
+        btn.className = "px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-400 font-black rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95";
+        icon.className = "fa-solid fa-bell-slash text-amber-600";
+        text.innerText = "Bật Nhắc Giỗ";
+      }
+    }
+
+    function toggleMemorialNotifications() {
+      if (!('Notification' in window)) {
+        showToast("Trình duyệt này không hỗ trợ Thông báo Web");
+        return;
+      }
+
+      if (Notification.permission === 'granted') {
+        const current = localStorage.getItem('datphu_memorial_notify') === 'true';
+        if (current) {
+          localStorage.setItem('datphu_memorial_notify', 'false');
+          showToast("Đã tắt chuông nhắc ngày giỗ gia tiên");
+        } else {
+          localStorage.setItem('datphu_memorial_notify', 'true');
+          showToast("Đã bật chuông nhắc ngày giỗ gia tiên trước 3 ngày");
+          checkUpcomingMemorialNotifications();
+        }
+        syncMemorialNotifyBtnUI();
+      } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            localStorage.setItem('datphu_memorial_notify', 'true');
+            showToast("Đã kích hoạt quyền thông báo nhắc giỗ thành công!");
+            try {
+              new Notification("Lịch Dân Sinh Đất Phú", {
+                body: "Chuông nhắc ngày giỗ tổ tiên và ngày rằm đã sẵn sàng phục vụ bạn.",
+                icon: "img/logo_datphu_brand.jpg"
+              });
+            } catch(e) {}
+            syncMemorialNotifyBtnUI();
+            checkUpcomingMemorialNotifications();
+          } else {
+            showToast("Bạn đã từ chối nhận thông báo từ trình duyệt");
+          }
+        });
+      } else {
+        showToast("Vui lòng vào cài đặt trình duyệt để mở quyền thông báo");
+      }
+    }
+
+    // Tự động rà soát ngày giỗ sắp tới
+    function checkUpcomingMemorialNotifications() {
+      if (!isMemorialNotificationEnabled() || !Array.isArray(memorials) || memorials.length === 0) return;
+
+      const now = new Date();
+      const currentLun = convertSolar2Lunar(now.getDate(), now.getMonth() + 1, now.getFullYear(), TIME_ZONE);
+      const curLDay = currentLun.day;
+      const curLMonth = currentLun.month;
+
+      memorials.forEach(item => {
+        if (!item || !item.name) return;
+        // Kiểm tra đúng ngày giỗ hôm nay
+        if (item.day === curLDay && item.month === curLMonth) {
+          try {
+            new Notification("Hôm Nay Giỗ Gia Tiên: " + item.name, {
+              body: "Ngày " + curLDay + "/" + curLMonth + " Âm lịch: Tưởng nhớ công đức " + item.name + ". Nguyện cầu gia tiên an nghỉ.",
+              icon: "img/logo_datphu_brand.jpg"
+            });
+          } catch(e) {}
+        }
+      });
+    }
+
+    // Đồng bộ trạng thái khi tải trang
+    document.addEventListener("DOMContentLoaded", () => {
+      syncMemorialNotifyBtnUI();
+      setTimeout(checkUpcomingMemorialNotifications, 2500);
+    });
+
+
 </script>
 
   <!-- ========================================================================= -->
