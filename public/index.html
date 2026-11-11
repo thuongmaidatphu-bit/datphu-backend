@@ -1360,30 +1360,34 @@
         <div class="space-y-2 pt-1 select-none">
           <!-- THANH CHỌN 2 PHONG CÁCH: SEN THIÊN NHIÊN & SEN VÀNG CUNG ĐÌNH -->
           <div class="flex items-center justify-center gap-1.5 sm:gap-2 mb-1.5 select-none">
-            <button onclick="setLotusStyle('nature')" id="lotusStyleBtn_nature" class="px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-emerald-400 bg-gradient-to-r from-emerald-600 to-teal-600 text-white" title="Phong cách Đầm Sen Thiên Nhiên chụp thực tế sống động">
-              <span>🌿</span><span>Sen Hồ Thiên Nhiên</span>
+            <button onclick="setLotusStyle('nature')" id="lotusStyleBtn_nature" class="px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-emerald-400 bg-gradient-to-r from-emerald-600 to-teal-600 text-white ring-2 ring-emerald-300" title="Phong cách Đầm Sen Thiên Nhiên chụp thực tế sống động">
+              <div class="w-4 h-4 rounded-full overflow-hidden border border-white/80 shrink-0">
+                <img src="img/logo_hoa_sen_real.png" alt="Sen" class="w-full h-full object-cover" />
+              </div>
+              <span>Sen Hồ Thiên Nhiên</span>
             </button>
-            <button onclick="setLotusStyle('imperial')" id="lotusStyleBtn_imperial" class="px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-amber-300 bg-white/90 text-amber-900 hover:bg-amber-50" title="Phong cách Tòa Sen Đồng & Hoàng Kim 3D Cung Đình">
-              <span>⚜️</span><span>Sen Vàng Cung Đình</span>
+            <button onclick="setLotusStyle('imperial')" id="lotusStyleBtn_imperial" class="px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-amber-300 bg-white/90 text-amber-900 hover:bg-amber-50 opacity-80" title="Phong cách Tòa Sen Đồng & Hoàng Kim 3D Cung Đình">
+              <i class="fa-solid fa-crown text-amber-600 text-xs"></i>
+              <span>Sen Vàng Cung Đình</span>
             </button>
           </div>
 
           <!-- THANH CHUYỂN ĐỔI 4 BẦU KHÍ QUYỂN TỨ THỜI (INTERACTIVE ATMOSPHERE SWITCHER) -->
           <div class="flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap px-1">
-            <button onclick="setLotusAtmosphere('dawn')" id="atmoBtn_dawn" class="atmo-btn px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-pink-300 bg-pink-100/80 text-pink-900 shadow-xs" title="Bầu khí quyển Bình Minh sương mai">
-              <span>🌅</span><span>Bình Minh</span>
+            <button onclick="setLotusAtmosphere('dawn')" id="atmoBtn_dawn" class="atmo-btn px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-pink-300 bg-pink-100/90 text-pink-900 shadow-xs" title="Bầu khí quyển Bình Minh sương mai">
+              <i class="fa-solid fa-cloud-sun text-rose-500 text-xs"></i><span>Bình Minh</span>
             </button>
-            <button onclick="setLotusAtmosphere('noon')" id="atmoBtn_noon" class="atmo-btn px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-amber-300 bg-white/80 text-amber-900 hover:bg-amber-50" title="Bầu khí quyển Nắng Trưa rực rỡ">
-              <span>☀️</span><span>Nắng Trưa</span>
+            <button onclick="setLotusAtmosphere('noon')" id="atmoBtn_noon" class="atmo-btn px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-amber-300 bg-white/80 text-amber-900 hover:bg-amber-50" title="Bầu khí quyển Nắng Trưa rực rỡ">
+              <i class="fa-solid fa-sun text-amber-500 text-xs"></i><span>Nắng Trưa</span>
             </button>
-            <button onclick="setLotusAtmosphere('sunset')" id="atmoBtn_sunset" class="atmo-btn px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-orange-300 bg-white/80 text-orange-900 hover:bg-orange-50" title="Bầu khí quyển Hoàng Hôn ráng đỏ">
-              <span>🌇</span><span>Hoàng Hôn</span>
+            <button onclick="setLotusAtmosphere('sunset')" id="atmoBtn_sunset" class="atmo-btn px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-orange-300 bg-white/80 text-orange-900 hover:bg-orange-50" title="Bầu khí quyển Hoàng Hôn ráng đỏ">
+              <i class="fa-solid fa-cloud-sun text-orange-500 text-xs"></i><span>Hoàng Hôn</span>
             </button>
-            <button onclick="setLotusAtmosphere('night')" id="atmoBtn_night" class="atmo-btn px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-emerald-300 bg-white/80 text-emerald-950 hover:bg-emerald-50" title="Bầu khí quyển Đêm Trăng dạ quang tĩnh lặng">
-              <span>🌙</span><span>Đêm Trăng</span>
+            <button onclick="setLotusAtmosphere('night')" id="atmoBtn_night" class="atmo-btn px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-emerald-300 bg-white/80 text-emerald-950 hover:bg-emerald-50" title="Bầu khí quyển Đêm Trăng dạ quang tĩnh lặng">
+              <i class="fa-solid fa-moon text-emerald-600 text-xs"></i><span>Đêm Trăng</span>
             </button>
             <button onclick="setLotusAtmosphere('auto')" id="atmoBtn_auto" class="atmo-btn px-2 py-1 rounded-full text-[10px] sm:text-xs font-black transition active:scale-95 flex items-center gap-1 border border-slate-300 bg-slate-100 text-slate-700" title="Tự động đổi theo giờ thực tế của điện thoại">
-              <span>🔄</span><span>Tự Động</span>
+              <i class="fa-solid fa-clock-rotate-left text-slate-500 text-[11px]"></i><span>Tự Động</span>
             </button>
           </div>
 
@@ -9197,13 +9201,7 @@
       { id: 5, title: "5. Hồng Trần Như Mộng", artist: "Ca Nhạc Sĩ Nhật Phong Lãng (432Hz)", category: "thien_tra", type: "synth", synthType: "hong_tran" },
       { id: 6, title: "6. Mở Lên Là Thấy An Yên", artist: "Kênh Thiền Sen Trúc • Tĩnh Tâm", category: "thien_tra", type: "synth", synthType: "zen_rain" }
     ];
-      { id: 1, title: "1. Nam Mô A Di Đà Phật", artist: "Đạo Tràng Đất Phú • Điệu Tịnh Độ", type: "synth", synthType: "adida" },
-      { id: 2, title: "2. Chú Đại Bi (Phạn Âm 21 Biến)", artist: "Ban Tụng Niệm Cổ Truyền", type: "synth", synthType: "daibi" },
-      { id: 3, title: "3. Nam Mô Quán Thế Âm Bồ Tát", artist: "Cứu Khổ Cứu Nạn • Tiếng Chuông Ngân", type: "synth", synthType: "quanam" },
-      { id: 4, title: "4. Kinh Dược Sư Lưu Ly Quang", artist: "Cầu An Sức Khỏe Thân Tâm", type: "synth", synthType: "duocsu" },
-      { id: 5, title: "5. Hồng Trần Như Mộng", artist: "Ca Nhạc Sĩ Nhật Phong Lãng (432Hz)", type: "synth", synthType: "hong_tran" },
-      { id: 6, title: "6. Mở Lên Là Thấy An Yên", artist: "Kênh Thiền Sen Trúc • Tĩnh Tâm", type: "synth", synthType: "zen_rain" }
-    ];
+
 
     let dharmaPlaylist = [...DHARMA_DEFAULT_PLAYLIST];
     let currentDharmaTrackIdx = 0;
