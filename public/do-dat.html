@@ -162,9 +162,9 @@
             </svg>
             <span>Nhập Sổ Đỏ VN-2000</span>
           </button>
-          <button onclick="getUserGPSLocation()" class="px-3.5 py-2 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
-            <i class="fa-solid fa-location-crosshairs text-sm"></i>
-            <span>Vị Trí Của Tôi</span>
+          <button onclick="getUserGPSLocation()" id="btnMyGpsLocation" class="px-3.5 py-2 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
+            <i id="iconMyGpsLocation" class="fa-solid fa-location-crosshairs text-sm"></i>
+            <span id="textMyGpsLocation">Vị Trí Của Tôi</span>
           </button>
         </div>
       </div>
@@ -860,6 +860,58 @@
     </div>
   </div>
 
+  
+  <!-- MODAL HƯỚNG DẪN MỞ QUYỀN VỊ TRÍ GPS KHI BỊ CHẶN -->
+  <div id="gpsPermissionModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-3xl p-5 sm:p-6 max-w-md w-full shadow-2xl border-2 border-amber-300 space-y-4 animate-in fade-in zoom-in duration-150">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg font-black shrink-0">
+            <i class="fa-solid fa-lock text-amber-600"></i>
+          </div>
+          <div>
+            <h3 class="text-sm sm:text-base font-black text-slate-900">Trình Duyệt Đang Chặn Quyền Vị Trí!</h3>
+            <p class="text-[10px] text-slate-500">Mở quyền vị trí chỉ mất 3 giây theo hướng dẫn sau</p>
+          </div>
+        </div>
+        <button onclick="closeGpsPermissionModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center font-bold text-sm">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-700">
+        <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200 space-y-2">
+          <div class="font-bold text-amber-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-laptop text-amber-600"></i>
+            <span>Nếu đang dùng Máy Tính Bàn hoặc Laptop:</span>
+          </div>
+          <ol class="list-decimal list-inside space-y-1 text-slate-700 leading-relaxed pl-1">
+            <li>Nhìn lên góc trên bên trái thanh địa chỉ web (chỗ <b>datphu-backend.vercel.app</b>).</li>
+            <li>Bấm vào biểu tượng <b>Cài đặt trang web 🎛️ hoặc Ổ khóa 🔒</b>.</li>
+            <li>Tìm dòng <b>Vị trí (Location)</b> và đổi từ <span class="text-rose-600 font-bold">Chặn (Block)</span> sang <span class="text-emerald-700 font-bold">Cho phép (Allow)</span>.</li>
+            <li>Bấm phím <b>F5 (Tải lại trang)</b> và bấm lại nút "Vị Trí Của Tôi".</li>
+          </ol>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-2">
+          <div class="font-bold text-emerald-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-mobile-screen text-emerald-600"></i>
+            <span>Nếu đang dùng Điện Thoại Thông Minh:</span>
+          </div>
+          <ol class="list-decimal list-inside space-y-1 text-slate-700 leading-relaxed pl-1">
+            <li>Bấm vào biểu tượng <b>Ổ khóa 🔒</b> bên cạnh thanh địa chỉ web.</li>
+            <li>Chọn <b>Quyền truy cập trang web (Permissions)</b> ➔ Bật <b>Vị trí (Location)</b>.</li>
+            <li>Kiểm tra xem điện thoại đã kéo thanh thông báo xuống và <b>bật nút "Vị trí (GPS)"</b> chưa.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="closeGpsPermissionModal()" class="w-full py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition active:scale-95">
+          Đã Hiểu, Tôi Sẽ Mở Quyền Ngay
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== FOOTER ==================== -->
   <footer class="mt-8 border-t border-slate-200/80 bg-white/80 py-6 text-center text-xs text-slate-500">
     <div class="max-w-6xl mx-auto px-4 space-y-1.5">
@@ -1229,50 +1281,112 @@
       }
     }
 
-    function getUserGPSLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            const rawLat = pos.coords.latitude;
-            const rawLng = pos.coords.longitude;
-            const lat = kalmanLat.filter(rawLat);
-            const lng = kalmanLng.filter(rawLng);
-            const acc = Math.round(pos.coords.accuracy || 0);
+    
+    function openGpsPermissionModal() {
+      const modal = document.getElementById('gpsPermissionModal');
+      if (modal) modal.classList.remove('hidden');
+    }
 
-            // Bật cảnh báo nếu sai số GPS quá lớn (> 100m)
-            const warnAlert = document.getElementById('gpsWarningAlert');
-            const warnMeters = document.getElementById('gpsWarningMeters');
-            if (acc > 100 && warnAlert && warnMeters) {
-              warnMeters.innerText = acc.toLocaleString('vi-VN');
-              warnAlert.classList.remove('hidden');
-            } else if (warnAlert) {
-              warnAlert.classList.add('hidden');
-            }
+    function closeGpsPermissionModal() {
+      const modal = document.getElementById('gpsPermissionModal');
+      if (modal) modal.classList.add('hidden');
+    }
 
-            const badge = document.getElementById('gpsAccuracyBadge');
-            const meters = document.getElementById('gpsAccuracyMeters');
-            if (badge && meters) {
-              badge.classList.remove('hidden');
-              meters.innerText = acc;
-            }
-
-            map.setView([lat, lng], 17);
-            L.circleMarker([lat, lng], {
-              radius: 8,
-              fillColor: '#0ea5e9',
-              color: '#ffffff',
-              weight: 2.5,
-              opacity: 1,
-              fillOpacity: 0.9
-            }).addTo(map).bindPopup("📍 Vị trí GPS (Sai số ±" + acc + "m)").openPopup();
-          },
-          (err) => {
-            console.warn('Geolocation warning:', err.message);
-          },
-          { enableHighAccuracy: true, timeout: 8000 }
-        );
+    function setGpsButtonLoading(isLoading) {
+      const btn = document.getElementById('btnMyGpsLocation');
+      const icon = document.getElementById('iconMyGpsLocation');
+      const text = document.getElementById('textMyGpsLocation');
+      if (isLoading) {
+        if (btn) btn.classList.add('opacity-80', 'cursor-wait');
+        if (icon) icon.className = "fa-solid fa-spinner fa-spin text-sm";
+        if (text) text.innerText = "Đang Dò GPS...";
+      } else {
+        if (btn) btn.classList.remove('opacity-80', 'cursor-wait');
+        if (icon) icon.className = "fa-solid fa-location-crosshairs text-sm";
+        if (text) text.innerText = "Vị Trí Của Tôi";
       }
     }
+
+    function getUserGPSLocation() {
+      if (!navigator.geolocation) {
+        alert("Thiết bị hoặc trình duyệt của bạn không hỗ trợ chức năng định vị GPS!");
+        return;
+      }
+
+      setGpsButtonLoading(true);
+
+      const successHandler = (pos) => {
+        setGpsButtonLoading(false);
+        const rawLat = pos.coords.latitude;
+        const rawLng = pos.coords.longitude;
+        const lat = kalmanLat.filter(rawLat);
+        const lng = kalmanLng.filter(rawLng);
+        const acc = Math.round(pos.coords.accuracy || 0);
+
+        // Bật cảnh báo nếu sai số GPS quá lớn (> 100m)
+        const warnAlert = document.getElementById('gpsWarningAlert');
+        const warnMeters = document.getElementById('gpsWarningMeters');
+        if (acc > 100 && warnAlert && warnMeters) {
+          warnMeters.innerText = acc.toLocaleString('vi-VN');
+          warnAlert.classList.remove('hidden');
+        } else if (warnAlert) {
+          warnAlert.classList.add('hidden');
+        }
+
+        const badge = document.getElementById('gpsAccuracyBadge');
+        const meters = document.getElementById('gpsAccuracyMeters');
+        if (badge && meters) {
+          badge.classList.remove('hidden');
+          meters.innerText = acc;
+        }
+
+        map.setView([lat, lng], 17);
+        L.circleMarker([lat, lng], {
+          radius: 8,
+          fillColor: '#0ea5e9',
+          color: '#ffffff',
+          weight: 2.5,
+          opacity: 1,
+          fillOpacity: 0.9
+        }).addTo(map).bindPopup("📍 Vị trí GPS của bạn (Sai số ±" + acc + "m)").openPopup();
+      };
+
+      const errorHandler = (err) => {
+        console.warn('Geolocation error code:', err.code, err.message);
+
+        // Mã lỗi 1: PERMISSION_DENIED (Người dùng hoặc trình duyệt chặn quyền vị trí)
+        if (err.code === 1) {
+          setGpsButtonLoading(false);
+          openGpsPermissionModal();
+          return;
+        }
+
+        // Mã lỗi 3: TIMEOUT (Nếu bật High Accuracy bị quá thời gian, thử lại với độ chính xác chuẩn)
+        if (err.code === 3) {
+          navigator.geolocation.getCurrentPosition(
+            successHandler,
+            (fallbackErr) => {
+              setGpsButtonLoading(false);
+              alert("⚠️ Không thể kết nối với vệ tinh GPS (Hết thời gian chờ). Bạn vui lòng dùng chuột lăn phóng to bản đồ vệ tinh để chấm mốc trực tiếp nhé!");
+            },
+            { enableHighAccuracy: false, timeout: 12000 }
+          );
+          return;
+        }
+
+        // Mã lỗi 2: POSITION_UNAVAILABLE
+        setGpsButtonLoading(false);
+        alert("⚠️ Không tìm thấy tín hiệu định vị. Hãy kiểm tra xem bạn đã bật 'Vị trí (GPS)' trong Cài đặt của máy chưa, hoặc dùng bản đồ vệ tinh để chấm điểm trực tiếp.");
+      };
+
+      // Thử định vị độ chính xác cao trước
+      navigator.geolocation.getCurrentPosition(
+        successHandler,
+        errorHandler,
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
 
     // 4. THÊM / XÓA MỐC & HIỂN THỊ CHIỀU DÀI CẠNH
     function addPoint(lat, lng) {
