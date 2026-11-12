@@ -285,7 +285,7 @@
             <span class="w-5 h-5 rounded-md bg-black/15 text-slate-950 flex items-center justify-center text-[10px]">
               <i class="fa-solid fa-shapes"></i>
             </span>
-            <span>Tất Cả (<span id="themeCount_all">15</span>)</span>
+            <span>Tất Cả (<span id="themeCount_all">16</span>)</span>
           </button>
 
           <button onclick="filterRadioTheme('nhacxuan')" id="themeBtn_nhacxuan" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-red-900 to-amber-900 hover:from-red-800 hover:to-amber-800 text-amber-200 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer border border-amber-400/50 shadow-xs">
@@ -1271,6 +1271,18 @@
 
     // 2. KHO DỮ LIỆU BÀI HÁT, BÀI CHÒI & VIDEO THEO CHỦ ĐỀ
     const DEFAULT_MEDIA_PLAYLIST = [
+      {
+        id: "med_xuan_abba",
+        title: "Happy New Year - Khúc Ca Giao Thừa Bất Hủ (ABBA 4K)",
+        artist: "Ban Nhạc Huyền Thoại ABBA • Khúc Ca Tân Niên",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "youtube",
+        youtubeId: "3Uo0JAUWijM",
+        coverImg: "img/tet_sum_vay_dat_phu.jpg",
+        chant: "“Happy New Year, Happy New Year... May we all have a vision now and then of a world where every neighbor is a friend... Cầu chúc năm mới an khang thịnh vượng, xóm giềng hòa thuận, toàn gia hạnh phúc!”",
+        duration: "04:25"
+      },
       {
         id: "med_xuan1",
         title: "Trống Hội Mừng Xuân & Hòa Tấu Lưu Thủy Kim Tiền",
@@ -3047,6 +3059,10 @@ function changeArtSlide(delta) {
 
         if (diff <= 0) {
           el.innerHTML = "🎉 <b>CUNG CHÚC TÂN XUÂN • VẠN SỰ NHƯ Ý • AN KHANG THỊNH VƯỢNG!</b>";
+          const abbaIdx = MEDIA_PLAYLIST.findIndex(t => t.id === 'med_xuan_abba');
+          if (abbaIdx !== -1 && currentRadioIdx !== abbaIdx && !isRadioPlaying) {
+            selectRadioTrack(abbaIdx);
+          }
           return;
         }
 
