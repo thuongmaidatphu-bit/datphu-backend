@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đo Đất Rẫy Rừng & Mặt Biển • Lịch Đất Phú</title>
-  <meta name="description" content="Ứng dụng đo diện tích đất rẫy, rừng trồng, mặt nước đầm vịnh nuôi thủy sản bằng GPS vệ tinh, quy đổi sào mẫu Trung Bộ chuẩn xác tại Phú Yên.">
+  <title>Thước Đo Đất Rẫy & Trắc Địa Nông Dân • Lịch Đất Phú</title>
+  <meta name="description" content="Ứng dụng đo diện tích đất rẫy trồng dưa, rừng keo, mặt biển bằng GPS vệ tinh. Tính tiền khoán đất, chống hớ diện tích, quy đổi sào mẫu Trung Bộ chuẩn xác tại Phú Yên.">
   <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
 
   <!-- Tailwind CSS CDN -->
@@ -41,6 +41,19 @@
     @media (min-width: 640px) {
       #mapMeasure { height: 560px; }
     }
+    /* Nhãn đo chiều dài cạnh */
+    .edge-label {
+      background: rgba(15, 23, 42, 0.85);
+      color: #fef08a;
+      border: 1px solid rgba(250, 204, 21, 0.6);
+      padding: 1px 5px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: bold;
+      font-family: monospace;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body class="bg-gradient-to-b from-emerald-50 via-slate-50 to-emerald-100/30 text-slate-800 min-h-screen font-sans antialiased flex flex-col transition-colors duration-300">
@@ -62,10 +75,10 @@
         </div>
         <div class="text-left">
           <h1 class="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5">
-            <span>ĐO ĐẤT RÃY RỪNG & BIỂN</span>
+            <span>ĐO ĐẤT RẪY RỪNG & BIỂN</span>
             <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 uppercase font-mono">Đất Phú</span>
           </h1>
-          <p class="text-[10px] sm:text-xs text-slate-500 font-medium">Đo diện tích GPS • Bản đồ vệ tinh • Sào, Mẫu, Héc-ta</p>
+          <p class="text-[10px] sm:text-xs text-slate-500 font-medium">Trắc địa nông dân • Chống hớ tiền khoán • Đo dưa hấu, keo, tôm</p>
         </div>
       </div>
 
@@ -87,18 +100,18 @@
   <!-- ==================== NỘI DUNG CHÍNH ==================== -->
   <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 space-y-6">
 
-    <!-- BANNER GIỚI THIỆU TIỆN ÍCH DÂN SINH -->
+    <!-- BANNER GIỚI THIỆU TIỆN ÍCH DÂN SINH DÀNH CHO NÔNG DÂN -->
     <div class="card-box p-4 sm:p-6 rounded-3xl bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white shadow-xl space-y-3 border border-emerald-500/30">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 uppercase tracking-wider">
-            Công Cụ Trắc Địa Dân Sinh Nông Lâm Ngư Nghiệp
+            Tiện Ích Trắc Địa Chuyên Dụng Cho Nông Dân Thuê Khoán Đất
           </span>
           <h2 class="text-base sm:text-xl font-black text-white mt-1">
-            Thước Đo Đất Rẫy, Rừng Trồng & Mặt Nước Biển Đất Phú
+            Đo Đất Nương Rẫy, Rừng Trồng & Chống Bị Hớ Diện Tích
           </h2>
           <p class="text-xs text-emerald-100/80">
-            Chấm điểm trực tiếp trên bản đồ vệ tinh độ nét cao hoặc cầm điện thoại đi bộ quanh ranh đất ngoài thực địa để máy tự tính diện tích.
+            Chấm mốc vệ tinh hoặc cầm máy đi bộ thực địa. Tự động trừ mương rãnh, tính tiền thuê khoán dưa hấu, mía, sắn, keo và xuất biên bản nghiệm thu gửi Zalo.
           </p>
         </div>
 
@@ -114,8 +127,10 @@
     <!-- KHU VỰC BẢN ĐỒ VỆ TINH & BẢNG ĐIỀU KHIỂN ĐO ĐẠC -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-      <!-- CỘT 1 & 2: BẢN ĐỒ VỆ TINH TƯƠNG TÁC (MAP VIEW) -->
-      <div class="lg:col-span-2 space-y-3">
+      <!-- CỘT 1 & 2: BẢN ĐỒ VỆ TINH TƯƠNG TÁC (MAP VIEW) & THƯỚC ĐO THỦ CÔNG -->
+      <div class="lg:col-span-2 space-y-4">
+        
+        <!-- BẢN ĐỒ VỆ TINH VÀ CÔNG CỤ -->
         <div class="card-box p-3 sm:p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md space-y-3">
           
           <!-- Thanh công cụ bản đồ -->
@@ -131,11 +146,9 @@
             </div>
 
             <div class="flex items-center gap-1.5">
-              <!-- Nút xóa điểm cuối -->
               <button onclick="removeLastMarker()" class="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-700 font-bold transition active:scale-95" title="Xóa điểm mốc vừa chấm">
                 <i class="fa-solid fa-rotate-left mr-1"></i> Hoàn Tác
               </button>
-              <!-- Nút xóa sạch -->
               <button onclick="clearAllMarkers()" class="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-rose-100 text-rose-600 font-bold transition active:scale-95" title="Xóa toàn bộ điểm mốc">
                 <i class="fa-solid fa-trash mr-1"></i> Xóa Hết
               </button>
@@ -145,28 +158,33 @@
           <!-- Bản đồ Leaflet -->
           <div id="mapMeasure" class="w-full relative shadow-inner"></div>
 
-          <!-- Hướng dẫn thao tác nhanh -->
+          <!-- Hướng dẫn & Chỉ báo tín hiệu GPS -->
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-500 px-1">
             <span class="flex items-center gap-1.5">
               <i class="fa-solid fa-circle-info text-emerald-600"></i>
-              <span>Chạm / Bấm trên vệ tinh từ 3 điểm trở lên để tạo ranh giới thửa đất / lô rừng / mặt biển.</span>
+              <span>Chấm từ 3 điểm để vẽ ranh thửa đất. Chiều dài từng cạnh ranh hiển thị trực tiếp trên bản đồ.</span>
             </span>
-            <span class="font-bold text-emerald-700 flex items-center gap-1">
-              <i class="fa-solid fa-crosshairs"></i> Đang có <span id="markerCountText" class="font-mono text-xs">0</span> điểm mốc
-            </span>
+            <div class="flex items-center gap-2">
+              <span id="gpsAccuracyBadge" class="hidden text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
+                <i class="fa-solid fa-satellite-dish mr-1"></i> Sai số: ±<span id="gpsAccuracyMeters">0</span>m
+              </span>
+              <span class="font-bold text-emerald-700 flex items-center gap-1">
+                <i class="fa-solid fa-crosshairs"></i> <span id="markerCountText" class="font-mono text-xs">0</span> điểm mốc
+              </span>
+            </div>
           </div>
 
         </div>
 
-        <!-- CÔNG CỤ ĐO GPS THỰC ĐỊA: BƯỚC ĐI BỘ QUANH RANH ĐẤT -->
+        <!-- CÔNG CỤ ĐO THỰC ĐỊA: ĐI BỘ QUANH RANH ĐẤT -->
         <div class="card-box p-4 rounded-3xl bg-gradient-to-r from-teal-50 via-emerald-50 to-slate-50 border border-teal-200/80 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 rounded-2xl bg-teal-600 text-white flex items-center justify-center text-xl shadow shrink-0">
               <i class="fa-solid fa-person-walking"></i>
             </div>
             <div>
-              <h4 class="text-xs sm:text-sm font-black text-slate-800">Đo Thực Địa: Cầm Điện Thoại Đi Quanh Ranh Đất</h4>
-              <p class="text-[11px] text-slate-600">Bật máy và đi bộ men theo bờ rào/ranh rẫy. GPS sẽ tự động lấy mốc và tính diện tích.</p>
+              <h4 class="text-xs sm:text-sm font-black text-slate-800">Đo Thực Địa: Cầm Điện Thoại Đi Quanh Bờ Rào / Ranh Rẫy</h4>
+              <p class="text-[11px] text-slate-600">Bấm bắt đầu và đi bộ men bờ ranh. Máy phát tiếng bíp khi lấy mốc toạ độ và tự tính diện tích.</p>
             </div>
           </div>
 
@@ -181,9 +199,61 @@
           </div>
         </div>
 
+        <!-- THƯỚC ĐO ĐẤT MÉO THỦ CÔNG 4 CẠNH & TAM GIÁC (OFFLINE CALCULATOR) -->
+        <div class="card-box p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-md space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-xl bg-amber-500/20 text-amber-700 flex items-center justify-center text-xs">
+                <i class="fa-solid fa-ruler-combined"></i>
+              </div>
+              <h3 class="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-tight">Thước Đo Thủ Công Bằng Thước Dây (Không Cần Mạng)</h3>
+            </div>
+            <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">Công thức Heron chuẩn</span>
+          </div>
+
+          <p class="text-xs text-slate-500">
+            Dành cho bà con khi kéo thước dây ngoài đồng: Nhập 4 cạnh và 1 đường chéo (chia mảnh đất méo thành 2 tam giác) để tính diện tích chuẩn xác 100%, chống bị chủ đất tính nhẩm ăn gian.
+          </p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 text-xs">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 mb-1">Cạnh 1 (mét)</label>
+              <input type="number" id="inSideA" placeholder="VD: 35.5" oninput="calcManualPolygonArea()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 font-mono font-bold focus:outline-emerald-500">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 mb-1">Cạnh 2 (mét)</label>
+              <input type="number" id="inSideB" placeholder="VD: 42.0" oninput="calcManualPolygonArea()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 font-mono font-bold focus:outline-emerald-500">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 mb-1">Cạnh 3 (mét)</label>
+              <input type="number" id="inSideC" placeholder="VD: 38.2" oninput="calcManualPolygonArea()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 font-mono font-bold focus:outline-emerald-500">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 mb-1">Cạnh 4 (mét)</label>
+              <input type="number" id="inSideD" placeholder="VD: 40.5" oninput="calcManualPolygonArea()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 font-mono font-bold focus:outline-emerald-500">
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+              <label class="block text-[10px] font-bold text-amber-700 mb-1">Đường chéo (mét)</label>
+              <input type="number" id="inDiag" placeholder="VD: 55.0" oninput="calcManualPolygonArea()" class="w-full p-2 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 font-mono font-bold focus:outline-amber-500">
+            </div>
+          </div>
+
+          <!-- Kết quả tính tay -->
+          <div id="manualCalcResultBox" class="hidden p-3 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+            <div>
+              <span class="text-slate-600">Diện tích hình học chuẩn: </span>
+              <span id="resManualM2" class="font-black text-amber-900 font-mono text-sm">0 m²</span>
+              <span class="text-slate-500 font-medium"> (<span id="resManualSao" class="font-bold text-emerald-800">0</span> Sào Trung Bộ)</span>
+            </div>
+            <button onclick="applyManualAreaToMain()" class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs active:scale-95 transition">
+              Đưa Vào Bảng Tính Tiền Khoán ➔
+            </button>
+          </div>
+        </div>
+
       </div>
 
-      <!-- CỘT 3: KẾT QUẢ DIỆN TÍCH, QUY ĐỔI MIỀN TRUNG & DỰ TOÁN SẢN XUẤT -->
+      <!-- CỘT 3: KẾT QUẢ DIỆN TÍCH, TÍNH TIỀN KHOÁN & DỰ TOÁN NÔNG NGHIỆP -->
       <div class="space-y-4">
         
         <!-- THẺ KẾT QUẢ DIỆN TÍCH TỔNG QUAN -->
@@ -197,19 +267,34 @@
           </div>
 
           <!-- Con số diện tích chính -->
-          <div class="space-y-1 text-center py-2">
-            <div class="text-[11px] text-emerald-200/80 font-bold uppercase tracking-wide">Diện Tích Thửa Đất / Rẫy / Biển</div>
+          <div class="space-y-1 text-center py-1">
+            <div class="text-[11px] text-emerald-200/80 font-bold uppercase tracking-wide">Diện Tích Đo Đạc Thực Tế</div>
             <div id="resAreaM2" class="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight drop-shadow">0 m²</div>
             <div class="text-xs text-emerald-300 font-medium">Chu vi ranh giới: <span id="resPerimeter" class="font-bold font-mono text-white">0 m</span></div>
           </div>
 
-          <!-- BẢNG QUY ĐỔI ĐƠN VỊ ĐẤT ĐAI MIỀN TRUNG CHUẨN XÁC -->
-          <div class="space-y-2 pt-2 border-t border-emerald-500/30">
-            <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-300 flex items-center gap-1">
-              <i class="fa-solid fa-scale-balanced text-amber-400"></i>
-              <span>Quy Đổi Đơn Vị Đất Truyền Thống Xứ Nẫu</span>
+          <!-- BỘ TRỪ HAO ĐẤT CHẾT (MƯƠNG RÃNH, MỎM ĐÁ, ĐƯỜNG MÁY CÀY) -->
+          <div class="p-3 rounded-2xl bg-emerald-950/70 border border-emerald-500/30 space-y-2 text-xs">
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="font-bold text-amber-300 flex items-center gap-1">
+                <i class="fa-solid fa-scissors"></i> Trừ hao đất chết (không trồng được):
+              </span>
+              <span id="deductRateText" class="font-bold text-white font-mono">0%</span>
             </div>
+            <div class="grid grid-cols-4 gap-1.5 text-center text-[10px] font-bold">
+              <button onclick="setDeductRate(0)" id="btnDed_0" class="py-1 rounded-lg bg-emerald-600 text-white transition">0%</button>
+              <button onclick="setDeductRate(5)" id="btnDed_5" class="py-1 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 transition">5% (rãnh)</button>
+              <button onclick="setDeductRate(10)" id="btnDed_10" class="py-1 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 transition">10% (mô đá)</button>
+              <button onclick="setDeductRate(15)" id="btnDed_15" class="py-1 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 transition">15% (đồi dốc)</button>
+            </div>
+            <div class="flex justify-between items-center text-[11px] pt-1 border-t border-emerald-500/20">
+              <span class="text-emerald-200/80">Diện tích canh tác thực tế (Net):</span>
+              <span id="resNetAreaM2" class="font-black text-emerald-300 font-mono text-xs">0 m²</span>
+            </div>
+          </div>
 
+          <!-- BẢNG QUY ĐỔI ĐƠN VỊ ĐẤT TRUYỀN THỐNG MIỀN TRUNG -->
+          <div class="space-y-2 pt-1 border-t border-emerald-500/30">
             <div class="grid grid-cols-2 gap-2 text-xs">
               <!-- Sào Trung Bộ -->
               <div class="p-2.5 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 space-y-0.5">
@@ -235,48 +320,107 @@
                 <div id="resThuocTrungBo" class="text-base font-black text-rose-300 font-mono">0 Thước</div>
               </div>
             </div>
-
-            <!-- Đối chiếu sào Nam Bộ / Bắc Bộ khi mua bán -->
-            <div class="text-[10px] text-emerald-200/70 bg-emerald-900/40 p-2 rounded-xl border border-emerald-400/20">
-              Đối chiếu giao dịch: <span id="resSaoNamBo" class="font-bold text-white font-mono">0 Công</span> (Nam Bộ 1.000m²) • <span id="resSaoBacBo" class="font-bold text-white font-mono">0 Sào</span> (Bắc Bộ 360m²)
-            </div>
           </div>
 
-          <!-- Nút lưu & sao chép toạ độ -->
-          <div class="grid grid-cols-2 gap-2 pt-2">
+          <!-- Nút lưu & xuất biên bản -->
+          <div class="grid grid-cols-2 gap-2 pt-1">
             <button onclick="copyMeasurementReport()" class="p-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer shadow">
               <i class="fa-solid fa-copy"></i>
               <span>Sao Chép Báo Cáo</span>
             </button>
-            <button onclick="saveCurrentPlot()" class="p-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/40 font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer shadow">
-              <i class="fa-solid fa-bookmark"></i>
-              <span>Lưu Thửa Đất</span>
+            <button onclick="exportZaloContractText()" class="p-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer shadow">
+              <i class="fa-solid fa-file-contract"></i>
+              <span>Biên Bản Zalo</span>
             </button>
           </div>
         </div>
 
-        <!-- CÔNG CỤ DỰ TOÁN VẬT TƯ & SẢN XUẤT THỰC TẾ -->
+        <!-- BỘ TÍNH TIỀN KHOÁN ĐẤT & PHÁT HIỆN DIỆN TÍCH ẢO (CHỐNG BỊ HỚ) -->
         <div class="card-box p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md space-y-3">
           <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
-            <i class="fa-solid fa-calculator text-emerald-600"></i>
-            <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">Dự Toán Vật Tư & Cây Giống Thực Tế</h3>
+            <div class="w-6 h-6 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">Tính Tiền Thuê Khoán & Chống Hớ Diện Tích</h3>
           </div>
 
-          <!-- Tabs chọn mục đích: Rào đất / Trồng rừng keo / Đầm tôm -->
-          <div class="grid grid-cols-3 gap-1.5 text-center text-xs">
-            <button onclick="switchCalcType('fence')" id="calcTab_fence" class="p-2 rounded-xl bg-emerald-600 text-white font-bold transition">
-              <i class="fa-solid fa-border-all mr-1"></i> Rào Đất
+          <div class="space-y-2.5 text-xs">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-600 mb-1">Giá thuê 1 sào/vụ (VNĐ)</label>
+                <input type="number" id="inLeasePricePerSao" value="1500000" oninput="calcLeaseEconomics()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono font-bold text-slate-800 focus:outline-emerald-500">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-600 mb-1">Chủ đất báo (Sào)</label>
+                <input type="number" id="inClaimedSao" placeholder="VD: 10" oninput="calcLeaseEconomics()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono font-bold text-slate-800 focus:outline-emerald-500">
+              </div>
+            </div>
+
+            <!-- Kết quả tính tiền thuê -->
+            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5">
+              <div class="flex justify-between items-center">
+                <span class="text-slate-600">Tiền thuê chuẩn theo đo đạc:</span>
+                <span id="resTotalLeaseRent" class="font-black text-emerald-700 font-mono text-sm">0 đ</span>
+              </div>
+              
+              <!-- Cảnh báo chênh lệch ảo -->
+              <div id="claimDifferenceBox" class="hidden p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-medium space-y-0.5">
+                <div class="font-bold flex items-center gap-1">
+                  <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+                  <span>Phát hiện chênh lệch:</span>
+                </div>
+                <div id="claimDiffText">Chủ đất báo thừa 0 Sào. Bạn tiết kiệm được 0 đ tiền thuê!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CÔNG CỤ DỰ TOÁN VẬT TƯ NÔNG NGHIỆP: DƯA HẤU, HOA MÀU, KEO, TÔM -->
+        <div class="card-box p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md space-y-3">
+          <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
+            <i class="fa-solid fa-seedling text-emerald-600"></i>
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">Dự Toán Vật Tư Mùa Vụ Nông Nghiệp</h3>
+          </div>
+
+          <!-- Tabs chọn mục đích: Trồng Dưa Hấu / Rào Đất / Trồng Keo / Đầm Tôm -->
+          <div class="grid grid-cols-4 gap-1 text-center text-[10px] font-bold">
+            <button onclick="switchCalcType('watermelon')" id="calcTab_watermelon" class="p-1.5 rounded-xl bg-emerald-600 text-white transition">
+              🍉 Dưa Hấu
             </button>
-            <button onclick="switchCalcType('forest')" id="calcTab_forest" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition">
-              <i class="fa-solid fa-tree mr-1"></i> Trồng Keo
+            <button onclick="switchCalcType('fence')" id="calcTab_fence" class="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+              🧱 Rào Đất
             </button>
-            <button onclick="switchCalcType('aqua')" id="calcTab_aqua" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition">
-              <i class="fa-solid fa-shrimp mr-1"></i> Nuôi Tôm
+            <button onclick="switchCalcType('forest')" id="calcTab_forest" class="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+              🌲 Rừng Keo
+            </button>
+            <button onclick="switchCalcType('aqua')" id="calcTab_aqua" class="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+              🦐 Nuôi Tôm
             </button>
           </div>
 
-          <!-- Khung tính rào đất -->
-          <div id="calcBox_fence" class="space-y-2 text-xs">
+          <!-- 1. KHUNG TÍNH TRỒNG DƯA HẤU & HOA MÀU -->
+          <div id="calcBox_watermelon" class="space-y-2 text-xs">
+            <div class="flex justify-between items-center text-slate-600">
+              <span>Tổng chiều dài luống dưa (khoảng cách 4.8m):</span>
+              <span id="calcMelonRowLength" class="font-bold text-slate-900 font-mono">0 mét luống</span>
+            </div>
+            <div class="flex justify-between items-center text-slate-600">
+              <span>Bạt nilon màng phủ (cuộn 100m khổ 1m):</span>
+              <span id="calcMelonPlasticRolls" class="font-bold text-emerald-700 font-mono">0 cuộn</span>
+            </div>
+            <div class="flex justify-between items-center text-slate-600">
+              <span>Hạt giống dưa hấu (gói 20g ~ 450 hạt):</span>
+              <span id="calcMelonSeedPacks" class="font-bold text-amber-700 font-mono">0 gói</span>
+            </div>
+            <div class="flex justify-between items-center text-slate-600">
+              <span>Vôi bột xử lý đất chua phèn (40kg/sào):</span>
+              <span id="calcMelonLime" class="font-bold text-slate-900 font-mono">0 kg vôi</span>
+            </div>
+            <p class="text-[10px] text-slate-400 italic">* Tính trên diện tích canh tác thực sau khi trừ mương rãnh.</p>
+          </div>
+
+          <!-- 2. Khung tính rào đất -->
+          <div id="calcBox_fence" class="space-y-2 text-xs hidden">
             <div class="flex justify-between items-center text-slate-600">
               <span>Lưới B40 / Kẽm gai:</span>
               <span id="calcFenceLength" class="font-bold text-slate-900 font-mono">0 mét</span>
@@ -288,10 +432,10 @@
             <p class="text-[10px] text-slate-400 italic">* Tự động tính theo chiều dài chu vi ranh đất bạn vừa đo.</p>
           </div>
 
-          <!-- Khung tính trồng keo / lâm nghiệp -->
+          <!-- 3. Khung tính trồng keo / lâm nghiệp -->
           <div id="calcBox_forest" class="space-y-2 text-xs hidden">
             <div class="flex justify-between items-center text-slate-600">
-              <span>Số cây giống keo (2.500 cây/ha):</span>
+              <span>Số cây giống keo lai (2.500 cây/ha):</span>
               <span id="calcTreeKeo" class="font-bold text-emerald-700 font-mono">0 cây</span>
             </div>
             <div class="flex justify-between items-center text-slate-600">
@@ -301,7 +445,7 @@
             <p class="text-[10px] text-slate-400 italic">* Mật độ chuẩn rừng sản xuất đồi núi Phú Yên.</p>
           </div>
 
-          <!-- Khung tính nuôi thủy sản đầm biển -->
+          <!-- 4. Khung tính nuôi thủy sản đầm biển -->
           <div id="calcBox_aqua" class="space-y-2 text-xs hidden">
             <div class="flex justify-between items-center text-slate-600">
               <span>Số lồng nuôi tối đa (4m x 4m):</span>
@@ -447,13 +591,14 @@
     let markers = [];
     let polygon = null;
     let polyline = null;
+    let edgeMarkers = []; // Nhãn hiển thị độ dài cạnh
     let isGpsTracking = false;
     let gpsWatchId = null;
-    let currentCalcType = 'fence';
+    let currentCalcType = 'watermelon';
     let currentCalculatedArea = 0;
     let currentCalculatedPerimeter = 0;
+    let currentDeductRate = 0; // % trừ hao đất chết
 
-    // Tọa độ trung tâm Phú Yên (Tuy Hòa)
     const PHU_YEN_CENTER = [13.0882, 109.3097];
 
     function initMap() {
@@ -477,7 +622,6 @@
         addPoint(e.latlng.lat, e.latlng.lng);
       });
 
-      // Tự động thử lấy vị trí hiện tại
       getUserGPSLocation();
       loadSavedPlots();
     }
@@ -502,6 +646,15 @@
           (pos) => {
             const lat = pos.coords.latitude;
             const lng = pos.coords.longitude;
+            const acc = Math.round(pos.coords.accuracy || 0);
+
+            const badge = document.getElementById('gpsAccuracyBadge');
+            const meters = document.getElementById('gpsAccuracyMeters');
+            if (badge && meters) {
+              badge.classList.remove('hidden');
+              meters.innerText = acc;
+            }
+
             map.setView([lat, lng], 17);
             L.circleMarker([lat, lng], {
               radius: 8,
@@ -510,7 +663,7 @@
               weight: 2.5,
               opacity: 1,
               fillOpacity: 0.9
-            }).addTo(map).bindPopup("📍 Vị trí hiện tại của bạn").openPopup();
+            }).addTo(map).bindPopup("📍 Vị trí GPS của bạn (Sai số ±" + acc + "m)").openPopup();
           },
           (err) => {
             console.warn('Geolocation warning:', err.message);
@@ -520,11 +673,10 @@
       }
     }
 
-    // 3. THÊM / XÓA ĐIỂM MỐC RANH GIỚI & VẼ ĐA GIÁC
+    // 3. THÊM / XÓA ĐIỂM MỐC RANH GIỚI & HIỂN THỊ CHIỀU DÀI CẠNH
     function addPoint(lat, lng) {
       const markerIndex = markers.length + 1;
       
-      // Marker tùy biến hình mốc đo đạc
       const marker = L.circleMarker([lat, lng], {
         radius: 6,
         fillColor: '#f59e0b',
@@ -536,6 +688,9 @@
 
       marker.bindTooltip("Mốc " + markerIndex, { permanent: true, direction: "top", className: "text-[9px] font-bold" });
       markers.push({ lat, lng, marker });
+
+      // Phát tiếng bíp ngắn báo hiệu đã lấy mốc
+      playBeepSound();
 
       updateMeasurement();
     }
@@ -550,14 +705,36 @@
     function clearAllMarkers() {
       markers.forEach(m => map.removeLayer(m.marker));
       markers = [];
+      clearEdgeLabels();
       if (polygon) { map.removeLayer(polygon); polygon = null; }
       if (polyline) { map.removeLayer(polyline); polyline = null; }
       updateMeasurement();
     }
 
-    // 4. TÍNH DIỆN TÍCH (ALGORITHM SHOELACE TRÊN MẶT CẦU) & CHU VI
+    function clearEdgeLabels() {
+      edgeMarkers.forEach(em => map.removeLayer(em));
+      edgeMarkers = [];
+    }
+
+    function playBeepSound() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime); // 880Hz A5
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.1);
+      } catch(e) {}
+    }
+
+    // 4. TÍNH DIỆN TÍCH ĐA GIÁC HÌNH CẦU & HIỂN THỊ CHIỀU DÀI TỪNG CẠNH
     function updateMeasurement() {
       document.getElementById('markerCountText').innerText = markers.length;
+      clearEdgeLabels();
 
       const latlngs = markers.map(m => [m.lat, m.lng]);
 
@@ -576,11 +753,12 @@
           polyline.setLatLngs(latlngs);
         }
         const dist = getDistance(latlngs[0][0], latlngs[0][1], latlngs[1][0], latlngs[1][1]);
+        renderEdgeLabel(latlngs[0], latlngs[1], dist);
         renderResults(0, dist);
         return;
       }
 
-      // Có từ 3 điểm trở lên: Vẽ Đa giác hoàn chỉnh
+      // Có từ 3 điểm trở lên: Vẽ Đa giác
       if (polyline) { map.removeLayer(polyline); polyline = null; }
 
       if (!polygon) {
@@ -594,14 +772,37 @@
         polygon.setLatLngs(latlngs);
       }
 
+      // Hiển thị nhãn chiều dài từng cạnh ranh
+      for (let i = 0; i < latlngs.length; i++) {
+        const p1 = latlngs[i];
+        const p2 = latlngs[(i + 1) % latlngs.length];
+        const segDist = getDistance(p1[0], p1[1], p2[0], p2[1]);
+        renderEdgeLabel(p1, p2, segDist);
+      }
+
       const area = computeGeodesicPolygonArea(latlngs);
       const perimeter = computePolygonPerimeter(latlngs);
       renderResults(area, perimeter);
     }
 
-    // Tính khoảng cách Haversine giữa 2 điểm (mét)
+    function renderEdgeLabel(p1, p2, distanceM) {
+      const midLat = (p1[0] + p2[0]) / 2;
+      const midLng = (p1[1] + p2[1]) / 2;
+      const text = Math.round(distanceM) + 'm';
+
+      const customIcon = L.divIcon({
+        className: 'edge-label',
+        html: text,
+        iconSize: [40, 16],
+        iconAnchor: [20, 8]
+      });
+
+      const edgeMarker = L.marker([midLat, midLng], { icon: customIcon, interactive: false }).addTo(map);
+      edgeMarkers.push(edgeMarker);
+    }
+
     function getDistance(lat1, lon1, lat2, lon2) {
-      const R = 6378137; // Bán kính trái đất (m)
+      const R = 6378137;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
       const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
@@ -620,7 +821,6 @@
       return total;
     }
 
-    // Công thức tính diện tích hình đa giác hình cầu (Spherical Excess / Shoelace)
     function computeGeodesicPolygonArea(coords) {
       if (coords.length < 3) return 0;
       const R = 6378137;
@@ -634,81 +834,183 @@
         const lon2 = p2[1] * Math.PI / 180;
         total += (lon2 - lon1) * (2 + Math.sin(lat1) + Math.sin(lat2));
       }
-      let area = Math.abs(total * (R * R) / 2.0);
-      return area;
+      return Math.abs(total * (R * R) / 2.0);
     }
 
-    // 5. HIỂN THỊ KẾT QUẢ & QUY ĐỔI ĐƠN VỊ MIỀN TRUNG
+    // 5. BỘ TRỪ HAO ĐẤT CHẾT & HIỂN THỊ KẾT QUẢ QUY ĐỔI MIỀN TRUNG
+    function setDeductRate(rate) {
+      currentDeductRate = rate;
+      document.getElementById('deductRateText').innerText = rate + '%';
+      [0, 5, 10, 15].forEach(r => {
+        const btn = document.getElementById('btnDed_' + r);
+        if (btn) {
+          btn.className = r === rate 
+            ? 'py-1 rounded-lg bg-emerald-600 text-white font-bold transition'
+            : 'py-1 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 transition';
+        }
+      });
+      renderResults(currentCalculatedArea, currentCalculatedPerimeter);
+    }
+
     function renderResults(areaM2, perimeterM) {
       currentCalculatedArea = areaM2;
       currentCalculatedPerimeter = perimeterM;
 
-      // Diện tích & chu vi
+      const netArea = areaM2 * (1 - currentDeductRate / 100);
+
       document.getElementById('resAreaM2').innerText = Math.round(areaM2).toLocaleString('vi-VN') + ' m²';
+      document.getElementById('resNetAreaM2').innerText = Math.round(netArea).toLocaleString('vi-VN') + ' m²';
       document.getElementById('resPerimeter').innerText = Math.round(perimeterM).toLocaleString('vi-VN') + ' m';
 
       // Sào Trung Bộ (500 m2)
-      const saoTB = areaM2 / 500;
+      const saoTB = netArea / 500;
       document.getElementById('resSaoTrungBo').innerText = saoTB.toFixed(2) + ' Sào';
 
       // Mẫu Trung Bộ (5.000 m2 = 10 sào)
-      const mauTB = areaM2 / 5000;
+      const mauTB = netArea / 5000;
       document.getElementById('resMauTrungBo').innerText = mauTB.toFixed(3) + ' Mẫu';
 
       // Héc-ta (10.000 m2)
-      const ha = areaM2 / 10000;
+      const ha = netArea / 10000;
       document.getElementById('resHecta').innerText = ha.toFixed(3) + ' ha';
 
       // Thước Trung Bộ (33.33 m2)
-      const thuocTB = Math.round(areaM2 / 33.333);
+      const thuocTB = Math.round(netArea / 33.333);
       document.getElementById('resThuocTrungBo').innerText = thuocTB.toLocaleString('vi-VN') + ' Thước';
 
-      // Đối chiếu Nam Bộ (1.000m2/công) & Bắc Bộ (360m2/sào)
-      const congNB = (areaM2 / 1000).toFixed(2);
-      const saoBB = (areaM2 / 360).toFixed(1);
-      document.getElementById('resSaoNamBo').innerText = congNB + ' Công';
-      document.getElementById('resSaoBacBo').innerText = saoBB + ' Sào';
-
-      // Cập nhật công cụ dự toán
-      updateCalculators(areaM2, perimeterM);
+      calcLeaseEconomics();
+      updateCalculators(netArea, perimeterM);
     }
 
-    // 6. CÔNG CỤ DỰ TOÁN VẬT TƯ & CÂY GIỐNG
+    // 6. TÍNH TIỀN KHOÁN ĐẤT & PHÁT HIỆN DIỆN TÍCH ẢO
+    function calcLeaseEconomics() {
+      const pricePerSao = parseFloat(document.getElementById('inLeasePricePerSao').value) || 0;
+      const claimedSao = parseFloat(document.getElementById('inClaimedSao').value) || 0;
+
+      const netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      const actualSao = netArea / 500;
+      const actualRent = actualSao * pricePerSao;
+
+      document.getElementById('resTotalLeaseRent').innerText = Math.round(actualRent).toLocaleString('vi-VN') + ' đ';
+
+      const diffBox = document.getElementById('claimDifferenceBox');
+      const diffText = document.getElementById('claimDiffText');
+
+      if (claimedSao > 0 && actualSao > 0) {
+        diffBox.classList.remove('hidden');
+        const diffSao = claimedSao - actualSao;
+        if (diffSao > 0.05) {
+          const moneySaved = diffSao * pricePerSao;
+          diffBox.className = 'p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-[11px] font-medium space-y-0.5';
+          diffText.innerHTML = `Chủ đất báo dôi <b>${diffSao.toFixed(2)} Sào</b> (${Math.round(diffSao * 500)} m²).<br>Bạn <b>tiết kiệm được ${Math.round(moneySaved).toLocaleString('vi-VN')} đ</b> tiền thuê!`;
+        } else if (diffSao < -0.05) {
+          diffBox.className = 'p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-[11px] font-medium space-y-0.5';
+          diffText.innerHTML = `Đo thực tế nhiều hơn chủ đất báo <b>${Math.abs(diffSao).toFixed(2)} Sào</b> (${Math.round(Math.abs(diffSao) * 500)} m²).`;
+        } else {
+          diffBox.className = 'p-2 rounded-xl bg-slate-100 text-slate-700 text-[11px] font-medium';
+          diffText.innerText = "Diện tích đo thực tế trùng khớp với chủ đất báo.";
+        }
+      } else {
+        diffBox.classList.add('hidden');
+      }
+    }
+
+    // 7. CÔNG CỤ DỰ TOÁN NÔNG NGHIỆP: DƯA HẤU, RÀO ĐẤT, KEO, TÔM
     function switchCalcType(type) {
       currentCalcType = type;
-      ['fence', 'forest', 'aqua'].forEach(t => {
+      ['watermelon', 'fence', 'forest', 'aqua'].forEach(t => {
         const tab = document.getElementById('calcTab_' + t);
         const box = document.getElementById('calcBox_' + t);
         if (t === type) {
-          tab.className = 'p-2 rounded-xl bg-emerald-600 text-white font-bold transition';
+          tab.className = 'p-1.5 rounded-xl bg-emerald-600 text-white font-bold transition';
           box.classList.remove('hidden');
         } else {
-          tab.className = 'p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition';
+          tab.className = 'p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition';
           box.classList.add('hidden');
         }
       });
-      updateCalculators(currentCalculatedArea, currentCalculatedPerimeter);
+      const netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      updateCalculators(netArea, currentCalculatedPerimeter);
     }
 
-    function updateCalculators(areaM2, perimeterM) {
-      // 1. Rào đất
+    function updateCalculators(netAreaM2, perimeterM) {
+      // 1. Dưa hấu & hoa màu
+      // Khoảng cách luống đôi dưa hấu trung bình 4.8m -> Tổng mét dài luống = Diện tích / 4.8
+      const rowLength = netAreaM2 > 0 ? Math.round(netAreaM2 / 4.8) : 0;
+      document.getElementById('calcMelonRowLength').innerText = rowLength.toLocaleString('vi-VN') + ' mét';
+
+      // 1 cuộn bạt màng phủ nilon 100m
+      const rolls = Math.ceil(rowLength / 100);
+      document.getElementById('calcMelonPlasticRolls').innerText = rolls + ' cuộn (100m)';
+
+      // 1 sào (500m2) cần 1 gói hạt giống dưa 20g (~450 hạt, mật độ cây 40-45cm)
+      const saoCount = netAreaM2 / 500;
+      const seedPacks = Math.ceil(saoCount * 1.05); // Trừ hao 5% dặm bầu
+      document.getElementById('calcMelonSeedPacks').innerText = seedPacks + ' gói (20g)';
+
+      // 40kg vôi / sào khử chua phèn
+      const limeKg = Math.round(saoCount * 40);
+      document.getElementById('calcMelonLime').innerText = limeKg.toLocaleString('vi-VN') + ' kg vôi';
+
+      // 2. Rào đất
       document.getElementById('calcFenceLength').innerText = Math.round(perimeterM) + ' mét';
       const posts = perimeterM > 0 ? Math.ceil(perimeterM / 2.5) : 0;
       document.getElementById('calcFencePosts').innerText = posts.toLocaleString('vi-VN') + ' cọc';
 
-      // 2. Trồng keo (2.500 cây/ha)
-      const ha = areaM2 / 10000;
+      // 3. Trồng keo (2.500 cây/ha)
+      const ha = netAreaM2 / 10000;
       const trees = Math.round(ha * 2500);
       document.getElementById('calcTreeKeo').innerText = trees.toLocaleString('vi-VN') + ' cây';
       document.getElementById('calcFertilizer').innerText = Math.round(trees * 0.1).toLocaleString('vi-VN') + ' kg';
 
-      // 3. Nuôi tôm (lồng 16m2, chiếm tối đa 40% diện tích mặt nước)
-      const maxCages = Math.floor((areaM2 * 0.4) / 16);
+      // 4. Nuôi tôm (lồng 16m2, chiếm tối đa 40% diện tích mặt nước)
+      const maxCages = Math.floor((netAreaM2 * 0.4) / 16);
       document.getElementById('calcAquaCages').innerText = maxCages.toLocaleString('vi-VN') + ' lồng';
       document.getElementById('calcAquaShrimp').innerText = (maxCages * 300).toLocaleString('vi-VN') + ' con';
     }
 
-    // 7. ĐO GPS THỰC ĐỊA: BƯỚC ĐI BỘ QUANH BỜ RÀO
+    // 8. THƯỚC ĐO THỦ CÔNG 4 CẠNH & TAM GIÁC HERON (OFFLINE)
+    function calcManualPolygonArea() {
+      const a = parseFloat(document.getElementById('inSideA').value) || 0;
+      const b = parseFloat(document.getElementById('inSideB').value) || 0;
+      const c = parseFloat(document.getElementById('inSideC').value) || 0;
+      const d = parseFloat(document.getElementById('inSideD').value) || 0;
+      const diag = parseFloat(document.getElementById('inDiag').value) || 0;
+
+      const resBox = document.getElementById('manualCalcResultBox');
+
+      if (a > 0 && b > 0 && diag > 0 && (a + b > diag)) {
+        resBox.classList.remove('hidden');
+
+        // Tam giác 1: a, b, diag
+        const s1 = (a + b + diag) / 2;
+        const area1 = Math.sqrt(Math.max(0, s1 * (s1 - a) * (s1 - b) * (s1 - diag)));
+
+        // Tam giác 2: c, d, diag (nếu có c và d)
+        let area2 = 0;
+        if (c > 0 && d > 0 && (c + d > diag)) {
+          const s2 = (c + d + diag) / 2;
+          area2 = Math.sqrt(Math.max(0, s2 * (s2 - c) * (s2 - d) * (s2 - diag)));
+        }
+
+        const totalManualArea = area1 + area2;
+        document.getElementById('resManualM2').innerText = Math.round(totalManualArea).toLocaleString('vi-VN') + ' m²';
+        document.getElementById('resManualSao').innerText = (totalManualArea / 500).toFixed(2);
+      } else {
+        resBox.classList.add('hidden');
+      }
+    }
+
+    function applyManualAreaToMain() {
+      const areaM2Text = document.getElementById('resManualM2').innerText.replace(/[^d]/g, '');
+      const areaM2 = parseFloat(areaM2Text) || 0;
+      if (areaM2 > 0) {
+        renderResults(areaM2, 0);
+        alert("✅ Đã nạp " + areaM2.toLocaleString('vi-VN') + " m² vào bảng tính kinh tế khoán đất!");
+      }
+    }
+
+    // 9. ĐO GPS THỰC ĐỊA: BƯỚC ĐI BỘ QUANH RANH ĐẤT
     function toggleGpsTracking() {
       if (isGpsTracking) {
         stopGpsTracking();
@@ -734,6 +1036,15 @@
         (pos) => {
           const lat = pos.coords.latitude;
           const lng = pos.coords.longitude;
+          const acc = Math.round(pos.coords.accuracy || 0);
+
+          const badge = document.getElementById('gpsAccuracyBadge');
+          const meters = document.getElementById('gpsAccuracyMeters');
+          if (badge && meters) {
+            badge.classList.remove('hidden');
+            meters.innerText = acc;
+          }
+
           addPoint(lat, lng);
           map.setView([lat, lng], 18);
         },
@@ -763,35 +1074,74 @@
       }
     }
 
-    // 8. SAO CHÉP BÁO CÁO & LƯU THỬA ĐẤT VÀO MÁY
+    // 10. SAO CHÉP BÁO CÁO & XUẤT BIÊN BẢN NGHIỆM THU GỬI ZALO
     function copyMeasurementReport() {
       if (currentCalculatedArea === 0) {
-        alert("Vui lòng chấm các điểm mốc trên bản đồ để đo trước khi sao chép báo cáo!");
+        alert("Vui lòng đo thửa đất trước khi sao chép báo cáo!");
         return;
       }
+      const netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
       const text = [
         "📋 KẾT QUẢ TRẮC ĐỊA • THƯỚC ĐO ĐẤT RÃY RỪNG BIỂN ĐẤT PHÚ",
-        "• Diện tích: " + Math.round(currentCalculatedArea).toLocaleString('vi-VN') + " m²",
-        "• Sào Trung Bộ (500m²): " + (currentCalculatedArea / 500).toFixed(2) + " Sào",
-        "• Mẫu Trung Bộ (5.000m²): " + (currentCalculatedArea / 5000).toFixed(3) + " Mẫu",
-        "• Héc-ta (ha): " + (currentCalculatedArea / 10000).toFixed(3) + " ha",
-        "• Thước Trung Bộ: " + Math.round(currentCalculatedArea / 33.333) + " Thước",
+        "• Diện tích tổng: " + Math.round(currentCalculatedArea).toLocaleString('vi-VN') + " m²",
+        "• Trừ hao đất chết: " + currentDeductRate + "%",
+        "• Diện tích canh tác thực (Net): " + Math.round(netArea).toLocaleString('vi-VN') + " m²",
+        "• Sào Trung Bộ (500m²): " + (netArea / 500).toFixed(2) + " Sào",
+        "• Mẫu Trung Bộ (5.000m²): " + (netArea / 5000).toFixed(3) + " Mẫu",
+        "• Héc-ta (ha): " + (netArea / 10000).toFixed(3) + " ha",
         "• Chu vi ranh giới: " + Math.round(currentCalculatedPerimeter).toLocaleString('vi-VN') + " m",
         "• Số điểm mốc GPS: " + markers.length + " mốc",
         "Nguồn: https://datphu-backend.vercel.app/do-dat"
       ].join('\n');
 
       navigator.clipboard.writeText(text).then(() => {
-        alert("✅ Đã sao chép báo cáo đo đạc vào bộ nhớ tạm! Bạn có thể dán (Paste) để gửi qua Zalo.");
+        alert("✅ Đã sao chép báo cáo đo đạc vào bộ nhớ tạm! Bạn có thể dán (Paste) gửi Zalo.");
       });
     }
 
+    function exportZaloContractText() {
+      if (currentCalculatedArea === 0) {
+        alert("Vui lòng đo thửa đất trước khi tạo biên bản nghiệm thu!");
+        return;
+      }
+
+      const netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      const saoTB = (netArea / 500).toFixed(2);
+      const pricePerSao = parseFloat(document.getElementById('inLeasePricePerSao').value) || 0;
+      const totalRent = Math.round(saoTB * pricePerSao).toLocaleString('vi-VN');
+
+      const contract = [
+        "📑 BIÊN BẢN NGHIỆM THU DIỆN TÍCH KHOÁN ĐẤT CANH TÁC",
+        "Hôm nay, ngày " + new Date().toLocaleDateString('vi-VN') + ", hai bên tiến hành đo đạc thực tế thửa đất:",
+        "------------------------------------",
+        "1. Vị trí thửa đất: Tại Đất Phú (Tỉnh Phú Yên)",
+        "2. Diện tích đo đạc thực tế bằng GPS vệ tinh:",
+        "   - Diện tích đo được: " + Math.round(currentCalculatedArea).toLocaleString('vi-VN') + " m²",
+        "   - Tỷ lệ trừ hao đất chết/mương rãnh: " + currentDeductRate + "%",
+        "   - Diện tích canh tác nghiệm thu: " + Math.round(netArea).toLocaleString('vi-VN') + " m²",
+        "   - Quy đổi: " + saoTB + " Sào Trung Bộ (chuẩn 500m²/sào)",
+        "   - Chiều dài chu vi ranh rào: " + Math.round(currentCalculatedPerimeter).toLocaleString('vi-VN') + " mét",
+        "3. Thanh toán tiền thuê khoán:",
+        "   - Đơn giá thỏa thuận: " + pricePerSao.toLocaleString('vi-VN') + " đ / sào",
+        "   - Tổng tiền thuê phải thanh toán: " + totalRent + " đ",
+        "------------------------------------",
+        "Hai bên thống nhất số liệu đo đạc khách quan qua hệ thống vệ tinh Đất Phú, không thắc mắc khiếu nại về sau.",
+        "Đại diện Bên Cho Thuê        Đại diện Bên Thuê",
+        "(Đã thống nhất gửi qua Zalo xác nhận)"
+      ].join('\n');
+
+      navigator.clipboard.writeText(contract).then(() => {
+        alert("🎉 Đã tạo Biên Bản Nghiệm Thu Khoán Đất! Đã sao chép vào bộ nhớ tạm, bạn hãy dán (Paste) gửi Zalo cho chủ đất / người thuê.");
+      });
+    }
+
+    // 11. LƯU & QUẢN LÝ THỬA ĐẤT
     function saveCurrentPlot() {
       if (currentCalculatedArea === 0) {
         alert("Vui lòng đo thửa đất trước khi lưu!");
         return;
       }
-      const plotName = prompt("Nhập tên thửa đất / lô rừng / mặt biển (ví dụ: Rẫy keo Suối Bùn, Đầm tôm Vũng Rô):", "Thửa đất ngày " + new Date().toLocaleDateString('vi-VN'));
+      const plotName = prompt("Nhập tên thửa đất / lô rẫy dưa (ví dụ: Rẫy dưa Bãi Bồi sông Ba, Rẫy keo Suối Bùn):", "Thửa đất ngày " + new Date().toLocaleDateString('vi-VN'));
       if (!plotName) return;
 
       const plots = JSON.parse(localStorage.getItem('datphu_saved_plots') || '[]');
@@ -852,7 +1202,6 @@
       loadSavedPlots();
     }
 
-    // Khởi động bản đồ khi trang tải xong
     document.addEventListener('DOMContentLoaded', () => {
       initMap();
     });
