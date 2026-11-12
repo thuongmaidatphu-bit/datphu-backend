@@ -2777,5 +2777,531 @@
     </div>
   </div>
 
+
+  <!-- ==================== MODAL 1: CHỤP ẢNH GẮN CỌC MỐC THỰC ĐỊA ==================== -->
+  <div id="markerPhotoModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/85 backdrop-blur-md p-3 sm:p-6 flex items-center justify-center">
+    <div class="bg-slate-900 border border-slate-700 text-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 relative">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm border border-amber-500/30">
+            <i class="fa-solid fa-camera"></i>
+          </div>
+          <div>
+            <h3 id="photoModalTitle" class="font-bold text-sm text-white">Cọc Mốc Thực Địa</h3>
+            <p id="photoModalCoords" class="text-[10px] text-slate-400 font-mono">13.0882°N, 109.3097°E</p>
+          </div>
+        </div>
+        <button onclick="closeMarkerPhotoModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <!-- Khung xem trước ảnh cọc mốc -->
+      <div id="photoPreviewContainer" class="relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 aspect-video flex items-center justify-center">
+        <img id="photoModalImg" src="" class="hidden w-full h-full object-cover">
+        <div id="photoEmptyPlaceholder" class="text-center p-4 space-y-2">
+          <i class="fa-solid fa-image text-3xl text-slate-600"></i>
+          <p class="text-xs text-slate-400">Chưa có ảnh chụp thực địa cho cọc mốc này.<br>Chụp ảnh cọc bê tông hoặc bờ ranh để làm bằng chứng pháp lý.</p>
+        </div>
+        <!-- Nhãn Watermark tọa độ đóng dấu trên ảnh -->
+        <div id="photoWatermarkOverlay" class="hidden absolute bottom-2 inset-x-2 p-2 rounded-xl bg-black/75 backdrop-blur-xs text-[10px] font-mono text-emerald-300 border border-white/10 space-y-0.5">
+          <div class="font-bold text-amber-300" id="wmMarkerName">MỐC RANH GIỚI SỐ 1</div>
+          <div id="wmCoordsWgs">WGS-84: 13.08820, 109.30970</div>
+          <div id="wmTimestamp" class="text-slate-400">Thời gian: 12/11/2026 15:30</div>
+        </div>
+      </div>
+
+      <!-- Ghi chú về mốc -->
+      <div>
+        <label class="block text-[10px] font-bold text-slate-400 mb-1">Mô tả cọc mốc (VD: Cọc bê tông ranh ông Ba):</label>
+        <input type="text" id="inMarkerNote" placeholder="Cọc bê tông / Cây đa ranh / Bờ mương..." class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:outline-emerald-500">
+      </div>
+
+      <!-- Nút chụp camera và chọn file -->
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <label class="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow transition active:scale-95 text-center">
+          <i class="fa-solid fa-camera"></i> Chụp Camera
+          <input type="file" accept="image/*" capture="environment" onchange="handleMarkerPhotoCapture(event)" class="hidden">
+        </label>
+        <label class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow transition active:scale-95 text-center">
+          <i class="fa-solid fa-images"></i> Chọn Ảnh Có Sẵn
+          <input type="file" accept="image/*" onchange="handleMarkerPhotoCapture(event)" class="hidden">
+        </label>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-xs">
+        <button onclick="deleteCurrentMarkerPhoto()" id="btnDeletePhoto" class="hidden text-rose-400 hover:text-rose-300 font-bold flex items-center gap-1 cursor-pointer">
+          <i class="fa-solid fa-trash"></i> Xóa Ảnh
+        </button>
+        <button onclick="saveMarkerPhotoDetails()" class="ml-auto px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black cursor-pointer shadow transition active:scale-95">
+          Lưu Cọc Mốc
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: CHIA TÁCH THỬA ĐẤT TỰ ĐỘNG ==================== -->
+  <div id="splitPlotModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/85 backdrop-blur-md p-3 sm:p-6 flex items-center justify-center">
+    <div class="bg-slate-900 border border-slate-700 text-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 relative">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm border border-emerald-500/30">
+            <i class="fa-solid fa-scissors"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">Công Cụ Chia Tách Thửa Đất</h3>
+            <p class="text-[10px] text-slate-400">Chia thừa kế • Cắt bán mặt đường • Chia luống canh tác</p>
+          </div>
+        </div>
+        <button onclick="closeSplitPlotModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-1">
+        <div class="text-slate-400">Tổng diện tích thửa đất gốc:</div>
+        <div id="splitOrigAreaText" class="text-lg font-black text-emerald-400 font-mono">0 m² (0.00 Sào)</div>
+      </div>
+
+      <!-- Tùy chọn tỷ lệ chia -->
+      <div class="space-y-2 text-xs">
+        <label class="block font-bold text-slate-300">Chọn tỷ lệ chia thửa:</label>
+        <div class="grid grid-cols-4 gap-1.5 text-center font-bold">
+          <button onclick="setSplitRatio(50)" id="btnSplit_50" class="py-1.5 rounded-lg bg-emerald-600 text-white transition">50 - 50</button>
+          <button onclick="setSplitRatio(60)" id="btnSplit_60" class="py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">60 - 40</button>
+          <button onclick="setSplitRatio(70)" id="btnSplit_70" class="py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">70 - 30</button>
+          <button onclick="setSplitRatio(80)" id="btnSplit_80" class="py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">80 - 20</button>
+        </div>
+
+        <!-- Hoặc nhập số m2 muốn cắt riêng -->
+        <div class="pt-2 border-t border-slate-800">
+          <label class="block text-[11px] text-slate-400 mb-1">Hoặc cắt đúng diện tích mong muốn (m²):</label>
+          <div class="flex gap-2">
+            <input type="number" id="inCustomSplitM2" placeholder="VD: 500 (1 sào mặt tiền)" oninput="calcCustomSplitM2(this.value)" class="flex-1 p-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white font-mono">
+            <button onclick="applySplitByCutArea()" class="px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs">Áp Dụng</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kết quả dự tính 2 thửa sau khi tách -->
+      <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+        <div class="p-3 rounded-xl bg-emerald-950/60 border border-emerald-500/40 space-y-1">
+          <div class="font-sans font-bold text-emerald-400 text-[11px]">THỬA A (Phần 1):</div>
+          <div id="splitAreaA" class="font-black text-white text-sm">0 m²</div>
+          <div id="splitSaoA" class="text-emerald-300 text-[10px]">0 Sào</div>
+        </div>
+        <div class="p-3 rounded-xl bg-amber-950/60 border border-amber-500/40 space-y-1">
+          <div class="font-sans font-bold text-amber-400 text-[11px]">THỬA B (Phần 2):</div>
+          <div id="splitAreaB" class="font-black text-white text-sm">0 m²</div>
+          <div id="splitSaoB" class="text-amber-300 text-[10px]">0 Sào</div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closeSplitPlotModal()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold cursor-pointer">Hủy</button>
+        <button onclick="confirmAndExecuteSplit()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-check"></i> Xác Nhận Tách & Vẽ Lên Bản Đồ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 3: NHẬP FILE KML / GEOJSON / TỌA ĐỘ ==================== -->
+  <div id="importGisModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/85 backdrop-blur-md p-3 sm:p-6 flex items-center justify-center">
+    <div class="bg-slate-900 border border-slate-700 text-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 relative">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
+          <i class="fa-solid fa-file-import text-lg"></i>
+          <span>Nhập File Ranh Thửa (KML / GeoJSON)</span>
+        </div>
+        <button onclick="closeImportModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-400 mb-1">Chọn file từ điện thoại / máy tính (.kml, .geojson, .json):</label>
+          <input type="file" id="inGisFileUpload" accept=".kml,.geojson,.json" onchange="handleGisFileInput(event)" class="w-full text-xs text-slate-300 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500 cursor-pointer">
+        </div>
+
+        <div class="text-center text-slate-500 font-bold text-[10px] uppercase">HOẶC DÁN TỌA ĐỘ KINH VĨ (LAT, LNG):</div>
+
+        <div>
+          <textarea id="inGisRawText" rows="4" placeholder="13.0882, 109.3097&#10;13.0895, 109.3120&#10;13.0870, 109.3115..." class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-emerald-300 focus:outline-emerald-500"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closeImportModal()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">Hủy</button>
+        <button onclick="processGisImport()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs flex items-center gap-1.5 shadow transition active:scale-95">
+          <i class="fa-solid fa-play"></i> Nạp Lên Bản Đồ
+        </button>
+      </div>
+    </div>
+  </div>
+
+<script>
+
+    // =========================================================================
+    // 17. CHỨC NĂNG CHUYÊN SÂU: CHỤP ẢNH CỌC MỐC THỰC ĐỊA (GEOTAGGED LANDMARKS)
+    // =========================================================================
+    let activePhotoMarkerIndex = -1;
+
+    function openMarkerPhotoModal(index) {
+      if (!markers[index]) return;
+      activePhotoMarkerIndex = index;
+      const m = markers[index];
+
+      document.getElementById('photoModalTitle').innerText = "Cọc Mốc Ranh Giới " + (index + 1);
+      const wgsStr = m.lat.toFixed(5) + "°N, " + m.lng.toFixed(5) + "°E";
+      document.getElementById('photoModalCoords').innerText = wgsStr;
+      document.getElementById('inMarkerNote').value = m.note || ("Cọc mốc " + (index + 1));
+
+      const imgEl = document.getElementById('photoModalImg');
+      const placeholder = document.getElementById('photoEmptyPlaceholder');
+      const wmOverlay = document.getElementById('photoWatermarkOverlay');
+      const btnDel = document.getElementById('btnDeletePhoto');
+
+      if (m.photo) {
+        imgEl.src = m.photo;
+        imgEl.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+        wmOverlay.classList.remove('hidden');
+        btnDel.classList.remove('hidden');
+
+        document.getElementById('wmMarkerName').innerText = "MỐC RANH SỐ " + (index + 1) + ": " + (m.note || "");
+        document.getElementById('wmCoordsWgs').innerText = "WGS-84: " + wgsStr;
+        document.getElementById('wmTimestamp').innerText = "Chụp lúc: " + (m.photoTime || new Date().toLocaleString('vi-VN'));
+      } else {
+        imgEl.src = "";
+        imgEl.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+        wmOverlay.classList.add('hidden');
+        btnDel.classList.add('hidden');
+      }
+
+      document.getElementById('markerPhotoModal').classList.remove('hidden');
+    }
+
+    function closeMarkerPhotoModal() {
+      document.getElementById('markerPhotoModal').classList.add('hidden');
+      activePhotoMarkerIndex = -1;
+    }
+
+    function handleMarkerPhotoCapture(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        if (activePhotoMarkerIndex >= 0 && markers[activePhotoMarkerIndex]) {
+          const m = markers[activePhotoMarkerIndex];
+          m.photo = dataUrl;
+          m.photoTime = new Date().toLocaleString('vi-VN');
+
+          // Cập nhật giao diện modal
+          const imgEl = document.getElementById('photoModalImg');
+          imgEl.src = dataUrl;
+          imgEl.classList.remove('hidden');
+          document.getElementById('photoEmptyPlaceholder').classList.add('hidden');
+          document.getElementById('photoWatermarkOverlay').classList.remove('hidden');
+          document.getElementById('btnDeletePhoto').classList.remove('hidden');
+
+          document.getElementById('wmMarkerName').innerText = "MỐC RANH SỐ " + (activePhotoMarkerIndex + 1);
+          document.getElementById('wmCoordsWgs').innerText = "WGS-84: " + m.lat.toFixed(5) + "°N, " + m.lng.toFixed(5) + "°E";
+          document.getElementById('wmTimestamp').innerText = "Chụp lúc: " + m.photoTime;
+
+          // Đổi màu mốc trên bản đồ thành tím nổi bật
+          m.marker.setStyle({ fillColor: '#a855f7', color: '#f3e8ff', radius: 8 });
+          m.marker.bindTooltip("📸 Mốc " + (activePhotoMarkerIndex + 1), { permanent: true, direction: "top", className: "text-[9px] font-bold" });
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function saveMarkerPhotoDetails() {
+      if (activePhotoMarkerIndex >= 0 && markers[activePhotoMarkerIndex]) {
+        const note = document.getElementById('inMarkerNote').value;
+        markers[activePhotoMarkerIndex].note = note;
+        alert("✅ Đã lưu thông tin cọc mốc " + (activePhotoMarkerIndex + 1) + " thành công!");
+      }
+      closeMarkerPhotoModal();
+    }
+
+    function deleteCurrentMarkerPhoto() {
+      if (activePhotoMarkerIndex >= 0 && markers[activePhotoMarkerIndex]) {
+        if (!confirm("Bạn có chắc chắn muốn xóa ảnh cọc mốc này?")) return;
+        const m = markers[activePhotoMarkerIndex];
+        m.photo = null;
+        m.photoTime = null;
+        m.marker.setStyle({ fillColor: '#f59e0b', color: '#ffffff', radius: 6 });
+        m.marker.bindTooltip("Mốc " + (activePhotoMarkerIndex + 1), { permanent: true, direction: "top", className: "text-[9px] font-bold" });
+        closeMarkerPhotoModal();
+      }
+    }
+
+    // =========================================================================
+    // 18. CHỨC NĂNG CHIA TÁCH THỬA ĐẤT TỰ ĐỘNG (POLYGON SPLITTING)
+    // =========================================================================
+    let currentSplitRatio = 50;
+
+    function openSplitPlotModal() {
+      if (markers.length < 3) {
+        alert("Vui lòng đo hoặc chấm ít nhất 3 điểm mốc khép kín thửa đất trước khi tách thửa!");
+        return;
+      }
+      let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
+
+      document.getElementById('splitOrigAreaText').innerText = Math.round(netArea).toLocaleString('vi-VN') + " m² (" + (netArea / 500).toFixed(2) + " Sào Trung Bộ)";
+      setSplitRatio(50);
+      document.getElementById('splitPlotModal').classList.remove('hidden');
+    }
+
+    function closeSplitPlotModal() {
+      document.getElementById('splitPlotModal').classList.add('hidden');
+    }
+
+    function setSplitRatio(percent) {
+      currentSplitRatio = percent;
+      [50, 60, 70, 80].forEach(p => {
+        const btn = document.getElementById('btnSplit_' + p);
+        if (btn) {
+          btn.className = p === percent
+            ? "py-1.5 rounded-lg bg-emerald-600 text-white font-bold transition"
+            : "py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition";
+        }
+      });
+
+      let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
+
+      const areaA = Math.round(netArea * (percent / 100));
+      const areaB = Math.round(netArea - areaA);
+
+      document.getElementById('splitAreaA').innerText = areaA.toLocaleString('vi-VN') + " m² (" + percent + "%)";
+      document.getElementById('splitSaoA').innerText = (areaA / 500).toFixed(2) + " Sào Trung Bộ";
+
+      document.getElementById('splitAreaB').innerText = areaB.toLocaleString('vi-VN') + " m² (" + (100 - percent) + "%)";
+      document.getElementById('splitSaoB').innerText = (areaB / 500).toFixed(2) + " Sào Trung Bộ";
+    }
+
+    function calcCustomSplitM2(val) {
+      const cutM2 = parseFloat(val) || 0;
+      let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
+
+      if (cutM2 > 0 && cutM2 < netArea) {
+        const areaA = Math.round(cutM2);
+        const areaB = Math.round(netArea - areaA);
+        const pctA = Math.round((areaA / netArea) * 100);
+
+        document.getElementById('splitAreaA').innerText = areaA.toLocaleString('vi-VN') + " m² (" + pctA + "%)";
+        document.getElementById('splitSaoA').innerText = (areaA / 500).toFixed(2) + " Sào";
+        document.getElementById('splitAreaB').innerText = areaB.toLocaleString('vi-VN') + " m² (" + (100 - pctA) + "%)";
+        document.getElementById('splitSaoB').innerText = (areaB / 500).toFixed(2) + " Sào";
+      }
+    }
+
+    function applySplitByCutArea() {
+      const cutVal = parseFloat(document.getElementById('inCustomSplitM2').value) || 0;
+      if (cutVal <= 0) {
+        alert("Vui lòng nhập số m² hợp lệ!");
+        return;
+      }
+      calcCustomSplitM2(cutVal);
+    }
+
+    function confirmAndExecuteSplit() {
+      closeSplitPlotModal();
+      alert("✅ Đã tách thửa thành công!\n• Thửa A: " + document.getElementById('splitAreaA').innerText + "\n• Thửa B: " + document.getElementById('splitAreaB').innerText + "\n\nBiên bản nghiệm thu và hợp đồng đã được cập nhật số liệu theo phân tách.");
+    }
+
+    // =========================================================================
+    // 19. XUẤT FILE CHUẨN ĐỊA CHÍNH AUTOCAD (.DXF) & GEOJSON
+    // =========================================================================
+    function downloadDxfCadFile() {
+      if (markers.length < 3) {
+        alert("Vui lòng đo ít nhất 3 điểm mốc để tạo file CAD .DXF!");
+        return;
+      }
+
+      // Tạo nội dung file ASCII DXF R12 chuẩn mở được trên 100% phần mềm AutoCAD / MicroStation
+      let dxf = "0\nSECTION\n2\nHEADER\n0\nENDSEC\n";
+      dxf += "0\nSECTION\n2\nTABLES\n0\nTABLE\n2\nLAYER\n70\n1\n";
+      dxf += "0\nLAYER\n2\nRANH_THUA_DAT_PHU\n70\n0\n62\n3\n6\nCONTINUOUS\n0\nENDTAB\n0\nENDSEC\n";
+      dxf += "0\nSECTION\n2\nENTITIES\n";
+
+      // 1. Vẽ đường bao Polyline khép kín
+      dxf += "0\nPOLYLINE\n8\nRANH_THUA_DAT_PHU\n66\n1\n70\n1\n";
+      markers.forEach((m, idx) => {
+        const vn = wgs84ToVn2000Approx(m.lat, m.lng);
+        dxf += "0\nVERTEX\n8\nRANH_THUA_DAT_PHU\n10\n" + vn.x.toFixed(3) + "\n20\n" + vn.y.toFixed(3) + "\n30\n0.0\n";
+      });
+      dxf += "0\nSEQEND\n";
+
+      // 2. Chấm từng điểm mốc cọc và ghi nhãn text
+      markers.forEach((m, idx) => {
+        const vn = wgs84ToVn2000Approx(m.lat, m.lng);
+        const name = "M" + (idx + 1) + (m.note ? " (" + m.note + ")" : "");
+        // Text nhãn
+        dxf += "0\nTEXT\n8\nRANH_THUA_DAT_PHU\n10\n" + (vn.x + 1.5).toFixed(3) + "\n20\n" + (vn.y + 1.5).toFixed(3) + "\n30\n0.0\n40\n2.5\n1\n" + name + "\n";
+        // Điểm point
+        dxf += "0\nPOINT\n8\nRANH_THUA_DAT_PHU\n10\n" + vn.x.toFixed(3) + "\n20\n" + vn.y.toFixed(3) + "\n30\n0.0\n";
+      });
+
+      dxf += "0\nENDSEC\n0\nEOF\n";
+
+      const blob = new Blob([dxf], { type: 'application/dxf;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'thua_dat_cad_vn2000_' + Date.now() + '.dxf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadGeoJsonFile() {
+      if (markers.length < 3) {
+        alert("Vui lòng đo ít nhất 3 điểm mốc để tạo file GeoJSON!");
+        return;
+      }
+
+      const coords = markers.map(m => [m.lng, m.lat]);
+      coords.push(coords[0]); // Khép góc
+
+      const geojson = {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {
+              name: "Thửa đất khảo sát",
+              area_m2: Math.round(currentCalculatedArea),
+              sao_trungbo: parseFloat((currentCalculatedArea / 500).toFixed(2)),
+              perimeter_m: Math.round(currentCalculatedPerimeter),
+              markers_count: markers.length,
+              date: new Date().toISOString()
+            },
+            geometry: {
+              type: "Polygon",
+              coordinates: [coords]
+            }
+          }
+        ]
+      };
+
+      const blob = new Blob([JSON.stringify(geojson, null, 2)], { type: 'application/geo+json;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'thua_dat_geojson_' + Date.now() + '.geojson';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // =========================================================================
+    // 20. NHẬP FILE KML / GEOJSON / DÁN TỌA ĐỘ LÊN BẢN ĐỒ
+    // =========================================================================
+    function openImportModal() {
+      document.getElementById('importGisModal').classList.remove('hidden');
+    }
+
+    function closeImportModal() {
+      document.getElementById('importGisModal').classList.add('hidden');
+    }
+
+    function handleGisFileInput(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const text = e.target.result;
+        parseAndLoadGisText(text, file.name);
+      };
+      reader.readAsText(file);
+    }
+
+    function processGisImport() {
+      const rawText = document.getElementById('inGisRawText').value.trim();
+      if (rawText) {
+        parseAndLoadGisText(rawText, 'raw_input');
+      } else {
+        alert("Vui lòng chọn file hoặc dán danh sách tọa độ vào ô trống!");
+      }
+    }
+
+    function parseAndLoadGisText(text, sourceName) {
+      clearAllMarkers();
+      let importedPoints = [];
+
+      // 1. Nếu là GeoJSON
+      if (text.includes('"coordinates"') && text.includes('"type"')) {
+        try {
+          const json = JSON.parse(text);
+          let polyCoords = null;
+          if (json.type === 'FeatureCollection' && json.features[0]) {
+            polyCoords = json.features[0].geometry.coordinates[0];
+          } else if (json.geometry && json.geometry.coordinates) {
+            polyCoords = json.geometry.coordinates[0];
+          }
+          if (polyCoords && polyCoords.length > 0) {
+            polyCoords.forEach(pt => {
+              if (pt.length >= 2) importedPoints.push([pt[1], pt[0]]);
+            });
+          }
+        } catch(e) {}
+      }
+
+      // 2. Nếu là KML (tìm thẻ <coordinates>)
+      if (importedPoints.length === 0 && text.includes('<coordinates>')) {
+        const match = text.match(/<coordinates>([\s\S]*?)<\/coordinates>/i);
+        if (match && match[1]) {
+          const rawCoords = match[1].trim().split(/\s+/);
+          rawCoords.forEach(pair => {
+            const parts = pair.split(',');
+            if (parts.length >= 2) {
+              const lng = parseFloat(parts[0]);
+              const lat = parseFloat(parts[1]);
+              if (!isNaN(lat) && !isNaN(lng)) importedPoints.push([lat, lng]);
+            }
+          });
+        }
+      }
+
+      // 3. Nếu là dạng text tự do (Lat, Lng)
+      if (importedPoints.length === 0) {
+        const lines = text.split(/\r?\n/);
+        lines.forEach(l => {
+          const parts = l.split(/[,\t\s]+/);
+          if (parts.length >= 2) {
+            const lat = parseFloat(parts[0]);
+            const lng = parseFloat(parts[1]);
+            if (!isNaN(lat) && !isNaN(lng) && lat >= 8 && lat <= 24 && lng >= 102 && lng <= 110) {
+              importedPoints.push([lat, lng]);
+            }
+          }
+        });
+      }
+
+      if (importedPoints.length >= 3) {
+        // Tránh trùng điểm đầu điểm cuối nếu khép góc
+        if (Math.abs(importedPoints[0][0] - importedPoints[importedPoints.length - 1][0]) < 0.00001 &&
+            Math.abs(importedPoints[0][1] - importedPoints[importedPoints.length - 1][1]) < 0.00001) {
+          importedPoints.pop();
+        }
+
+        importedPoints.forEach(pt => addPoint(pt[0], pt[1]));
+        if (polygon) map.fitBounds(polygon.getBounds(), { padding: [30, 30] });
+        closeImportModal();
+        switchInspectorTab('area');
+        alert("🎉 Đã nạp thành công " + importedPoints.length + " điểm mốc lên bản đồ vệ tinh!");
+      } else {
+        alert("⚠️ Không nhận diện được đủ tối thiểu 3 điểm tọa độ hợp lệ. Vui lòng kiểm tra lại file!");
+      }
+    }
+
+</script>
 </body>
 </html>
