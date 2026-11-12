@@ -3737,8 +3737,45 @@
        - Lịch con nước triều cường & hướng dẫn cứu hộ dân sinh
        ======================================================================== */
 
-    let cachedWeatherDetailData = null;
+        let currentWeatherModalTheme = localStorage.getItem("datphu_weather_theme") || "light";
     let currentWeatherDetailTab = 'dashboard';
+
+    function initWeatherModalTheme() {
+      applyWeatherModalTheme(currentWeatherModalTheme);
+    }
+
+    function toggleWeatherModalTheme() {
+      currentWeatherModalTheme = (currentWeatherModalTheme === "light") ? "dark" : "light";
+      try {
+        localStorage.setItem("datphu_weather_theme", currentWeatherModalTheme);
+      } catch(e) {}
+      applyWeatherModalTheme(currentWeatherModalTheme);
+    }
+
+    function applyWeatherModalTheme(theme) {
+      const box = document.getElementById("weatherDetailModalBox");
+      const icon = document.getElementById("weatherThemeIcon");
+      const text = document.getElementById("weatherThemeText");
+      const btn = document.getElementById("weatherThemeToggleBtn");
+
+      if (!box) return;
+
+      if (theme === "light") {
+        box.classList.remove("weather-modal-dark");
+        box.classList.add("weather-modal-light");
+        if (icon) icon.className = "fa-solid fa-sun text-amber-500 text-xs";
+        if (text) text.innerText = "Trắng Sáng";
+        if (btn) btn.className = "px-2.5 py-1.5 rounded-xl bg-amber-100 border border-amber-300 text-amber-950 text-xs font-black shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer";
+      } else {
+        box.classList.remove("weather-modal-light");
+        box.classList.add("weather-modal-dark");
+        if (icon) icon.className = "fa-solid fa-moon text-indigo-300 text-xs";
+        if (text) text.innerText = "Ban Đêm";
+        if (btn) btn.className = "px-2.5 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 text-xs font-black shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer";
+      }
+
+      switchWeatherDetailTab(currentWeatherDetailTab || 'dashboard');
+    }
 
     function switchWeatherDetailTab(tab) {
       currentWeatherDetailTab = tab;
@@ -3751,8 +3788,14 @@
       const btnRadar = document.getElementById("weatherTab_radar");
       const btnHandbook = document.getElementById("weatherTab_handbook");
 
-      const activeCls = "px-3 py-1.5 rounded-xl bg-gradient-to-r from-sky-400 to-blue-500 text-slate-950 font-black shadow transition active:scale-95 whitespace-nowrap flex items-center gap-1.5 text-xs cursor-pointer";
-      const idleCls = "px-3 py-1.5 rounded-xl text-sky-200 hover:text-white hover:bg-white/10 transition active:scale-95 whitespace-nowrap flex items-center gap-1.5 text-xs font-bold cursor-pointer";
+      const isLight = (currentWeatherModalTheme === "light");
+      const activeCls = isLight 
+        ? "weather-nav-btn py-2 px-2.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 font-black text-xs shadow-md active:scale-95 cursor-pointer bg-white text-sky-950 border-2 border-sky-400 ring-2 ring-sky-300/40"
+        : "weather-nav-btn py-2 px-2.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 font-black text-xs shadow-md active:scale-95 cursor-pointer bg-gradient-to-r from-sky-400 to-blue-500 text-slate-950 border-2 border-sky-300 ring-2 ring-sky-400/40";
+
+      const idleCls = isLight
+        ? "weather-nav-btn py-2 px-2.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 font-bold text-xs active:scale-95 cursor-pointer text-slate-600 hover:text-slate-950 hover:bg-white/80 border border-transparent"
+        : "weather-nav-btn py-2 px-2.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 font-bold text-xs active:scale-95 cursor-pointer text-sky-200 hover:text-white hover:bg-white/10 border border-transparent";
 
       if (btnDashboard) btnDashboard.className = (tab === 'dashboard') ? activeCls : idleCls;
       if (btnRadar) btnRadar.className = (tab === 'radar') ? activeCls : idleCls;
@@ -3813,6 +3856,7 @@
       const modal = document.getElementById("weatherDetailModal");
       if (!modal) return;
       modal.classList.remove("hidden");
+      initWeatherModalTheme();
       refreshWeatherDetailData();
     }
 
@@ -13544,7 +13588,7 @@
       <div id="weatherSec_dashboard" class="space-y-3">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
         <!-- Cột Trái: Nhiệt độ & Bầu trời -->
-        <div class="p-4 rounded-2xl bg-black/40 border border-sky-500/30 flex flex-col justify-between shadow-inner">
+        <div class="p-4 rounded-2xl weather-card-box bg-white border border-sky-200 flex flex-col justify-between shadow-xs">
           <span class="text-[11px] text-sky-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
             <i class="fa-solid fa-temperature-half"></i> NHIỆT ĐỘ HIỆN TẠI
           </span>
@@ -13602,7 +13646,7 @@
       </div>
 
       <!-- KHỐI 2: BIỂU ĐỒ DỰ BÁO MƯA & NHIỆT ĐỘ 24 GIỜ TỚI -->
-      <div class="p-3.5 rounded-2xl bg-black/40 border border-sky-500/30 space-y-2">
+      <div class="p-3.5 rounded-2xl weather-card-box bg-white border border-sky-200 space-y-2 shadow-xs">
         <div class="flex items-center justify-between text-xs font-bold">
           <span class="text-sky-300 flex items-center gap-1.5">
             <i class="fa-solid fa-clock"></i> DỰ BÁO LƯỢNG MƯA & NHIỆT ĐỘ 24 GIỜ TỚI THEO GIỜ
@@ -13615,7 +13659,7 @@
       </div>
 
       <!-- KHỐI 3: BẢNG QUAN TRẮC THỦY VĂN SÔNG NGÒI & LỊCH CON NƯỚC (DÀNH CHO MÙA MƯA BÃO) -->
-      <div class="p-3.5 rounded-2xl bg-gradient-to-r from-blue-950/60 via-slate-900/60 to-blue-950/60 border border-blue-400/40 space-y-3">
+      <div class="p-3.5 rounded-2xl weather-hydro-box bg-gradient-to-r from-blue-50 to-sky-50 border border-blue-300 space-y-3 shadow-xs">
         <div class="flex items-center justify-between flex-wrap gap-2">
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-water text-cyan-400 text-base"></i>
@@ -13665,7 +13709,7 @@
       </div>
 
       <!-- KHỐI 4: HƯỚNG DẪN AN TOÀN & ĐƯỜNG DÂY NÓNG CỨU HỘ 114 -->
-      <div class="p-3.5 rounded-2xl bg-gradient-to-r from-red-950/50 via-slate-900/60 to-red-950/50 border border-red-500/40 space-y-2.5 text-xs">
+      <div class="p-3.5 rounded-2xl weather-safety-box bg-gradient-to-r from-rose-50 to-amber-50 border border-rose-300 space-y-2.5 text-xs shadow-xs">
         <div class="flex items-center justify-between">
           <span class="font-black text-red-300 uppercase tracking-wide flex items-center gap-1.5">
             <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> LƯU Ý SỐNG CÒN KHI NƯỚC LŨ DÂNG CAO
