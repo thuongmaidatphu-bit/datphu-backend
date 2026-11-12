@@ -4011,6 +4011,99 @@
       }
     }
 
+        function changeRadarLocation(locKey) {
+      if (LOCATIONS[locKey]) {
+        currentLocationKey = locKey;
+        if (window.selectLocation) {
+          try { window.selectLocation(locKey); } catch(e) {}
+        }
+        refreshWeatherDetailData();
+        setSatelliteRadarMode(currentSatelliteRadarMode || 'rain');
+        if (window.showToastNotification) {
+          window.showToastNotification("Đã chuyển tâm quét radar: " + LOCATIONS[locKey].name, "info");
+        }
+      }
+    }
+
+    function updateSatelliteTelemetry(loc, cur, daily) {
+      const code = cur ? cur.weather_code : 61;
+      const rainSum = (daily && daily.precipitation_sum && daily.precipitation_sum[0] !== undefined)
+                      ? daily.precipitation_sum[0] 
+                      : (cur ? (cur.precipitation || 0) : 0);
+      const windSpd = cur ? Math.round(cur.wind_speed_10m || 15) : 15;
+      const windDir = cur ? cur.wind_direction_10m : 45;
+
+      const tempEl = document.getElementById("satCloudTopTemp");
+      const tempDesc = document.getElementById("satCloudTopDesc");
+      if (tempEl) {
+        if (code >= 95 || rainSum > 40) {
+          tempEl.innerText = "-68°C";
+          if (tempDesc) tempDesc.innerText = "Đỉnh mây bão rất cao (>14km)";
+        } else if (code >= 60 || rainSum > 10) {
+          tempEl.innerText = "-58°C";
+          if (tempDesc) tempDesc.innerText = "Mây đối lưu cao 12-14km";
+        } else {
+          tempEl.innerText = "-36°C";
+          if (tempDesc) tempDesc.innerText = "Mây tầng trung tích ổn định";
+        }
+      }
+
+      const dirEl = document.getElementById("satCloudDirection");
+      const spdEl = document.getElementById("satCloudSpeed");
+      if (dirEl) {
+        let dirName = "Tây - Tây Nam";
+        if (windDir >= 337.5 || windDir < 22.5) dirName = "Bắc - Đông Bắc";
+        else if (windDir >= 22.5 && windDir < 67.5) dirName = "Tây Nam (Theo gió Đông Bắc)";
+        else if (windDir >= 67.5 && windDir < 157.5) dirName = "Tây - Tây Bắc";
+        else if (windDir >= 157.5 && windDir < 247.5) dirName = "Đông Bắc (Theo gió Tây Nam)";
+        else dirName = "Đông - Đông Nam";
+        dirEl.innerText = dirName;
+      }
+      if (spdEl) {
+        const cloudSpdMin = Math.max(15, Math.round(windSpd * 1.3));
+        const cloudSpdMax = cloudSpdMin + 6;
+        spdEl.innerText = "Vận tốc ~" + cloudSpdMin + "-" + cloudSpdMax + " km/h";
+      }
+
+      const dbzEl = document.getElementById("satRadarDbz");
+      const dbzDesc = document.getElementById("satRadarDbzDesc");
+      if (dbzEl) {
+        if (code >= 95 || rainSum > 40) {
+          dbzEl.innerText = "52 - 58 dBZ";
+          if (dbzDesc) dbzDesc.innerText = "Mưa xối xả, giông lốc dữ dội";
+        } else if (code >= 60 || rainSum > 10) {
+          dbzEl.innerText = "42 - 48 dBZ";
+          if (dbzDesc) dbzDesc.innerText = "Mưa rào nặng hạt dồn dập";
+        } else if (code >= 50 || rainSum > 2) {
+          dbzEl.innerText = "28 - 35 dBZ";
+          if (dbzDesc) dbzDesc.innerText = "Mưa rào nhẹ đến vừa rải rác";
+        } else {
+          dbzEl.innerText = "12 - 18 dBZ";
+          if (dbzDesc) dbzDesc.innerText = "Phản hồi mây loãng, không mưa";
+        }
+      }
+
+      const visEl = document.getElementById("satVisibility");
+      const visDesc = document.getElementById("satVisibilityDesc");
+      if (visEl) {
+        if (code >= 95 || rainSum > 40) {
+          visEl.innerText = "3 - 5 km";
+          if (visDesc) visDesc.innerText = "Tầm nhìn giảm mạnh do mưa bão";
+        } else if (code >= 60 || rainSum > 10) {
+          visEl.innerText = "6 - 8 km";
+          if (visDesc) visDesc.innerText = "Tầm nhìn trung bình trong mưa";
+        } else {
+          visEl.innerText = "9 - 12 km";
+          if (visDesc) visDesc.innerText = "Độ rõ ảnh viễn thám cao";
+        }
+      }
+
+      const locLabel = document.getElementById("radarLocationLabel");
+      if (locLabel && loc) {
+        locLabel.innerText = "Tâm quét: " + loc.name + " (" + (loc.lat.toFixed(2)) + "°B, " + (loc.lon.toFixed(2)) + "°Đ)";
+      }
+    }
+
     function sendSosRescueDispatch() {
       const loc = (currentLocationKey === 'custom' && customGeoLocation)
                   ? customGeoLocation
@@ -4204,6 +4297,7 @@
 
       renderHourlyForecastUI(hourly);
       updateHydrologyDisplay(loc, cur, daily);
+      updateSatelliteTelemetry(loc, cur, daily);
     }
 
     function renderHourlyForecastUI(hourly) {
@@ -14055,38 +14149,54 @@
           </div>
         </div>
 
+        <!-- THANH CHỌN NHANH VÙNG QUÉT RADAR ĐỊA PHƯƠNG -->
+        <div class="flex items-center gap-1.5 overflow-x-auto py-1 text-[11px] no-scrollbar">
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider shrink-0 flex items-center gap-1">
+            <i class="fa-solid fa-crosshairs text-sky-500"></i> Quét nhanh:
+          </span>
+          <button onclick="changeRadarLocation('tuy-hoa')" class="px-2.5 py-1 rounded-lg bg-sky-100 hover:bg-sky-200 text-sky-900 font-bold whitespace-nowrap active:scale-95 transition cursor-pointer">Tuy Hòa</button>
+          <button onclick="changeRadarLocation('song-cau')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold whitespace-nowrap active:scale-95 transition cursor-pointer">Sông Cầu</button>
+          <button onclick="changeRadarLocation('dong-hoa')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold whitespace-nowrap active:scale-95 transition cursor-pointer">Đông Hòa</button>
+          <button onclick="changeRadarLocation('dong-xuan')" class="px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold whitespace-nowrap active:scale-95 transition cursor-pointer" title="Lưu vực Sông Kỳ Lộ">Đồng Xuân (Sông Kỳ Lộ)</button>
+          <button onclick="changeRadarLocation('song-hinh')" class="px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold whitespace-nowrap active:scale-95 transition cursor-pointer" title="Thượng nguồn Sông Ba">Sông Hinh (Sông Ba)</button>
+          <button onclick="changeRadarLocation('tuy-an')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold whitespace-nowrap active:scale-95 transition cursor-pointer">Tuy An</button>
+          <button onclick="changeRadarLocation('son-hoa')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold whitespace-nowrap active:scale-95 transition cursor-pointer">Sơn Hòa</button>
+          <button onclick="changeRadarLocation('tay-hoa')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold whitespace-nowrap active:scale-95 transition cursor-pointer">Tây Hòa</button>
+          <button onclick="changeRadarLocation('phu-hoa')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold whitespace-nowrap active:scale-95 transition cursor-pointer">Phú Hòa</button>
+        </div>
+
         <!-- 4 Ô CHỈ SỐ VIỄN THÁM VỆ TINH THỰC ĐỊA -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
           <div class="p-2.5 rounded-xl weather-card-box bg-white border border-slate-200 shadow-xs space-y-0.5">
             <div class="text-[10px] text-sky-700 font-bold flex items-center gap-1">
               <i class="fa-solid fa-temperature-arrow-down text-sky-500"></i> NHIỆT ĐỘ ĐỈNH MÂY
             </div>
-            <div class="text-base font-black text-slate-900 font-mono">-58°C</div>
-            <div class="text-[10px] text-slate-500">Mây đối lưu cao 12-14km</div>
+            <div id="satCloudTopTemp" class="text-base font-black text-slate-900 font-mono">-58°C</div>
+            <div id="satCloudTopDesc" class="text-[10px] text-slate-500">Mây đối lưu cao 12-14km</div>
           </div>
 
           <div class="p-2.5 rounded-xl weather-card-box bg-white border border-slate-200 shadow-xs space-y-0.5">
             <div class="text-[10px] text-teal-700 font-bold flex items-center gap-1">
               <i class="fa-solid fa-compass text-teal-500"></i> HƯỚNG DI CHUYỂN MÂY
             </div>
-            <div class="text-base font-black text-slate-900 font-mono">Tây - Tây Nam</div>
-            <div class="text-[10px] text-slate-500">Vận tốc ~22-26 km/h</div>
+            <div id="satCloudDirection" class="text-base font-black text-slate-900 font-mono truncate">Tây - Tây Nam</div>
+            <div id="satCloudSpeed" class="text-[10px] text-slate-500">Vận tốc ~22-26 km/h</div>
           </div>
 
           <div class="p-2.5 rounded-xl weather-card-box bg-white border border-slate-200 shadow-xs space-y-0.5">
             <div class="text-[10px] text-amber-700 font-bold flex items-center gap-1">
               <i class="fa-solid fa-tower-broadcast text-amber-500"></i> PHẢN HỒI RADAR
             </div>
-            <div class="text-base font-black text-amber-900 font-mono">42 - 48 dBZ</div>
-            <div class="text-[10px] text-amber-700/80">Mưa rào nặng hạt dồn dập</div>
+            <div id="satRadarDbz" class="text-base font-black text-amber-900 font-mono">42 - 48 dBZ</div>
+            <div id="satRadarDbzDesc" class="text-[10px] text-amber-700/80">Mưa rào nặng hạt dồn dập</div>
           </div>
 
           <div class="p-2.5 rounded-xl weather-card-box bg-white border border-slate-200 shadow-xs space-y-0.5">
             <div class="text-[10px] text-indigo-700 font-bold flex items-center gap-1">
               <i class="fa-solid fa-eye text-indigo-500"></i> TẦM NHÌN XA
             </div>
-            <div class="text-base font-black text-slate-900 font-mono">8 - 10 km</div>
-            <div class="text-[10px] text-slate-500">Độ rõ ảnh viễn thám cao</div>
+            <div id="satVisibility" class="text-base font-black text-slate-900 font-mono">8 - 10 km</div>
+            <div id="satVisibilityDesc" class="text-[10px] text-slate-500">Độ rõ ảnh viễn thám cao</div>
           </div>
         </div>
 
