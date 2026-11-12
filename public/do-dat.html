@@ -306,6 +306,35 @@
         <div id="mapMeasure" class="w-full h-full flex-1"></div>
 
         
+        
+        <!-- HỘP ĐIỀU KHIỂN MÔ PHỎNG NƯỚC LŨ SÔNG BA (ẨN MẶC ĐỊNH, HIỆN KHI BẬT LỚP VÙNG NGẬP LŨ) -->
+        <div id="floodSimulationControlBox" class="hidden absolute top-16 left-3 z-30 p-3 rounded-2xl bg-slate-950/95 backdrop-blur-md border border-cyan-500/50 shadow-2xl text-xs space-y-2.5 max-w-[260px] text-white">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
+            <span class="font-bold text-cyan-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-water text-blue-400"></i> Mô Phỏng Lũ Sông Ba
+            </span>
+            <button onclick="toggleFloodSimulationLayer()" class="text-slate-400 hover:text-white font-bold text-xs">✕</button>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex justify-between text-[11px]">
+              <span class="text-slate-400">Mức báo động lũ:</span>
+              <span id="floodLevelBadge" class="font-bold text-amber-300 font-mono">Báo Động II (+3.0m)</span>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-1 text-[10px] font-bold text-center pt-1">
+              <button onclick="setFloodAlertLevel(1)" id="btnFlood_1" class="py-1 rounded-lg bg-slate-800 text-slate-300 transition">BĐ I</button>
+              <button onclick="setFloodAlertLevel(2)" id="btnFlood_2" class="py-1 rounded-lg bg-amber-500 text-slate-950 transition font-black">BĐ II</button>
+              <button onclick="setFloodAlertLevel(3)" id="btnFlood_3" class="py-1 rounded-lg bg-slate-800 text-slate-300 transition">BĐ III</button>
+              <button onclick="setFloodAlertLevel(4)" id="btnFlood_4" class="py-1 rounded-lg bg-slate-800 text-rose-400 transition">Lũ Lịch Sử</button>
+            </div>
+          </div>
+
+          <div id="floodRiskEvaluation" class="p-2 rounded-xl bg-amber-950/80 border border-amber-500/40 text-[10.5px] text-amber-200 leading-tight">
+            ⚠️ <b>Cảnh báo bãi bồi:</b> Bãi bồi dưa hấu, bắp ngập 0.5m - 1.2m! Di dời máy bơm và thu hoạch ngay.
+          </div>
+        </div>
+  
         <!-- BẢNG CHÚ GIẢI PHỔ QUANG HỌC NDVI (ẨN MẶC ĐỊNH, HIỆN KHI BẬT NDVI) -->
         <div id="ndviLegendBox" class="hidden absolute bottom-16 left-3 z-30 p-2.5 rounded-2xl bg-slate-950/90 backdrop-blur-md border border-slate-700/80 shadow-2xl text-[10px] space-y-1.5 max-w-[210px]">
           <div class="font-bold text-emerald-300 flex items-center justify-between">
@@ -1115,47 +1144,129 @@
 
 
         
+        
         <!-- ==================== TAB: THỦY LỢI, LỊCH CON NƯỚC & CẢNH BÁO LŨ SÔNG BA ==================== -->
         <div id="inspTabBox_hydro" class="space-y-3.5 hidden text-xs">
           
-          <!-- 1. CẢNH BÁO LŨ SÔNG BA & XẢ ĐẬP THỦY ĐIỆN -->
+          <!-- KHỐI 1: TÌNH TRẠNG 4 TRẠM THỦY VĂN & HỒ THỦY ĐIỆN SÔNG BA HẠ -->
           <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2.5">
             <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-              <span class="font-bold text-amber-400 flex items-center gap-1.5">
-                <i class="fa-solid fa-water text-sm text-cyan-400"></i> Giám Sát Mực Nước Lũ Sông Ba
+              <span class="font-bold text-amber-400 flex items-center gap-1.5 text-xs">
+                <i class="fa-solid fa-water text-cyan-400"></i> Giám Sát Lũ Sông Ba & Thủy Điện
               </span>
               <span id="riverStatusBadge" class="px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-400 font-bold text-[10px]">
                 ● An Toàn Bãi Bồi
               </span>
             </div>
 
-            <div class="grid grid-cols-3 gap-1.5 text-center font-mono">
+            <!-- Lưới 4 trạm thủy văn huyết mạch -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-center font-mono">
               <div class="p-2 rounded-xl bg-slate-950 border border-slate-800 space-y-0.5">
-                <div class="text-[9px] text-slate-400 font-sans">Trạm Củng Sơn:</div>
+                <div class="text-[9.5px] text-slate-400 font-sans">Trạm Củng Sơn</div>
                 <div id="riverCungSon" class="font-bold text-emerald-400 text-xs">28.5 m</div>
-                <div class="text-[8.5px] text-slate-500 font-sans">&lt; BĐ I (32m)</div>
+                <div class="text-[8.5px] text-slate-500 font-sans">&lt; BĐ I (32.0m)</div>
               </div>
               <div class="p-2 rounded-xl bg-slate-950 border border-slate-800 space-y-0.5">
-                <div class="text-[9px] text-slate-400 font-sans">Trạm Hà Bằng:</div>
+                <div class="text-[9.5px] text-slate-400 font-sans">Trạm Hà Bằng</div>
                 <div id="riverHaBang" class="font-bold text-cyan-400 text-xs">8.2 m</div>
                 <div class="text-[8.5px] text-slate-500 font-sans">&lt; BĐ I (9.5m)</div>
               </div>
               <div class="p-2 rounded-xl bg-slate-950 border border-slate-800 space-y-0.5">
-                <div class="text-[9px] text-slate-400 font-sans">Xả Thủy Điện:</div>
+                <div class="text-[9.5px] text-slate-400 font-sans">Sông Kỳ Lộ (La Hai)</div>
+                <div id="riverKyLo" class="font-bold text-emerald-400 text-xs">6.8 m</div>
+                <div class="text-[8.5px] text-slate-500 font-sans">&lt; BĐ I (7.5m)</div>
+              </div>
+              <div class="p-2 rounded-xl bg-slate-950 border border-slate-800 space-y-0.5">
+                <div class="text-[9.5px] text-slate-400 font-sans">Xả Sông Ba Hạ</div>
                 <div id="hydroDamFlow" class="font-bold text-amber-300 text-xs">350 m³/s</div>
                 <div class="text-[8.5px] text-slate-500 font-sans">Phát điện đều</div>
               </div>
             </div>
 
-            <div class="p-2 rounded-xl bg-emerald-950/60 border border-emerald-500/30 text-emerald-200 text-[10.5px] leading-relaxed flex items-start gap-1.5">
-              <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
-              <span><b>Khuyến cáo nông vụ:</b> Mực nước sông Ba ổn định dưới Báo động 1. Bãi bồi Suối Bạc, Củng Sơn an toàn tuyệt đối để gieo trồng dưa hấu, bắp, đậu phộng.</span>
+            <div class="p-2.5 rounded-xl bg-emerald-950/70 border border-emerald-500/40 text-emerald-200 text-[11px] leading-relaxed flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5 text-sm"></i>
+              <span><b>Đánh giá an toàn hiện tại:</b> Lưu lượng xả đập Thủy điện Sông Ba Hạ $350	ext{ m}^3	ext{/s}$ (mức phát điện tiêu chuẩn). Bãi bồi Suối Bạc, Củng Sơn, Hòa Định Đông, Hòa An an toàn tuyệt đối cho người và hoa màu.</span>
             </div>
           </div>
 
-          <!-- 2. LỊCH CON NƯỚC THỦY TRIỀU BẢN ĐỊA (VỊNH XUÂN ĐÀI, Ô LOAN, CÙ MÔNG) -->
+          <!-- KHỐI 2: MÁY TÍNH THỜI GIAN NƯỚC LŨ VỀ BÃI BỒI & ĐẾM NGƯỢC DI DỜI -->
           <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2.5">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
+              <span class="font-bold text-cyan-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-stopwatch text-amber-400"></i> Tính Giờ Nước Lũ Chạm Bãi Bồi
+              </span>
+              <span class="text-[10px] text-slate-400">Dự báo dòng chảy</span>
+            </div>
+
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-1 font-bold">Chọn vị trí ruộng / bãi bồi của bạn:</label>
+              <select id="selFloodReachArea" onchange="calculateFloodTravelTime(this.value)" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold text-white focus:outline-cyan-500 cursor-pointer">
+                <option value="son_hoa">📍 Huyện Sơn Hòa (Suối Bạc, Củng Sơn) • Cách đập ~18 km</option>
+                <option value="phu_hoa" selected>📍 Huyện Phú Hòa & Tây Hòa (Hòa Định, Hòa Thắng, Phú Thứ) • Cách đập ~42 km</option>
+                <option value="tuy_hoa">📍 TP. Tuy Hòa (Bãi bồi Cầu Đà Rằng, Cửa biển Đà Diễn) • Cách đập ~60 km</option>
+                <option value="dong_xuan">📍 Huyện Đồng Xuân & Tuy An (Bãi bồi Sông Kỳ Lộ) • Cách thượng lưu ~25 km</option>
+              </select>
+            </div>
+
+            <!-- Bảng đếm ngược & thời gian tới -->
+            <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+              <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 space-y-0.5">
+                <div class="text-[10px] text-slate-400 font-sans">Thời gian nước tràn tới:</div>
+                <div id="floodArriveHours" class="font-black text-amber-300 text-sm">~ 3.5 đến 4.0 Giờ</div>
+                <div class="text-[9px] text-slate-500 font-sans">Tốc độ dòng lũ $3.2	ext{ m/s}$</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 space-y-0.5">
+                <div class="text-[10px] text-slate-400 font-sans">Hạn chót kéo máy bơm:</div>
+                <div id="floodSafeDeadline" class="font-black text-emerald-400 text-sm">Trước 17:30 Chiều</div>
+                <div class="text-[9px] text-slate-500 font-sans">An toàn tài sản</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- KHỐI 3: KẾ HOẠCH KHẨN CẤP "CHẠY LŨ 3 BƯỚC" & SỐ ĐIỆN THOẠI NÓNG CỨU HỘ -->
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2.5">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
+              <span class="font-bold text-rose-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-triangle-exclamation"></i> Kế Hoạch Ứng Phó Khẩn Cấp
+              </span>
+              <span class="text-[10px] text-slate-400">Bảo vệ tính mạng</span>
+            </div>
+
+            <div class="space-y-1.5 text-[11px] text-slate-300">
+              <div class="flex items-start gap-2 p-1.5 rounded-lg bg-slate-950/80 border border-slate-800">
+                <span class="w-4 h-4 rounded-full bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-[9px] shrink-0 mt-0.5">1</span>
+                <span><b>Kéo máy móc & ngắt điện:</b> Ngắt ngay cầu dao điện bơm tưới. Dùng ròng rọc hoặc xe cày kéo máy bơm dầu, máy nổ lên bờ đê cao ráo.</span>
+              </div>
+              <div class="flex items-start gap-2 p-1.5 rounded-lg bg-slate-950/80 border border-slate-800">
+                <span class="w-4 h-4 rounded-full bg-emerald-500 text-slate-950 font-bold flex items-center justify-center text-[9px] shrink-0 mt-0.5">2</span>
+                <span><b>Thu hoạch dưa già hạt & lúa chín:</b> Huy động tổ đội gặt dưa, bẻ bắp đưa lên thuyền/xe ba gác chuyển vào kho cao ráo.</span>
+              </div>
+              <div class="flex items-start gap-2 p-1.5 rounded-lg bg-slate-950/80 border border-slate-800">
+                <span class="w-4 h-4 rounded-full bg-rose-500 text-white font-bold flex items-center justify-center text-[9px] shrink-0 mt-0.5">3</span>
+                <span><b>Sơ tán trâu bò & người già:</b> Di dời gia súc lên các gò đồi, sẵn sàng áo phao và lương thực khô tối thiểu 3 ngày.</span>
+              </div>
+            </div>
+
+            <!-- Danh bạ số điện thoại khẩn cấp cứu hộ Phú Yên (Bấm là gọi ngay) -->
+            <div class="pt-1 grid grid-cols-3 gap-1.5 text-center font-bold text-[10.5px]">
+              <a href="tel:114" class="p-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white flex flex-col items-center justify-center gap-0.5 shadow transition active:scale-95">
+                <i class="fa-solid fa-phone-volume text-xs"></i>
+                <span>Cứu Hộ 114</span>
+              </a>
+              <a href="tel:115" class="p-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white flex flex-col items-center justify-center gap-0.5 shadow transition active:scale-95">
+                <i class="fa-solid fa-truck-medical text-xs"></i>
+                <span>Cấp Cứu 115</span>
+              </a>
+              <a href="tel:02573822649" class="p-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 flex flex-col items-center justify-center gap-0.5 shadow transition active:scale-95" title="Ban Chỉ Huy PCTT & TKCN Tỉnh Phú Yên">
+                <i class="fa-solid fa-shield-halved text-xs"></i>
+                <span>PCTT Tỉnh PY</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- KHỐI 4: LỊCH CON NƯỚC THỦY TRIỀU & THỜI TIẾT 24H -->
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2.5">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
               <span class="font-bold text-cyan-400 flex items-center gap-1.5">
                 <i class="fa-solid fa-moon text-amber-300"></i> Lịch Con Nước & Thủy Triều
               </span>
@@ -1172,47 +1283,6 @@
                 <div class="text-[10px] text-slate-400">Đỉnh triều hôm nay:</div>
                 <div id="tidePeakTime" class="font-bold text-amber-300 font-mono text-sm">17:45 Chiều</div>
                 <div class="text-[9px] text-slate-500">Nước lớn nhất trong ngày</div>
-              </div>
-            </div>
-
-            <!-- Hướng dẫn thực hành con nước -->
-            <div class="space-y-1 text-[11px] text-slate-300">
-              <div class="flex items-center gap-2 p-1.5 rounded-lg bg-slate-800/60">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span><b>Lấy nước phù sa:</b> Mở cống đón triều cường lúc 16h - 18h để đưa phù sa vào ruộng dưa, ruộng lúa.</span>
-              </div>
-              <div class="flex items-center gap-2 p-1.5 rounded-lg bg-slate-800/60">
-                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-                <span><b>Nuôi tôm đầm vịnh:</b> Nước biển trong sạch nhất lúc triều dâng, thích hợp thay nước ao và giặt lưới lồng bè.</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. THỜI TIẾT THỜI GIAN THỰC (NHIỆT ĐỘ, MƯA, GIÓ GIẬT) -->
-          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
-              <span class="font-bold text-white flex items-center gap-1.5">
-                <i class="fa-solid fa-cloud-sun text-amber-400"></i> Thời Tiết Nông Nghiệp Phú Yên
-              </span>
-              <span id="weatherStationLoc" class="text-[10px] text-slate-400">TP. Tuy Hòa • Bờ biển</span>
-            </div>
-
-            <div class="grid grid-cols-4 gap-1.5 text-center font-mono">
-              <div class="p-2 rounded-xl bg-slate-950 border border-slate-800">
-                <div class="text-[9px] text-slate-400 font-sans">Nhiệt độ</div>
-                <div id="wtTemp" class="font-bold text-white text-xs">29°C</div>
-              </div>
-              <div class="p-2 rounded-xl bg-slate-950 border border-slate-800">
-                <div class="text-[9px] text-slate-400 font-sans">Độ ẩm</div>
-                <div id="wtHumidity" class="font-bold text-cyan-300 text-xs">78%</div>
-              </div>
-              <div class="p-2 rounded-xl bg-slate-950 border border-slate-800">
-                <div class="text-[9px] text-slate-400 font-sans">Gió giật</div>
-                <div id="wtWind" class="font-bold text-amber-300 text-xs">14 km/h</div>
-              </div>
-              <div class="p-2 rounded-xl bg-slate-950 border border-slate-800">
-                <div class="text-[9px] text-slate-400 font-sans">Mưa 24h</div>
-                <div id="wtRain" class="font-bold text-emerald-400 text-xs">0 mm</div>
               </div>
             </div>
           </div>
