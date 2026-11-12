@@ -985,6 +985,22 @@
       border-color: rgba(56, 189, 248, 0.3) !important;
     }
 
+    
+    /* =================================================================
+       ⚡ CHẾ ĐỘ TIẾT KIỆM PIN & CHỐNG TREO MÁY (LITE PERFORMANCE MODE)
+       ================================================================= */
+    body.datphu-lite-mode * {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+      animation-duration: 0.01ms !important;
+    }
+    body.datphu-lite-mode .custom-weather-scroll,
+    body.datphu-lite-mode .modal-mobile-app {
+      backdrop-filter: none !important;
+    }
+
     </style>
 </head>
 <body class="min-h-[100dvh] p-1 sm:p-5 flex flex-col items-center justify-between">
@@ -4181,6 +4197,22 @@
       });
     }
 
+        function initLitePerformanceMode() {
+      const isLite = (localStorage.getItem("datphu_lite_mode") === "true");
+      if (isLite) document.body.classList.add("datphu-lite-mode");
+      const btn = document.getElementById("liteModeToggleBtn");
+      if (btn) btn.classList.toggle("bg-amber-400", isLite);
+    }
+
+    function toggleLitePerformanceMode() {
+      const isLite = document.body.classList.toggle("datphu-lite-mode");
+      localStorage.setItem("datphu_lite_mode", isLite ? "true" : "false");
+      if (window.showToastNotification) {
+        window.showToastNotification(isLite ? "⚡ Đã bật Chế Độ Siêu Nhẹ (Tiết kiệm pin & mượt mà)" : "🌟 Đã tắt Chế Độ Siêu Nhẹ (Bật đầy đủ hiệu ứng)", "info");
+      }
+    }
+    document.addEventListener("DOMContentLoaded", initLitePerformanceMode);
+
     function openWeatherDetailModal() {
       const modal = document.getElementById("weatherDetailModal");
       if (!modal) return;
@@ -4193,6 +4225,12 @@
     function closeWeatherDetailModal() {
       const modal = document.getElementById("weatherDetailModal");
       if (modal) modal.classList.add("hidden");
+
+      // Giải phóng bộ nhớ RAM và băng thông mạng khi đóng bảng thời tiết
+      const iframe = document.getElementById("liveSatelliteRadarIframe");
+      if (iframe && iframe.src && iframe.src !== "about:blank") {
+        iframe.src = "about:blank";
+      }
     }
 
     async function refreshWeatherDetailData() {
@@ -9873,15 +9911,24 @@
 
     // CHẠY CHU TRÌNH ĐỒNG HỒ 3D THỜI GIAN THỰC (60 FPS SMOOTH SWEEP)
     let lastTickSecond = -1;
+        let lastClockTickSecond = -1;
+    let liveClockIntervalId = null;
+
     function updateLiveClock3DEngine() {
+      if (document.hidden) return; // Tiết kiệm 100% CPU khi chuyển tab hoặc ẩn trình duyệt
+
       const now = new Date();
+      const s = now.getSeconds();
+
+      // Chỉ cập nhật DOM đúng 1 lần mỗi giây (giảm 98% tải CPU so với 60 FPS liên tục)
+      if (s === lastClockTickSecond) return;
+      lastClockTickSecond = s;
+
       const h = now.getHours();
       const m = now.getMinutes();
-      const s = now.getSeconds();
-      const ms = now.getMilliseconds();
 
-      // Góc quay chính xác
-      const secAngle = (s + ms / 1000) * 6; // 360 / 60
+      // Góc quay kim đồng hồ
+      const secAngle = s * 6; // 360 / 60
       const minAngle = (m + s / 60) * 6;
       const hourAngle = ((h % 12) + m / 60) * 30;
 
@@ -9889,21 +9936,21 @@
       const miniH = document.getElementById("miniClockHourHand");
       const miniM = document.getElementById("miniClockMinHand");
       const miniS = document.getElementById("miniClockSecHand");
-      if (miniH) miniH.setAttribute("transform", `rotate(${hourAngle.toFixed(2)} 50 50)`);
-      if (miniM) miniM.setAttribute("transform", `rotate(${minAngle.toFixed(2)} 50 50)`);
-      if (miniS) miniS.setAttribute("transform", `rotate(${secAngle.toFixed(2)} 50 50)`);
+      if (miniH) miniH.setAttribute("transform", "rotate(" + hourAngle.toFixed(1) + " 50 50)");
+      if (miniM) miniM.setAttribute("transform", "rotate(" + minAngle.toFixed(1) + " 50 50)");
+      if (miniS) miniS.setAttribute("transform", "rotate(" + secAngle.toFixed(1) + " 50 50)");
 
       // 2. Cập nhật Master Clock trong Modal
       const mastH = document.getElementById("masterClockHourHand");
       const mastM = document.getElementById("masterClockMinHand");
       const mastS = document.getElementById("masterClockSecHand");
-      if (mastH) mastH.setAttribute("transform", `rotate(${hourAngle.toFixed(2)} 100 100)`);
-      if (mastM) mastM.setAttribute("transform", `rotate(${minAngle.toFixed(2)} 100 100)`);
-      if (mastS) mastS.setAttribute("transform", `rotate(${secAngle.toFixed(2)} 100 100)`);
+      if (mastH) mastH.setAttribute("transform", "rotate(" + hourAngle.toFixed(1) + " 100 100)");
+      if (mastM) mastM.setAttribute("transform", "rotate(" + minAngle.toFixed(1) + " 100 100)");
+      if (mastS) mastS.setAttribute("transform", "rotate(" + secAngle.toFixed(1) + " 100 100)");
 
       // 3. Cập nhật Đồng Hồ Số
       const pad = n => (n < 10 ? '0' : '') + n;
-      const timeStr = `${pad(h)}:${pad(m)}:${pad(s)}`;
+      const timeStr = pad(h) + ":" + pad(m) + ":" + pad(s);
 
       const miniDig = document.getElementById("clockLiveDigital");
       const mastDig = document.getElementById("masterClockDigital");
@@ -9922,7 +9969,7 @@
         const canChi = getLiveCanChiHour(h);
         const canChiBadgeText = document.getElementById("clockLiveCanChiText");
         if (canChiBadgeText) {
-          canChiBadgeText.innerText = `${canChi.name} (${canChi.range.replace(':00', '').replace(':00', '')}) • ${canChi.type}`;
+          canChiBadgeText.innerText = canChi.name + " (" + canChi.range.replace(':00', '').replace(':00', '') + ") • " + canChi.type;
         }
 
         const currentName = document.getElementById("currentCanChiName");
@@ -9930,26 +9977,35 @@
         const currentAdv = document.getElementById("currentCanChiAdvice");
         const badgeAusp = document.getElementById("badgeCurrentAuspicious");
 
-        if (currentName) currentName.innerText = `${canChi.name.toUpperCase()} (${canChi.range})`;
-        if (currentDesc) currentDesc.innerText = `Sao ${canChi.star} • ${canChi.type} Đất Phú`;
-        if (currentAdv) currentAdv.innerText = `"${canChi.desc}"`;
+        if (currentName) currentName.innerText = canChi.name.toUpperCase() + " (" + canChi.range + ")";
+        if (currentDesc) currentDesc.innerText = "Sao " + canChi.star + " • " + canChi.type + " Đất Phú";
+        if (currentAdv) currentAdv.innerText = '"' + canChi.desc + '"';
         if (badgeAusp) {
           badgeAusp.innerText = canChi.type.toUpperCase();
-          badgeAusp.className = `px-2 py-0.5 rounded-full text-[10px] font-black ${canChi.type === 'Hoàng Đạo' ? 'bg-emerald-500 text-white' : 'bg-slate-700 text-slate-300'}`;
+          badgeAusp.className = "px-2 py-0.5 rounded-full text-[10px] font-black " + (canChi.type === 'Hoàng Đạo' ? 'bg-emerald-500 text-white' : 'bg-slate-700 text-slate-300');
         }
       }
-
-      requestAnimationFrame(updateLiveClock3DEngine);
     }
 
-    // Khởi động Engine Đồng Hồ 3D
-    document.addEventListener("DOMContentLoaded", () => {
-      requestAnimationFrame(updateLiveClock3DEngine);
-    });
-    // Kích hoạt ngay lập tức nếu DOM đã sẵn sàng
+    // Khởi động Engine Đồng Hồ 3D tiết kiệm pin với tần số 500ms
+    function startLiveClockEngine() {
+      if (liveClockIntervalId) clearInterval(liveClockIntervalId);
+      updateLiveClock3DEngine();
+      liveClockIntervalId = setInterval(updateLiveClock3DEngine, 500);
+    }
+
+    document.addEventListener("DOMContentLoaded", startLiveClockEngine);
     if (document.readyState === "complete" || document.readyState === "interactive") {
-      requestAnimationFrame(updateLiveClock3DEngine);
+      startLiveClockEngine();
     }
+
+    // Tự động tạm dừng / khôi phục khi người dùng ẩn/hiện trang
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) {
+        lastClockTickSecond = -1;
+        updateLiveClock3DEngine();
+      }
+    });
 
     // =========================================================================
     // HỆ THỐNG TRUNG TÂM NGHE NHÌN ĐẤT PHÚ (AUDIOVISUAL SANCTUARY ENGINE)
@@ -11028,10 +11084,28 @@
       if (centerEl) centerEl.innerText = malaBeadCount;
     }
 
-    function render3DMalaLoop() {
-      malaCurrentAngle += (malaTargetAngle - malaCurrentAngle) * 0.14;
-      draw3DMala();
-      malaAnimId = requestAnimationFrame(render3DMalaLoop);
+        function render3DMalaLoop() {
+      if (document.hidden) {
+        malaAnimId = null;
+        return;
+      }
+
+      const diff = Math.abs(malaTargetAngle - malaCurrentAngle);
+      if (diff > 0.001) {
+        malaCurrentAngle += (malaTargetAngle - malaCurrentAngle) * 0.14;
+        draw3DMala();
+        malaAnimId = requestAnimationFrame(render3DMalaLoop);
+      } else {
+        malaCurrentAngle = malaTargetAngle;
+        draw3DMala();
+        malaAnimId = null; // Tự động nghỉ khi dừng di chuyển (tiết kiệm 100% CPU)
+      }
+    }
+
+    function trigger3DMalaAnimation() {
+      if (!malaAnimId) {
+        malaAnimId = requestAnimationFrame(render3DMalaLoop);
+      }
     }
 
     function draw3DMala() {
