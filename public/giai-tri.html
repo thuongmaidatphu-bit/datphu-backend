@@ -569,12 +569,37 @@
             </div>
           </div>
 
-          <!-- BAN THỜ TÂY PHƯƠNG TAM THÁNH TRANG NGHIÊM (CÓ THỂ ẨN/HIỆN) -->
+          <!-- BAN THỜ TAM BẢO & PHÁP BẢO CHUÔNG MÕ (CÓ THỂ ẨN/HIỆN) -->
           <div id="buddhistAltarDisplay" class="hidden relative z-10 rounded-2xl overflow-hidden border border-amber-500/50 shadow-inner bg-black">
-            <img src="img/phat_phap_cong_dong/ban_tho_tam_bao_tay_phuong_tam_thanh.jpg" alt="Ban Thờ Tây Phương Tam Thánh Đất Phú" class="w-full max-h-48 sm:max-h-56 object-cover object-center filter brightness-95">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-2.5">
-              <div class="text-[11px] font-black text-amber-300 uppercase font-sans">Tây Phương Tam Thánh Tiếp Dẫn Chúng Sanh</div>
-              <div class="text-[9.5px] text-amber-100/90 font-serif italic">Nam Mô A Di Đà Phật • Nam Mô Quán Thế Âm Bồ Tát • Nam Mô Đại Thế Chí Bồ Tát</div>
+            <!-- Tabs chuyển đổi giữa Ban Thờ Tam Bảo & Chuông Mõ -->
+            <div class="absolute top-2 right-2 z-20 flex items-center gap-1 bg-black/75 backdrop-blur-md p-1 rounded-xl border border-amber-400/40 text-[9.5px] font-bold">
+              <button onclick="setAltarSubView('altar')" id="btnAltarTab_altar" class="px-2 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer">
+                🏛️ Ban Thờ
+              </button>
+              <button onclick="setAltarSubView('bells')" id="btnAltarTab_bells" class="px-2 py-0.5 rounded-lg text-amber-200 hover:text-white transition cursor-pointer">
+                🔔 Chuông Mõ
+              </button>
+            </div>
+
+            <!-- Khung 1: Ban Thờ Tam Bảo -->
+            <div id="altarView_altar" class="relative">
+              <img src="img/phat_phap_cong_dong/ban_tho_tam_bao_tay_phuong_tam_thanh.jpg" alt="Ban Thờ Tây Phương Tam Thánh Đất Phú" class="w-full max-h-52 sm:max-h-60 object-cover object-center filter brightness-95">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent flex flex-col justify-end p-3">
+                <div class="text-[11px] font-black text-amber-300 uppercase font-sans">Tây Phương Tam Thánh Tiếp Dẫn Chúng Sanh</div>
+                <div class="text-[9.5px] text-amber-100/90 font-serif italic">Nam Mô A Di Đà Phật • Nam Mô Quán Thế Âm Bồ Tát • Nam Mô Đại Thế Chí Bồ Tát</div>
+              </div>
+            </div>
+
+            <!-- Khung 2: Pháp Bảo Chuông Bát & Mõ Gỗ Thiền Tự -->
+            <div id="altarView_bells" class="hidden relative">
+              <img src="img/chuong_mo_phat_giao_thien_vien.jpg" alt="Chuông Bát Đồng & Mõ Gỗ Thiền Tự Đất Phú" class="w-full max-h-52 sm:max-h-60 object-cover object-center filter brightness-95">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent flex flex-col justify-end p-3">
+                <div class="text-[11px] font-black text-amber-300 uppercase font-sans flex items-center gap-1.5">
+                  <span>Pháp Bảo Chuông Bát & Mõ Gỗ Cá Chép</span>
+                  <span class="text-[9px] px-1.5 py-0.2 bg-amber-500/30 text-amber-200 rounded border border-amber-400/40 font-mono">Bảo Khí</span>
+                </div>
+                <div class="text-[9.5px] text-amber-100/90 font-serif italic">Tiếng chuông thanh tịnh cảnh tỉnh trần tâm • Tiếng mõ điều hòa nhiếp tâm tụng niệm</div>
+              </div>
             </div>
           </div>
 
@@ -619,12 +644,39 @@
             </div>
           </div>
 
-          <!-- CỤM NÚT ĐIỀU KHIỂN CHÍNH (CÔNG THÁI HỌC VỪA VẶN TẦM MẮT) -->
+          <!-- CỤM NÚT ĐIỀU KHIỂN CHÍNH (ICON CHUÔNG MÕ CHẠM KHẮC TINH XẢO) -->
           <div class="relative z-10 flex items-center justify-around gap-2 pt-1">
-            <!-- Nút bật/tắt Mõ Thiền Viện -->
+            <!-- Nút bật/tắt Mõ Thiền Viện (Icon Mõ Gỗ Cá Chép) -->
             <button onclick="toggleBuddhistMetronome()" id="btnBuddhistWoodblock" class="group flex flex-col items-center gap-1 cursor-pointer active:scale-95 transition" title="Bật / Tắt Tiếng Mõ">
-              <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-b from-[#3a1f0a] to-[#201004] border-2 border-amber-500/50 hover:border-amber-400 shadow-md flex items-center justify-center text-amber-300 group-hover:text-white transition">
-                <i class="fa-solid fa-drum text-base sm:text-lg"></i>
+              <div id="woodblockIconBox" class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-gradient-to-b from-[#3a1f0a] to-[#201004] border-2 border-amber-500/60 hover:border-amber-400 shadow-md flex items-center justify-center p-1.5 transition group-hover:scale-105">
+                <!-- ICON MÕ GỖ CÁ CHÉP THIỀN MÔN (ĐỒNG ĐIỆU VỚI PHÁP BẢO THẬT) -->
+                <svg class="w-8 h-8 drop-shadow" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="moWoodGrad" x1="8" y1="4" x2="40" y2="44" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#fef08a"/>
+                      <stop offset="35%" stop-color="#f59e0b"/>
+                      <stop offset="75%" stop-color="#b45309"/>
+                      <stop offset="100%" stop-color="#78350f"/>
+                    </linearGradient>
+                    <linearGradient id="moWoodHole" x1="16" y1="28" x2="32" y2="36" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#451a03"/>
+                      <stop offset="100%" stop-color="#120401"/>
+                    </linearGradient>
+                  </defs>
+                  <!-- Vòm thân Mõ hình Ngư Đầu cá chép -->
+                  <path d="M24 5C13.5 5 7 14 7 24.5C7 34 11 41 13 41.5C14.5 42 16.5 40 18.5 40C20.5 40 21 42 24 42C27 42 27.5 40 29.5 40C31.5 40 33.5 42 35 41.5C37 41 41 34 41 24.5C41 14 34.5 5 24 5Z" fill="url(#moWoodGrad)" stroke="#fde047" stroke-width="1.2" stroke-linejoin="round"/>
+                  <!-- Họa tiết chữ Thọ & Vòng tròn Pháp Luân trên đỉnh -->
+                  <circle cx="24" cy="14" r="5" fill="#fef9c3" stroke="#92400e" stroke-width="0.9" fill-opacity="0.3"/>
+                  <path d="M24 10.5V17.5M20.5 14H27.5M21.5 12.5H26.5M21.5 15.5H26.5" stroke="#78350f" stroke-width="0.8" stroke-linecap="round"/>
+                  <!-- Họa tiết vảy cá chép hóa rồng tinh xảo -->
+                  <path d="M14 18C16 19.5 17 22 17 25M34 18C32 19.5 31 22 31 25" stroke="#92400e" stroke-width="0.9" stroke-linecap="round" fill="none"/>
+                  <path d="M18 17C20.5 18 22 20 22 22.5M30 17C27.5 18 26 20 26 22.5" stroke="#92400e" stroke-width="0.9" stroke-linecap="round" fill="none"/>
+                  <path d="M12 24C13.5 26.5 15 28 17 29M36 24C34.5 26.5 33 28 31 29" stroke="#92400e" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+                  <!-- Khe miệng mõ (Lỗ cộng hưởng âm thanh) -->
+                  <path d="M17 31.5C17 29.5 19 28 24 28C29 28 31 29.5 31 31.5C31 33.5 28.5 34.5 24 34.5C19.5 34.5 17 33.5 17 31.5Z" fill="url(#moWoodHole)" stroke="#fef08a" stroke-width="0.8"/>
+                  <ellipse cx="24" cy="31.2" rx="4.5" ry="1.5" fill="#0c0301"/>
+                  <path d="M9 37.5C12 36 14.5 37 15 39M39 37.5C36 36 33.5 37 33 39" stroke="#78350f" stroke-width="0.9" stroke-linecap="round"/>
+                </svg>
               </div>
               <span class="text-[9.5px] font-bold text-amber-200 font-sans">Mõ: <b id="woodblockStateText" class="text-emerald-400">BẬT</b></span>
             </button>
@@ -634,10 +686,39 @@
               <i id="buddhistMasterPlayIcon" class="fa-solid fa-play ml-0.5 drop-shadow"></i>
             </button>
 
-            <!-- Nút Gõ Mõ Thủ Công (+1) -->
+            <!-- Nút Gõ Mõ Thủ Công (+1) kèm dùi gỗ bọc gấm vàng -->
             <button onclick="manualHitWoodblock()" class="group flex flex-col items-center gap-1 cursor-pointer active:scale-95 transition" title="Gõ Mõ Thủ Công +1">
-              <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-b from-[#3a1f0a] to-[#201004] border-2 border-amber-500/50 hover:border-amber-400 shadow-md flex items-center justify-center text-amber-300 group-hover:text-white transition">
-                <i class="fa-solid fa-hand-fist text-base sm:text-lg"></i>
+              <div id="duiMalaBox" class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-gradient-to-b from-[#3a1f0a] to-[#201004] border-2 border-amber-500/60 hover:border-amber-400 shadow-md flex items-center justify-center p-1.5 transition group-hover:scale-105">
+                <!-- ICON DÙI GÕ MÕ GỖ BỌC GẤM VÀNG (ĐỒNG ĐIỆU VỚI DÙI GẤM THẬT) -->
+                <svg class="w-8 h-8 drop-shadow" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="duiHandleGrad" x1="6" y1="42" x2="32" y2="16" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#451a03"/>
+                      <stop offset="40%" stop-color="#78350f"/>
+                      <stop offset="70%" stop-color="#9a3412"/>
+                      <stop offset="100%" stop-color="#431407"/>
+                    </linearGradient>
+                    <linearGradient id="duiBrocadeGrad" x1="26" y1="8" x2="44" y2="26" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#fef08a"/>
+                      <stop offset="40%" stop-color="#f59e0b"/>
+                      <stop offset="80%" stop-color="#d97706"/>
+                      <stop offset="100%" stop-color="#b45309"/>
+                    </linearGradient>
+                  </defs>
+                  <!-- Cán dùi bằng gỗ tiện tròn màu cánh gián -->
+                  <path d="M9 41L27 23" stroke="url(#duiHandleGrad)" stroke-width="4.5" stroke-linecap="round"/>
+                  <!-- Khớp tiện tròn hoa văn trên cán dùi -->
+                  <circle cx="14" cy="36" r="3.2" fill="#92400e" stroke="#fde047" stroke-width="0.8"/>
+                  <circle cx="20" cy="30" r="2.8" fill="#92400e" stroke="#fde047" stroke-width="0.8"/>
+                  <circle cx="8" cy="42" r="3.2" fill="#78350f" stroke="#ca8a04" stroke-width="0.8"/>
+                  <!-- Đầu dùi bọc lụa gấm vàng hoa văn sang trọng -->
+                  <g transform="rotate(45 35 15)">
+                    <rect x="29" y="9" width="12" height="15" rx="5" fill="url(#duiBrocadeGrad)" stroke="#fef08a" stroke-width="1"/>
+                    <line x1="29" y1="13" x2="41" y2="13" stroke="#78350f" stroke-width="1"/>
+                    <line x1="29" y1="20" x2="41" y2="20" stroke="#78350f" stroke-width="1"/>
+                    <circle cx="35" cy="16.5" r="1.8" fill="#78350f" fill-opacity="0.6"/>
+                  </g>
+                </svg>
               </div>
               <span class="text-[9.5px] font-bold text-amber-200 font-sans">Gõ Mõ +1</span>
             </button>
@@ -655,11 +736,44 @@
               </div>
             </div>
 
-            <!-- Nút thỉnh chuông đồng -->
-            <button onclick="playTempleBronzeBell()" class="p-2 rounded-xl bg-black/50 hover:bg-amber-950/80 border border-amber-500/30 text-left flex flex-col justify-between transition active:scale-95 cursor-pointer">
-              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Chuông Đồng:</span>
-              <div class="flex items-center gap-1 text-amber-300 font-bold mt-1 text-[11px]">
-                <i class="fa-solid fa-bell text-amber-400"></i>
+            <!-- Nút thỉnh chuông đồng bát (Icon Chuông Bát Đồng Đen Viền Vàng Trên Đệm Sen Gấm) -->
+            <button onclick="playTempleBronzeBell()" id="btnTempleBell" class="p-2 rounded-xl bg-black/50 hover:bg-amber-950/80 border border-amber-500/30 text-left flex flex-col justify-between transition active:scale-95 cursor-pointer group">
+              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Chuông Bát:</span>
+              <div class="flex items-center gap-1.5 text-amber-300 font-bold mt-1 text-[11px]">
+                <div class="w-5 h-5 shrink-0 group-hover:scale-115 transition">
+                  <svg class="w-full h-full drop-shadow" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="bellCushion" x1="10" y1="36" x2="38" y2="44" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#b91c1c"/>
+                        <stop offset="45%" stop-color="#dc2626"/>
+                        <stop offset="100%" stop-color="#991b1b"/>
+                      </linearGradient>
+                      <linearGradient id="bellBronzeBody" x1="8" y1="12" x2="40" y2="36" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#475569"/>
+                        <stop offset="25%" stop-color="#1e293b"/>
+                        <stop offset="60%" stop-color="#0f172a"/>
+                        <stop offset="100%" stop-color="#020617"/>
+                      </linearGradient>
+                      <linearGradient id="bellGoldRim" x1="6" y1="12" x2="42" y2="15" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#fef08a"/>
+                        <stop offset="30%" stop-color="#facc15"/>
+                        <stop offset="70%" stop-color="#eab308"/>
+                        <stop offset="100%" stop-color="#ca8a04"/>
+                      </linearGradient>
+                    </defs>
+                    <!-- Đệm sen gấm đỏ viền vàng -->
+                    <ellipse cx="24" cy="40" rx="17" ry="5.5" fill="url(#bellCushion)" stroke="#facc15" stroke-width="0.9"/>
+                    <path d="M12 40C15 42 19 43 24 43C29 43 33 42 36 40" stroke="#fef08a" stroke-width="0.8" stroke-dasharray="1.5 1.5"/>
+                    <!-- Thân Chuông Bát đồng đen -->
+                    <path d="M7.5 15C7.5 28 14 36 24 36C34 36 40.5 28 40.5 15C36 18 28 19 24 19C20 19 12 18 7.5 15Z" fill="url(#bellBronzeBody)" stroke="#64748b" stroke-width="0.8"/>
+                    <!-- Lòng chuông đen tuyền -->
+                    <ellipse cx="24" cy="14" rx="16.5" ry="5" fill="#090d16" stroke="#facc15" stroke-width="0.5"/>
+                    <ellipse cx="24" cy="14" rx="14" ry="3.8" fill="#020408"/>
+                    <!-- Vành chuông dát đồng vàng sáng bóng -->
+                    <ellipse cx="24" cy="13.5" rx="16.5" ry="4.5" fill="none" stroke="url(#bellGoldRim)" stroke-width="1.8"/>
+                    <path d="M11 14.5C14 16 19 16.8 24 16.8C29 16.8 34 16 37 14.5" stroke="#fef9c3" stroke-width="0.9" stroke-linecap="round" opacity="0.8"/>
+                  </svg>
+                </div>
                 <span>Thỉnh Chuông 🔔</span>
               </div>
             </button>
@@ -2476,6 +2590,25 @@ function changeArtSlide(delta) {
     let woodblockTimer = null;
     let buddhistCount = 108;
 
+    
+    function setAltarSubView(mode) {
+      const vAltar = document.getElementById('altarView_altar');
+      const vBells = document.getElementById('altarView_bells');
+      const btnA = document.getElementById('btnAltarTab_altar');
+      const btnB = document.getElementById('btnAltarTab_bells');
+      if (mode === 'altar') {
+        if (vAltar) vAltar.classList.remove('hidden');
+        if (vBells) vBells.classList.add('hidden');
+        if (btnA) btnA.className = "px-2 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer";
+        if (btnB) btnB.className = "px-2 py-0.5 rounded-lg text-amber-200 hover:text-white transition cursor-pointer";
+      } else {
+        if (vAltar) vAltar.classList.add('hidden');
+        if (vBells) vBells.classList.remove('hidden');
+        if (btnB) btnB.className = "px-2 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer";
+        if (btnA) btnA.className = "px-2 py-0.5 rounded-lg text-amber-200 hover:text-white transition cursor-pointer";
+      }
+    }
+
     function toggleBuddhistAltarView() {
       const altar = document.getElementById('buddhistAltarDisplay');
       const btnText = document.getElementById('altarToggleText');
@@ -2709,7 +2842,21 @@ function changeArtSlide(delta) {
 
     function manualHitWoodblock() {
       buddhistCount++;
-      document.getElementById('buddhistMalaCount').innerText = buddhistCount;
+      const malaEl = document.getElementById('buddhistMalaCount');
+      if (malaEl) malaEl.innerText = buddhistCount;
+      
+      // Hiệu ứng gõ mõ cơ học nảy nhẹ 3D
+      const moBox = document.getElementById('woodblockIconBox');
+      const duiBox = document.getElementById('duiMalaBox');
+      if (moBox) {
+        moBox.classList.add('scale-90', 'border-amber-300');
+        setTimeout(() => moBox.classList.remove('scale-90', 'border-amber-300'), 120);
+      }
+      if (duiBox) {
+        duiBox.classList.add('-rotate-12');
+        setTimeout(() => duiBox.classList.remove('-rotate-12'), 120);
+      }
+
       playWoodblockSound();
       if (navigator.vibrate) navigator.vibrate(25);
     }
@@ -3338,6 +3485,11 @@ function changeArtSlide(delta) {
     // Tiếng Chuông Đồng Thiền Tự Ngân Vang 4 Giây
     function playTempleBronzeBell() {
       try {
+        const bellBtn = document.getElementById('btnTempleBell');
+        if (bellBtn) {
+          bellBtn.classList.add('ring-2', 'ring-amber-400', 'bg-amber-900/60');
+          setTimeout(() => bellBtn.classList.remove('ring-2', 'ring-amber-400', 'bg-amber-900/60'), 1500);
+        }
         if (!radioAudioContext) radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
         if (radioAudioContext.state === 'suspended') radioAudioContext.resume();
 
