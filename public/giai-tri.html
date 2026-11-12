@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trung Tâm Giải Trí & Văn Hóa Đất Phú • Lịch Đất Phú</title>
+  <meta name="description" content="Kênh phát thanh dân tộc, Hô Bài Chòi Xứ Nẫu, Rạp chiếu cảnh đẹp 4K, Máy Niệm Phật Số và Âm thanh trị liệu thư giãn tâm hồn Đất Phú.">
+  <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 9999px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    
+    @keyframes eqWave {
+      0%, 100% { height: 18%; }
+      50% { height: 95%; }
+    }
+    .eq-bar-anim { animation: eqWave 0.8s ease-in-out infinite; }
+    
+    @keyframes lotusPulse {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.8; }
+    }
+    .lotus-breath-anim { animation: lotusPulse 8s ease-in-out infinite; }
+
+    /* Dark Mode variables */
+    body.dark-mode {
+      background: linear-gradient(180deg, #090e17 0%, #0d1527 50%, #05080f 100%);
+      color: #f1f5f9;
+    }
+    body.dark-mode .card-box {
+      background-color: rgba(15, 23, 42, 0.85);
+      border-color: rgba(245, 158, 11, 0.25);
+      color: #f1f5f9;
+    }
+    body.dark-mode .nav-bar-bg {
+      background-color: rgba(15, 23, 42, 0.95);
+      border-color: rgba(245, 158, 11, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-slate-50 via-white to-amber-50/40 min-h-screen text-slate-800 flex flex-col font-sans antialiased transition-colors duration-300">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="nav-bar-bg sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-200/80 shadow-xs px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+      <a href="/" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-black shadow-2xs transition active:scale-95 flex items-center gap-1.5 shrink-0" title="Trở về Trang Chủ Lịch Đất Phú">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span class="hidden sm:inline">Về Lịch Đất Phú</span>
+      </a>
+
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 text-white flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0 border border-amber-300">
+          <i class="fa-solid fa-radio text-base sm:text-lg"></i>
+        </div>
+        <div class="min-w-0">
+          <h1 class="text-xs sm:text-sm md:text-base font-black text-amber-950 uppercase tracking-wide truncate">
+            TRUNG TÂM GIẢI TRÍ & VĂN HÓA ĐẤT PHÚ
+          </h1>
+          <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate hidden sm:block">Radio Quê Hương • Rạp Chiếu 4K • Niệm Phật Số • Trị Liệu & Thiền Định</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 shrink-0">
+      <!-- Nút đổi nền Sáng / Tối -->
+      <button onclick="toggleGiaiTriTheme()" id="btnThemeToggle" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition active:scale-95" title="Đổi màu nền ngày / đêm">
+        <i id="themeToggleIcon" class="fa-solid fa-moon text-amber-600"></i>
+      </button>
+
+      <!-- Nút sang trang Khí tượng -->
+      <a href="/thoi-tiet" class="px-2.5 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 text-xs font-bold shadow-2xs transition active:scale-95 flex items-center gap-1.5">
+        <i class="fa-solid fa-cloud-sun-rain text-sky-600"></i>
+        <span class="hidden sm:inline">Khí Tượng</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= MASTER CHANNELS DOCK ================= -->
+  <div class="sticky top-[53px] sm:top-[57px] z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-2xs py-2 px-3 sm:px-6">
+    <div class="max-w-4xl mx-auto flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar text-xs font-black">
+      <button onclick="switchChannel('radio')" id="tabBtn_radio" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-sm shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+        <i class="fa-solid fa-radio"></i>
+        <span>Đài Radio & Bài Chòi</span>
+      </button>
+
+      <button onclick="switchChannel('art')" id="tabBtn_art" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+        <i class="fa-solid fa-film text-rose-500"></i>
+        <span>Rạp Chiếu 4K</span>
+      </button>
+
+      <button onclick="switchChannel('buddhist')" id="tabBtn_buddhist" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+        <i class="fa-solid fa-dharmachakra text-amber-600"></i>
+        <span>Máy Niệm Phật Số</span>
+      </button>
+
+      <button onclick="switchChannel('healing')" id="tabBtn_healing" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+        <i class="fa-solid fa-spa text-teal-600"></i>
+        <span>Trị Liệu & Tiếng Mưa</span>
+      </button>
+
+      <button onclick="switchChannel('mindful')" id="tabBtn_mindful" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+        <i class="fa-solid fa-ring text-indigo-600"></i>
+        <span>Thiền Thở & Chuỗi Hạt</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main class="flex-1 max-w-4xl w-full mx-auto p-3 sm:p-5 space-y-4">
+
+    <!-- ============================================================ -->
+    <!-- PHÂN HỆ 1: ĐÀI RADIO & HÔ BÀI CHÒI XỨ NẪU                     -->
+    <!-- ============================================================ -->
+    <section id="channelSection_radio" class="space-y-4">
+      <!-- MASTER PLAYER CARD -->
+      <div class="card-box p-4 sm:p-6 rounded-3xl bg-white border border-amber-200 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+          <!-- Đĩa hát quay hoặc Badge nhạc -->
+          <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 p-1 shadow-lg shrink-0 flex items-center justify-center text-white">
+            <div class="w-full h-full rounded-xl bg-slate-900/40 backdrop-blur-xs flex flex-col items-center justify-center text-center p-2">
+              <i id="radioPlayerDiscIcon" class="fa-solid fa-music text-3xl text-amber-200"></i>
+              <div id="radioEqualizerBox" class="flex items-end gap-1 h-4 mt-2 hidden">
+                <span class="w-1 bg-amber-300 rounded-full eq-bar-anim" style="animation-delay: 0.1s;"></span>
+                <span class="w-1 bg-amber-300 rounded-full eq-bar-anim" style="animation-delay: 0.3s;"></span>
+                <span class="w-1 bg-amber-300 rounded-full eq-bar-anim" style="animation-delay: 0.5s;"></span>
+                <span class="w-1 bg-amber-300 rounded-full eq-bar-anim" style="animation-delay: 0.2s;"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Thông tin bài đang phát -->
+          <div class="flex-1 text-center sm:text-left min-w-0 space-y-1">
+            <span id="radioCurrentCatBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 uppercase">
+              Dân Ca & Bài Chòi
+            </span>
+            <h2 id="radioCurrentTrackTitle" class="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug">
+              Hô Bài Chòi Xứ Nẫu: Hội Xuân Đất Phú
+            </h2>
+            <p id="radioCurrentTrackArtist" class="text-xs text-slate-500 font-medium">
+              Đoàn Nghệ Thuật Dân Gian Miền Trung
+            </p>
+            <p id="radioCurrentTrackDesc" class="text-[11px] text-amber-900/80 italic pt-1 line-clamp-2">
+              "Tiếng hô giòn giã mở đầu ngày hội làng, thắm đượm tình làng nghĩa xóm."
+            </p>
+          </div>
+        </div>
+
+        <!-- BỘ NÚT ĐIỀU KHIỂN PHÁT NHẠC -->
+        <div class="flex items-center justify-between border-t border-slate-100 pt-3">
+          <button id="radioRepeatBtn" onclick="toggleRadioRepeatMode()" class="p-2 sm:px-3 sm:py-1.5 rounded-xl text-slate-600 hover:text-slate-900 text-xs font-bold transition flex items-center gap-1.5" title="Chế độ phát">
+            <i id="radioRepeatIcon" class="fa-solid fa-repeat text-amber-600"></i>
+            <span id="radioRepeatText" class="hidden sm:inline">Liên tục</span>
+          </button>
+
+          <div class="flex items-center gap-2 sm:gap-3">
+            <button onclick="playPrevRadioTrack()" class="w-10 h-10 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition active:scale-95" title="Bài trước">
+              <i class="fa-solid fa-backward-step"></i>
+            </button>
+
+            <button onclick="toggleRadioPlay()" id="radioMasterPlayBtn" class="w-14 h-14 rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-600 hover:to-rose-700 text-white flex items-center justify-center shadow-lg shadow-amber-500/30 transition transform active:scale-95" title="Phát / Dừng">
+              <i id="radioMasterPlayIcon" class="fa-solid fa-play text-xl ml-0.5"></i>
+            </button>
+
+            <button onclick="playNextRadioTrack()" class="w-10 h-10 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition active:scale-95" title="Bài kế tiếp">
+              <i class="fa-solid fa-forward-step"></i>
+            </button>
+          </div>
+
+          <div class="relative">
+            <button onclick="toggleRadioSleepDropdown()" id="radioSleepBtn" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-1.5" title="Hẹn giờ tắt">
+              <i class="fa-solid fa-moon text-indigo-500"></i>
+              <span id="radioSleepText" class="hidden sm:inline">Hẹn giờ</span>
+            </button>
+            <div id="radioSleepMenu" class="hidden absolute right-0 bottom-full mb-2 w-36 bg-white border border-slate-200 rounded-2xl shadow-xl p-1.5 z-20 space-y-1 text-xs font-bold">
+              <button onclick="setRadioSleepTimer(0)" class="w-full text-left px-3 py-1.5 rounded-xl hover:bg-slate-100 text-slate-700">Tắt hẹn giờ</button>
+              <button onclick="setRadioSleepTimer(15)" class="w-full text-left px-3 py-1.5 rounded-xl hover:bg-slate-100 text-slate-700">Sau 15 phút</button>
+              <button onclick="setRadioSleepTimer(30)" class="w-full text-left px-3 py-1.5 rounded-xl hover:bg-slate-100 text-slate-700">Sau 30 phút</button>
+              <button onclick="setRadioSleepTimer(45)" class="w-full text-left px-3 py-1.5 rounded-xl hover:bg-slate-100 text-slate-700">Sau 45 phút</button>
+              <button onclick="setRadioSleepTimer(60)" class="w-full text-left px-3 py-1.5 rounded-xl hover:bg-slate-100 text-slate-700">Sau 60 phút</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DANH SÁCH BÀI HÁT / KÊNH RADIO -->
+      <div class="card-box bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm space-y-3">
+        <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+          <h3 class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-list-ul text-amber-500"></i>
+            <span>Kho Bản Thu Dân Ca & Đài Phát Thanh</span>
+          </h3>
+          <span id="radioTotalCountBadge" class="text-[11px] font-bold text-slate-500">8 tác phẩm</span>
+        </div>
+
+        <div id="radioPlaylistContainer" class="space-y-2">
+          <!-- Render bằng Javascript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- PHÂN HỆ 2: RẠP CHIẾU NGHỆ THUẬT & DANH THẮNG 4K               -->
+    <!-- ============================================================ -->
+    <section id="channelSection_art" class="space-y-4 hidden">
+      <div class="card-box p-4 sm:p-6 rounded-3xl bg-white border border-rose-200 shadow-xl space-y-4">
+        <!-- KHUNG CHIẾU PHIM 4K & AMBILIGHT -->
+        <div class="relative w-full rounded-2xl overflow-hidden bg-slate-950 aspect-video shadow-2xl group flex items-center justify-center">
+          <img id="artMainImage" src="img/tet_sum_vay_dat_phu.jpg" alt="Danh Thắng Đất Phú" class="w-full h-full object-cover transition-all duration-700" />
+          
+          <!-- Hào quang Ambilight & Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/30 pointer-events-none"></div>
+
+          <!-- Thông tin tranh trên ảnh -->
+          <div class="absolute bottom-3 inset-x-3 sm:bottom-4 sm:inset-x-5 text-white space-y-1 pointer-events-none">
+            <span id="artCategoryBadge" class="px-2.5 py-0.5 rounded-full bg-rose-500 text-[10px] font-black uppercase tracking-wider">
+              Tết Đoàn Viên 4K
+            </span>
+            <h2 id="artTitleText" class="text-sm sm:text-base md:text-lg font-black leading-tight drop-shadow-md">
+              ĐẠI GIA ĐÌNH ĐẤT PHÚ SUM VẦY ĐÓN TẾT CỔ TRUYỀN
+            </h2>
+            <p id="artPoemText" class="text-[11px] sm:text-xs text-amber-200 italic line-clamp-2 drop-shadow">
+              "Con cháu quây quần mừng thọ ông bà, nụ cười rạng rỡ bên phong bao lì xì đỏ..."
+            </p>
+          </div>
+
+          <!-- Nút Prev / Next trên khung chiếu -->
+          <button onclick="changeArtSlide(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-2xl bg-black/50 hover:bg-rose-600 text-white flex items-center justify-center transition active:scale-95" title="Ảnh trước">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button onclick="changeArtSlide(1)" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-2xl bg-black/50 hover:bg-rose-600 text-white flex items-center justify-center transition active:scale-95" title="Ảnh tiếp theo">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <!-- BỘ ĐIỀU KHIỂN CHIẾU SLIDESHOW & TOÀN MÀN HÌNH -->
+        <div class="flex items-center justify-between border-t border-slate-100 pt-3">
+          <div class="flex items-center gap-2">
+            <button onclick="toggleArtSlideshow()" id="btnArtSlideshow" class="px-3.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition flex items-center gap-1.5 active:scale-95">
+              <i id="artSlideshowIcon" class="fa-solid fa-play"></i>
+              <span id="artSlideshowText">Tự Động Chiếu</span>
+            </button>
+            <span id="artCounterBadge" class="text-xs font-bold text-slate-500 px-2 py-1 bg-slate-100 rounded-lg">1 / 9</span>
+          </div>
+
+          <button onclick="toggleArtFullscreen()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 active:scale-95" title="Phóng to toàn màn hình">
+            <i class="fa-solid fa-expand"></i>
+            <span class="hidden sm:inline">Toàn Màn Hình</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- DANH SÁCH BỘ SƯU TẬP ẢNH 4K ĐẤT PHÚ -->
+      <div class="card-box bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm space-y-3">
+        <h3 class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-images text-rose-500"></i>
+          <span>Danh Sách Danh Lam Thắng Cảnh & Di Tích Xứ Nẫu</span>
+        </h3>
+        <div id="artGalleryContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+          <!-- Render danh sách thumbnail ảnh 4K -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- PHÂN HỆ 3: MÁY NIỆM PHẬT SỐ & NHẠC THIỀN MÔN                   -->
+    <!-- ============================================================ -->
+    <section id="channelSection_buddhist" class="space-y-4 hidden">
+      <!-- MÁY NIỆM PHẬT SỐ CONSOLE -->
+      <div class="card-box p-4 sm:p-6 rounded-3xl bg-gradient-to-br from-amber-950 via-slate-900 to-amber-950 text-white shadow-xl space-y-4 border-2 border-amber-500/40">
+        <!-- Đỉnh máy niệm Phật: Màn hình LCD cổ điển -->
+        <div class="p-3.5 rounded-2xl bg-black/60 border border-amber-500/30 flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <span class="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> MÁY NIỆM PHẬT ĐẤT PHÚ
+            </span>
+            <h3 id="buddhistLcdTitle" class="text-sm sm:text-base font-black text-amber-200 truncate mt-0.5">
+              Nam Mô A Di Đà Phật (Thiền Môn Trầm Hùng)
+            </h3>
+          </div>
+          <div class="text-right shrink-0">
+            <span id="buddhistMalaCount" class="text-xl sm:text-2xl font-black font-mono text-amber-300">108</span>
+            <div class="text-[9px] text-amber-200/60 font-bold uppercase">Biến / Niệm</div>
+          </div>
+        </div>
+
+        <!-- BỘ ĐIỀU KHIỂN CHÍNH MÁY NIỆM PHẬT -->
+        <div class="flex items-center justify-between pt-1">
+          <!-- Bật / Tắt Tiếng Mõ Thiền Viện -->
+          <button onclick="toggleBuddhistMetronome()" id="btnBuddhistWoodblock" class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-200 text-xs font-bold transition flex items-center gap-1.5 active:scale-95">
+            <i class="fa-solid fa-drum text-amber-400"></i>
+            <span>Mõ Gỗ: <b id="woodblockStateText">BẬT</b></span>
+          </button>
+
+          <!-- Nút Play Trung Tâm -->
+          <button onclick="toggleBuddhistPlay()" id="btnBuddhistMasterPlay" class="w-14 h-14 rounded-full bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 hover:scale-105 text-slate-950 flex items-center justify-center shadow-lg shadow-amber-400/30 transition active:scale-95 font-black text-xl" title="Phát Niệm Phật">
+            <i id="buddhistMasterPlayIcon" class="fa-solid fa-play ml-0.5"></i>
+          </button>
+
+          <!-- Gõ mõ thủ công 1 lần -->
+          <button onclick="manualHitWoodblock()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-600 text-xs font-bold transition flex items-center gap-1.5 active:scale-95">
+            <i class="fa-solid fa-hand text-amber-400"></i>
+            <span>Gõ Mõ +1</span>
+          </button>
+        </div>
+
+        <!-- PHÍM BẤM SỐ CHỌN BÀI NHANH (0 - 9) -->
+        <div class="pt-2 border-t border-amber-500/20 space-y-2">
+          <div class="flex items-center justify-between text-xs text-amber-200/80 font-bold">
+            <span>Bàn phím chọn bài số:</span>
+            <span id="buddhistKeypadDisplay" class="font-mono text-amber-300 text-sm">--</span>
+          </div>
+          <div class="grid grid-cols-5 gap-1.5 font-mono font-bold text-xs">
+            <button onclick="pressBuddhistDigit(1)" class="py-2 rounded-xl bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 transition">1</button>
+            <button onclick="pressBuddhistDigit(2)" class="py-2 rounded-xl bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 transition">2</button>
+            <button onclick="pressBuddhistDigit(3)" class="py-2 rounded-xl bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 transition">3</button>
+            <button onclick="pressBuddhistDigit(4)" class="py-2 rounded-xl bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 transition">4</button>
+            <button onclick="pressBuddhistDigit(5)" class="py-2 rounded-xl bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 transition">5</button>
+            <button onclick="pressBuddhistDigit(6)" class="py-2 rounded-xl bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 transition">6</button>
+            <button onclick="pressBuddhistDigit(7)" class="py-2 rounded-xl bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 transition">7</button>
+            <button onclick="pressBuddhistDigit(8)" class="py-2 rounded-xl bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 transition">8</button>
+            <button onclick="pressBuddhistDigit(9)" class="py-2 rounded-xl bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 transition">9</button>
+            <button onclick="pressBuddhistDigit(0)" class="py-2 rounded-xl bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 transition">0</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DANH SÁCH BÀI NIỆM PHẬT & KINH CHÚ -->
+      <div class="card-box bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm space-y-3">
+        <h3 class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-dharmachakra text-amber-600"></i>
+          <span>Danh Sách Danh Hiệu Phật & Kinh Chú</span>
+        </h3>
+        <div id="buddhistPlaylistContainer" class="space-y-2">
+          <!-- Render bằng Javascript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- PHÂN HỆ 4: TRỊ LIỆU TẦN SỐ SINH HỌC & TIẾNG MƯA               -->
+    <!-- ============================================================ -->
+    <section id="channelSection_healing" class="space-y-4 hidden">
+      <div class="card-box p-4 sm:p-6 rounded-3xl bg-gradient-to-br from-teal-950 via-slate-900 to-teal-950 text-white shadow-xl space-y-4 border border-teal-500/30">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/40 uppercase">
+              Tần Số Thư Giãn & Trị Liệu
+            </span>
+            <h2 id="healingCurrentTitle" class="text-base sm:text-lg font-black text-white mt-1">
+              Thiền Mưa Tuy Hòa & Chuông Gió Pha Lê (432Hz)
+            </h2>
+          </div>
+          <button onclick="toggleHealingMasterPlay()" id="btnHealingMasterPlay" class="w-13 h-13 rounded-full bg-teal-400 hover:bg-teal-300 text-slate-950 flex items-center justify-center font-black text-xl shadow-lg transition active:scale-95" title="Phát Âm Thanh">
+            <i id="healingMasterPlayIcon" class="fa-solid fa-play ml-0.5"></i>
+          </button>
+        </div>
+
+        <!-- 4 NÚT CHỌN NHANH ÂM THANH TRỊ LIỆU -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+          <button onclick="selectHealingTrack('rain')" id="hBtn_rain" class="p-3 rounded-2xl bg-teal-900/60 border border-teal-400/50 text-left space-y-1 transition active:scale-95">
+            <i class="fa-solid fa-cloud-showers-heavy text-teal-300 text-lg"></i>
+            <div class="text-xs font-black text-white">Thiền Mưa & Gió</div>
+            <div class="text-[10px] text-teal-200/70">Mưa êm Tuy Hòa</div>
+          </button>
+
+          <button onclick="selectHealingTrack('flute')" id="hBtn_flute" class="p-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-left space-y-1 transition active:scale-95">
+            <i class="fa-solid fa-wind text-amber-300 text-lg"></i>
+            <div class="text-xs font-black text-white">Sáo Trúc Đất Phú</div>
+            <div class="text-[10px] text-slate-400">Ngũ cung thanh tịnh</div>
+          </button>
+
+          <button onclick="selectHealingTrack('bowl432')" id="hBtn_bowl432" class="p-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-left space-y-1 transition active:scale-95">
+            <i class="fa-solid fa-bell text-rose-300 text-lg"></i>
+            <div class="text-xs font-black text-white">Chuông Xoay 432Hz</div>
+            <div class="text-[10px] text-slate-400">Sóng an lạc tâm hồn</div>
+          </button>
+
+          <button onclick="selectHealingTrack('ocean')" id="hBtn_ocean" class="p-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-left space-y-1 transition active:scale-95">
+            <i class="fa-solid fa-water text-sky-300 text-lg"></i>
+            <div class="text-xs font-black text-white">Sóng Biển Tuy Hòa</div>
+            <div class="text-[10px] text-slate-400">Gió mát Bãi Môn</div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- PHÂN HỆ 5: THIỀN THỞ ĐÓA SEN 4-7-8 & CHUỖI HẠT CHÁNH NIỆM       -->
+    <!-- ============================================================ -->
+    <section id="channelSection_mindful" class="space-y-4 hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- KHỐI 1: THIỀN THỞ ĐÓA SEN 4-7-8 -->
+        <div class="card-box bg-white border border-rose-200 rounded-3xl p-5 shadow-md flex flex-col items-center text-center space-y-3">
+          <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-300 uppercase">
+            Điều Hòa Hơi Thở 4-7-8
+          </span>
+          <h3 class="text-sm font-black text-slate-800">Thiền Thở Đóa Sen Chánh Niệm</h3>
+          <p class="text-[11px] text-slate-500 max-w-xs">Hít vào 4 giây • Nín thở 7 giây • Thở ra từ tốn 8 giây giúp xua tan căng thẳng.</p>
+
+          <!-- Vòng tròn đóa sen thở -->
+          <div class="relative w-44 h-44 flex items-center justify-center my-2">
+            <div id="lotusPulseCircle" class="absolute inset-0 rounded-full bg-gradient-to-tr from-rose-400/20 via-pink-300/30 to-amber-200/40 border-2 border-rose-400/60 lotus-breath-anim"></div>
+            <div class="relative z-10 flex flex-col items-center justify-center">
+              <i class="fa-solid fa-spa text-3xl text-rose-500 mb-1"></i>
+              <span id="breathPhaseText" class="text-sm font-black text-rose-700 uppercase">Hít Vào</span>
+              <span id="breathCountdown" class="text-2xl font-black font-mono text-slate-800">4s</span>
+            </div>
+          </div>
+
+          <button onclick="toggleBreathPractice()" id="btnToggleBreath" class="px-5 py-2 rounded-2xl bg-rose-500 hover:bg-rose-600 text-white font-black text-xs shadow-md transition active:scale-95">
+            Bắt Đầu Luyện Thở
+          </button>
+        </div>
+
+        <!-- KHỐI 2: ĐẾM HẠT BỒ ĐỀ CHÁNH NIỆM 108 HẠT -->
+        <div class="card-box bg-white border border-amber-200 rounded-3xl p-5 shadow-md flex flex-col items-center text-center space-y-3">
+          <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 uppercase">
+            Digital Mala Beads
+          </span>
+          <h3 class="text-sm font-black text-slate-800">Chuỗi Hạt Chánh Niệm 108 Hạt</h3>
+          <p class="text-[11px] text-slate-500 max-w-xs">Mỗi lần chạm chuỗi hạt là một lời chúc an lành hoặc một câu niệm thanh tịnh.</p>
+
+          <!-- Nút đếm hạt lớn -->
+          <div class="my-2">
+            <button onclick="countMalaBead()" class="w-36 h-36 rounded-full bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 text-amber-100 border-4 border-amber-400 shadow-xl flex flex-col items-center justify-center transition transform active:scale-90 hover:scale-102">
+              <span class="text-[10px] uppercase font-bold text-amber-300">Chạm để đếm</span>
+              <span id="malaMainCounter" class="text-4xl font-black font-mono my-0.5">0</span>
+              <span class="text-[10px] text-amber-200/80">/ 108 Hạt</span>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="resetMalaCount()" class="px-3 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition">
+              Đặt Lại 0
+            </button>
+            <span id="malaCompletedRounds" class="text-xs font-bold text-amber-800">Đã xong: 0 vòng</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white/80 border-t border-slate-200 py-4 px-3 text-center text-xs text-slate-500 font-medium">
+    <p>TRUNG TÂM GIẢI TRÍ & VĂN HÓA DÂN SINH • LỊCH ĐẤT PHÚ</p>
+    <p class="text-[11px] text-slate-400 mt-0.5">Bản quyền nội dung thuộc về Nhân dân Đất Phú • Tải siêu tốc & Không tốn pin</p>
+  </footer>
+
+  <!-- ================= AUDIO ENGINE & JAVASCRIPT LOGIC ================= -->
+  <script>
+    // 1. CHUYỂN ĐỔI KÊNH (TABS ROUTING)
+    let currentChannel = 'radio';
+
+    function switchChannel(channel) {
+      currentChannel = channel;
+      const channels = ['radio', 'art', 'buddhist', 'healing', 'mindful'];
+      
+      channels.forEach(ch => {
+        const sec = document.getElementById('channelSection_' + ch);
+        const btn = document.getElementById('tabBtn_' + ch);
+        if (sec) {
+          if (ch === channel) sec.classList.remove('hidden');
+          else sec.classList.add('hidden');
+        }
+        if (btn) {
+          if (ch === channel) {
+            btn.className = "px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-sm shrink-0 flex items-center gap-1.5 active:scale-95 transition font-black";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition font-bold";
+          }
+        }
+      });
+    }
+
+    // 2. KHO DỮ LIỆU BÀI HÁT / RADIO
+    const RADIO_PLAYLIST = [
+      {
+        id: 1,
+        title: "Hô Bài Chòi Xứ Nẫu: Hội Xuân Đất Phú",
+        artist: "Nghệ Nhân Dân Gian Phú Yên",
+        category: "Dân Ca & Bài Chòi",
+        desc: "Tiếng hô giòn giã rộn rã đầu xuân, đưa bà con trở về không khí hội làng truyền thống.",
+        synth: "pentatonic_fast"
+      },
+      {
+        id: 2,
+        title: "Dân Ca Nam Trung Bộ: Hò Ba Lý Sông Ba",
+        artist: "Đoàn Ca Múa Dân Gian Đất Phú",
+        category: "Dân Ca & Bài Chòi",
+        desc: "Điệu hò khoan chở nặng ân tình của dòng sông mẹ tưới mát vựa lúa Tuy Hòa.",
+        synth: "pentatonic_slow"
+      },
+      {
+        id: 3,
+        title: "Radio Viễn Xứ: Tiếng Mưa Đêm & Nỗi Niềm Đất Mẹ",
+        artist: "Đất Phú Radio • Tản Văn Đêm",
+        category: "Radio Viễn Xứ",
+        desc: "Lời tâm tình gửi gắm đến những người con Đất Phú xa quê đang mưu sinh nơi phố thị.",
+        synth: "rain_radio"
+      },
+      {
+        id: 4,
+        title: "Hát Ru Xứ Nẫu: Ví Dầu Cầu Ván Đóng Đinh",
+        artist: "Mẹ Đất Phú • Giọng Ru Cổ",
+        category: "Dân Ca & Bài Chòi",
+        desc: "Giai điệu ru con ngọt ngào nâng niu giấc ngủ thanh bình bên bờ tre gốc lúa.",
+        synth: "lullaby"
+      },
+      {
+        id: 5,
+        title: "Ngâm Thơ: Sông Đà Rằng Trôi Về Đâu",
+        artist: "Thi Quán Đất Phú",
+        category: "Thơ Ca Xứ Nẫu",
+        desc: "Bản ngâm thơ lục bát mộc mạc lắng đọng hồn thiêng non nước.",
+        synth: "poem"
+      },
+      {
+        id: 6,
+        title: "Đài Tiếng Nói Đất Phú: Bản Tin Nông Dân Sáng",
+        artist: "Ban Tuyên Truyền Dân Sinh",
+        category: "Radio Viễn Xứ",
+        desc: "Thông tin thời tiết mùa vụ, kinh nghiệm làm nông và giá cả nông sản.",
+        synth: "news_radio"
+      }
+    ];
+
+    let currentRadioIdx = 0;
+    let isRadioPlaying = false;
+    let radioAudioContext = null;
+    let radioSynthTimer = null;
+    let radioSleepTimeout = null;
+
+    function renderRadioPlaylist() {
+      const c = document.getElementById('radioPlaylistContainer');
+      if (!c) return;
+      c.innerHTML = RADIO_PLAYLIST.map((t, idx) => {
+        const isCurrent = (idx === currentRadioIdx);
+        return `
+          <div onclick="selectRadioTrack(${idx})" class="p-3 rounded-2xl cursor-pointer transition flex items-center justify-between gap-3 ${isCurrent ? 'bg-amber-50 border border-amber-300' : 'bg-slate-50/70 hover:bg-slate-100 border border-transparent'}">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="w-7 h-7 rounded-xl flex items-center justify-center font-mono font-bold text-xs ${isCurrent ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600'}">
+                ${idx + 1}
+              </span>
+              <div class="min-w-0">
+                <h4 class="text-xs sm:text-sm font-bold text-slate-800 truncate ${isCurrent ? 'text-amber-900 font-black' : ''}">${t.title}</h4>
+                <p class="text-[11px] text-slate-500 truncate">${t.artist}</p>
+              </div>
+            </div>
+            <div class="shrink-0 flex items-center gap-2">
+              <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 hidden sm:inline">${t.category}</span>
+              ${isCurrent && isRadioPlaying ? '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>' : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectRadioTrack(idx) {
+      currentRadioIdx = idx;
+      const track = RADIO_PLAYLIST[idx];
+      document.getElementById('radioCurrentTrackTitle').innerText = track.title;
+      document.getElementById('radioCurrentTrackArtist').innerText = track.artist;
+      document.getElementById('radioCurrentTrackDesc').innerText = '"' + track.desc + '"';
+      document.getElementById('radioCurrentCatBadge').innerText = track.category;
+      playRadioSynth();
+      renderRadioPlaylist();
+    }
+
+    function toggleRadioPlay() {
+      if (isRadioPlaying) {
+        stopRadioSynth();
+      } else {
+        playRadioSynth();
+      }
+    }
+
+    function playNextRadioTrack() {
+      currentRadioIdx = (currentRadioIdx + 1) % RADIO_PLAYLIST.length;
+      selectRadioTrack(currentRadioIdx);
+    }
+
+    function playPrevRadioTrack() {
+      currentRadioIdx = (currentRadioIdx - 1 + RADIO_PLAYLIST.length) % RADIO_PLAYLIST.length;
+      selectRadioTrack(currentRadioIdx);
+    }
+
+    function playRadioSynth() {
+      stopRadioSynth();
+      isRadioPlaying = true;
+      document.getElementById('radioMasterPlayIcon').className = "fa-solid fa-pause text-xl";
+      document.getElementById('radioEqualizerBox').classList.remove('hidden');
+      renderRadioPlaylist();
+
+      try {
+        if (!radioAudioContext) {
+          radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (radioAudioContext.state === 'suspended') {
+          radioAudioContext.resume();
+        }
+
+        // Tần số ngũ cung Việt Nam (Hò, Xự, Xang, Xê, Cống)
+        const notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
+        let noteStep = 0;
+
+        radioSynthTimer = setInterval(() => {
+          if (!isRadioPlaying || !radioAudioContext) return;
+          const osc = radioAudioContext.createOscillator();
+          const gain = radioAudioContext.createGain();
+          
+          const freq = notes[noteStep % notes.length];
+          noteStep++;
+
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, radioAudioContext.currentTime);
+
+          gain.gain.setValueAtTime(0.001, radioAudioContext.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.12, radioAudioContext.currentTime + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.0001, radioAudioContext.currentTime + 0.7);
+
+          osc.connect(gain);
+          gain.connect(radioAudioContext.destination);
+
+          osc.start();
+          osc.stop(radioAudioContext.currentTime + 0.75);
+        }, 550);
+
+      } catch(e) {
+        console.warn('AudioContext failed:', e);
+      }
+    }
+
+    function stopRadioSynth() {
+      isRadioPlaying = false;
+      if (radioSynthTimer) {
+        clearInterval(radioSynthTimer);
+        radioSynthTimer = null;
+      }
+      document.getElementById('radioMasterPlayIcon').className = "fa-solid fa-play text-xl ml-0.5";
+      document.getElementById('radioEqualizerBox').classList.add('hidden');
+      renderRadioPlaylist();
+    }
+
+    function toggleRadioSleepDropdown() {
+      const menu = document.getElementById('radioSleepMenu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function setRadioSleepTimer(minutes) {
+      toggleRadioSleepDropdown();
+      if (radioSleepTimeout) clearTimeout(radioSleepTimeout);
+      const text = document.getElementById('radioSleepText');
+
+      if (minutes === 0) {
+        if (text) text.innerText = "Hẹn giờ";
+        return;
+      }
+
+      if (text) text.innerText = minutes + " phút";
+      radioSleepTimeout = setTimeout(() => {
+        stopRadioSynth();
+        if (text) text.innerText = "Hẹn giờ";
+        alert("Đã hoàn tất thời gian hẹn giờ nghe đài. Chúc bạn giấc ngủ an lành!");
+      }, minutes * 60 * 1000);
+    }
+
+    // 3. KHO DỮ LIỆU RẠP CHIẾU 4K & NGHỆ THUẬT ĐẤT PHÚ
+    const ARTWORKS_DATA = [
+      {
+        title: "ĐẠI GIA ĐÌNH ĐẤT PHÚ SUM VẦY ĐÓN TẾT CỔ TRUYỀN",
+        category: "Tết Đoàn Viên 4K",
+        poem: "Con cháu quây quần mừng thọ ông bà, nụ cười rạng rỡ bên phong bao lì xì đỏ...",
+        img: "img/tet_sum_vay_dat_phu.jpg"
+      },
+      {
+        title: "TÌNH THƯƠNG & LÒNG NHÂN ÁI ĐẤT PHÚ",
+        category: "Nhân Ái Dân Sinh",
+        poem: "Bát cơm nghĩa tình, nụ cười hồn hậu xua tan mệt nhọc trên bước đường quê hương.",
+        img: "img/tinh_thuong_nhan_ai_4k.jpg"
+      },
+      {
+        title: "NỤ CƯỜI RẠNG RỠ CỦA NGƯỜI THỢ XÂY ĐẤT PHÚ",
+        category: "Nụ Cười Lao Động",
+        poem: "Chung sức chung lòng đẩy xe vữa nặng nghĩa tình, mồ hôi ướt đẫm nhưng nụ cười hồn hậu thắp sáng cả công trình.",
+        img: "img/lao_dong_nu_cuoi_cong_trinh.jpg"
+      },
+      {
+        title: "ĐỔ MÓNG CÔNG TRÌNH TRÊN ĐỈNH ĐỒI CAO XỨ NẪU",
+        category: "Kiến Thiết Non Sông",
+        poem: "Cốt thép vững chãi, móng sâu dựng xây tương lai kiên cố nhìn ra thung lũng mây trắng.",
+        img: "img/lao_dong_mong_cong_trinh.jpg"
+      },
+      {
+        title: "TỶ MỶ TỪNG VIÊN ĐÁ LÁT NỀN KHUÔN VIÊN DI TÍCH",
+        category: "Bàn Tay Tài Hoa",
+        poem: "Bàn tay chai sạn nắn nót từng phiến đá tự nhiên làm đẹp cảnh sắc tôn nghiêm quê nhà.",
+        img: "img/lao_dong_lat_da_san_chua.jpg"
+      },
+      {
+        title: "ÁNH ĐÈN ĐÊM TRÙNG TU CHỐN TỔ ĐÌNH THANH TỊNH",
+        category: "Công Đức Thiền Môn",
+        poem: "Giàn giáo vươn cao trong đêm tĩnh mịch, che chở Phật tử thập phương.",
+        img: "img/tu_bo_chua_co_dem_1.jpg"
+      },
+      {
+        title: "GÀNH ĐÁ ĐĨA - KỲ QUAN TRIỆU NĂM BIỂN ĐÔNG",
+        category: "Danh Thắng Quốc Gia",
+        poem: "Trăm ngàn cột đá bazan lục lăng đen tuyền xếp tầng kiên cường trước sóng đại dương.",
+        img: "img/lotus_lagoon_sky_noon.jpg"
+      },
+      {
+        title: "HẢI ĐĂNG MŨI ĐIỆN - ĐÓN ÁNH BÌNH MINH ĐẦU TIÊN",
+        category: "Địa Đầu Tổ Quốc",
+        poem: "Ngọn hải đăng đứng sừng sững đón tia nắng sớm đầu tiên soi sáng biển khơi.",
+        img: "img/lotus_lagoon_real_dawn.jpg"
+      }
+    ];
+
+    let currentArtIdx = 0;
+    let artSlideshowTimer = null;
+
+    function renderArtGallery() {
+      const c = document.getElementById('artGalleryContainer');
+      if (!c) return;
+      c.innerHTML = ARTWORKS_DATA.map((art, idx) => {
+        return `
+          <div onclick="selectArtSlide(${idx})" class="group cursor-pointer rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 aspect-video relative shadow-xs hover:shadow-md transition">
+            <img src="${art.img}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition"></div>
+            <div class="absolute bottom-1.5 inset-x-2 text-[10px] font-bold text-white truncate drop-shadow">
+              ${art.category}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectArtSlide(idx) {
+      currentArtIdx = idx;
+      const art = ARTWORKS_DATA[idx];
+      document.getElementById('artMainImage').src = art.img;
+      document.getElementById('artTitleText').innerText = art.title;
+      document.getElementById('artCategoryBadge').innerText = art.category;
+      document.getElementById('artPoemText').innerText = '"' + art.poem + '"';
+      document.getElementById('artCounterBadge').innerText = (idx + 1) + ' / ' + ARTWORKS_DATA.length;
+    }
+
+    function changeArtSlide(delta) {
+      currentArtIdx = (currentArtIdx + delta + ARTWORKS_DATA.length) % ARTWORKS_DATA.length;
+      selectArtSlide(currentArtIdx);
+    }
+
+    function toggleArtSlideshow() {
+      if (artSlideshowTimer) {
+        clearInterval(artSlideshowTimer);
+        artSlideshowTimer = null;
+        document.getElementById('artSlideshowIcon').className = "fa-solid fa-play";
+        document.getElementById('artSlideshowText').innerText = "Tự Động Chiếu";
+      } else {
+        document.getElementById('artSlideshowIcon').className = "fa-solid fa-pause";
+        document.getElementById('artSlideshowText').innerText = "Dừng Chiếu";
+        artSlideshowTimer = setInterval(() => {
+          changeArtSlide(1);
+        }, 5000);
+      }
+    }
+
+    function toggleArtFullscreen() {
+      const el = document.getElementById('artMainImage');
+      if (el) {
+        if (!document.fullscreenElement) {
+          el.requestFullscreen().catch(err => alert("Không hỗ trợ toàn màn hình"));
+        } else {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // 4. MÁY NIỆM PHẬT SỐ & TIẾNG MÕ
+    const BUDDHIST_CHENTS = [
+      { id: 1, title: "Nam Mô A Di Đà Phật (Thiền Môn Trầm Hùng)", freq: 432 },
+      { id: 2, title: "Nam Mô Quán Thế Âm Bồ Tát (Từ Bi Cứu Khổ)", freq: 528 },
+      { id: 3, title: "Kinh Chú Đại Bi 84 Câu (Thanh Tịnh Tâm Hồn)", freq: 396 },
+      { id: 4, title: "Nam Mô Bổn Sư Thích Ca Mâu Ni Phật", freq: 432 },
+      { id: 5, title: "Nam Mô Địa Tạng Vương Bồ Tát (Hiếu Nghĩa Thâm Sâu)", freq: 432 },
+      { id: 6, title: "Chú Vãng Sanh Tịnh Độ (An Lành Cực Lạc)", freq: 528 }
+    ];
+
+    let currentBuddhistIdx = 0;
+    let isBuddhistPlaying = false;
+    let isWoodblockActive = true;
+    let woodblockTimer = null;
+    let buddhistCount = 108;
+
+    function renderBuddhistPlaylist() {
+      const c = document.getElementById('buddhistPlaylistContainer');
+      if (!c) return;
+      c.innerHTML = BUDDHIST_CHENTS.map((item, idx) => {
+        const isCurrent = (idx === currentBuddhistIdx);
+        return `
+          <div onclick="selectBuddhistTrack(${idx})" class="p-3 rounded-2xl cursor-pointer transition flex items-center justify-between gap-3 ${isCurrent ? 'bg-amber-50 border border-amber-300' : 'bg-slate-50 hover:bg-slate-100 border border-transparent'}">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-800 font-mono font-bold text-xs flex items-center justify-center">${idx + 1}</span>
+              <h4 class="text-xs sm:text-sm font-bold text-slate-800 truncate ${isCurrent ? 'text-amber-900 font-black' : ''}">${item.title}</h4>
+            </div>
+            <span class="text-[10px] text-amber-700 font-bold">${item.freq}Hz</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectBuddhistTrack(idx) {
+      currentBuddhistIdx = idx;
+      document.getElementById('buddhistLcdTitle').innerText = BUDDHIST_CHENTS[idx].title;
+      renderBuddhistPlaylist();
+    }
+
+    function toggleBuddhistPlay() {
+      if (isBuddhistPlaying) {
+        isBuddhistPlaying = false;
+        clearInterval(woodblockTimer);
+        woodblockTimer = null;
+        document.getElementById('buddhistMasterPlayIcon').className = "fa-solid fa-play ml-0.5";
+      } else {
+        isBuddhistPlaying = true;
+        document.getElementById('buddhistMasterPlayIcon').className = "fa-solid fa-pause ml-0";
+        if (isWoodblockActive) {
+          startWoodblockLoop();
+        }
+      }
+    }
+
+    function toggleBuddhistMetronome() {
+      isWoodblockActive = !isWoodblockActive;
+      document.getElementById('woodblockStateText').innerText = isWoodblockActive ? "BẬT" : "TẮT";
+      if (!isWoodblockActive && woodblockTimer) {
+        clearInterval(woodblockTimer);
+        woodblockTimer = null;
+      } else if (isWoodblockActive && isBuddhistPlaying) {
+        startWoodblockLoop();
+      }
+    }
+
+    function startWoodblockLoop() {
+      if (woodblockTimer) clearInterval(woodblockTimer);
+      woodblockTimer = setInterval(() => {
+        manualHitWoodblock();
+      }, 1200);
+    }
+
+    function manualHitWoodblock() {
+      buddhistCount++;
+      document.getElementById('buddhistMalaCount').innerText = buddhistCount;
+      playWoodblockSound();
+    }
+
+    function playWoodblockSound() {
+      try {
+        if (!radioAudioContext) {
+          radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (radioAudioContext.state === 'suspended') {
+          radioAudioContext.resume();
+        }
+
+        const osc = radioAudioContext.createOscillator();
+        const gain = radioAudioContext.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(800, radioAudioContext.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(320, radioAudioContext.currentTime + 0.08);
+
+        gain.gain.setValueAtTime(0.4, radioAudioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, radioAudioContext.currentTime + 0.12);
+
+        osc.connect(gain);
+        gain.connect(radioAudioContext.destination);
+
+        osc.start();
+        osc.stop(radioAudioContext.currentTime + 0.15);
+      } catch(e) {}
+    }
+
+    function pressBuddhistDigit(digit) {
+      document.getElementById('buddhistKeypadDisplay').innerText = digit;
+      const targetIdx = digit - 1;
+      if (targetIdx >= 0 && targetIdx < BUDDHIST_CHENTS.length) {
+        selectBuddhistTrack(targetIdx);
+      }
+    }
+
+    // 5. TRỊ LIỆU TẦN SỐ & TIẾNG MƯA
+    let currentHealingTrack = 'rain';
+    let isHealingPlaying = false;
+    let healingTimer = null;
+
+    function selectHealingTrack(type) {
+      currentHealingTrack = type;
+      const titles = {
+        rain: "Thiền Mưa Tuy Hòa & Chuông Gió Pha Lê (432Hz)",
+        flute: "Sáo Trúc Đất Phú & Thiền Trà Ngũ Cung",
+        bowl432: "Chuông Xoay Tây Tạng Solfeggio 432Hz An Lạc",
+        ocean: "Tiếng Sóng Biển Tuy Hòa Gầm Ru Êm Dịu"
+      };
+      document.getElementById('healingCurrentTitle').innerText = titles[type] || "Âm Thanh Trị Liệu";
+      if (isHealingPlaying) {
+        playHealingSynth();
+      }
+    }
+
+    function toggleHealingMasterPlay() {
+      if (isHealingPlaying) {
+        stopHealingSynth();
+      } else {
+        playHealingSynth();
+      }
+    }
+
+    function playHealingSynth() {
+      stopHealingSynth();
+      isHealingPlaying = true;
+      document.getElementById('healingMasterPlayIcon').className = "fa-solid fa-pause ml-0";
+
+      try {
+        if (!radioAudioContext) {
+          radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (radioAudioContext.state === 'suspended') radioAudioContext.resume();
+
+        // Phát tần số chuông xoay
+        const targetFreq = (currentHealingTrack === 'bowl432') ? 432 : 528;
+        
+        healingTimer = setInterval(() => {
+          if (!isHealingPlaying || !radioAudioContext) return;
+          const osc = radioAudioContext.createOscillator();
+          const gain = radioAudioContext.createGain();
+
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(targetFreq, radioAudioContext.currentTime);
+
+          gain.gain.setValueAtTime(0.001, radioAudioContext.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.15, radioAudioContext.currentTime + 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.0001, radioAudioContext.currentTime + 2.5);
+
+          osc.connect(gain);
+          gain.connect(radioAudioContext.destination);
+
+          osc.start();
+          osc.stop(radioAudioContext.currentTime + 2.6);
+        }, 3000);
+
+      } catch(e) {}
+    }
+
+    function stopHealingSynth() {
+      isHealingPlaying = false;
+      if (healingTimer) {
+        clearInterval(healingTimer);
+        healingTimer = null;
+      }
+      document.getElementById('healingMasterPlayIcon').className = "fa-solid fa-play ml-0.5";
+    }
+
+    // 6. THIỀN THỞ ĐÓA SEN 4-7-8 & ĐẾM HẠT 108
+    let isBreathingActive = false;
+    let breathTimer = null;
+    let breathPhase = 'inhale'; // inhale (4), hold (7), exhale (8)
+    let breathCounter = 4;
+
+    function toggleBreathPractice() {
+      const btn = document.getElementById('btnToggleBreath');
+      if (isBreathingActive) {
+        isBreathingActive = false;
+        clearInterval(breathTimer);
+        breathTimer = null;
+        if (btn) btn.innerText = "Bắt Đầu Luyện Thở";
+        document.getElementById('breathPhaseText').innerText = "Nghỉ Ngơi";
+        document.getElementById('breathCountdown').innerText = "--";
+      } else {
+        isBreathingActive = true;
+        if (btn) btn.innerText = "Dừng Luyện Thở";
+        breathPhase = 'inhale';
+        breathCounter = 4;
+        updateBreathUI();
+
+        breathTimer = setInterval(() => {
+          breathCounter--;
+          if (breathCounter <= 0) {
+            if (breathPhase === 'inhale') {
+              breathPhase = 'hold';
+              breathCounter = 7;
+            } else if (breathPhase === 'hold') {
+              breathPhase = 'exhale';
+              breathCounter = 8;
+            } else {
+              breathPhase = 'inhale';
+              breathCounter = 4;
+            }
+          }
+          updateBreathUI();
+        }, 1000);
+      }
+    }
+
+    function updateBreathUI() {
+      const phaseMap = {
+        inhale: { label: "HÍT VÀO TỪ TỐN", color: "text-emerald-600" },
+        hold: { label: "NÍN THỞ TĨNH TÂM", color: "text-amber-600" },
+        exhale: { label: "THỞ RA NHẸ NHÀNG", color: "text-rose-600" }
+      };
+      const info = phaseMap[breathPhase];
+      const phaseEl = document.getElementById('breathPhaseText');
+      if (phaseEl) {
+        phaseEl.innerText = info.label;
+        phaseEl.className = "text-sm font-black uppercase " + info.color;
+      }
+      const countEl = document.getElementById('breathCountdown');
+      if (countEl) countEl.innerText = breathCounter + "s";
+    }
+
+    // ĐẾM HẠT CHUỖI MALA 108 HẠT
+    let malaBeadCount = 0;
+    let malaRounds = 0;
+
+    function countMalaBead() {
+      malaBeadCount++;
+      if (malaBeadCount >= 108) {
+        malaBeadCount = 0;
+        malaRounds++;
+        document.getElementById('malaCompletedRounds').innerText = "Đã xong: " + malaRounds + " vòng";
+        alert("Chúc mừng bạn đã hoàn thành trọn vẹn 1 chuỗi 108 hạt chánh niệm!");
+      }
+      document.getElementById('malaMainCounter').innerText = malaBeadCount;
+      playWoodblockSound();
+    }
+
+    function resetMalaCount() {
+      malaBeadCount = 0;
+      document.getElementById('malaMainCounter').innerText = "0";
+    }
+
+    // ĐỔI GIAO DIỆN SÁNG / TỐI
+    function toggleGiaiTriTheme() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      const icon = document.getElementById('themeToggleIcon');
+      if (icon) {
+        icon.className = isDark ? "fa-solid fa-sun text-yellow-400" : "fa-solid fa-moon text-amber-600";
+      }
+    }
+
+    // KHỞI TẠO GIAO DIỆN
+    window.addEventListener('DOMContentLoaded', () => {
+      renderRadioPlaylist();
+      renderArtGallery();
+      renderBuddhistPlaylist();
+    });
+  </script>
+</body>
+</html>
