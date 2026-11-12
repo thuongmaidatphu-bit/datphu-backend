@@ -430,6 +430,55 @@
           </button>
         </div>
 
+        
+        <!-- BẢNG ĐIỀU KHIỂN NÂNG CAO: TỐC ĐỘ, CHUÔNG ĐỒNG & CÔNG ĐỨC TÍCH LŨY -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-xs">
+          <!-- Tốc độ niệm -->
+          <div class="p-2.5 rounded-2xl bg-black/40 border border-amber-500/20 flex flex-col justify-between">
+            <span class="text-[10px] text-amber-200/70 font-bold uppercase">Nhịp Tụng Niệm:</span>
+            <div class="flex items-center gap-1 mt-1">
+              <button onclick="setBuddhistSpeed(1.2)" id="bSpeed_1" class="flex-1 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[10px] transition">x1.0</button>
+              <button onclick="setBuddhistSpeed(0.9)" id="bSpeed_2" class="flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[10px] transition">x1.3</button>
+              <button onclick="setBuddhistSpeed(0.65)" id="bSpeed_3" class="flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[10px] transition">x1.6</button>
+            </div>
+          </div>
+
+          <!-- Nút đánh chuông đồng thiền tự -->
+          <button onclick="playTempleBronzeBell()" class="p-2.5 rounded-2xl bg-black/40 hover:bg-amber-950/60 border border-amber-500/20 text-left flex flex-col justify-between transition active:scale-95 cursor-pointer">
+            <span class="text-[10px] text-amber-200/70 font-bold uppercase">Chuông Đồng Thiền Tự:</span>
+            <div class="flex items-center gap-1.5 text-amber-300 font-bold mt-1">
+              <i class="fa-solid fa-bell text-amber-400"></i>
+              <span>Thỉnh Chuông 🔔</span>
+            </div>
+          </button>
+
+          <!-- Tổng công đức tích lũy -->
+          <div class="p-2.5 rounded-2xl bg-black/40 border border-amber-500/20 flex flex-col justify-between">
+            <span class="text-[10px] text-amber-200/70 font-bold uppercase">Tổng Biến Tích Lũy:</span>
+            <div id="buddhistLifetimeCount" class="text-sm font-black text-amber-300 font-mono mt-1">
+              1,080
+            </div>
+          </div>
+
+          <!-- Nút hiển thị kệ hồi hướng -->
+          <button onclick="toggleDedicationDrawer()" class="p-2.5 rounded-2xl bg-black/40 hover:bg-amber-950/60 border border-amber-500/20 text-left flex flex-col justify-between transition active:scale-95 cursor-pointer">
+            <span class="text-[10px] text-amber-200/70 font-bold uppercase">Cầu An & Hồi Hướng:</span>
+            <div class="flex items-center gap-1.5 text-rose-300 font-bold mt-1">
+              <i class="fa-solid fa-hands-praying text-rose-400"></i>
+              <span>Khấn Hồi Hướng</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- KHUNG KỆ HỒI HƯỚNG CÔNG ĐỨC (ẨN/HIỆN) -->
+        <div id="dedicationPrayerDrawer" class="hidden p-3.5 rounded-2xl bg-amber-950/80 border border-amber-400/50 text-center space-y-1 animate-fade-in text-xs">
+          <div class="text-[11px] font-black text-amber-300 uppercase tracking-wider">KỆ HỒI HƯỚNG CÔNG ĐỨC ĐẤT PHÚ</div>
+          <p class="text-amber-100 font-serif leading-relaxed italic text-xs sm:text-sm">
+            "Nguyện đem công đức này • Hướng về khắp tất cả • Đệ tử và chúng sanh • Đều trọn thành Phật đạo."
+          </p>
+          <p class="text-[10px] text-amber-300/80 pt-0.5">Cầu chúc quê hương mưa thuận gió hòa, bão lũ tiêu trừ, toàn gia bình an cát tường.</p>
+        </div>
+
         <!-- BÀN PHÍM CHỌN BÀI SỐ NHANH 0 - 9 -->
         <div class="pt-2 border-t border-amber-500/20 space-y-2">
           <div class="flex items-center justify-between text-xs text-amber-200/80 font-bold">
@@ -480,6 +529,43 @@
           <button onclick="toggleHealingMasterPlay()" id="btnHealingMasterPlay" class="w-14 h-14 rounded-full bg-teal-400 hover:bg-teal-300 text-slate-950 flex items-center justify-center font-black text-2xl shadow-lg transition active:scale-95" title="Bật / Tắt Bộ Trộn">
             <i id="healingMasterPlayIcon" class="fa-solid fa-play ml-0.5"></i>
           </button>
+        </div>
+
+        
+        <!-- 3 CHẾ ĐỘ PHỐI ÂM CÀI SẴN 1-CHẠM (SOUNDSCAPE PRESETS) -->
+        <div class="space-y-2">
+          <div class="text-[10px] font-bold text-teal-300 uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+            <span>3 Chế Độ Phối Âm Thiên Nhiên Cài Sẵn (1 Chạm Tự Động Phối)</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+            <!-- Preset 1: Đêm mưa Tuy Hòa -->
+            <button onclick="applyHealingPreset('rain_sleep')" class="p-3 rounded-2xl bg-teal-900/60 hover:bg-teal-800/80 border border-teal-400/30 text-left transition active:scale-95 space-y-1 cursor-pointer">
+              <div class="font-black text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-cloud-moon-rain text-sky-300"></i>
+                <span>Đêm Mưa Tuy Hòa</span>
+              </div>
+              <p class="text-[10px] text-teal-200/80">Mưa 85% • Chuông gió 45% • 432Hz ngủ sâu</p>
+            </button>
+
+            <!-- Preset 2: Chiều hoàng hôn Bãi Môn -->
+            <button onclick="applyHealingPreset('ocean_sunset')" class="p-3 rounded-2xl bg-teal-900/60 hover:bg-teal-800/80 border border-teal-400/30 text-left transition active:scale-95 space-y-1 cursor-pointer">
+              <div class="font-black text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-water text-cyan-300"></i>
+                <span>Hoàng Hôn Bãi Môn</span>
+              </div>
+              <p class="text-[10px] text-teal-200/80">Sóng 80% • Sáo trúc 40% • 528Hz tái tạo</p>
+            </button>
+
+            <!-- Preset 3: Thiền trà tổ đình -->
+            <button onclick="applyHealingPreset('zen_tea')" class="p-3 rounded-2xl bg-teal-900/60 hover:bg-teal-800/80 border border-teal-400/30 text-left transition active:scale-95 space-y-1 cursor-pointer">
+              <div class="font-black text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-mug-hot text-amber-300"></i>
+                <span>Thiền Trà Tổ Đình</span>
+              </div>
+              <p class="text-[10px] text-teal-200/80">Chuông 60% • Sáo 65% • Tĩnh tâm đọc sách</p>
+            </button>
+          </div>
         </div>
 
         <!-- BÀN TRỘN 4 KÊNH ÂM THANH (4-CHANNEL SLIDER MIXER) -->
@@ -1111,6 +1197,7 @@
       document.getElementById('buddhistLcdTitle').innerText = track.title;
       document.getElementById('buddhistKaraokeLine').innerText = '"' + track.line + '"';
       renderBuddhistPlaylist();
+      updateLifetimeMalaDisplay();
     }
 
     function toggleBuddhistPlay() {
@@ -1581,6 +1668,193 @@
       if (gpsEl) gpsEl.innerText = loc.coords;
       if (distEl) distEl.innerText = loc.dist;
       if (mapEl) mapEl.href = loc.map;
+    };
+
+    
+    // =========================================================================
+    // NÂNG CẤP CHUYÊN SÂU: MÁY NIỆM PHẬT (CHUÔNG ĐỒNG & TỐC ĐỘ NIỆM)
+    // =========================================================================
+    let buddhistSpeedMs = 1200; // 1.2s mặc định
+    let lifetimeMalaCount = parseInt(localStorage.getItem('datphu_lifetime_mala') || '1080');
+
+    function updateLifetimeMalaDisplay() {
+      const el = document.getElementById('buddhistLifetimeCount');
+      if (el) el.innerText = lifetimeMalaCount.toLocaleString('vi-VN');
+    }
+
+    function setBuddhistSpeed(speedFactor) {
+      if (speedFactor === 1.2) buddhistSpeedMs = 1200;
+      else if (speedFactor === 0.9) buddhistSpeedMs = 900;
+      else if (speedFactor === 0.65) buddhistSpeedMs = 650;
+
+      // Update button styles
+      ['bSpeed_1', 'bSpeed_2', 'bSpeed_3'].forEach((id, i) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          const isMatch = (i === 0 && speedFactor === 1.2) || (i === 1 && speedFactor === 0.9) || (i === 2 && speedFactor === 0.65);
+          btn.className = isMatch ? "flex-1 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[10px] transition" : "flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[10px] transition";
+        }
+      });
+
+      if (isWoodblockActive && isBuddhistPlaying) {
+        startWoodblockLoop();
+      }
+    }
+
+    function toggleDedicationDrawer() {
+      const drawer = document.getElementById('dedicationPrayerDrawer');
+      if (drawer) drawer.classList.toggle('hidden');
+    }
+
+    // Tiếng Chuông Đồng Thiền Tự Ngân Vang 4 Giây
+    function playTempleBronzeBell() {
+      try {
+        if (!radioAudioContext) radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (radioAudioContext.state === 'suspended') radioAudioContext.resume();
+
+        // Âm bồi chuông đồng (108Hz và 216Hz, 432Hz)
+        const fundamental = 216;
+        const freqs = [fundamental, fundamental * 1.5, fundamental * 2.76, fundamental * 4.2];
+
+        freqs.forEach((freq, idx) => {
+          const osc = radioAudioContext.createOscillator();
+          const gain = radioAudioContext.createGain();
+
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, radioAudioContext.currentTime);
+
+          const initialGain = 0.3 / (idx + 1);
+          gain.gain.setValueAtTime(0.001, radioAudioContext.currentTime);
+          gain.gain.exponentialRampToValueAtTime(initialGain, radioAudioContext.currentTime + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.00001, radioAudioContext.currentTime + 4.2);
+
+          osc.connect(gain);
+          gain.connect(radioAudioContext.destination);
+
+          osc.start();
+          osc.stop(radioAudioContext.currentTime + 4.3);
+        });
+
+        if (navigator.vibrate) navigator.vibrate([60, 80, 60]);
+      } catch(e) {}
+    }
+
+    // Override startWoodblockLoop to use buddhistSpeedMs
+    const originalStartWoodblock = startWoodblockLoop;
+    startWoodblockLoop = function() {
+      if (woodblockTimer) clearInterval(woodblockTimer);
+      woodblockTimer = setInterval(() => {
+        manualHitWoodblock();
+      }, buddhistSpeedMs);
+    };
+
+    // Override manualHitWoodblock to increment lifetime count
+    const originalManualHit = manualHitWoodblock;
+    manualHitWoodblock = function() {
+      originalManualHit();
+      lifetimeMalaCount++;
+      localStorage.setItem('datphu_lifetime_mala', lifetimeMalaCount.toString());
+      updateLifetimeMalaDisplay();
+
+      // Mỗi khi đạt tròn 108 biến tự động thỉnh chuông đồng!
+      if (buddhistCount % 108 === 0) {
+        playTempleBronzeBell();
+      }
+    };
+
+    // =========================================================================
+    // NÂNG CẤP CHUYÊN SÂU: ÂM THANH TRỊ LIỆU & TIẾNG MƯA THẬT (SOUNDSCAPE ENGINE)
+    // =========================================================================
+    let rainNoiseNode = null;
+    let rainGainNode = null;
+
+    function applyHealingPreset(preset) {
+      if (preset === 'rain_sleep') {
+        updateMixerVolume('rain', 85);
+        updateMixerVolume('ocean', 20);
+        updateMixerVolume('wind', 45);
+        updateMixerVolume('flute', 10);
+      } else if (preset === 'ocean_sunset') {
+        updateMixerVolume('rain', 10);
+        updateMixerVolume('ocean', 80);
+        updateMixerVolume('wind', 25);
+        updateMixerVolume('flute', 40);
+      } else if (preset === 'zen_tea') {
+        updateMixerVolume('rain', 25);
+        updateMixerVolume('ocean', 15);
+        updateMixerVolume('wind', 60);
+        updateMixerVolume('flute', 65);
+      }
+
+      // Cập nhật lại thanh trượt
+      document.getElementById('sliderVolRain').value = mixerVolumes.rain;
+      document.getElementById('sliderVolOcean').value = mixerVolumes.ocean;
+      document.getElementById('sliderVolWind').value = mixerVolumes.wind;
+      document.getElementById('sliderVolFlute').value = mixerVolumes.flute;
+
+      if (!isHealingPlaying) {
+        toggleHealingMasterPlay();
+      }
+    }
+
+    // Khởi tạo tiếng mưa rơi tự nhiên (Pink Noise Buffer)
+    function createRainAudioSource() {
+      if (!radioAudioContext) return;
+      try {
+        const bufferSize = radioAudioContext.sampleRate * 2;
+        const noiseBuffer = radioAudioContext.createBuffer(1, bufferSize, radioAudioContext.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          b0 = 0.99886 * b0 + white * 0.0555179;
+          b1 = 0.99332 * b1 + white * 0.0750759;
+          b2 = 0.96900 * b2 + white * 0.1538520;
+          b3 = 0.86650 * b3 + white * 0.3104856;
+          b4 = 0.55000 * b4 + white * 0.5329522;
+          b5 = -0.7616 * b5 - white * 0.0168980;
+          output[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.04;
+          b6 = white * 0.115926;
+        }
+
+        const whiteNoise = radioAudioContext.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+        whiteNoise.loop = true;
+
+        // Bộ lọc Lowpass tạo âm sắc mưa rơi ấm áp
+        const filter = radioAudioContext.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(1000, radioAudioContext.currentTime);
+
+        rainGainNode = radioAudioContext.createGain();
+        const rainVol = (mixerVolumes.rain / 100) * 0.35;
+        rainGainNode.gain.setValueAtTime(rainVol, radioAudioContext.currentTime);
+
+        whiteNoise.connect(filter);
+        filter.connect(rainGainNode);
+        rainGainNode.connect(radioAudioContext.destination);
+
+        whiteNoise.start();
+        rainNoiseNode = whiteNoise;
+      } catch(e) {}
+    }
+
+    // Override startHealingSoundscape to include rain noise
+    const originalStartHealing = startHealingSoundscape;
+    startHealingSoundscape = function() {
+      originalStartHealing();
+      createRainAudioSource();
+    };
+
+    // Override stopHealingSynth to stop rain noise
+    const originalStopHealing = stopHealingSynth;
+    stopHealingSynth = function() {
+      originalStopHealing();
+      if (rainNoiseNode) {
+        try { rainNoiseNode.stop(); } catch(e) {}
+        rainNoiseNode = null;
+      }
     };
 
     // KHỞI TẠO BAN ĐẦU
