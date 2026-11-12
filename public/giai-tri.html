@@ -96,29 +96,24 @@
   <!-- ================= MASTER CHANNELS DOCK (5 CHUYÊN ĐỀ LỚN) ================= -->
   <div class="sticky top-[53px] sm:top-[57px] z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-2xs py-2 px-3 sm:px-6">
     <div class="max-w-5xl mx-auto flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar text-xs font-black">
-      <button onclick="switchChannel('radio')" id="tabBtn_radio" class="px-3.5 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-sm shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+      <button onclick="switchChannel('radio')" id="tabBtn_radio" class="px-3.5 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-sm shrink-0 flex items-center gap-1.5 active:scale-95 transition font-black">
         <i class="fa-solid fa-radio"></i>
-        <span>1. Đài Radio & Bài Chòi</span>
-      </button>
-
-      <button onclick="switchChannel('art')" id="tabBtn_art" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
-        <i class="fa-solid fa-film text-rose-500"></i>
-        <span>2. Rạp Chiếu Phim 4K</span>
+        <span>1. Đài Radio, Bài Chòi & Phim 4K</span>
       </button>
 
       <button onclick="switchChannel('buddhist')" id="tabBtn_buddhist" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
         <i class="fa-solid fa-dharmachakra text-amber-600"></i>
-        <span>3. Máy Niệm Phật Số</span>
+        <span>2. Máy Niệm Phật Số</span>
       </button>
 
       <button onclick="switchChannel('healing')" id="tabBtn_healing" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
         <i class="fa-solid fa-mug-hot text-amber-700"></i>
-        <span>4. Trà Đạo Thư Quán</span>
+        <span>3. Trà Đạo Thư Quán</span>
       </button>
 
       <button onclick="switchChannel('mindful')" id="tabBtn_mindful" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
         <i class="fa-solid fa-spa text-indigo-600"></i>
-        <span>5. Thiền Thở Sen 4-7-8</span>
+        <span>4. Thiền Thở Sen 4-7-8</span>
       </button>
     </div>
   </div>
@@ -1123,15 +1118,10 @@
 
     function switchChannel(channel) {
       currentChannel = channel;
-      const channels = ['radio', 'art', 'buddhist', 'healing', 'mindful'];
+      const channels = ['radio', 'buddhist', 'healing', 'mindful'];
       
       channels.forEach(ch => {
-        const sec = document.getElementById('channelSection_' + ch);
         const btn = document.getElementById('tabBtn_' + ch);
-        if (sec) {
-          if (ch === channel) sec.classList.remove('hidden');
-          else sec.classList.add('hidden');
-        }
         if (btn) {
           if (ch === channel) {
             btn.className = "px-3.5 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-sm shrink-0 flex items-center gap-1.5 active:scale-95 transition font-black";
@@ -1140,58 +1130,41 @@
           }
         }
       });
+
+      const secRadio = document.getElementById('channelSection_radio');
+      const secArt = document.getElementById('channelSection_art');
+      const secBuddhist = document.getElementById('channelSection_buddhist');
+      const secHealing = document.getElementById('channelSection_healing');
+      const secMindful = document.getElementById('channelSection_mindful');
+
+      if (channel === 'radio') {
+        if (secRadio) secRadio.classList.remove('hidden');
+        if (secArt) secArt.classList.remove('hidden');
+        if (secBuddhist) secBuddhist.classList.add('hidden');
+        if (secHealing) secHealing.classList.add('hidden');
+        if (secMindful) secMindful.classList.add('hidden');
+      } else if (channel === 'buddhist') {
+        if (secRadio) secRadio.classList.add('hidden');
+        if (secArt) secArt.classList.add('hidden');
+        if (secBuddhist) secBuddhist.classList.remove('hidden');
+        if (secHealing) secHealing.classList.add('hidden');
+        if (secMindful) secMindful.classList.add('hidden');
+      } else if (channel === 'healing') {
+        if (secRadio) secRadio.classList.add('hidden');
+        if (secArt) secArt.classList.add('hidden');
+        if (secBuddhist) secBuddhist.classList.add('hidden');
+        if (secHealing) secHealing.classList.remove('hidden');
+        if (secMindful) secMindful.classList.add('hidden');
+      } else if (channel === 'mindful') {
+        if (secRadio) secRadio.classList.add('hidden');
+        if (secArt) secArt.classList.add('hidden');
+        if (secBuddhist) secBuddhist.classList.add('hidden');
+        if (secHealing) secHealing.classList.add('hidden');
+        if (secMindful) secMindful.classList.remove('hidden');
+      }
     }
 
     // 2. KHO DỮ LIỆU BÀI HÁT & BÀI CHÒI
-    const RADIO_PLAYLIST = [
-      {
-        id: 1,
-        title: "Độc Tấu Sáo Trúc: Phượng Vũ (Âm Thanh Mộc)",
-        artist: "Nghệ Nhân Dân Gian • Nhạc Khí Tre Nứa",
-        category: "Sáo Trúc & Nhạc Cụ Mộc",
-        src: "audio/sao_truc_phuong_vu.mp3",
-        chant: "Tiếng sáo trúc vi vu đầu làng, thanh âm mộc mạc trong trẻo ru giấc trưa hè bên rặng tre xanh."
-      },
-      {
-        id: 2,
-        title: "Hòa Tấu Cổ Truyền: Lưu Thủy Kim Tiền",
-        artist: "Ban Nhạc Cổ Truyền Đất Phú",
-        category: "Đàn Tranh & Ngũ Cung",
-        src: "audio/hoa_tau_luu_thuy.mp3",
-        chant: "Hòa tấu đàn tranh, đàn nguyệt, đàn nhị... nhịp điệu rộn ràng đón hội xuân Đất Phú."
-      },
-      {
-        id: 3,
-        title: "Hò Mái Nhì: Tiếng Hát Sông Nước Miền Trung",
-        artist: "Nghệ Nhân Dân Gian Xứ Nẫu",
-        category: "Dân Ca & Hò Khoan",
-        src: "audio/ho_mai_nhi_song_nuoc.mp3",
-        chant: "Hò ơ... Chèo đò trên dòng sông Ba chở nặng phù sa, đò về bến cũ thắm đượm nghĩa tình quê hương."
-      },
-      {
-        id: 4,
-        title: "Hát Ru Con: Đất Mẹ Xứ Nẫu (Điệu Ru Cổ)",
-        artist: "Mẹ Đất Phú • Điệu Ru Dân Gian",
-        category: "Hát Ru & Dân Ca",
-        src: "audio/ho_ru_con_lullaby.mp3",
-        chant: "Ví dầu cầu ván đóng đinh... Cầu tre lắc lẻo gập ghềnh khó đi... Khó đi mượn chén ăn cơm, mượn đờn nỉ non."
-      },
-      {
-        id: 5,
-        title: "Độc Tấu Đàn T'rưng: Thanh Âm Thượng Nguồn Sông Ba",
-        artist: "Nghệ Nhân Đồng Bào Tây Nguyên",
-        category: "Nhạc Cụ Tây Nguyên",
-        src: "audio/dan_trung_to_rung.mp3",
-        chant: "Tiếng đàn T'rưng suối reo từ miền rừng Sơn Hòa, Sông Hinh hòa vào dòng nước sông Ba xuôi về biển cả."
-      }
-    ];
-    let currentRadioIdx = 0;
-    let isRadioPlaying = false;
-    let radioAudioContext = null;
-    let radioSynthTimer = null;
-    let radioSleepTimeout = null;
-    let waveAnimFrame = null;
-
     function renderRadioPlaylist() {
       const c = document.getElementById('radioPlaylistContainer');
       if (!c) return;
