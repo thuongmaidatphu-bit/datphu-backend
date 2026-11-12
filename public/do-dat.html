@@ -3591,5 +3591,47 @@
     });
 
 </script>
+
+  <!-- ==================== MODAL HƯỚNG DẪN KHẮC PHỤC GPS TRÊN ĐIỆN THOẠI ==================== -->
+  <div id="mobileGpsHelpModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/85 backdrop-blur-md p-3 sm:p-6 flex items-center justify-center">
+    <div class="bg-slate-900 border-2 border-amber-500/50 text-white rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-4 relative">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
+          <i class="fa-solid fa-satellite-dish text-lg"></i>
+          <span>Điện Thoại Chưa Khóa Sóng GPS</span>
+        </div>
+        <button onclick="closeMobileGpsHelpModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs leading-relaxed">
+        <p class="text-slate-300">Sóng vệ tinh GPS cách Trái Đất 20.000km không thể xuyên qua <b>mái tôn, bê tông</b> hoặc khi điện thoại đang tắt nút Vị trí.</p>
+        
+        <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex items-start gap-2">
+            <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+            <span><b>Bật nút Vị trí:</b> Vuốt từ trên đỉnh màn hình điện thoại xuống, kiểm tra xem biểu tượng <b>"Vị trí" (GPS)</b> đã bật sáng chưa.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+            <span><b>Bước ra ngoài trời quang:</b> Đi ra khỏi hiên nhà, đứng dưới trời quang mây tạnh khoảng 10-15 giây để điện thoại bắt tín hiệu 4 vệ tinh.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+            <span><b>Cách đo tốt nhất ngay lúc này:</b> Dùng 2 ngón tay phóng to ảnh vệ tinh Google siêu nét, nhìn thấy rõ từng bờ ruộng/bờ mương và chạm ngón tay để cắm mốc ranh giới!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button onclick="closeMobileGpsHelpModal(); getUserGPSLocation();" class="py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-1 shadow transition active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-rotate"></i> Dò Lại GPS
+        </button>
+        <button onclick="closeMobileGpsHelpModal();" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs cursor-pointer">
+          Tự Chấm Mốc
+        </button>
+      </div>
+    </div>
+  </div>
+  
 </body>
 </html>
