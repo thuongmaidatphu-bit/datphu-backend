@@ -1765,7 +1765,11 @@
                 <span id="leafZodiacName">Thiên Yết (Scorpio ♏)</span>
               </span>
   
-              <span id="solarTermSimple" class="px-2 py-0.5 rounded-full bg-amber-400/20 text-yellow-300 font-black border border-amber-400/40 text-[10px] sm:text-xs">Lập Đông (225°)</span>
+              <button onclick="open24SolarTermsModal()" id="solarTermSimple" class="px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500/30 to-yellow-400/20 text-yellow-300 font-black border border-amber-400/50 text-[10px] sm:text-xs flex items-center gap-1 hover:scale-105 active:scale-95 transition cursor-pointer shadow-sm" title="Bấm xem cẩm nang nông nghiệp 24 tiết khí">
+                <i class="fa-solid fa-leaf text-emerald-400 text-[10px]"></i>
+                <span id="txtSolarTermBadge">Lập Đông (225°)</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse ml-0.5"></span>
+              </button>
             </div>
           </div>
 
@@ -2834,7 +2838,7 @@
         </button>
         <button onclick="switchAstroTab('seasons')" id="tabBtnSeasons" class="py-2 px-1 rounded-xl text-xs font-black text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1 transition">
           <i class="fa-solid fa-clover"></i>
-          <span class="truncate">4 Mùa 8 Tiết</span>
+          <span class="truncate">24 Tiết Khí</span>
         </button>
         <button onclick="switchAstroTab('bachdao')" id="tabBtnBachDao" class="py-2 px-1 rounded-xl text-xs font-black text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1 transition">
           <i class="fa-solid fa-circle-nodes"></i>
@@ -3025,31 +3029,39 @@
 
       
       <!-- PHẦN 2: 4 MÙA 8 TIẾT TRỞ XOAY (TỨ THỜI & BÁT TIẾT THIÊN NHIÊN ĐẤT PHÚ) -->
-      <div id="astroTabSeasons" class="hidden space-y-3">
-        <div class="bg-slate-950/80 rounded-2xl p-4 border border-emerald-500/30 space-y-3">
+      <div id="astroTabSeasons" class="hidden space-y-3.5">
+        <div class="bg-slate-950/90 rounded-2xl p-3.5 sm:p-4 border border-emerald-500/30 space-y-3 text-white">
           
-          <div class="flex items-center justify-between border-b border-slate-700/60 pb-2 flex-wrap gap-2">
+          <div class="flex items-center justify-between border-b border-slate-700/60 pb-2.5 flex-wrap gap-2">
             <div>
-              <h4 class="font-black text-sm text-emerald-300 flex items-center gap-1.5">
+              <h4 class="font-black text-sm sm:text-base text-emerald-300 flex items-center gap-2">
                 <i class="fa-solid fa-compass text-yellow-300"></i>
-                MỘT NĂM CÓ 4 MÙA • 8 TIẾT TRỞ XOAY
+                BẢNG VÀNG THIÊN VĂN 24 TIẾT KHÍ & LỊCH MÙA VỤ ĐẤT PHÚ
               </h4>
-              <p class="text-[11px] text-slate-300">Xuân Sinh • Hạ Trưởng • Thu Liễm • Đông Tàng</p>
+              <p class="text-[11px] text-slate-300">Quỹ Đạo Kinh Độ Mặt Trời 360° • Vòng Đời Cây Trồng & Phòng Tránh Sâu Bệnh</p>
             </div>
-            <span class="text-xs font-bold text-yellow-300 bg-emerald-950/80 px-2.5 py-1 rounded-full border border-emerald-400/40">
-              Bát Tiết Thiên Văn
+            <span id="currentTermPill" class="text-xs font-bold text-yellow-300 bg-emerald-950/90 px-3 py-1 rounded-full border border-emerald-400/50 shadow">
+              🌿 Tiết Khí Hiện Tại
             </span>
           </div>
 
-          <!-- LỜI DẪN CẢM ĐỘNG HỒN QUÊ -->
-          <div class="bg-gradient-to-r from-emerald-950/70 via-slate-900 to-emerald-950/70 p-3 rounded-xl border border-emerald-500/20 text-xs text-slate-200 italic leading-relaxed text-center">
-            "Một năm có bốn mùa, tám tiết trở xoay<br class="hidden sm:inline">
-            Đất Phú trời êm, hạt lúa mẩy rồng, người bền lòng sinh trái ngọt."
+          <!-- LỜI DẪN NÔNG NGHIỆP CỔ TRUYỀN XỨ NẪU -->
+          <div class="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-emerald-950/80 p-3 rounded-xl border border-emerald-500/30 text-xs text-slate-200 leading-relaxed">
+            <span class="text-yellow-300 font-bold">🌾 Bí kíp nhà nông:</span> Mỗi Tiết Khí tương ứng với đúng $15^circ$ kinh độ Mặt Trời. Theo dõi tiết khí giúp bà con biết chính xác ngày xuống giống, thời điểm bướm sâu nở rộ sau sấm Kinh Trập, và chu kỳ lũ tiểu mãn sông Ba.
           </div>
 
-          <!-- VÒNG TRÒN 4 MÙA & LƯỚI 8 TIẾT TRỌNG YẾU -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="eightTermsGrid">
-            <!-- Render 8 tiết bằng JavaScript -->
+          <!-- BỘ LỌC 4 MÙA TRONG NĂM -->
+          <div class="grid grid-cols-5 gap-1 text-[11px] font-bold text-center">
+            <button onclick="filterSolarTermsSeason('all')" id="btnSTFilter_all" class="py-1.5 rounded-xl bg-yellow-400 text-slate-950 font-black transition">Tất Cả (24)</button>
+            <button onclick="filterSolarTermsSeason('xuan')" id="btnSTFilter_xuan" class="py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-emerald-500 text-emerald-300 transition">🌸 Xuân (6)</button>
+            <button onclick="filterSolarTermsSeason('ha')" id="btnSTFilter_ha" class="py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-amber-500 text-amber-300 transition">☀️ Hạ (6)</button>
+            <button onclick="filterSolarTermsSeason('thu')" id="btnSTFilter_thu" class="py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-yellow-500 text-yellow-300 transition">🍂 Thu (6)</button>
+            <button onclick="filterSolarTermsSeason('dong')" id="btnSTFilter_dong" class="py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-500 text-cyan-300 transition">❄️ Đông (6)</button>
+          </div>
+
+          <!-- LƯỚI HIỂN THỊ 24 TIẾT KHÍ (ĐƯỢC JAVASCRIPT RENDER TỰ ĐỘNG) -->
+          <div id="twentyFourTermsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-2.5 max-h-[520px] overflow-y-auto pr-1">
+            <!-- Render via renderTwentyFourTermsGrid() -->
           </div>
 
         </div>
@@ -14615,6 +14627,544 @@
       const modal = document.getElementById('datPhuAppLauncherModal');
       if (modal) modal.classList.toggle('hidden');
     }
+</script>
+<script>
+
+    
+    // =========================================================================
+    // KHO DỮ LIỆU CHUẨN 24 TIẾT KHÍ THIÊN VĂN & NÔNG VỤ ĐẤT PHÚ
+    // =========================================================================
+    const TWENTY_FOUR_SOLAR_TERMS = [
+      {
+        index: 0,
+        id: "xuan-phan",
+        name: "Xuân Phân",
+        degree: "0°",
+        season: "MÙA XUÂN",
+        seasonKey: "xuan",
+        seasonIcon: "🌸",
+        seasonColor: "text-emerald-300",
+        seasonBg: "bg-emerald-950/80 border-emerald-500/40",
+        approxDate: "20/03 - 03/04",
+        role: "Chính Giữa Mùa Xuân • Ngày Đêm Bằng Nhau",
+        meaning: "Mặt Trời chiếu thẳng xích đạo, ngày và đêm dài bằng nhau chính xác (12h ngày = 12h đêm). Khí trời ấm áp, cây cối bung chồi rực rỡ khắp đồng bằng Tuy Hòa.",
+        farmingGuide: "Lúa Đông Xuân vào giai đoạn trổ đòng ngậm sữa. Cần giữ mực nước ruộng 3-5cm. Bón đón đòng đúng đợt, chăm sóc vườn tiêu, tỉa cành cà phê.",
+        pestAlert: "Đề phòng rầy nâu di trú và đạo ôn cổ bông sau những ngày sương sớm.",
+        folkPoem: "Xuân Phân ngày dạ ngang phân / Cỏ thơm hoa ngát đón vần thơ say."
+      },
+      {
+        index: 1,
+        id: "thanh-minh",
+        name: "Thanh Minh",
+        degree: "15°",
+        season: "MÙA XUÂN",
+        seasonKey: "xuan",
+        seasonIcon: "🌸",
+        seasonColor: "text-emerald-300",
+        seasonBg: "bg-emerald-950/80 border-emerald-500/40",
+        approxDate: "04/04 - 19/04",
+        role: "Khí Trời Trong Sáng • Tảo Mộ Tri Ân",
+        meaning: "Gió xuân mơn man, bầu trời cao xanh quang đãng. Con cháu quây quần tảo mộ ông bà tổ tiên, phát quang bờ ranh rẫy nương.",
+        farmingGuide: "Thu hoạch đậu phụng, dưa hấu vụ sớm. Làm cỏ sục bùn, chuẩn bị thu hoạch rộ vụ lúa Đông Xuân. Chăm sóc cây ăn quả sau thụ phấn.",
+        pestAlert: "Bọ xít muỗi trên vườn điều, rệp sáp hại rễ tiêu mùa nắng ấm.",
+        folkPoem: "Thanh minh trong tiết tháng ba / Lễ là tảo mộ, hội là đạp thanh."
+      },
+      {
+        index: 2,
+        id: "coc-vu",
+        name: "Cốc Vũ",
+        degree: "30°",
+        season: "MÙA XUÂN",
+        seasonKey: "xuan",
+        seasonIcon: "🌧️",
+        seasonColor: "text-emerald-300",
+        seasonBg: "bg-emerald-950/80 border-emerald-500/40",
+        approxDate: "20/04 - 04/05",
+        role: "Mưa Rào Nảy Hạt • Kết Thúc Mùa Xuân",
+        meaning: "Những cơn mưa rào đầu mùa tưới mát cho mùa màng tươi tốt (Cốc = ngũ cốc, Vũ = mưa). Đất đai mềm xốp chuẩn bị cho vụ gieo trồng mới.",
+        farmingGuide: "Gặt rộ lúa Đông Xuân, phơi lúa hạt vàng vào kho. Cày lật đất phơi ải diệt trừ mầm bệnh. Xuống giống vụ bắp, tỉa dặm luống mía ven sông Ba.",
+        pestAlert: "Chuột đồng cắn phá lúa chín, bướm sâu cuốn lá nở sau mưa rào.",
+        folkPoem: "Mưa Cốc Vũ hạt đỗ hạt bông / Ơn trời mưa thuận nhà nông ấm lòng."
+      },
+      {
+        index: 3,
+        id: "lap-ha",
+        name: "Lập Hạ",
+        degree: "45°",
+        season: "MÙA HẠ",
+        seasonKey: "ha",
+        seasonIcon: "☀️",
+        seasonColor: "text-amber-300",
+        seasonBg: "bg-amber-950/80 border-amber-500/40",
+        approxDate: "05/05 - 20/05",
+        role: "Khởi Đầu Mùa Hạ • Nắng Ấm Dần Lên",
+        meaning: "Mùa hè chính thức bắt đầu, tiếng ve ngân ran, nắng vàng rực rỡ trải dài từ bờ biển Tuy An đến cao nguyên Vân Hòa.",
+        farmingGuide: "Vệ sinh đồng ruộng, nạo vét mương thủy nông Đồng Cam. Bắt đầu ngâm ủ giống lúa vụ Hè Thu. Tỉa cành vượt cho vườn sầu riêng, bơ.",
+        pestAlert: "Bọ trĩ gây hại mạ non vụ hè thu do nắng gắt đầu vụ.",
+        folkPoem: "Lập Hạ mây bạc trời trong / Nhà nông tát nước đưa dòng vào mương."
+      },
+      {
+        index: 4,
+        id: "tieu-man",
+        name: "Tiểu Mãn",
+        degree: "60°",
+        season: "MÙA HẠ",
+        seasonKey: "ha",
+        seasonIcon: "🌾",
+        seasonColor: "text-amber-300",
+        seasonBg: "bg-amber-950/80 border-amber-500/40",
+        approxDate: "21/05 - 05/06",
+        role: "Hạt Lúa Tròn Đầy • Đề Phòng Lũ Tiểu Mãn",
+        meaning: "Hạt ngũ cốc bắt đầu mẩy chắc. Miền Trung thường xuất hiện đợt mưa giông lớn gây 'Lũ Tiểu Mãn' trên sông Ba.",
+        farmingGuide: "Khẩn trương xuống giống lúa Hè Thu. Kê cao máy bơm dã chiến ở các bãi bồi ven sông Ba, sông Kỳ Lộ để phòng nước lũ tiểu mãn dâng bất ngờ.",
+        pestAlert: "Ốc bươu vàng cắn phá mạ non mới sạ.",
+        folkPoem: "Tiểu Mãn nước ngập bờ mương / Lũ về sông vỗ, thương người đồng trũng."
+      },
+      {
+        index: 5,
+        id: "mang-chung",
+        name: "Mang Chủng",
+        degree: "75°",
+        season: "MÙA HẠ",
+        seasonKey: "ha",
+        seasonIcon: "🌾",
+        seasonColor: "text-amber-300",
+        seasonBg: "bg-amber-950/80 border-amber-500/40",
+        approxDate: "06/06 - 20/06",
+        role: "Gieo Trồng Hạt Có Râu • Lúa Trổ Đồng Bằng",
+        meaning: "Thời điểm thích hợp nhất để gieo trồng các loại ngũ cốc có râu (lúa, lúa mì, bắp). Nắng hè chan hòa khắp các vùng đồi cát.",
+        farmingGuide: "Bón thúc đợt 1 cho lúa Hè Thu (phân đạm + lân). Dặm tỉa mạ cho đều ruộng. Vun gốc bón phân cho mía gốc năm 2 tại Sơn Hòa, Sông Hinh.",
+        pestAlert: "Sâu đục thân 2 chấm trên lúa non, rệp sáp bông trên mía.",
+        folkPoem: "Mang Chủng gieo hạt kịp thời / Ngày mai gặt hái sáng ngời ấm no."
+      },
+      {
+        index: 6,
+        id: "ha-chi",
+        name: "Hạ Chí",
+        degree: "90°",
+        season: "MÙA HẠ",
+        seasonKey: "ha",
+        seasonIcon: "☀️",
+        seasonColor: "text-amber-300",
+        seasonBg: "bg-amber-950/80 border-amber-500/40",
+        approxDate: "21/06 - 06/07",
+        role: "Đỉnh Điểm Mùa Hạ • Ngày Dài Nhất Năm",
+        meaning: "Mặt Trời chiếu thẳng chí tuyến Bắc, ngày dài nhất và đêm ngắn nhất trong năm (đêm tháng năm chưa nằm đã sáng). Gió Lào Tây Nam thổi mạnh.",
+        farmingGuide: "Điều tiết nước kênh mương chống hạn nghiêm ngặt. Phủ rơm rạ mục giữ ẩm gốc cây tiêu, cà phê. Tưới nước đêm hoặc sáng sớm cho hoa màu.",
+        pestAlert: "Nhện đỏ bùng phát trên hồ tiêu và cây ăn trái do thời tiết khô hạn nóng bức.",
+        folkPoem: "Hạ Chí nắng đổ chang chang / Nước vào ngập ruộng xóm làng mừng vui."
+      },
+      {
+        index: 7,
+        id: "tieu-thu",
+        name: "Tiểu Thử",
+        degree: "105°",
+        season: "MÙA HẠ",
+        seasonKey: "ha",
+        seasonIcon: "🔥",
+        seasonColor: "text-amber-300",
+        seasonBg: "bg-amber-950/80 border-amber-500/40",
+        approxDate: "07/07 - 22/07",
+        role: "Nắng Nóng Oi Nồng • Chống Hạn Vụ Hè",
+        meaning: "Khí trời oi bức ngột ngạt (Thử = nắng nóng). Đất đai khô khát chờ mong mưa dông giải nhiệt.",
+        farmingGuide: "Bơm tát nước dưỡng đòng lúa Hè Thu. Che lưới lan cho vườn ươm giống, tỉa cành thông thoáng vườn tiêu để giảm bốc thoát hơi nước.",
+        pestAlert: "Rầy nâu lứa 2, bệnh đốm vằn trên chân ruộng thừa đạm.",
+        folkPoem: "Tiểu Thử gió rát đồng khô / Khơi nguồn dẫn nước vào hồ, vào mương."
+      },
+      {
+        index: 8,
+        id: "dai-thu",
+        name: "Đại Thử",
+        degree: "120°",
+        season: "MÙA HẠ",
+        seasonKey: "ha",
+        seasonIcon: "🔥",
+        seasonColor: "text-amber-300",
+        seasonBg: "bg-amber-950/80 border-amber-500/40",
+        approxDate: "23/07 - 06/08",
+        role: "Nắng Nóng Cực Điểm • Đợt Hạn Cuối Cùng",
+        meaning: "Giai đoạn nóng nực và gay gắt nhất trong 24 tiết khí. Mặt biển lặng sóng, hơi nước bốc mạnh chuẩn bị hình thành mây dông bão tố.",
+        farmingGuide: "Lúa Hè Thu làm đòng rộ. Cần bón phân đón đòng cân đối kali. Không làm việc nặng giữa trưa tránh sốc nhiệt. Tắm mát cho đàn gia súc.",
+        pestAlert: "Sâu cuốn lá nhỏ rộ trên diện rộng, cháy bìa lá vi khuẩn.",
+        folkPoem: "Đại Thử nắng cháy đồi cao / Thương người cày cấy mồ hôi ướt đầm."
+      },
+      {
+        index: 9,
+        id: "lap-thu",
+        name: "Lập Thu",
+        degree: "135°",
+        season: "MÙA THU",
+        seasonKey: "thu",
+        seasonIcon: "🍂",
+        seasonColor: "text-yellow-300",
+        seasonBg: "bg-yellow-950/80 border-yellow-500/40",
+        approxDate: "07/08 - 22/08",
+        role: "Khởi Đầu Mùa Thu • Gió Heo May Về",
+        meaning: "Mùa thu chạm ngõ, ban ngày bớt nắng chói chang, chiều tối có gió mát rượi. Lúa Hè Thu trổ đều trĩu hạt.",
+        farmingGuide: "Rút cạn nước ruộng trước thu hoạch 7-10 ngày để cứng cây, tiện máy gặt đập liên hợp chạy đồng. Thu hoạch bắp hè, đậu nành.",
+        pestAlert: "Lem lép hạt lúa do mưa giông chiều tối.",
+        folkPoem: "Lập Thu gió thoảng ngọn cau / Đồng vàng lúa chín hẹn mùa bội thu."
+      },
+      {
+        index: 10,
+        id: "xu-thu",
+        name: "Xử Thử",
+        degree: "150°",
+        season: "MÙA THU",
+        seasonKey: "thu",
+        seasonIcon: "🍂",
+        seasonColor: "text-yellow-300",
+        seasonBg: "bg-yellow-950/80 border-yellow-500/40",
+        approxDate: "23/08 - 06/09",
+        role: "Dứt Cơn Nắng Nóng • Khí Thu Dịu Mát",
+        meaning: "Cái nóng oi bức của mùa hè chính thức chấm dứt (Xử = dừng lại). Trời thu trong xanh, gió thu hiền hòa.",
+        farmingGuide: "Gặt rộ lúa Hè Thu 'chạy lũ'. Đóng bao sấy lúa hạt khô ráo. Vệ sinh chuồng trại, xuất chuồng lứa heo gà trước mùa bão lũ tháng 9-10.",
+        pestAlert: "Nấm mốc nông sản thu hoạch gặp mưa dông.",
+        folkPoem: "Xử Thử lúa chín đầy đồng / Tiếng cười rộn rã thỏa lòng ước mong."
+      },
+      {
+        index: 11,
+        id: "bach-lo",
+        name: "Bạch Lộ",
+        degree: "165°",
+        season: "MÙA THU",
+        seasonKey: "thu",
+        seasonIcon: "💧",
+        seasonColor: "text-yellow-300",
+        seasonBg: "bg-yellow-950/80 border-yellow-500/40",
+        approxDate: "07/09 - 22/09",
+        role: "Hạt Sương Trắng Muốt • Đêm Lạnh Sớm Mai",
+        meaning: "Ban đêm nhiệt độ hạ thấp, hơi ẩm ngưng tụ thành những hạt sương trắng lấp lánh trên đầu ngọn cỏ buổi sớm mai.",
+        farmingGuide: "Hoàn tất thu hoạch toàn bộ lúa Hè Thu. Chằng chống nhà cửa, cắt tỉa cành cây xung quanh chuồng trại đề phòng áp thấp nhiệt đới miền Trung.",
+        pestAlert: "Bệnh rỉ sắt và tuyến trùng rễ trên vườn tiêu sau mưa dài ngày.",
+        folkPoem: "Bạch Lộ sương trắng đọng cành / Nông dân thu vén lúa vàng vào kho."
+      },
+      {
+        index: 12,
+        id: "thu-phan",
+        name: "Thu Phân",
+        degree: "180°",
+        season: "MÙA THU",
+        seasonKey: "thu",
+        seasonIcon: "🍂",
+        seasonColor: "text-yellow-300",
+        seasonBg: "bg-yellow-950/80 border-yellow-500/40",
+        approxDate: "23/09 - 07/10",
+        role: "Chính Giữa Mùa Thu • Mùa Bão Miền Trung",
+        meaning: "Mặt Trời lần thứ 2 trong năm chiếu thẳng xích đạo, ngày đêm dài bằng nhau. Mùa bão lũ miền Trung bắt đầu bước vào giai đoạn dồn dập.",
+        farmingGuide: "Khơi thông rãnh thoát nước nương rẫy chống úng thối rễ cây tiêu, sắn, mía. Neo buộc tàu thuyền tại các âu thuyền Vũng Rô, Đông Tác.",
+        pestAlert: "Bệnh lở cổ rễ, chết nhanh chết chậm trên cây hồ tiêu do úng nước.",
+        folkPoem: "Thu Phân gió lạnh đầu mùa / Bờ cao đắp chặt, giữ lùa dòng mưa."
+      },
+      {
+        index: 13,
+        id: "han-lo",
+        name: "Hàn Lộ",
+        degree: "195°",
+        season: "MÙA THU",
+        seasonKey: "thu",
+        seasonIcon: "❄️",
+        seasonColor: "text-yellow-300",
+        seasonBg: "bg-yellow-950/80 border-yellow-500/40",
+        approxDate: "08/10 - 22/10",
+        role: "Sương Lạnh Buốt Giá • Nước Lũ Sông Ba",
+        meaning: "Hơi sương không chỉ đọng trắng mà đã chuyển sang buốt giá (Hàn = lạnh). Lượng mưa lớn ở Tây Nguyên dồn về lưu vực sông Ba.",
+        farmingGuide: "Theo dõi sát sao trạm thủy văn Củng Sơn và lưu lượng xả thủy điện Sông Ba Hạ. Di dời máy bơm, phân bón ở bãi bồi lên gò cao trước bão lũ.",
+        pestAlert: "Bệnh dịch tả lợn châu Phi, lở mồm long móng gia súc mùa mưa ẩm.",
+        folkPoem: "Hàn Lộ sương buốt tái tê / Nhớ câu phòng chống lũ về xóm thôn."
+      },
+      {
+        index: 14,
+        id: "suong-giang",
+        name: "Sương Giáng",
+        degree: "210°",
+        season: "MÙA THU",
+        seasonKey: "thu",
+        seasonIcon: "🌫️",
+        seasonColor: "text-yellow-300",
+        seasonBg: "bg-yellow-950/80 border-yellow-500/40",
+        approxDate: "23/10 - 06/11",
+        role: "Sương Rơi Khắp Ngả • Lá Rụng Chớm Đông",
+        meaning: "Sương muối bắt đầu xuất hiện dày đặc, hơi nước đóng băng mỏng trên lá non. Đợt mưa lũ lịch sử miền Trung thường rơi vào tiết này.",
+        farmingGuide: "Gia cố mái tôn nhà ở và chuồng bò. Dự trữ rơm khô, cỏ ủ chua cho trâu bò tối thiểu 1 tháng. Chuẩn bị cọc rào cảnh báo các đập tràn ngập.",
+        pestAlert: "Nấm hồng, rụng lá mùa mưa trên cây cao su và cây keo lá tràm.",
+        folkPoem: "Sương Giáng buốt lạnh sườn non / Người lo mái ấm, bò con ấm chuồng."
+      },
+      {
+        index: 15,
+        id: "lap-dong",
+        name: "Lập Đông",
+        degree: "225°",
+        season: "MÙA ĐÔNG",
+        seasonKey: "dong",
+        seasonIcon: "❄️",
+        seasonColor: "text-cyan-300",
+        seasonBg: "bg-cyan-950/80 border-cyan-500/40",
+        approxDate: "07/11 - 21/11",
+        role: "Khởi Đầu Mùa Đông • Gió Bấc Tràn Về",
+        meaning: "Mùa đông bắt đầu, những đợt không khí lạnh phương Bắc liên tục dồn xuống biển miền Trung tạo sóng lớn và gió bấc hun hút.",
+        farmingGuide: "Che chắn luống rau màu bằng màng nylon tránh giập lá do mưa gió bấc. Che kín chuồng trại hướng Bắc và Đông Bắc giữ ấm cho gia súc.",
+        pestAlert: "Bệnh tụ huyết trùng trên trâu bò, bệnh phân trắng trên đàn gà.",
+        folkPoem: "Lập Đông ngọn gió bấc lùa / Chăm lo nương rẫy cho vừa đón xuân."
+      },
+      {
+        index: 16,
+        id: "tieu-tuyet",
+        name: "Tiểu Tuyết",
+        degree: "240°",
+        season: "MÙA ĐÔNG",
+        seasonKey: "dong",
+        seasonIcon: "🌨️",
+        seasonColor: "text-cyan-300",
+        seasonBg: "bg-cyan-950/80 border-cyan-500/40",
+        approxDate: "22/11 - 06/12",
+        role: "Tuyết Nhẹ Khí Lạnh • Mưa Phùn Miền Trung",
+        meaning: "Phương Bắc có tuyết rơi nhẹ, miền Trung mưa phùn lạnh kéo dài. Nước lũ trên sông rút dần, để lại lớp phù sa màu mỡ trên bãi bồi.",
+        farmingGuide: "Tranh thủ cày lật đất bãi bồi ven sông Ba vừa ráo nước. Chuẩn bị phân chuồng ủ hoai mục để gieo ươm vụ dưa hấu Tết và hoa màu.",
+        pestAlert: "Nấm lở cổ rễ trên cây con giống trong vườn ươm ẩm ướt.",
+        folkPoem: "Tiểu Tuyết mưa lạnh dầm dề / Phù sa bãi mới hẹn về mùa dưa."
+      },
+      {
+        index: 17,
+        id: "dai-tuyet",
+        name: "Đại Tuyết",
+        degree: "255°",
+        season: "MÙA ĐÔNG",
+        seasonKey: "dong",
+        seasonIcon: "🌨️",
+        seasonColor: "text-cyan-300",
+        seasonBg: "bg-cyan-950/80 border-cyan-500/40",
+        approxDate: "07/12 - 20/12",
+        role: "Rét Đậm Diện Rộng • Gieo Hạt Dưa Tết",
+        meaning: "Các đợt rét sâu tràn về, biển động dữ dội. Bãi bồi sông Ba khô ráo nắng nhẹ, thời điểm vàng gieo hạt vụ hoa màu phục vụ Tết Nguyên Đán.",
+        farmingGuide: "Xuống giống hạt dưa hấu Tết trên đất bãi bồi phù sa. Căng bạt nylon phủ luống giữ ấm và chống cỏ dại. Chăm sóc luống hoa cúc vạn thọ.",
+        pestAlert: "Bọ trĩ cắn đọt dưa non, dòi đục thân mạ lúa sớm.",
+        folkPoem: "Đại Tuyết rét mướt tái tê / Vun luống dưa Tết đợi về xuân tươi."
+      },
+      {
+        index: 18,
+        id: "dong-chi",
+        name: "Đông Chí",
+        degree: "270°",
+        season: "MÙA ĐÔNG",
+        seasonKey: "dong",
+        seasonIcon: "❄️",
+        seasonColor: "text-cyan-300",
+        seasonBg: "bg-cyan-950/80 border-cyan-500/40",
+        approxDate: "21/12 - 04/01",
+        role: "Đỉnh Điểm Mùa Đông • Đêm Dài Nhất Năm",
+        meaning: "Mặt Trời chiếu thẳng chí tuyến Nam, ngày ngắn nhất và đêm dài nhất trong năm. Trời rét căm căm, người dân quây quần bên bếp lửa hồng.",
+        farmingGuide: "Bắt đầu xuống giống lúa vụ Đông Xuân chính vụ. Ngâm ủ hạt giống kỹ bằng nước ấm '3 sôi 2 lạnh' để mầm ra đều, không bị thối mộng.",
+        pestAlert: "Bệnh đạo ôn lá trên mạ non gặp rét buốt sương mù.",
+        folkPoem: "Đông Chí đêm lạnh dài sâu / Ngâm giống gieo mạ đón màu lúa xuân."
+      },
+      {
+        index: 19,
+        id: "tieu-han",
+        name: "Tiểu Hàn",
+        degree: "285°",
+        season: "MÙA ĐÔNG",
+        seasonKey: "dong",
+        seasonIcon: "🥶",
+        seasonColor: "text-cyan-300",
+        seasonBg: "bg-cyan-950/80 border-cyan-500/40",
+        approxDate: "05/01 - 19/01",
+        role: "Rét Buốt Đầu Năm • Chăm Hoa Đón Tết",
+        meaning: "Đợt rét đậm đầu tháng Chạp âm lịch. Gió bấc hanh hao làm se sắt da thịt, hoa mai vàng bắt đầu tích nhựa chờ ngày bung vỏ trấu.",
+        farmingGuide: "Bấm đọt dưa hấu chừa nhánh chính, thụ phấn thủ công cho dưa. Xuống nốt diện tích lúa Đông Xuân muộn. Bón thúc đợt 1 cho mạ đã bén rễ.",
+        pestAlert: "Rầy phấn trắng trên luống dưa, sâu ăn búp hoa cúc Tết.",
+        folkPoem: "Tiểu Hàn sương muối gió may / Nông gia chăm bón đợi ngày đón hoa."
+      },
+      {
+        index: 20,
+        id: "dai-han",
+        name: "Đại Hàn",
+        degree: "300°",
+        season: "MÙA ĐÔNG",
+        seasonKey: "dong",
+        seasonIcon: "🥶",
+        seasonColor: "text-cyan-300",
+        seasonBg: "bg-cyan-950/80 border-cyan-500/40",
+        approxDate: "20/01 - 03/02",
+        role: "Rét Đậm Cuối Năm • Vặt Lá Mai Vàng",
+        meaning: "Thời điểm lạnh nhất trong năm (Đại = lớn, Hàn = rét buốt). Đây cũng là tiết khí cuối cùng của vòng 24 tiết khí, báo hiệu mùa xuân sắp gõ cửa.",
+        farmingGuide: "Vặt lá mai vàng vào khoảng rằm tháng Chạp để mai nở rực đúng mùng Một Tết. Thúc trái dưa hấu nở to, lau bóng vỏ dưa chuẩn bị xuất bán.",
+        pestAlert: "Thối trái dưa hấu do sương muối đêm lạnh.",
+        folkPoem: "Đại Hàn giá buốt cành mai / Vặt lá hé nhụy đợi ngày đầu xuân."
+      },
+      {
+        index: 21,
+        id: "lap-xuan",
+        name: "Lập Xuân",
+        degree: "315°",
+        season: "MÙA XUÂN",
+        seasonKey: "xuan",
+        seasonIcon: "🌸",
+        seasonColor: "text-emerald-300",
+        seasonBg: "bg-emerald-950/80 border-emerald-500/40",
+        approxDate: "04/02 - 18/02",
+        role: "Khởi Đầu Mùa Xuân • Đất Trời Tái Sinh",
+        meaning: "Tiết khí đầu tiên mở ra một chu kỳ sinh sôi mới của vũ trụ. Hoa mai vàng rực rỡ, chim én chao lượn, xóm làng náo nức đón Tết cổ truyền.",
+        farmingGuide: "Thu hoạch dưa hấu Tết, xuất bán rau củ kiệu. Bón thúc đợt 2 cho lúa Đông Xuân phát triển đẻ nhánh rộ. Tưới ẩm vườn tiêu sau Tết.",
+        pestAlert: "Sâu tơ trên luống rau màu vụ xuân.",
+        folkPoem: "Lập Xuân mưa bụi bay bay / Mạ non xanh ngát, ngất ngây tình làng."
+      },
+      {
+        index: 22,
+        id: "vu-thuy",
+        name: "Vũ Thủy",
+        degree: "330°",
+        season: "MÙA XUÂN",
+        seasonKey: "xuan",
+        seasonIcon: "🌧️",
+        seasonColor: "text-emerald-300",
+        seasonBg: "bg-emerald-950/80 border-emerald-500/40",
+        approxDate: "19/02 - 04/03",
+        role: "Mưa Xuân Ẩm Ướt • Dồi Dào Dòng Nước",
+        meaning: "Những cơn mưa xuân lất phất làm băng giá tan biến, sông ngòi đầy ắp phù sa, cây cối bung chồi biếc xanh mơn mởn.",
+        farmingGuide: "Dẫn nước vào ruộng lúa Đông Xuân đẻ nhánh rộ. Tỉa dặm lúa, làm cỏ bờ. Trồng mới các loại cây ăn trái: xoài, bơ, mít, mãng cầu Đất Phú.",
+        pestAlert: "Bệnh nghẹt rễ lúa xuân do bón đạm gặp lạnh kéo dài.",
+        folkPoem: "Vũ Thủy mưa ngọt dòng sông / Nước về đầy mương thỏa lòng người gieo."
+      },
+      {
+        index: 23,
+        id: "kinh-trap",
+        name: "Kinh Trập",
+        degree: "345°",
+        season: "MÙA XUÂN",
+        seasonKey: "xuan",
+        seasonIcon: "⚡",
+        seasonColor: "text-emerald-300",
+        seasonBg: "bg-emerald-950/80 border-emerald-500/40",
+        approxDate: "05/03 - 19/03",
+        role: "Sấm Dậy Đầu Mùa • Sâu Bọ Thức Giấc",
+        meaning: "Tiếng sấm mùa xuân rền vang đánh thức muôn loài sâu bọ chui lên khỏi lòng đất sau mùa ngủ đông (Kinh = kinh động, Trập = ẩn nấp).",
+        farmingGuide: "Kiểm tra kỹ đồng ruộng ngay sau tiếng sấm đầu mùa. Phun thuốc sinh học diệt trừ mầm mống sâu non nở rộ. Bón phân đón đòng sớm.",
+        pestAlert: "Sâu cuốn lá nhỏ lứa 1, rầy mềm phá hại đọt non cây ăn trái.",
+        folkPoem: "Kinh Trập sấm giật trời cao / Sâu bọ thức giấc, nhà nông ra đồng."
+      }
+    ];
+
+    // Hàm lấy Tiết Khí chính xác theo thiên văn học
+    function getSolarTerm(dateObj) {
+      if (!dateObj) dateObj = new Date();
+      const d = dateObj.getDate();
+      const m = dateObj.getMonth() + 1;
+      const y = dateObj.getFullYear();
+      
+      let lun = convertSolar2Lunar(d, m, y);
+      let sl = getSunLongitude(lun.jdn, TIME_ZONE) * 180 / Math.PI;
+      while (sl < 0) sl += 360;
+      while (sl >= 360) sl -= 360;
+
+      let termIndex = Math.floor(sl / 15) % 24;
+      const term = TWENTY_FOUR_SOLAR_TERMS[termIndex];
+      const nextTerm = TWENTY_FOUR_SOLAR_TERMS[(termIndex + 1) % 24];
+
+      // Tính khoảng ngày còn lại đến tiết tiếp theo (mỗi tiết xấp xỉ 15.2 ngày)
+      const degreeInTerm = sl % 15;
+      const daysElapsed = Math.floor(degreeInTerm * (15.218 / 15)) + 1;
+      const daysRemaining = Math.max(1, 15 - daysElapsed);
+
+      return {
+        ...term,
+        currentDegree: Math.round(sl),
+        daysElapsed: daysElapsed,
+        daysRemaining: daysRemaining,
+        nextTerm: nextTerm
+      };
+    }
+
+
+    let currentSolarTermsSeasonFilter = 'all';
+
+    function open24SolarTermsModal() {
+      if (typeof toggleMoonCycleModal === 'function') {
+        const modal = document.getElementById('moonCycleModal');
+        if (modal && modal.classList.contains('hidden')) {
+          toggleMoonCycleModal();
+        }
+      }
+      if (typeof switchAstroTab === 'function') {
+        switchAstroTab('seasons');
+      }
+      renderTwentyFourTermsGrid();
+    }
+
+    function filterSolarTermsSeason(seasonKey) {
+      currentSolarTermsSeasonFilter = seasonKey;
+      ['all', 'xuan', 'ha', 'thu', 'dong'].forEach(s => {
+        const btn = document.getElementById('btnSTFilter_' + s);
+        if (btn) {
+          btn.className = s === seasonKey
+            ? 'py-1.5 rounded-xl bg-yellow-400 text-slate-950 font-black transition shadow'
+            : 'py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-white transition';
+        }
+      });
+      renderTwentyFourTermsGrid();
+    }
+
+    function renderTwentyFourTermsGrid() {
+      const container = document.getElementById('twentyFourTermsGrid');
+      if (!container) return;
+
+      const currentTermInfo = getSolarTerm(currentDate);
+
+      const pill = document.getElementById('currentTermPill');
+      if (pill) {
+        pill.innerHTML = '🌿 ' + currentTermInfo.name + ' (' + currentTermInfo.currentDegree + '°) • Ngày ' + currentTermInfo.daysElapsed + '/15 • Còn ' + currentTermInfo.daysRemaining + ' ngày đến ' + currentTermInfo.nextTerm.name;
+      }
+
+      container.innerHTML = TWENTY_FOUR_SOLAR_TERMS.map(t => {
+        if (currentSolarTermsSeasonFilter !== 'all' && t.seasonKey !== currentSolarTermsSeasonFilter) {
+          return '';
+        }
+
+        const isCurrent = (t.name === currentTermInfo.name);
+        const cardBorder = isCurrent 
+          ? 'border-2 border-yellow-400 bg-gradient-to-br from-emerald-950 via-slate-900 to-slate-950 shadow-[0_0_20px_rgba(250,204,21,0.5)]'
+          : 'border border-slate-800 bg-slate-950/80 hover:border-slate-700';
+
+        return '<div class="p-3 rounded-2xl ' + cardBorder + ' space-y-2 transition">' +
+                 '<div class="flex items-center justify-between">' +
+                   '<div class="flex items-center gap-2">' +
+                     '<span class="text-2xl">' + t.seasonIcon + '</span>' +
+                     '<div>' +
+                       '<div class="font-black text-sm text-yellow-300 flex items-center gap-1.5">' +
+                         t.name + ' (' + t.degree + ')' +
+                         (isCurrent ? '<span class="px-2 py-0.5 rounded-full bg-yellow-400 text-slate-950 text-[9px] font-black uppercase shadow animate-pulse">✦ Hiện tại</span>' : '') +
+                       '</div>' +
+                       '<div class="text-[10px] ' + t.seasonColor + ' font-bold uppercase tracking-wider">' + t.season + ' • ' + t.role + '</div>' +
+                     '</div>' +
+                   '</div>' +
+                   '<span class="text-[10px] text-slate-300 font-mono bg-slate-800/90 border border-slate-700 px-2 py-0.5 rounded-md shrink-0">' + t.approxDate + '</span>' +
+                 '</div>' +
+
+                 '<div class="text-[11px] text-slate-300 leading-relaxed">' + t.meaning + '</div>' +
+
+                 '<div class="p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-[10.5px] space-y-1">' +
+                   '<div class="text-emerald-300 font-bold flex items-start gap-1">' +
+                     '<i class="fa-solid fa-seedling text-[11px] mt-0.5 shrink-0"></i>' +
+                     '<span><b>Làm Nông:</b> ' + t.farmingGuide + '</span>' +
+                   '</div>' +
+                   '<div class="text-rose-300 font-bold flex items-start gap-1">' +
+                     '<i class="fa-solid fa-triangle-exclamation text-[11px] mt-0.5 shrink-0"></i>' +
+                     '<span><b>Sâu Bệnh / Thời Tiết:</b> ' + t.pestAlert + '</span>' +
+                   '</div>' +
+                 '</div>' +
+
+                 '<div class="text-[10.5px] text-amber-200/90 italic border-l-2 border-amber-400/60 pl-2">' +
+                   '“' + t.folkPoem + '”' +
+                 '</div>' +
+               '</div>';
+      }).join('');
+    }
+
+    // Đảm bảo hàm renderEightTermsGrid cũ trỏ sang hàm mới để không gãy gọi
+    function renderEightTermsGrid() {
+      renderTwentyFourTermsGrid();
+    }
+  
 </script>
 </body>
 </html>
