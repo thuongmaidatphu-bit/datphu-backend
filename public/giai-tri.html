@@ -2229,6 +2229,30 @@
         intro: "Bãi biển trung tâm thành phố Tuy Hòa với làn nước trong xanh, bờ cát dài thoai thoải và không khí trong lành nguyên sơ."
       },
       {
+        title: "ĐẠO TRÀNG NIỆM PHẬT & MẦM BỒ ĐỀ TUỔI THƠ",
+        district: "Đạo Tràng Đất Phú",
+        category: "Tâm Linh & Hiếu Hạnh",
+        poem: "Chắp tay búp sen niệm Phật A Di Đà, gieo mầm hiếu thảo sáng ngời tuổi thơ.",
+        img: "img/phat_phap_cong_dong/ba_con_va_em_nho_chap_tay_niem_phat.jpg",
+        intro: "Khoảnh khắc thiêng liêng và vô cùng xúc động khi bà con Phật tử cùng các cháu thiếu nhi ngồi ngay ngắn trên manh chiếu mộc, thành kính chắp tay búp sen niệm Phật A Di Đà cầu an lạc."
+      },
+      {
+        title: "LỚP HỌC ĐẠO ĐỨC & KHÓA TU THIẾU NHI",
+        district: "Cửa Phật Từ Bi",
+        category: "Giáo Dục & Gieo Duyên",
+        poem: "Học phép tắc người con giữ trọn chữ hiếu, sống trọn đời nhân ái bao dung.",
+        img: "img/phat_phap_cong_dong/thay_trao_kinh_sach_de_tu_quy_cho_cac_chau.jpg",
+        intro: "Quý Thầy trao tặng kinh sách 'Phép Tắc Người Con - Đệ Tử Quy' cho các cháu nhỏ, chỉ dạy bài học đạo đức, kính trọng ông bà cha mẹ và mở rộng lòng nhân ái với muôn loài."
+      },
+      {
+        title: "ÁNH HÀO QUANG TAM BẢO & KHÓA LỄ CẦU AN",
+        district: "Chốn Thiền Môn Thanh Tịnh",
+        category: "Phật Pháp Nhiệm Mầu",
+        poem: "Tam Bảo uy nghiêm rực sáng hào quang, lời kinh tiếng kệ xua tan muộn phiền.",
+        img: "img/phat_phap_cong_dong/ban_tho_tam_bao_tay_phuong_tam_thanh.jpg",
+        intro: "Bàn thờ Tây Phương Tam Thánh trang nghiêm rực sáng hoa tươi và ánh hào quang rực rỡ trong khóa lễ tụng kinh niệm Phật cầu quốc thái dân an, xóm làng hòa thuận."
+      },
+      {
         title: "TẾT SUM VẦY & NẾP SỐNG GIA ĐÌNH ĐẤT PHÚ",
         district: "Toàn Tỉnh Phú Yên",
         category: "Văn Hóa Dân Gian",
@@ -3547,14 +3571,18 @@ function changeArtSlide(delta) {
       </div>
 
       <!-- TÙY CHỌN PHƯƠNG THỨC: DÁN LINK HAY THU ÂM TRỰC TIẾP -->
-      <div class="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-950 border border-slate-800 text-xs">
-        <button type="button" onclick="switchUploadMode('link')" id="btnUploadModeLink" class="flex-1 py-2 rounded-xl bg-amber-500 text-slate-950 font-black transition flex items-center justify-center gap-1.5">
-          <i class="fa-brands fa-youtube text-red-600"></i>
-          <span>Dán Link Video / YouTube</span>
+      <div class="flex items-center gap-1.5 p-1.5 rounded-2xl bg-slate-950 border border-slate-800 text-xs flex-wrap sm:flex-nowrap">
+        <button type="button" onclick="switchUploadMode('photo')" id="btnUploadModePhoto" class="flex-1 py-2 px-2 rounded-xl bg-emerald-600 text-white font-black transition flex items-center justify-center gap-1.5 shadow-sm cursor-pointer text-[11px] sm:text-xs">
+          <i class="fa-solid fa-camera text-amber-300"></i>
+          <span>📷 Đăng Ảnh Từ Thiện & Phật Pháp</span>
         </button>
-        <button type="button" onclick="switchUploadMode('record')" id="btnUploadModeRecord" class="flex-1 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white font-bold transition flex items-center justify-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-microphone text-rose-500"></i>
-          <span>Thu Âm Micro Trực Tiếp</span>
+        <button type="button" onclick="switchUploadMode('link')" id="btnUploadModeLink" class="flex-1 py-2 px-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white font-bold transition flex items-center justify-center gap-1.5 cursor-pointer text-[11px] sm:text-xs">
+          <i class="fa-brands fa-youtube text-red-500"></i>
+          <span>Dán Link YouTube</span>
+        </button>
+        <button type="button" onclick="switchUploadMode('record')" id="btnUploadModeRecord" class="flex-1 py-2 px-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white font-bold transition flex items-center justify-center gap-1.5 cursor-pointer text-[11px] sm:text-xs">
+          <i class="fa-solid fa-microphone text-rose-400"></i>
+          <span>Thu Micro</span>
         </button>
       </div>
 
@@ -3562,7 +3590,7 @@ function changeArtSlide(delta) {
       <div class="space-y-3 text-xs">
         
         <!-- PHẦN 1: DÁN LINK VIDEO / YOUTUBE / MP3 -->
-        <div id="sectionModeLink">
+        <div id="sectionModeLink" class="hidden">
           <label class="block font-bold text-amber-200 mb-1">
             <i class="fa-brands fa-youtube text-red-500 mr-1"></i> Đường Link YouTube hoặc File MP3:
           </label>
@@ -3571,6 +3599,30 @@ function changeArtSlide(delta) {
         </div>
 
         <!-- PHẦN 2: THU ÂM MICRO TRỰC TIẾP TRÊN ĐIỆN THOẠI (ẨN MẶC ĐỊNH) -->
+        <!-- PHẦN 3: ĐĂNG TẢI HÌNH ẢNH TỪ THIỆN & ĐẠO TRÀNG (MỚI) -->
+        <div id="sectionModePhoto" class="p-4 rounded-2xl bg-slate-950 border-2 border-dashed border-emerald-500/50 text-center space-y-3">
+          <div class="text-xs text-emerald-300 font-bold">
+            📷 Chọn hình ảnh từ thiện, đạo tràng niệm Phật hoặc nụ cười làng quê từ máy của Bác:
+          </div>
+
+          <div class="flex flex-col items-center justify-center gap-2">
+            <input type="file" id="addPhotoFileInput" accept="image/*" class="hidden" onchange="handleCommunityPhotoSelected(this)" />
+            <button type="button" onclick="document.getElementById('addPhotoFileInput').click()" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow-lg active:scale-95 transition flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-images text-amber-300 text-base"></i>
+              <span>Bấm Chọn Ảnh Từ Điện Thoại / Máy Tính</span>
+            </button>
+            <p class="text-[10px] text-slate-400">Hỗ trợ ảnh JPG, PNG chụp từ điện thoại, máy ảnh sắc nét</p>
+          </div>
+
+          <!-- Xem trước ảnh vừa chọn -->
+          <div id="photoPreviewBox" class="hidden relative max-w-xs mx-auto rounded-xl overflow-hidden border border-emerald-500/40 shadow">
+            <img id="photoPreviewImg" src="" alt="Xem trước" class="w-full max-h-48 object-cover" />
+            <button type="button" onclick="clearSelectedCommunityPhoto()" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/80 hover:bg-black text-white flex items-center justify-center text-xs">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
         <div id="sectionModeRecord" class="hidden p-4 rounded-2xl bg-slate-950 border-2 border-dashed border-rose-500/50 text-center space-y-3">
           <div class="text-xs text-rose-300 font-bold">
             🎙️ Bấm nút dưới đây để hát một câu hò, lời ru hoặc kể chuyện tiếu lâm:
