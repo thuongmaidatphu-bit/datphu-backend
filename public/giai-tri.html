@@ -59,119 +59,114 @@
 </head>
 <body class="bg-gradient-to-b from-slate-50 via-white to-amber-50/40 min-h-screen text-slate-800 flex flex-col font-sans antialiased transition-colors duration-300">
 
-  <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header class="nav-bar-bg sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-200/80 shadow-xs px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3">
-    <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
-      <a href="/" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-black shadow-2xs transition active:scale-95 flex items-center gap-1.5 shrink-0" title="Trở về Trang Chủ Lịch Đất Phú">
-        <i class="fa-solid fa-arrow-left"></i>
+  <!-- ================= TOP NAVIGATION BAR (SIÊU TINH GỌN TRÊN MOBILE) ================= -->
+  <header class="nav-bar-bg sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-200/60 shadow-2xs px-2 sm:px-6 py-1.5 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-3">
+    <div class="flex items-center gap-1.5 sm:gap-3 min-w-0">
+      <a href="/" class="p-1.5 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-black shadow-2xs transition active:scale-95 flex items-center gap-1 shrink-0" title="Trở về Trang Chủ Lịch Đất Phú">
+        <i class="fa-solid fa-arrow-left text-xs"></i>
         <span class="hidden sm:inline">Về Lịch Đất Phú</span>
       </a>
 
-      <div class="flex items-center gap-2.5 min-w-0">
-        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 text-white flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0 border border-amber-300">
-          <i class="fa-solid fa-masks-theater text-base sm:text-lg"></i>
+      <div class="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
+        <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 text-white flex items-center justify-center shadow-xs shrink-0 border border-amber-300">
+          <i class="fa-solid fa-masks-theater text-xs sm:text-base"></i>
         </div>
         <div class="min-w-0">
-          <h1 class="text-xs sm:text-sm md:text-base font-black text-amber-950 uppercase tracking-wide truncate">
-            TRUNG TÂM GIẢI TRÍ & VĂN HÓA ĐẤT PHÚ
+          <h1 class="text-[11px] sm:text-sm md:text-base font-black text-amber-950 uppercase tracking-tight sm:tracking-wide truncate">
+            GIẢI TRÍ & VĂN HÓA ĐẤT PHÚ
           </h1>
-          <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate hidden sm:block">Radio Quê Hương • Rạp Chiếu 4K • Niệm Phật Số • Trà Đạo Thư Quán • Thiền Định</p>
+          <p class="text-[10px] text-slate-500 font-medium truncate hidden md:block">Radio Quê Hương • Rạp Chiếu 4K • Niệm Phật Số • Trà Đạo Thư Quán</p>
         </div>
       </div>
     </div>
 
-    <!-- CỤM NÚT ĐIỀU HƯỚNG & HỆ SINH THÁI -->
-    <div class="flex items-center gap-2 shrink-0">
-      <button onclick="openDedicatedPhotoModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white border border-emerald-400/40 text-xs font-black shadow transition active:scale-95 flex items-center gap-1.5 cursor-pointer" title="Đăng tải ảnh từ máy tính hoặc điện thoại">
-        <i class="fa-solid fa-camera text-amber-300"></i>
-        <span>Đăng Ảnh 📷</span>
+    <!-- CỤM NÚT ĐIỀU HƯỚNG GỌN GÀNG -->
+    <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+      <button onclick="openDedicatedPhotoModal()" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white border border-emerald-400/40 text-[11px] sm:text-xs font-black shadow-xs transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Đăng ảnh từ điện thoại hoặc máy tính">
+        <i class="fa-solid fa-camera text-amber-300 text-xs"></i>
+        <span class="hidden sm:inline">Đăng Ảnh</span>
       </button>
 
-      <button onclick="toggleDatPhuAppLauncher()" id="universalAppLauncherBtn" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-black shadow-xs transition active:scale-95 flex items-center gap-1.5" title="Mở khay ứng dụng Hệ Sinh Thái Đất Phú">
-        <i class="fa-solid fa-grip text-amber-600 text-sm"></i>
-        <span class="hidden sm:inline">Hệ Sinh Thái</span>
+      <button onclick="toggleDatPhuAppLauncher()" id="universalAppLauncherBtn" class="p-1.5 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-[11px] sm:text-xs font-black shadow-2xs transition active:scale-95 flex items-center gap-1" title="Mở khay ứng dụng Hệ Sinh Thái Đất Phú">
+        <i class="fa-solid fa-grip text-amber-600 text-xs"></i>
+        <span class="hidden md:inline">Hệ Sinh Thái</span>
       </button>
 
-      <button onclick="toggleGiaiTriTheme()" id="btnThemeToggle" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition active:scale-95" title="Đổi màu nền ngày / đêm">
-        <i id="themeToggleIcon" class="fa-solid fa-moon text-amber-600"></i>
+      <button onclick="toggleGiaiTriTheme()" id="btnThemeToggle" class="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition active:scale-95" title="Đổi màu nền ngày / đêm">
+        <i id="themeToggleIcon" class="fa-solid fa-moon text-amber-600 text-xs"></i>
       </button>
     </div>
   </header>
 
-  <!-- ================= MASTER CHANNELS DOCK (5 CHUYÊN ĐỀ LỚN) ================= -->
-  <div class="sticky top-[53px] sm:top-[57px] z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs py-2 px-3 sm:px-6">
-    <div class="max-w-5xl mx-auto flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar text-xs font-black">
-      <button onclick="switchChannel('radio')" id="tabBtn_radio" class="px-3.5 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-sm shrink-0 flex items-center gap-2 active:scale-95 transition font-black cursor-pointer">
-        <span class="w-5 h-5 rounded-lg bg-black/20 text-slate-950 flex items-center justify-center text-xs">
+  <!-- ================= MASTER CHANNELS DOCK (SIÊU GỌN, CUỘN MƯỢT MÀ) ================= -->
+  <div class="bg-white/95 backdrop-blur-md border-b border-slate-200/70 shadow-2xs py-1.5 px-2 sm:px-6">
+    <div class="max-w-5xl mx-auto flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar text-xs font-black">
+      <button onclick="switchChannel('radio')" id="tabBtn_radio" class="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-xs shrink-0 flex items-center gap-1.5 active:scale-95 transition font-black cursor-pointer text-[11px] sm:text-xs">
+        <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-black/20 text-slate-950 flex items-center justify-center text-[10px]">
           <i class="fa-solid fa-tower-broadcast"></i>
         </span>
-        <span>1. Đài Radio, Bài Chòi & Phim 4K</span>
+        <span>1. Đài Radio & Phim 4K</span>
       </button>
 
-      <button onclick="switchChannel('buddhist')" id="tabBtn_buddhist" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-2 active:scale-95 transition cursor-pointer">
-        <span class="w-5 h-5 rounded-lg bg-amber-500/15 text-amber-700 flex items-center justify-center text-xs">
+      <button onclick="switchChannel('buddhist')" id="tabBtn_buddhist" class="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer text-[11px] sm:text-xs">
+        <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-amber-500/15 text-amber-700 flex items-center justify-center text-[10px]">
           <i class="fa-solid fa-dharmachakra"></i>
         </span>
-        <span>2. Máy Niệm Phật Số</span>
+        <span>2. Máy Niệm Phật</span>
       </button>
 
-      <button onclick="switchChannel('healing')" id="tabBtn_healing" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-2 active:scale-95 transition cursor-pointer">
-        <span class="w-5 h-5 rounded-lg bg-emerald-500/15 text-emerald-700 flex items-center justify-center text-xs">
+      <button onclick="switchChannel('healing')" id="tabBtn_healing" class="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer text-[11px] sm:text-xs">
+        <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-emerald-500/15 text-emerald-700 flex items-center justify-center text-[10px]">
           <i class="fa-solid fa-mug-hot"></i>
         </span>
-        <span>3. Trà Đạo Thư Quán</span>
+        <span>3. Trà Đạo</span>
       </button>
 
-      <button onclick="switchChannel('mindful')" id="tabBtn_mindful" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-2 active:scale-95 transition cursor-pointer">
-        <span class="w-5 h-5 rounded-lg bg-indigo-500/15 text-indigo-700 flex items-center justify-center text-xs">
+      <button onclick="switchChannel('mindful')" id="tabBtn_mindful" class="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer text-[11px] sm:text-xs">
+        <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-indigo-500/15 text-indigo-700 flex items-center justify-center text-[10px]">
           <i class="fa-solid fa-spa"></i>
         </span>
-        <span>4. Thiền Thở Sen 4-7-8</span>
+        <span>4. Thiền Thở 4-7-8</span>
       </button>
     </div>
   </div>
 
   <!-- ================= MAIN CONTENT CONTAINER ================= -->
-  <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-5 space-y-4">
+  <main class="flex-1 max-w-5xl w-full mx-auto p-2 sm:p-5 space-y-2.5 sm:space-y-4">
 
     <!-- ============================================================ -->
     <!-- PHÂN HỆ 1: ĐÀI RADIO & HÔ BÀI CHÒI XỨ NẪU                     -->
     <!-- ========================================================================= -->
     <!-- PHÂN HỆ DUY NHẤT: MÀN HÌNH LỚN 4K Ở TRÊN & CHUỖI TƯƠNG TÁC CHẠY DỌC DƯỚI   -->
     <!-- ========================================================================= -->
-    <!-- ================= BANNER MÙA LỄ HỘI NOEL & TẾT SUM VẦY COMPACT ================= -->
-      <div class="py-2 px-3 sm:px-4 rounded-2xl bg-gradient-to-r from-red-950 via-slate-900 to-emerald-950 border border-amber-500/40 shadow-lg text-white flex flex-wrap items-center justify-between gap-2 relative overflow-hidden">
-        <div class="flex items-center gap-2.5 relative z-10 min-w-0">
-          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-600 flex items-center justify-center text-sm shadow shrink-0 text-white font-bold">
-            <i class="fa-solid fa-gift text-amber-200"></i>
-          </div>
-          <div class="min-w-0">
-            <div class="flex items-center gap-1.5 flex-wrap">
-              <span class="text-xs font-black text-amber-300 tracking-wide uppercase">MÙA LỄ HỘI GIÁNG SINH & XUÂN ĐẤT PHÚ</span>
-              <span class="px-2 py-0.5 rounded-full bg-emerald-700/80 text-emerald-100 text-[9px] font-bold border border-emerald-400/30">Noel & Tết 2027</span>
-            </div>
-            <p id="tetCountdownText" class="text-[10.5px] sm:text-[11px] text-amber-100/90 font-mono font-medium truncate">Đang tính thời khắc mùa lễ hội...</p>
-          </div>
+    <!-- ================= DẢI RUY-BĂNG LỄ HỘI SIÊU MẢNH (SLIM FESTIVAL RIBBON - KHÔNG BỊ CẤN) ================= -->
+      <div id="festivalSlimBanner" class="py-1 px-2.5 sm:py-1.5 sm:px-3.5 rounded-xl bg-gradient-to-r from-red-950 via-slate-900 to-emerald-950 border border-amber-500/30 shadow-xs text-white flex items-center justify-between gap-1.5 relative overflow-hidden text-[10.5px] sm:text-xs">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span class="text-amber-300 font-bold shrink-0">🎁</span>
+          <p id="tetCountdownText" class="text-[10px] sm:text-[11px] text-amber-100 font-mono font-medium truncate">Đang tính thời khắc mùa lễ hội...</p>
         </div>
 
-        <div class="flex items-center gap-1.5 relative z-10 text-xs shrink-0">
-          <button onclick="toggleTetPetals()" id="btnTetPetalsToggle" class="px-2.5 py-1 rounded-xl bg-black/50 hover:bg-black/70 border border-amber-400/40 text-amber-200 font-bold transition flex items-center gap-1 active:scale-95 cursor-pointer text-[11px]" title="Bật/Tắt hiệu ứng tuyết rơi & mai vàng">
+        <div class="flex items-center gap-1 shrink-0">
+          <button onclick="toggleTetPetals()" id="btnTetPetalsToggle" class="px-2 py-0.5 rounded-lg bg-black/40 hover:bg-black/60 border border-amber-400/30 text-amber-200 font-bold transition flex items-center gap-1 active:scale-95 cursor-pointer text-[10px]" title="Bật/Tắt tuyết & mai rơi">
             <span id="petalsStatusDot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>❄️ Tuyết & Mai 🌸</span>
+            <span>❄️🌸</span>
           </button>
-          <button onclick="filterRadioTheme('noel')" class="px-2.5 py-1 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black shadow transition flex items-center gap-1 active:scale-95 cursor-pointer border border-emerald-300/40 text-[11px]" title="Nghe tuyển tập Giáng Sinh & Noel">
+          <button onclick="filterRadioTheme('noel')" class="px-2 py-0.5 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black shadow-xs transition active:scale-95 cursor-pointer text-[10px] flex items-center gap-1" title="Nhạc Giáng Sinh">
             <span>🎄 Noel</span>
           </button>
-          <button onclick="filterRadioTheme('nhacxuan')" class="px-2.5 py-1 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black shadow transition flex items-center gap-1 active:scale-95 cursor-pointer text-[11px]">
-            <span>🌸 Nhạc Xuân</span>
+          <button onclick="filterRadioTheme('nhacxuan')" class="px-2 py-0.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black shadow-xs transition active:scale-95 cursor-pointer text-[10px] flex items-center gap-1">
+            <span>🌸 Xuân</span>
+          </button>
+          <button onclick="document.getElementById('festivalSlimBanner').classList.add('hidden')" class="w-5 h-5 rounded-md hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center text-[10px] ml-0.5" title="Tạm ẩn thanh này">
+            <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
       </div>
 
-      <section id="channelSection_radio" class="space-y-3">
+      <section id="channelSection_radio" class="space-y-2 sm:space-y-3">
       
       <!-- 1. MÀN HÌNH LỚN 4K (HERO CINEMA SCREEN) TÍCH HỢP NÚT PLAY / PAUSE LỚN -->
-      <div class="p-3 sm:p-5 rounded-3xl bg-slate-900 border border-amber-500/30 shadow-2xl space-y-3 relative overflow-hidden">
+      <div class="p-2 sm:p-4 rounded-2xl sm:rounded-3xl bg-slate-900 border border-amber-500/30 shadow-xl space-y-2 sm:space-y-3 relative overflow-hidden">
         
         <!-- Khung chiếu video/ảnh tỉ lệ 16:9 với viền Ambilight -->
         <div id="heroTheaterContainer" class="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 aspect-video max-h-[50vh] sm:max-h-[54vh] md:max-h-[460px] shadow-2xl group flex items-center justify-center border-2 border-amber-500/40 select-none">
