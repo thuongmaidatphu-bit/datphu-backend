@@ -636,11 +636,52 @@
               </div>
             </div>
 
+            <!-- TIẾN ĐỘ CHUỖI TRÀNG HẠT 108 HẠT TRỰC QUAN -->
+            <div class="pt-1.5 border-t border-amber-500/20 space-y-1">
+              <div class="flex items-center justify-between text-[9px] font-mono font-bold text-amber-200/85">
+                <span class="flex items-center gap-1">
+                  📿 Hạt thứ: <b id="malaCurrentBead" class="text-amber-300 font-mono text-[10.5px]">108</b> / 108
+                </span>
+                <span class="text-amber-300 flex items-center gap-1">
+                  Vòng Chuỗi: <b id="malaRoundCount" class="text-amber-300 font-mono text-[10.5px]">1</b>
+                </span>
+              </div>
+              <!-- Thanh hạt tiến độ hiển thị trực quan lấp lánh -->
+              <div class="relative w-full h-1.5 sm:h-2 rounded-full bg-black/85 border border-amber-500/40 overflow-hidden shadow-inner flex items-center">
+                <div id="malaProgressBar" class="h-full bg-gradient-to-r from-amber-600 via-amber-400 to-yellow-300 rounded-full transition-all duration-200 shadow-[0_0_8px_rgba(245,158,11,0.8)]" style="width: 100%;"></div>
+              </div>
+            </div>
+
             <!-- Dưới màn hình: Dòng tụng niệm Karaoke chữ thư thái -->
-            <div class="pt-1.5 border-t border-amber-500/20 text-center">
+            <div class="pt-1 border-t border-amber-500/20 text-center">
               <p id="buddhistKaraokeLine" class="text-[11px] sm:text-xs font-bold text-amber-200 font-serif italic tracking-wide">
                 "Nam Mô A Di Đà Phật • Nam Mô A Di Đà Phật"
               </p>
+            </div>
+          </div>
+
+          <!-- THANH KHAI KHÓA LỄ & HẸN GIỜ THỜI KHÓA TU TẬP -->
+          <div class="relative z-10 p-2 sm:p-2.5 rounded-2xl bg-black/60 border border-amber-500/40 text-[10.5px] font-sans space-y-1.5 shadow-md">
+            <div class="flex items-center justify-between gap-2">
+              <!-- Nút Khai Khóa Lễ Chuông Mõ Tự Động -->
+              <button onclick="startBuddhistRitualCeremony()" id="btnStartRitual" class="px-2.5 py-1 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-slate-950 font-black text-[10.5px] flex items-center gap-1.5 shadow active:scale-95 transition cursor-pointer" title="Tự động Khai 3 tiếng Chuông & Hồi Mõ Đạo Tràng">
+                <i class="fa-solid fa-dharmachakra"></i>
+                <span id="btnStartRitualText">Khai Khóa Lễ Chuông Mõ</span>
+              </button>
+              <!-- Đồng hồ đếm ngược thời khóa -->
+              <div id="ritualTimerDisplay" class="font-mono text-amber-300 font-bold text-[10px] bg-black/80 px-2 py-0.5 rounded-lg border border-amber-400/30 shrink-0">
+                ⏳ Tự Do
+              </div>
+            </div>
+
+            <!-- Các mốc hẹn giờ thời khóa tu tập -->
+            <div class="flex items-center gap-1 text-[9.5px] font-bold">
+              <span class="text-amber-200/70 uppercase text-[8.5px] shrink-0">Thời lượng:</span>
+              <button onclick="setRitualTimer(0)" id="timerBtn_0" class="flex-1 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer">Tự Do</button>
+              <button onclick="setRitualTimer(15)" id="timerBtn_15" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">15 Phút</button>
+              <button onclick="setRitualTimer(30)" id="timerBtn_30" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">30 Phút</button>
+              <button onclick="setRitualTimer(45)" id="timerBtn_45" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">45 Phút</button>
+              <button onclick="setRitualTimer(60)" id="timerBtn_60" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">60 Phút</button>
             </div>
           </div>
 
@@ -2663,6 +2704,7 @@ function changeArtSlide(delta) {
       if (karaokeLine) karaokeLine.innerText = '"' + track.line + '"';
       renderBuddhistPlaylist();
       updateLifetimeMalaDisplay();
+      updateMalaProgressUI();
       if (!isBuddhistPlaying) {
         toggleBuddhistPlay();
       } else {
@@ -2858,6 +2900,7 @@ function changeArtSlide(delta) {
       }
 
       playWoodblockSound();
+      updateMalaProgressUI();
       if (navigator.vibrate) navigator.vibrate(25);
     }
 
@@ -3454,6 +3497,152 @@ function changeArtSlide(delta) {
     // =========================================================================
     let buddhistSpeedMs = 2000; // 1.2s mặc định
     let lifetimeMalaCount = parseInt(localStorage.getItem('datphu_lifetime_mala') || '1080');
+
+    
+    // =========================================================================
+    // NÂNG CẤP BẢO ĐÀI: CHUỖI TRÀNG HẠT 108 HẠT, HẸN GIỜ & KHAI KHÓA LỄ
+    // =========================================================================
+    let ritualTimerInterval = null;
+    let ritualRemainingSeconds = 0;
+    let isRitualCeremonyRunning = false;
+
+    function updateMalaProgressUI() {
+      const currentBead = ((buddhistCount - 1) % 108) + 1;
+      const malaRounds = Math.floor((buddhistCount - 1) / 108) + 1;
+
+      const beadEl = document.getElementById('malaCurrentBead');
+      const roundEl = document.getElementById('malaRoundCount');
+      const barEl = document.getElementById('malaProgressBar');
+
+      if (beadEl) beadEl.innerText = currentBead;
+      if (roundEl) roundEl.innerText = malaRounds;
+      if (barEl) barEl.style.width = ((currentBead / 108) * 100) + '%';
+    }
+
+    // Hẹn giờ khóa lễ tu tập (15, 30, 45, 60 phút hoặc Tự Do)
+    function setRitualTimer(minutes) {
+      if (ritualTimerInterval) {
+        clearInterval(ritualTimerInterval);
+        ritualTimerInterval = null;
+      }
+
+      ['timerBtn_0', 'timerBtn_15', 'timerBtn_30', 'timerBtn_45', 'timerBtn_60'].forEach((btnId, idx) => {
+        const btn = document.getElementById(btnId);
+        const match = (idx === 0 && minutes === 0) || (idx === 1 && minutes === 15) || (idx === 2 && minutes === 30) || (idx === 3 && minutes === 45) || (idx === 4 && minutes === 60);
+        if (btn) {
+          btn.className = match ? "flex-1 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer" : "flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer";
+        }
+      });
+
+      const display = document.getElementById('ritualTimerDisplay');
+      if (minutes === 0) {
+        ritualRemainingSeconds = 0;
+        if (display) display.innerText = "⏳ Tự Do";
+        return;
+      }
+
+      ritualRemainingSeconds = minutes * 60;
+      updateRitualTimerDisplay();
+
+      // Nếu máy chưa phát, tự động khởi động phát luôn
+      if (!isBuddhistPlaying) {
+        toggleBuddhistPlay();
+      }
+
+      ritualTimerInterval = setInterval(() => {
+        if (!isBuddhistPlaying) return; // Chỉ đếm khi đang hành trì
+
+        ritualRemainingSeconds--;
+        updateRitualTimerDisplay();
+
+        if (ritualRemainingSeconds <= 0) {
+          clearInterval(ritualTimerInterval);
+          ritualTimerInterval = null;
+          finishRitualWithHamMoAndBell();
+        }
+      }, 1000);
+    }
+
+    function updateRitualTimerDisplay() {
+      const display = document.getElementById('ritualTimerDisplay');
+      if (!display) return;
+      if (ritualRemainingSeconds <= 0) {
+        display.innerText = "⏳ Hoàn Tất";
+        return;
+      }
+      const mins = Math.floor(ritualRemainingSeconds / 60);
+      const secs = ritualRemainingSeconds % 60;
+      display.innerText = "⏳ " + mins.toString().padStart(2, '0') + ":" + secs.toString().padStart(2, '0');
+    }
+
+    // Kết thúc khóa lễ: Hãm mõ 3 tiếng chậm dần + Thỉnh chuông đại hồng chung + Mở Kệ Hồi Hướng
+    function finishRitualWithHamMoAndBell() {
+      if (isBuddhistPlaying) {
+        toggleBuddhistPlay(); // Tạm ngưng nhịp phát thông thường
+      }
+
+      // Hãm mõ 3 tiếng thong thả
+      setTimeout(() => playWoodblockSound(), 400);
+      setTimeout(() => playWoodblockSound(), 1400);
+      setTimeout(() => playWoodblockSound(), 2600);
+
+      // Thỉnh chuông đồng ngân vang dứt bài
+      setTimeout(() => {
+        playTempleBronzeBell();
+        const drawer = document.getElementById('dedicationPrayerDrawer');
+        if (drawer && drawer.classList.contains('hidden')) {
+          drawer.classList.remove('hidden');
+        }
+        alert("Khóa lễ tu tập đã hoàn tất viên mãn! Nguyện hồi hướng công đức an lạc, cát tường đến khắp muôn nơi.");
+      }, 3500);
+    }
+
+    // Tự động Khai Khóa Lễ Chuông Mõ chuẩn mực thiền môn
+    function startBuddhistRitualCeremony() {
+      if (isRitualCeremonyRunning) return;
+      isRitualCeremonyRunning = true;
+
+      const btnText = document.getElementById('btnStartRitualText');
+      if (btnText) btnText.innerText = "Đang Khai Chuông Mõ...";
+
+      // Chuỗi Khai Chuông Mõ (3 tiếng chuông + hồi mõ dồn + hãm 3 tiếng)
+      // 1. Tiếng chuông 1
+      playTempleBronzeBell();
+
+      // 2. Tiếng chuông 2 (sau 2.2s)
+      setTimeout(() => playTempleBronzeBell(), 2200);
+
+      // 3. Tiếng chuông 3 (sau 4.4s)
+      setTimeout(() => playTempleBronzeBell(), 4400);
+
+      // 4. Khai mõ: 3 tiếng thong dong
+      setTimeout(() => playWoodblockSound(), 6600);
+      setTimeout(() => playWoodblockSound(), 7500);
+      setTimeout(() => playWoodblockSound(), 8400);
+
+      // 5. Hồi mõ dồn nhanh dần
+      setTimeout(() => playWoodblockSound(), 9000);
+      setTimeout(() => playWoodblockSound(), 9300);
+      setTimeout(() => playWoodblockSound(), 9550);
+      setTimeout(() => playWoodblockSound(), 9750);
+      setTimeout(() => playWoodblockSound(), 9900);
+      setTimeout(() => playWoodblockSound(), 10050);
+
+      // 6. Hãm mõ 3 tiếng dứt khoát
+      setTimeout(() => playWoodblockSound(), 10700);
+      setTimeout(() => playWoodblockSound(), 11500);
+      setTimeout(() => playWoodblockSound(), 12400);
+
+      // 7. Thỉnh chuông dẫn vào nhịp niệm chính thức!
+      setTimeout(() => {
+        playTempleBronzeBell();
+        isRitualCeremonyRunning = false;
+        if (btnText) btnText.innerText = "Khai Khóa Lễ Chuông Mõ";
+        if (!isBuddhistPlaying) {
+          toggleBuddhistPlay();
+        }
+      }, 13200);
+    }
 
     function updateLifetimeMalaDisplay() {
       const el = document.getElementById('buddhistLifetimeCount');
