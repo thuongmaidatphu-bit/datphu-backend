@@ -487,25 +487,128 @@
             </div>
 
             <!-- 6 Nút chuyển đổi bảng tính ngành nghề -->
-            <div class="grid grid-cols-3 sm:grid-cols-6 gap-1 text-center text-[10px] font-bold">
-              <button onclick="switchCalcType('watermelon')" id="calcTab_watermelon" class="py-1.5 px-1 rounded-xl bg-emerald-600 text-white transition flex flex-col items-center">
+            <div class="grid grid-cols-4 sm:grid-cols-8 gap-1 text-center text-[9.5px] font-bold">
+              <button onclick="switchCalcType('watermelon')" id="calcTab_watermelon" class="py-1.5 px-0.5 rounded-xl bg-emerald-600 text-white transition flex flex-col items-center">
                 <span>🍉 Dưa Hấu</span>
               </button>
-              <button onclick="switchCalcType('rice')" id="calcTab_rice" class="py-1.5 px-1 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+              <button onclick="switchCalcType('coffee')" id="calcTab_coffee" class="py-1.5 px-0.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+                <span>☕ Cà Phê</span>
+              </button>
+              <button onclick="switchCalcType('pepper')" id="calcTab_pepper" class="py-1.5 px-0.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+                <span>🌿 Hồ Tiêu</span>
+              </button>
+              <button onclick="switchCalcType('rice')" id="calcTab_rice" class="py-1.5 px-0.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
                 <span>🌾 Lúa Nước</span>
               </button>
-              <button onclick="switchCalcType('sugarcane')" id="calcTab_sugarcane" class="py-1.5 px-1 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+              <button onclick="switchCalcType('sugarcane')" id="calcTab_sugarcane" class="py-1.5 px-0.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
                 <span>🎋 Mía Đường</span>
               </button>
-              <button onclick="switchCalcType('forest')" id="calcTab_forest" class="py-1.5 px-1 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+              <button onclick="switchCalcType('forest')" id="calcTab_forest" class="py-1.5 px-0.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
                 <span>🌲 Keo Lai</span>
               </button>
-              <button onclick="switchCalcType('aquaculture')" id="calcTab_aquaculture" class="py-1.5 px-1 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+              <button onclick="switchCalcType('aquaculture')" id="calcTab_aquaculture" class="py-1.5 px-0.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
                 <span>🦐 Ao Tôm</span>
               </button>
-              <button onclick="switchCalcType('team')" id="calcTab_team" class="py-1.5 px-1 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+              <button onclick="switchCalcType('team')" id="calcTab_team" class="py-1.5 px-0.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
                 <span>👥 Chia Công</span>
               </button>
+            </div>
+
+            
+            <!-- BẢNG TÍNH CÀ PHÊ (TÂY NGUYÊN & ĐỒI NÚI) -->
+            <div id="calcBox_coffee" class="space-y-2 text-xs hidden">
+              <div class="overflow-x-auto rounded-xl border border-slate-800">
+                <table class="w-full text-left text-[11px]">
+                  <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 font-bold">
+                    <tr>
+                      <th class="p-2">Hạng Mục Cà Phê</th>
+                      <th class="p-2 text-center">Tiêu Chuẩn</th>
+                      <th class="p-2 text-right">Khối Lượng</th>
+                      <th class="p-2 text-right">Dự Toán (đ)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 font-mono text-slate-300">
+                    <tr>
+                      <td class="p-2 font-sans">Số gốc cà phê (Robusta)</td>
+                      <td class="p-2 text-center text-slate-400">1.100 gốc/ha</td>
+                      <td id="calcCoffeeTrees" class="p-2 text-right font-bold text-amber-300">0 gốc</td>
+                      <td id="costCoffeeTrees" class="p-2 text-right text-amber-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Nước tưới mùa khô (3 đợt)</td>
+                      <td class="p-2 text-center text-slate-400">450L/gốc/đợt</td>
+                      <td id="calcCoffeeWaterM3" class="p-2 text-right font-bold text-cyan-300">0 m³</td>
+                      <td class="p-2 text-right text-slate-400">Hồ chứa</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Phân bón NPK mùa mưa</td>
+                      <td class="p-2 text-center text-slate-400">1.5kg/gốc</td>
+                      <td id="calcCoffeeFertKg" class="p-2 text-right font-bold text-white">0 kg</td>
+                      <td id="costCoffeeFert" class="p-2 text-right text-slate-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Sản lượng nhân xô dự kiến</td>
+                      <td class="p-2 text-center text-slate-400">3.5 tấn/ha</td>
+                      <td id="calcCoffeeYield" class="p-2 text-right font-bold text-emerald-400">0 tấn</td>
+                      <td id="revenueCoffeeEst" class="p-2 text-right text-emerald-300 font-bold">0 đ</td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="bg-slate-950 font-bold border-t border-slate-800 text-xs">
+                    <tr>
+                      <td colspan="3" class="p-2 text-emerald-400 font-sans">DOANH THU NHÂN XÔ (110k/kg):</td>
+                      <td id="totalCoffeeRevenue" class="p-2 text-right font-mono text-emerald-300">0 đ</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+
+            <!-- BẢNG TÍNH HỒ TIÊU (VÀNG ĐEN NƯƠNG RẪY) -->
+            <div id="calcBox_pepper" class="space-y-2 text-xs hidden">
+              <div class="overflow-x-auto rounded-xl border border-slate-800">
+                <table class="w-full text-left text-[11px]">
+                  <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 font-bold">
+                    <tr>
+                      <th class="p-2">Hạng Mục Hồ Tiêu</th>
+                      <th class="p-2 text-center">Tiêu Chuẩn</th>
+                      <th class="p-2 text-right">Khối Lượng</th>
+                      <th class="p-2 text-right">Dự Toán (đ)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 font-mono text-slate-300">
+                    <tr>
+                      <td class="p-2 font-sans">Số trụ tiêu (Trụ sống/đúc)</td>
+                      <td class="p-2 text-center text-slate-400">1.600 trụ/ha</td>
+                      <td id="calcPepperPoles" class="p-2 text-right font-bold text-amber-300">0 trụ</td>
+                      <td id="costPepperPoles" class="p-2 text-right text-amber-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Hom dây giống Vĩnh Linh</td>
+                      <td class="p-2 text-center text-slate-400">2.5 hom/trụ</td>
+                      <td id="calcPepperVines" class="p-2 text-right font-bold text-emerald-400">0 hom</td>
+                      <td id="costPepperVines" class="p-2 text-right text-emerald-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Vôi nung quét gốc khử nấm</td>
+                      <td class="p-2 text-center text-slate-400">0.5kg/trụ</td>
+                      <td id="calcPepperLime" class="p-2 text-right font-bold text-white">0 kg</td>
+                      <td id="costPepperLime" class="p-2 text-right text-slate-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Sản lượng tiêu hạt khô</td>
+                      <td class="p-2 text-center text-slate-400">3.0 tấn/ha</td>
+                      <td id="calcPepperYield" class="p-2 text-right font-bold text-cyan-300">0 tấn</td>
+                      <td id="revenuePepperEst" class="p-2 text-right text-cyan-300 font-bold">0 đ</td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="bg-slate-950 font-bold border-t border-slate-800 text-xs">
+                    <tr>
+                      <td colspan="3" class="p-2 text-amber-400 font-sans">DOANH THU TIÊU ĐEN (140k/kg):</td>
+                      <td id="totalPepperRevenue" class="p-2 text-right font-mono text-amber-300">0 đ</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
             </div>
 
             <!-- 1. BẢNG TÍNH DƯA HẤU & HOA MÀU -->
@@ -1627,7 +1730,7 @@
     // 9. CÔNG CỤ DỰ TOÁN BẢNG PHÉP TÍNH NÔNG - LÂM - THỦY SẢN & TỔ ĐỘI
     function switchCalcType(type) {
       currentCalcType = type;
-      ['watermelon', 'rice', 'sugarcane', 'forest', 'aquaculture', 'team'].forEach(t => {
+      ['watermelon', 'coffee', 'pepper', 'rice', 'sugarcane', 'forest', 'aquaculture', 'team'].forEach(t => {
         const tab = document.getElementById('calcTab_' + t);
         const box = document.getElementById('calcBox_' + t);
         if (tab && box) {
@@ -1648,6 +1751,49 @@
     function updateCalculators(netAreaM2, perimeterM) {
       const saoCount = netAreaM2 / 500;
       const haCount = netAreaM2 / 10000;
+
+      
+      // Cà phê
+      const coffeeTrees = Math.round(haCount * 1100);
+      const costCoffeeTrees = Math.round(coffeeTrees * 15000);
+      const coffeeWaterM3 = Math.round((coffeeTrees * 450 * 3) / 1000);
+      const coffeeFertKg = Math.round(coffeeTrees * 1.5);
+      const costCoffeeFert = Math.round(coffeeFertKg * 16000);
+      const coffeeYieldTon = (haCount * 3.5).toFixed(1);
+      const revenueCoffee = Math.round(parseFloat(coffeeYieldTon) * 1000 * 110000);
+
+      if (document.getElementById('calcCoffeeTrees')) {
+        document.getElementById('calcCoffeeTrees').innerText = coffeeTrees.toLocaleString('vi-VN') + ' gốc';
+        document.getElementById('costCoffeeTrees').innerText = costCoffeeTrees.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcCoffeeWaterM3').innerText = coffeeWaterM3.toLocaleString('vi-VN') + ' m³';
+        document.getElementById('calcCoffeeFertKg').innerText = coffeeFertKg.toLocaleString('vi-VN') + ' kg';
+        document.getElementById('costCoffeeFert').innerText = costCoffeeFert.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcCoffeeYield').innerText = coffeeYieldTon + ' tấn';
+        document.getElementById('revenueCoffeeEst').innerText = revenueCoffee.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('totalCoffeeRevenue').innerText = revenueCoffee.toLocaleString('vi-VN') + ' đ';
+      }
+
+      // Hồ tiêu
+      const pepperPoles = Math.round(haCount * 1600);
+      const costPepperPoles = Math.round(pepperPoles * 150000);
+      const pepperVines = Math.round(pepperPoles * 2.5);
+      const costPepperVines = Math.round(pepperVines * 12000);
+      const pepperLimeKg = Math.round(pepperPoles * 0.5);
+      const costPepperLime = Math.round(pepperLimeKg * 4500);
+      const pepperYieldTon = (haCount * 3.0).toFixed(1);
+      const revenuePepper = Math.round(parseFloat(pepperYieldTon) * 1000 * 140000);
+
+      if (document.getElementById('calcPepperPoles')) {
+        document.getElementById('calcPepperPoles').innerText = pepperPoles.toLocaleString('vi-VN') + ' trụ';
+        document.getElementById('costPepperPoles').innerText = costPepperPoles.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcPepperVines').innerText = pepperVines.toLocaleString('vi-VN') + ' hom';
+        document.getElementById('costPepperVines').innerText = costPepperVines.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcPepperLime').innerText = pepperLimeKg.toLocaleString('vi-VN') + ' kg';
+        document.getElementById('costPepperLime').innerText = costPepperLime.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcPepperYield').innerText = pepperYieldTon + ' tấn';
+        document.getElementById('revenuePepperEst').innerText = revenuePepper.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('totalPepperRevenue').innerText = revenuePepper.toLocaleString('vi-VN') + ' đ';
+      }
 
       // 1. Dưa hấu
       const rowLength = netAreaM2 > 0 ? Math.round(netAreaM2 / 4.8) : 0;
@@ -1800,6 +1946,20 @@
         text += "• Vôi khử phèn: " + document.getElementById('calcMelonLime').innerText + " (" + document.getElementById('costMelonLime').innerText + ")\n";
         text += "• Tiền cày đất: " + document.getElementById('costMelonPlow').innerText + "\n";
         text += "👉 TỔNG VẬT TƯ DỰ KIẾN: " + document.getElementById('totalMelonCost').innerText + "\n";
+      } else if (currentCalcType === 'coffee') {
+        text += "☕ DỰ TOÁN NƯƠNG RẪY CÀ PHÊ (TÂY NGUYÊN):\n";
+        text += "• Số gốc cà phê: " + document.getElementById('calcCoffeeTrees').innerText + "\n";
+        text += "• Lượng nước tưới mùa khô (3 đợt): " + document.getElementById('calcCoffeeWaterM3').innerText + "\n";
+        text += "• Phân bón NPK mùa mưa: " + document.getElementById('calcCoffeeFertKg').innerText + "\n";
+        text += "• Sản lượng nhân xô dự kiến: " + document.getElementById('calcCoffeeYield').innerText + "\n";
+        text += "👉 DOANH THU NHÂN XÔ (110k/kg): " + document.getElementById('totalCoffeeRevenue').innerText + "\n";
+      } else if (currentCalcType === 'pepper') {
+        text += "🌿 DỰ TOÁN TRỒNG HỒ TIÊU (VÀNG ĐEN):\n";
+        text += "• Số trụ tiêu (1.600 trụ/ha): " + document.getElementById('calcPepperPoles').innerText + " (" + document.getElementById('costPepperPoles').innerText + ")\n";
+        text += "• Hom giống Vĩnh Linh: " + document.getElementById('calcPepperVines').innerText + " (" + document.getElementById('costPepperVines').innerText + ")\n";
+        text += "• Vôi nung quét gốc khử nấm: " + document.getElementById('calcPepperLime').innerText + "\n";
+        text += "• Sản lượng tiêu đen dự kiến: " + document.getElementById('calcPepperYield').innerText + "\n";
+        text += "👉 DOANH THU TIÊU ĐEN (140k/kg): " + document.getElementById('totalPepperRevenue').innerText + "\n";
       } else if (currentCalcType === 'rice') {
         text += "🌾 DỰ TOÁN LÚA NƯỚC & MÁY GẶT:\n";
         text += "• Lúa giống xác nhận: " + document.getElementById('calcRiceSeed').innerText + " (" + document.getElementById('costRiceSeed').innerText + ")\n";
