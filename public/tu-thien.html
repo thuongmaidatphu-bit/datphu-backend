@@ -316,6 +316,33 @@
             <button onclick="toggleFloodSimulationLayer()" class="text-slate-400 hover:text-white font-bold text-xs">✕</button>
           </div>
 
+        <!-- HỘP ĐIỀU KHIỂN CẢNH BÁO SẠT LỞ & ĐẬP TRÀN NGẬP LỤT (HIỆN KHI BẬT LỚP SẠT LỞ & TRÀN) -->
+        <div id="roadHazardControlBox" class="hidden absolute top-16 left-3 z-30 p-3 rounded-2xl bg-slate-950/95 backdrop-blur-md border border-rose-500/50 shadow-2xl text-xs space-y-2.5 max-w-[280px] text-white">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
+            <span class="font-bold text-rose-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> Cảnh Báo Sạt Lở & Tràn Lũ
+            </span>
+            <button onclick="toggleRoadHazardsLayer()" class="text-slate-400 hover:text-white font-bold text-xs">✕</button>
+          </div>
+
+          <div class="text-[10.5px] text-slate-300">
+            Theo dõi các tuyến đèo sạt núi taluy và các ngầm tràn bị chia cắt trên địa bàn Phú Yên.
+          </div>
+
+          <!-- Bộ lọc loại điểm cảnh báo -->
+          <div class="grid grid-cols-3 gap-1 text-[10px] font-bold text-center">
+            <button onclick="filterHazardPoints('all')" id="btnHazFilter_all" class="py-1 rounded-lg bg-rose-600 text-white transition">Tất Cả</button>
+            <button onclick="filterHazardPoints('landslide')" id="btnHazFilter_landslide" class="py-1 rounded-lg bg-slate-800 text-slate-300 transition">Sạt Lở Núi</button>
+            <button onclick="filterHazardPoints('spillway')" id="btnHazFilter_spillway" class="py-1 rounded-lg bg-slate-800 text-slate-300 transition">Đập Tràn</button>
+          </div>
+
+          <!-- Nút bấm báo cáo thực địa 1 chạm cho bà con -->
+          <button onclick="openReportHazardModal()" class="w-full py-2 px-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-[11px] flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
+            <i class="fa-solid fa-bullhorn text-xs"></i> <span>Báo Cáo Điểm Sạt Lở / Ngập Mới</span>
+          </button>
+        </div>
+  
+
           <div class="space-y-1">
             <div class="flex justify-between text-[11px]">
               <span class="text-slate-400">Mức báo động lũ:</span>
@@ -1279,6 +1306,31 @@
                 <div id="tideStatusText" class="font-bold text-emerald-400 font-mono text-sm">NƯỚC RONG</div>
                 <div class="text-[9px] text-slate-500">Biên độ triều: +1.6m ~ +1.9m</div>
               </div>
+
+
+          <!-- KHỐI 5: MẠNG LƯỚI TUYẾN ĐƯỜNG SẠT LỞ & ĐẬP TRÀN NGẬP LỤT PHÚ YÊN -->
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-rose-500/40 space-y-2.5">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="font-bold text-rose-400 flex items-center gap-1.5 text-xs">
+                <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Các Điểm Chia Cắt & Sạt Lở Huyết Mạch
+              </span>
+              <button onclick="toggleRoadHazardsLayer(true)" class="px-2 py-0.5 rounded-lg bg-rose-600/80 hover:bg-rose-500 text-white font-bold text-[10px] transition">
+                Xem Trên Bản Đồ
+              </button>
+            </div>
+
+            <div class="space-y-1.5 max-h-[220px] overflow-y-auto pr-1" id="roadHazardsTabList">
+              <!-- Danh sách tuyến đường sẽ được Javascript render tự động -->
+            </div>
+
+            <div class="p-2 rounded-xl bg-slate-950 border border-slate-800 text-[10px] text-slate-400 leading-tight flex items-center justify-between">
+              <span>Bà con phát hiện đường sạt lở hoặc ngập?</span>
+              <button onclick="openReportHazardModal()" class="px-2 py-1 rounded-lg bg-amber-500 text-slate-950 font-black hover:bg-amber-400 transition">
+                + Báo Cáo Ngay
+              </button>
+            </div>
+          </div>
+  
               <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
                 <div class="text-[10px] text-slate-400">Đỉnh triều hôm nay:</div>
                 <div id="tidePeakTime" class="font-bold text-amber-300 font-mono text-sm">17:45 Chiều</div>
@@ -3713,5 +3765,73 @@
 
   </nav>
 
+
+  <!-- MODAL BÁO CÁO THỰC ĐỊA: ĐIỂM SẠT LỞ & TRÀN NGẬP CHO BÀ CON -->
+  <div id="modalReportHazard" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 text-slate-100">
+    <div class="bg-slate-900 border border-rose-500/50 rounded-3xl w-full max-w-md p-4 space-y-3.5 shadow-2xl relative text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-rose-300 text-sm">Báo Cáo Điểm Nguy Hiểm Mùa Lũ</h3>
+            <p class="text-[10px] text-slate-400">Giúp bà con và tài xế tránh đường chia cắt, ngập lụt</p>
+          </div>
+        </div>
+        <button onclick="closeReportHazardModal()" class="text-slate-400 hover:text-white text-base font-bold p-1">✕</button>
+      </div>
+
+      <div class="space-y-2.5">
+        <div>
+          <label class="block text-[10.5px] font-bold text-slate-300 mb-1">Tên tuyến đường / Điểm nguy hiểm (*):</label>
+          <input type="text" id="iptHazardName" placeholder="Ví dụ: ĐT641 đoạn qua Xuân Sơn Nam / Dốc Bông Trang" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-rose-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[10.5px] font-bold text-slate-300 mb-1">Loại sự cố:</label>
+            <select id="selHazardType" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white">
+              <option value="spillway">🌊 Đập tràn ngập nước sâu</option>
+              <option value="landslide">⛰️ Sạt lở đất đá taluy đèo</option>
+              <option value="broken">🚧 Đứt đường / Sập mố cầu</option>
+              <option value="tree">🌳 Cây ngã đổ chắn ngang</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10.5px] font-bold text-slate-300 mb-1">Mức độ nguy hiểm:</label>
+            <select id="selHazardSeverity" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white font-bold">
+              <option value="blocked" class="text-rose-400 font-bold">⛔ CẤM XE (Ngập &gt;0.6m / Đứt đường)</option>
+              <option value="warning" class="text-amber-400">⚠️ Nguy hiểm (Ngập 0.3m - 0.5m)</option>
+              <option value="cautious" class="text-yellow-300">🟡 Cần đi chậm quan sát</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[10.5px] font-bold text-slate-300 mb-1">Độ sâu ước tính / Mô tả chi tiết:</label>
+          <input type="text" id="iptHazardDesc" placeholder="Nước ngập lút bánh xe máy, dòng chảy xiết, ô tô không qua được..." class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-rose-500">
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-[10.5px] space-y-1">
+          <div class="flex items-center justify-between text-slate-300">
+            <span>Tọa độ ghim cảnh báo:</span>
+            <span id="txtHazardCoords" class="font-mono text-cyan-400 font-bold">Lấy theo tâm bản đồ</span>
+          </div>
+          <div class="text-[9.5px] text-slate-500">
+            Ứng dụng sẽ tự động gắn tọa độ vị trí bạn đang đứng (hoặc tâm bản đồ hiện tại).
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-1">
+        <button onclick="closeReportHazardModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition">Hủy</button>
+        <button onclick="submitHazardReport()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold transition shadow-lg flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-paper-plane text-xs"></i> Gửi Cảnh Báo
+        </button>
+      </div>
+    </div>
+  </div>
+  
 </body>
 </html>
