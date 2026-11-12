@@ -82,6 +82,11 @@
 
     <!-- CỤM NÚT ĐIỀU HƯỚNG & HỆ SINH THÁI -->
     <div class="flex items-center gap-2 shrink-0">
+      <button onclick="openDedicatedPhotoModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white border border-emerald-400/40 text-xs font-black shadow transition active:scale-95 flex items-center gap-1.5 cursor-pointer" title="Đăng tải ảnh từ máy tính hoặc điện thoại">
+        <i class="fa-solid fa-camera text-amber-300"></i>
+        <span>Đăng Ảnh 📷</span>
+      </button>
+
       <button onclick="toggleDatPhuAppLauncher()" id="universalAppLauncherBtn" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-black shadow-xs transition active:scale-95 flex items-center gap-1.5" title="Mở khay ứng dụng Hệ Sinh Thái Đất Phú">
         <i class="fa-solid fa-grip text-amber-600 text-sm"></i>
         <span class="hidden sm:inline">Hệ Sinh Thái</span>
@@ -489,9 +494,12 @@
         <div class="flex items-center justify-between border-b border-slate-800 pb-2">
           <span class="text-xs font-black text-rose-400 flex items-center gap-2">
             <i class="fa-solid fa-images text-sm"></i>
-            <span>THƯ VIỆN THẮNG CẢNH & DI TÍCH XỨ NẪU (CHẠM ĐỂ CHIẾU LÊN MÀN HÌNH LỚN)</span>
+            <span>THƯ VIỆN THẮNG CẢNH, ĐẠO TRÀNG & THIỆN NGUYỆN</span>
           </span>
-          <span class="text-[10px] text-slate-400">Ảnh 4K</span>
+          <button onclick="openDedicatedPhotoModal()" class="px-3 py-1 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[11px] shadow transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i>
+            <span>+ Tải Ảnh Lên (Máy tính / ĐT)</span>
+          </button>
         </div>
         <div id="artGalleryContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5"></div>
       </div>
@@ -2229,6 +2237,30 @@
         intro: "Bãi biển trung tâm thành phố Tuy Hòa với làn nước trong xanh, bờ cát dài thoai thoải và không khí trong lành nguyên sơ."
       },
       {
+        title: "HỌC SINH ĐỒNG PHỤC THÀNH KÍNH LỄ PHẬT",
+        district: "Đạo Tràng Tuổi Thơ",
+        category: "Tâm Linh & Hiếu Hạnh",
+        poem: "Áo trắng đồng phục kính lễ Như Lai, giữ tâm trong sáng bước vào tương lai.",
+        img: "img/phat_phap_cong_dong/hoc_sinh_dong_phuc_le_phat.jpg",
+        intro: "Các em học sinh trong bộ đồng phục trắng tinh khôi quỳ gối thành kính chắp tay trước bàn thờ Đức Phật A Di Đà trước giờ đến trường học tập."
+      },
+      {
+        title: "BÚP SEN NON HƯỚNG VỀ PHẬT PHÁP",
+        district: "Đạo Tràng Đất Phú",
+        category: "Gieo Duyên Lành",
+        poem: "Búp sen non chắp tay niệm Phật, nụ cười hồn nhiên sáng rực đạo tràng.",
+        img: "img/phat_phap_cong_dong/cac_em_nho_quy_chap_tay_niem_phat.jpg",
+        intro: "Các cháu nhỏ mang ba lô đến chùa, cùng nhau quỳ gối chắp tay búp sen niệm danh hiệu Phật với tâm hồn trong sáng, thuần khiết."
+      },
+      {
+        title: "NGŨ THỂ ĐẦU ĐỊA LỄ LẠY TAM BẢO",
+        district: "Cửa Phật Từ Bi",
+        category: "Cung Kính Tam Bảo",
+        poem: "Năm vóc sát đất dứt trừ ngã mạn, trọn lòng thành kính bái Phật từ bi.",
+        img: "img/phat_phap_cong_dong/ngu_the_dau_dia_le_lay_tam_bao.jpg",
+        intro: "Khoảnh khắc các em thiếu nhi thực hành nghi thức ngũ thể đầu địa (năm vóc gieo sát đất) chí thành đảnh lễ Tam Bảo, nuôi dưỡng đức tính khiêm cung và biết ơn."
+      },
+      {
         title: "ĐẠO TRÀNG NIỆM PHẬT & MẦM BỒ ĐỀ TUỔI THƠ",
         district: "Đạo Tràng Đất Phú",
         category: "Tâm Linh & Hiếu Hạnh",
@@ -2310,6 +2342,7 @@
       const quoteEl = document.getElementById('radioChantQuote');
       if (quoteEl) quoteEl.innerText = '“' + art.poem + '” — ' + art.intro;
 
+      loadSavedCommunityPhotos();
       renderArtGallery();
 
       // Cuộn êm màn hình lên màn hình lớn nếu người dùng đang ở dưới
@@ -3476,6 +3509,164 @@ function changeArtSlide(delta) {
       }
     }
 
+    
+    // QUẢN LÝ ĐĂNG TẢI ẢNH TỪ ĐIỆN THOẠI & MÁY TÍNH
+    let currentDedicatedPhotoBase64 = null;
+
+    function openDedicatedPhotoModal() {
+      const m = document.getElementById('modalDedicatedPhoto');
+      if (m) m.classList.remove('hidden');
+    }
+
+    function closeDedicatedPhotoModal() {
+      const m = document.getElementById('modalDedicatedPhoto');
+      if (m) m.classList.add('hidden');
+      clearDedicatedPhotoPreview();
+    }
+
+    function setDedicatedPhotoTitle(val) {
+      const input = document.getElementById('dedicatedPhotoTitle');
+      if (input) input.value = val;
+    }
+
+    function clearDedicatedPhotoPreview() {
+      currentDedicatedPhotoBase64 = null;
+      const box = document.getElementById('dedicatedPhotoPreviewBox');
+      const img = document.getElementById('dedicatedPhotoPreviewImg');
+      const fileInp = document.getElementById('dedicatedPhotoPickerFile');
+      const camInp = document.getElementById('dedicatedPhotoPickerCamera');
+      if (box) box.classList.add('hidden');
+      if (img) img.src = '';
+      if (fileInp) fileInp.value = '';
+      if (camInp) camInp.value = '';
+    }
+
+    // Xử lý nén ảnh thông minh bằng HTML5 Canvas để ảnh điện thoại 10MB mượt mà thành ~200KB nét căng
+    function processDedicatedPhotoFile(input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const rawImg = new Image();
+        rawImg.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = rawImg.width;
+          let height = rawImg.height;
+
+          // Giới hạn cạnh lớn nhất tối đa 1600px để đảm bảo siêu nét 2K/4K mà dung lượng nhẹ tênh
+          const MAX_SIZE = 1600;
+          if (width > height && width > MAX_SIZE) {
+            height = Math.round((height * MAX_SIZE) / width);
+            width = MAX_SIZE;
+          } else if (height > MAX_SIZE) {
+            width = Math.round((width * MAX_SIZE) / height);
+            height = MAX_SIZE;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(rawImg, 0, 0, width, height);
+
+          // Nén chuẩn JPEG chất lượng cao 0.86
+          currentDedicatedPhotoBase64 = canvas.toDataURL('image/jpeg', 0.86);
+
+          const box = document.getElementById('dedicatedPhotoPreviewBox');
+          const previewImg = document.getElementById('dedicatedPhotoPreviewImg');
+          const dimText = document.getElementById('dedicatedPhotoDimText');
+          if (box && previewImg) {
+            previewImg.src = currentDedicatedPhotoBase64;
+            if (dimText) dimText.innerText = width + ' x ' + height + ' px';
+            box.classList.remove('hidden');
+          }
+        };
+        rawImg.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function submitDedicatedPhotoUpload() {
+      const fb = document.getElementById('dedicatedPhotoFeedback');
+      const title = (document.getElementById('dedicatedPhotoTitle').value || '').trim();
+      const author = (document.getElementById('dedicatedPhotoAuthor').value || 'Đạo Tràng / Bà Con').trim();
+      const category = document.getElementById('dedicatedPhotoCategory').value;
+      const intro = (document.getElementById('dedicatedPhotoIntro').value || '').trim();
+
+      if (!currentDedicatedPhotoBase64) {
+        if (fb) {
+          fb.className = "p-2 rounded-xl text-xs font-bold text-center bg-rose-500/20 text-rose-300 border border-rose-500/30";
+          fb.innerText = "Bác ơi, vui lòng bấm nút chụp hoặc chọn ảnh từ máy trước khi lưu nhé!";
+          fb.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (!title) {
+        if (fb) {
+          fb.className = "p-2 rounded-xl text-xs font-bold text-center bg-rose-500/20 text-rose-300 border border-rose-500/30";
+          fb.innerText = "Bác vui lòng nhập tiêu đề bức ảnh để lưu giữ kỷ niệm nhé!";
+          fb.classList.remove('hidden');
+        }
+        return;
+      }
+
+      // Thêm ảnh mới vào đầu mảng ARTWORKS_DATA
+      const newArt = {
+        title: title.toUpperCase(),
+        district: author,
+        category: category,
+        poem: intro || "Nghĩa tình nhân ái và phước lành lan tỏa muôn nơi.",
+        img: currentDedicatedPhotoBase64,
+        intro: intro || ("Khoảnh khắc ý nghĩa được bà con đóng góp: " + title)
+      };
+
+      ARTWORKS_DATA.unshift(newArt);
+      currentArtIdx = 0;
+
+      // Cập nhật lên màn hình chính và thư viện ảnh
+      if (typeof renderArtGallery === 'function') renderArtGallery();
+      const mainImg = document.getElementById('artMainImage');
+      if (mainImg) mainImg.src = currentDedicatedPhotoBase64;
+      const currentTitleEl = document.getElementById('radioCurrentTitle');
+      if (currentTitleEl) currentTitleEl.innerText = title;
+      const currentArtistEl = document.getElementById('radioCurrentArtist');
+      if (currentArtistEl) currentArtistEl.innerText = author + " • Ảnh Đóng Góp Mới";
+
+      // Lưu trữ ảnh người dùng vào localStorage an toàn
+      try {
+        const stored = JSON.parse(localStorage.getItem('datphu_uploaded_photos') || '[]');
+        stored.unshift(newArt);
+        if (stored.length > 30) stored.pop(); // Giữ tối đa 30 ảnh mới nhất
+        localStorage.setItem('datphu_uploaded_photos', JSON.stringify(stored));
+      } catch(e) {
+        console.warn('LocalStorage Quota:', e);
+      }
+
+      if (fb) {
+        fb.className = "p-2 rounded-xl text-xs font-bold text-center bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+        fb.innerHTML = "🎉 <b>Đã đăng ảnh thành công!</b> Bức ảnh đã được đưa lên Triển Lãm và Màn Hình Lớn.";
+        fb.classList.remove('hidden');
+      }
+
+      setTimeout(() => {
+        closeDedicatedPhotoModal();
+        const galleryEl = document.getElementById('artGalleryContainer');
+        if (galleryEl) galleryEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 1000);
+    }
+
+    // Tự động nạp các ảnh đã lưu từ localStorage khi khởi động
+    function loadSavedCommunityPhotos() {
+      try {
+        const stored = JSON.parse(localStorage.getItem('datphu_uploaded_photos') || '[]');
+        if (stored.length > 0) {
+          ARTWORKS_DATA.unshift(...stored);
+          if (typeof renderArtGallery === 'function') renderArtGallery();
+        }
+      } catch(e) {}
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       startTetCountdown();
       initTetPetals();
@@ -3720,5 +3911,133 @@ function changeArtSlide(delta) {
   </div>
 
 <canvas id="tetBlossomCanvas" class="fixed inset-0 pointer-events-none z-40 w-full h-full"></canvas>
+
+  <!-- ================= MODAL CHUYÊN BIỆT ĐĂNG ẢNH TỪ ĐIỆN THOẠI & MÁY TÍNH ================= -->
+  <div id="modalDedicatedPhoto" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-5" onclick="if(event.target === this) closeDedicatedPhotoModal()">
+    <div class="bg-slate-900 border-2 border-emerald-500/60 rounded-3xl p-4 sm:p-6 w-full max-w-lg text-white space-y-4 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto no-scrollbar">
+      
+      <!-- Tiêu đề modal -->
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-white flex items-center justify-center font-black text-base shadow">
+            <i class="fa-solid fa-camera text-amber-300"></i>
+          </span>
+          <div>
+            <h3 class="text-sm sm:text-base font-black text-white">ĐĂNG TẢI ẢNH TỪ ĐIỆN THOẠI & MÁY TÍNH</h3>
+            <p class="text-[11px] text-emerald-300/80">Ảnh thiện nguyện, đạo tràng niệm Phật, nụ cười quê hương</p>
+          </div>
+        </div>
+        <button onclick="closeDedicatedPhotoModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- KHU VỰC CHỌN ẢNH THÔNG MINH CHO ĐIỆN THOẠI VÀ MÁY TÍNH -->
+      <div class="p-4 rounded-2xl bg-slate-950 border-2 border-dashed border-emerald-500/60 text-center space-y-3">
+        <div class="text-xs text-emerald-200 font-bold">
+          📸 Chạm vào nút bên dưới để chụp ảnh trực tiếp hoặc chọn ảnh từ máy của Bác:
+        </div>
+
+        <!-- Input ẩn cho file picker và camera -->
+        <input type="file" id="dedicatedPhotoPickerFile" accept="image/*" class="hidden" onchange="processDedicatedPhotoFile(this)" />
+        <input type="file" id="dedicatedPhotoPickerCamera" accept="image/*" capture="environment" class="hidden" onchange="processDedicatedPhotoFile(this)" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button type="button" onclick="document.getElementById('dedicatedPhotoPickerCamera').click()" class="py-3 px-3 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-xs shadow transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-camera text-base"></i>
+            <span>Chụp Bằng Camera Điện Thoại</span>
+          </button>
+          
+          <button type="button" onclick="document.getElementById('dedicatedPhotoPickerFile').click()" class="py-3 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-images text-base text-amber-300"></i>
+            <span>Chọn Ảnh Trong Máy</span>
+          </button>
+        </div>
+
+        <!-- Khung xem trước ảnh sắc nét kèm thông tin -->
+        <div id="dedicatedPhotoPreviewBox" class="hidden pt-2 border-t border-slate-800 space-y-2">
+          <div class="relative max-w-sm mx-auto rounded-xl overflow-hidden border-2 border-emerald-400 shadow-lg">
+            <img id="dedicatedPhotoPreviewImg" src="" alt="Xem trước ảnh" class="w-full max-h-56 object-contain bg-black" />
+            <button type="button" onclick="clearDedicatedPhotoPreview()" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/80 hover:bg-red-600 text-white flex items-center justify-center text-xs transition" title="Xóa ảnh để chọn lại">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+            <div class="absolute bottom-0 inset-x-0 bg-black/70 px-2 py-1 text-[10px] text-emerald-300 font-mono flex items-center justify-between">
+              <span id="dedicatedPhotoDimText">Độ phân giải: Đã tối ưu</span>
+              <span class="text-amber-300 font-bold">✨ Sắc nét chuẩn 4K</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM ĐIỀN THÔNG TIN BỨC ẢNH -->
+      <div class="space-y-3 text-xs">
+        <!-- Gợi ý chủ đề nhanh -->
+        <div>
+          <label class="block font-bold text-amber-200 mb-1.5">
+            <i class="fa-solid fa-tag text-amber-400 mr-1"></i> Gợi Ý Chọn Nhanh Tiêu Đề:
+          </label>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <button type="button" onclick="setDedicatedPhotoTitle('Khóa Tu Thiếu Nhi & Đạo Tràng Niệm Phật')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 text-[11px] font-bold border border-emerald-500/30 transition">
+              🙏 Khóa Tu Tuổi Thơ
+            </button>
+            <button type="button" onclick="setDedicatedPhotoTitle('Bữa Cơm Tình Thương & Phát Quà Từ Thiện')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[11px] font-bold border border-amber-500/30 transition">
+              🤝 Bữa Cơm Bác Ái
+            </button>
+            <button type="button" onclick="setDedicatedPhotoTitle('Nụ Cười Hồn Nhiên Ngày Hội')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-rose-300 text-[11px] font-bold border border-rose-500/30 transition">
+              🌸 Nụ Cười Tuổi Thơ
+            </button>
+            <button type="button" onclick="setDedicatedPhotoTitle('Cảnh Đẹp Quê Hương Đất Phú')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-[11px] font-bold border border-cyan-500/30 transition">
+              🌾 Quê Hương Xứ Nẫu
+            </button>
+          </div>
+        </div>
+
+        <!-- Tiêu đề chính -->
+        <div>
+          <label class="block font-bold text-slate-300 mb-1">Tiêu Đề Bức Ảnh (*):</label>
+          <input type="text" id="dedicatedPhotoTitle" placeholder="Ví dụ: Lễ Phật Trước Giờ Đi Học, Trao Quà Người Nghèo..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none" />
+        </div>
+
+        <!-- Người chụp / Đạo tràng -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">Tác Giả / Đạo Tràng / Đoàn:</label>
+            <input type="text" id="dedicatedPhotoAuthor" placeholder="Ví dụ: Đạo Tràng Đất Phú, Bác Hai..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">Phân Loại Thể Loại:</label>
+            <select id="dedicatedPhotoCategory" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-emerald-300 font-bold focus:border-emerald-400 focus:outline-none">
+              <option value="Tâm Linh & Hiếu Hạnh">🙏 Tâm Linh, Niệm Phật & Khóa Tu</option>
+              <option value="Thiện Nguyện & Bác Ái">🤝 Thiện Nguyện & Bữa Cơm Bác Ái</option>
+              <option value="Nụ Cười Tuổi Thơ & Lễ Hội">🌸 Nụ Cười Tuổi Thơ & Lễ Hội</option>
+              <option value="Quê Hương & Danh Thắng">🏔️ Thắng Cảnh & Nếp Sống Đất Phú</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Lời bình / Cảm xúc -->
+        <div>
+          <label class="block font-bold text-slate-300 mb-1">Lời Bình / Câu Thơ / Cảm Xúc Kèm Theo:</label>
+          <textarea id="dedicatedPhotoIntro" rows="2" placeholder="Ghi lại vài lời chúc bình an, bài thơ hay câu chuyện đằng sau bức ảnh..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none"></textarea>
+        </div>
+      </div>
+
+      <!-- Phản hồi trạng thái -->
+      <div id="dedicatedPhotoFeedback" class="hidden p-2 rounded-xl text-xs font-bold text-center"></div>
+
+      <!-- Nút hành động chính -->
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+        <button type="button" onclick="closeDedicatedPhotoModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition cursor-pointer">
+          Hủy Bỏ
+        </button>
+        <button type="button" onclick="submitDedicatedPhotoUpload()" id="btnSubmitDedicatedPhoto" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow-lg active:scale-95 transition flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i>
+          <span>LƯU & ĐĂNG LÊN TRANG WEB NGAY</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
 </body>
 </html>
