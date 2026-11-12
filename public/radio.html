@@ -154,43 +154,48 @@
         category: "baichoi",
         categoryName: "Dân Ca & Bài Chòi",
         duration: "04:30",
-        desc: "Tiếng hô giòn giã mở đầu ngày hội làng, thắm đượm tình làng nghĩa xóm."
+        desc: "Tiếng hô giòn giã mở đầu ngày hội làng, thắm đượm tình làng nghĩa xóm.",
+        src: "/audio/ho_mai_nhi_song_nuoc.mp3"
       },
       {
         id: "bc_2",
-        title: "Hò Khoan Miền Trung & Khúc Ca Sông Ba",
-        artist: "Nghệ Nhân Làng Chài & Thợ Cày Đất Phú",
+        title: "Độc Tấu Sáo Trúc: Phượng Vũ Sông Ba",
+        artist: "Nghệ Nhân Dân Gian • Sáo Trúc Mộc",
         category: "baichoi",
         categoryName: "Dân Ca & Bài Chòi",
-        duration: "05:15",
-        desc: "Điệu hò sông nước dạt dào, gắn liền với mồ hôi và chuyến bè xuôi ngược."
+        duration: "04:12",
+        desc: "Tiếng sáo trúc thánh thót vút cao giữa đại ngàn sông Ba.",
+        src: "/audio/sao_truc_phuong_vu.mp3"
       },
       {
         id: "bc_3",
-        title: "Dân Ca Nam Trung Bộ: Lý Ngựa Ô & Lý Chiều Chiều",
-        artist: "Tiếng Hát Quê Nhà Xứ Quảng - Phú Yên",
+        title: "Hòa Tấu Lưu Thủy Kim Tiền: Đàn Tranh, Nguyệt & Nhị",
+        artist: "Phường Bát Âm Đất Phú",
         category: "baichoi",
         categoryName: "Dân Ca & Bài Chòi",
-        duration: "04:50",
-        desc: "Làn điệu dân ca thanh bình rộn ràng bên rặng tre đầu làng."
+        duration: "03:45",
+        desc: "Hòa điệu ngũ cung mộc mạc lưu truyền qua nhiều thế hệ.",
+        src: "/audio/hoa_tau_luu_thuy.mp3"
       },
       {
         id: "bc_4",
-        title: "Vọng Cổ Hoài Niệm: Nhớ Quê Hương & Tình Mẹ",
-        artist: "Tiếng Đàn Kìm & Câu Ca Mộc Mạc",
+        title: "Hát Ru Con Đất Mẹ & Lời Ru Quê Hương",
+        artist: "Tiếng Hát Mẹ Đất Phú",
         category: "baichoi",
         categoryName: "Dân Ca & Bài Chòi",
-        duration: "06:10",
-        desc: "Khúc ca cổ thấm đượm nỗi nhớ cội nguồn của người con xa xứ."
+        duration: "03:55",
+        desc: "Khúc hát ru êm đềm dạt dào tình mẹ bên bờ biển xanh ngát.",
+        src: "/audio/ho_ru_con_lullaby.mp3"
       },
       {
         id: "rd_1",
-        title: "Radio Đêm Khuya: Tiếng Mưa Trên Mái Tôn & Nỗi Niềm Đất Cằn",
-        artist: "Giọng Đọc Tản Văn • Đất Phú Radio",
+        title: "Độc Tấu Đàn T'rưng Thượng Nguồn",
+        artist: "Âm Vang Đại Ngàn Cao Nguyên",
         category: "radio",
         categoryName: "Radio Viễn Xứ",
-        duration: "07:20",
-        desc: "Tiếng mưa rào gõ nhịp mái tôn, gợi nhớ căn nhà xưa nơi thôn quê yêu dấu."
+        duration: "04:05",
+        desc: "Tiếng suối reo hòa cùng điệu đàn T'rưng gõ nhịp đá che chở buôn làng.",
+        src: "/audio/dan_trung_to_rung.mp3"
       },
       {
         id: "rd_2",
@@ -199,7 +204,8 @@
         category: "radio",
         categoryName: "Radio Viễn Xứ",
         duration: "06:40",
-        desc: "Hương thơm rơm rạ mùa gặt mới và tình làng nghĩa xóm bình dị."
+        desc: "Hương thơm rơm rạ mùa gặt mới và tình làng nghĩa xóm bình dị.",
+        src: "/audio/sao_truc_phuong_vu.mp3"
       },
       {
         id: "nt_1",
@@ -208,7 +214,8 @@
         category: "nature",
         categoryName: "Tiếng Sóng & Mưa Quê Hương",
         duration: "10:00",
-        desc: "Âm thanh sóng vỗ rì rào ru giấc ngủ thanh bình của biển trời Nam Phú Yên."
+        desc: "Âm thanh sóng vỗ rì rào ru giấc ngủ thanh bình của biển trời Nam Phú Yên.",
+        src: "/audio/hoa_tau_luu_thuy.mp3"
       },
       {
         id: "nt_2",
@@ -217,7 +224,8 @@
         category: "nature",
         categoryName: "Tiếng Sóng & Mưa Quê Hương",
         duration: "08:30",
-        desc: "Bản hòa ca của thiên nhiên miền Trung sau cơn mưa dông mát lành."
+        desc: "Bản hòa ca của thiên nhiên miền Trung sau cơn mưa dông mát lành.",
+        src: "/audio/ho_mai_nhi_song_nuoc.mp3"
       }
     ];
 
@@ -398,7 +406,7 @@
 
     function startOfflineSynthesizer() {
       stopOfflineSynthesizer();
-      const track = RADIO_PLAYLIST[currentTrackIdx];
+      const track = PLAYLIST[currentTrackIdx];
 
       if (!realFolkAudio) {
         realFolkAudio = new Audio();

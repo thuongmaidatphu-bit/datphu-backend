@@ -132,55 +132,61 @@
       <div class="p-3 sm:p-5 rounded-3xl bg-slate-900 border border-amber-500/30 shadow-2xl space-y-3 relative overflow-hidden">
         
         <!-- Khung chiếu video/ảnh tỉ lệ 16:9 với viền Ambilight -->
-        <div class="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 aspect-video shadow-2xl group flex items-center justify-center border-2 border-amber-500/40 select-none">
+        <div id="heroTheaterContainer" class="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 aspect-video shadow-2xl group flex items-center justify-center border-2 border-amber-500/40 select-none">
           
           <div id="ambilightGlow" class="absolute -inset-4 bg-gradient-to-r from-amber-500/20 via-rose-500/20 to-cyan-500/20 blur-2xl pointer-events-none transition-all duration-700"></div>
 
+          <!-- Ảnh nền tranh 4K (Dành cho bản thu Âm thanh mộc) -->
           <img id="artMainImage" src="img/tet_sum_vay_dat_phu.jpg" alt="Danh Thắng Đất Phú" class="relative z-10 w-full h-full object-cover transition-all duration-700 select-none scale-100 group-hover:scale-105" />
           
-          <div class="absolute inset-0 z-20 bg-gradient-to-t from-black/90 via-black/25 to-black/40 pointer-events-none"></div>
+          <!-- Khung YouTube Video Player (Dành cho Video Clip / Nhạc Phim 4K) -->
+          <div id="heroVideoWrapper" class="absolute inset-0 z-15 hidden w-full h-full bg-black">
+            <iframe id="heroYoutubeIframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+
+          <div id="heroOverlayGradient" class="absolute inset-0 z-20 bg-gradient-to-t from-black/90 via-black/25 to-black/40 pointer-events-none transition-opacity duration-300"></div>
 
           <!-- Huy hiệu thể loại góc trên trái -->
           <div class="absolute top-3 left-3 sm:top-5 sm:left-5 z-30 flex items-center gap-2">
             <span id="artCategoryBadge" class="px-3 py-1 rounded-full bg-amber-500/90 text-slate-950 text-[10px] sm:text-xs font-black shadow backdrop-blur-md flex items-center gap-1.5">
-              <i class="fa-solid fa-film"></i>
-              <span>DANH THẮNG ĐẤT PHÚ 4K</span>
+              <i id="artCategoryIcon" class="fa-solid fa-music"></i>
+              <span id="artCategoryBadgeText">ĐỘC TẤU SÁO TRÚC</span>
             </span>
-            <span class="px-2.5 py-1 rounded-full bg-slate-900/80 text-emerald-400 text-[10px] sm:text-xs font-bold border border-emerald-500/40 backdrop-blur-md hidden sm:inline-flex items-center gap-1">
+            <span id="mediaTypeBadge" class="px-2.5 py-1 rounded-full bg-slate-900/80 text-emerald-400 text-[10px] sm:text-xs font-bold border border-emerald-500/40 backdrop-blur-md hidden sm:inline-flex items-center gap-1">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span>Âm Thanh Mộc Thực Tế</span>
+              <span id="mediaTypeBadgeText">Âm Thanh Mộc Thực Tế</span>
             </span>
           </div>
 
           <!-- Nút phóng to toàn màn hình góc trên phải -->
-          <div class="absolute top-3 right-3 sm:top-5 sm:right-5 z-30">
-            <button onclick="toggleTheaterFullscreen()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition border border-white/20 backdrop-blur-md active:scale-95" title="Phóng to toàn màn hình">
+          <div class="absolute top-3 right-3 sm:top-5 sm:right-5 z-30 flex items-center gap-2">
+            <button onclick="toggleTheaterFullscreen()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition border border-white/20 backdrop-blur-md active:scale-95 cursor-pointer" title="Phóng to toàn màn hình">
               <i class="fa-solid fa-expand text-xs sm:text-sm"></i>
             </button>
           </div>
 
           <!-- NÚT PLAY / PAUSE LỚN NỔI BẬT Ở CHÍNH GIỮA MÀN HÌNH -->
-          <div class="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
+          <div id="heroPlayCenterWrapper" class="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
             <button onclick="toggleRadioPlay()" id="heroScreenPlayBtn" class="pointer-events-auto w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-white flex items-center justify-center shadow-[0_0_35px_rgba(245,158,11,0.8)] border-4 border-white/80 transition-all duration-300 transform active:scale-90 hover:scale-110 cursor-pointer" title="Bấm Phát / Tạm dừng">
               <i id="heroScreenPlayIcon" class="fa-solid fa-play text-2xl sm:text-3xl ml-1 text-white drop-shadow"></i>
             </button>
           </div>
 
           <!-- Thanh điều khiển và tiến trình phát góc dưới màn hình lớn -->
-          <div class="absolute bottom-2 inset-x-2 sm:bottom-4 sm:inset-x-6 z-30 text-white space-y-1.5 pointer-events-none">
+          <div id="heroBottomControls" class="absolute bottom-2 inset-x-2 sm:bottom-4 sm:inset-x-6 z-30 text-white space-y-1.5 pointer-events-none">
             <div class="flex items-center justify-between text-xs sm:text-sm font-bold pointer-events-auto">
               <div class="truncate max-w-[70%]">
                 <h3 id="radioCurrentTitle" class="text-sm sm:text-lg font-black text-white drop-shadow-md truncate">Độc Tấu Sáo Trúc: Phượng Vũ</h3>
-                <p id="radioCurrentArtist" class="text-[10px] sm:text-xs text-amber-300 font-medium truncate">Nghệ Nhân Dân Gian • Sáo Trúc & Nhạc Cụ Mộc</p>
+                <p id="radioCurrentArtist" class="text-[10px] sm:text-xs text-amber-300 font-medium truncate">Nghệ Nhân Dân Gian • Sáo Trúc Mộc</p>
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
-                <button onclick="playPrevRadioTrack()" class="w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition border border-white/20 active:scale-95" title="Bài trước">
+                <button onclick="playPrevRadioTrack()" class="w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition border border-white/20 active:scale-95 cursor-pointer" title="Bài trước">
                   <i class="fa-solid fa-backward-step text-xs"></i>
                 </button>
-                <button onclick="toggleRadioPlay()" id="radioMasterPlayBtn" class="w-9 h-9 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center font-bold transition shadow active:scale-95" title="Phát / Tạm dừng">
+                <button onclick="toggleRadioPlay()" id="radioMasterPlayBtn" class="w-9 h-9 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center font-bold transition shadow active:scale-95 cursor-pointer" title="Phát / Tạm dừng">
                   <i id="radioMasterPlayIcon" class="fa-solid fa-play text-xs ml-0.5"></i>
                 </button>
-                <button onclick="playNextRadioTrack()" class="w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition border border-white/20 active:scale-95" title="Bài tiếp">
+                <button onclick="playNextRadioTrack()" class="w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition border border-white/20 active:scale-95 cursor-pointer" title="Bài tiếp">
                   <i class="fa-solid fa-forward-step text-xs"></i>
                 </button>
               </div>
@@ -188,7 +194,7 @@
 
             <!-- Thanh tiến trình phát -->
             <div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden backdrop-blur-md">
-              <div id="heroProgressBar" class="bg-gradient-to-r from-amber-400 to-rose-500 h-full w-2/5 transition-all duration-300"></div>
+              <div id="heroProgressBar" class="bg-gradient-to-r from-amber-400 to-rose-500 h-full w-0 transition-all duration-300"></div>
             </div>
           </div>
 
@@ -215,19 +221,52 @@
         </div>
       </div>
 
-      <!-- KHỐI 2: DANH SÁCH BÀI HÁT / NHẠC KHÍ MỘC ĐANG CHIẾU (PLAYLIST FEED) -->
-      <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-3 text-white">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-          <span class="text-xs font-black text-cyan-300 flex items-center gap-2">
-            <i class="fa-solid fa-list-music text-sm"></i>
-            <span>KHO NHẠC CỤ MỘC & DÂN CA THỰC TẾ (5 BÀI THU ÂM THẬT)</span>
-          </span>
-          <span class="text-[10px] text-slate-400">Chạm để đổi bài</span>
+      <!-- KHỐI 2: DANH SÁCH BÀI HÁT & VIDEO THEO CHỦ ĐỀ (THEMATIC PLAYLIST FEED) -->
+      <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-3.5 text-white">
+        
+        <!-- Hàng tiêu đề & Nút đăng tải nhạc phẩm -->
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-slate-950 font-black text-sm">
+              <i class="fa-solid fa-clapperboard"></i>
+            </span>
+            <div>
+              <h3 class="text-xs sm:text-sm font-black text-white tracking-wide">KHO VIDEO & NHẠC PHẨM CHUYÊN ĐỀ</h3>
+              <p class="text-[10px] text-slate-400">Chọn chủ đề âm nhạc hoặc tự thêm nhạc phẩm yêu thích</p>
+            </div>
+          </div>
+
+          <!-- NÚT MỞ MODAL ĐĂNG TẢI NHẠC PHẨM -->
+          <button onclick="openAddMediaModal()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow-md transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-circle-plus text-sm"></i>
+            <span>+ Đăng Tải Nhạc Phẩm Mới</span>
+          </button>
         </div>
 
-        <div class="space-y-1.5" id="radioPlaylistContainer">
+        <!-- THANH LỌC CHỦ ĐỀ 1 CHẠM (THEMATIC TABS) -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
+          <button onclick="filterRadioTheme('all')" id="themeBtn_all" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition active:scale-95 shadow shrink-0">
+            Tất Cả (<span id="themeCount_all">8</span>)
+          </button>
+          <button onclick="filterRadioTheme('baichoi')" id="themeBtn_baichoi" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
+            <span>🎋 Bài Chòi Xứ Nẫu</span>
+          </button>
+          <button onclick="filterRadioTheme('dieuly')" id="themeBtn_dieuly" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
+            <span>🌊 Điệu Lý Quê Mẹ</span>
+          </button>
+          <button onclick="filterRadioTheme('nhaccu')" id="themeBtn_nhaccu" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
+            <span>🎶 Nhạc Cụ Mộc</span>
+          </button>
+          <button onclick="filterRadioTheme('phim4k')" id="themeBtn_phim4k" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
+            <span>🎬 Phim Danh Thắng 4K</span>
+          </button>
+        </div>
+
+        <!-- Danh sách bài hát / video hiển thị -->
+        <div class="space-y-2" id="radioPlaylistContainer">
           <!-- Sẽ được renderRadioPlaylist() đổ tự động -->
         </div>
+
       </div>
 
       <!-- KHỐI 3: HỘI BÀI CHÒI XỨ NẪU BỐC QUÂN & NGHE CÂU HÔ TƯƠNG TÁC -->
@@ -1082,181 +1121,510 @@
       }
     }
 
-    // 2. KHO DỮ LIỆU BÀI HÁT & BÀI CHÒI
+    // 2. KHO DỮ LIỆU BÀI HÁT, BÀI CHÒI & VIDEO THEO CHỦ ĐỀ
+    const DEFAULT_MEDIA_PLAYLIST = [
+      {
+        id: "med_1",
+        title: "Độc Tấu Sáo Trúc: Phượng Vũ",
+        artist: "Nghệ Nhân Dân Gian • Sáo Trúc Mộc",
+        theme: "nhaccu",
+        themeName: "Nhạc Cụ Mộc",
+        type: "audio",
+        src: "/audio/sao_truc_phuong_vu.mp3",
+        coverImg: "img/art_phuongvu.jpg",
+        chant: "Gió đưa cây lách xách sậy ngã ngùi ngùi... Anh đi làm thợ xứ người nhớ em ở lại đất cằn thương nhau!",
+        duration: "04:12"
+      },
+      {
+        id: "med_2",
+        title: "Hòa Tấu Lưu Thủy Kim Tiền",
+        artist: "Phường Bát Âm • Đàn Tranh, Nguyệt & Nhị",
+        theme: "nhaccu",
+        themeName: "Nhạc Cụ Mộc",
+        type: "audio",
+        src: "/audio/hoa_tau_luu_thuy.mp3",
+        coverImg: "img/art_luuthuy.jpg",
+        chant: "Tiếng đàn tranh thánh thót như suối nguồn chảy qua ghềnh đá, gieo niềm an lạc giữa chốn quê nhà.",
+        duration: "03:45"
+      },
+      {
+        id: "med_3",
+        title: "Hò Mái Nhì Sông Ba",
+        artist: "Nghệ Nhân Dân Ca Phú Yên",
+        theme: "dieuly",
+        themeName: "Điệu Lý Quê Mẹ",
+        type: "audio",
+        src: "/audio/ho_mai_nhi_song_nuoc.mp3",
+        coverImg: "img/art_songba.jpg",
+        chant: "Ơi hò... Chiều chiều mây phủ Đèo Cả, đá Bia chơ vơ... Người đi biền biệt biết bao giờ về thăm quê...",
+        duration: "04:30"
+      },
+      {
+        id: "med_4",
+        title: "Hát Ru Con Đất Mẹ",
+        artist: "Mẹ Đất Phú • Lời Ru Ngọt Ngào",
+        theme: "dieuly",
+        themeName: "Điệu Lý Quê Mẹ",
+        type: "audio",
+        src: "/audio/ho_ru_con_lullaby.mp3",
+        coverImg: "img/tinh_thuong_nhan_ai_4k.jpg",
+        chant: "À ơi... Ví dầu cầu ván đóng đinh, cầu tre lắc lẻo gập ghềnh khó đi... Khó đi mẹ dắt con đi...",
+        duration: "03:55"
+      },
+      {
+        id: "med_5",
+        title: "Độc Tấu Đàn T'rưng Thượng Nguồn Sông Ba",
+        artist: "Âm Vang Đại Ngàn Cao Nguyên",
+        theme: "nhaccu",
+        themeName: "Nhạc Cụ Mộc",
+        type: "audio",
+        src: "/audio/dan_trung_to_rung.mp3",
+        coverImg: "img/art_nui_nhan.jpg",
+        chant: "Tiếng suối reo hòa cùng điệu đàn T'rưng gõ nhịp vách đá, mang sinh khí của rừng già che chở xóm làng.",
+        duration: "04:05"
+      },
+      {
+        id: "med_6",
+        title: "Hô Thai Bài Chòi Cổ Truyền Xứ Nẫu",
+        artist: "Anh Hiệu Làng Cổ An Nghiệp • Tuy An",
+        theme: "baichoi",
+        themeName: "Bài Chòi Xứ Nẫu",
+        type: "audio",
+        src: "/audio/ho_mai_nhi_song_nuoc.mp3",
+        coverImg: "img/art_bai_choi.jpg",
+        chant: "Lắng nghe con gối... Chân vấp hòn đá té cái rầm... Lòng đăm đăm dòm tới... Là con Nọc Đăng!",
+        duration: "03:20"
+      },
+      {
+        id: "med_7",
+        title: "Kỳ Quan Gành Đá Đĩa & Bờ Biển Nam Trung Bộ (4K)",
+        artist: "Phim Tư Liệu • Danh Thắng Đất Phú",
+        theme: "phim4k",
+        themeName: "Phim Danh Thắng 4K",
+        type: "youtube",
+        youtubeId: "G4Y71g6z6lM",
+        coverImg: "img/art_da_dia.jpg",
+        chant: "Kỳ quan địa chất triệu năm hiếm có bên bờ đại dương xanh biếc, niềm tự hào của người con Đất Phú.",
+        duration: "05:40"
+      },
+      {
+        id: "med_8",
+        title: "Đồng Lúa Tuy Hòa Mùa Gặt & Dòng Nước Đập Đồng Cam",
+        artist: "Flycam Danh Thắng • Quê Hương Đất Phú",
+        theme: "phim4k",
+        themeName: "Phim Danh Thắng 4K",
+        type: "youtube",
+        youtubeId: "L7bUa5K-x48",
+        coverImg: "img/art_mui_dien.jpg",
+        chant: "Bạt ngàn đồng lúa Tuy Hòa vào mùa gặt, cánh cò bay lả trên dòng nước ngọt đập Đồng Cam dẫn lối.",
+        duration: "04:15"
+      }
+    ];
+
+    // Khởi tạo danh sách bài hát (hỗ trợ lưu thêm bài tùy chỉnh)
+    let customMediaList = [];
+    try {
+      const saved = localStorage.getItem('datphu_custom_media');
+      if (saved) customMediaList = JSON.parse(saved);
+    } catch (e) {
+      console.warn('Cannot load custom media list from localStorage', e);
+    }
+
+    let MEDIA_PLAYLIST = [...DEFAULT_MEDIA_PLAYLIST, ...customMediaList];
+    let currentRadioIdx = 0;
+    let currentThemeFilter = 'all';
+    let isRadioPlaying = false;
+    let realFolkAudio = null;
+    let waveAnimFrame = null;
+    let radioSleepTimeout = null;
+
+    // Lọc theo chủ đề
+    function filterRadioTheme(theme) {
+      currentThemeFilter = theme;
+      ['all', 'baichoi', 'dieuly', 'nhaccu', 'phim4k'].forEach(t => {
+        const btn = document.getElementById('themeBtn_' + t);
+        if (btn) {
+          if (t === theme) {
+            btn.className = "px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition active:scale-95 shadow shrink-0 cursor-pointer";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer";
+          }
+        }
+      });
+      renderRadioPlaylist();
+    }
+
+    // Hiển thị danh sách phát
     function renderRadioPlaylist() {
       const c = document.getElementById('radioPlaylistContainer');
       if (!c) return;
-      c.innerHTML = RADIO_PLAYLIST.map((t, idx) => {
-        const isCurrent = (idx === currentRadioIdx);
+
+      const filtered = MEDIA_PLAYLIST.filter(item => {
+        if (currentThemeFilter === 'all') return true;
+        return item.theme === currentThemeFilter;
+      });
+
+      // Cập nhật tổng số bài
+      const countEl = document.getElementById('themeCount_all');
+      if (countEl) countEl.innerText = MEDIA_PLAYLIST.length;
+
+      if (filtered.length === 0) {
+        c.innerHTML = `
+          <div class="p-6 rounded-2xl bg-slate-950/60 border border-slate-800 text-center space-y-2">
+            <div class="text-3xl">📭</div>
+            <p class="text-xs text-slate-400">Chưa có nhạc phẩm nào trong chủ đề này.</p>
+            <button onclick="openAddMediaModal()" class="px-3.5 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs">
+              + Bấm để đăng tải bài đầu tiên
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      c.innerHTML = filtered.map(t => {
+        const actualIdx = MEDIA_PLAYLIST.indexOf(t);
+        const isCurrent = (actualIdx === currentRadioIdx);
+        const isCustom = t.id && t.id.startsWith('custom_');
+
+        let badgeBg = 'bg-slate-800 text-slate-300';
+        let badgeIcon = 'fa-music';
+        if (t.theme === 'baichoi') { badgeBg = 'bg-amber-950 text-amber-300 border border-amber-600/40'; badgeIcon = 'fa-dice'; }
+        else if (t.theme === 'dieuly') { badgeBg = 'bg-cyan-950 text-cyan-300 border border-cyan-600/40'; badgeIcon = 'fa-water'; }
+        else if (t.theme === 'nhaccu') { badgeBg = 'bg-emerald-950 text-emerald-300 border border-emerald-600/40'; badgeIcon = 'fa-guitar'; }
+        else if (t.theme === 'phim4k') { badgeBg = 'bg-rose-950 text-rose-300 border border-rose-600/40'; badgeIcon = 'fa-film'; }
+
         return `
-          <div onclick="selectRadioTrack(${idx})" class="p-3 rounded-2xl cursor-pointer transition flex items-center justify-between gap-3 ${isCurrent ? 'bg-amber-50 border border-amber-300 shadow-2xs' : 'bg-slate-50/70 hover:bg-slate-100 border border-transparent'}">
+          <div onclick="selectRadioTrack(${actualIdx})" class="p-3 rounded-2xl cursor-pointer transition-all flex items-center justify-between gap-3 ${isCurrent ? 'bg-amber-500/15 border-2 border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800/80'}">
             <div class="flex items-center gap-3 min-w-0">
-              <span class="w-8 h-8 rounded-xl flex items-center justify-center font-mono font-bold text-xs ${isCurrent ? 'bg-amber-500 text-white shadow' : 'bg-slate-200 text-slate-600'}">
-                ${idx + 1}
+              <span class="w-8 h-8 rounded-xl flex items-center justify-center font-mono font-bold text-xs shrink-0 ${isCurrent ? 'bg-amber-500 text-slate-950 font-black shadow' : 'bg-slate-800 text-slate-400'}">
+                ${isCurrent && isRadioPlaying ? '<i class="fa-solid fa-volume-high animate-pulse text-xs"></i>' : (actualIdx + 1)}
               </span>
               <div class="min-w-0">
-                <h4 class="text-xs sm:text-sm font-bold text-slate-800 truncate ${isCurrent ? 'text-amber-950 font-black' : ''}">${t.title}</h4>
-                <p class="text-[11px] text-slate-500 truncate">${t.artist}</p>
+                <h4 class="text-xs sm:text-sm font-bold text-white truncate ${isCurrent ? 'text-amber-300 font-black' : ''}">${t.title}</h4>
+                <p class="text-[11px] text-slate-400 truncate flex items-center gap-1.5">
+                  <span>${t.artist}</span>
+                  ${t.type === 'youtube' ? '<span class="text-[9px] px-1.5 py-0.2 rounded bg-red-600 text-white font-bold">YouTube 4K</span>' : '<span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-700 text-white font-bold">Audio Mộc</span>'}
+                </p>
               </div>
             </div>
+
             <div class="shrink-0 flex items-center gap-2">
-              <span class="text-[9px] font-bold px-2.5 py-0.5 rounded-full bg-slate-200/80 text-slate-700 hidden sm:inline">${t.category}</span>
-              ${isCurrent && isRadioPlaying ? '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>' : ''}
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeBg} hidden sm:inline-flex items-center gap-1">
+                <i class="fa-solid ${badgeIcon} text-[9px]"></i>
+                <span>${t.themeName || t.theme}</span>
+              </span>
+
+              ${isCustom ? `
+                <button onclick="event.stopPropagation(); deleteCustomMedia('${t.id}')" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-rose-600/80 text-slate-400 hover:text-white flex items-center justify-center transition active:scale-95" title="Xóa bài này">
+                  <i class="fa-solid fa-trash text-[10px]"></i>
+                </button>
+              ` : ''}
+
+              ${isCurrent && isRadioPlaying ? '<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>' : ''}
             </div>
           </div>
         `;
       }).join('');
     }
 
+    // Chọn bài hát / video để phát
     function selectRadioTrack(idx) {
+      if (idx < 0 || idx >= MEDIA_PLAYLIST.length) return;
       currentRadioIdx = idx;
-      const track = RADIO_PLAYLIST[idx];
-      document.getElementById('radioCurrentTrackTitle').innerText = track.title;
-      document.getElementById('radioCurrentTrackArtist').innerText = track.artist;
-      document.getElementById('radioChantLyrics').innerText = '"' + track.chant + '"';
-      document.getElementById('radioCurrentCatBadge').innerText = track.category;
-      
-      // Update Lockscreen MediaSession
+      const track = MEDIA_PLAYLIST[idx];
+
+      // 1. Cập nhật Tiêu đề & Tác giả
+      const titleEl = document.getElementById('radioCurrentTitle');
+      if (titleEl) titleEl.innerText = track.title;
+      const artistEl = document.getElementById('radioCurrentArtist');
+      if (artistEl) artistEl.innerText = track.artist + (track.type === 'youtube' ? ' • Video 4K YouTube' : ' • Nhạc Cụ Mộc');
+
+      // 2. Cập nhật Lời ca chạy chữ
+      const quoteEl = document.getElementById('radioChantQuote');
+      if (quoteEl) quoteEl.innerText = '“' + (track.chant || track.title) + '”';
+
+      // 3. Cập nhật Thẻ Chủ đề góc trên màn hình lớn
+      const catBadgeText = document.getElementById('artCategoryBadgeText');
+      if (catBadgeText) catBadgeText.innerText = (track.themeName || 'CHUYÊN ĐỀ ĐẤT PHÚ').toUpperCase();
+      const catIcon = document.getElementById('artCategoryIcon');
+      if (catIcon) {
+        if (track.theme === 'baichoi') catIcon.className = 'fa-solid fa-dice mr-1';
+        else if (track.theme === 'dieuly') catIcon.className = 'fa-solid fa-water mr-1';
+        else if (track.theme === 'nhaccu') catIcon.className = 'fa-solid fa-music mr-1';
+        else if (track.theme === 'phim4k') catIcon.className = 'fa-solid fa-film mr-1';
+      }
+
+      // 4. Cập nhật Thẻ Chế độ phát (Audio hay YouTube)
+      const mediaTypeBadge = document.getElementById('mediaTypeBadgeText');
+      if (mediaTypeBadge) {
+        mediaTypeBadge.innerText = (track.type === 'youtube') ? 'Video 4K Trực Tuyến' : 'Âm Thanh Mộc Thực Tế';
+      }
+
+      // 5. Cập nhật Ảnh nền / Video Player
+      const mainImg = document.getElementById('artMainImage');
+      const videoWrapper = document.getElementById('heroVideoWrapper');
+      const youtubeIframe = document.getElementById('heroYoutubeIframe');
+      const playCenterWrapper = document.getElementById('heroPlayCenterWrapper');
+
+      if (track.type === 'youtube' && track.youtubeId) {
+        // Dừng âm thanh mộc
+        if (realFolkAudio) realFolkAudio.pause();
+        
+        // Bật khung Video YouTube
+        if (videoWrapper) videoWrapper.classList.remove('hidden');
+        if (mainImg) mainImg.classList.add('hidden');
+        if (youtubeIframe) {
+          youtubeIframe.src = 'https://www.youtube-nocookie.com/embed/' + track.youtubeId + '?autoplay=1&rel=0&modestbranding=1';
+        }
+        if (playCenterWrapper) playCenterWrapper.classList.add('hidden'); // Để người dùng bấm trực tiếp vào player youtube
+        isRadioPlaying = true;
+        updatePlayIcons(true);
+      } else {
+        // Tắt khung video YouTube
+        if (videoWrapper) videoWrapper.classList.add('hidden');
+        if (youtubeIframe) youtubeIframe.src = '';
+        if (mainImg) {
+          mainImg.classList.remove('hidden');
+          if (track.coverImg) mainImg.src = track.coverImg;
+        }
+        if (playCenterWrapper) playCenterWrapper.classList.remove('hidden');
+
+        // Phát âm thanh mộc
+        playAudioTrack(track);
+      }
+
+      // Cập nhật Lockscreen MediaSession
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: track.title,
           artist: track.artist,
-          album: 'Đài Tiếng Nói Đất Phú',
-          artwork: [
-            { src: '/logo_datphu.jpg', sizes: '512x512', type: 'image/jpeg' }
-          ]
+          album: 'Văn Hóa & Âm Nhạc Đất Phú',
+          artwork: [{ src: track.coverImg || '/logo_datphu.jpg', sizes: '512x512', type: 'image/jpeg' }]
         });
       }
 
-      playRadioSynth();
       renderRadioPlaylist();
     }
 
-    function toggleRadioPlay() {
-      if (isRadioPlaying) {
-        stopRadioSynth();
-      } else {
-        playRadioSynth();
-      }
-    }
-
-    function playNextRadioTrack() {
-      currentRadioIdx = (currentRadioIdx + 1) % RADIO_PLAYLIST.length;
-      selectRadioTrack(currentRadioIdx);
-    }
-
-    function playPrevRadioTrack() {
-      currentRadioIdx = (currentRadioIdx - 1 + RADIO_PLAYLIST.length) % RADIO_PLAYLIST.length;
-      selectRadioTrack(currentRadioIdx);
-    }
-
-    let realFolkAudio = null;
-
-    function playRadioSynth() {
-      stopRadioSynth();
-      isRadioPlaying = true;
-      document.getElementById('radioMasterPlayIcon').className = "fa-solid fa-pause text-xs";
-      const heroIcon = document.getElementById('heroScreenPlayIcon');
-      if (heroIcon) heroIcon.className = "fa-solid fa-pause text-2xl sm:text-3xl text-white";
-      document.getElementById('vinylDisc').classList.remove('rotating-disc-paused');
-      renderRadioPlaylist();
-      startWaveVisualizer();
-
-      const track = RADIO_PLAYLIST[currentRadioIdx];
+    function playAudioTrack(track) {
       if (!realFolkAudio) {
         realFolkAudio = new Audio();
         realFolkAudio.addEventListener('ended', () => {
           if (isRadioPlaying) playNextRadioTrack();
         });
+        realFolkAudio.addEventListener('timeupdate', () => {
+          if (realFolkAudio.duration) {
+            const pct = (realFolkAudio.currentTime / realFolkAudio.duration) * 100;
+            const pb = document.getElementById('heroProgressBar');
+            if (pb) pb.style.width = pct + '%';
+          }
+        });
         realFolkAudio.addEventListener('error', (e) => {
-          console.warn('Real audio playback error:', e);
+          console.warn('Playback error:', e);
         });
       }
 
       if (track && track.src) {
         realFolkAudio.src = track.src;
         realFolkAudio.currentTime = 0;
-        realFolkAudio.play().catch(err => {
-          console.warn('Playback error (browser policy):', err);
+        realFolkAudio.play().then(() => {
+          isRadioPlaying = true;
+          updatePlayIcons(true);
+          startWaveVisualizer();
+        }).catch(err => {
+          console.warn('Browser autoplay prevented:', err);
+          isRadioPlaying = false;
+          updatePlayIcons(false);
         });
       }
     }
 
-    function stopRadioSynth() {
-      isRadioPlaying = false;
-      if (realFolkAudio) {
-        realFolkAudio.pause();
-      }
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
-      document.getElementById('radioMasterPlayIcon').className = "fa-solid fa-play text-xs ml-0.5";
+    function updatePlayIcons(playing) {
       const heroIcon = document.getElementById('heroScreenPlayIcon');
-      if (heroIcon) heroIcon.className = "fa-solid fa-play text-2xl sm:text-3xl ml-1 text-white drop-shadow";
-      document.getElementById('vinylDisc').classList.add('rotating-disc-paused');
+      if (heroIcon) heroIcon.className = playing ? "fa-solid fa-pause text-2xl sm:text-3xl text-white" : "fa-solid fa-play text-2xl sm:text-3xl ml-1 text-white drop-shadow";
+      const masterIcon = document.getElementById('radioMasterPlayIcon');
+      if (masterIcon) masterIcon.className = playing ? "fa-solid fa-pause text-xs" : "fa-solid fa-play text-xs ml-0.5";
+    }
+
+    function toggleRadioPlay() {
+      const track = MEDIA_PLAYLIST[currentRadioIdx];
+      if (!track) return;
+
+      if (track.type === 'youtube') {
+        // Đối với youtube, toggle bằng cách bật/tắt iframe hoặc phát lại
+        if (isRadioPlaying) {
+          const yt = document.getElementById('heroYoutubeIframe');
+          if (yt) yt.src = '';
+          isRadioPlaying = false;
+          updatePlayIcons(false);
+        } else {
+          selectRadioTrack(currentRadioIdx);
+        }
+      } else {
+        // Đối với audio mộc
+        if (isRadioPlaying) {
+          if (realFolkAudio) realFolkAudio.pause();
+          isRadioPlaying = false;
+          updatePlayIcons(false);
+          stopWaveVisualizer();
+        } else {
+          if (realFolkAudio && realFolkAudio.src) {
+            realFolkAudio.play().catch(e => console.warn(e));
+            isRadioPlaying = true;
+            updatePlayIcons(true);
+            startWaveVisualizer();
+          } else {
+            selectRadioTrack(currentRadioIdx);
+          }
+        }
+      }
       renderRadioPlaylist();
+    }
+
+    function playNextRadioTrack() {
+      currentRadioIdx = (currentRadioIdx + 1) % MEDIA_PLAYLIST.length;
+      selectRadioTrack(currentRadioIdx);
+    }
+
+    function playPrevRadioTrack() {
+      currentRadioIdx = (currentRadioIdx - 1 + MEDIA_PLAYLIST.length) % MEDIA_PLAYLIST.length;
+      selectRadioTrack(currentRadioIdx);
+    }
+
+    function stopRadioSynth() {
+      if (realFolkAudio) realFolkAudio.pause();
+      const yt = document.getElementById('heroYoutubeIframe');
+      if (yt) yt.src = '';
+      isRadioPlaying = false;
+      updatePlayIcons(false);
       stopWaveVisualizer();
+      renderRadioPlaylist();
     }
 
-    // Canvas Visualizer
-    function startWaveVisualizer() {
-      const canvas = document.getElementById('radioWaveCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let step = 0;
+    // Modal Đăng tải & Quản lý nhạc phẩm
+    function openAddMediaModal() {
+      const m = document.getElementById('modalAddMedia');
+      if (m) m.classList.remove('hidden');
+      const fb = document.getElementById('addMediaFeedback');
+      if (fb) fb.classList.add('hidden');
+    }
 
-      function draw() {
-        if (!isRadioPlaying) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          return;
+    function closeAddMediaModal() {
+      const m = document.getElementById('modalAddMedia');
+      if (m) m.classList.add('hidden');
+    }
+
+    function extractYouTubeId(url) {
+      if (!url) return null;
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    function submitNewMedia() {
+      const urlInput = document.getElementById('addMediaUrl');
+      const themeInput = document.getElementById('addMediaTheme');
+      const titleInput = document.getElementById('addMediaTitle');
+      const artistInput = document.getElementById('addMediaArtist');
+      const chantInput = document.getElementById('addMediaChant');
+      const fb = document.getElementById('addMediaFeedback');
+
+      const url = urlInput ? urlInput.value.trim() : '';
+      const theme = themeInput ? themeInput.value : 'baichoi';
+      const title = titleInput ? titleInput.value.trim() : '';
+      const artist = artistInput ? artistInput.value.trim() : 'Nghệ Nhân Dân Gian';
+      const chant = chantInput ? chantInput.value.trim() : '';
+
+      if (!url) {
+        if (fb) {
+          fb.className = "p-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-950/80 border border-rose-600/40 text-center";
+          fb.innerText = "Vui lòng nhập đường link YouTube hoặc link file âm thanh MP3!";
+          fb.classList.remove('hidden');
         }
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#f59e0b';
-
-        const bars = 48;
-        const width = canvas.width / bars;
-
-        for (let i = 0; i < bars; i++) {
-          const h = Math.abs(Math.sin((i * 0.3) + (step * 0.15))) * (canvas.height * 0.8) + 4;
-          const y = (canvas.height - h) / 2;
-          ctx.fillRect(i * width, y, width - 2, h);
-        }
-        step++;
-        waveAnimFrame = requestAnimationFrame(draw);
-      }
-      draw();
-    }
-
-    function stopWaveVisualizer() {
-      if (waveAnimFrame) cancelAnimationFrame(waveAnimFrame);
-      const canvas = document.getElementById('radioWaveCanvas');
-      if (canvas) {
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-    }
-
-    function toggleRadioSleepDropdown() {
-      const menu = document.getElementById('radioSleepMenu');
-      if (menu) menu.classList.toggle('hidden');
-    }
-
-    function setRadioSleepTimer(minutes) {
-      toggleRadioSleepDropdown();
-      if (radioSleepTimeout) clearTimeout(radioSleepTimeout);
-      const text = document.getElementById('radioSleepText');
-
-      if (minutes === 0) {
-        if (text) text.innerText = "Hẹn giờ ngủ";
         return;
       }
 
-      if (text) text.innerText = minutes + " phút";
-      radioSleepTimeout = setTimeout(() => {
-        stopRadioSynth();
-        if (text) text.innerText = "Hẹn giờ ngủ";
-        alert("Đã hoàn tất thời gian hẹn giờ nghe đài. Chúc bạn giấc ngủ an lành!");
-      }, minutes * 60 * 1000);
+      if (!title) {
+        if (fb) {
+          fb.className = "p-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-950/80 border border-rose-600/40 text-center";
+          fb.innerText = "Vui lòng nhập tên bài hát / nhạc phẩm!";
+          fb.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const ytId = extractYouTubeId(url);
+      const isYouTube = !!ytId;
+
+      const themeNames = {
+        'baichoi': 'Bài Chòi Xứ Nẫu',
+        'dieuly': 'Điệu Lý Quê Mẹ',
+        'nhaccu': 'Nhạc Cụ Mộc',
+        'phim4k': 'Phim Danh Thắng 4K'
+      };
+
+      const newItem = {
+        id: 'custom_' + Date.now(),
+        title: title,
+        artist: artist,
+        theme: theme,
+        themeName: themeNames[theme] || 'Chuyên Đề',
+        type: isYouTube ? 'youtube' : 'audio',
+        youtubeId: ytId || '',
+        src: isYouTube ? '' : url,
+        coverImg: isYouTube ? ('https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg') : 'img/tet_sum_vay_dat_phu.jpg',
+        chant: chant || ('Giai điệu thân thương của quê hương Đất Phú: ' + title),
+        duration: "04:00"
+      };
+
+      customMediaList.push(newItem);
+      try {
+        localStorage.setItem('datphu_custom_media', JSON.stringify(customMediaList));
+      } catch (e) {
+        console.warn('Cannot save to localStorage', e);
+      }
+
+      MEDIA_PLAYLIST = [...DEFAULT_MEDIA_PLAYLIST, ...customMediaList];
+      
+      // Chuyển ngay sang bài mới thêm và phát trên màn hình lớn
+      const newIdx = MEDIA_PLAYLIST.length - 1;
+      currentThemeFilter = 'all';
+      filterRadioTheme('all');
+      selectRadioTrack(newIdx);
+
+      closeAddMediaModal();
+
+      // Reset form
+      if (urlInput) urlInput.value = '';
+      if (titleInput) titleInput.value = '';
+      if (artistInput) artistInput.value = '';
+      if (chantInput) chantInput.value = '';
+
+      alert('🎉 Đã thêm thành công nhạc phẩm: "' + title + '"! Đang chiếu ngay trên Màn Hình Lớn.');
+    }
+
+    function deleteCustomMedia(id) {
+      if (!confirm('Bạn có chắc chắn muốn xóa bài này khỏi danh sách?')) return;
+      customMediaList = customMediaList.filter(item => item.id !== id);
+      try {
+        localStorage.setItem('datphu_custom_media', JSON.stringify(customMediaList));
+      } catch (e) {}
+
+      MEDIA_PLAYLIST = [...DEFAULT_MEDIA_PLAYLIST, ...customMediaList];
+      if (currentRadioIdx >= MEDIA_PLAYLIST.length) currentRadioIdx = 0;
+      renderRadioPlaylist();
+      selectRadioTrack(currentRadioIdx);
+    }
+
+    function resetDefaultMediaList() {
+      if (!confirm('Bạn có muốn đặt lại danh sách về 8 tác phẩm gốc không?')) return;
+      customMediaList = [];
+      localStorage.removeItem('datphu_custom_media');
+      MEDIA_PLAYLIST = [...DEFAULT_MEDIA_PLAYLIST];
+      currentRadioIdx = 0;
+      filterRadioTheme('all');
+      selectRadioTrack(0);
+      closeAddMediaModal();
     }
 
     // 3. RẠP CHIẾU 4K & THUYẾT MINH THẮNG CẢNH
@@ -2413,11 +2781,11 @@ function changeArtSlide(delta) {
 <script>
 
     function toggleTheaterFullscreen() {
-      const img = document.getElementById('artMainImage');
-      if (!img) return;
+      const container = document.getElementById('heroTheaterContainer') || document.getElementById('artMainImage');
+      if (!container) return;
       if (!document.fullscreenElement) {
-        if (img.requestFullscreen) img.requestFullscreen();
-        else if (img.webkitRequestFullscreen) img.webkitRequestFullscreen();
+        if (container.requestFullscreen) container.requestFullscreen();
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
       } else {
         if (document.exitFullscreen) document.exitFullscreen();
       }
@@ -2449,5 +2817,92 @@ function changeArtSlide(delta) {
     }
     
 </script>
+
+  <!-- ================= MODAL ĐĂNG TẢI VIDEO & NHẠC PHẨM THEO CHỦ ĐỀ ================= -->
+  <div id="modalAddMedia" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5" onclick="if(event.target === this) closeAddMediaModal()">
+    <div class="bg-slate-900 border-2 border-amber-500/50 rounded-3xl p-5 sm:p-6 w-full max-w-lg text-white space-y-4 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+      
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 text-slate-950 flex items-center justify-center font-black text-base shadow">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </span>
+          <div>
+            <h3 class="text-sm sm:text-base font-black text-white">ĐĂNG TẢI VIDEO / NHẠC PHẨM MỚI</h3>
+            <p class="text-[11px] text-amber-300/80">Công nghệ tuyển chọn tinh gọn • Không tốn băng thông</p>
+          </div>
+        </div>
+        <button onclick="closeAddMediaModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Khung biểu mẫu -->
+      <div class="space-y-3 text-xs">
+        <!-- Đường link YouTube / Audio -->
+        <div>
+          <label class="block font-bold text-amber-200 mb-1">
+            <i class="fa-brands fa-youtube text-red-500 mr-1"></i> Đường Link YouTube hoặc File Âm Thanh MP3:
+          </label>
+          <input type="text" id="addMediaUrl" placeholder="Ví dụ: https://www.youtube.com/watch?v=... hoặc /audio/tenbai.mp3" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none" />
+          <p class="text-[10px] text-slate-400 mt-1">Hệ thống tự động phát hiện mã Video YouTube và lấy ảnh bìa HD chất lượng cao.</p>
+        </div>
+
+        <!-- Phân loại Chủ đề -->
+        <div>
+          <label class="block font-bold text-amber-200 mb-1">
+            <i class="fa-solid fa-layer-group text-amber-400 mr-1"></i> Chọn Chủ Đề Nhạc Phẩm:
+          </label>
+          <select id="addMediaTheme" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-amber-300 font-bold focus:border-amber-400 focus:outline-none">
+            <option value="baichoi">🎋 Bài Chòi Cổ Truyền Xứ Nẫu</option>
+            <option value="dieuly">🌊 Điệu Lý & Dân Ca Quê Mẹ</option>
+            <option value="nhaccu">🎶 Độc Tấu Nhạc Cụ Mộc</option>
+            <option value="phim4k">🎬 Phim Danh Thắng & Làng Nghề 4K</option>
+          </select>
+        </div>
+
+        <!-- Tên tác phẩm & Nghệ sĩ -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">Tên Tác Phẩm / Ca Khúc:</label>
+            <input type="text" id="addMediaTitle" placeholder="Ví dụ: Hò Mái Nhì Sông Ba..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">Nghệ Sĩ / Nghệ Nhân:</label>
+            <input type="text" id="addMediaArtist" placeholder="Ví dụ: Nghệ nhân dân gian Tuy An..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- Lời ca dao / thơ / câu hò chạy chữ -->
+        <div>
+          <label class="block font-bold text-slate-300 mb-1">
+            <i class="fa-solid fa-quote-left text-amber-400 mr-1"></i> Lời Ca Dao / Tích Xưa (Hiển thị chạy chữ dưới màn hình):
+          </label>
+          <textarea id="addMediaChant" rows="2" placeholder="Ví dụ: Chiều chiều mây phủ Đèo Cả, đá Bia chơ vơ... Người đi biền biệt biết bao giờ về thăm quê..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none"></textarea>
+        </div>
+      </div>
+
+      <!-- Thông báo trạng thái -->
+      <div id="addMediaFeedback" class="hidden p-2 rounded-xl text-xs font-bold text-center"></div>
+
+      <!-- Nút hành động -->
+      <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-800">
+        <button onclick="resetDefaultMediaList()" class="text-[11px] text-slate-400 hover:text-rose-400 transition underline underline-offset-2 cursor-pointer">
+          Khôi phục 8 bài gốc
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="closeAddMediaModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition cursor-pointer">
+            Hủy Bỏ
+          </button>
+          <button onclick="submitNewMedia()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs shadow-lg active:scale-95 transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>Lưu & Chiếu Ngay 🚀</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </body>
 </html>
