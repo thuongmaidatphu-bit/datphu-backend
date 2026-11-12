@@ -423,100 +423,387 @@
 
         </div>
 
-        <!-- ==================== TAB 2: KINH TẾ MÙA VỤ & TIỀN THUÊ ==================== -->
+        
+        <!-- ==================== TAB 2: CÁC BẢNG PHÉP TÍNH NÔNG VỤ & TỔ ĐỘI ==================== -->
         <div id="inspTabBox_crop" class="space-y-4 hidden">
           
-          <!-- BỘ TÍNH TIỀN KHOÁN & CHỐNG HỚ -->
-          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2.5 text-xs">
+          <!-- BẢNG 1: BẢNG TÍNH TIỀN KHOÁN & CHỐNG HỚ ĐẤT -->
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 text-xs">
             <div class="font-bold text-white flex items-center justify-between border-b border-slate-800 pb-2">
               <span class="flex items-center gap-1.5 text-rose-400">
-                <i class="fa-solid fa-shield-halved"></i> Tính Tiền Khoán & Chống Hớ
+                <i class="fa-solid fa-shield-halved"></i> Bảng Đối Chiếu Thuê Khoán & Chống Hớ
               </span>
-              <span class="text-[10px] text-slate-500">Đối chiếu diện tích</span>
+              <span class="text-[10px] text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-500/30 font-mono">Bảo Vệ Nông Dân</span>
             </div>
 
             <div class="grid grid-cols-2 gap-2">
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Giá thuê 1 sào/vụ (VNĐ)</label>
-                <input type="number" id="inLeasePricePerSao" value="1500000" oninput="calcLeaseEconomics()" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 font-mono font-bold text-white focus:outline-emerald-500">
+                <label class="block text-[10px] font-bold text-slate-400 mb-1">Giá thuê 1 sào/vụ (VNĐ):</label>
+                <input type="number" id="inLeasePricePerSao" value="1500000" oninput="calcLeaseEconomics()" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 font-mono font-bold text-white focus:outline-emerald-500 text-xs">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Chủ đất báo (Sào)</label>
-                <input type="number" id="inClaimedSao" placeholder="VD: 10" oninput="calcLeaseEconomics()" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 font-mono font-bold text-white focus:outline-emerald-500">
+                <label class="block text-[10px] font-bold text-slate-400 mb-1">Chủ đất báo (Sào):</label>
+                <input type="number" id="inClaimedSao" placeholder="VD: 10" oninput="calcLeaseEconomics()" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 font-mono font-bold text-amber-300 focus:outline-emerald-500 text-xs">
               </div>
             </div>
 
-            <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-              <div class="flex justify-between items-center">
-                <span class="text-slate-400">Tiền thuê chuẩn theo đo đạc:</span>
-                <span id="resTotalLeaseRent" class="font-black text-emerald-400 font-mono text-sm">0 đ</span>
-              </div>
-              
-              <div id="claimDifferenceBox" class="hidden p-2 rounded-lg bg-emerald-950/70 border border-emerald-500/40 text-emerald-200 text-[11px] font-medium">
-                <div id="claimDiffText">Chủ đất báo dôi 0 Sào. Tiết kiệm 0 đ!</div>
-              </div>
+            <!-- Bảng phân tích chi tiết tiền khoán -->
+            <div class="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/80">
+              <table class="w-full text-left text-[11px]">
+                <tbody class="divide-y divide-slate-800/80 font-mono">
+                  <tr>
+                    <td class="p-2 text-slate-400 font-sans">Diện tích đo thực tế:</td>
+                    <td id="tableActualSao" class="p-2 font-bold text-white text-right">0 Sào</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 text-slate-400 font-sans">Tiền thuê thực trả:</td>
+                    <td id="resTotalLeaseRent" class="p-2 font-bold text-emerald-400 text-right">0 đ</td>
+                  </tr>
+                  <tr id="rowClaimDiff" class="bg-slate-900/40">
+                    <td class="p-2 text-slate-400 font-sans">Chênh lệch với chủ đất:</td>
+                    <td id="tableClaimDiff" class="p-2 font-bold text-slate-400 text-right">0 Sào (0 đ)</td>
+                  </tr>
+                  <tr class="bg-amber-950/20 text-amber-300">
+                    <td class="p-2 font-sans font-bold">Đặt cọc đợt 1 (30%):</td>
+                    <td id="tableDeposit30" class="p-2 font-bold text-right">0 đ</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div id="claimDifferenceBox" class="hidden p-2.5 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-200 text-[11px] font-medium leading-relaxed">
+              <div id="claimDiffText">Chủ đất báo dôi 0 Sào. Tiết kiệm 0 đ!</div>
             </div>
           </div>
 
-          <!-- DỰ TOÁN VẬT TƯ CÂY TRỒNG & MÁY CÀY -->
+          <!-- BẢNG 2: HỆ THỐNG 6 BẢNG PHÉP TÍNH VẬT TƯ & CÂY TRỒNG CHI TIẾT -->
           <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 text-xs">
-            <!-- 5 Nút chọn ngành nghề -->
-            <div class="grid grid-cols-5 gap-1 text-center text-[9.5px] font-bold">
-              <button onclick="switchCalcType('watermelon')" id="calcTab_watermelon" class="p-1 rounded-xl bg-emerald-600 text-white transition">🍉 Dưa</button>
-              <button onclick="switchCalcType('sugarcane')" id="calcTab_sugarcane" class="p-1 rounded-xl bg-slate-800 text-slate-400 transition">🎋 Mía</button>
-              <button onclick="switchCalcType('plow')" id="calcTab_plow" class="p-1 rounded-xl bg-slate-800 text-slate-400 transition">🚜 Máy Cày</button>
-              <button onclick="switchCalcType('forest')" id="calcTab_forest" class="p-1 rounded-xl bg-slate-800 text-slate-400 transition">🌲 Keo Lai</button>
-              <button onclick="switchCalcType('team')" id="calcTab_team" class="p-1 rounded-xl bg-slate-800 text-slate-400 transition">👥 Chia Công</button>
+            
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="font-bold text-white flex items-center gap-1.5 text-emerald-400">
+                <i class="fa-solid fa-calculator"></i> Bảng Phép Tính Vật Tư & Đầu Tư Nông Vụ
+              </span>
+              <span class="text-[10px] text-slate-400">Chọn ngành:</span>
             </div>
 
-            <!-- Chi tiết dưa hấu -->
-            <div id="calcBox_watermelon" class="space-y-1.5 text-xs text-slate-300">
-              <div class="flex justify-between"><span>Chiều dài luống dưa (4.8m):</span><span id="calcMelonRowLength" class="font-bold text-white font-mono">0 mét</span></div>
-              <div class="flex justify-between"><span>Bạt phủ nilon (cuộn 100m):</span><span id="calcMelonPlasticRolls" class="font-bold text-emerald-400 font-mono">0 cuộn</span></div>
-              <div class="flex justify-between"><span>Hạt giống (gói 20g ~ 450 hạt):</span><span id="calcMelonSeedPacks" class="font-bold text-amber-300 font-mono">0 gói</span></div>
-              <div class="flex justify-between"><span>Vôi bột khử phèn (40kg/sào):</span><span id="calcMelonLime" class="font-bold text-white font-mono">0 kg</span></div>
+            <!-- 6 Nút chuyển đổi bảng tính ngành nghề -->
+            <div class="grid grid-cols-3 sm:grid-cols-6 gap-1 text-center text-[10px] font-bold">
+              <button onclick="switchCalcType('watermelon')" id="calcTab_watermelon" class="py-1.5 px-1 rounded-xl bg-emerald-600 text-white transition flex flex-col items-center">
+                <span>🍉 Dưa Hấu</span>
+              </button>
+              <button onclick="switchCalcType('rice')" id="calcTab_rice" class="py-1.5 px-1 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+                <span>🌾 Lúa Nước</span>
+              </button>
+              <button onclick="switchCalcType('sugarcane')" id="calcTab_sugarcane" class="py-1.5 px-1 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+                <span>🎋 Mía Đường</span>
+              </button>
+              <button onclick="switchCalcType('forest')" id="calcTab_forest" class="py-1.5 px-1 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+                <span>🌲 Keo Lai</span>
+              </button>
+              <button onclick="switchCalcType('aquaculture')" id="calcTab_aquaculture" class="py-1.5 px-1 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+                <span>🦐 Ao Tôm</span>
+              </button>
+              <button onclick="switchCalcType('team')" id="calcTab_team" class="py-1.5 px-1 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center">
+                <span>👥 Chia Công</span>
+              </button>
             </div>
 
-            <!-- Chi tiết mía đường -->
-            <div id="calcBox_sugarcane" class="space-y-1.5 text-xs text-slate-300 hidden">
-              <div class="flex justify-between"><span>Hom giống mía (8.5 tấn/ha):</span><span id="calcCaneSeed" class="font-bold text-emerald-400 font-mono">0 tấn</span></div>
-              <div class="flex justify-between"><span>Phân lót NPK (bao 50kg):</span><span id="calcCaneFertilizer" class="font-bold text-white font-mono">0 bao</span></div>
-              <div class="flex justify-between"><span>Sản lượng dự kiến (75 tấn/ha):</span><span id="calcCaneYield" class="font-bold text-amber-300 font-mono">0 tấn</span></div>
+            <!-- 1. BẢNG TÍNH DƯA HẤU & HOA MÀU -->
+            <div id="calcBox_watermelon" class="space-y-2 text-xs">
+              <div class="overflow-x-auto rounded-xl border border-slate-800">
+                <table class="w-full text-left text-[11px]">
+                  <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 font-bold">
+                    <tr>
+                      <th class="p-2">Hạng Mục</th>
+                      <th class="p-2 text-center">Định Mức</th>
+                      <th class="p-2 text-right">Số Lượng</th>
+                      <th class="p-2 text-right">Dự Toán (đ)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 font-mono text-slate-300">
+                    <tr>
+                      <td class="p-2 font-sans">Chiều dài luống dưa</td>
+                      <td class="p-2 text-center text-slate-400">Luống 4.8m</td>
+                      <td id="calcMelonRowLength" class="p-2 text-right font-bold text-white">0 m</td>
+                      <td class="p-2 text-right text-slate-500">-</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Bạt phủ nilon</td>
+                      <td class="p-2 text-center text-slate-400">Cuộn 400m</td>
+                      <td id="calcMelonPlasticRolls" class="p-2 text-right font-bold text-emerald-400">0 cuộn</td>
+                      <td id="costMelonPlastic" class="p-2 text-right text-emerald-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Hạt giống F1</td>
+                      <td class="p-2 text-center text-slate-400">1 gói/sào</td>
+                      <td id="calcMelonSeedPacks" class="p-2 text-right font-bold text-amber-300">0 gói</td>
+                      <td id="costMelonSeed" class="p-2 text-right text-amber-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Vôi bột hạ chua</td>
+                      <td class="p-2 text-center text-slate-400">40kg/sào</td>
+                      <td id="calcMelonLime" class="p-2 text-right font-bold text-white">0 kg</td>
+                      <td id="costMelonLime" class="p-2 text-right text-slate-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Công cày bừa đất</td>
+                      <td class="p-2 text-center text-slate-400">180k/sào</td>
+                      <td id="calcMelonPlowSao" class="p-2 text-right font-bold text-white">0 sào</td>
+                      <td id="costMelonPlow" class="p-2 text-right text-cyan-300">0 đ</td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="bg-slate-950 font-bold border-t border-slate-800 text-xs">
+                    <tr>
+                      <td colspan="3" class="p-2 text-emerald-400 font-sans">TỔNG VẬT TƯ & CÀY ĐẤT:</td>
+                      <td id="totalMelonCost" class="p-2 text-right font-mono text-emerald-300">0 đ</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
             </div>
 
-            <!-- Chi tiết máy cày -->
-            <div id="calcBox_plow" class="space-y-1.5 text-xs text-slate-300 hidden">
-              <div class="flex justify-between"><span>Công cày ải (180.000 đ/sào):</span><span id="calcPlowCost" class="font-bold text-emerald-400 font-mono">0 đ</span></div>
-              <div class="flex justify-between"><span>Công gặt đập (250.000 đ/sào):</span><span id="calcHarvestCost" class="font-bold text-amber-300 font-mono">0 đ</span></div>
+            <!-- 2. BẢNG TÍNH LÚA NƯỚC & MÁY GẶT LIÊN HỢP -->
+            <div id="calcBox_rice" class="space-y-2 text-xs hidden">
+              <div class="overflow-x-auto rounded-xl border border-slate-800">
+                <table class="w-full text-left text-[11px]">
+                  <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 font-bold">
+                    <tr>
+                      <th class="p-2">Hạng Mục Lúa Vụ</th>
+                      <th class="p-2 text-center">Định Mức</th>
+                      <th class="p-2 text-right">Khối Lượng</th>
+                      <th class="p-2 text-right">Thành Tiền (đ)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 font-mono text-slate-300">
+                    <tr>
+                      <td class="p-2 font-sans">Giống lúa xác nhận</td>
+                      <td class="p-2 text-center text-slate-400">15kg/sào</td>
+                      <td id="calcRiceSeed" class="p-2 text-right font-bold text-amber-300">0 kg</td>
+                      <td id="costRiceSeed" class="p-2 text-right text-amber-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Phân bón NPK 3 đợt</td>
+                      <td class="p-2 text-center text-slate-400">30kg/sào</td>
+                      <td id="calcRiceFertilizer" class="p-2 text-right font-bold text-white">0 kg</td>
+                      <td id="costRiceFertilizer" class="p-2 text-right text-slate-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Thuê máy gặt đập liên hợp</td>
+                      <td class="p-2 text-center text-slate-400">220k/sào</td>
+                      <td id="calcRiceHarvestSao" class="p-2 text-right font-bold text-white">0 sào</td>
+                      <td id="costRiceHarvest" class="p-2 text-right text-cyan-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Sản lượng lúa ước tính</td>
+                      <td class="p-2 text-center text-slate-400">3.5 tạ/sào</td>
+                      <td id="calcRiceYield" class="p-2 text-right font-bold text-emerald-400">0 tạ</td>
+                      <td id="revenueRiceEst" class="p-2 text-right text-emerald-400 font-bold">Doanh thu: 0 đ</td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="bg-slate-950 font-bold border-t border-slate-800 text-xs">
+                    <tr>
+                      <td colspan="3" class="p-2 text-amber-400 font-sans">LỢI NHUẬN DỰ KIẾN (LÚA):</td>
+                      <td id="profitRiceEst" class="p-2 text-right font-mono text-amber-300">0 đ</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
             </div>
 
-            <!-- Chi tiết keo lai -->
-            <div id="calcBox_forest" class="space-y-1.5 text-xs text-slate-300 hidden">
-              <div class="flex justify-between"><span>Cây giống keo (2.500 cây/ha):</span><span id="calcTreeKeo" class="font-bold text-emerald-400 font-mono">0 cây</span></div>
-              <div class="flex justify-between"><span>Phân lót hố (100g/hố):</span><span id="calcFertilizer" class="font-bold text-white font-mono">0 kg</span></div>
+            <!-- 3. BẢNG TÍNH MÍA ĐƯỜNG NGUYÊN LIỆU -->
+            <div id="calcBox_sugarcane" class="space-y-2 text-xs hidden">
+              <div class="overflow-x-auto rounded-xl border border-slate-800">
+                <table class="w-full text-left text-[11px]">
+                  <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 font-bold">
+                    <tr>
+                      <th class="p-2">Hạng Mục Mía</th>
+                      <th class="p-2 text-center">Định Mức</th>
+                      <th class="p-2 text-right">Khối Lượng</th>
+                      <th class="p-2 text-right">Dự Toán (đ)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 font-mono text-slate-300">
+                    <tr>
+                      <td class="p-2 font-sans">Hom giống mía</td>
+                      <td class="p-2 text-center text-slate-400">8.5 tấn/ha</td>
+                      <td id="calcCaneSeed" class="p-2 text-right font-bold text-emerald-400">0 tấn</td>
+                      <td id="costCaneSeed" class="p-2 text-right text-emerald-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Phân lót chuyên mía</td>
+                      <td class="p-2 text-center text-slate-400">8 bao/ha</td>
+                      <td id="calcCaneFertilizer" class="p-2 text-right font-bold text-white">0 bao</td>
+                      <td id="costCaneFertilizer" class="p-2 text-right text-slate-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Sản lượng mía cây (10 CCS)</td>
+                      <td class="p-2 text-center text-slate-400">75 tấn/ha</td>
+                      <td id="calcCaneYield" class="p-2 text-right font-bold text-amber-300">0 tấn</td>
+                      <td id="revenueCaneEst" class="p-2 text-right text-amber-300">Tiền nhà máy: 0 đ</td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="bg-slate-950 font-bold border-t border-slate-800 text-xs">
+                    <tr>
+                      <td colspan="3" class="p-2 text-emerald-400 font-sans">TIỀN BÁN MÍA DỰ KIẾN:</td>
+                      <td id="totalCaneNet" class="p-2 text-right font-mono text-emerald-300">0 đ</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
             </div>
 
-            <!-- Chi tiết chia tiền công tổ đội -->
-            <div id="calcBox_team" class="space-y-2 text-xs hidden">
+            <!-- 4. BẢNG TÍNH RỪNG KEO LAI & BẠCH ĐÀN -->
+            <div id="calcBox_forest" class="space-y-2 text-xs hidden">
+              <div class="overflow-x-auto rounded-xl border border-slate-800">
+                <table class="w-full text-left text-[11px]">
+                  <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 font-bold">
+                    <tr>
+                      <th class="p-2">Hạng Mục Trồng Rừng</th>
+                      <th class="p-2 text-center">Định Mức</th>
+                      <th class="p-2 text-right">Khối Lượng</th>
+                      <th class="p-2 text-right">Chi Phí (đ)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 font-mono text-slate-300">
+                    <tr>
+                      <td class="p-2 font-sans">Cây hom giống keo mô</td>
+                      <td class="p-2 text-center text-slate-400">2.500 cây/ha</td>
+                      <td id="calcTreeKeo" class="p-2 text-right font-bold text-emerald-400">0 cây</td>
+                      <td id="costTreeKeo" class="p-2 text-right text-emerald-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Phân NPK lót đáy hố</td>
+                      <td class="p-2 text-center text-slate-400">100g/hố</td>
+                      <td id="calcFertilizer" class="p-2 text-right font-bold text-white">0 kg</td>
+                      <td id="costFertilizer" class="p-2 text-right text-slate-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Công cuốc hố & trồng</td>
+                      <td class="p-2 text-center text-slate-400">1.000 đ/hố</td>
+                      <td id="calcForestHoles" class="p-2 text-right font-bold text-cyan-300">0 hố</td>
+                      <td id="costForestDig" class="p-2 text-right text-cyan-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Sản lượng gỗ sau 5 năm</td>
+                      <td class="p-2 text-center text-slate-400">120 tấn/ha</td>
+                      <td id="calcWoodYield" class="p-2 text-right font-bold text-amber-300">0 tấn</td>
+                      <td id="revenueWoodEst" class="p-2 text-right text-amber-300">Giá trị: 0 đ</td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="bg-slate-950 font-bold border-t border-slate-800 text-xs">
+                    <tr>
+                      <td colspan="3" class="p-2 text-emerald-400 font-sans">TỔNG ĐẦU TƯ BAN ĐẦU:</td>
+                      <td id="totalForestInvest" class="p-2 text-right font-mono text-emerald-300">0 đ</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+
+            <!-- 5. BẢNG TÍNH AO NUÔI TÔM & THỦY SẢN -->
+            <div id="calcBox_aquaculture" class="space-y-2 text-xs hidden">
+              <div class="overflow-x-auto rounded-xl border border-slate-800">
+                <table class="w-full text-left text-[11px]">
+                  <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 font-bold">
+                    <tr>
+                      <th class="p-2">Hạng Mục Ao Nuôi</th>
+                      <th class="p-2 text-center">Tiêu Chuẩn</th>
+                      <th class="p-2 text-right">Khối Lượng</th>
+                      <th class="p-2 text-right">Dự Toán (đ)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 font-mono text-slate-300">
+                    <tr>
+                      <td class="p-2 font-sans">Thể tích khối nước ao</td>
+                      <td class="p-2 text-center text-slate-400">Sâu 1.4 mét</td>
+                      <td id="calcAquaVolume" class="p-2 text-right font-bold text-cyan-300">0 m³</td>
+                      <td class="p-2 text-right text-slate-500">-</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Tôm giống thả (Post)</td>
+                      <td class="p-2 text-center text-slate-400">100 con/m²</td>
+                      <td id="calcAquaPost" class="p-2 text-right font-bold text-emerald-400">0 vạn</td>
+                      <td id="costAquaPost" class="p-2 text-right text-emerald-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Vôi nung CaCO3 khử phèn</td>
+                      <td class="p-2 text-center text-slate-400">20kg/1.000m³</td>
+                      <td id="calcAquaLime" class="p-2 text-right font-bold text-white">0 kg</td>
+                      <td id="costAquaLime" class="p-2 text-right text-slate-300">0 đ</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 font-sans">Dàn quạt tạo oxy</td>
+                      <td class="p-2 text-center text-slate-400">1 dàn/1.000m²</td>
+                      <td id="calcAquaFans" class="p-2 text-right font-bold text-amber-300">0 dàn</td>
+                      <td class="p-2 text-right text-slate-500">-</td>
+                    </tr>
+                  </tbody>
+                  <tfoot class="bg-slate-950 font-bold border-t border-slate-800 text-xs">
+                    <tr>
+                      <td colspan="3" class="p-2 text-cyan-400 font-sans">VỐN THẢ GIỐNG & XỬ LÝ NƯỚC:</td>
+                      <td id="totalAquaInvest" class="p-2 text-right font-mono text-cyan-300">0 đ</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+
+            <!-- 6. BẢNG QUYẾT TOÁN & CHIA CÔNG TỔ ĐỘI NÔNG DÂN -->
+            <div id="calcBox_team" class="space-y-3 text-xs hidden">
               <div class="grid grid-cols-2 gap-2">
                 <div>
-                  <label class="block text-[10px] text-slate-400 mb-1">Số thợ trong tổ:</label>
-                  <input type="number" id="inTeamWorkers" value="5" oninput="calcTeamSplitting()" class="w-full p-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white font-mono">
+                  <label class="block text-[10px] text-slate-400 mb-1">Số thợ trong tổ đội:</label>
+                  <input type="number" id="inTeamWorkers" value="5" oninput="calcTeamSplitting()" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 text-white font-mono font-bold text-xs">
                 </div>
                 <div>
-                  <label class="block text-[10px] text-slate-400 mb-1">Tiền ăn/xăng chung:</label>
-                  <input type="number" id="inTeamExpenses" value="300000" oninput="calcTeamSplitting()" class="w-full p-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white font-mono">
+                  <label class="block text-[10px] text-slate-400 mb-1">Giá khoán 1 sào (VNĐ):</label>
+                  <input type="number" id="inTeamRatePerSao" value="250000" oninput="calcTeamSplitting()" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 text-white font-mono font-bold text-xs">
                 </div>
               </div>
-              <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex justify-between items-center">
-                <span class="text-emerald-400 font-bold">Mỗi thợ được chia:</span>
-                <span id="teamWorkerShare" class="font-black text-amber-300 font-mono text-sm">0 đ / người</span>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] text-slate-400 mb-1">Tiền xăng dầu / máy móc:</label>
+                  <input type="number" id="inTeamGasCost" value="300000" oninput="calcTeamSplitting()" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 text-white font-mono font-bold text-xs">
+                </div>
+                <div>
+                  <label class="block text-[10px] text-slate-400 mb-1">Tiền ăn uống, nước non:</label>
+                  <input type="number" id="inTeamMealCost" value="200000" oninput="calcTeamSplitting()" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 text-white font-mono font-bold text-xs">
+                </div>
+              </div>
+
+              <!-- Bảng quyết toán minh bạch từng đồng -->
+              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5 font-mono text-[11px]">
+                <div class="flex justify-between text-slate-300 font-sans">
+                  <span>Tổng tiền khoán nhận:</span>
+                  <span id="teamTotalRevenue" class="font-bold text-white">0 đ</span>
+                </div>
+                <div class="flex justify-between text-rose-400 font-sans">
+                  <span>Trừ chi phí dùng chung:</span>
+                  <span id="teamTotalExpenses" class="font-bold">- 500.000 đ</span>
+                </div>
+                <div class="flex justify-between text-emerald-400 font-sans pt-1 border-t border-slate-800">
+                  <span class="font-bold">Tổng tiền chia thợ:</span>
+                  <span id="teamNetPayout" class="font-bold text-emerald-300 text-xs">0 đ</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-emerald-950/70 border border-emerald-500/40 flex justify-between items-center text-xs font-sans">
+                  <span class="font-bold text-white">MỖI THỢ THỰC NHẬN:</span>
+                  <span id="teamWorkerShare" class="font-black text-amber-300 font-mono text-sm">0 đ / người</span>
+                </div>
               </div>
             </div>
 
+          </div>
+
+          <!-- NÚT SAO CHÉP BẢNG TÍNH GỬI ZALO NHÓM -->
+          <div class="pt-1">
+            <button onclick="copyFarmCalculatorSheet()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow transition active:scale-95 cursor-pointer">
+              <i class="fa-solid fa-file-lines text-amber-300"></i>
+              <span>Sao Chép Bảng Phép Tính Này Gửi Zalo</span>
+            </button>
           </div>
 
         </div>
+
 
         <!-- ==================== TAB 3: NHẬP SỔ ĐỎ VN-2000 (TÍCH HỢP TRỰC TIẾP) ==================== -->
         <div id="inspTabBox_sodo" class="space-y-3 hidden">
@@ -1287,6 +1574,7 @@
       updateCalculators(netArea, perimeterM);
     }
 
+    
     // 8. TÍNH TIỀN KHOÁN & CHỐNG HỚ DIỆN TÍCH
     function calcLeaseEconomics() {
       const pricePerSao = parseFloat(document.getElementById('inLeasePricePerSao').value) || 0;
@@ -1299,41 +1587,57 @@
       const actualRent = actualSao * pricePerSao;
 
       document.getElementById('resTotalLeaseRent').innerText = Math.round(actualRent).toLocaleString('vi-VN') + ' đ';
+      if (document.getElementById('tableActualSao')) {
+        document.getElementById('tableActualSao').innerText = actualSao.toFixed(2) + ' Sào (' + Math.round(netArea).toLocaleString('vi-VN') + ' m²)';
+      }
+      if (document.getElementById('tableDeposit30')) {
+        document.getElementById('tableDeposit30').innerText = Math.round(actualRent * 0.3).toLocaleString('vi-VN') + ' đ';
+      }
 
       const diffBox = document.getElementById('claimDifferenceBox');
       const diffText = document.getElementById('claimDiffText');
+      const tableClaimDiff = document.getElementById('tableClaimDiff');
 
       if (claimedSao > 0 && actualSao > 0) {
         diffBox.classList.remove('hidden');
         const diffSao = claimedSao - actualSao;
+        const moneyDiff = Math.abs(diffSao * pricePerSao);
+
         if (diffSao > 0.05) {
-          const moneySaved = diffSao * pricePerSao;
-          diffBox.className = 'p-2 rounded-lg bg-emerald-950/70 border border-emerald-500/40 text-emerald-200 text-[11px] font-medium';
-          diffText.innerHTML = `Chủ đất báo dôi <b>${diffSao.toFixed(2)} Sào</b> (${Math.round(diffSao * 500)} m²).<br>Bạn <b>tiết kiệm được ${Math.round(moneySaved).toLocaleString('vi-VN')} đ</b> tiền thuê!`;
+          diffBox.className = 'p-2.5 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-200 text-[11px] font-medium leading-relaxed';
+          diffText.innerHTML = "🛡️ Chủ đất báo dôi <b>" + diffSao.toFixed(2) + " Sào</b> (" + Math.round(diffSao * 500) + " m²).<br>Bạn <b>tiết kiệm được " + Math.round(moneyDiff).toLocaleString('vi-VN') + " đ</b> tiền thuê!";
+          if (tableClaimDiff) tableClaimDiff.innerHTML = "<span class='text-emerald-400 font-bold'>Dôi " + diffSao.toFixed(2) + " Sào (Tiết kiệm " + Math.round(moneyDiff).toLocaleString('vi-VN') + " đ)</span>";
         } else if (diffSao < -0.05) {
-          diffBox.className = 'p-2 rounded-lg bg-amber-950/70 border border-amber-500/40 text-amber-200 text-[11px] font-medium';
-          diffText.innerHTML = `Đo thực tế nhiều hơn chủ đất báo <b>${Math.abs(diffSao).toFixed(2)} Sào</b>.`;
+          diffBox.className = 'p-2.5 rounded-xl bg-amber-950/80 border border-amber-500/50 text-amber-200 text-[11px] font-medium leading-relaxed';
+          diffText.innerHTML = "⚠️ Đo thực tế nhiều hơn chủ đất báo <b>" + Math.abs(diffSao).toFixed(2) + " Sào</b> (Thêm " + Math.round(moneyDiff).toLocaleString('vi-VN') + " đ).";
+          if (tableClaimDiff) tableClaimDiff.innerHTML = "<span class='text-amber-400 font-bold'>Nhiều hơn " + Math.abs(diffSao).toFixed(2) + " Sào</span>";
         } else {
-          diffBox.className = 'p-2 rounded-lg bg-slate-900 text-slate-400 text-[11px]';
-          diffText.innerText = "Diện tích đo thực tế trùng khớp với chủ đất báo.";
+          diffBox.className = 'p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 text-[11px]';
+          diffText.innerText = "✅ Diện tích đo thực tế hoàn toàn trùng khớp với chủ đất báo.";
+          if (tableClaimDiff) tableClaimDiff.innerText = "Trùng khớp 100%";
         }
       } else {
         diffBox.classList.add('hidden');
+        if (tableClaimDiff) tableClaimDiff.innerText = "Chưa nhập số chủ đất báo";
       }
     }
 
-    // 9. CÔNG CỤ DỰ TOÁN NÔNG - LÂM - MÁY CÀY
+
+
+    // 9. CÔNG CỤ DỰ TOÁN BẢNG PHÉP TÍNH NÔNG - LÂM - THỦY SẢN & TỔ ĐỘI
     function switchCalcType(type) {
       currentCalcType = type;
-      ['watermelon', 'sugarcane', 'plow', 'forest', 'team'].forEach(t => {
+      ['watermelon', 'rice', 'sugarcane', 'forest', 'aquaculture', 'team'].forEach(t => {
         const tab = document.getElementById('calcTab_' + t);
         const box = document.getElementById('calcBox_' + t);
-        if (t === type) {
-          tab.className = 'p-1 rounded-xl bg-emerald-600 text-white font-bold transition';
-          box.classList.remove('hidden');
-        } else {
-          tab.className = 'p-1 rounded-xl bg-slate-800 text-slate-400 transition';
-          box.classList.add('hidden');
+        if (tab && box) {
+          if (t === type) {
+            tab.className = 'py-1.5 px-1 rounded-xl bg-emerald-600 text-white transition flex flex-col items-center shadow-xs';
+            box.classList.remove('hidden');
+          } else {
+            tab.className = 'py-1.5 px-1 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition flex flex-col items-center';
+            box.classList.add('hidden');
+          }
         }
       });
       let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
@@ -1345,52 +1649,185 @@
       const saoCount = netAreaM2 / 500;
       const haCount = netAreaM2 / 10000;
 
-      // Dưa hấu
+      // 1. Dưa hấu
       const rowLength = netAreaM2 > 0 ? Math.round(netAreaM2 / 4.8) : 0;
-      document.getElementById('calcMelonRowLength').innerText = rowLength.toLocaleString('vi-VN') + ' mét';
-      const rolls = Math.ceil(rowLength / 100);
-      document.getElementById('calcMelonPlasticRolls').innerText = rolls + ' cuộn (100m)';
-      const seedPacks = Math.ceil(saoCount * 1.05);
-      document.getElementById('calcMelonSeedPacks').innerText = seedPacks + ' gói (20g)';
-      const limeKg = Math.round(saoCount * 40);
-      document.getElementById('calcMelonLime').innerText = limeKg.toLocaleString('vi-VN') + ' kg vôi';
+      const melonRolls = Math.ceil(rowLength / 400);
+      const melonCostPlastic = melonRolls * 480000;
+      const melonSeedPacks = Math.ceil(saoCount * 1.05);
+      const melonCostSeed = melonSeedPacks * 180000;
+      const melonLimeKg = Math.round(saoCount * 40);
+      const melonCostLime = Math.round(melonLimeKg * 4000);
+      const melonCostPlow = Math.round(saoCount * 180000);
+      const totalMelonCost = melonCostPlastic + melonCostSeed + melonCostLime + melonCostPlow;
 
-      // Mía
+      if (document.getElementById('calcMelonRowLength')) {
+        document.getElementById('calcMelonRowLength').innerText = rowLength.toLocaleString('vi-VN') + ' m';
+        document.getElementById('calcMelonPlasticRolls').innerText = melonRolls + ' cuộn (400m)';
+        document.getElementById('costMelonPlastic').innerText = melonCostPlastic.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcMelonSeedPacks').innerText = melonSeedPacks + ' gói (20g)';
+        document.getElementById('costMelonSeed').innerText = melonCostSeed.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcMelonLime').innerText = melonLimeKg.toLocaleString('vi-VN') + ' kg';
+        document.getElementById('costMelonLime').innerText = melonCostLime.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcMelonPlowSao').innerText = saoCount.toFixed(1) + ' sào';
+        document.getElementById('costMelonPlow').innerText = melonCostPlow.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('totalMelonCost').innerText = totalMelonCost.toLocaleString('vi-VN') + ' đ';
+      }
+
+      // 2. Lúa nước
+      const riceSeedKg = Math.round(saoCount * 15);
+      const costRiceSeed = Math.round(riceSeedKg * 18000);
+      const riceFertKg = Math.round(saoCount * 30);
+      const costRiceFert = Math.round(riceFertKg * 14000);
+      const costRiceHarvest = Math.round(saoCount * 220000);
+      const riceYieldTa = (saoCount * 3.5).toFixed(1);
+      const revenueRice = Math.round(saoCount * 3.5 * 800000);
+      const profitRice = revenueRice - (costRiceSeed + costRiceFert + costRiceHarvest);
+
+      if (document.getElementById('calcRiceSeed')) {
+        document.getElementById('calcRiceSeed').innerText = riceSeedKg.toLocaleString('vi-VN') + ' kg';
+        document.getElementById('costRiceSeed').innerText = costRiceSeed.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcRiceFertilizer').innerText = riceFertKg.toLocaleString('vi-VN') + ' kg';
+        document.getElementById('costRiceFertilizer').innerText = costRiceFert.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcRiceHarvestSao').innerText = saoCount.toFixed(1) + ' sào';
+        document.getElementById('costRiceHarvest').innerText = costRiceHarvest.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcRiceYield').innerText = riceYieldTa + ' tạ';
+        document.getElementById('revenueRiceEst').innerText = revenueRice.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('profitRiceEst').innerText = profitRice.toLocaleString('vi-VN') + ' đ';
+      }
+
+      // 3. Mía đường
       const caneSeeds = (haCount * 8.5).toFixed(1);
-      document.getElementById('calcCaneSeed').innerText = caneSeeds + ' tấn hom';
+      const costCaneSeed = Math.round(haCount * 8.5 * 1100000);
       const caneFert = Math.round(haCount * 8);
-      document.getElementById('calcCaneFertilizer').innerText = caneFert + ' bao (50kg)';
+      const costCaneFert = Math.round(caneFert * 600000);
       const caneYield = Math.round(haCount * 75);
-      document.getElementById('calcCaneYield').innerText = caneYield.toLocaleString('vi-VN') + ' tấn';
+      const revenueCane = Math.round(caneYield * 1150000);
+      const totalCaneNet = revenueCane - (costCaneSeed + costCaneFert);
 
-      // Máy cày
-      const plowCost = Math.round(saoCount * 180000);
-      const harvestCost = Math.round(saoCount * 250000);
-      document.getElementById('calcPlowCost').innerText = plowCost.toLocaleString('vi-VN') + ' đ';
-      document.getElementById('calcHarvestCost').innerText = harvestCost.toLocaleString('vi-VN') + ' đ';
+      if (document.getElementById('calcCaneSeed')) {
+        document.getElementById('calcCaneSeed').innerText = caneSeeds + ' tấn hom';
+        document.getElementById('costCaneSeed').innerText = costCaneSeed.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcCaneFertilizer').innerText = caneFert + ' bao';
+        document.getElementById('costCaneFertilizer').innerText = costCaneFert.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcCaneYield').innerText = caneYield.toLocaleString('vi-VN') + ' tấn';
+        document.getElementById('revenueCaneEst').innerText = revenueCane.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('totalCaneNet').innerText = totalCaneNet.toLocaleString('vi-VN') + ' đ';
+      }
 
-      // Keo lai
+      // 4. Rừng keo lai
       const trees = Math.round(haCount * 2500);
-      document.getElementById('calcTreeKeo').innerText = trees.toLocaleString('vi-VN') + ' cây';
-      document.getElementById('calcFertilizer').innerText = Math.round(trees * 0.1).toLocaleString('vi-VN') + ' kg';
+      const costTreeKeo = Math.round(trees * 1200);
+      const fertKg = Math.round(trees * 0.1);
+      const costFert = Math.round(fertKg * 12000);
+      const costForestDig = Math.round(trees * 1000);
+      const woodYield = Math.round(haCount * 120);
+      const revenueWood = Math.round(woodYield * 1250000);
+      const totalForestInvest = costTreeKeo + costFert + costForestDig;
 
-      // Chia công
+      if (document.getElementById('calcTreeKeo')) {
+        document.getElementById('calcTreeKeo').innerText = trees.toLocaleString('vi-VN') + ' cây';
+        document.getElementById('costTreeKeo').innerText = costTreeKeo.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcFertilizer').innerText = fertKg.toLocaleString('vi-VN') + ' kg';
+        document.getElementById('costFertilizer').innerText = costFert.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcForestHoles').innerText = trees.toLocaleString('vi-VN') + ' hố';
+        document.getElementById('costForestDig').innerText = costForestDig.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcWoodYield').innerText = woodYield.toLocaleString('vi-VN') + ' tấn';
+        document.getElementById('revenueWoodEst').innerText = revenueWood.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('totalForestInvest').innerText = totalForestInvest.toLocaleString('vi-VN') + ' đ';
+      }
+
+      // 5. Thủy sản & Ao tôm
+      const aquaVolume = Math.round(netAreaM2 * 1.4);
+      const aquaPostVan = (netAreaM2 * 100 / 10000).toFixed(1);
+      const costAquaPost = Math.round(parseFloat(aquaPostVan) * 10000 * 120);
+      const aquaLimeKg = Math.round((aquaVolume / 1000) * 20);
+      const costAquaLime = Math.round(aquaLimeKg * 4500);
+      const aquaFans = Math.max(1, Math.round(netAreaM2 / 1000));
+      const totalAquaInvest = costAquaPost + costAquaLime;
+
+      if (document.getElementById('calcAquaVolume')) {
+        document.getElementById('calcAquaVolume').innerText = aquaVolume.toLocaleString('vi-VN') + ' m³';
+        document.getElementById('calcAquaPost').innerText = aquaPostVan + ' vạn';
+        document.getElementById('costAquaPost').innerText = costAquaPost.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcAquaLime').innerText = aquaLimeKg.toLocaleString('vi-VN') + ' kg';
+        document.getElementById('costAquaLime').innerText = costAquaLime.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('calcAquaFans').innerText = aquaFans + ' dàn';
+        document.getElementById('totalAquaInvest').innerText = totalAquaInvest.toLocaleString('vi-VN') + ' đ';
+      }
+
+      // 6. Quyết toán tổ đội
       calcTeamSplitting();
     }
 
     function calcTeamSplitting() {
-      const workers = parseInt(document.getElementById('inTeamWorkers').value) || 1;
-      const expenses = parseFloat(document.getElementById('inTeamExpenses').value) || 0;
+      const workers = Math.max(1, parseInt(document.getElementById('inTeamWorkers').value) || 1);
+      const ratePerSao = parseFloat(document.getElementById('inTeamRatePerSao').value) || 250000;
+      const gasCost = parseFloat(document.getElementById('inTeamGasCost').value) || 0;
+      const mealCost = parseFloat(document.getElementById('inTeamMealCost').value) || 0;
 
       let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
       if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
       const saoCount = netArea / 500;
 
-      const plowTotal = Math.round(saoCount * 250000);
-      const remainPayout = Math.max(0, plowTotal - expenses);
-      const eachShare = Math.round(remainPayout / Math.max(1, workers));
-      document.getElementById('teamWorkerShare').innerText = eachShare.toLocaleString('vi-VN') + ' đ / người';
+      const totalRevenue = Math.round(saoCount * ratePerSao);
+      const totalExpenses = Math.round(gasCost + mealCost);
+      const netPayout = Math.max(0, totalRevenue - totalExpenses);
+      const eachShare = Math.round(netPayout / workers);
+
+      if (document.getElementById('teamTotalRevenue')) {
+        document.getElementById('teamTotalRevenue').innerText = totalRevenue.toLocaleString('vi-VN') + ' đ (' + saoCount.toFixed(1) + ' sào)';
+        document.getElementById('teamTotalExpenses').innerText = '- ' + totalExpenses.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('teamNetPayout').innerText = netPayout.toLocaleString('vi-VN') + ' đ';
+        document.getElementById('teamWorkerShare').innerText = eachShare.toLocaleString('vi-VN') + ' đ / người';
+      }
     }
+
+    function copyFarmCalculatorSheet() {
+      let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
+      const sao = (netArea / 500).toFixed(2);
+      const m2 = Math.round(netArea).toLocaleString('vi-VN');
+
+      let text = "📋 BẢNG PHÉP TÍNH NÔNG VỤ • TRẠM TRẮC ĐỊA SỐ ĐẤT PHÚ\n";
+      text += "🌾 Diện tích thực canh tác: " + m2 + " m² (" + sao + " Sào Trung Bộ)\n";
+      text += "----------------------------------------\n";
+
+      if (currentCalcType === 'watermelon') {
+        text += "🍉 DỰ TOÁN TRỒNG DƯA HẤU & HOA MÀU:\n";
+        text += "• Luống dưa (4.8m): " + document.getElementById('calcMelonRowLength').innerText + "\n";
+        text += "• Bạt nilon 400m: " + document.getElementById('calcMelonPlasticRolls').innerText + " (" + document.getElementById('costMelonPlastic').innerText + ")\n";
+        text += "• Hạt giống F1: " + document.getElementById('calcMelonSeedPacks').innerText + " (" + document.getElementById('costMelonSeed').innerText + ")\n";
+        text += "• Vôi khử phèn: " + document.getElementById('calcMelonLime').innerText + " (" + document.getElementById('costMelonLime').innerText + ")\n";
+        text += "• Tiền cày đất: " + document.getElementById('costMelonPlow').innerText + "\n";
+        text += "👉 TỔNG VẬT TƯ DỰ KIẾN: " + document.getElementById('totalMelonCost').innerText + "\n";
+      } else if (currentCalcType === 'rice') {
+        text += "🌾 DỰ TOÁN LÚA NƯỚC & MÁY GẶT:\n";
+        text += "• Lúa giống xác nhận: " + document.getElementById('calcRiceSeed').innerText + " (" + document.getElementById('costRiceSeed').innerText + ")\n";
+        text += "• Phân bón NPK 3 đợt: " + document.getElementById('calcRiceFertilizer').innerText + " (" + document.getElementById('costRiceFertilizer').innerText + ")\n";
+        text += "• Thuê máy gặt đập: " + document.getElementById('costRiceHarvest').innerText + "\n";
+        text += "• Doanh thu lúa dự kiến: " + document.getElementById('revenueRiceEst').innerText + "\n";
+        text += "👉 LỢI NHUẬN DỰ KIẾN: " + document.getElementById('profitRiceEst').innerText + "\n";
+      } else if (currentCalcType === 'team') {
+        text += "👥 QUYẾT TOÁN CÔNG KHOÁN TỔ ĐỘI:\n";
+        text += "• Số thợ trong tổ: " + document.getElementById('inTeamWorkers').value + " người\n";
+        text += "• Tổng tiền khoán nhận: " + document.getElementById('teamTotalRevenue').innerText + "\n";
+        text += "• Trừ chi phí chung (xăng/ăn): " + document.getElementById('teamTotalExpenses').innerText + "\n";
+        text += "• Tiền chia cả tổ: " + document.getElementById('teamNetPayout').innerText + "\n";
+        text += "👉 MỖI THỢ THỰC NHẬN: " + document.getElementById('teamWorkerShare').innerText + "\n";
+      } else {
+        text += "🌱 Bảng dự toán chi tiết đã được tính toán đồng bộ trên ứng dụng Lịch Đất Phú.\n";
+      }
+
+      text += "----------------------------------------\n";
+      text += "🔗 Xem trực tiếp: https://datphu-backend.vercel.app/do-dat";
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert("✅ Đã sao chép Bảng Phép Tính vào bộ nhớ tạm! Bạn có thể dán (Paste) gửi ngay qua Zalo.");
+      }).catch(() => {
+        alert("Vui lòng cho phép quyền sao chép trên trình duyệt!");
+      });
+    }
+
 
     // 10. TRỢ LÝ GIỌNG NÓI TIẾNG VIỆT
     function speakMeasurementResult() {
