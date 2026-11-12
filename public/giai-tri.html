@@ -94,25 +94,33 @@
   </header>
 
   <!-- ================= MASTER CHANNELS DOCK (5 CHUYÊN ĐỀ LỚN) ================= -->
-  <div class="sticky top-[53px] sm:top-[57px] z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-2xs py-2 px-3 sm:px-6">
+  <div class="sticky top-[53px] sm:top-[57px] z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs py-2 px-3 sm:px-6">
     <div class="max-w-5xl mx-auto flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar text-xs font-black">
-      <button onclick="switchChannel('radio')" id="tabBtn_radio" class="px-3.5 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-sm shrink-0 flex items-center gap-1.5 active:scale-95 transition font-black">
-        <i class="fa-solid fa-radio"></i>
+      <button onclick="switchChannel('radio')" id="tabBtn_radio" class="px-3.5 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-sm shrink-0 flex items-center gap-2 active:scale-95 transition font-black cursor-pointer">
+        <span class="w-5 h-5 rounded-lg bg-black/20 text-slate-950 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-tower-broadcast"></i>
+        </span>
         <span>1. Đài Radio, Bài Chòi & Phim 4K</span>
       </button>
 
-      <button onclick="switchChannel('buddhist')" id="tabBtn_buddhist" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
-        <i class="fa-solid fa-dharmachakra text-amber-600"></i>
+      <button onclick="switchChannel('buddhist')" id="tabBtn_buddhist" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-2 active:scale-95 transition cursor-pointer">
+        <span class="w-5 h-5 rounded-lg bg-amber-500/15 text-amber-700 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-dharmachakra"></i>
+        </span>
         <span>2. Máy Niệm Phật Số</span>
       </button>
 
-      <button onclick="switchChannel('healing')" id="tabBtn_healing" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
-        <i class="fa-solid fa-mug-hot text-amber-700"></i>
+      <button onclick="switchChannel('healing')" id="tabBtn_healing" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-2 active:scale-95 transition cursor-pointer">
+        <span class="w-5 h-5 rounded-lg bg-emerald-500/15 text-emerald-700 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-mug-hot"></i>
+        </span>
         <span>3. Trà Đạo Thư Quán</span>
       </button>
 
-      <button onclick="switchChannel('mindful')" id="tabBtn_mindful" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
-        <i class="fa-solid fa-spa text-indigo-600"></i>
+      <button onclick="switchChannel('mindful')" id="tabBtn_mindful" class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-2 active:scale-95 transition cursor-pointer">
+        <span class="w-5 h-5 rounded-lg bg-indigo-500/15 text-indigo-700 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-spa"></i>
+        </span>
         <span>4. Thiền Thở Sen 4-7-8</span>
       </button>
     </div>
@@ -245,29 +253,60 @@
 
         <!-- THANH LỌC CHỦ ĐỀ 1 CHẠM (THEMATIC TABS) -->
         <div class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
-          <button onclick="filterRadioTheme('all')" id="themeBtn_all" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition active:scale-95 shadow shrink-0 cursor-pointer">
-            Tất Cả (<span id="themeCount_all">11</span>)
+          <button onclick="filterRadioTheme('all')" id="themeBtn_all" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition active:scale-95 shadow shrink-0 cursor-pointer flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-md bg-black/15 text-slate-950 flex items-center justify-center text-[10px]">
+              <i class="fa-solid fa-shapes"></i>
+            </span>
+            <span>Tất Cả (<span id="themeCount_all">11</span>)</span>
           </button>
-          <button onclick="filterRadioTheme('baichoi')" id="themeBtn_baichoi" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
-            <span>🎋 Bài Chòi Cổ</span>
+
+          <button onclick="filterRadioTheme('baichoi')" id="themeBtn_baichoi" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
+            <span class="w-5 h-5 rounded-md bg-amber-500/20 text-amber-400 flex items-center justify-center text-[10px] border border-amber-500/30">
+              <i class="fa-solid fa-dice-d6"></i>
+            </span>
+            <span>Bài Chòi Cổ</span>
           </button>
-          <button onclick="filterRadioTheme('dieuly')" id="themeBtn_dieuly" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
-            <span>🌊 Điệu Lý & Ca Dao</span>
+
+          <button onclick="filterRadioTheme('dieuly')" id="themeBtn_dieuly" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
+            <span class="w-5 h-5 rounded-md bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-[10px] border border-cyan-500/30">
+              <i class="fa-solid fa-water"></i>
+            </span>
+            <span>Điệu Lý & Ca Dao</span>
           </button>
-          <button onclick="filterRadioTheme('nhaccu')" id="themeBtn_nhaccu" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
-            <span>🎶 Nhạc Cụ Mộc</span>
+
+          <button onclick="filterRadioTheme('nhaccu')" id="themeBtn_nhaccu" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
+            <span class="w-5 h-5 rounded-md bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] border border-emerald-500/30">
+              <i class="fa-solid fa-guitar"></i>
+            </span>
+            <span>Nhạc Cụ Mộc</span>
           </button>
-          <button onclick="filterRadioTheme('taynguyen')" id="themeBtn_taynguyen" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
-            <span>🏔️ Cồng Chiêng Tây Nguyên</span>
+
+          <button onclick="filterRadioTheme('taynguyen')" id="themeBtn_taynguyen" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
+            <span class="w-5 h-5 rounded-md bg-orange-500/20 text-orange-400 flex items-center justify-center text-[10px] border border-orange-500/30">
+              <i class="fa-solid fa-mountain-sun"></i>
+            </span>
+            <span>Cồng Chiêng Tây Nguyên</span>
           </button>
-          <button onclick="filterRadioTheme('tieulam')" id="themeBtn_tieulam" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
-            <span>😂 Tiếu Lâm & Góc Cười</span>
+
+          <button onclick="filterRadioTheme('tieulam')" id="themeBtn_tieulam" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
+            <span class="w-5 h-5 rounded-md bg-pink-500/20 text-pink-400 flex items-center justify-center text-[10px] border border-pink-500/30">
+              <i class="fa-solid fa-face-laugh-beam"></i>
+            </span>
+            <span>Tiếu Lâm Quê Mình</span>
           </button>
-          <button onclick="filterRadioTheme('phim4k')" id="themeBtn_phim4k" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
-            <span>🎬 Phim 4K</span>
+
+          <button onclick="filterRadioTheme('phim4k')" id="themeBtn_phim4k" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
+            <span class="w-5 h-5 rounded-md bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] border border-purple-500/30">
+              <i class="fa-solid fa-film"></i>
+            </span>
+            <span>Phim 4K</span>
           </button>
-          <button onclick="filterRadioTheme('community')" id="themeBtn_community" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-700 hover:to-teal-700 text-emerald-200 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer border border-emerald-500/40">
-            <span>🌟 Bà Con Đóng Góp</span>
+
+          <button onclick="filterRadioTheme('community')" id="themeBtn_community" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-700 hover:to-teal-700 text-emerald-200 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer border border-emerald-500/40">
+            <span class="w-5 h-5 rounded-md bg-emerald-400 text-slate-950 flex items-center justify-center text-[10px] font-black">
+              <i class="fa-solid fa-hand-holding-heart"></i>
+            </span>
+            <span>Bà Con Đóng Góp</span>
           </button>
         </div>
 
@@ -1652,13 +1691,24 @@
       const artist = artistInput ? artistInput.value.trim() : 'Nghệ Nhân Dân Gian';
       const chant = chantInput ? chantInput.value.trim() : '';
 
-      if (!url) {
-        if (fb) {
-          fb.className = "p-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-950/80 border border-rose-600/40 text-center";
-          fb.innerText = "Vui lòng nhập đường link YouTube hoặc link file âm thanh MP3!";
-          fb.classList.remove('hidden');
+      if (currentUploadMode === 'record') {
+        if (!recordedAudioBlobUrl) {
+          if (fb) {
+            fb.className = "p-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-950/80 border border-rose-600/40 text-center";
+            fb.innerText = "Vui lòng bấm 'Bắt Đầu Thu Âm' để thu một câu hò hoặc tiếng hát!";
+            fb.classList.remove('hidden');
+          }
+          return;
         }
-        return;
+      } else {
+        if (!url) {
+          if (fb) {
+            fb.className = "p-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-950/80 border border-rose-600/40 text-center";
+            fb.innerText = "Vui lòng nhập đường link YouTube hoặc link file âm thanh MP3!";
+            fb.classList.remove('hidden');
+          }
+          return;
+        }
       }
 
       if (!title) {
@@ -1683,18 +1733,21 @@
         'community': 'Bà Con & Nghệ Sĩ Góp'
       };
 
+      const isLiveAudio = (currentUploadMode === 'record');
+      const finalSrc = isLiveAudio ? recordedAudioBlobUrl : (isYouTube ? '' : url);
+
       const newItem = {
         id: 'custom_' + Date.now(),
         title: title,
         artist: artist,
         theme: theme,
-        themeName: themeNames[theme] || 'Chuyên Đề',
-        type: isYouTube ? 'youtube' : 'audio',
-        youtubeId: ytId || '',
-        src: isYouTube ? '' : url,
-        coverImg: isYouTube ? ('https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg') : 'img/tet_sum_vay_dat_phu.jpg',
-        chant: chant || ('Giai điệu thân thương của quê hương Đất Phú: ' + title),
-        duration: "04:00"
+        themeName: themeNames[theme] || 'Bà Con & Nghệ Sĩ Góp',
+        type: (isYouTube && !isLiveAudio) ? 'youtube' : 'audio',
+        youtubeId: (isYouTube && !isLiveAudio) ? ytId : '',
+        src: finalSrc,
+        coverImg: (isYouTube && !isLiveAudio) ? ('https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg') : 'img/tet_sum_vay_dat_phu.jpg',
+        chant: chant || ('Lời ca tiếng hát thân thương của quê hương Đất Phú: ' + title),
+        duration: "03:30"
       };
 
       customMediaList.push(newItem);
@@ -2957,15 +3010,51 @@ function changeArtSlide(delta) {
         </button>
       </div>
 
+      <!-- TÙY CHỌN PHƯƠNG THỨC: DÁN LINK HAY THU ÂM TRỰC TIẾP -->
+      <div class="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-950 border border-slate-800 text-xs">
+        <button type="button" onclick="switchUploadMode('link')" id="btnUploadModeLink" class="flex-1 py-2 rounded-xl bg-amber-500 text-slate-950 font-black transition flex items-center justify-center gap-1.5">
+          <i class="fa-brands fa-youtube text-red-600"></i>
+          <span>Dán Link Video / YouTube</span>
+        </button>
+        <button type="button" onclick="switchUploadMode('record')" id="btnUploadModeRecord" class="flex-1 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white font-bold transition flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-microphone text-rose-500"></i>
+          <span>🎙️ Thu Âm Micro Trực Tiếp</span>
+        </button>
+      </div>
+
       <!-- Khung biểu mẫu -->
       <div class="space-y-3 text-xs">
-        <!-- Đường link YouTube / Audio -->
-        <div>
+        
+        <!-- PHẦN 1: DÁN LINK VIDEO / YOUTUBE / MP3 -->
+        <div id="sectionModeLink">
           <label class="block font-bold text-amber-200 mb-1">
-            <i class="fa-brands fa-youtube text-red-500 mr-1"></i> Đường Link YouTube hoặc File Âm Thanh MP3:
+            <i class="fa-brands fa-youtube text-red-500 mr-1"></i> Đường Link YouTube hoặc File MP3:
           </label>
           <input type="text" id="addMediaUrl" placeholder="Ví dụ: https://www.youtube.com/watch?v=... hoặc /audio/tenbai.mp3" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none" />
           <p class="text-[10px] text-slate-400 mt-1">Hệ thống tự động phát hiện mã Video YouTube và lấy ảnh bìa HD chất lượng cao.</p>
+        </div>
+
+        <!-- PHẦN 2: THU ÂM MICRO TRỰC TIẾP TRÊN ĐIỆN THOẠI (ẨN MẶC ĐỊNH) -->
+        <div id="sectionModeRecord" class="hidden p-4 rounded-2xl bg-slate-950 border-2 border-dashed border-rose-500/50 text-center space-y-3">
+          <div class="text-xs text-rose-300 font-bold">
+            🎙️ Bấm nút dưới đây để hát một câu hò, lời ru hoặc kể chuyện tiếu lâm:
+          </div>
+
+          <div class="flex items-center justify-center gap-3">
+            <button type="button" onclick="toggleLiveRecording()" id="btnLiveRecordAction" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-xs shadow-lg active:scale-95 transition flex items-center gap-2 cursor-pointer">
+              <span id="recordPulseDot" class="w-3 h-3 rounded-full bg-white"></span>
+              <span id="recordBtnText">Bắt Đầu Thu Âm</span>
+            </button>
+            <span id="recordTimerDisplay" class="font-mono text-sm text-amber-300 font-bold bg-black/60 px-3 py-2 rounded-xl border border-amber-500/30">00:00</span>
+          </div>
+
+          <!-- Trình phát nghe lại bản thu -->
+          <div id="recordPreviewWrapper" class="hidden pt-2 border-t border-slate-800 space-y-2">
+            <div class="text-[11px] text-emerald-400 font-bold flex items-center justify-center gap-1">
+              <i class="fa-solid fa-check-circle"></i> Đã thu âm xong! Nghe lại bản thu:
+            </div>
+            <audio id="recordedAudioPreview" controls class="w-full h-8 rounded-lg"></audio>
+          </div>
         </div>
 
         <!-- Vai trò người đăng -->
@@ -3002,12 +3091,12 @@ function changeArtSlide(delta) {
         <!-- Tên tác phẩm & Nghệ sĩ -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           <div>
-            <label class="block font-bold text-slate-300 mb-1">Tên Tác Phẩm / Ca Khúc:</label>
+            <label class="block font-bold text-slate-300 mb-1">Tên Tác Phẩm / Làn Điệu:</label>
             <input type="text" id="addMediaTitle" placeholder="Ví dụ: Hò Mái Nhì Sông Ba..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none" />
           </div>
           <div>
-            <label class="block font-bold text-slate-300 mb-1">Nghệ Sĩ / Nghệ Nhân:</label>
-            <input type="text" id="addMediaArtist" placeholder="Ví dụ: Nghệ nhân dân gian Tuy An..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none" />
+            <label class="block font-bold text-slate-300 mb-1">Nghệ Sĩ / Nghệ Nhân / Buôn Làng:</label>
+            <input type="text" id="addMediaArtist" placeholder="Ví dụ: Nghệ nhân Ma Bio • Buôn Ma Lôi..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none" />
           </div>
         </div>
 
