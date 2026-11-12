@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thước Đo Đất Rẫy & Trắc Địa Nông Dân • Lịch Đất Phú</title>
-  <meta name="description" content="Ứng dụng đo diện tích đất rẫy trồng dưa, rừng keo, mặt biển bằng GPS vệ tinh. Tính tiền khoán đất, chống hớ diện tích, quy đổi sào mẫu Trung Bộ chuẩn xác tại Phú Yên.">
+  <title>Trạm Trắc Địa Kỹ Thuật Số & Đo Đất Rẫy Rừng Biển • Lịch Đất Phú</title>
+  <meta name="description" content="Trạm trắc địa kỹ thuật số chuyên nghiệp dành cho nông dân, chủ rừng, ngư dân. Đo diện tích GPS Kalman vệ tinh, nhập Sổ Đỏ VN-2000, chống hớ tiền khoán đất.">
   <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
 
   <!-- Tailwind CSS CDN -->
@@ -18,21 +18,32 @@
   <style>
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    
-    body.dark-mode {
-      background: linear-gradient(180deg, #090e17 0%, #0d1527 50%, #05080f 100%);
-      color: #f1f5f9;
-    }
-    body.dark-mode .card-box {
-      background-color: rgba(15, 23, 42, 0.9);
-      border-color: rgba(51, 65, 85, 0.6);
+
+    /* Theme Trắc Địa Kỹ Thuật Số Chuyên Nghiệp */
+    body {
+      background: #080f18;
       color: #e2e8f0;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
-    body.dark-mode .card-box h1,
-    body.dark-mode .card-box h2,
-    body.dark-mode .card-box h3,
-    body.dark-mode .card-box h4 {
-      color: #ffffff;
+
+    .pro-glass {
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(51, 65, 85, 0.65);
+    }
+
+    .pro-hud-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 16, 29, 0.98) 100%);
+      border: 1px solid rgba(30, 41, 59, 0.9);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Màn hình hiển thị số kỹ thuật số HUD */
+    .digital-lcd {
+      background: #041210;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.9), 0 0 15px rgba(16, 185, 129, 0.1);
     }
 
     /* Chế độ ngoài trời chống chói nắng gắt */
@@ -40,8 +51,9 @@
       background: #000000 !important;
       color: #ffffff !important;
     }
-    body.sunlight-mode .card-box {
-      background-color: #121212 !important;
+    body.sunlight-mode .pro-glass,
+    body.sunlight-mode .pro-hud-card {
+      background: #000000 !important;
       border: 2px solid #facc15 !important;
       color: #ffffff !important;
     }
@@ -51,689 +63,587 @@
     }
 
     #mapMeasure {
-      height: 480px;
+      height: 100%;
+      min-height: 520px;
       z-index: 10;
-      border-radius: 1.5rem;
     }
-    @media (min-width: 640px) {
-      #mapMeasure { height: 560px; }
+    @media (min-width: 1024px) {
+      #mapMeasure { min-height: 680px; }
     }
-    
+
+    /* Nhãn đo chiều dài cạnh */
     .edge-label {
-      background: rgba(15, 23, 42, 0.88);
+      background: rgba(10, 15, 29, 0.9);
       color: #fef08a;
-      border: 1px solid rgba(250, 204, 21, 0.7);
-      padding: 1px 5px;
+      border: 1px solid rgba(250, 204, 21, 0.8);
+      padding: 1px 6px;
       border-radius: 6px;
-      font-size: 10px;
-      font-weight: bold;
-      font-family: monospace;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      font-size: 10.5px;
+      font-weight: 900;
+      font-family: ui-monospace, monospace;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.5);
       white-space: nowrap;
     }
   </style>
 </head>
-<body class="bg-gradient-to-b from-emerald-50 via-slate-50 to-emerald-100/30 text-slate-800 min-h-screen font-sans antialiased flex flex-col transition-colors duration-300">
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950">
 
-  <!-- ==================== HEADER CHUẨN ĐẤT PHÚ ==================== -->
-  <header class="sticky top-0 z-50 backdrop-blur-md bg-white/90 border-b border-emerald-100 shadow-sm transition-colors duration-300">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+  <!-- ==================== HEADER TRẠM TRẮC ĐỊA KỸ THUẬT SỐ ==================== -->
+  <header class="sticky top-0 z-50 pro-glass border-b border-slate-800 shadow-xl">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-3">
       
-      <!-- Nút quay về Lịch Đất Phú -->
-      <a href="/" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold transition active:scale-95" title="Quay về trang chính">
-        <i class="fa-solid fa-arrow-left"></i>
-        <span>Về Lịch Đất Phú</span>
-      </a>
+      <!-- Cụm bên trái: Quay về & Thương hiệu -->
+      <div class="flex items-center gap-3">
+        <a href="/" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs font-bold transition active:scale-95 flex items-center gap-1.5 border border-slate-700/60" title="Về trang Lịch Đất Phú">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span class="hidden sm:inline">Về Lịch Đất Phú</span>
+        </a>
 
-      <!-- Tiêu đề thương hiệu -->
-      <div class="flex items-center gap-2.5">
-        <div class="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-green-800 p-0.5 shadow-[0_4px_16px_rgba(16,185,129,0.4)] border border-emerald-200/80 shrink-0 flex items-center justify-center group">
-          <div class="absolute inset-0 bg-emerald-400/20 rounded-2xl blur-[2px]"></div>
-          <svg class="relative w-6 h-6 drop-shadow" viewBox="0 0 32 32" fill="none">
-            <polygon points="6,9 25,6 27,22 14,27 5,20" fill="url(#brandPolyGrad)" stroke="#a7f3d0" stroke-width="1.5" stroke-linejoin="round"/>
-            <circle cx="6" cy="9" r="2.2" fill="#facc15" stroke="#ffffff" stroke-width="0.8"/>
-            <circle cx="25" cy="6" r="2.2" fill="#facc15" stroke="#ffffff" stroke-width="0.8"/>
-            <circle cx="27" cy="22" r="2.2" fill="#facc15" stroke="#ffffff" stroke-width="0.8"/>
-            <circle cx="14" cy="27" r="2.2" fill="#facc15" stroke="#ffffff" stroke-width="0.8"/>
-            <circle cx="5" cy="20" r="2.2" fill="#facc15" stroke="#ffffff" stroke-width="0.8"/>
-            <circle cx="16" cy="16" r="3" fill="#ef4444" stroke="#ffffff" stroke-width="1"/>
-            <defs>
-              <linearGradient id="brandPolyGrad" x1="5" y1="6" x2="27" y2="27" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#34d399" stop-opacity="0.85"/>
-                <stop offset="1" stop-color="#047857" stop-opacity="0.95"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <div class="text-left">
-          <h1 class="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5">
-            <span>ĐO ĐẤT RẪY RỪNG & BIỂN</span>
-            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 uppercase font-mono">Đất Phú</span>
-          </h1>
-          <p class="text-[10px] sm:text-xs text-slate-500 font-medium">Trắc địa nông dân • Nhập VN-2000 Sổ Đỏ • Chống hớ tiền khoán</p>
+        <!-- Biểu tượng trắc địa 3D -->
+        <div class="flex items-center gap-2.5">
+          <div class="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-green-800 p-0.5 shadow-[0_4px_16px_rgba(16,185,129,0.4)] border border-emerald-300/60 shrink-0 flex items-center justify-center">
+            <svg class="w-6 h-6 drop-shadow" viewBox="0 0 32 32" fill="none">
+              <polygon points="6,9 25,6 27,22 14,27 5,20" fill="url(#hdrBrandGrad)" stroke="#a7f3d0" stroke-width="1.5" stroke-linejoin="round"/>
+              <circle cx="6" cy="9" r="2.2" fill="#facc15" stroke="#ffffff" stroke-width="0.8"/>
+              <circle cx="25" cy="6" r="2.2" fill="#facc15" stroke="#ffffff" stroke-width="0.8"/>
+              <circle cx="27" cy="22" r="2.2" fill="#facc15" stroke="#ffffff" stroke-width="0.8"/>
+              <circle cx="14" cy="27" r="2.2" fill="#facc15" stroke="#ffffff" stroke-width="0.8"/>
+              <circle cx="5" cy="20" r="2.2" fill="#facc15" stroke="#ffffff" stroke-width="0.8"/>
+              <circle cx="16" cy="16" r="3" fill="#ef4444" stroke="#ffffff" stroke-width="1"/>
+              <defs>
+                <linearGradient id="hdrBrandGrad" x1="5" y1="6" x2="27" y2="27" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#34d399" stop-opacity="0.85"/>
+                  <stop offset="1" stop-color="#047857" stop-opacity="0.95"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <h1 class="text-xs sm:text-sm font-black text-white tracking-wider uppercase font-mono">
+                TRẠM TRẮC ĐỊA SỐ ĐẤT PHÚ
+              </h1>
+              <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 uppercase font-black">
+                PRO GIS v3.0
+              </span>
+            </div>
+            <p class="text-[10px] text-slate-400 font-medium hidden sm:block">Đo đất rẫy rừng • Vệ tinh GPS Kalman • Sổ Đỏ VN-2000</p>
+          </div>
         </div>
       </div>
 
-      <!-- Cụm nút: Chống chói nắng, Trình khởi chạy hệ sinh thái, Chế độ tối -->
+      <!-- Cụm giữa: Đèn trạng thái tín hiệu GPS / RTK -->
+      <div class="hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 text-[11px] font-mono">
+        <span class="flex items-center gap-1.5 text-emerald-400 font-bold">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>GPS KALMAN</span>
+        </span>
+        <span class="text-slate-600">|</span>
+        <span class="text-slate-300">VN-2000: <span class="text-amber-300 font-bold" id="statusMeridianText">108°30' (Phú Yên)</span></span>
+        <span class="text-slate-600">|</span>
+        <span class="text-slate-400">Sai số: <span id="hdrAccuracyText" class="text-white font-bold">Sẵn sàng</span></span>
+      </div>
+
+      <!-- Cụm bên phải: Chống chói, Hệ sinh thái, Toàn màn hình -->
       <div class="flex items-center gap-2">
-        <!-- Nút bật chế độ ngoài trời chống chói nắng -->
-        <button onclick="toggleSunlightMode()" id="btnSunlight" class="p-2 rounded-2xl bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 text-xs font-bold transition active:scale-95 cursor-pointer shadow-xs" title="Chế độ ngoài trời chống chói nắng gắt">
-          <i class="fa-solid fa-sun-plant-wilt text-sm"></i>
-          <span class="hidden md:inline ml-1">Chống Chói</span>
+        <button onclick="toggleSunlightMode()" id="btnSunlight" class="px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 text-xs font-bold transition active:scale-95 cursor-pointer flex items-center gap-1.5" title="Bật chế độ ngoài trời chống chói nắng gắt">
+          <i class="fa-solid fa-sun text-sm"></i>
+          <span class="hidden lg:inline">Chống Chói</span>
         </button>
 
-        <button onclick="toggleDatPhuAppLauncher()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 border border-slate-200/80 text-xs font-bold transition active:scale-95 cursor-pointer shadow-sm" title="Mở danh mục ứng dụng Đất Phú">
-          <i class="fa-solid fa-grip text-amber-500"></i>
+        <button onclick="toggleDatPhuAppLauncher()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition active:scale-95 cursor-pointer flex items-center gap-1.5 shadow-sm" title="Mở danh mục ứng dụng Đất Phú">
+          <i class="fa-solid fa-grip text-amber-400"></i>
           <span class="hidden sm:inline">Hệ Sinh Thái</span>
-        </button>
-
-        <button onclick="toggleTheme()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition active:scale-95" title="Chuyển chế độ sáng/tối">
-          <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
         </button>
       </div>
 
     </div>
   </header>
 
-  <!-- ==================== NỘI DUNG CHÍNH ==================== -->
-  <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 space-y-6">
+  <!-- ==================== WORKSPACE TRẮC ĐỊA CHUYÊN NGHIỆP ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-    <!-- BANNER GIỚI THIỆU TIỆN ÍCH DÂN SINH DÀNH CHO NÔNG DÂN -->
-    <div class="card-box p-4 sm:p-6 rounded-3xl bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white shadow-xl space-y-3 border border-emerald-500/30">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 uppercase tracking-wider">
-            Trắc Địa Dân Sinh Nông Lâm Ngư Nghiệp 4.0
-          </span>
-          <h2 class="text-base sm:text-xl font-black text-white mt-1">
-            Đo Đất Nương Rẫy, Rừng Keo, Mặt Biển & Chống Hớ Tiền Thuê
-          </h2>
-          <p class="text-xs text-emerald-100/80">
-            Chấm mốc vệ tinh, đi bộ GPS thực địa với bộ lọc Kalman chống giật, nhập toạ độ X,Y VN-2000 từ Sổ Đỏ và tính tiền công máy cày, mùa vụ dưa hấu, mía, sắn.
-          </p>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-2 shrink-0">
-          <button onclick="openVn2000Modal()" class="px-3.5 py-2 rounded-2xl bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 hover:from-amber-200 hover:to-amber-400 text-slate-950 font-black text-xs flex items-center gap-2 shadow-md transition active:scale-95 cursor-pointer border border-amber-200">
-            <svg class="w-4 h-4 drop-shadow" viewBox="0 0 24 24" fill="none">
-              <rect x="4" y="2.5" width="16" height="19" rx="2" fill="#dc2626" stroke="#fef08a" stroke-width="1.2"/>
-              <circle cx="12" cy="9.5" r="3" fill="#facc15"/>
-              <line x1="8" y1="15.5" x2="16" y2="15.5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-            <span>Nhập Sổ Đỏ VN-2000</span>
-          </button>
-          <button onclick="getUserGPSLocation()" id="btnMyGpsLocation" class="px-3.5 py-2 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
-            <i id="iconMyGpsLocation" class="fa-solid fa-location-crosshairs text-sm"></i>
-            <span id="textMyGpsLocation">Vị Trí Của Tôi</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- KHU VỰC BẢN ĐỒ VỆ TINH & BẢNG ĐIỀU KHIỂN ĐO ĐẠC -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-      <!-- CỘT 1 & 2: BẢN ĐỒ VỆ TINH TƯƠNG TÁC (MAP VIEW) & CÔNG CỤ NGOÀI TRỜI -->
-      <div class="lg:col-span-2 space-y-4">
+    <!-- KHÔNG GIAN BẢN ĐỒ VỆ TINH TRUNG TÂM (CHIẾM 7 CỘT LỚN) -->
+    <div class="lg:col-span-7 flex flex-col space-y-3">
+      
+      <!-- HỘP BẢN ĐỒ KỸ THUẬT SỐ CÓ HUD NỔI -->
+      <div class="relative flex-1 rounded-3xl overflow-hidden border-2 border-slate-800 shadow-2xl bg-slate-950 flex flex-col">
         
-        <!-- BẢN ĐỒ VỆ TINH VÀ CÔNG CỤ -->
-        <div class="card-box p-3 sm:p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md space-y-3">
+        <!-- THANH CÔNG CỤ NỔI HUD TRÊN ĐẦU BẢN ĐỒ (FLOATING HUD BAR) -->
+        <div class="absolute top-3 inset-x-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
           
-          <!-- Thanh công cụ bản đồ -->
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5 text-xs">
-            <div class="flex items-center gap-1.5">
-              <span class="font-bold text-slate-700">Lớp bản đồ:</span>
-              <button onclick="switchMapLayer('satellite')" id="btnLayerSat" class="px-2.5 py-1 rounded-xl bg-emerald-600 text-white font-bold transition shadow-xs">
-                <i class="fa-solid fa-satellite mr-1"></i> Vệ Tinh Siêu Nét
-              </button>
-              <button onclick="switchMapLayer('street')" id="btnLayerStreet" class="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition">
-                <i class="fa-solid fa-map mr-1"></i> Đường Phố
-              </button>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-1.5">
-              <button onclick="downloadKmlFile()" class="px-2.5 py-1 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold transition active:scale-95 border border-emerald-200" title="Xuất file KML mở Google Earth">
-                <i class="fa-solid fa-file-export mr-1"></i> Tải KML
-              </button>
-              <button onclick="removeLastMarker()" class="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-700 font-bold transition active:scale-95" title="Xóa điểm mốc vừa chấm">
-                <i class="fa-solid fa-rotate-left mr-1"></i> Hoàn Tác
-              </button>
-              <button onclick="clearAllMarkers()" class="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-rose-100 text-rose-600 font-bold transition active:scale-95" title="Xóa toàn bộ điểm mốc">
-                <i class="fa-solid fa-trash mr-1"></i> Xóa Hết
-              </button>
-            </div>
-          </div>
-
-          
-          <!-- THANH TÌM KIẾM NHANH XÃ/HUYỆN & BỘ CẢNH BÁO GPS THÔNG MINH -->
-          <div class="space-y-2">
-            <div class="flex flex-col sm:flex-row items-center gap-2">
-              <div class="relative flex-1 w-full">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                <select id="selPhuYenLocation" onchange="jumpToPhuYenLocation(this.value)" class="w-full pl-9 pr-4 py-2 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 focus:outline-emerald-500 cursor-pointer transition">
-                  <option value="">🔍 Bay nhanh đến Xã / Phường / Huyện tại Phú Yên...</option>
-                  <optgroup label="📍 Thành phố Tuy Hòa">
-                    <option value="13.0882,109.3097,15">TP. Tuy Hòa (Trung tâm)</option>
-                    <option value="13.0722,109.3142,16">Phường Phú Đông • Cảng cá Đông Tác</option>
-                    <option value="13.1362,109.2885,15">Xã An Phú • Cánh đồng hoa rẫy</option>
-                    <option value="13.1118,109.2612,15">Xã Hòa Kiến • Vùng đồi núi Tuy Hòa</option>
-                    <option value="13.0954,109.2625,16">Xã Bình Ngọc • Vườn hoa cây cảnh</option>
-                  </optgroup>
-                  <optgroup label="📍 Thị xã Sông Cầu (Vùng đầm vịnh & tôm hùm)">
-                    <option value="13.4542,109.2215,14">TX. Sông Cầu (Trung tâm)</option>
-                    <option value="13.5215,109.2562,15">Đầm Cù Mông • Lồng bè nuôi tôm</option>
-                    <option value="13.4412,109.2815,14">Vịnh Xuân Đài • Nuôi trồng thủy sản</option>
-                    <option value="13.5612,109.2114,14">Xã Xuân Lộc • Vùng đồi keo</option>
-                    <option value="13.4012,109.1812,15">Xã Xuân Lâm • Rẫy nương đồi núi</option>
-                  </optgroup>
-                  <optgroup label="📍 Huyện Tuy An">
-                    <option value="13.2512,109.2215,15">Thị trấn Chí Thạnh</option>
-                    <option value="13.2612,109.2612,14">Đầm Ô Loan • Vùng mặt nước nuôi thủy sản</option>
-                    <option value="13.3512,109.2985,15">Gành Đá Đĩa • Vùng ven biển An Ninh Đông</option>
-                    <option value="13.2112,109.1812,15">Xã An Nghiệp • Rẫy dưa và hoa màu</option>
-                  </optgroup>
-                  <optgroup label="📍 Huyện Đồng Xuân (Vùng rẫy mía, sắn & rừng keo)">
-                    <option value="13.3712,108.9812,14">Thị trấn La Hai</option>
-                    <option value="13.4312,108.9215,14">Xã Xuân Lãnh • Nương rẫy đồi keo</option>
-                    <option value="13.3112,109.0412,14">Xã Xuân Phước • Vùng đất bãi bồi</option>
-                    <option value="13.4812,109.0215,14">Xã Xuân Quang • Đồi núi sản xuất</option>
-                  </optgroup>
-                  <optgroup label="📍 Huyện Sơn Hòa (Thủ phủ dưa hấu & mía đường)">
-                    <option value="13.0412,108.9812,14">Thị trấn Củng Sơn</option>
-                    <option value="13.0812,109.0512,14">Xã Suối Bạc • Bãi bồi sông Ba trồng dưa</option>
-                    <option value="13.0112,108.9215,14">Xã Sơn Hà • Vùng rẫy mía rộng lớn</option>
-                    <option value="13.1212,108.9112,14">Xã Sơn Nguyên • Đất đồi trồng cây</option>
-                  </optgroup>
-                  <optgroup label="📍 Huyện Sông Hinh">
-                    <option value="12.8512,108.9812,14">Thị trấn Hai Riêng</option>
-                    <option value="12.9212,108.8512,14">Xã Ea Ly • Vùng cao su, sắn mì</option>
-                    <option value="12.8012,109.0512,14">Xã Đức Bình • Nương rẫy bãi bồi</option>
-                  </optgroup>
-                  <optgroup label="📍 Huyện Tây Hòa & Phú Hòa">
-                    <option value="13.0112,109.2012,14">Thị trấn Phú Thứ • Tây Hòa</option>
-                    <option value="13.0612,109.1512,14">Huyện Phú Hòa • Đồng lúa Sông Ba</option>
-                    <option value="12.9512,109.1212,14">Xã Hòa Mỹ Tây • Vùng rẫy đồi keo</option>
-                  </optgroup>
-                  <optgroup label="📍 Thị xã Đông Hòa">
-                    <option value="12.9612,109.3212,14">Thị xã Đông Hòa (Hòa Vinh)</option>
-                    <option value="12.8812,109.3912,14">Vịnh Vũng Rô • Bè nuôi tôm hùm</option>
-                    <option value="12.9012,109.4112,14">Bãi Môn • Mũi Điện</option>
-                  </optgroup>
-                </select>
-              </div>
-
-              <!-- Nút căn giữa nhanh thửa đất đã vẽ -->
-              <button onclick="fitPlotBounds()" class="px-3 py-2 rounded-2xl bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 border border-slate-200 text-xs font-bold transition active:scale-95 shrink-0 flex items-center gap-1.5" title="Phóng to vừa khít thửa đất đang vẽ">
-                <i class="fa-solid fa-expand text-emerald-600"></i>
-                <span>Căn Giữa Ranh Đất</span>
-              </button>
-            </div>
-
-            <!-- Cảnh báo sai số GPS thông minh -->
-            <div id="gpsWarningAlert" class="hidden p-3 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 text-xs space-y-1 animate-in fade-in duration-200">
-              <div class="font-bold flex items-center justify-between">
-                <span class="flex items-center gap-1.5 text-amber-800">
-                  <i class="fa-solid fa-triangle-exclamation text-amber-600 text-sm"></i>
-                  <span>Đang dùng định vị mạng Wi-Fi / IP (Sai số ±<span id="gpsWarningMeters" class="font-mono">50000</span>m)</span>
-                </span>
-                <button onclick="dismissGpsWarning()" class="text-amber-600 hover:text-amber-900 font-bold px-1.5">✕</button>
-              </div>
-              <p class="text-[11px] text-amber-800/90 leading-relaxed">
-                Máy tính bàn hoặc laptop không có chip GPS vệ tinh nên chỉ định vị ước lượng theo trạm mạng internet. <b>Cách đo tốt nhất:</b> Dùng chuột lăn phóng to ảnh vệ tinh để chấm mốc ranh giới, hoặc mở link này trên điện thoại thông minh khi đứng ngoài trời để có GPS chính xác ±2m!
-              </p>
-            </div>
-          </div>
-
-          <!-- Bản đồ Leaflet -->
-          <div id="mapMeasure" class="w-full relative shadow-inner"></div>
-
-          
-          <!-- THANH TỌA ĐỘ CON TRỎ THỜI GIAN THỰC & LA BÀN -->
-          <div class="flex flex-wrap items-center justify-between gap-2 p-2 rounded-2xl bg-slate-100/80 border border-slate-200/80 text-[10.5px] font-mono text-slate-600">
-            <div class="flex items-center gap-2">
-              <span class="font-bold text-slate-700 font-sans"><i class="fa-solid fa-crosshairs text-emerald-600"></i> Toạ độ con trỏ:</span>
-              <span id="cursorWgs84">13.0882°N, 109.3097°E</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-slate-500">VN-2000:</span>
-              <span id="cursorVn2000" class="font-bold text-slate-800">X: 1.447.450 | Y: 533.580</span>
-            </div>
-          </div>
-
-          <!-- Hướng dẫn & Chỉ báo tín hiệu GPS Kalman -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-500 px-1">
-            <span class="flex items-center gap-1.5">
-              <i class="fa-solid fa-circle-info text-emerald-600"></i>
-              <span>Chấm từ 3 điểm để vẽ ranh đất. Chiều dài từng cạnh ranh và góc phương vị hiển thị trực tiếp.</span>
-            </span>
-            <div class="flex items-center gap-2">
-              <span id="gpsAccuracyBadge" class="hidden text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
-                <i class="fa-solid fa-satellite-dish mr-1"></i> Lọc Kalman: ±<span id="gpsAccuracyMeters">0</span>m
-              </span>
-              <span class="font-bold text-emerald-700 flex items-center gap-1">
-                <i class="fa-solid fa-crosshairs"></i> <span id="markerCountText" class="font-mono text-xs">0</span> mốc
-              </span>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- CÔNG CỤ ĐO THỰC ĐỊA: ĐI BỘ QUANH RANH ĐẤT & BÙ TRỪ ĐỘ DỐC ĐỒI -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          
-          <!-- THẺ 1: ĐI BỘ ĐO GPS THỰC ĐỊA -->
-          <div class="card-box p-4 rounded-3xl bg-gradient-to-r from-teal-50 via-emerald-50 to-slate-50 border border-teal-200/80 shadow-md space-y-3">
-            <div class="flex items-center gap-3">
-              <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500 via-emerald-600 to-teal-800 border border-teal-300/60 shadow-[0_4px_16px_rgba(20,184,166,0.35)] flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition duration-300">
-                <div class="absolute inset-0 bg-teal-400/10 rounded-2xl blur-sm"></div>
-                <svg class="relative w-7 h-7 drop-shadow" viewBox="0 0 32 32" fill="none">
-                  <circle cx="16" cy="8" r="6" stroke="#99f6e4" stroke-width="1.2" stroke-dasharray="2 3" opacity="0.8"/>
-                  <circle cx="16" cy="8" r="9" stroke="#5eead4" stroke-width="1" stroke-dasharray="3 4" opacity="0.5"/>
-                  <circle cx="16" cy="8" r="3" fill="#fef08a"/>
-                  <path d="M16 11V18L12 24M16 18L20 25M12 15L20 15" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle cx="8" cy="27" r="1.5" fill="#38bdf8"/>
-                  <circle cx="15" cy="28" r="1.5" fill="#38bdf8"/>
-                  <circle cx="23" cy="27" r="1.5" fill="#38bdf8"/>
-                </svg>
-              </div>
-              <div>
-                <h4 class="text-xs sm:text-sm font-black text-slate-800">Đi Bộ Đo GPS Ngoài Đồng</h4>
-                <p class="text-[10px] text-slate-500">Tích hợp bộ lọc Kalman chống trôi dạt</p>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-2">
-              <button onclick="toggleGpsTracking()" id="btnGpsTrack" class="flex-1 py-2.5 rounded-2xl bg-teal-600 hover:bg-teal-700 text-white font-black text-xs transition active:scale-95 shadow flex items-center justify-center gap-1.5 cursor-pointer">
-                <i id="gpsTrackIcon" class="fa-solid fa-play"></i>
-                <span id="gpsTrackText">Bắt Đầu Đi Đo</span>
-              </button>
-              <button onclick="finishGpsTracking()" id="btnFinishGps" class="hidden px-3.5 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs transition active:scale-95 shadow cursor-pointer">
-                <i class="fa-solid fa-check mr-1"></i> Khép Góc
-              </button>
-            </div>
-          </div>
-
-          <!-- THẺ 2: BÙ TRỪ DIỆN TÍCH MẶT NGHIÊNG ĐỒI DỐC -->
-          <div class="card-box p-4 rounded-3xl bg-gradient-to-r from-amber-50 via-orange-50 to-slate-50 border border-amber-200/80 shadow-md space-y-2.5">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <div class="relative w-7 h-7 rounded-xl bg-gradient-to-br from-amber-500/25 via-orange-600/30 to-amber-900/40 border border-amber-400/60 shadow-sm flex items-center justify-center shrink-0">
-                  <svg class="w-4 h-4 drop-shadow" viewBox="0 0 24 24" fill="none">
-                    <path d="M2 20L12 5L22 20H2Z" fill="#10b981" stroke="#fde68a" stroke-width="1"/>
-                    <circle cx="18" cy="7" r="2.5" fill="#fef08a"/>
-                  </svg>
-                </div>
-                <h4 class="text-xs font-black text-slate-800">Bù Trừ Đất Đồi Dốc</h4>
-              </div>
-              <span class="text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">Sơn Hòa • Đồng Xuân</span>
-            </div>
+          <!-- Nhóm trái: Đổi lớp bản đồ & Nhảy địa điểm nhanh -->
+          <div class="flex items-center gap-1.5 pointer-events-auto bg-slate-900/90 backdrop-blur-md p-1 rounded-2xl border border-slate-700/80 shadow-lg text-xs">
+            <button onclick="switchMapLayer('satellite')" id="btnLayerSat" class="px-2.5 py-1 rounded-xl bg-emerald-600 text-white font-bold transition shadow-xs">
+              <i class="fa-solid fa-satellite mr-1"></i> Vệ Tinh
+            </button>
+            <button onclick="switchMapLayer('street')" id="btnLayerStreet" class="px-2.5 py-1 rounded-xl hover:bg-slate-800 text-slate-300 font-bold transition">
+              <i class="fa-solid fa-map mr-1"></i> Bản Đồ
+            </button>
             
-            <div class="flex items-center gap-2 text-xs">
-              <label class="text-[10px] font-bold text-slate-600 shrink-0">Độ dốc sườn đồi:</label>
-              <select id="selSlopeDeg" onchange="onSlopeChange(this.value)" class="flex-1 p-1.5 rounded-xl bg-white border border-amber-300 font-bold text-xs text-amber-900 focus:outline-amber-500">
-                <option value="0">Đất phẳng đồng bằng (0°)</option>
-                <option value="10">Dốc thoai thoải (10° - thêm 1.5%)</option>
-                <option value="20">Dốc đồi bát úp (20° - thêm 6.4%)</option>
-                <option value="30">Dốc núi hiểm trở (30° - thêm 15.5%)</option>
-              </select>
-            </div>
-            <p class="text-[10px] text-slate-500 italic">* Tính thêm diện tích mặt dốc thực tế để chuẩn bị đủ cây giống keo/mía.</p>
+            <!-- Chọn nhanh xã huyện -->
+            <select id="selPhuYenLocation" onchange="jumpToPhuYenLocation(this.value)" class="max-w-[130px] sm:max-w-[180px] p-1 rounded-lg bg-slate-800 text-slate-200 border-none text-[11px] font-bold focus:ring-0 cursor-pointer">
+              <option value="">🔍 Đến Xã / Huyện...</option>
+              <optgroup label="📍 Thành phố Tuy Hòa">
+                <option value="13.0882,109.3097,15">TP. Tuy Hòa (Trung tâm)</option>
+                <option value="13.0722,109.3142,16">Phường Phú Đông • Cảng cá</option>
+                <option value="13.1362,109.2885,15">Xã An Phú • Vùng hoa rẫy</option>
+                <option value="13.1118,109.2612,15">Xã Hòa Kiến • Đồi núi rẫy</option>
+              </optgroup>
+              <optgroup label="📍 Huyện Sơn Hòa (Thủ phủ Dưa & Mía)">
+                <option value="13.0412,108.9812,14">Thị trấn Củng Sơn</option>
+                <option value="13.0812,109.0512,14">Xã Suối Bạc • Bãi bồi sông Ba</option>
+                <option value="13.0112,108.9215,14">Xã Sơn Hà • Vùng rẫy mía</option>
+              </optgroup>
+              <optgroup label="📍 Huyện Đồng Xuân (Rừng Keo & Sắn)">
+                <option value="13.3712,108.9812,14">Thị trấn La Hai</option>
+                <option value="13.4312,108.9215,14">Xã Xuân Lãnh • Nương rẫy</option>
+                <option value="13.3112,109.0412,14">Xã Xuân Phước • Bãi bồi</option>
+              </optgroup>
+              <optgroup label="📍 TX. Sông Cầu (Vịnh Biển & Ao Tôm)">
+                <option value="13.4542,109.2215,14">TX. Sông Cầu (Trung tâm)</option>
+                <option value="13.4412,109.2815,14">Vịnh Xuân Đài • Bè tôm</option>
+                <option value="13.5215,109.2562,15">Đầm Cù Mông • Thủy sản</option>
+              </optgroup>
+              <optgroup label="📍 Huyện Tuy An & Tây Hòa">
+                <option value="13.2512,109.2215,15">Thị trấn Chí Thạnh</option>
+                <option value="13.2612,109.2612,14">Đầm Ô Loan</option>
+                <option value="13.0112,109.2012,14">Phú Thứ • Tây Hòa</option>
+              </optgroup>
+              <optgroup label="📍 TX. Đông Hòa & Sông Hinh">
+                <option value="12.9612,109.3212,14">Hòa Vinh • Đông Hòa</option>
+                <option value="12.8812,109.3912,14">Vịnh Vũng Rô</option>
+                <option value="12.8512,108.9812,14">Hai Riêng • Sông Hinh</option>
+              </optgroup>
+            </select>
           </div>
 
-        </div>
-
-        <!-- THƯỚC ĐO ĐẤT MÉO THỦ CÔNG 4 CẠNH & TAM GIÁC (OFFLINE CALCULATOR) -->
-        <div class="card-box p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-md space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-            <div class="flex items-center gap-2">
-              <div class="relative w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500/30 to-amber-800/40 border border-amber-400/60 shadow-sm flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 drop-shadow" viewBox="0 0 24 24" fill="none">
-                  <circle cx="11" cy="13" r="8" fill="#d97706" stroke="#fbbf24" stroke-width="1.2"/>
-                  <circle cx="11" cy="13" r="4" fill="#78350f"/>
-                  <rect x="15" y="11" width="7" height="4" rx="1" fill="#fef08a" stroke="#d97706" stroke-width="0.8"/>
-                  <line x1="17" y1="11" x2="17" y2="13" stroke="#78350f" stroke-width="0.8"/>
-                  <line x1="19" y1="11" x2="19" y2="14" stroke="#78350f" stroke-width="0.8"/>
-                </svg>
-              </div>
-              <h3 class="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-tight">Thước Đo Thủ Công Bằng Thước Dây (Không Cần Mạng)</h3>
-            </div>
-            <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">Công thức Heron chuẩn</span>
-          </div>
-
-          <p class="text-xs text-slate-500">
-            Dành cho bà con khi kéo thước dây ngoài đồng: Nhập 4 cạnh và 1 đường chéo (chia mảnh đất méo thành 2 tam giác) để tính diện tích chuẩn xác 100%, chống bị chủ đất tính nhẩm ăn gian.
-          </p>
-
-          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 text-xs">
-            <div>
-              <label class="block text-[10px] font-bold text-slate-600 mb-1">Cạnh 1 (mét)</label>
-              <input type="number" id="inSideA" placeholder="VD: 35.5" oninput="calcManualPolygonArea()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 font-mono font-bold focus:outline-emerald-500">
-            </div>
-            <div>
-              <label class="block text-[10px] font-bold text-slate-600 mb-1">Cạnh 2 (mét)</label>
-              <input type="number" id="inSideB" placeholder="VD: 42.0" oninput="calcManualPolygonArea()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 font-mono font-bold focus:outline-emerald-500">
-            </div>
-            <div>
-              <label class="block text-[10px] font-bold text-slate-600 mb-1">Cạnh 3 (mét)</label>
-              <input type="number" id="inSideC" placeholder="VD: 38.2" oninput="calcManualPolygonArea()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 font-mono font-bold focus:outline-emerald-500">
-            </div>
-            <div>
-              <label class="block text-[10px] font-bold text-slate-600 mb-1">Cạnh 4 (mét)</label>
-              <input type="number" id="inSideD" placeholder="VD: 40.5" oninput="calcManualPolygonArea()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 font-mono font-bold focus:outline-emerald-500">
-            </div>
-            <div class="col-span-2 sm:col-span-1">
-              <label class="block text-[10px] font-bold text-amber-700 mb-1">Đường chéo (mét)</label>
-              <input type="number" id="inDiag" placeholder="VD: 55.0" oninput="calcManualPolygonArea()" class="w-full p-2 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 font-mono font-bold focus:outline-amber-500">
-            </div>
-          </div>
-
-          <!-- Kết quả tính tay -->
-          <div id="manualCalcResultBox" class="hidden p-3 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-            <div>
-              <span class="text-slate-600">Diện tích hình học chuẩn: </span>
-              <span id="resManualM2" class="font-black text-amber-900 font-mono text-sm">0 m²</span>
-              <span class="text-slate-500 font-medium"> (<span id="resManualSao" class="font-bold text-emerald-800">0</span> Sào Trung Bộ)</span>
-            </div>
-            <button onclick="applyManualAreaToMain()" class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs active:scale-95 transition">
-              Đưa Vào Bảng Tính Tiền Khoán ➔
+          <!-- Nhóm phải: Nút thao tác nhanh (Căn giữa, Hoàn tác, Xoá) -->
+          <div class="flex items-center gap-1 pointer-events-auto bg-slate-900/90 backdrop-blur-md p-1 rounded-2xl border border-slate-700/80 shadow-lg text-xs">
+            <button onclick="fitPlotBounds()" class="px-2.5 py-1 rounded-xl hover:bg-slate-800 text-emerald-400 font-bold transition" title="Căn giữa vừa khít thửa đất">
+              <i class="fa-solid fa-expand mr-1"></i> Căn Ranh
+            </button>
+            <button onclick="removeLastMarker()" class="px-2.5 py-1 rounded-xl hover:bg-slate-800 text-slate-300 font-bold transition" title="Hoàn tác điểm mốc cuối">
+              <i class="fa-solid fa-rotate-left mr-1"></i> Hoàn Tác
+            </button>
+            <button onclick="clearAllMarkers()" class="px-2.5 py-1 rounded-xl hover:bg-rose-950/60 text-rose-400 font-bold transition" title="Xóa toàn bộ">
+              <i class="fa-solid fa-trash"></i>
             </button>
           </div>
+
+        </div>
+
+        <!-- MÀN HÌNH BẢN ĐỒ LEAFLET CHÍNH -->
+        <div id="mapMeasure" class="w-full h-full flex-1"></div>
+
+        <!-- THANH CÔNG CỤ CHÂN BẢN ĐỒ: TOẠ ĐỘ THỜI GIAN THỰC & ĐI BỘ ĐO GPS -->
+        <div class="pro-glass border-t border-slate-800 p-3 flex flex-wrap items-center justify-between gap-3 text-xs z-20">
+          
+          <!-- Nút bấm Định vị & Đi bộ đo ngoài đồng -->
+          <div class="flex items-center gap-2">
+            <button onclick="getUserGPSLocation()" id="btnMyGpsLocation" class="px-3.5 py-2 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
+              <i id="iconMyGpsLocation" class="fa-solid fa-location-crosshairs text-sm"></i>
+              <span id="textMyGpsLocation">Vị Trí Của Tôi</span>
+            </button>
+
+            <button onclick="toggleGpsTracking()" id="btnGpsTrack" class="px-3.5 py-2 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
+              <i id="gpsTrackIcon" class="fa-solid fa-person-walking"></i>
+              <span id="gpsTrackText">Đi Bộ Đo Ranh</span>
+            </button>
+
+            <button onclick="finishGpsTracking()" id="btnFinishGps" class="hidden px-3 py-2 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs transition active:scale-95 shadow">
+              <i class="fa-solid fa-check mr-1"></i> Khép Góc
+            </button>
+          </div>
+
+          <!-- Toạ độ con trỏ chuột thời gian thực -->
+          <div class="flex items-center gap-3 font-mono text-[11px] text-slate-400 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-slate-800">
+            <div>
+              <span class="text-slate-500">WGS84:</span>
+              <span id="cursorWgs84" class="text-emerald-300 font-bold">13.0882°N, 109.3097°E</span>
+            </div>
+            <div class="hidden sm:block">
+              <span class="text-slate-500">VN-2000:</span>
+              <span id="cursorVn2000" class="text-amber-300 font-bold">X: 1.447.450 | Y: 533.580</span>
+            </div>
+          </div>
+
         </div>
 
       </div>
 
-      <!-- CỘT 3: KẾT QUẢ DIỆN TÍCH, TÍNH TIỀN KHOÁN & DỰ TOÁN KINH TẾ MÙA VỤ -->
-      <div class="space-y-4">
+      <!-- CẢNH BÁO SAI SỐ GPS NẾU QUÁ LỚN -->
+      <div id="gpsWarningAlert" class="hidden p-3 rounded-2xl bg-amber-950/60 border border-amber-500/50 text-amber-200 text-xs space-y-1">
+        <div class="font-bold flex items-center justify-between">
+          <span class="flex items-center gap-1.5 text-amber-300">
+            <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+            <span>Đang dùng mạng Wi-Fi / IP (Sai số ±<span id="gpsWarningMeters" class="font-mono">50000</span>m)</span>
+          </span>
+          <button onclick="dismissGpsWarning()" class="text-amber-400 hover:text-white font-bold px-1.5">✕</button>
+        </div>
+        <p class="text-[11px] text-amber-200/80">
+          Máy tính bàn không có chip GPS vệ tinh. <b>Cách đo tốt nhất:</b> Lăn chuột phóng to ảnh vệ tinh để chấm mốc ranh giới, hoặc mở link trên điện thoại khi đứng ngoài trời để có GPS chính xác ±2m.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- BẢNG ĐIỀU KHIỂN TRẮC ĐỊA BÊN CẠNH (SURVEYOR INSPECTOR DOCK - CHIẾM 5 CỘT) -->
+    <div class="lg:col-span-5 flex flex-col space-y-4">
+      
+      <!-- HỘP ĐIỀU KHIỂN TRUNG TÂM DẠNG COCKPIT -->
+      <div class="pro-hud-card rounded-3xl p-4 sm:p-5 space-y-4 flex flex-col">
         
-        <!-- THẺ KẾT QUẢ DIỆN TÍCH TỔNG QUAN -->
-        <div class="card-box p-5 rounded-3xl bg-gradient-to-br from-emerald-800 via-teal-900 to-slate-900 text-white shadow-xl space-y-4 border border-emerald-500/40">
-          <div class="flex items-center justify-between border-b border-emerald-500/30 pb-3">
-            <div class="flex items-center gap-2">
-              <div class="relative w-6 h-6 rounded-lg bg-emerald-500/30 border border-emerald-400/50 flex items-center justify-center shrink-0">
-                <svg class="w-4 h-4 drop-shadow" viewBox="0 0 24 24" fill="none">
-                  <polygon points="4,18 10,8 16,14 20,6 20,18" fill="#34d399" fill-opacity="0.4" stroke="#34d399" stroke-width="1.5"/>
-                  <circle cx="20" cy="6" r="2" fill="#facc15"/>
-                </svg>
-              </div>
-              <span class="text-xs font-black uppercase tracking-wider text-emerald-200">Kết Quả Đo Đạc</span>
-            </div>
-            <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Chuẩn Phú Yên</span>
-          </div>
+        <!-- THANH 4 TAB CHỨC NĂNG CHUYÊN NGHIỆP -->
+        <div class="grid grid-cols-4 gap-1 p-1 rounded-2xl bg-slate-900 border border-slate-800 text-center text-xs font-bold">
+          <button onclick="switchInspectorTab('area')" id="tabInsp_area" class="py-2 rounded-xl bg-emerald-600 text-white transition shadow-sm flex flex-col items-center gap-0.5">
+            <i class="fa-solid fa-chart-area text-xs"></i>
+            <span class="text-[10px]">Diện Tích</span>
+          </button>
+          <button onclick="switchInspectorTab('crop')" id="tabInsp_crop" class="py-2 rounded-xl text-slate-400 hover:text-slate-200 transition flex flex-col items-center gap-0.5">
+            <i class="fa-solid fa-seedling text-xs"></i>
+            <span class="text-[10px]">Mùa Vụ</span>
+          </button>
+          <button onclick="switchInspectorTab('sodo')" id="tabInsp_sodo" class="py-2 rounded-xl text-slate-400 hover:text-slate-200 transition flex flex-col items-center gap-0.5">
+            <i class="fa-solid fa-file-invoice text-xs"></i>
+            <span class="text-[10px]">Sổ Đỏ</span>
+          </button>
+          <button onclick="switchInspectorTab('plots')" id="tabInsp_plots" class="py-2 rounded-xl text-slate-400 hover:text-slate-200 transition flex flex-col items-center gap-0.5">
+            <i class="fa-solid fa-folder text-xs"></i>
+            <span class="text-[10px]">Hồ Sơ</span>
+          </button>
+        </div>
 
-          <!-- Con số diện tích chính -->
-          <div class="space-y-1 text-center py-1">
-            <div class="text-[11px] text-emerald-200/80 font-bold uppercase tracking-wide">Diện Tích Đo Đạc Thực Tế</div>
-            <div id="resAreaM2" class="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight drop-shadow">0 m²</div>
-            <div class="text-xs text-emerald-300 font-medium">Chu vi ranh giới: <span id="resPerimeter" class="font-bold font-mono text-white">0 m</span></div>
-          </div>
-
-          <!-- BỘ TRỪ HAO ĐẤT CHẾT (MƯƠNG RÃNH, MỎM ĐÁ, ĐƯỜNG MÁY CÀY) -->
-          <div class="p-3 rounded-2xl bg-emerald-950/70 border border-emerald-500/30 space-y-2 text-xs">
-            <div class="flex items-center justify-between text-[11px]">
-              <span class="font-bold text-amber-300 flex items-center gap-1">
-                <i class="fa-solid fa-scissors"></i> Trừ hao đất chết (không trồng được):
-              </span>
-              <span id="deductRateText" class="font-bold text-white font-mono">0%</span>
-            </div>
-            <div class="grid grid-cols-4 gap-1.5 text-center text-[10px] font-bold">
-              <button onclick="setDeductRate(0)" id="btnDed_0" class="py-1 rounded-lg bg-emerald-600 text-white transition">0%</button>
-              <button onclick="setDeductRate(5)" id="btnDed_5" class="py-1 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 transition">5% (rãnh)</button>
-              <button onclick="setDeductRate(10)" id="btnDed_10" class="py-1 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 transition">10% (mô đá)</button>
-              <button onclick="setDeductRate(15)" id="btnDed_15" class="py-1 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 transition">15% (đồi dốc)</button>
-            </div>
-            <div class="flex justify-between items-center text-[11px] pt-1 border-t border-emerald-500/20">
-              <span class="text-emerald-200/80">Diện tích canh tác thực tế (Net):</span>
-              <span id="resNetAreaM2" class="font-black text-emerald-300 font-mono text-xs">0 m²</span>
-            </div>
-          </div>
-
+        <!-- ==================== TAB 1: DIỆN TÍCH & TRẮC ĐỊA ==================== -->
+        <div id="inspTabBox_area" class="space-y-4">
           
-          <!-- CHỌN VÙNG MIỀN ĐƠN VỊ ĐẤT 3 MIỀN & TRỢ LÝ GIỌNG NÓI TIẾNG VIỆT -->
-          <div class="p-3 rounded-2xl bg-gradient-to-r from-emerald-900/80 to-teal-950 border border-emerald-500/40 space-y-2.5 text-xs">
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-emerald-200 flex items-center gap-1.5 text-[11px]">
-                <i class="fa-solid fa-earth-asia text-amber-400"></i>
-                <span>Tập Quán Đo Đất 3 Miền:</span>
+          <!-- MÀN HÌNH SỐ ĐIỆN TỬ DIGITAL LCD HIỂN THỊ DIỆN TÍCH -->
+          <div class="digital-lcd p-4 rounded-2xl space-y-2">
+            <div class="flex items-center justify-between text-[11px] text-emerald-400/80 font-mono">
+              <span class="flex items-center gap-1.5 uppercase font-bold tracking-wider">
+                <i class="fa-solid fa-microchip"></i> KẾT QUẢ DIỆN TÍCH ĐO THỰC ĐỊA
               </span>
-
-              <!-- Nút Loa Trợ Lý Giọng Nói -->
-              <button onclick="speakMeasurementResult()" id="btnVoiceSpeak" class="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer" title="Bấm để máy đọc to kết quả bằng giọng tiếng Việt">
-                <i class="fa-solid fa-volume-high text-slate-950"></i>
-                <span>Bác Ơi Nghe Đọc Kết Quả</span>
-              </button>
+              <span class="text-amber-300 font-bold">Mốc: <span id="markerCountText" class="font-mono text-white">0</span></span>
             </div>
 
-            <!-- 3 Nút Chọn Vùng Miền -->
-            <div class="grid grid-cols-3 gap-1.5 text-center text-[10px] font-bold">
-              <button onclick="switchRegionMode('central')" id="btnReg_central" class="p-1.5 rounded-xl bg-emerald-600 text-white transition shadow-xs">
-                Miền Trung • Sào 500m²
-              </button>
-              <button onclick="switchRegionMode('south')" id="btnReg_south" class="p-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900 text-emerald-200 transition">
-                Miền Nam • Công 1.000m²
-              </button>
-              <button onclick="switchRegionMode('north')" id="btnReg_north" class="p-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900 text-emerald-200 transition">
-                Miền Bắc • Sào 360m²
-              </button>
+            <div class="text-center py-1">
+              <div id="resAreaM2" class="text-3xl sm:text-4xl font-black text-emerald-300 font-mono tracking-tight drop-shadow-[0_0_15px_rgba(52,211,153,0.3)]">0 m²</div>
+              <div class="text-xs text-slate-400 mt-1">Chu vi ranh giới: <span id="resPerimeter" class="font-bold font-mono text-white">0 m</span></div>
             </div>
+
+            <!-- Nút Loa Trợ Lý Giọng Nói Đọc To Cho Nông Dân -->
+            <button onclick="speakMeasurementResult()" id="btnVoiceSpeak" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow transition active:scale-95 cursor-pointer">
+              <i class="fa-solid fa-volume-high text-sm"></i>
+              <span>Bác Ơi Nghe Đọc Kết Quả Bằng Giọng Nói</span>
+            </button>
           </div>
 
-          <!-- BẢNG QUY ĐỔI ĐƠN VỊ ĐẤT TRUYỀN THỐNG MIỀN TRUNG -->
-          <div class="space-y-2 pt-1 border-t border-emerald-500/30">
+          <!-- BẢNG QUY ĐỔI 3 MIỀN (SÀO - CÔNG - MẪU - HÉC-TA) -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs px-1">
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-scale-balanced text-amber-400"></i>
+                <span>Quy Đổi Đơn Vị Đất 3 Miền</span>
+              </span>
+              <!-- Nút chọn vùng miền -->
+              <div class="flex items-center gap-1 text-[10px] font-bold">
+                <button onclick="switchRegionMode('central')" id="btnReg_central" class="px-2 py-0.5 rounded-md bg-emerald-600 text-white transition">Trung</button>
+                <button onclick="switchRegionMode('south')" id="btnReg_south" class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-400 transition">Nam</button>
+                <button onclick="switchRegionMode('north')" id="btnReg_north" class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-400 transition">Bắc</button>
+              </div>
+            </div>
+
             <div class="grid grid-cols-2 gap-2 text-xs">
-              <div class="p-2.5 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 space-y-0.5">
-                <div class="text-[9.5px] text-emerald-200/80">Sào Trung Bộ (500m²)</div>
+              <div class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                <div class="text-[10px] text-slate-400">Sào Trung Bộ (500m²)</div>
                 <div id="resSaoTrungBo" class="text-base font-black text-amber-300 font-mono">0.00 Sào</div>
               </div>
 
-              <div class="p-2.5 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 space-y-0.5">
-                <div class="text-[9.5px] text-emerald-200/80">Mẫu Trung Bộ (5.000m²)</div>
+              <div class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                <div class="text-[10px] text-slate-400">Mẫu Trung Bộ (5.000m²)</div>
                 <div id="resMauTrungBo" class="text-base font-black text-emerald-300 font-mono">0.00 Mẫu</div>
               </div>
 
-              <div class="p-2.5 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 space-y-0.5">
-                <div class="text-[9.5px] text-emerald-200/80">Héc-ta Rừng/Rẫy (ha)</div>
+              <div class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                <div class="text-[10px] text-slate-400">Héc-ta Rừng/Rẫy (ha)</div>
                 <div id="resHecta" class="text-base font-black text-cyan-300 font-mono">0.000 ha</div>
               </div>
 
-              <div class="p-2.5 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 space-y-0.5">
-                <div class="text-[9.5px] text-emerald-200/80">Thước Xứ Nẫu (33.3m²)</div>
+              <div class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                <div class="text-[10px] text-slate-400">Thước Xứ Nẫu (33.3m²)</div>
                 <div id="resThuocTrungBo" class="text-base font-black text-rose-300 font-mono">0 Thước</div>
               </div>
             </div>
           </div>
 
-          <!-- Nút lưu & xuất biên bản -->
-          <div class="grid grid-cols-2 gap-2 pt-1">
-            <button onclick="copyMeasurementReport()" class="p-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer shadow">
+          <!-- BỘ TRỪ HAO ĐẤT CHẾT & BÙ TRỪ ĐỘ DỐC SƯỜN ĐỒI -->
+          <div class="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs">
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="font-bold text-slate-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-scissors text-amber-400"></i> Trừ hao mương rãnh / mô đá:
+              </span>
+              <span id="deductRateText" class="font-bold text-amber-300 font-mono">0%</span>
+            </div>
+
+            <div class="grid grid-cols-4 gap-1.5 text-center text-[10px] font-bold">
+              <button onclick="setDeductRate(0)" id="btnDed_0" class="py-1 rounded-lg bg-emerald-600 text-white transition">0%</button>
+              <button onclick="setDeductRate(5)" id="btnDed_5" class="py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">5% rãnh</button>
+              <button onclick="setDeductRate(10)" id="btnDed_10" class="py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">10% đá</button>
+              <button onclick="setDeductRate(15)" id="btnDed_15" class="py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">15% dốc</button>
+            </div>
+
+            <!-- Độ dốc sườn đồi -->
+            <div class="flex items-center justify-between text-[11px] pt-1 border-t border-slate-800">
+              <span class="text-slate-400">Độ dốc sườn đồi (bù diện tích):</span>
+              <select id="selSlopeDeg" onchange="onSlopeChange(this.value)" class="p-1 rounded-lg bg-slate-800 text-amber-300 font-bold border-none text-[11px] cursor-pointer">
+                <option value="0">0° (Phẳng)</option>
+                <option value="10">10° (Dốc nhẹ +1.5%)</option>
+                <option value="20">20° (Đồi bát úp +6.4%)</option>
+                <option value="30">30° (Dốc núi +15.5%)</option>
+              </select>
+            </div>
+
+            <div class="flex justify-between items-center text-[11px] pt-1 border-t border-slate-800">
+              <span class="text-emerald-400 font-bold">Diện tích canh tác thực (Net):</span>
+              <span id="resNetAreaM2" class="font-black text-emerald-300 font-mono text-xs">0 m²</span>
+            </div>
+          </div>
+
+          <!-- NÚT SAO CHÉP & XUẤT BIÊN BẢN ZALO -->
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="copyMeasurementReport()" class="p-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/40 font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95 shadow cursor-pointer">
               <i class="fa-solid fa-copy"></i>
-              <span>Sao Chép Báo Cáo</span>
+              <span>Sao Chép Số Liệu</span>
             </button>
-            <button onclick="exportZaloContractText()" class="p-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer shadow">
+            <button onclick="exportZaloContractText()" class="p-2.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 transition active:scale-95 shadow cursor-pointer">
               <i class="fa-solid fa-file-contract"></i>
-              <span>Biên Bản Zalo</span>
+              <span>Xuất Biên Bản Zalo</span>
             </button>
           </div>
+
         </div>
 
-        <!-- BỘ TÍNH TIỀN KHOÁN ĐẤT & PHÁT HIỆN DIỆN TÍCH ẢO (CHỐNG BỊ HỚ) -->
-        <div class="card-box p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md space-y-3">
-          <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
-            <div class="relative w-7 h-7 rounded-xl bg-gradient-to-br from-rose-500/25 to-rose-800/40 border border-rose-400/60 shadow-sm flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 drop-shadow" viewBox="0 0 24 24" fill="none">
-                <path d="M12 3L4 6V12C4 17.5 7.4 21.5 12 22C16.6 21.5 20 17.5 20 12V6L12 3Z" fill="#f43f5e" stroke="#fecdd3" stroke-width="1"/>
-                <path d="M9 12L11 14L15 10" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+        <!-- ==================== TAB 2: KINH TẾ MÙA VỤ & TIỀN THUÊ ==================== -->
+        <div id="inspTabBox_crop" class="space-y-4 hidden">
+          
+          <!-- BỘ TÍNH TIỀN KHOÁN & CHỐNG HỚ -->
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2.5 text-xs">
+            <div class="font-bold text-white flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="flex items-center gap-1.5 text-rose-400">
+                <i class="fa-solid fa-shield-halved"></i> Tính Tiền Khoán & Chống Hớ
+              </span>
+              <span class="text-[10px] text-slate-500">Đối chiếu diện tích</span>
             </div>
-            <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">Tính Tiền Thuê Khoán & Chống Hớ Diện Tích</h3>
-          </div>
 
-          <div class="space-y-2.5 text-xs">
             <div class="grid grid-cols-2 gap-2">
               <div>
-                <label class="block text-[10px] font-bold text-slate-600 mb-1">Giá thuê 1 sào/vụ (VNĐ)</label>
-                <input type="number" id="inLeasePricePerSao" value="1500000" oninput="calcLeaseEconomics()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono font-bold text-slate-800 focus:outline-emerald-500">
+                <label class="block text-[10px] font-bold text-slate-400 mb-1">Giá thuê 1 sào/vụ (VNĐ)</label>
+                <input type="number" id="inLeasePricePerSao" value="1500000" oninput="calcLeaseEconomics()" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 font-mono font-bold text-white focus:outline-emerald-500">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-600 mb-1">Chủ đất báo (Sào)</label>
-                <input type="number" id="inClaimedSao" placeholder="VD: 10" oninput="calcLeaseEconomics()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono font-bold text-slate-800 focus:outline-emerald-500">
+                <label class="block text-[10px] font-bold text-slate-400 mb-1">Chủ đất báo (Sào)</label>
+                <input type="number" id="inClaimedSao" placeholder="VD: 10" oninput="calcLeaseEconomics()" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 font-mono font-bold text-white focus:outline-emerald-500">
               </div>
             </div>
 
-            <!-- Kết quả tính tiền thuê -->
-            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5">
+            <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
               <div class="flex justify-between items-center">
-                <span class="text-slate-600">Tiền thuê chuẩn theo đo đạc:</span>
-                <span id="resTotalLeaseRent" class="font-black text-emerald-700 font-mono text-sm">0 đ</span>
+                <span class="text-slate-400">Tiền thuê chuẩn theo đo đạc:</span>
+                <span id="resTotalLeaseRent" class="font-black text-emerald-400 font-mono text-sm">0 đ</span>
               </div>
               
-              <!-- Cảnh báo chênh lệch ảo -->
-              <div id="claimDifferenceBox" class="hidden p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-[11px] font-medium space-y-0.5">
-                <div class="font-bold flex items-center gap-1">
-                  <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
-                  <span>Phát hiện chênh lệch:</span>
+              <div id="claimDifferenceBox" class="hidden p-2 rounded-lg bg-emerald-950/70 border border-emerald-500/40 text-emerald-200 text-[11px] font-medium">
+                <div id="claimDiffText">Chủ đất báo dôi 0 Sào. Tiết kiệm 0 đ!</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DỰ TOÁN VẬT TƯ CÂY TRỒNG & MÁY CÀY -->
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 text-xs">
+            <!-- 5 Nút chọn ngành nghề -->
+            <div class="grid grid-cols-5 gap-1 text-center text-[9.5px] font-bold">
+              <button onclick="switchCalcType('watermelon')" id="calcTab_watermelon" class="p-1 rounded-xl bg-emerald-600 text-white transition">🍉 Dưa</button>
+              <button onclick="switchCalcType('sugarcane')" id="calcTab_sugarcane" class="p-1 rounded-xl bg-slate-800 text-slate-400 transition">🎋 Mía</button>
+              <button onclick="switchCalcType('plow')" id="calcTab_plow" class="p-1 rounded-xl bg-slate-800 text-slate-400 transition">🚜 Máy Cày</button>
+              <button onclick="switchCalcType('forest')" id="calcTab_forest" class="p-1 rounded-xl bg-slate-800 text-slate-400 transition">🌲 Keo Lai</button>
+              <button onclick="switchCalcType('team')" id="calcTab_team" class="p-1 rounded-xl bg-slate-800 text-slate-400 transition">👥 Chia Công</button>
+            </div>
+
+            <!-- Chi tiết dưa hấu -->
+            <div id="calcBox_watermelon" class="space-y-1.5 text-xs text-slate-300">
+              <div class="flex justify-between"><span>Chiều dài luống dưa (4.8m):</span><span id="calcMelonRowLength" class="font-bold text-white font-mono">0 mét</span></div>
+              <div class="flex justify-between"><span>Bạt phủ nilon (cuộn 100m):</span><span id="calcMelonPlasticRolls" class="font-bold text-emerald-400 font-mono">0 cuộn</span></div>
+              <div class="flex justify-between"><span>Hạt giống (gói 20g ~ 450 hạt):</span><span id="calcMelonSeedPacks" class="font-bold text-amber-300 font-mono">0 gói</span></div>
+              <div class="flex justify-between"><span>Vôi bột khử phèn (40kg/sào):</span><span id="calcMelonLime" class="font-bold text-white font-mono">0 kg</span></div>
+            </div>
+
+            <!-- Chi tiết mía đường -->
+            <div id="calcBox_sugarcane" class="space-y-1.5 text-xs text-slate-300 hidden">
+              <div class="flex justify-between"><span>Hom giống mía (8.5 tấn/ha):</span><span id="calcCaneSeed" class="font-bold text-emerald-400 font-mono">0 tấn</span></div>
+              <div class="flex justify-between"><span>Phân lót NPK (bao 50kg):</span><span id="calcCaneFertilizer" class="font-bold text-white font-mono">0 bao</span></div>
+              <div class="flex justify-between"><span>Sản lượng dự kiến (75 tấn/ha):</span><span id="calcCaneYield" class="font-bold text-amber-300 font-mono">0 tấn</span></div>
+            </div>
+
+            <!-- Chi tiết máy cày -->
+            <div id="calcBox_plow" class="space-y-1.5 text-xs text-slate-300 hidden">
+              <div class="flex justify-between"><span>Công cày ải (180.000 đ/sào):</span><span id="calcPlowCost" class="font-bold text-emerald-400 font-mono">0 đ</span></div>
+              <div class="flex justify-between"><span>Công gặt đập (250.000 đ/sào):</span><span id="calcHarvestCost" class="font-bold text-amber-300 font-mono">0 đ</span></div>
+            </div>
+
+            <!-- Chi tiết keo lai -->
+            <div id="calcBox_forest" class="space-y-1.5 text-xs text-slate-300 hidden">
+              <div class="flex justify-between"><span>Cây giống keo (2.500 cây/ha):</span><span id="calcTreeKeo" class="font-bold text-emerald-400 font-mono">0 cây</span></div>
+              <div class="flex justify-between"><span>Phân lót hố (100g/hố):</span><span id="calcFertilizer" class="font-bold text-white font-mono">0 kg</span></div>
+            </div>
+
+            <!-- Chi tiết chia tiền công tổ đội -->
+            <div id="calcBox_team" class="space-y-2 text-xs hidden">
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] text-slate-400 mb-1">Số thợ trong tổ:</label>
+                  <input type="number" id="inTeamWorkers" value="5" oninput="calcTeamSplitting()" class="w-full p-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white font-mono">
                 </div>
-                <div id="claimDiffText">Chủ đất báo thừa 0 Sào. Bạn tiết kiệm được 0 đ tiền thuê!</div>
+                <div>
+                  <label class="block text-[10px] text-slate-400 mb-1">Tiền ăn/xăng chung:</label>
+                  <input type="number" id="inTeamExpenses" value="300000" oninput="calcTeamSplitting()" class="w-full p-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white font-mono">
+                </div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex justify-between items-center">
+                <span class="text-emerald-400 font-bold">Mỗi thợ được chia:</span>
+                <span id="teamWorkerShare" class="font-black text-amber-300 font-mono text-sm">0 đ / người</span>
               </div>
             </div>
+
           </div>
+
         </div>
 
-        <!-- CÔNG CỤ DỰ TOÁN KINH TẾ MÙA VỤ NÔNG - LÂM - NGƯ - CƠ GIỚI -->
-        <div class="card-box p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md space-y-3">
-          <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
-            <div class="relative w-6 h-6 rounded-lg bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 drop-shadow" viewBox="0 0 24 24" fill="none">
-                <path d="M12 21V10M12 10C12 6.5 9 3.5 4 3.5C4 8.5 7 11.5 12 10ZM12 10C12 7 15 4.5 20 4.5C20 9 17 11.5 12 10Z" fill="#10b981" stroke="#a7f3d0" stroke-width="1.2"/>
-              </svg>
-            </div>
-            <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">Dự Toán Mùa Vụ & Tiền Công Cơ Giới</h3>
-          </div>
-
-          <!-- 5 Tabs Chọn Ngành Nghề -->
-          <div class="grid grid-cols-3 sm:grid-cols-6 gap-1 text-center text-[9.5px] font-bold">
-            <button onclick="switchCalcType('watermelon')" id="calcTab_watermelon" class="p-1 rounded-xl bg-emerald-600 text-white transition">🍉 Dưa</button>
-            <button onclick="switchCalcType('sugarcane')" id="calcTab_sugarcane" class="p-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">🎋 Mía/Sắn</button>
-            <button onclick="switchCalcType('plow')" id="calcTab_plow" class="p-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">🚜 Máy Cày</button>
-            <button onclick="switchCalcType('forest')" id="calcTab_forest" class="p-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">🌲 Keo Lai</button>
-            <button onclick="switchCalcType('fence')" id="calcTab_fence" class="p-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">🧱 Rào Đất</button>
-            <button onclick="switchCalcType('team')" id="calcTab_team" class="p-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">👥 Chia Công</button>
-          </div>
-
-          <!-- 1. Dưa hấu -->
-          <div id="calcBox_watermelon" class="space-y-2 text-xs">
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Chiều dài luống dưa (khoảng cách 4.8m):</span>
-              <span id="calcMelonRowLength" class="font-bold text-slate-900 font-mono">0 mét luống</span>
-            </div>
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Bạt nilon màng phủ (cuộn 100m khổ 1m):</span>
-              <span id="calcMelonPlasticRolls" class="font-bold text-emerald-700 font-mono">0 cuộn</span>
-            </div>
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Hạt giống dưa hấu (gói 20g ~ 450 hạt):</span>
-              <span id="calcMelonSeedPacks" class="font-bold text-amber-700 font-mono">0 gói</span>
-            </div>
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Vôi bột khử chua phèn (40kg/sào):</span>
-              <span id="calcMelonLime" class="font-bold text-slate-900 font-mono">0 kg vôi</span>
-            </div>
-          </div>
-
-          <!-- 2. Mía đường & Sắn mì -->
-          <div id="calcBox_sugarcane" class="space-y-2 text-xs hidden">
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Hom giống mía (8 tấn/ha) / Sắn (80 bó/ha):</span>
-              <span id="calcCaneSeed" class="font-bold text-emerald-700 font-mono">0 tấn</span>
-            </div>
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Phân lót NPK đầu trâu (400kg/ha):</span>
-              <span id="calcCaneFertilizer" class="font-bold text-slate-900 font-mono">0 bao (50kg)</span>
-            </div>
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Sản lượng mía dự kiến (75 tấn/ha):</span>
-              <span id="calcCaneYield" class="font-bold text-amber-700 font-mono">0 tấn mía</span>
-            </div>
-          </div>
-
-          <!-- 3. Tiền công máy cày / máy gặt -->
-          <div id="calcBox_plow" class="space-y-2 text-xs hidden">
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Tiền công cày ải (180.000 đ/sào 500m²):</span>
-              <span id="calcPlowCost" class="font-bold text-emerald-700 font-mono">0 đ</span>
-            </div>
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Tiền công gặt đập liên hợp (250.000 đ/sào):</span>
-              <span id="calcHarvestCost" class="font-bold text-amber-700 font-mono">0 đ</span>
-            </div>
-            <p class="text-[10px] text-slate-400 italic">* Tính tiền công nhanh giữa chủ ruộng và tài xế máy cày tại đầu bờ.</p>
-          </div>
-
-          <!-- 4. Rừng keo lai -->
-          <div id="calcBox_forest" class="space-y-2 text-xs hidden">
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Số cây giống keo lai (2.500 cây/ha):</span>
-              <span id="calcTreeKeo" class="font-bold text-emerald-700 font-mono">0 cây</span>
-            </div>
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Phân lót hố (100g NPK/hố):</span>
-              <span id="calcFertilizer" class="font-bold text-slate-900 font-mono">0 kg</span>
-            </div>
-          </div>
-
+        <!-- ==================== TAB 3: NHẬP SỔ ĐỎ VN-2000 (TÍCH HỢP TRỰC TIẾP) ==================== -->
+        <div id="inspTabBox_sodo" class="space-y-3 hidden">
           
-          <!-- 6. Chia tiền công tổ đội thợ nông nghiệp -->
-          <div id="calcBox_team" class="space-y-2.5 text-xs hidden">
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[10px] font-bold text-slate-600 mb-1">Số thợ trong tổ/đội:</label>
-                <input type="number" id="inTeamWorkers" value="5" oninput="calcTeamSplitting()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono font-bold text-slate-800 focus:outline-emerald-500">
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 text-xs">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="font-bold text-amber-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-file-invoice"></i> Trích Lục Toạ Độ Sổ Đỏ VN-2000
+              </span>
+              <span class="text-[10px] text-slate-500">63 Tỉnh Thành</span>
+            </div>
+
+            <!-- Chọn Tỉnh Thành Toàn Quốc -->
+            <div>
+              <label class="block text-[10px] font-bold text-slate-400 mb-1">Chọn Tỉnh / Thành phố trên Sổ Đỏ:</label>
+              <select id="selVn2000Province" onchange="onProvinceChange(this.value)" class="w-full p-2 rounded-xl bg-slate-800 border border-slate-700 font-bold text-xs text-white focus:outline-emerald-500 cursor-pointer">
+                <optgroup label="📍 Duyên Hải Miền Trung & Tây Nguyên">
+                  <option value="108.5" selected>Phú Yên (Kinh tuyến trục 108°30')</option>
+                  <option value="108.25">Bình Định (Kinh tuyến trục 108°15')</option>
+                  <option value="108.25">Khánh Hòa (Kinh tuyến trục 108°15')</option>
+                  <option value="107.75">Gia Lai (Kinh tuyến trục 107°45')</option>
+                  <option value="108.5">Đắk Lắk (Kinh tuyến trục 108°30')</option>
+                  <option value="107.75">Lâm Đồng (Kinh tuyến trục 107°45')</option>
+                  <option value="108.0">Quảng Ngãi (Kinh tuyến trục 108°00')</option>
+                  <option value="107.75">Đà Nẵng (Kinh tuyến trục 107°45')</option>
+                </optgroup>
+                <optgroup label="📍 Đông Nam Bộ & TP. Hồ Chí Minh">
+                  <option value="105.75">TP. Hồ Chí Minh (Kinh tuyến trục 105°45')</option>
+                  <option value="107.75">Đồng Nai (Kinh tuyến trục 107°45')</option>
+                  <option value="105.75">Bình Dương (Kinh tuyến trục 105°45')</option>
+                  <option value="107.75">Bà Rịa - Vũng Tàu (Kinh tuyến trục 107°45')</option>
+                </optgroup>
+                <optgroup label="📍 Đồng Bằng Sông Cửu Long (Miền Tây)">
+                  <option value="105.0">Cần Thơ (Kinh tuyến trục 105°00')</option>
+                  <option value="105.75">Long An (Kinh tuyến trục 105°45')</option>
+                  <option value="105.75">Tiền Giang (Kinh tuyến trục 105°45')</option>
+                  <option value="105.0">Đồng Tháp (Kinh tuyến trục 105°00')</option>
+                  <option value="104.5">Kiên Giang (Kinh tuyến trục 104°30')</option>
+                  <option value="104.5">An Giang (Kinh tuyến trục 104°30')</option>
+                </optgroup>
+                <optgroup label="📍 Miền Bắc & Thủ Đô Hà Nội">
+                  <option value="105.0">Hà Nội (Kinh tuyến trục 105°00')</option>
+                  <option value="105.75">Hải Phòng (Kinh tuyến trục 105°45')</option>
+                  <option value="105.0">Thanh Hóa (Kinh tuyến trục 105°00')</option>
+                  <option value="104.75">Nghệ An (Kinh tuyến trục 104°45')</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <!-- Các dòng nhập toạ độ X, Y -->
+            <div class="space-y-1.5 max-h-52 overflow-y-auto no-scrollbar" id="vn2000RowsContainer">
+              <div class="grid grid-cols-12 gap-1.5 items-center text-xs">
+                <span class="col-span-2 font-bold text-slate-500 font-mono">Điểm 1:</span>
+                <input type="number" placeholder="X (VD: 1447450)" class="col-span-5 p-1.5 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs text-white vn2000-x">
+                <input type="number" placeholder="Y (VD: 533580)" class="col-span-5 p-1.5 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs text-white vn2000-y">
               </div>
-              <div>
-                <label class="block text-[10px] font-bold text-slate-600 mb-1">Tiền ăn uống/xăng xe (trừ chung):</label>
-                <input type="number" id="inTeamExpenses" value="300000" oninput="calcTeamSplitting()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono font-bold text-slate-800 focus:outline-emerald-500">
+              <div class="grid grid-cols-12 gap-1.5 items-center text-xs">
+                <span class="col-span-2 font-bold text-slate-500 font-mono">Điểm 2:</span>
+                <input type="number" placeholder="X" class="col-span-5 p-1.5 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs text-white vn2000-x">
+                <input type="number" placeholder="Y" class="col-span-5 p-1.5 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs text-white vn2000-y">
+              </div>
+              <div class="grid grid-cols-12 gap-1.5 items-center text-xs">
+                <span class="col-span-2 font-bold text-slate-500 font-mono">Điểm 3:</span>
+                <input type="number" placeholder="X" class="col-span-5 p-1.5 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs text-white vn2000-x">
+                <input type="number" placeholder="Y" class="col-span-5 p-1.5 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs text-white vn2000-y">
+              </div>
+              <div class="grid grid-cols-12 gap-1.5 items-center text-xs">
+                <span class="col-span-2 font-bold text-slate-500 font-mono">Điểm 4:</span>
+                <input type="number" placeholder="X" class="col-span-5 p-1.5 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs text-white vn2000-x">
+                <input type="number" placeholder="Y" class="col-span-5 p-1.5 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs text-white vn2000-y">
               </div>
             </div>
 
-            <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-1">
-              <div class="flex justify-between items-center text-slate-700">
-                <span>Tổng tiền công thửa ruộng:</span>
-                <span id="teamTotalPayout" class="font-bold font-mono text-slate-900">0 đ</span>
-              </div>
-              <div class="flex justify-between items-center text-slate-700 border-t border-emerald-200/60 pt-1">
-                <span class="font-bold text-emerald-900">Mỗi anh em thợ được chia:</span>
-                <span id="teamWorkerShare" class="font-black font-mono text-emerald-800 text-sm">0 đ</span>
-              </div>
-            </div>
-            <p class="text-[10px] text-slate-400 italic">* Tính tự động từ tiền công cày/gặt/khoán dưa để chia đều minh bạch cho cả tổ.</p>
-          </div>
-
-          <!-- 5. Rào đất -->
-          <div id="calcBox_fence" class="space-y-2 text-xs hidden">
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Lưới B40 / Kẽm gai:</span>
-              <span id="calcFenceLength" class="font-bold text-slate-900 font-mono">0 mét</span>
-            </div>
-            <div class="flex justify-between items-center text-slate-600">
-              <span>Số cọc ranh (khoảng cách 2.5m/cọc):</span>
-              <span id="calcFencePosts" class="font-bold text-emerald-700 font-mono">0 cọc</span>
+            <div class="flex items-center justify-between pt-1">
+              <button onclick="addVn2000Row()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[11px] transition">
+                + Thêm Mốc
+              </button>
+              <button onclick="applyVn2000ToPlot()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition active:scale-95 shadow">
+                Vẽ Lên Vệ Tinh ➔
+              </button>
             </div>
           </div>
 
         </div>
 
-        <!-- DANH SÁCH THỬA ĐẤT ĐÃ LƯU TRONG MÁY -->
-        <div class="card-box p-4 rounded-3xl bg-white border border-slate-200/80 shadow-md space-y-3">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-            <div class="flex items-center gap-1.5 text-xs font-black uppercase text-slate-800">
-              <i class="fa-solid fa-folder-open text-amber-500"></i>
-              <span>Thửa Đất Đã Lưu Của Bạn</span>
-            </div>
-            <span id="savedPlotsCount" class="text-[10px] font-bold text-slate-400 font-mono">0 thửa</span>
+        <!-- ==================== TAB 4: HỒ SƠ THỬA ĐẤT & XUẤT FILE ==================== -->
+        <div id="inspTabBox_plots" class="space-y-3 hidden">
+          
+          <!-- LƯU & XUẤT FILE KML -->
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <button onclick="saveCurrentPlot()" class="p-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow">
+              <i class="fa-solid fa-bookmark"></i> Lưu Vào Máy
+            </button>
+            <button onclick="downloadKmlFile()" class="p-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/40 font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow">
+              <i class="fa-solid fa-file-export"></i> Tải File KML
+            </button>
           </div>
 
-          <div id="savedPlotsList" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar text-xs">
-            <div class="text-center py-4 text-slate-400 text-xs">Chưa có thửa đất nào được lưu. Hãy đo và bấm "Lưu Thửa Đất".</div>
+          <!-- DANH SÁCH THỬA ĐẤT ĐÃ LƯU -->
+          <div class="p-3 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between text-xs border-b border-slate-800 pb-1.5">
+              <span class="font-bold text-slate-400 uppercase text-[10px]">Sổ Tay Thửa Đất Đã Lưu</span>
+              <span id="savedPlotsCount" class="text-amber-400 font-mono font-bold text-[10px]">0 thửa</span>
+            </div>
+            <div id="savedPlotsList" class="space-y-1.5 max-h-48 overflow-y-auto no-scrollbar text-xs">
+              <div class="text-center py-4 text-slate-500 text-xs">Chưa có thửa đất nào được lưu.</div>
+            </div>
           </div>
+
+          <!-- THƯỚC ĐO THỦ CÔNG 4 CẠNH BẰNG THƯỚC DÂY -->
+          <div class="p-3 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 text-xs">
+            <div class="font-bold text-amber-300 flex items-center gap-1 text-[11px]">
+              <i class="fa-solid fa-ruler-combined"></i> Thước Đo 4 Cạnh Bằng Thước Dây
+            </div>
+            <div class="grid grid-cols-5 gap-1 text-center">
+              <input type="number" id="inSideA" placeholder="A" oninput="calcManualPolygonArea()" class="p-1 rounded bg-slate-800 text-white font-mono text-center text-xs">
+              <input type="number" id="inSideB" placeholder="B" oninput="calcManualPolygonArea()" class="p-1 rounded bg-slate-800 text-white font-mono text-center text-xs">
+              <input type="number" id="inSideC" placeholder="C" oninput="calcManualPolygonArea()" class="p-1 rounded bg-slate-800 text-white font-mono text-center text-xs">
+              <input type="number" id="inSideD" placeholder="D" oninput="calcManualPolygonArea()" class="p-1 rounded bg-slate-800 text-white font-mono text-center text-xs">
+              <input type="number" id="inDiag" placeholder="Chéo" oninput="calcManualPolygonArea()" class="p-1 rounded bg-amber-950 text-amber-300 font-mono text-center text-xs border border-amber-500/50">
+            </div>
+            <div id="manualCalcResultBox" class="hidden flex justify-between items-center text-xs pt-1 border-t border-slate-800">
+              <span class="text-slate-400">Diện tích Heron: <span id="resManualM2" class="font-bold text-amber-300 font-mono">0 m²</span></span>
+              <button onclick="applyManualAreaToMain()" class="px-2 py-0.5 rounded bg-emerald-600 text-white font-bold text-[10px]">Áp Dụng</button>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -742,282 +652,149 @@
 
   </main>
 
-  <!-- ==================== MODAL NHẬP TOẠ ĐỘ VN-2000 SỔ ĐỎ ==================== -->
-  <div id="vn2000Modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-3xl p-5 max-w-lg w-full shadow-2xl border border-slate-100 space-y-4 animate-in fade-in zoom-in duration-150">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <div class="flex items-center gap-2">
-          <div class="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-red-600 via-rose-700 to-red-900 border border-amber-300 shadow-md flex items-center justify-center shrink-0">
-            <svg class="w-6 h-6 drop-shadow" viewBox="0 0 24 24" fill="none">
-              <rect x="4" y="2.5" width="16" height="19" rx="2" fill="#b91c1c" stroke="#fde047" stroke-width="1.2"/>
-              <circle cx="12" cy="9.5" r="3.5" fill="#eab308"/>
-              <polygon points="12,7 12.8,8.8 14.8,8.8 13.2,10 13.8,11.8 12,10.6 10.2,11.8 10.8,10 9.2,8.8 11.2,8.8" fill="#ffffff"/>
-              <line x1="8" y1="15.5" x2="16" y2="15.5" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="9" y1="18" x2="15" y2="18" stroke="#fef08a" stroke-width="1.2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div>
-            <h3 class="text-sm font-black text-slate-900">Nhập Toạ Độ Sổ Đỏ (VN-2000)</h3>
-            <p class="text-[10px] text-slate-500">Kinh tuyến trục Phú Yên 108°30' • Lưới 3 độ</p>
-          </div>
-        </div>
-        <button onclick="closeVn2000Modal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center font-bold text-sm">✕</button>
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="mt-auto border-t border-slate-800 pro-glass py-4 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div class="font-bold text-slate-400 flex items-center gap-1.5">
+        <i class="fa-solid fa-compass text-emerald-400"></i>
+        <span>HỆ THỐNG TRẮC ĐỊA DÂN SINH • LỊCH ĐẤT PHÚ</span>
       </div>
-
-      
-      <!-- CHỌN TỈNH THÀNH TOÀN QUỐC (KINH TUYẾN TRỤC VN-2000) -->
-      <div class="space-y-1">
-        <label class="block text-[10px] font-bold text-slate-700">Chọn Tỉnh / Thành phố cấp Sổ Đỏ:</label>
-        <select id="selVn2000Province" onchange="onProvinceChange(this.value)" class="w-full p-2 rounded-xl bg-slate-50 border border-amber-300 font-bold text-xs text-slate-800 focus:outline-amber-500">
-          <optgroup label="📍 Duyên Hải Miền Trung & Tây Nguyên">
-            <option value="108.5" selected>Phú Yên (Kinh tuyến trục 108°30')</option>
-            <option value="108.25">Bình Định (Kinh tuyến trục 108°15')</option>
-            <option value="108.25">Khánh Hòa (Kinh tuyến trục 108°15')</option>
-            <option value="107.75">Gia Lai (Kinh tuyến trục 107°45')</option>
-            <option value="108.5">Đắk Lắk (Kinh tuyến trục 108°30')</option>
-            <option value="107.75">Lâm Đồng (Kinh tuyến trục 107°45')</option>
-            <option value="108.5">Đắk Nông (Kinh tuyến trục 108°30')</option>
-            <option value="107.75">Kon Tum (Kinh tuyến trục 107°45')</option>
-            <option value="108.0">Quảng Ngãi (Kinh tuyến trục 108°00')</option>
-            <option value="108.0">Quảng Nam (Kinh tuyến trục 108°00')</option>
-            <option value="107.75">Đà Nẵng (Kinh tuyến trục 107°45')</option>
-            <option value="107.5">Thừa Thiên Huế (Kinh tuyến trục 107°30')</option>
-            <option value="108.5">Ninh Thuận (Kinh tuyến trục 108°30')</option>
-            <option value="107.75">Bình Thuận (Kinh tuyến trục 107°45')</option>
-          </optgroup>
-          <optgroup label="📍 Đông Nam Bộ & TP. Hồ Chí Minh">
-            <option value="105.75">TP. Hồ Chí Minh (Kinh tuyến trục 105°45')</option>
-            <option value="107.75">Đồng Nai (Kinh tuyến trục 107°45')</option>
-            <option value="105.75">Bình Dương (Kinh tuyến trục 105°45')</option>
-            <option value="107.75">Bà Rịa - Vũng Tàu (Kinh tuyến trục 107°45')</option>
-            <option value="106.25">Tây Ninh (Kinh tuyến trục 106°15')</option>
-            <option value="106.25">Bình Phước (Kinh tuyến trục 106°15')</option>
-          </optgroup>
-          <optgroup label="📍 Đồng Bằng Sông Cửu Long (Miền Tây)">
-            <option value="105.0">Cần Thơ (Kinh tuyến trục 105°00')</option>
-            <option value="105.75">Long An (Kinh tuyến trục 105°45')</option>
-            <option value="105.75">Tiền Giang (Kinh tuyến trục 105°45')</option>
-            <option value="105.75">Bến Tre (Kinh tuyến trục 105°45')</option>
-            <option value="105.0">Đồng Tháp (Kinh tuyến trục 105°00')</option>
-            <option value="104.5">Kiên Giang (Kinh tuyến trục 104°30')</option>
-            <option value="104.5">An Giang (Kinh tuyến trục 104°30')</option>
-            <option value="105.0">Vĩnh Long (Kinh tuyến trục 105°00')</option>
-            <option value="105.0">Trà Vinh (Kinh tuyến trục 105°00')</option>
-            <option value="105.0">Sóc Trăng (Kinh tuyến trục 105°00')</option>
-            <option value="104.5">Cà Mau (Kinh tuyến trục 104°30')</option>
-          </optgroup>
-          <optgroup label="📍 Miền Bắc & Thủ Đô Hà Nội">
-            <option value="105.0">Hà Nội (Kinh tuyến trục 105°00')</option>
-            <option value="105.75">Hải Phòng (Kinh tuyến trục 105°45')</option>
-            <option value="105.0">Thanh Hóa (Kinh tuyến trục 105°00')</option>
-            <option value="104.75">Nghệ An (Kinh tuyến trục 104°45')</option>
-            <option value="105.5">Hà Tĩnh (Kinh tuyến trục 105°30')</option>
-            <option value="105.75">Quảng Ninh (Kinh tuyến trục 105°45')</option>
-            <option value="106.0">Bắc Giang (Kinh tuyến trục 106°00')</option>
-            <option value="105.75">Bắc Ninh (Kinh tuyến trục 105°45')</option>
-            <option value="105.5">Thái Nguyên (Kinh tuyến trục 105°30')</option>
-            <option value="104.75">Phú Thọ (Kinh tuyến trục 104°45')</option>
-          </optgroup>
-        </select>
-      </div>
-
-      <p class="text-xs text-slate-600">
-        Mở bảng liệt kê toạ độ góc ranh ở trang 3 hoặc trang 4 của Sổ Đỏ (Giấy chứng nhận QSDĐ) và nhập các cặp toạ độ (X, Y) vào bên dưới:
-      </p>
-
-      <div class="space-y-2 max-h-60 overflow-y-auto no-scrollbar" id="vn2000RowsContainer">
-        <!-- 4 dòng mẫu -->
-        <div class="grid grid-cols-12 gap-2 items-center text-xs">
-          <span class="col-span-2 font-bold text-slate-500 font-mono">Điểm 1:</span>
-          <input type="number" placeholder="Toạ độ X (VD: 1447450)" class="col-span-5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs vn2000-x">
-          <input type="number" placeholder="Toạ độ Y (VD: 533580)" class="col-span-5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs vn2000-y">
-        </div>
-        <div class="grid grid-cols-12 gap-2 items-center text-xs">
-          <span class="col-span-2 font-bold text-slate-500 font-mono">Điểm 2:</span>
-          <input type="number" placeholder="Toạ độ X" class="col-span-5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs vn2000-x">
-          <input type="number" placeholder="Toạ độ Y" class="col-span-5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs vn2000-y">
-        </div>
-        <div class="grid grid-cols-12 gap-2 items-center text-xs">
-          <span class="col-span-2 font-bold text-slate-500 font-mono">Điểm 3:</span>
-          <input type="number" placeholder="Toạ độ X" class="col-span-5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs vn2000-x">
-          <input type="number" placeholder="Toạ độ Y" class="col-span-5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs vn2000-y">
-        </div>
-        <div class="grid grid-cols-12 gap-2 items-center text-xs">
-          <span class="col-span-2 font-bold text-slate-500 font-mono">Điểm 4:</span>
-          <input type="number" placeholder="Toạ độ X" class="col-span-5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs vn2000-x">
-          <input type="number" placeholder="Toạ độ Y" class="col-span-5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs vn2000-y">
-        </div>
-      </div>
-
-      <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
-        <button onclick="addVn2000Row()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition">
-          + Thêm Điểm Mốc
-        </button>
-        <button onclick="applyVn2000ToPlot()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold transition active:scale-95 shadow">
-          Vẽ Lên Vệ Tinh ➔
-        </button>
-      </div>
+      <p class="text-[11px] text-slate-500">Bản đồ vệ tinh ESRI World Imagery & OpenStreetMap • Tích hợp GPS Kalman & VN-2000 63 Tỉnh Thành</p>
     </div>
-  </div>
+  </footer>
 
-  
-  <!-- MODAL HƯỚNG DẪN MỞ QUYỀN VỊ TRÍ GPS KHI BỊ CHẶN -->
-  <div id="gpsPermissionModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-3xl p-5 sm:p-6 max-w-md w-full shadow-2xl border-2 border-amber-300 space-y-4 animate-in fade-in zoom-in duration-150">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+  <!-- ==================== MODAL HƯỚNG DẪN MỞ QUYỀN GPS KHI BỊ CHẶN ==================== -->
+  <div id="gpsPermissionModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+    <div class="bg-slate-900 rounded-3xl p-5 sm:p-6 max-w-md w-full shadow-2xl border-2 border-amber-400 text-slate-200 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg font-black shrink-0">
-            <i class="fa-solid fa-lock text-amber-600"></i>
+          <div class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-black shrink-0">
+            <i class="fa-solid fa-lock text-amber-400"></i>
           </div>
           <div>
-            <h3 class="text-sm sm:text-base font-black text-slate-900">Trình Duyệt Đang Chặn Quyền Vị Trí!</h3>
-            <p class="text-[10px] text-slate-500">Mở quyền vị trí chỉ mất 3 giây theo hướng dẫn sau</p>
+            <h3 class="text-sm sm:text-base font-black text-white">Trình Duyệt Đang Chặn Quyền Vị Trí!</h3>
+            <p class="text-[10px] text-slate-400">Mở quyền vị trí chỉ mất 3 giây theo hướng dẫn sau</p>
           </div>
         </div>
-        <button onclick="closeGpsPermissionModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center font-bold text-sm">✕</button>
+        <button onclick="closeGpsPermissionModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center font-bold text-sm">✕</button>
       </div>
 
-      <div class="space-y-3 text-xs text-slate-700">
-        <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200 space-y-2">
-          <div class="font-bold text-amber-900 flex items-center gap-1.5">
-            <i class="fa-solid fa-laptop text-amber-600"></i>
-            <span>Nếu đang dùng Máy Tính Bàn hoặc Laptop:</span>
+      <div class="space-y-3 text-xs text-slate-300">
+        <div class="p-3 rounded-2xl bg-amber-950/40 border border-amber-500/40 space-y-1.5">
+          <div class="font-bold text-amber-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-laptop text-amber-400"></i>
+            <span>Trên Máy Tính Bàn hoặc Laptop:</span>
           </div>
-          <ol class="list-decimal list-inside space-y-1 text-slate-700 leading-relaxed pl-1">
+          <ol class="list-decimal list-inside space-y-1 text-slate-300 leading-relaxed pl-1 text-[11px]">
             <li>Nhìn lên góc trên bên trái thanh địa chỉ web (chỗ <b>datphu-backend.vercel.app</b>).</li>
             <li>Bấm vào biểu tượng <b>Cài đặt trang web 🎛️ hoặc Ổ khóa 🔒</b>.</li>
-            <li>Tìm dòng <b>Vị trí (Location)</b> và đổi từ <span class="text-rose-600 font-bold">Chặn (Block)</span> sang <span class="text-emerald-700 font-bold">Cho phép (Allow)</span>.</li>
+            <li>Tìm dòng <b>Vị trí (Location)</b> và đổi từ <span class="text-rose-400 font-bold">Chặn</span> sang <span class="text-emerald-400 font-bold">Cho phép (Allow)</span>.</li>
             <li>Bấm phím <b>F5 (Tải lại trang)</b> và bấm lại nút "Vị Trí Của Tôi".</li>
           </ol>
         </div>
 
-        <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-2">
-          <div class="font-bold text-emerald-900 flex items-center gap-1.5">
-            <i class="fa-solid fa-mobile-screen text-emerald-600"></i>
-            <span>Nếu đang dùng Điện Thoại Thông Minh:</span>
+        <div class="p-3 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 space-y-1.5">
+          <div class="font-bold text-emerald-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-mobile-screen text-emerald-400"></i>
+            <span>Trên Điện Thoại Thông Minh:</span>
           </div>
-          <ol class="list-decimal list-inside space-y-1 text-slate-700 leading-relaxed pl-1">
+          <ol class="list-decimal list-inside space-y-1 text-slate-300 leading-relaxed pl-1 text-[11px]">
             <li>Bấm vào biểu tượng <b>Ổ khóa 🔒</b> bên cạnh thanh địa chỉ web.</li>
-            <li>Chọn <b>Quyền truy cập trang web (Permissions)</b> ➔ Bật <b>Vị trí (Location)</b>.</li>
-            <li>Kiểm tra xem điện thoại đã kéo thanh thông báo xuống và <b>bật nút "Vị trí (GPS)"</b> chưa.</li>
+            <li>Chọn <b>Quyền trang web</b> ➔ Bật <b>Cho phép Vị trí</b>.</li>
+            <li>Kiểm tra xem điện thoại đã kéo thanh thông báo xuống và <b>bật nút GPS</b> chưa.</li>
           </ol>
         </div>
       </div>
 
-      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
-        <button onclick="closeGpsPermissionModal()" class="w-full py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition active:scale-95">
+      <div class="pt-2 border-t border-slate-800">
+        <button onclick="closeGpsPermissionModal()" class="w-full py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition active:scale-95">
           Đã Hiểu, Tôi Sẽ Mở Quyền Ngay
         </button>
       </div>
     </div>
   </div>
 
-  <!-- ==================== FOOTER ==================== -->
-  <footer class="mt-8 border-t border-slate-200/80 bg-white/80 py-6 text-center text-xs text-slate-500">
-    <div class="max-w-6xl mx-auto px-4 space-y-1.5">
-      <div class="font-bold text-slate-700 flex items-center justify-center gap-1.5">
-        <i class="fa-solid fa-compass text-emerald-600"></i>
-        <span>HỆ THỐNG TRẮC ĐỊA DÂN SINH • LỊCH ĐẤT PHÚ</span>
-      </div>
-      <p class="text-[11px] text-slate-400">Dữ liệu bản đồ vệ tinh ESRI World Imagery & OpenStreetMap • Tích hợp GPS Kalman & VN-2000</p>
-    </div>
-  </footer>
-
   <!-- ==================== UNIVERSAL APP LAUNCHER MODAL ==================== -->
-  <div id="datPhuAppLauncherModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-3xl p-5 max-w-sm w-full shadow-2xl border border-slate-100 space-y-4 animate-in fade-in zoom-in duration-150">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+  <div id="datPhuAppLauncherModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 backdrop-blur-sm p-4">
+    <div class="bg-slate-900 rounded-3xl p-5 max-w-sm w-full shadow-2xl border border-slate-800 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center font-black text-sm">
+          <div class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-sm">
             <i class="fa-solid fa-shapes"></i>
           </div>
           <div>
-            <h3 class="text-sm font-black text-slate-900">Hệ Sinh Thái Đất Phú</h3>
-            <p class="text-[10px] text-slate-500">5 Chuyên đề ứng dụng chuyên sâu</p>
+            <h3 class="text-sm font-black text-white">Hệ Sinh Thái Đất Phú</h3>
+            <p class="text-[10px] text-slate-400">5 Chuyên đề ứng dụng chuyên sâu</p>
           </div>
         </div>
-        <button onclick="toggleDatPhuAppLauncher()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center font-bold text-sm">✕</button>
+        <button onclick="toggleDatPhuAppLauncher()" class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center font-bold text-sm">✕</button>
       </div>
 
       <div class="grid grid-cols-1 gap-2">
-        <a href="/" class="flex items-center gap-3 p-2.5 rounded-2xl border border-slate-100 hover:border-amber-300 hover:bg-amber-50/60 transition group">
-          <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-lg group-hover:scale-105 transition">
-            <i class="fa-solid fa-calendar-days text-amber-600"></i>
+        <a href="/" class="flex items-center gap-3 p-2.5 rounded-2xl border border-slate-800 hover:border-amber-400/50 hover:bg-slate-800 transition group">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-calendar-days"></i>
           </div>
           <div class="text-left">
-            <div class="text-xs font-black text-slate-800">Lịch Dân Sinh Đất Phú</div>
-            <div class="text-[10px] text-slate-500">Lịch vạn niên • Giờ hoàng đạo • Thủy triều</div>
+            <div class="text-xs font-black text-white">Lịch Dân Sinh Đất Phú</div>
+            <div class="text-[10px] text-slate-400">Lịch vạn niên • Giờ hoàng đạo • Thủy triều</div>
           </div>
         </a>
 
-        <a href="/thoi-tiet" class="flex items-center gap-3 p-2.5 rounded-2xl border border-slate-100 hover:border-cyan-300 hover:bg-cyan-50/60 transition group">
-          <div class="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center text-lg group-hover:scale-105 transition">
-            <i class="fa-solid fa-cloud-bolt text-cyan-600"></i>
+        <a href="/thoi-tiet" class="flex items-center gap-3 p-2.5 rounded-2xl border border-slate-800 hover:border-cyan-400/50 hover:bg-slate-800 transition group">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-cloud-bolt"></i>
           </div>
           <div class="text-left">
-            <div class="text-xs font-black text-slate-800">Trạm Khí Tượng & Viễn Thám</div>
-            <div class="text-[10px] text-slate-500">Dự báo bão lũ • Thủy triều • Sóng biển</div>
+            <div class="text-xs font-black text-white">Trạm Khí Tượng & Viễn Thám</div>
+            <div class="text-[10px] text-slate-400">Dự báo bão lũ • Thủy triều • Sóng biển</div>
           </div>
         </a>
 
-        <a href="/giai-tri" class="flex items-center gap-3 p-2.5 rounded-2xl border border-slate-100 hover:border-orange-300 hover:bg-orange-50/60 transition group">
-          <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-lg group-hover:scale-105 transition">
-            <i class="fa-solid fa-masks-theater text-orange-600"></i>
+        <a href="/giai-tri" class="flex items-center gap-3 p-2.5 rounded-2xl border border-slate-800 hover:border-orange-400/50 hover:bg-slate-800 transition group">
+          <div class="w-10 h-10 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-masks-theater"></i>
           </div>
           <div class="text-left">
-            <div class="text-xs font-black text-slate-800">Trung Tâm Giải Trí & Văn Hóa</div>
-            <div class="text-[10px] text-slate-500">Radio Quê Hương • Bài Chòi • Trà Đạo</div>
+            <div class="text-xs font-black text-white">Trung Tâm Giải Trí & Văn Hóa</div>
+            <div class="text-[10px] text-slate-400">Radio Quê Hương • Bài Chòi • Trà Đạo</div>
           </div>
         </a>
 
-        <a href="/lao-dong" class="flex items-center gap-3 p-2.5 rounded-2xl border border-slate-100 hover:border-blue-300 hover:bg-blue-50/60 transition group">
-          <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-lg group-hover:scale-105 transition">
-            <i class="fa-solid fa-hammer text-blue-600"></i>
+        <a href="/lao-dong" class="flex items-center gap-3 p-2.5 rounded-2xl border border-slate-800 hover:border-blue-400/50 hover:bg-slate-800 transition group">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-hammer"></i>
           </div>
           <div class="text-left">
-            <div class="text-xs font-black text-slate-800">Sàn Lao Động Dân Sinh</div>
-            <div class="text-[10px] text-slate-500">Tìm thợ lành nghề • Việc làm thời vụ</div>
+            <div class="text-xs font-black text-white">Sàn Lao Động Dân Sinh</div>
+            <div class="text-[10px] text-slate-400">Tìm thợ lành nghề • Việc làm thời vụ</div>
           </div>
         </a>
 
-        <a href="/do-dat" class="flex items-center gap-3 p-2.5 rounded-2xl border-2 border-emerald-500 bg-emerald-50/80 transition group">
+        <a href="/do-dat" class="flex items-center gap-3 p-2.5 rounded-2xl border-2 border-emerald-500 bg-emerald-950/40 transition group">
           <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg shadow-sm">
             <i class="fa-solid fa-draw-polygon"></i>
           </div>
           <div class="text-left">
-            <div class="text-xs font-black text-emerald-900">Đo Đất Rẫy Rừng & Biển</div>
-            <div class="text-[10px] text-emerald-700 font-bold">Đang xem • Sào, Mẫu, Héc-ta GPS</div>
+            <div class="text-xs font-black text-emerald-300">Đo Đất Rẫy Rừng & Biển</div>
+            <div class="text-[10px] text-emerald-400 font-bold">Đang xem • Trắc địa chuyên nghiệp</div>
           </div>
         </a>
       </div>
     </div>
   </div>
 
-  <!-- ==================== JAVASCRIPT ĐO ĐẠC & TRẮC ĐỊA ==================== -->
+  <!-- ==================== JAVASCRIPT TRẮC ĐỊA & HÌNH HỌC ==================== -->
   <script>
-    // 1. Theme sáng / tối & Chế độ ngoài trời chống chói
-    function toggleTheme() {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('datphu_theme', isDark ? 'dark' : 'light');
-      const icon = document.getElementById('themeIcon');
-      if (icon) icon.className = isDark ? 'fa-solid fa-sun text-amber-400 text-sm' : 'fa-solid fa-moon text-sm';
-    }
-
-    if (localStorage.getItem('datphu_theme') === 'dark') {
-      document.body.classList.add('dark-mode');
-      const icon = document.getElementById('themeIcon');
-      if (icon) icon.className = 'fa-solid fa-sun text-amber-400 text-sm';
-    }
-
+    // 1. Chế độ ngoài trời chống chói
     function toggleSunlightMode() {
       document.body.classList.toggle('sunlight-mode');
       const isSun = document.body.classList.contains('sunlight-mode');
       const btn = document.getElementById('btnSunlight');
       if (btn) {
         btn.className = isSun 
-          ? 'p-2 rounded-2xl bg-yellow-400 text-slate-950 font-black border-2 border-white shadow-md'
-          : 'p-2 rounded-2xl bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 text-xs font-bold transition';
+          ? 'px-2.5 py-1.5 rounded-xl bg-yellow-400 text-slate-950 font-black border-2 border-white shadow-md'
+          : 'px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 text-xs font-bold transition';
       }
     }
 
@@ -1026,7 +803,22 @@
       if (modal) modal.classList.toggle('hidden');
     }
 
-    // 2. BỘ LỌC KALMAN CHO TỌA ĐỘ GPS
+    // 2. Chuyển đổi Tab trong Bảng Điều Khiển Inspector
+    function switchInspectorTab(tabKey) {
+      ['area', 'crop', 'sodo', 'plots'].forEach(t => {
+        const btn = document.getElementById('tabInsp_' + t);
+        const box = document.getElementById('inspTabBox_' + t);
+        if (t === tabKey) {
+          btn.className = 'py-2 rounded-xl bg-emerald-600 text-white transition shadow-sm flex flex-col items-center gap-0.5';
+          box.classList.remove('hidden');
+        } else {
+          btn.className = 'py-2 rounded-xl text-slate-400 hover:text-slate-200 transition flex flex-col items-center gap-0.5';
+          box.classList.add('hidden');
+        }
+      });
+    }
+
+    // 3. BỘ LỌC KALMAN CHO TỌA ĐỘ GPS
     class SimpleKalman {
       constructor(q = 0.00001, r = 0.0001) {
         this.q = q;
@@ -1054,7 +846,7 @@
     const kalmanLat = new SimpleKalman();
     const kalmanLng = new SimpleKalman();
 
-    // 3. KHỞI TẠO BẢN ĐỒ LEAFLET
+    // 4. KHỞI TẠO BẢN ĐỒ LEAFLET
     let map = null;
     let satLayer = null;
     let streetLayer = null;
@@ -1069,176 +861,19 @@
     let currentCalculatedPerimeter = 0;
     let currentDeductRate = 0;
     let currentSlopeAngle = 0;
+    let currentRegion = 'central';
+    let selectedCentralMeridian = 108.5;
 
     const PHU_YEN_CENTER = [13.0882, 109.3097];
 
-    
-    // XỬ LÝ NHẢY NHANH ĐỊA ĐIỂM XÃ / HUYỆN PHÚ YÊN
-    function jumpToPhuYenLocation(val) {
-      if (!val) return;
-      const parts = val.split(',');
-      if (parts.length >= 3) {
-        const lat = parseFloat(parts[0]);
-        const lng = parseFloat(parts[1]);
-        const zoom = parseInt(parts[2]);
-        if (map) {
-          map.flyTo([lat, lng], zoom, { duration: 1.5 });
-        }
-      }
-    }
-
-    function fitPlotBounds() {
-      if (polygon) {
-        map.fitBounds(polygon.getBounds(), { padding: [40, 40] });
-      } else if (markers.length > 0) {
-        const group = L.featureGroup(markers.map(m => m.marker));
-        map.fitBounds(group.getBounds(), { padding: [50, 50] });
-      } else {
-        alert("Chưa có điểm mốc nào trên bản đồ để căn giữa!");
-      }
-    }
-
-    function dismissGpsWarning() {
-      const alertBox = document.getElementById('gpsWarningAlert');
-      if (alertBox) alertBox.classList.add('hidden');
-    }
-
-    // Chuyển đổi WGS-84 sang toạ độ hiển thị VN-2000 (X, Y)
-    function wgs84ToVn2000Approx(lat, lng, L0 = 108.5) {
-      // Công thức gần đúng chuyển WGS-84 sang VN-2000 Phú Yên phục vụ hiển thị
-      const dLat = (lat - 13.0) * 110852;
-      const dLng = (lng - L0) * 108420;
-      const x = Math.round(1437600 + dLat);
-      const y = Math.round(500000 + dLng);
-      return { x, y };
-    }
-
-    
-    // QUẢN LÝ TẬP QUÁN ĐO ĐẤT 3 MIỀN TOÀN QUỐC
-    let currentRegion = 'central'; // 'central' (Trung), 'south' (Nam), 'north' (Bắc)
-    let selectedCentralMeridian = 108.5; // Mặc định Phú Yên
-
-    function switchRegionMode(reg) {
-      currentRegion = reg;
-      ['central', 'south', 'north'].forEach(r => {
-        const btn = document.getElementById('btnReg_' + r);
-        if (btn) {
-          btn.className = r === reg 
-            ? 'p-1.5 rounded-xl bg-emerald-600 text-white font-bold transition shadow-xs'
-            : 'p-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900 text-emerald-200 transition';
-        }
-      });
-      renderResults(currentCalculatedArea, currentCalculatedPerimeter);
-    }
-
-    function onProvinceChange(meridianVal) {
-      selectedCentralMeridian = parseFloat(meridianVal) || 108.5;
-    }
-
-    // TRỢ LÝ GIỌNG NÓI TIẾNG VIỆT ĐỌC KẾT QUẢ ĐO ĐẠC CHO BÀ CON
-    function speakMeasurementResult() {
-      if (!('speechSynthesis' in window)) {
-        alert("Thiết bị của bạn chưa hỗ trợ phát giọng nói tự động!");
-        return;
-      }
-
-      if (currentCalculatedArea === 0) {
-        speakText("Bác ơi, bác chưa chấm điểm mốc nào trên bản đồ cả. Hãy chấm các góc ranh đất để máy đo nhé!");
-        return;
-      }
-
-      let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
-      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
-
-      const m2 = Math.round(netArea);
-      const saoTB = (netArea / 500).toFixed(1);
-      const pricePerSao = parseFloat(document.getElementById('inLeasePricePerSao').value) || 0;
-      const totalRent = Math.round((netArea / 500) * pricePerSao);
-      const claimedSao = parseFloat(document.getElementById('inClaimedSao').value) || 0;
-
-      let msg = "Kính thưa bà con. Thửa đất này đo được thực tế là " + m2.toLocaleString('vi-VN') + " mét vuông, quy đổi ra là " + saoTB + " sào Trung Bộ. ";
-
-      if (currentDeductRate > 0) {
-        msg += "Đã trừ hao " + currentDeductRate + " phần trăm mương rãnh đất chết. ";
-      }
-
-      if (pricePerSao > 0) {
-        msg += "Tiền thuê khoán phải thanh toán là " + totalRent.toLocaleString('vi-VN') + " đồng. ";
-      }
-
-      if (claimedSao > 0 && claimedSao > (netArea / 500)) {
-        const diffSao = (claimedSao - (netArea / 500)).toFixed(1);
-        const savedMoney = Math.round(diffSao * pricePerSao);
-        msg += "Chủ đất báo thừa " + diffSao + " sào. Bà con đã tiết kiệm được " + savedMoney.toLocaleString('vi-VN') + " đồng tiền thuê!";
-      }
-
-      speakText(msg);
-    }
-
-    function speakText(text) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'vi-VN';
-      utterance.rate = 0.95; // Tốc độ vừa phải, trầm ấm dễ nghe
-      utterance.pitch = 1.0;
-
-      const btn = document.getElementById('btnVoiceSpeak');
-      if (btn) btn.classList.add('animate-pulse', 'bg-amber-300');
-
-      utterance.onend = () => {
-        if (btn) btn.classList.remove('animate-pulse', 'bg-amber-300');
-      };
-
-      window.speechSynthesis.speak(utterance);
-    }
-
-    // THUẬT TOÁN KIỂM TRA ĐA GIÁC TỰ CẮT CHÉO (SELF-INTERSECTION DETECTOR)
-    function checkSegmentsIntersect(a, b, c, d) {
-      function ccw(p1, p2, p3) {
-        return (p3[1] - p1[1]) * (p2[0] - p1[0]) > (p2[1] - p1[1]) * (p3[0] - p1[0]);
-      }
-      return (ccw(a, c, d) !== ccw(b, c, d)) && (ccw(a, b, c) !== ccw(a, b, d));
-    }
-
-    function detectPolygonSelfIntersection(pts) {
-      const n = pts.length;
-      if (n < 4) return false;
-      for (let i = 0; i < n; i++) {
-        const a = pts[i];
-        const b = pts[(i + 1) % n];
-        for (let j = i + 2; j < n; j++) {
-          if ((i === 0 && j === n - 1)) continue;
-          const c = pts[j];
-          const d = pts[(j + 1) % n];
-          if (checkSegmentsIntersect(a, b, c, d)) return true;
-        }
-      }
-      return false;
-    }
-
-    // CHIA TIỀN CÔNG TỔ ĐỘI THỢ
-    function calcTeamSplitting() {
-      const workers = parseInt(document.getElementById('inTeamWorkers').value) || 1;
-      const expenses = parseFloat(document.getElementById('inTeamExpenses').value) || 0;
-
-      let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
-      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
-      const saoCount = netArea / 500;
-
-      // Tiền công gặt hoặc cày ước tính
-      const plowTotal = Math.round(saoCount * 250000); // 250k/sào gặt
-      document.getElementById('teamTotalPayout').innerText = plowTotal.toLocaleString('vi-VN') + ' đ';
-
-      const remainPayout = Math.max(0, plowTotal - expenses);
-      const eachShare = Math.round(remainPayout / Math.max(1, workers));
-      document.getElementById('teamWorkerShare').innerText = eachShare.toLocaleString('vi-VN') + ' đ / người';
-    }
-
     function initMap() {
       map = L.map('mapMeasure', {
-        zoomControl: true,
+        zoomControl: false,
         attributionControl: false
       }).setView(PHU_YEN_CENTER, 14);
+
+      // Thêm nút zoom ở góc dưới bên phải
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
 
       satLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 19
@@ -1272,16 +907,42 @@
         if (map.hasLayer(streetLayer)) map.removeLayer(streetLayer);
         if (!map.hasLayer(satLayer)) satLayer.addTo(map);
         document.getElementById('btnLayerSat').className = 'px-2.5 py-1 rounded-xl bg-emerald-600 text-white font-bold transition shadow-xs';
-        document.getElementById('btnLayerStreet').className = 'px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition';
+        document.getElementById('btnLayerStreet').className = 'px-2.5 py-1 rounded-xl hover:bg-slate-800 text-slate-300 font-bold transition';
       } else {
         if (map.hasLayer(satLayer)) map.removeLayer(satLayer);
         if (!map.hasLayer(streetLayer)) streetLayer.addTo(map);
         document.getElementById('btnLayerStreet').className = 'px-2.5 py-1 rounded-xl bg-emerald-600 text-white font-bold transition shadow-xs';
-        document.getElementById('btnLayerSat').className = 'px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition';
+        document.getElementById('btnLayerSat').className = 'px-2.5 py-1 rounded-xl hover:bg-slate-800 text-slate-300 font-bold transition';
       }
     }
 
-    
+    function jumpToPhuYenLocation(val) {
+      if (!val) return;
+      const parts = val.split(',');
+      if (parts.length >= 3) {
+        const lat = parseFloat(parts[0]);
+        const lng = parseFloat(parts[1]);
+        const zoom = parseInt(parts[2]);
+        if (map) map.flyTo([lat, lng], zoom, { duration: 1.5 });
+      }
+    }
+
+    function fitPlotBounds() {
+      if (polygon) {
+        map.fitBounds(polygon.getBounds(), { padding: [40, 40] });
+      } else if (markers.length > 0) {
+        const group = L.featureGroup(markers.map(m => m.marker));
+        map.fitBounds(group.getBounds(), { padding: [50, 50] });
+      } else {
+        alert("Chưa có điểm mốc nào trên bản đồ để căn giữa!");
+      }
+    }
+
+    function dismissGpsWarning() {
+      const alertBox = document.getElementById('gpsWarningAlert');
+      if (alertBox) alertBox.classList.add('hidden');
+    }
+
     function openGpsPermissionModal() {
       const modal = document.getElementById('gpsPermissionModal');
       if (modal) modal.classList.remove('hidden');
@@ -1299,7 +960,7 @@
       if (isLoading) {
         if (btn) btn.classList.add('opacity-80', 'cursor-wait');
         if (icon) icon.className = "fa-solid fa-spinner fa-spin text-sm";
-        if (text) text.innerText = "Đang Dò GPS...";
+        if (text) text.innerText = "Đang Dò...";
       } else {
         if (btn) btn.classList.remove('opacity-80', 'cursor-wait');
         if (icon) icon.className = "fa-solid fa-location-crosshairs text-sm";
@@ -1309,7 +970,7 @@
 
     function getUserGPSLocation() {
       if (!navigator.geolocation) {
-        alert("Thiết bị hoặc trình duyệt của bạn không hỗ trợ chức năng định vị GPS!");
+        alert("Thiết bị không hỗ trợ định vị GPS!");
         return;
       }
 
@@ -1323,7 +984,6 @@
         const lng = kalmanLng.filter(rawLng);
         const acc = Math.round(pos.coords.accuracy || 0);
 
-        // Bật cảnh báo nếu sai số GPS quá lớn (> 100m)
         const warnAlert = document.getElementById('gpsWarningAlert');
         const warnMeters = document.getElementById('gpsWarningMeters');
         if (acc > 100 && warnAlert && warnMeters) {
@@ -1333,12 +993,8 @@
           warnAlert.classList.add('hidden');
         }
 
-        const badge = document.getElementById('gpsAccuracyBadge');
-        const meters = document.getElementById('gpsAccuracyMeters');
-        if (badge && meters) {
-          badge.classList.remove('hidden');
-          meters.innerText = acc;
-        }
+        const hdrAcc = document.getElementById('hdrAccuracyText');
+        if (hdrAcc) hdrAcc.innerText = '±' + acc + 'm';
 
         map.setView([lat, lng], 17);
         L.circleMarker([lat, lng], {
@@ -1354,32 +1010,28 @@
       const errorHandler = (err) => {
         console.warn('Geolocation error code:', err.code, err.message);
 
-        // Mã lỗi 1: PERMISSION_DENIED (Người dùng hoặc trình duyệt chặn quyền vị trí)
         if (err.code === 1) {
           setGpsButtonLoading(false);
           openGpsPermissionModal();
           return;
         }
 
-        // Mã lỗi 3: TIMEOUT (Nếu bật High Accuracy bị quá thời gian, thử lại với độ chính xác chuẩn)
         if (err.code === 3) {
           navigator.geolocation.getCurrentPosition(
             successHandler,
-            (fallbackErr) => {
+            () => {
               setGpsButtonLoading(false);
-              alert("⚠️ Không thể kết nối với vệ tinh GPS (Hết thời gian chờ). Bạn vui lòng dùng chuột lăn phóng to bản đồ vệ tinh để chấm mốc trực tiếp nhé!");
+              alert("⚠️ Không thể kết nối vệ tinh GPS (Hết thời gian chờ). Bạn vui lòng dùng chuột lăn phóng to ảnh vệ tinh để chấm mốc nhé!");
             },
             { enableHighAccuracy: false, timeout: 12000 }
           );
           return;
         }
 
-        // Mã lỗi 2: POSITION_UNAVAILABLE
         setGpsButtonLoading(false);
-        alert("⚠️ Không tìm thấy tín hiệu định vị. Hãy kiểm tra xem bạn đã bật 'Vị trí (GPS)' trong Cài đặt của máy chưa, hoặc dùng bản đồ vệ tinh để chấm điểm trực tiếp.");
+        alert("⚠️ Không tìm thấy tín hiệu định vị. Hãy kiểm tra xem máy đã bật 'Vị trí (GPS)' chưa.");
       };
 
-      // Thử định vị độ chính xác cao trước
       navigator.geolocation.getCurrentPosition(
         successHandler,
         errorHandler,
@@ -1387,8 +1039,7 @@
       );
     }
 
-
-    // 4. THÊM / XÓA MỐC & HIỂN THỊ CHIỀU DÀI CẠNH
+    // 5. THÊM / XÓA MỐC & HIỂN THỊ CHIỀU DÀI CẠNH
     function addPoint(lat, lng) {
       const markerIndex = markers.length + 1;
       
@@ -1444,7 +1095,30 @@
       } catch(e) {}
     }
 
-    // 5. TÍNH DIỆN TÍCH CẦU & HIỂN THỊ ĐỘ DÀI TỪNG CẠNH
+    // 6. KIỂM TRA ĐA GIÁC TỰ CẮT CHÉO & TÍNH DIỆN TÍCH
+    function checkSegmentsIntersect(a, b, c, d) {
+      function ccw(p1, p2, p3) {
+        return (p3[1] - p1[1]) * (p2[0] - p1[0]) > (p2[1] - p1[1]) * (p3[0] - p1[0]);
+      }
+      return (ccw(a, c, d) !== ccw(b, c, d)) && (ccw(a, b, c) !== ccw(a, b, d));
+    }
+
+    function detectPolygonSelfIntersection(pts) {
+      const n = pts.length;
+      if (n < 4) return false;
+      for (let i = 0; i < n; i++) {
+        const a = pts[i];
+        const b = pts[(i + 1) % n];
+        for (let j = i + 2; j < n; j++) {
+          if ((i === 0 && j === n - 1)) continue;
+          const c = pts[j];
+          const d = pts[(j + 1) % n];
+          if (checkSegmentsIntersect(a, b, c, d)) return true;
+        }
+      }
+      return false;
+    }
+
     function updateMeasurement() {
       document.getElementById('markerCountText').innerText = markers.length;
       clearEdgeLabels();
@@ -1473,24 +1147,20 @@
 
       if (polyline) { map.removeLayer(polyline); polyline = null; }
 
-      if (!polygon) {
-        const isSelfIntersecting = detectPolygonSelfIntersection(latlngs);
+      const isSelfIntersecting = detectPolygonSelfIntersection(latlngs);
       const polyColor = isSelfIntersecting ? '#ef4444' : '#10b981';
       const polyFillColor = isSelfIntersecting ? '#f87171' : '#34d399';
 
-      if (isSelfIntersecting) {
-        console.warn('Cảnh báo: Ranh đất bị tự cắt chéo hình số 8!');
-      }
-
-      polygon = L.polygon(latlngs, {
+      if (!polygon) {
+        polygon = L.polygon(latlngs, {
           color: polyColor,
           fillColor: polyFillColor,
-          fillColor: '#34d399',
           fillOpacity: 0.35,
           weight: 2.5
         }).addTo(map);
       } else {
         polygon.setLatLngs(latlngs);
+        polygon.setStyle({ color: polyColor, fillColor: polyFillColor });
       }
 
       for (let i = 0; i < latlngs.length; i++) {
@@ -1513,8 +1183,8 @@
       const customIcon = L.divIcon({
         className: 'edge-label',
         html: text,
-        iconSize: [40, 16],
-        iconAnchor: [20, 8]
+        iconSize: [42, 16],
+        iconAnchor: [21, 8]
       });
 
       const edgeMarker = L.marker([midLat, midLng], { icon: customIcon, interactive: false }).addTo(map);
@@ -1557,7 +1227,7 @@
       return Math.abs(total * (R * R) / 2.0);
     }
 
-    // 6. ĐỘ DỐC SƯỜN ĐỒI & TRỪ HAO ĐẤT CHẾT
+    // 7. BÙ TRỪ ĐỘ DỐC & HIỂN THỊ KẾT QUẢ ĐA MIỀN
     function onSlopeChange(deg) {
       currentSlopeAngle = parseFloat(deg) || 0;
       renderResults(currentCalculatedArea, currentCalculatedPerimeter);
@@ -1571,7 +1241,20 @@
         if (btn) {
           btn.className = r === rate 
             ? 'py-1 rounded-lg bg-emerald-600 text-white font-bold transition'
-            : 'py-1 rounded-lg bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 transition';
+            : 'py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition';
+        }
+      });
+      renderResults(currentCalculatedArea, currentCalculatedPerimeter);
+    }
+
+    function switchRegionMode(reg) {
+      currentRegion = reg;
+      ['central', 'south', 'north'].forEach(r => {
+        const btn = document.getElementById('btnReg_' + r);
+        if (btn) {
+          btn.className = r === reg 
+            ? 'px-2 py-0.5 rounded-md bg-emerald-600 text-white font-bold transition'
+            : 'px-2 py-0.5 rounded-md bg-slate-800 text-slate-400 transition';
         }
       });
       renderResults(currentCalculatedArea, currentCalculatedPerimeter);
@@ -1582,11 +1265,7 @@
       currentCalculatedPerimeter = perimeterM;
 
       let netArea = areaM2 * (1 - currentDeductRate / 100);
-
-      // Bù trừ diện tích sườn đồi dốc
-      if (currentSlopeAngle > 0) {
-        netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
-      }
+      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
 
       document.getElementById('resAreaM2').innerText = Math.round(areaM2).toLocaleString('vi-VN') + ' m²';
       document.getElementById('resNetAreaM2').innerText = Math.round(netArea).toLocaleString('vi-VN') + ' m²';
@@ -1608,7 +1287,7 @@
       updateCalculators(netArea, perimeterM);
     }
 
-    // 7. TÍNH TIỀN KHOÁN ĐẤT & PHÁT HIỆN DIỆN TÍCH ẢO
+    // 8. TÍNH TIỀN KHOÁN & CHỐNG HỚ DIỆN TÍCH
     function calcLeaseEconomics() {
       const pricePerSao = parseFloat(document.getElementById('inLeasePricePerSao').value) || 0;
       const claimedSao = parseFloat(document.getElementById('inClaimedSao').value) || 0;
@@ -1629,13 +1308,13 @@
         const diffSao = claimedSao - actualSao;
         if (diffSao > 0.05) {
           const moneySaved = diffSao * pricePerSao;
-          diffBox.className = 'p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-[11px] font-medium space-y-0.5';
+          diffBox.className = 'p-2 rounded-lg bg-emerald-950/70 border border-emerald-500/40 text-emerald-200 text-[11px] font-medium';
           diffText.innerHTML = `Chủ đất báo dôi <b>${diffSao.toFixed(2)} Sào</b> (${Math.round(diffSao * 500)} m²).<br>Bạn <b>tiết kiệm được ${Math.round(moneySaved).toLocaleString('vi-VN')} đ</b> tiền thuê!`;
         } else if (diffSao < -0.05) {
-          diffBox.className = 'p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-[11px] font-medium space-y-0.5';
-          diffText.innerHTML = `Đo thực tế nhiều hơn chủ đất báo <b>${Math.abs(diffSao).toFixed(2)} Sào</b> (${Math.round(Math.abs(diffSao) * 500)} m²).`;
+          diffBox.className = 'p-2 rounded-lg bg-amber-950/70 border border-amber-500/40 text-amber-200 text-[11px] font-medium';
+          diffText.innerHTML = `Đo thực tế nhiều hơn chủ đất báo <b>${Math.abs(diffSao).toFixed(2)} Sào</b>.`;
         } else {
-          diffBox.className = 'p-2 rounded-xl bg-slate-100 text-slate-700 text-[11px] font-medium';
+          diffBox.className = 'p-2 rounded-lg bg-slate-900 text-slate-400 text-[11px]';
           diffText.innerText = "Diện tích đo thực tế trùng khớp với chủ đất báo.";
         }
       } else {
@@ -1643,17 +1322,17 @@
       }
     }
 
-    // 8. CÔNG CỤ DỰ TOÁN NÔNG - LÂM - MÁY CÀY
+    // 9. CÔNG CỤ DỰ TOÁN NÔNG - LÂM - MÁY CÀY
     function switchCalcType(type) {
       currentCalcType = type;
-      ['watermelon', 'sugarcane', 'plow', 'forest', 'fence'].forEach(t => {
+      ['watermelon', 'sugarcane', 'plow', 'forest', 'team'].forEach(t => {
         const tab = document.getElementById('calcTab_' + t);
         const box = document.getElementById('calcBox_' + t);
         if (t === type) {
           tab.className = 'p-1 rounded-xl bg-emerald-600 text-white font-bold transition';
           box.classList.remove('hidden');
         } else {
-          tab.className = 'p-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition';
+          tab.className = 'p-1 rounded-xl bg-slate-800 text-slate-400 transition';
           box.classList.add('hidden');
         }
       });
@@ -1666,7 +1345,7 @@
       const saoCount = netAreaM2 / 500;
       const haCount = netAreaM2 / 10000;
 
-      // 1. Dưa hấu
+      // Dưa hấu
       const rowLength = netAreaM2 > 0 ? Math.round(netAreaM2 / 4.8) : 0;
       document.getElementById('calcMelonRowLength').innerText = rowLength.toLocaleString('vi-VN') + ' mét';
       const rolls = Math.ceil(rowLength / 100);
@@ -1676,71 +1355,96 @@
       const limeKg = Math.round(saoCount * 40);
       document.getElementById('calcMelonLime').innerText = limeKg.toLocaleString('vi-VN') + ' kg vôi';
 
-      // 2. Mía đường & sắn mì
+      // Mía
       const caneSeeds = (haCount * 8.5).toFixed(1);
       document.getElementById('calcCaneSeed').innerText = caneSeeds + ' tấn hom';
-      const caneFert = Math.round(haCount * 8); // 8 bao NPK 50kg/ha
+      const caneFert = Math.round(haCount * 8);
       document.getElementById('calcCaneFertilizer').innerText = caneFert + ' bao (50kg)';
       const caneYield = Math.round(haCount * 75);
-      document.getElementById('calcCaneYield').innerText = caneYield.toLocaleString('vi-VN') + ' tấn mía';
+      document.getElementById('calcCaneYield').innerText = caneYield.toLocaleString('vi-VN') + ' tấn';
 
-      // 3. Tiền công máy cày / máy gặt
+      // Máy cày
       const plowCost = Math.round(saoCount * 180000);
       const harvestCost = Math.round(saoCount * 250000);
       document.getElementById('calcPlowCost').innerText = plowCost.toLocaleString('vi-VN') + ' đ';
       document.getElementById('calcHarvestCost').innerText = harvestCost.toLocaleString('vi-VN') + ' đ';
 
-      // 4. Rừng keo lai
+      // Keo lai
       const trees = Math.round(haCount * 2500);
       document.getElementById('calcTreeKeo').innerText = trees.toLocaleString('vi-VN') + ' cây';
       document.getElementById('calcFertilizer').innerText = Math.round(trees * 0.1).toLocaleString('vi-VN') + ' kg';
 
-      // 5. Rào đất
-      document.getElementById('calcFenceLength').innerText = Math.round(perimeterM) + ' mét';
-      const posts = perimeterM > 0 ? Math.ceil(perimeterM / 2.5) : 0;
-      document.getElementById('calcFencePosts').innerText = posts.toLocaleString('vi-VN') + ' cọc';
+      // Chia công
+      calcTeamSplitting();
     }
 
-    // 9. THƯỚC ĐO THỦ CÔNG 4 CẠNH & TAM GIÁC HERON (OFFLINE)
-    function calcManualPolygonArea() {
-      const a = parseFloat(document.getElementById('inSideA').value) || 0;
-      const b = parseFloat(document.getElementById('inSideB').value) || 0;
-      const c = parseFloat(document.getElementById('inSideC').value) || 0;
-      const d = parseFloat(document.getElementById('inSideD').value) || 0;
-      const diag = parseFloat(document.getElementById('inDiag').value) || 0;
+    function calcTeamSplitting() {
+      const workers = parseInt(document.getElementById('inTeamWorkers').value) || 1;
+      const expenses = parseFloat(document.getElementById('inTeamExpenses').value) || 0;
 
-      const resBox = document.getElementById('manualCalcResultBox');
+      let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
+      const saoCount = netArea / 500;
 
-      if (a > 0 && b > 0 && diag > 0 && (a + b > diag)) {
-        resBox.classList.remove('hidden');
+      const plowTotal = Math.round(saoCount * 250000);
+      const remainPayout = Math.max(0, plowTotal - expenses);
+      const eachShare = Math.round(remainPayout / Math.max(1, workers));
+      document.getElementById('teamWorkerShare').innerText = eachShare.toLocaleString('vi-VN') + ' đ / người';
+    }
 
-        const s1 = (a + b + diag) / 2;
-        const area1 = Math.sqrt(Math.max(0, s1 * (s1 - a) * (s1 - b) * (s1 - diag)));
-
-        let area2 = 0;
-        if (c > 0 && d > 0 && (c + d > diag)) {
-          const s2 = (c + d + diag) / 2;
-          area2 = Math.sqrt(Math.max(0, s2 * (s2 - c) * (s2 - d) * (s2 - diag)));
-        }
-
-        const totalManualArea = area1 + area2;
-        document.getElementById('resManualM2').innerText = Math.round(totalManualArea).toLocaleString('vi-VN') + ' m²';
-        document.getElementById('resManualSao').innerText = (totalManualArea / 500).toFixed(2);
-      } else {
-        resBox.classList.add('hidden');
+    // 10. TRỢ LÝ GIỌNG NÓI TIẾNG VIỆT
+    function speakMeasurementResult() {
+      if (!('speechSynthesis' in window)) {
+        alert("Thiết bị chưa hỗ trợ phát giọng nói tự động!");
+        return;
       }
-    }
 
-    function applyManualAreaToMain() {
-      const areaM2Text = document.getElementById('resManualM2').innerText.replace(/[^d]/g, '');
-      const areaM2 = parseFloat(areaM2Text) || 0;
-      if (areaM2 > 0) {
-        renderResults(areaM2, 0);
-        alert("✅ Đã nạp " + areaM2.toLocaleString('vi-VN') + " m² vào bảng tính kinh tế khoán đất!");
+      if (currentCalculatedArea === 0) {
+        speakText("Bác ơi, bác chưa chấm điểm mốc nào trên bản đồ cả. Hãy chấm các góc ranh đất để máy đo nhé!");
+        return;
       }
+
+      let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
+
+      const m2 = Math.round(netArea);
+      const saoTB = (netArea / 500).toFixed(1);
+      const pricePerSao = parseFloat(document.getElementById('inLeasePricePerSao').value) || 0;
+      const totalRent = Math.round((netArea / 500) * pricePerSao);
+      const claimedSao = parseFloat(document.getElementById('inClaimedSao').value) || 0;
+
+      let msg = "Kính thưa bà con. Thửa đất này đo được thực tế là " + m2.toLocaleString('vi-VN') + " mét vuông, quy đổi ra là " + saoTB + " sào Trung Bộ. ";
+
+      if (currentDeductRate > 0) msg += "Đã trừ hao " + currentDeductRate + " phần trăm mương rãnh. ";
+      if (pricePerSao > 0) msg += "Tiền thuê khoán phải trả là " + totalRent.toLocaleString('vi-VN') + " đồng. ";
+
+      if (claimedSao > 0 && claimedSao > (netArea / 500)) {
+        const diffSao = (claimedSao - (netArea / 500)).toFixed(1);
+        const savedMoney = Math.round(diffSao * pricePerSao);
+        msg += "Chủ đất báo thừa " + diffSao + " sào. Bà con đã tiết kiệm được " + savedMoney.toLocaleString('vi-VN') + " đồng tiền thuê!";
+      }
+
+      speakText(msg);
     }
 
-    // 10. ĐO GPS THỰC ĐỊA: BƯỚC ĐI BỘ VỚI BỘ LỌC KALMAN
+    function speakText(text) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'vi-VN';
+      utterance.rate = 0.95;
+      utterance.pitch = 1.0;
+
+      const btn = document.getElementById('btnVoiceSpeak');
+      if (btn) btn.classList.add('animate-pulse');
+
+      utterance.onend = () => {
+        if (btn) btn.classList.remove('animate-pulse');
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // 11. ĐI BỘ ĐO GPS VỚI BỘ LỌC KALMAN
     function toggleGpsTracking() {
       if (isGpsTracking) {
         stopGpsTracking();
@@ -1751,14 +1455,14 @@
 
     function startGpsTracking() {
       if (!navigator.geolocation) {
-        alert("Thiết bị của bạn không hỗ trợ định vị GPS!");
+        alert("Thiết bị không hỗ trợ định vị GPS!");
         return;
       }
       isGpsTracking = true;
       kalmanLat.reset();
       kalmanLng.reset();
 
-      document.getElementById('btnGpsTrack').className = 'flex-1 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs transition active:scale-95 shadow flex items-center justify-center gap-1.5 cursor-pointer animate-pulse';
+      document.getElementById('btnGpsTrack').className = 'px-3.5 py-2 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs transition active:scale-95 shadow flex items-center gap-1.5 cursor-pointer animate-pulse';
       document.getElementById('gpsTrackIcon').className = 'fa-solid fa-stop';
       document.getElementById('gpsTrackText').innerText = 'Dừng GPS';
       document.getElementById('btnFinishGps').classList.remove('hidden');
@@ -1771,16 +1475,11 @@
           const rawLng = pos.coords.longitude;
           const acc = Math.round(pos.coords.accuracy || 0);
 
-          // Lọc qua Kalman
           const smoothLat = kalmanLat.filter(rawLat);
           const smoothLng = kalmanLng.filter(rawLng);
 
-          const badge = document.getElementById('gpsAccuracyBadge');
-          const meters = document.getElementById('gpsAccuracyMeters');
-          if (badge && meters) {
-            badge.classList.remove('hidden');
-            meters.innerText = acc;
-          }
+          const hdrAcc = document.getElementById('hdrAccuracyText');
+          if (hdrAcc) hdrAcc.innerText = '±' + acc + 'm';
 
           addPoint(smoothLat, smoothLng);
           map.setView([smoothLat, smoothLng], 18);
@@ -1798,9 +1497,9 @@
         navigator.geolocation.clearWatch(gpsWatchId);
         gpsWatchId = null;
       }
-      document.getElementById('btnGpsTrack').className = 'flex-1 py-2.5 rounded-2xl bg-teal-600 hover:bg-teal-700 text-white font-black text-xs transition active:scale-95 shadow flex items-center justify-center gap-1.5 cursor-pointer';
-      document.getElementById('gpsTrackIcon').className = 'fa-solid fa-play';
-      document.getElementById('gpsTrackText').innerText = 'Bắt Đầu Đi Đo';
+      document.getElementById('btnGpsTrack').className = 'px-3.5 py-2 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer';
+      document.getElementById('gpsTrackIcon').className = 'fa-solid fa-person-walking';
+      document.getElementById('gpsTrackText').innerText = 'Đi Bộ Đo Ranh';
     }
 
     function finishGpsTracking() {
@@ -1811,24 +1510,26 @@
       }
     }
 
-    // 11. BỘ CHUYỂN ĐỔI TOẠ ĐỘ VN-2000 (KINH TUYẾN TRỤC PHÚ YÊN 108°30')
-    function openVn2000Modal() {
-      document.getElementById('vn2000Modal').classList.remove('hidden');
-    }
-
-    function closeVn2000Modal() {
-      document.getElementById('vn2000Modal').classList.add('hidden');
+    // 12. SỔ ĐỎ VN-2000 CHUYỂN ĐỔI TOÀN QUỐC
+    function onProvinceChange(meridianVal) {
+      selectedCentralMeridian = parseFloat(meridianVal) || 108.5;
+      const textEl = document.getElementById('statusMeridianText');
+      if (textEl) {
+        const sel = document.getElementById('selVn2000Province');
+        const optText = sel.options[sel.selectedIndex].text;
+        textEl.innerText = optText.split('(')[0].trim() + ' (' + meridianVal + '°)';
+      }
     }
 
     function addVn2000Row() {
       const container = document.getElementById('vn2000RowsContainer');
       const rowCount = container.children.length + 1;
       const row = document.createElement('div');
-      row.className = 'grid grid-cols-12 gap-2 items-center text-xs';
+      row.className = 'grid grid-cols-12 gap-1.5 items-center text-xs';
       row.innerHTML = `
         <span class="col-span-2 font-bold text-slate-500 font-mono">Điểm ${rowCount}:</span>
-        <input type="number" placeholder="Toạ độ X" class="col-span-5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs vn2000-x">
-        <input type="number" placeholder="Toạ độ Y" class="col-span-5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs vn2000-y">
+        <input type="number" placeholder="X" class="col-span-5 p-1.5 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs text-white vn2000-x">
+        <input type="number" placeholder="Y" class="col-span-5 p-1.5 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs text-white vn2000-y">
       `;
       container.appendChild(row);
     }
@@ -1885,6 +1586,14 @@
       };
     }
 
+    function wgs84ToVn2000Approx(lat, lng) {
+      const dLat = (lat - 13.0) * 110852;
+      const dLng = (lng - selectedCentralMeridian) * 108420;
+      const x = Math.round(1437600 + dLat);
+      const y = Math.round(500000 + dLng);
+      return { x, y };
+    }
+
     function applyVn2000ToPlot() {
       const xInputs = document.querySelectorAll('.vn2000-x');
       const yInputs = document.querySelectorAll('.vn2000-y');
@@ -1906,16 +1615,53 @@
 
       clearAllMarkers();
       pts.forEach(p => addPoint(p.lat, p.lng));
-      closeVn2000Modal();
 
-      if (polygon) {
-        map.fitBounds(polygon.getBounds(), { padding: [40, 40] });
-      }
+      if (polygon) map.fitBounds(polygon.getBounds(), { padding: [40, 40] });
+      switchInspectorTab('area');
 
       alert("🎉 Đã chuyển đổi " + pts.length + " toạ độ Sổ Đỏ VN-2000 thành công và định vị lên bản đồ vệ tinh!");
     }
 
-    // 12. XUẤT FILE KML MỞ GOOGLE EARTH
+    // 13. THƯỚC ĐO THỦ CÔNG HERON
+    function calcManualPolygonArea() {
+      const a = parseFloat(document.getElementById('inSideA').value) || 0;
+      const b = parseFloat(document.getElementById('inSideB').value) || 0;
+      const c = parseFloat(document.getElementById('inSideC').value) || 0;
+      const d = parseFloat(document.getElementById('inSideD').value) || 0;
+      const diag = parseFloat(document.getElementById('inDiag').value) || 0;
+
+      const resBox = document.getElementById('manualCalcResultBox');
+
+      if (a > 0 && b > 0 && diag > 0 && (a + b > diag)) {
+        resBox.classList.remove('hidden');
+
+        const s1 = (a + b + diag) / 2;
+        const area1 = Math.sqrt(Math.max(0, s1 * (s1 - a) * (s1 - b) * (s1 - diag)));
+
+        let area2 = 0;
+        if (c > 0 && d > 0 && (c + d > diag)) {
+          const s2 = (c + d + diag) / 2;
+          area2 = Math.sqrt(Math.max(0, s2 * (s2 - c) * (s2 - d) * (s2 - diag)));
+        }
+
+        const totalManualArea = area1 + area2;
+        document.getElementById('resManualM2').innerText = Math.round(totalManualArea).toLocaleString('vi-VN') + ' m²';
+      } else {
+        resBox.classList.add('hidden');
+      }
+    }
+
+    function applyManualAreaToMain() {
+      const areaM2Text = document.getElementById('resManualM2').innerText.replace(/[^d]/g, '');
+      const areaM2 = parseFloat(areaM2Text) || 0;
+      if (areaM2 > 0) {
+        renderResults(areaM2, 0);
+        switchInspectorTab('area');
+        alert("✅ Đã nạp " + areaM2.toLocaleString('vi-VN') + " m² vào bảng tính kinh tế khoán đất!");
+      }
+    }
+
+    // 14. XUẤT FILE KML & BIÊN BẢN ZALO
     function downloadKmlFile() {
       if (markers.length < 3) {
         alert("Vui lòng chấm tối thiểu 3 điểm mốc để tạo file KML!");
@@ -1958,7 +1704,6 @@
       URL.revokeObjectURL(url);
     }
 
-    // 13. SAO CHÉP BÁO CÁO & XUẤT BIÊN BẢN NGHIỆM THU GỬI ZALO
     function copyMeasurementReport() {
       if (currentCalculatedArea === 0) {
         alert("Vui lòng đo thửa đất trước khi sao chép báo cáo!");
@@ -2023,7 +1768,7 @@
       });
     }
 
-    // 14. LƯU & QUẢN LÝ THỬA ĐẤT
+    // 15. LƯU & QUẢN LÝ THỬA ĐẤT
     function saveCurrentPlot() {
       if (currentCalculatedArea === 0) {
         alert("Vui lòng đo thửa đất trước khi lưu!");
@@ -2049,24 +1794,25 @@
 
     function loadSavedPlots() {
       const plots = JSON.parse(localStorage.getItem('datphu_saved_plots') || '[]');
-      document.getElementById('savedPlotsCount').innerText = plots.length + " thửa";
+      const countEl = document.getElementById('savedPlotsCount');
+      if (countEl) countEl.innerText = plots.length + " thửa";
       const listEl = document.getElementById('savedPlotsList');
       if (!listEl) return;
 
       if (plots.length === 0) {
-        listEl.innerHTML = '<div class="text-center py-4 text-slate-400 text-xs">Chưa có thửa đất nào được lưu. Hãy đo và bấm "Lưu Thửa Đất".</div>';
+        listEl.innerHTML = '<div class="text-center py-4 text-slate-500 text-xs">Chưa có thửa đất nào được lưu.</div>';
         return;
       }
 
       listEl.innerHTML = plots.map(p => `
-        <div class="p-2.5 rounded-2xl bg-slate-50 hover:bg-emerald-50 border border-slate-100 flex items-center justify-between transition">
+        <div class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 flex items-center justify-between transition">
           <div class="space-y-0.5">
-            <div class="font-bold text-slate-800 text-xs">${p.name}</div>
-            <div class="text-[10px] text-slate-500 font-mono">${Math.round(p.area).toLocaleString('vi-VN')} m² (${(p.area/500).toFixed(1)} sào) • ${p.date}</div>
+            <div class="font-bold text-white text-xs">${p.name}</div>
+            <div class="text-[10px] text-slate-400 font-mono">${Math.round(p.area).toLocaleString('vi-VN')} m² (${(p.area/500).toFixed(1)} sào) • ${p.date}</div>
           </div>
           <div class="flex items-center gap-1.5">
             <button onclick="viewPlot(${p.id})" class="px-2 py-1 rounded-lg bg-emerald-600 text-white font-bold text-[10px]" title="Xem lại">Xem</button>
-            <button onclick="deletePlot(${p.id})" class="px-2 py-1 rounded-lg bg-slate-200 hover:bg-rose-100 text-slate-600 hover:text-rose-600 font-bold text-[10px]" title="Xóa">✕</button>
+            <button onclick="deletePlot(${p.id})" class="px-2 py-1 rounded-lg bg-slate-700 hover:bg-rose-900/60 text-slate-300 hover:text-rose-300 font-bold text-[10px]" title="Xóa">✕</button>
           </div>
         </div>
       `).join('');
@@ -2080,6 +1826,7 @@
       clearAllMarkers();
       plot.points.forEach(pt => addPoint(pt[0], pt[1]));
       if (polygon) map.fitBounds(polygon.getBounds(), { padding: [30, 30] });
+      switchInspectorTab('area');
     }
 
     function deletePlot(id) {
