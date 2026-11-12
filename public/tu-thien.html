@@ -67,9 +67,7 @@
       min-height: 520px;
       z-index: 10;
     }
-    @media (min-width: 1024px) {
-      #mapMeasure { min-height: 680px; }
-    }
+    @media (min-width: 768px) { #mapMeasure { min-height: 640px; } }
 
     /* Nhãn đo chiều dài cạnh */
     .edge-label {
@@ -161,10 +159,10 @@
   </header>
 
   <!-- ==================== WORKSPACE TRẮC ĐỊA CHUYÊN NGHIỆP ==================== -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-4">
+  <main class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-4 lg:p-6 grid grid-cols-1 md:grid-cols-12 gap-4">
 
     <!-- KHÔNG GIAN BẢN ĐỒ VỆ TINH TRUNG TÂM (CHIẾM 7 CỘT LỚN) -->
-    <div class="lg:col-span-7 flex flex-col space-y-3">
+    <div class="md:col-span-7 flex flex-col space-y-3">
       
       <!-- HỘP BẢN ĐỒ KỸ THUẬT SỐ CÓ HUD NỔI -->
       <div class="relative flex-1 rounded-3xl overflow-hidden border-2 border-slate-800 shadow-2xl bg-slate-950 flex flex-col">
@@ -240,7 +238,8 @@
         <div class="pro-glass border-t border-slate-800 p-3 flex flex-wrap items-center justify-between gap-3 text-xs z-20">
           
           <!-- Nút bấm Định vị & Đi bộ đo ngoài đồng -->
-          <div class="flex items-center gap-2">
+          <button onclick="document.getElementById('surveyorInspectorDock').scrollIntoView({behavior: 'smooth'})" id="btnJumpToInspector" class="md:hidden px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-md active:scale-95 transition" title="Xem bảng số liệu"><i class="fa-solid fa-chart-pie"></i><span>Xem Bảng Số Liệu</span></button>
+            <div class="flex items-center gap-2">
             <button onclick="getUserGPSLocation()" id="btnMyGpsLocation" class="px-3.5 py-2 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
               <i id="iconMyGpsLocation" class="fa-solid fa-location-crosshairs text-sm"></i>
               <span id="textMyGpsLocation">Vị Trí Của Tôi</span>
@@ -289,11 +288,12 @@
     </div>
 
     <!-- BẢNG ĐIỀU KHIỂN TRẮC ĐỊA BÊN CẠNH (SURVEYOR INSPECTOR DOCK - CHIẾM 5 CỘT) -->
-    <div class="lg:col-span-5 flex flex-col space-y-4">
+    <div id="surveyorInspectorDock" class="md:col-span-5 flex flex-col space-y-4">
       
       <!-- HỘP ĐIỀU KHIỂN TRUNG TÂM DẠNG COCKPIT -->
       <div class="pro-hud-card rounded-3xl p-4 sm:p-5 space-y-4 flex flex-col">
         
+        <div class="md:hidden flex justify-end pb-1"><button onclick="document.getElementById('mapMeasure').scrollIntoView({behavior: 'smooth'})" id="btnJumpToMap" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 font-bold text-xs flex items-center gap-1.5 shadow active:scale-95 transition"><i class="fa-solid fa-map-location-dot"></i><span>Lên Bản Đồ Vệ Tinh</span></button></div>
         <!-- THANH 4 TAB CHỨC NĂNG CHUYÊN NGHIỆP -->
         <div class="grid grid-cols-4 gap-1 p-1 rounded-2xl bg-slate-900 border border-slate-800 text-center text-xs font-bold">
           <button onclick="switchInspectorTab('area')" id="tabInsp_area" class="py-2 rounded-xl bg-emerald-600 text-white transition shadow-sm flex flex-col items-center gap-0.5">
