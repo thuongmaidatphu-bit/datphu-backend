@@ -105,6 +105,42 @@
       }
     }
   
+  
+    /* ==================== TỐI ƯU HÓA ĐIỆN THOẠI DI ĐỘNG (MOBILE FIRST) ==================== */
+    @media (max-width: 767px) {
+      /* Chiều cao bản đồ trên điện thoại chiếm tối đa để thao tác dễ */
+      #mapMeasure {
+        min-height: 58vh !important;
+        height: 58vh !important;
+      }
+      
+      /* Cỡ chữ và nút bấm to rõ chống bấm nhầm khi tay dính đất/nước */
+      button, select, input {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+      }
+      
+      /* Thanh điều hướng cố định dưới đáy màn hình (Bottom Navigation Bar) */
+      .mobile-bottom-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 45;
+        background: rgba(10, 16, 29, 0.96);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-top: 1px solid rgba(51, 65, 85, 0.8);
+        padding: 6px 10px 10px 10px;
+        box-shadow: 0 -8px 25px rgba(0,0,0,0.8);
+      }
+
+      /* Đẩy khoảng đệm dưới cùng của trang để không bị thanh đáy che */
+      body {
+        padding-bottom: 75px !important;
+      }
+    }
+  
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950">
@@ -274,6 +310,24 @@
           <div id="ndviAnalysisText" class="text-[9.5px] text-emerald-200/90 leading-tight pt-1 border-t border-slate-800">
             Thửa đất đang xanh tốt khỏe mạnh (NDVI ~0.72). Độ ẩm sinh khối dồi dào.
           </div>
+        </div>
+  
+        
+        <!-- NÚT BẤM TO RÕ CHUYÊN DỤNG CHO NGƯỜI ĐI BỘ NGOÀI ĐỒNG (HIỆN TRÊN ĐIỆN THOẠI) -->
+        <div class="md:hidden absolute bottom-14 inset-x-3 z-30 flex items-center justify-between gap-2 pointer-events-none">
+          
+          <!-- Nút giữ sáng màn hình không bị tắt khi đi đo -->
+          <button onclick="toggleScreenWakeLock()" id="btnWakeLock" class="pointer-events-auto px-3 py-2 rounded-2xl bg-slate-900/90 backdrop-blur-md border border-slate-700/80 text-amber-300 font-bold text-[10.5px] flex items-center gap-1.5 shadow-lg active:scale-95 transition" title="Giữ màn hình điện thoại luôn sáng khi đang đi bộ đo đất">
+            <i class="fa-solid fa-sun" id="wakeLockIcon"></i>
+            <span id="wakeLockText">Giữ Sáng</span>
+          </button>
+
+          <!-- Nút Chấm mốc ngay tại vị trí đang đứng -->
+          <button onclick="markCurrentGpsPoint()" id="btnMarkGpsHere" class="pointer-events-auto flex-1 max-w-[200px] py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(16,185,129,0.45)] border-2 border-white/40 active:scale-95 transition cursor-pointer">
+            <i class="fa-solid fa-location-pin text-sm text-slate-950"></i>
+            <span class="tracking-wide">CHẤM MỐC TẠI ĐÂY</span>
+          </button>
+
         </div>
   
         <!-- THANH CÔNG CỤ CHÂN BẢN ĐỒ: TOẠ ĐỘ THỜI GIAN THỰC & ĐI BỘ ĐO GPS -->
@@ -1765,6 +1819,7 @@
     }
 
     function playBeepSound() {
+      triggerMobileHaptic(50); // Rung máy điện thoại khi cắm mốc
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = audioCtx.createOscillator();
