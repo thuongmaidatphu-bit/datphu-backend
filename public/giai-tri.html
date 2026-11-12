@@ -1284,6 +1284,35 @@
       renderRadioPlaylist();
       startWaveVisualizer();
 
+      const track = RADIO_PLAYLIST[currentRadioIdx];
+
+      // 1. NGÂM CÂU CA DAO / BÀI CHÒI BẰNG GIỌNG ĐỌC TRUYỀN CẢM TIẾNG VIỆT
+      if ('speechSynthesis' in window && track && track.chant) {
+        window.speechSynthesis.cancel();
+        const textToSpeak = track.title + ". " + track.chant;
+        const utter = new SpeechSynthesisUtterance(textToSpeak);
+        utter.lang = 'vi-VN';
+        utter.rate = 0.82; // Tốc độ chậm rãi, truyền cảm như ngâm thơ
+        utter.pitch = 1.0;
+        
+        // Tìm giọng đọc tiếng Việt mượt mà
+        const voices = window.speechSynthesis.getVoices();
+        const viVoice = voices.find(v => v.lang === 'vi-VN' || v.lang.startsWith('vi'));
+        if (viVoice) utter.voice = viVoice;
+
+        utter.onend = function() {
+          if (isRadioPlaying) {
+            // Khi ngâm xong 1 câu, nghỉ 3 giây rồi tự động chuyển bài tiếp theo
+            setTimeout(() => {
+              if (isRadioPlaying) playNextRadioTrack();
+            }, 3000);
+          }
+        };
+
+        window.speechSynthesis.speak(utter);
+      }
+
+      // 2. HÒA ÂM ĐÀN TRANH NGŨ CUNG MỘC LÀM NHẠC NỀN DỊU ÊM (KHÔNG DÙNG TIẾNG BÍP ĐIỆN TỬ)
       try {
         if (!radioAudioContext) {
           radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -1293,30 +1322,40 @@
         }
 
         // Tần số ngũ cung dân ca Xứ Nẫu (Hò, Xự, Xang, Xê, Cống)
-        const notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33];
+        const notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
         let noteStep = 0;
 
         radioSynthTimer = setInterval(() => {
           if (!isRadioPlaying || !radioAudioContext) return;
+          
+          // Tạo tiếng gảy đàn dây tơ (Acoustic Pluck) êm dịu, ấm áp
           const osc = radioAudioContext.createOscillator();
           const gain = radioAudioContext.createGain();
+          const filter = radioAudioContext.createBiquadFilter();
           
           const freq = notes[noteStep % notes.length];
           noteStep++;
 
-          osc.type = "triangle";
+          // Bộ lọc thông thấp giúp âm thanh ấm áp mộc mạc
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(750, radioAudioContext.currentTime);
+
+          // Dạng sóng sin thuần khiết mộc mạc như tiếng đàn tranh
+          osc.type = "sine";
           osc.frequency.setValueAtTime(freq, radioAudioContext.currentTime);
 
-          gain.gain.setValueAtTime(0.001, radioAudioContext.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.12, radioAudioContext.currentTime + 0.05);
-          gain.gain.exponentialRampToValueAtTime(0.0001, radioAudioContext.currentTime + 0.7);
+          // Âm lượng gảy nhẹ nhàng, tắt dần tự nhiên
+          gain.gain.setValueAtTime(0.0001, radioAudioContext.currentTime);
+          gain.gain.linearRampToValueAtTime(0.04, radioAudioContext.currentTime + 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.0001, radioAudioContext.currentTime + 1.2);
 
-          osc.connect(gain);
+          osc.connect(filter);
+          filter.connect(gain);
           gain.connect(radioAudioContext.destination);
 
           osc.start();
-          osc.stop(radioAudioContext.currentTime + 0.75);
-        }, 550);
+          osc.stop(radioAudioContext.currentTime + 1.25);
+        }, 1500); // 1.5 giây gảy một nốt đàn nhẹ nhàng làm nền
 
       } catch(e) {
         console.warn('AudioContext failed:', e);
@@ -1325,6 +1364,9 @@
 
     function stopRadioSynth() {
       isRadioPlaying = false;
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
       if (radioSynthTimer) {
         clearInterval(radioSynthTimer);
         radioSynthTimer = null;
