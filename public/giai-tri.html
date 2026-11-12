@@ -598,115 +598,257 @@
     <!-- ============================================================ -->
     <!-- PHÂN HỆ 4: TRỊ LIỆU TẦN SỐ & BỘ TRỘN ÂM THANH THIÊN NHIÊN      -->
     <!-- ============================================================ -->
+        <!-- ============================================================ -->
+    <!-- PHÂN HỆ 4: TRỊ LIỆU TẦN SỐ & BÀN TRỘN HÒA ÂM THIÊN NHIÊN       -->
+    <!-- ============================================================ -->
     <section id="channelSection_healing" class="space-y-4 hidden">
-      <div class="card-box p-4 sm:p-6 rounded-3xl bg-gradient-to-br from-teal-950 via-slate-900 to-teal-950 text-white shadow-xl space-y-5 border border-teal-500/30">
-        <div class="flex items-center justify-between">
-          <div>
-            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/40 uppercase">
-              Bộ Trộn Âm Thanh Thiên Nhiên (Soundscape Mixer)
-            </span>
-            <h2 class="text-base sm:text-xl font-black text-white mt-1">
-              Hòa Âm Thiên Nhiên Đất Phú & Tần Số Sinh Học
-            </h2>
-            <p class="text-xs text-teal-200/80">Kéo các thanh trượt bên dưới để tự phối âm thanh thư giãn theo sở thích riêng của bạn.</p>
+      <!-- CONSOLE BÀN TRỘN ÂM THANH THIÊN NHIÊN CAO CẤP (SOUNDSCAPE STUDIO) -->
+      <div class="relative rounded-[2.5rem] bg-gradient-to-b from-[#051d19] via-[#082621] to-[#02100d] p-4 sm:p-7 border-4 border-teal-500/60 shadow-[0_20px_60px_rgba(0,0,0,0.85),inset_0_2px_4px_rgba(255,255,255,0.15)] text-white space-y-6 select-none overflow-hidden">
+        
+        <!-- Hào quang phát sáng ngọc bích -->
+        <div class="pointer-events-none absolute -top-24 -right-24 w-64 h-64 bg-teal-400/15 rounded-full blur-3xl"></div>
+        <div class="pointer-events-none absolute -bottom-24 -left-24 w-64 h-64 bg-emerald-500/15 rounded-full blur-3xl"></div>
+
+        <!-- HEADER CONSOLE: TỰA ĐỀ & BỘ ĐIỀU KHIỂN CHÍNH -->
+        <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-teal-500/30 pb-4">
+          <div class="flex items-center gap-3 text-center sm:text-left">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-400 to-emerald-600 text-slate-950 flex items-center justify-center font-black text-xl shadow-lg border border-teal-200 shrink-0">
+              <i class="fa-solid fa-sliders"></i>
+            </div>
+            <div>
+              <div class="flex items-center justify-center sm:justify-start gap-2">
+                <span class="text-[9.5px] font-mono px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/40 uppercase font-black">
+                  SOUNDSCAPE STUDIO 432Hz
+                </span>
+                <span id="healingLiveBadge" class="hidden text-[9.5px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 font-bold flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ĐANG HÒA ÂM
+                </span>
+              </div>
+              <h2 class="text-base sm:text-lg font-black text-white mt-0.5 font-serif">
+                HÒA ÂM THIÊN NHIÊN ĐẤT PHÚ & TẦN SỐ SINH HỌC
+              </h2>
+              <p class="text-[11px] text-teal-200/70 font-medium">Tự do phối trộn 4 dải âm thanh thiên nhiên theo sở thích để ngủ sâu và thư giãn</p>
+            </div>
           </div>
 
-          <button onclick="toggleHealingMasterPlay()" id="btnHealingMasterPlay" class="w-14 h-14 rounded-full bg-teal-400 hover:bg-teal-300 text-slate-950 flex items-center justify-center font-black text-2xl shadow-lg transition active:scale-95" title="Bật / Tắt Bộ Trộn">
-            <i id="healingMasterPlayIcon" class="fa-solid fa-play ml-0.5"></i>
-          </button>
+          <!-- NÚT PHÁT CHÍNH TO TRÒN HÀO QUANG NGỌC BÍCH -->
+          <div class="flex items-center gap-3 shrink-0">
+            <!-- Nút Đặt Lại / Tắt Nhanh -->
+            <button onclick="resetAllMixerVolumes()" class="p-2.5 sm:px-3 sm:py-2 rounded-2xl bg-slate-900/80 hover:bg-slate-800 text-teal-300 border border-teal-500/30 text-xs font-bold transition active:scale-95 flex items-center gap-1.5" title="Đặt lại âm lượng ban đầu">
+              <i class="fa-solid fa-arrow-rotate-left"></i>
+              <span class="hidden sm:inline">Đặt Lại</span>
+            </button>
+
+            <!-- Nút Master Play -->
+            <button onclick="toggleHealingMasterPlay()" id="btnHealingMasterPlay" class="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-gradient-to-br from-teal-300 via-teal-400 to-emerald-600 border-4 border-teal-200 shadow-[0_8px_25px_rgba(45,212,191,0.6)] hover:shadow-[0_10px_30px_rgba(45,212,191,0.8)] hover:scale-105 active:scale-95 text-slate-950 flex items-center justify-center font-black text-2xl transition duration-200 cursor-pointer" title="Bật / Dừng Hòa Âm">
+              <i id="healingMasterPlayIcon" class="fa-solid fa-play ml-1 drop-shadow"></i>
+            </button>
+          </div>
         </div>
 
-        
-        <!-- 3 CHẾ ĐỘ PHỐI ÂM CÀI SẴN 1-CHẠM (SOUNDSCAPE PRESETS) -->
-        <div class="space-y-2">
-          <div class="text-[10px] font-bold text-teal-300 uppercase tracking-wider flex items-center gap-1.5">
-            <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
-            <span>3 Chế Độ Phối Âm Thiên Nhiên Cài Sẵn (1 Chạm Tự Động Phối)</span>
+        <!-- 3 CHẾ ĐỘ PHỐI ÂM CÀI SẴN 1-CHẠM (SOUNDSCAPE PRESET CARDS) -->
+        <div class="relative z-10 space-y-2">
+          <div class="flex items-center justify-between text-xs px-1">
+            <span class="text-[10px] font-black text-teal-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+              <span>3 Chế Độ Hòa Âm Cài Sẵn (1 Chạm Tự Động Phối)</span>
+            </span>
+            <span class="text-[10px] text-teal-200/60 font-medium">Bấm để máy tự cân chỉnh</span>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <!-- Preset 1: Đêm mưa Tuy Hòa -->
-            <button onclick="applyHealingPreset('rain_sleep')" class="p-3 rounded-2xl bg-teal-900/60 hover:bg-teal-800/80 border border-teal-400/30 text-left transition active:scale-95 space-y-1 cursor-pointer">
-              <div class="font-black text-white flex items-center gap-1.5">
-                <i class="fa-solid fa-cloud-moon-rain text-sky-300"></i>
-                <span>Đêm Mưa Tuy Hòa</span>
+            <button onclick="applyHealingPreset('rain_sleep')" class="group p-3.5 rounded-2xl bg-gradient-to-br from-[#0c2e36] to-[#06181d] hover:from-[#11404c] hover:to-[#092229] border-2 border-teal-400/40 hover:border-teal-300 text-left transition duration-200 shadow-md active:scale-95 space-y-1.5 cursor-pointer">
+              <div class="flex items-center justify-between">
+                <div class="font-black text-sm text-white flex items-center gap-2 group-hover:text-teal-200">
+                  <div class="w-7 h-7 rounded-xl bg-sky-500/20 text-sky-300 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-cloud-moon-rain"></i>
+                  </div>
+                  <span>Đêm Mưa Tuy Hòa</span>
+                </div>
+                <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/30">Ngủ Sâu</span>
               </div>
-              <p class="text-[10px] text-teal-200/80">Mưa 85% • Chuông gió 45% • 432Hz ngủ sâu</p>
+              <p class="text-[11px] text-teal-200/80 leading-snug">Mưa rào 85% • Chuông gió 45% • Sóng âm 432Hz xua tan mất ngủ</p>
             </button>
 
             <!-- Preset 2: Chiều hoàng hôn Bãi Môn -->
-            <button onclick="applyHealingPreset('ocean_sunset')" class="p-3 rounded-2xl bg-teal-900/60 hover:bg-teal-800/80 border border-teal-400/30 text-left transition active:scale-95 space-y-1 cursor-pointer">
-              <div class="font-black text-white flex items-center gap-1.5">
-                <i class="fa-solid fa-water text-cyan-300"></i>
-                <span>Hoàng Hôn Bãi Môn</span>
+            <button onclick="applyHealingPreset('ocean_sunset')" class="group p-3.5 rounded-2xl bg-gradient-to-br from-[#0b2f29] to-[#051a16] hover:from-[#0f3f37] hover:to-[#08241f] border-2 border-teal-400/40 hover:border-teal-300 text-left transition duration-200 shadow-md active:scale-95 space-y-1.5 cursor-pointer">
+              <div class="flex items-center justify-between">
+                <div class="font-black text-sm text-white flex items-center gap-2 group-hover:text-teal-200">
+                  <div class="w-7 h-7 rounded-xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-water"></i>
+                  </div>
+                  <span>Hoàng Hôn Bãi Môn</span>
+                </div>
+                <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">Thư Giãn</span>
               </div>
-              <p class="text-[10px] text-teal-200/80">Sóng 80% • Sáo trúc 40% • 528Hz tái tạo</p>
+              <p class="text-[11px] text-teal-200/80 leading-snug">Sóng biển 80% • Sáo trúc 40% • 528Hz phục hồi năng lượng</p>
             </button>
 
             <!-- Preset 3: Thiền trà tổ đình -->
-            <button onclick="applyHealingPreset('zen_tea')" class="p-3 rounded-2xl bg-teal-900/60 hover:bg-teal-800/80 border border-teal-400/30 text-left transition active:scale-95 space-y-1 cursor-pointer">
-              <div class="font-black text-white flex items-center gap-1.5">
-                <i class="fa-solid fa-mug-hot text-amber-300"></i>
-                <span>Thiền Trà Tổ Đình</span>
+            <button onclick="applyHealingPreset('zen_tea')" class="group p-3.5 rounded-2xl bg-gradient-to-br from-[#2a220b] to-[#141004] hover:from-[#3a2e0e] hover:to-[#1c1606] border-2 border-amber-400/40 hover:border-amber-300 text-left transition duration-200 shadow-md active:scale-95 space-y-1.5 cursor-pointer">
+              <div class="flex items-center justify-between">
+                <div class="font-black text-sm text-white flex items-center gap-2 group-hover:text-amber-200">
+                  <div class="w-7 h-7 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-mug-hot"></i>
+                  </div>
+                  <span>Thiền Trà Tổ Đình</span>
+                </div>
+                <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">Tĩnh Tâm</span>
               </div>
-              <p class="text-[10px] text-teal-200/80">Chuông 60% • Sáo 65% • Tĩnh tâm đọc sách</p>
+              <p class="text-[11px] text-amber-200/80 leading-snug">Chuông gió 60% • Sáo trúc 65% • Tâm an tịnh đọc sách, uống trà</p>
             </button>
           </div>
         </div>
 
-        <!-- BÀN TRỘN 4 KÊNH ÂM THANH (4-CHANNEL SLIDER MIXER) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 bg-slate-900/60 p-4 rounded-3xl border border-teal-500/20">
-          <!-- Kênh 1: Tiếng mưa Tuy Hòa -->
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between text-xs font-bold">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-cloud-showers-heavy text-sky-400"></i> Tiếng Mưa Rào Tuy Hòa</span>
-              <span id="volRainText" class="text-teal-300 font-mono">60%</span>
+        <!-- 4 BÀN KÉO ÂM LƯỢNG RIÊNG BIỆT THIẾT KẾ CÔNG THÁI HỌC (4-CHANNEL TACTILE CARDS) -->
+        <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          
+          <!-- THẺ 1: TIẾNG MƯA RÀO TUY HÒA -->
+          <div class="p-4 rounded-3xl bg-gradient-to-br from-[#0c2231] via-[#081822] to-[#040e14] border-2 border-sky-400/40 shadow-lg space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-2xl bg-sky-500/20 border border-sky-400/40 text-sky-300 flex items-center justify-center text-lg shadow">
+                  <i class="fa-solid fa-cloud-showers-heavy"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs sm:text-sm font-black text-white">Mưa Rào Tuy Hòa</h4>
+                  <p class="text-[10px] text-sky-200/70">Tiếng mưa rả rích trên mái ngói quê</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span id="volRainText" class="text-base font-black text-sky-300 font-mono">60%</span>
+              </div>
             </div>
-            <input type="range" id="sliderVolRain" min="0" max="100" value="60" oninput="updateMixerVolume('rain', this.value)" class="w-full accent-teal-400 cursor-pointer">
+
+            <!-- Thanh trượt điều chỉnh -->
+            <div class="space-y-1">
+              <input type="range" id="sliderVolRain" min="0" max="100" value="60" oninput="updateMixerVolume('rain', this.value)" class="w-full h-2.5 rounded-lg appearance-none bg-slate-800 accent-sky-400 cursor-pointer">
+              <div class="flex justify-between text-[9px] text-slate-400 font-mono px-0.5">
+                <span>0% (Tắt)</span>
+                <span>Mưa Vừa</span>
+                <span>100% (Mưa Rào)</span>
+              </div>
+            </div>
           </div>
 
-          <!-- Kênh 2: Tiếng Sóng Biển Bãi Môn -->
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between text-xs font-bold">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-water text-cyan-400"></i> Sóng Biển Bãi Môn</span>
-              <span id="volOceanText" class="text-teal-300 font-mono">50%</span>
+          <!-- THẺ 2: SÓNG BIỂN BÃI MÔN -->
+          <div class="p-4 rounded-3xl bg-gradient-to-br from-[#09272f] via-[#061a20] to-[#030e12] border-2 border-cyan-400/40 shadow-lg space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-2xl bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 flex items-center justify-center text-lg shadow">
+                  <i class="fa-solid fa-water"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs sm:text-sm font-black text-white">Sóng Biển Bãi Môn</h4>
+                  <p class="text-[10px] text-cyan-200/70">Hải âu & sóng đại dương ru êm</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span id="volOceanText" class="text-base font-black text-cyan-300 font-mono">50%</span>
+              </div>
             </div>
-            <input type="range" id="sliderVolOcean" min="0" max="100" value="50" oninput="updateMixerVolume('ocean', this.value)" class="w-full accent-teal-400 cursor-pointer">
+
+            <div class="space-y-1">
+              <input type="range" id="sliderVolOcean" min="0" max="100" value="50" oninput="updateMixerVolume('ocean', this.value)" class="w-full h-2.5 rounded-lg appearance-none bg-slate-800 accent-cyan-400 cursor-pointer">
+              <div class="flex justify-between text-[9px] text-slate-400 font-mono px-0.5">
+                <span>0% (Tắt)</span>
+                <span>Gió Biển</span>
+                <span>100% (Sóng Lớn)</span>
+              </div>
+            </div>
           </div>
 
-          <!-- Kênh 3: Chuông Gió Pha Lê 432Hz -->
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between text-xs font-bold">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-bell text-amber-300"></i> Chuông Gió Pha Lê 432Hz</span>
-              <span id="volWindText" class="text-teal-300 font-mono">40%</span>
+          <!-- THẺ 3: CHUÔNG GIÓ PHA LÊ 432Hz -->
+          <div class="p-4 rounded-3xl bg-gradient-to-br from-[#2a1d08] via-[#1a1104] to-[#0d0801] border-2 border-amber-400/40 shadow-lg space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-400/40 text-amber-300 flex items-center justify-center text-lg shadow">
+                  <i class="fa-solid fa-bell"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs sm:text-sm font-black text-white">Chuông Gió Pha Lê 432Hz</h4>
+                  <p class="text-[10px] text-amber-200/70">Tần số định tâm, buông bỏ lo âu</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span id="volWindText" class="text-base font-black text-amber-300 font-mono">40%</span>
+              </div>
             </div>
-            <input type="range" id="sliderVolWind" min="0" max="100" value="40" oninput="updateMixerVolume('wind', this.value)" class="w-full accent-teal-400 cursor-pointer">
+
+            <div class="space-y-1">
+              <input type="range" id="sliderVolWind" min="0" max="100" value="40" oninput="updateMixerVolume('wind', this.value)" class="w-full h-2.5 rounded-lg appearance-none bg-slate-800 accent-amber-400 cursor-pointer">
+              <div class="flex justify-between text-[9px] text-slate-400 font-mono px-0.5">
+                <span>0% (Tắt)</span>
+                <span>Thoang Thoảng</span>
+                <span>100% (Ngân Vang)</span>
+              </div>
+            </div>
           </div>
 
-          <!-- Kênh 4: Sáo Trúc Thiền Trà Ngũ Cung -->
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between text-xs font-bold">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-wind text-emerald-400"></i> Sáo Trúc Ngũ Cung</span>
-              <span id="volFluteText" class="text-teal-300 font-mono">35%</span>
+          <!-- THẺ 4: SÁO TRÚC THIỀN TRÀ NGŨ CUNG -->
+          <div class="p-4 rounded-3xl bg-gradient-to-br from-[#0c2919] via-[#081b10] to-[#030d07] border-2 border-emerald-400/40 shadow-lg space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center text-lg shadow">
+                  <i class="fa-solid fa-wind"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs sm:text-sm font-black text-white">Sáo Trúc Ngũ Cung</h4>
+                  <p class="text-[10px] text-emerald-200/70">Âm sắc mộc mạc bên bờ tre xanh</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span id="volFluteText" class="text-base font-black text-emerald-300 font-mono">35%</span>
+              </div>
             </div>
-            <input type="range" id="sliderVolFlute" min="0" max="100" value="35" oninput="updateMixerVolume('flute', this.value)" class="w-full accent-teal-400 cursor-pointer">
+
+            <div class="space-y-1">
+              <input type="range" id="sliderVolFlute" min="0" max="100" value="35" oninput="updateMixerVolume('flute', this.value)" class="w-full h-2.5 rounded-lg appearance-none bg-slate-800 accent-emerald-400 cursor-pointer">
+              <div class="flex justify-between text-[9px] text-slate-400 font-mono px-0.5">
+                <span>0% (Tắt)</span>
+                <span>Dịu Nhẹ</span>
+                <span>100% (Du Dương)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- BỘ 3 VIÊN NGỌC TẦN SỐ SOLFEGGIO SINH HỌC 3D -->
+        <div class="relative z-10 space-y-2 pt-2 border-t border-teal-500/20">
+          <div class="flex items-center justify-between text-xs px-1">
+            <span class="text-[10px] font-black text-teal-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-compact-disc text-amber-400"></i>
+              <span>Tần Số Sóng Âm Sinh Học Solfeggio (Thanh Lọc Năng Lượng)</span>
+            </span>
+            <span class="text-[10px] text-teal-200/60 font-medium">Bấm để kích hoạt sóng</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <!-- 432 Hz -->
+            <button onclick="playSolfeggioTone(432)" class="p-3.5 rounded-2xl bg-gradient-to-b from-[#0e3b44] to-[#071c21] hover:from-[#13505c] hover:to-[#0a272e] border-2 border-cyan-400/50 shadow-lg transition active:scale-95 space-y-1 cursor-pointer group">
+              <div class="text-lg sm:text-xl font-black text-cyan-300 font-mono group-hover:scale-105 transition">432 Hz</div>
+              <div class="text-xs font-bold text-white">Định Tâm</div>
+              <div class="text-[9.5px] text-cyan-200/70">An Thần • Ngủ Sâu</div>
+            </button>
+
+            <!-- 528 Hz -->
+            <button onclick="playSolfeggioTone(528)" class="p-3.5 rounded-2xl bg-gradient-to-b from-[#3a2e0a] to-[#1e1704] hover:from-[#4f3e0d] hover:to-[#281f05] border-2 border-amber-400/50 shadow-lg transition active:scale-95 space-y-1 cursor-pointer group">
+              <div class="text-lg sm:text-xl font-black text-amber-300 font-mono group-hover:scale-105 transition">528 Hz</div>
+              <div class="text-xs font-bold text-white">Tái Tạo Tế Bào</div>
+              <div class="text-[9.5px] text-amber-200/70">Năng Lượng Tích Cực</div>
+            </button>
+
+            <!-- 396 Hz -->
+            <button onclick="playSolfeggioTone(396)" class="p-3.5 rounded-2xl bg-gradient-to-b from-[#3a141c] to-[#1c080d] hover:from-[#4d1a25] hover:to-[#260b11] border-2 border-rose-400/50 shadow-lg transition active:scale-95 space-y-1 cursor-pointer group">
+              <div class="text-lg sm:text-xl font-black text-rose-300 font-mono group-hover:scale-105 transition">396 Hz</div>
+              <div class="text-xs font-bold text-white">Giải Tỏa Lo Âu</div>
+              <div class="text-[9.5px] text-rose-200/70">Phục Hồi Cảm Xúc</div>
+            </button>
           </div>
         </div>
 
-        <!-- 3 NÚT TẦN SỐ SOLFEGGIO CHUẨN KHOA HỌC -->
-        <div class="grid grid-cols-3 gap-2.5 text-center text-xs">
-          <button onclick="playSolfeggioTone(432)" class="p-3 rounded-2xl bg-teal-900/60 hover:bg-teal-900 border border-teal-400/40 transition active:scale-95 space-y-1">
-            <div class="text-base font-black text-teal-300 font-mono">432 Hz</div>
-            <div class="text-[10px] text-slate-300">Định Tâm • Bình An</div>
-          </button>
-          <button onclick="playSolfeggioTone(528)" class="p-3 rounded-2xl bg-teal-900/60 hover:bg-teal-900 border border-teal-400/40 transition active:scale-95 space-y-1">
-            <div class="text-base font-black text-amber-300 font-mono">528 Hz</div>
-            <div class="text-[10px] text-slate-300">Tái Tạo Năng Lượng</div>
-          </button>
-          <button onclick="playSolfeggioTone(396)" class="p-3 rounded-2xl bg-teal-900/60 hover:bg-teal-900 border border-teal-400/40 transition active:scale-95 space-y-1">
-            <div class="text-base font-black text-rose-300 font-mono">396 Hz</div>
-            <div class="text-[10px] text-slate-300">Giải Tỏa Lo Âu</div>
-          </button>
-        </div>
       </div>
     </section>
 
@@ -1524,6 +1666,18 @@
     let mixerTimer = null;
     let mixerVolumes = { rain: 60, ocean: 50, wind: 40, flute: 35 };
 
+    
+    function resetAllMixerVolumes() {
+      updateMixerVolume('rain', 60);
+      updateMixerVolume('ocean', 50);
+      updateMixerVolume('wind', 40);
+      updateMixerVolume('flute', 35);
+      document.getElementById('sliderVolRain').value = 60;
+      document.getElementById('sliderVolOcean').value = 50;
+      document.getElementById('sliderVolWind').value = 40;
+      document.getElementById('sliderVolFlute').value = 35;
+    }
+
     function updateMixerVolume(type, val) {
       mixerVolumes[type] = parseInt(val);
       const textEl = document.getElementById('vol' + type.charAt(0).toUpperCase() + type.slice(1) + 'Text');
@@ -1535,10 +1689,12 @@
         isHealingPlaying = false;
         clearInterval(mixerTimer);
         mixerTimer = null;
-        document.getElementById('healingMasterPlayIcon').className = "fa-solid fa-play ml-0.5";
+        document.getElementById('healingMasterPlayIcon').className = "fa-solid fa-play ml-1 drop-shadow";
+      const hBadge = document.getElementById('healingLiveBadge'); if (hBadge) hBadge.classList.add('hidden');
       } else {
         isHealingPlaying = true;
-        document.getElementById('healingMasterPlayIcon').className = "fa-solid fa-pause ml-0";
+        document.getElementById('healingMasterPlayIcon').className = "fa-solid fa-pause drop-shadow";
+      const hBadge = document.getElementById('healingLiveBadge'); if (hBadge) hBadge.classList.remove('hidden');
         startHealingSoundscape();
       }
     }
