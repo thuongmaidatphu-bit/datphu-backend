@@ -134,7 +134,35 @@
     <!-- ========================================================================= -->
     <!-- PHÂN HỆ DUY NHẤT: MÀN HÌNH LỚN 4K Ở TRÊN & CHUỖI TƯƠNG TÁC CHẠY DỌC DƯỚI   -->
     <!-- ========================================================================= -->
-    <section id="channelSection_radio" class="space-y-4">
+    <!-- ================= BANNER ĐÓN TẾT SUM VẦY & ĐẾM NGƯỢC GIAO THỪA ================= -->
+      <div class="p-3 sm:p-4 rounded-3xl bg-gradient-to-r from-red-950 via-amber-950/70 to-red-950 border-2 border-amber-500/50 shadow-xl text-white flex flex-wrap items-center justify-between gap-3 relative overflow-hidden">
+        <div class="absolute -right-4 -bottom-6 text-7xl opacity-15 pointer-events-none select-none">🌸</div>
+        <div class="flex items-center gap-3 relative z-10">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center text-xl shadow-lg shrink-0">
+            🧧
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs sm:text-sm font-black text-amber-300 tracking-wide">XUÂN ĐẤT PHÚ SUM VẦY • CHÀO ĐÓN NĂM MỚI</span>
+              <span class="px-2 py-0.2 rounded-full bg-red-600/80 text-white text-[9.5px] font-bold border border-amber-400/40 hidden sm:inline-block">Tết Nguyên Đán</span>
+            </div>
+            <p id="tetCountdownText" class="text-[11px] text-amber-100 font-mono font-medium">Đang tính thời khắc Giao Thừa thiêng liêng...</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 relative z-10 text-xs">
+          <button onclick="toggleTetPetals()" id="btnTetPetalsToggle" class="px-3 py-1.5 rounded-xl bg-black/40 hover:bg-black/60 border border-amber-400/40 text-amber-200 font-bold transition flex items-center gap-1.5 active:scale-95 cursor-pointer" title="Bật/Tắt hiệu ứng hoa mai rơi">
+            <span id="petalsStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>🌸 Cánh Mai Rơi</span>
+          </button>
+          <button onclick="filterRadioTheme('nhacxuan')" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black shadow-md transition flex items-center gap-1.5 active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-music"></i>
+            <span>Nghe Nhạc Xuân 🎶</span>
+          </button>
+        </div>
+      </div>
+
+      <section id="channelSection_radio" class="space-y-4">
       
       <!-- 1. MÀN HÌNH LỚN 4K (HERO CINEMA SCREEN) TÍCH HỢP NÚT PLAY / PAUSE LỚN -->
       <div class="p-3 sm:p-5 rounded-3xl bg-slate-900 border border-amber-500/30 shadow-2xl space-y-3 relative overflow-hidden">
@@ -257,7 +285,15 @@
             <span class="w-5 h-5 rounded-md bg-black/15 text-slate-950 flex items-center justify-center text-[10px]">
               <i class="fa-solid fa-shapes"></i>
             </span>
-            <span>Tất Cả (<span id="themeCount_all">11</span>)</span>
+            <span>Tất Cả (<span id="themeCount_all">15</span>)</span>
+          </button>
+
+          <button onclick="filterRadioTheme('nhacxuan')" id="themeBtn_nhacxuan" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-red-900 to-amber-900 hover:from-red-800 hover:to-amber-800 text-amber-200 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer border border-amber-400/50 shadow-xs">
+            <span class="w-5 h-5 rounded-md bg-amber-400 text-red-950 flex items-center justify-center text-[10px] font-black">
+              🌸
+            </span>
+            <span>Nhạc Xuân & Tết</span>
+          </button>
           </button>
 
           <button onclick="filterRadioTheme('baichoi')" id="themeBtn_baichoi" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
@@ -1236,6 +1272,54 @@
     // 2. KHO DỮ LIỆU BÀI HÁT, BÀI CHÒI & VIDEO THEO CHỦ ĐỀ
     const DEFAULT_MEDIA_PLAYLIST = [
       {
+        id: "med_xuan1",
+        title: "Trống Hội Mừng Xuân & Hòa Tấu Lưu Thủy Kim Tiền",
+        artist: "Đoàn Nghệ Thuật Dân Gian Đất Phú",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "audio",
+        src: "/audio/hoa_tau_luu_thuy.mp3",
+        coverImg: "img/tet_sum_vay_dat_phu.jpg",
+        chant: "“Trống hội giòn giã rước lộc đầu xuân, chúc cho xóm làng mưa thuận gió hòa, toàn gia an khang thịnh vượng!”",
+        duration: "04:15"
+      },
+      {
+        id: "med_xuan2",
+        title: "Mùa Xuân Đầu Tiên & Khúc Ca Đón Tết Quê Mẹ",
+        artist: "Tiếng Hát Quê Nhà Xứ Nẫu",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "audio",
+        src: "/audio/ho_mai_nhi_song_nuoc.mp3",
+        coverImg: "img/landmarks/thap_nhan.jpg",
+        chant: "“Mùa xuân mơ ước ấy đang đến đầu tiên... Gió reo cành mai vàng rực bên hiên nhà ấm cúng đoàn viên.”",
+        duration: "04:30"
+      },
+      {
+        id: "med_xuan3",
+        title: "Hội Bài Chòi Khai Xuân Nhận Lộc Đất Phú",
+        artist: "Anh Hiệu Làng Cổ An Nghiệp • Tuy An",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "audio",
+        src: "/audio/sao_truc_phuong_vu.mp3",
+        coverImg: "img/tet_sum_vay_dat_phu.jpg",
+        chant: "“Mùng Một Tết bước ra chòi cao... Chúc cho thiên hạ giàu sang phát tài... Lắng nghe con Trắng Duyên!”",
+        duration: "03:45"
+      },
+      {
+        id: "med_xuan4",
+        title: "Âm Thanh Nồi Bánh Tét Đêm 29 & Ký Ức Tết Quê (ASMR)",
+        artist: "Bếp Lửa Hồng Đêm Trừ Tịch • Đất Phú",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "audio",
+        src: "/audio/dan_trung_to_rung.mp3",
+        coverImg: "img/landmarks/song_ba.jpg",
+        chant: "“Tiếng củi nổ lách tách canh nồi bánh tét thâu đêm, khói lam chiều quyện mùi nếp mới nhớ thương đất mẹ.”",
+        duration: "05:00"
+      },
+      {
         id: "med_1",
         title: "Độc Tấu Sáo Trúc: Phượng Vũ",
         artist: "Nghệ Nhân Dân Gian • Sáo Trúc Mộc",
@@ -1388,7 +1472,7 @@
     // Lọc theo chủ đề
     function filterRadioTheme(theme) {
       currentThemeFilter = theme;
-      const themes = ['all', 'baichoi', 'dieuly', 'nhaccu', 'taynguyen', 'tieulam', 'phim4k', 'community'];
+      const themes = ['all', 'nhacxuan', 'baichoi', 'dieuly', 'nhaccu', 'taynguyen', 'tieulam', 'phim4k', 'community'];
       themes.forEach(t => {
         const btn = document.getElementById('themeBtn_' + t);
         if (btn) {
@@ -1438,7 +1522,8 @@
 
         let badgeBg = 'bg-slate-800 text-slate-300';
         let badgeIcon = 'fa-music';
-        if (t.theme === 'baichoi') { badgeBg = 'bg-amber-950 text-amber-300 border border-amber-600/40'; badgeIcon = 'fa-dice'; }
+        if (t.theme === 'nhacxuan') { badgeBg = 'bg-rose-950 text-amber-300 border border-amber-400/50'; badgeIcon = 'fa-fan'; }
+        else if (t.theme === 'baichoi') { badgeBg = 'bg-amber-950 text-amber-300 border border-amber-600/40'; badgeIcon = 'fa-dice'; }
         else if (t.theme === 'dieuly') { badgeBg = 'bg-cyan-950 text-cyan-300 border border-cyan-600/40'; badgeIcon = 'fa-water'; }
         else if (t.theme === 'nhaccu') { badgeBg = 'bg-emerald-950 text-emerald-300 border border-emerald-600/40'; badgeIcon = 'fa-guitar'; }
         else if (t.theme === 'taynguyen') { badgeBg = 'bg-amber-900 text-yellow-300 border border-amber-500/50'; badgeIcon = 'fa-mountain-sun'; }
@@ -1501,7 +1586,8 @@
       if (catBadgeText) catBadgeText.innerText = (track.themeName || 'CHUYÊN ĐỀ ĐẤT PHÚ').toUpperCase();
       const catIcon = document.getElementById('artCategoryIcon');
       if (catIcon) {
-        if (track.theme === 'baichoi') catIcon.className = 'fa-solid fa-dice mr-1';
+        if (track.theme === 'nhacxuan') catIcon.className = 'fa-solid fa-fan mr-1 text-rose-400 animate-spin';
+        else if (track.theme === 'baichoi') catIcon.className = 'fa-solid fa-dice mr-1';
         else if (track.theme === 'dieuly') catIcon.className = 'fa-solid fa-water mr-1';
         else if (track.theme === 'nhaccu') catIcon.className = 'fa-solid fa-music mr-1';
         else if (track.theme === 'taynguyen') catIcon.className = 'fa-solid fa-mountain-sun mr-1 text-amber-400';
@@ -2945,7 +3031,123 @@ function changeArtSlide(delta) {
     };
 
     // KHỞI TẠO BAN ĐẦU
+    
+    // ĐẾM NGƯỢC GIAO THỪA TẾT NGUYÊN ĐÁN
+    function startTetCountdown() {
+      // Thời khắc Giao Thừa Tết Nguyên Đán tiếp theo (Năm mới)
+      // Mùng 1 Tết Đinh Mùi: 06/02/2027 => Giao thừa: 05/02/2027 23:59:59
+      const tetEve = new Date(2027, 1, 5, 23, 59, 59).getTime();
+
+      function update() {
+        const now = new Date().getTime();
+        const diff = tetEve - now;
+
+        const el = document.getElementById('tetCountdownText');
+        if (!el) return;
+
+        if (diff <= 0) {
+          el.innerHTML = "🎉 <b>CUNG CHÚC TÂN XUÂN • VẠN SỰ NHƯ Ý • AN KHANG THỊNH VƯỢNG!</b>";
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        el.innerHTML = 'Còn <b>' + days + '</b> ngày <b>' + hours + '</b> giờ <b>' + minutes + '</b> phút <b>' + seconds + '</b> giây đến Giao Thừa';
+      }
+
+      update();
+      setInterval(update, 1000);
+    }
+
+    // HIỆU ỨNG CÁNH MAI VÀNG RƠI LẤT PHẤT (TET BLOSSOM PETALS)
+    let isPetalsEnabled = true;
+    let petalsAnimFrame = null;
+
+    function initTetPetals() {
+      const canvas = document.getElementById('tetBlossomCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const petals = [];
+      const petalCount = 22; // Nhẹ nhàng, không tốn pin
+
+      for (let i = 0; i < petalCount; i++) {
+        petals.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 4 + 3,
+          d: Math.random() * petalCount,
+          color: Math.random() > 0.3 ? '#facc15' : '#fbbf24', // Vàng mai rực rỡ
+          tilt: Math.random() * 10 - 10,
+          tiltAngleIncremental: (Math.random() * 0.07) + 0.03,
+          tiltAngle: 0
+        });
+      }
+
+      function draw() {
+        if (!isPetalsEnabled) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          return;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < petalCount; i++) {
+          const p = petals[i];
+          ctx.beginPath();
+          ctx.lineWidth = p.r;
+          ctx.strokeStyle = p.color;
+          ctx.moveTo(p.x + p.tilt + (p.r / 2), p.y);
+          ctx.lineTo(p.x + p.tilt, p.y + p.tilt + (p.r / 2));
+          ctx.stroke();
+
+          p.tiltAngle += p.tiltAngleIncremental;
+          p.y += (Math.cos(p.d) + 1 + p.r / 2) * 0.6;
+          p.x += Math.sin(p.d);
+          p.tilt = Math.sin(p.tiltAngle - (i / 3)) * 12;
+
+          if (p.x > canvas.width + 10 || p.x < -10 || p.y > canvas.height) {
+            p.x = Math.random() * canvas.width;
+            p.y = -10;
+          }
+        }
+
+        petalsAnimFrame = requestAnimationFrame(draw);
+      }
+
+      draw();
+    }
+
+    function toggleTetPetals() {
+      isPetalsEnabled = !isPetalsEnabled;
+      const dot = document.getElementById('petalsStatusDot');
+      if (dot) {
+        dot.className = isPetalsEnabled ? "w-2 h-2 rounded-full bg-emerald-400 animate-pulse" : "w-2 h-2 rounded-full bg-slate-500";
+      }
+      if (isPetalsEnabled) {
+        initTetPetals();
+      } else {
+        const canvas = document.getElementById('tetBlossomCanvas');
+        if (canvas) {
+          const ctx = canvas.getContext('2d');
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
+      startTetCountdown();
+      initTetPetals();
       renderRadioPlaylist();
       renderArtGallery();
       renderBuddhistPlaylist();
@@ -3131,5 +3333,6 @@ function changeArtSlide(delta) {
     </div>
   </div>
 
+<canvas id="tetBlossomCanvas" class="fixed inset-0 pointer-events-none z-40 w-full h-full"></canvas>
 </body>
 </html>
