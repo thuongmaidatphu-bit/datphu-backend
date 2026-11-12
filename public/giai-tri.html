@@ -108,25 +108,18 @@
         <span>1. Đài Radio & Phim 4K</span>
       </button>
 
-      <button onclick="switchChannel('buddhist')" id="tabBtn_buddhist" class="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer text-[11px] sm:text-xs">
+      <button onclick="switchChannel('buddhist_tea')" id="tabBtn_buddhist_tea" class="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer text-[11px] sm:text-xs">
         <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-amber-500/15 text-amber-700 flex items-center justify-center text-[10px]">
           <i class="fa-solid fa-dharmachakra"></i>
         </span>
-        <span>2. Máy Niệm Phật</span>
-      </button>
-
-      <button onclick="switchChannel('healing')" id="tabBtn_healing" class="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer text-[11px] sm:text-xs">
-        <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-emerald-500/15 text-emerald-700 flex items-center justify-center text-[10px]">
-          <i class="fa-solid fa-mug-hot"></i>
-        </span>
-        <span>3. Trà Đạo</span>
+        <span>2. Niệm Phật & Trà Đạo</span>
       </button>
 
       <button onclick="switchChannel('mindful')" id="tabBtn_mindful" class="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer text-[11px] sm:text-xs">
         <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-indigo-500/15 text-indigo-700 flex items-center justify-center text-[10px]">
           <i class="fa-solid fa-spa"></i>
         </span>
-        <span>4. Thiền Thở 4-7-8</span>
+        <span>3. Thiền Thở 4-7-8</span>
       </button>
     </div>
   </div>
@@ -525,7 +518,21 @@
       </div>
     </section>
 
-    <section id="channelSection_buddhist" class="space-y-4 hidden">
+    <section id="channelSection_buddhist_tea" class="space-y-3 sm:space-y-4 hidden">
+      <!-- THANH CHUYỂN NHẸ GIỮA MÁY NIỆM PHẬT & TRÀ ĐẠO THƯ QUÁN -->
+      <div class="flex items-center justify-center p-1 max-w-xs sm:max-w-sm mx-auto rounded-2xl bg-slate-900 border border-amber-500/30 text-xs font-bold shadow-md">
+        <button onclick="toggleBuddhistTeaSubMode('buddhist')" id="btnSubBt_buddhist" class="flex-1 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black transition flex items-center justify-center gap-1.5 shadow active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-dharmachakra"></i>
+          <span>Máy Niệm Phật Số</span>
+        </button>
+        <button onclick="toggleBuddhistTeaSubMode('tea')" id="btnSubBt_tea" class="flex-1 py-1.5 sm:py-2 rounded-xl bg-transparent hover:bg-slate-800 text-slate-300 font-bold transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-mug-hot text-emerald-400"></i>
+          <span>Trà Đạo Thư Quán</span>
+        </button>
+      </div>
+
+      <!-- PHẦN 1: MÁY NIỆM PHẬT SỐ -->
+      <div id="subBlock_buddhist" class="space-y-4">
       <!-- KHUNG THÂN MÁY NIỆM PHẬT CẦM TAY CỔ ĐIỂN THẾP VÀNG -->
       <div class="relative max-w-2xl mx-auto rounded-[2.5rem] bg-gradient-to-b from-[#2e1808] via-[#1c0e04] to-[#100602] p-4 sm:p-7 border-4 border-amber-500/80 shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_2px_4px_rgba(255,255,255,0.2)] text-white space-y-5 select-none overflow-hidden">
         
@@ -730,22 +737,9 @@
           <span class="text-[11px] font-bold text-slate-500">6 Danh mục chuẩn mực</span>
         </div>
         <div id="buddhistPlaylistContainer" class="space-y-2"></div>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- PHÂN HỆ 4: TRỊ LIỆU TẦN SỐ & BỘ TRỘN ÂM THANH THIÊN NHIÊN      -->
-    <!-- ============================================================ -->
-        <!-- ============================================================ -->
-    <!-- PHÂN HỆ 4: TRỊ LIỆU TẦN SỐ & BÀN TRỘN HÒA ÂM THIÊN NHIÊN       -->
-    <!-- ============================================================ -->
-        <!-- ============================================================ -->
-    <!-- PHÂN HỆ 4: TRỊ LIỆU TẦN SỐ & BÀN TRỘN HÒA ÂM THIÊN NHIÊN       -->
-    <!-- ============================================================ -->
-        <!-- ============================================================ -->
-    <!-- PHÂN HỆ 4: TRÀ ĐẠO THƯ QUÁN & HÒA ÂM NGŨ CUNG RU NGỦ           -->
-    <!-- ============================================================ -->
-    <section id="channelSection_healing" class="space-y-4 hidden">
+            </div>
+      <!-- PHẦN 2: TRÀ ĐẠO THƯ QUÁN & HÒA ÂM MƯA THIỀN -->
+      <div id="subBlock_tea" class="space-y-4 hidden">
       <!-- KHUNG TRÀ THẤT THƯ QUÁN THANH TAO TINH TẾ -->
       <div class="relative rounded-[2.5rem] bg-gradient-to-b from-[#1b1614] via-[#241e1b] to-[#14100e] p-4 sm:p-7 border-4 border-amber-800/40 shadow-[0_25px_65px_rgba(0,0,0,0.85),inset_0_2px_4px_rgba(255,255,255,0.08)] text-stone-200 space-y-6 select-none overflow-hidden">
         
@@ -1132,6 +1126,7 @@
         </div>
 
       </div>
+    </div>
     </section>
 
     <!-- ============================================================ -->
@@ -1261,49 +1256,55 @@
 
     function switchChannel(channel) {
       currentChannel = channel;
-      const channels = ['radio', 'buddhist', 'healing', 'mindful'];
+      const channels = ['radio', 'buddhist_tea', 'mindful'];
       
       channels.forEach(ch => {
         const btn = document.getElementById('tabBtn_' + ch);
         if (btn) {
           if (ch === channel) {
-            btn.className = "px-3.5 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-sm shrink-0 flex items-center gap-1.5 active:scale-95 transition font-black";
+            btn.className = "px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-xs shrink-0 flex items-center gap-1.5 active:scale-95 transition font-black cursor-pointer text-[11px] sm:text-xs";
           } else {
-            btn.className = "px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition font-bold";
+            btn.className = "px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer text-[11px] sm:text-xs";
           }
         }
       });
 
       const secRadio = document.getElementById('channelSection_radio');
-      const secArt = document.getElementById('channelSection_art');
-      const secBuddhist = document.getElementById('channelSection_buddhist');
-      const secHealing = document.getElementById('channelSection_healing');
+      const secBuddhistTea = document.getElementById('channelSection_buddhist_tea');
       const secMindful = document.getElementById('channelSection_mindful');
 
       if (channel === 'radio') {
         if (secRadio) secRadio.classList.remove('hidden');
-        if (secArt) secArt.classList.remove('hidden');
-        if (secBuddhist) secBuddhist.classList.add('hidden');
-        if (secHealing) secHealing.classList.add('hidden');
+        if (secBuddhistTea) secBuddhistTea.classList.add('hidden');
         if (secMindful) secMindful.classList.add('hidden');
-      } else if (channel === 'buddhist') {
+      } else if (channel === 'buddhist_tea' || channel === 'buddhist' || channel === 'healing') {
         if (secRadio) secRadio.classList.add('hidden');
-        if (secArt) secArt.classList.add('hidden');
-        if (secBuddhist) secBuddhist.classList.remove('hidden');
-        if (secHealing) secHealing.classList.add('hidden');
-        if (secMindful) secMindful.classList.add('hidden');
-      } else if (channel === 'healing') {
-        if (secRadio) secRadio.classList.add('hidden');
-        if (secArt) secArt.classList.add('hidden');
-        if (secBuddhist) secBuddhist.classList.add('hidden');
-        if (secHealing) secHealing.classList.remove('hidden');
+        if (secBuddhistTea) secBuddhistTea.classList.remove('hidden');
         if (secMindful) secMindful.classList.add('hidden');
       } else if (channel === 'mindful') {
         if (secRadio) secRadio.classList.add('hidden');
-        if (secArt) secArt.classList.add('hidden');
-        if (secBuddhist) secBuddhist.classList.add('hidden');
-        if (secHealing) secHealing.classList.add('hidden');
+        if (secBuddhistTea) secBuddhistTea.classList.add('hidden');
         if (secMindful) secMindful.classList.remove('hidden');
+      }
+    }
+
+    // Chuyển đổi qua lại giữa Máy Niệm Phật và Trà Đạo trong cùng phân hệ 2
+    function toggleBuddhistTeaSubMode(mode) {
+      const btnB = document.getElementById('btnSubBt_buddhist');
+      const btnT = document.getElementById('btnSubBt_tea');
+      const blockB = document.getElementById('subBlock_buddhist');
+      const blockT = document.getElementById('subBlock_tea');
+
+      if (mode === 'buddhist') {
+        if (btnB) btnB.className = "flex-1 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black transition flex items-center justify-center gap-1.5 shadow active:scale-95 cursor-pointer";
+        if (btnT) btnT.className = "flex-1 py-1.5 sm:py-2 rounded-xl bg-transparent hover:bg-slate-800 text-slate-300 font-bold transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer";
+        if (blockB) blockB.classList.remove('hidden');
+        if (blockT) blockT.classList.add('hidden');
+      } else {
+        if (btnT) btnT.className = "flex-1 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black transition flex items-center justify-center gap-1.5 shadow active:scale-95 cursor-pointer";
+        if (btnB) btnB.className = "flex-1 py-1.5 sm:py-2 rounded-xl bg-transparent hover:bg-slate-800 text-slate-300 font-bold transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer";
+        if (blockT) blockT.classList.remove('hidden');
+        if (blockB) blockB.classList.add('hidden');
       }
     }
 
