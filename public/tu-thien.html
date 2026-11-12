@@ -185,8 +185,101 @@
             </div>
           </div>
 
+          
+          <!-- THANH TÌM KIẾM NHANH XÃ/HUYỆN & BỘ CẢNH BÁO GPS THÔNG MINH -->
+          <div class="space-y-2">
+            <div class="flex flex-col sm:flex-row items-center gap-2">
+              <div class="relative flex-1 w-full">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                <select id="selPhuYenLocation" onchange="jumpToPhuYenLocation(this.value)" class="w-full pl-9 pr-4 py-2 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 focus:outline-emerald-500 cursor-pointer transition">
+                  <option value="">🔍 Bay nhanh đến Xã / Phường / Huyện tại Phú Yên...</option>
+                  <optgroup label="📍 Thành phố Tuy Hòa">
+                    <option value="13.0882,109.3097,15">TP. Tuy Hòa (Trung tâm)</option>
+                    <option value="13.0722,109.3142,16">Phường Phú Đông • Cảng cá Đông Tác</option>
+                    <option value="13.1362,109.2885,15">Xã An Phú • Cánh đồng hoa rẫy</option>
+                    <option value="13.1118,109.2612,15">Xã Hòa Kiến • Vùng đồi núi Tuy Hòa</option>
+                    <option value="13.0954,109.2625,16">Xã Bình Ngọc • Vườn hoa cây cảnh</option>
+                  </optgroup>
+                  <optgroup label="📍 Thị xã Sông Cầu (Vùng đầm vịnh & tôm hùm)">
+                    <option value="13.4542,109.2215,14">TX. Sông Cầu (Trung tâm)</option>
+                    <option value="13.5215,109.2562,15">Đầm Cù Mông • Lồng bè nuôi tôm</option>
+                    <option value="13.4412,109.2815,14">Vịnh Xuân Đài • Nuôi trồng thủy sản</option>
+                    <option value="13.5612,109.2114,14">Xã Xuân Lộc • Vùng đồi keo</option>
+                    <option value="13.4012,109.1812,15">Xã Xuân Lâm • Rẫy nương đồi núi</option>
+                  </optgroup>
+                  <optgroup label="📍 Huyện Tuy An">
+                    <option value="13.2512,109.2215,15">Thị trấn Chí Thạnh</option>
+                    <option value="13.2612,109.2612,14">Đầm Ô Loan • Vùng mặt nước nuôi thủy sản</option>
+                    <option value="13.3512,109.2985,15">Gành Đá Đĩa • Vùng ven biển An Ninh Đông</option>
+                    <option value="13.2112,109.1812,15">Xã An Nghiệp • Rẫy dưa và hoa màu</option>
+                  </optgroup>
+                  <optgroup label="📍 Huyện Đồng Xuân (Vùng rẫy mía, sắn & rừng keo)">
+                    <option value="13.3712,108.9812,14">Thị trấn La Hai</option>
+                    <option value="13.4312,108.9215,14">Xã Xuân Lãnh • Nương rẫy đồi keo</option>
+                    <option value="13.3112,109.0412,14">Xã Xuân Phước • Vùng đất bãi bồi</option>
+                    <option value="13.4812,109.0215,14">Xã Xuân Quang • Đồi núi sản xuất</option>
+                  </optgroup>
+                  <optgroup label="📍 Huyện Sơn Hòa (Thủ phủ dưa hấu & mía đường)">
+                    <option value="13.0412,108.9812,14">Thị trấn Củng Sơn</option>
+                    <option value="13.0812,109.0512,14">Xã Suối Bạc • Bãi bồi sông Ba trồng dưa</option>
+                    <option value="13.0112,108.9215,14">Xã Sơn Hà • Vùng rẫy mía rộng lớn</option>
+                    <option value="13.1212,108.9112,14">Xã Sơn Nguyên • Đất đồi trồng cây</option>
+                  </optgroup>
+                  <optgroup label="📍 Huyện Sông Hinh">
+                    <option value="12.8512,108.9812,14">Thị trấn Hai Riêng</option>
+                    <option value="12.9212,108.8512,14">Xã Ea Ly • Vùng cao su, sắn mì</option>
+                    <option value="12.8012,109.0512,14">Xã Đức Bình • Nương rẫy bãi bồi</option>
+                  </optgroup>
+                  <optgroup label="📍 Huyện Tây Hòa & Phú Hòa">
+                    <option value="13.0112,109.2012,14">Thị trấn Phú Thứ • Tây Hòa</option>
+                    <option value="13.0612,109.1512,14">Huyện Phú Hòa • Đồng lúa Sông Ba</option>
+                    <option value="12.9512,109.1212,14">Xã Hòa Mỹ Tây • Vùng rẫy đồi keo</option>
+                  </optgroup>
+                  <optgroup label="📍 Thị xã Đông Hòa">
+                    <option value="12.9612,109.3212,14">Thị xã Đông Hòa (Hòa Vinh)</option>
+                    <option value="12.8812,109.3912,14">Vịnh Vũng Rô • Bè nuôi tôm hùm</option>
+                    <option value="12.9012,109.4112,14">Bãi Môn • Mũi Điện</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <!-- Nút căn giữa nhanh thửa đất đã vẽ -->
+              <button onclick="fitPlotBounds()" class="px-3 py-2 rounded-2xl bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 border border-slate-200 text-xs font-bold transition active:scale-95 shrink-0 flex items-center gap-1.5" title="Phóng to vừa khít thửa đất đang vẽ">
+                <i class="fa-solid fa-expand text-emerald-600"></i>
+                <span>Căn Giữa Ranh Đất</span>
+              </button>
+            </div>
+
+            <!-- Cảnh báo sai số GPS thông minh -->
+            <div id="gpsWarningAlert" class="hidden p-3 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 text-xs space-y-1 animate-in fade-in duration-200">
+              <div class="font-bold flex items-center justify-between">
+                <span class="flex items-center gap-1.5 text-amber-800">
+                  <i class="fa-solid fa-triangle-exclamation text-amber-600 text-sm"></i>
+                  <span>Đang dùng định vị mạng Wi-Fi / IP (Sai số ±<span id="gpsWarningMeters" class="font-mono">50000</span>m)</span>
+                </span>
+                <button onclick="dismissGpsWarning()" class="text-amber-600 hover:text-amber-900 font-bold px-1.5">✕</button>
+              </div>
+              <p class="text-[11px] text-amber-800/90 leading-relaxed">
+                Máy tính bàn hoặc laptop không có chip GPS vệ tinh nên chỉ định vị ước lượng theo trạm mạng internet. <b>Cách đo tốt nhất:</b> Dùng chuột lăn phóng to ảnh vệ tinh để chấm mốc ranh giới, hoặc mở link này trên điện thoại thông minh khi đứng ngoài trời để có GPS chính xác ±2m!
+              </p>
+            </div>
+          </div>
+
           <!-- Bản đồ Leaflet -->
           <div id="mapMeasure" class="w-full relative shadow-inner"></div>
+
+          
+          <!-- THANH TỌA ĐỘ CON TRỎ THỜI GIAN THỰC & LA BÀN -->
+          <div class="flex flex-wrap items-center justify-between gap-2 p-2 rounded-2xl bg-slate-100/80 border border-slate-200/80 text-[10.5px] font-mono text-slate-600">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-slate-700 font-sans"><i class="fa-solid fa-crosshairs text-emerald-600"></i> Toạ độ con trỏ:</span>
+              <span id="cursorWgs84">13.0882°N, 109.3097°E</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-slate-500">VN-2000:</span>
+              <span id="cursorVn2000" class="font-bold text-slate-800">X: 1.447.450 | Y: 533.580</span>
+            </div>
+          </div>
 
           <!-- Hướng dẫn & Chỉ báo tín hiệu GPS Kalman -->
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-500 px-1">
@@ -755,6 +848,47 @@
 
     const PHU_YEN_CENTER = [13.0882, 109.3097];
 
+    
+    // XỬ LÝ NHẢY NHANH ĐỊA ĐIỂM XÃ / HUYỆN PHÚ YÊN
+    function jumpToPhuYenLocation(val) {
+      if (!val) return;
+      const parts = val.split(',');
+      if (parts.length >= 3) {
+        const lat = parseFloat(parts[0]);
+        const lng = parseFloat(parts[1]);
+        const zoom = parseInt(parts[2]);
+        if (map) {
+          map.flyTo([lat, lng], zoom, { duration: 1.5 });
+        }
+      }
+    }
+
+    function fitPlotBounds() {
+      if (polygon) {
+        map.fitBounds(polygon.getBounds(), { padding: [40, 40] });
+      } else if (markers.length > 0) {
+        const group = L.featureGroup(markers.map(m => m.marker));
+        map.fitBounds(group.getBounds(), { padding: [50, 50] });
+      } else {
+        alert("Chưa có điểm mốc nào trên bản đồ để căn giữa!");
+      }
+    }
+
+    function dismissGpsWarning() {
+      const alertBox = document.getElementById('gpsWarningAlert');
+      if (alertBox) alertBox.classList.add('hidden');
+    }
+
+    // Chuyển đổi WGS-84 sang toạ độ hiển thị VN-2000 (X, Y)
+    function wgs84ToVn2000Approx(lat, lng, L0 = 108.5) {
+      // Công thức gần đúng chuyển WGS-84 sang VN-2000 Phú Yên phục vụ hiển thị
+      const dLat = (lat - 13.0) * 110852;
+      const dLng = (lng - L0) * 108420;
+      const x = Math.round(1437600 + dLat);
+      const y = Math.round(500000 + dLng);
+      return { x, y };
+    }
+
     function initMap() {
       map = L.map('mapMeasure', {
         zoomControl: true,
@@ -771,6 +905,17 @@
 
       map.on('click', function(e) {
         addPoint(e.latlng.lat, e.latlng.lng);
+      });
+
+      map.on('mousemove', function(e) {
+        const lat = e.latlng.lat.toFixed(5);
+        const lng = e.latlng.lng.toFixed(5);
+        const wgsEl = document.getElementById('cursorWgs84');
+        if (wgsEl) wgsEl.innerText = lat + '°N, ' + lng + '°E';
+
+        const vn = wgs84ToVn2000Approx(e.latlng.lat, e.latlng.lng);
+        const vnEl = document.getElementById('cursorVn2000');
+        if (vnEl) vnEl.innerText = 'X: ' + vn.x.toLocaleString('vi-VN') + ' | Y: ' + vn.y.toLocaleString('vi-VN');
       });
 
       getUserGPSLocation();
@@ -800,6 +945,16 @@
             const lat = kalmanLat.filter(rawLat);
             const lng = kalmanLng.filter(rawLng);
             const acc = Math.round(pos.coords.accuracy || 0);
+
+            // Bật cảnh báo nếu sai số GPS quá lớn (> 100m)
+            const warnAlert = document.getElementById('gpsWarningAlert');
+            const warnMeters = document.getElementById('gpsWarningMeters');
+            if (acc > 100 && warnAlert && warnMeters) {
+              warnMeters.innerText = acc.toLocaleString('vi-VN');
+              warnAlert.classList.remove('hidden');
+            } else if (warnAlert) {
+              warnAlert.classList.add('hidden');
+            }
 
             const badge = document.getElementById('gpsAccuracyBadge');
             const meters = document.getElementById('gpsAccuracyMeters');
