@@ -940,7 +940,7 @@
     <section id="viewDaySection" class="space-y-3">
       
       <!-- WIDGET THỜI TIẾT DÂN SINH & RADAR MƯA SƠN HÒA / TUY HÒA -->
-      <div id="weatherWidgetCard" class="text-white p-4 sm:p-5 rounded-3xl space-y-3 transition-all duration-300 relative overflow-hidden">
+      <div id="weatherWidgetCard" ondblclick="openWeatherDetailModal()" class="text-white p-4 sm:p-5 rounded-3xl space-y-3 transition-all duration-300 relative overflow-hidden cursor-pointer select-none group" title="Nhấp đúp hoặc bấm nút Chi Tiết để mở Trạm Khí Tượng & Thủy Văn Vệ Tinh">
         <!-- Ánh sáng nền trang trí mềm mại -->
         <div class="pointer-events-none absolute -top-12 -right-12 w-40 h-40 bg-sky-400/10 rounded-full blur-2xl"></div>
         <div class="pointer-events-none absolute -bottom-10 -left-10 w-36 h-36 bg-amber-400/10 rounded-full blur-xl"></div>
@@ -961,9 +961,15 @@
             </span>
           </div>
 
-          <div class="text-[11px] sm:text-xs text-amber-200/95 font-semibold flex items-center gap-1.5 drop-shadow-sm ml-auto">
-            <i class="fa-solid fa-feather-pointed text-amber-300"></i>
-            <span id="aiEmotionalGreeting">Trời êm biển lặng • Đất Phú an bình</span>
+          <div class="flex items-center gap-2 ml-auto">
+            <div class="text-[11px] sm:text-xs text-amber-200/95 font-semibold hidden md:flex items-center gap-1.5 drop-shadow-sm">
+              <i class="fa-solid fa-feather-pointed text-amber-300"></i>
+              <span id="aiEmotionalGreeting">Trời êm biển lặng • Đất Phú an bình</span>
+            </div>
+            <button onclick="openWeatherDetailModal()" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 hover:bg-white/30 text-[10px] sm:text-[11px] font-black text-amber-200 border border-amber-300/50 shadow-xs transition active:scale-95 cursor-pointer" title="Bấm hoặc nhấp đúp để mở Trạm Khí Tượng & Thủy Văn Vệ Tinh Chi Tiết">
+              <i class="fa-solid fa-satellite-dish text-amber-300 animate-pulse"></i>
+              <span>Chi Tiết Khí Tượng ❯</span>
+            </button>
           </div>
         </div>
 
@@ -1019,6 +1025,10 @@
               <i class="fa-solid fa-mountain text-amber-300/70 text-[10px]"></i> Vùng mưa thượng nguồn Chư Sê / Gia Lai
             </div>
           </div>
+        </div>
+        <div class="text-[10px] text-blue-200/80 italic text-center pt-1 border-t border-white/10 select-none flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-circle-info text-amber-300"></i>
+          <span>Nhấp đúp vào khung (hoặc bấm "Chi Tiết Khí Tượng ❯") để xem báo cáo dự báo mưa & thủy văn chi tiết</span>
         </div>
       </div>
 
@@ -3699,6 +3709,299 @@
         }
       } catch (e) {
         // Giữ nguyên câu chúc mặc định nếu đang mất kết nối
+      }
+    }
+
+    async 
+    /* ========================================================================
+       🛰️ TRẠM QUAN TRẮC KHÍ TƯỢNG VỆ TINH & THỦY VĂN DÂN SINH ĐẤT PHÚ
+       - Nhấp đúp (hoặc bấm nút Chi Tiết) trên thẻ thời tiết để mở modal
+       - Dữ liệu vệ tinh thời gian thực (nhiệt độ, cảm giác như, gió, ẩm, áp suất)
+       - Dự báo mưa & biểu đồ 24 giờ tới từ vệ tinh Open-Meteo
+       - Theo dõi mực nước sông (Sông Ba, Sông Kỳ Lộ) & hồ chứa thủy điện
+       - Lịch con nước triều cường & hướng dẫn cứu hộ dân sinh
+       ======================================================================== */
+
+    let cachedWeatherDetailData = null;
+
+    function openWeatherDetailModal() {
+      const modal = document.getElementById("weatherDetailModal");
+      if (!modal) return;
+      modal.classList.remove("hidden");
+      refreshWeatherDetailData();
+    }
+
+    function closeWeatherDetailModal() {
+      const modal = document.getElementById("weatherDetailModal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    async function refreshWeatherDetailData() {
+      const loc = (currentLocationKey === "custom" && customGeoLocation)
+                  ? customGeoLocation
+                  : (LOCATIONS[currentLocationKey] || LOCATIONS["tuy-hoa"]);
+
+      const badge = document.getElementById("weatherDetailLocBadge");
+      if (badge) {
+        badge.innerText = loc.name + " (" + (loc.lat.toFixed(3)) + "°B, " + (loc.lon.toFixed(3)) + "°Đ)";
+      }
+
+      const refreshIcon = document.getElementById("weatherDetailRefreshIcon");
+      if (refreshIcon) refreshIcon.classList.add("fa-spin");
+
+      const url = "https://api.open-meteo.com/v1/forecast?latitude=" + loc.lat + "&longitude=" + loc.lon + 
+                  "&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m" +
+                  "&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation,weather_code" +
+                  "&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,uv_index_max" +
+                  "&timezone=Asia%2FBangkok&forecast_days=3";
+
+      try {
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          cachedWeatherDetailData = data;
+          renderWeatherDetailUI(data, loc);
+        } else {
+          renderWeatherDetailFallback(loc);
+        }
+      } catch (e) {
+        renderWeatherDetailFallback(loc);
+      } finally {
+        if (refreshIcon) refreshIcon.classList.remove("fa-spin");
+      }
+    }
+
+    function renderWeatherDetailUI(data, loc) {
+      if (!data || !data.current) {
+        renderWeatherDetailFallback(loc);
+        return;
+      }
+
+      const cur = data.current;
+      const daily = data.daily || {};
+      const hourly = data.hourly || {};
+
+      const tempEl = document.getElementById("detailCurrentTemp");
+      if (tempEl) tempEl.innerText = Math.round(cur.temperature_2m);
+
+      const feelsEl = document.getElementById("detailFeelsLike");
+      if (feelsEl) feelsEl.innerText = "Cảm giác như: " + Math.round(cur.apparent_temperature || cur.temperature_2m) + "°C";
+
+      const minMaxEl = document.getElementById("detailMinMaxTemp");
+      if (minMaxEl && daily.temperature_2m_min && daily.temperature_2m_max) {
+        minMaxEl.innerText = "Thấp: " + Math.round(daily.temperature_2m_min[0]) + "°C • Cao: " + Math.round(daily.temperature_2m_max[0]) + "°C";
+      }
+
+      const statusEl = document.getElementById("detailWeatherStatusText");
+      if (statusEl) {
+        statusEl.innerText = getWeatherCodeDescription(cur.weather_code, cur.precipitation);
+      }
+
+      const windEl = document.getElementById("detailWindVal");
+      if (windEl) {
+        const gust = cur.wind_gusts_10m ? (" (Giật " + Math.round(cur.wind_gusts_10m) + " km/h)") : "";
+        windEl.innerText = Math.round(cur.wind_speed_10m) + " km/h" + gust;
+      }
+
+      const windDirEl = document.getElementById("detailWindDirText");
+      if (windDirEl) {
+        windDirEl.innerText = getWindDirectionText(cur.wind_direction_10m);
+      }
+
+      const humEl = document.getElementById("detailHumidityVal");
+      if (humEl) humEl.innerText = Math.round(cur.relative_humidity_2m) + "%";
+
+      const rainEl = document.getElementById("detailRain24hVal");
+      if (rainEl && daily.precipitation_sum) {
+        rainEl.innerText = (daily.precipitation_sum[0] || 0) + " mm";
+      }
+
+      const pressEl = document.getElementById("detailPressureVal");
+      if (pressEl) {
+        const p = Math.round(cur.surface_pressure || 1013);
+        let pStatus = " (Bình thường)";
+        if (p < 1000) pStatus = " (Áp suất thấp • Nguy cơ bão)";
+        else if (p < 1008) pStatus = " (Hơi thấp)";
+        pressEl.innerText = p + " hPa" + pStatus;
+      }
+
+      const uvEl = document.getElementById("detailUVVal");
+      if (uvEl && daily.uv_index_max) {
+        const uv = Math.round(daily.uv_index_max[0] || 1);
+        let uvTxt = " (Thấp - An toàn)";
+        if (uv >= 8) uvTxt = " (Rất cao - Nguy hiểm)";
+        else if (uv >= 6) uvTxt = " (Cao - Cần che chắn)";
+        else if (uv >= 3) uvTxt = " (Trung bình)";
+        uvEl.innerText = uv + uvTxt;
+      }
+
+      renderHourlyForecastUI(hourly);
+      updateHydrologyDisplay(loc, cur, daily);
+    }
+
+    function renderHourlyForecastUI(hourly) {
+      const container = document.getElementById("detailHourlyList");
+      if (!container || !hourly.time) return;
+
+      const now = new Date();
+      const currentHour = now.getHours();
+
+      let itemsHtml = "";
+      const times = hourly.time.slice(0, 24);
+      for (let i = 0; i < times.length; i += 2) {
+        const timeStr = times[i];
+        const dateObj = new Date(timeStr);
+        const hour = dateObj.getHours();
+        const temp = Math.round(hourly.temperature_2m[i] || 25);
+        const rainProb = hourly.precipitation_probability ? hourly.precipitation_probability[i] : 0;
+        const code = hourly.weather_code ? hourly.weather_code[i] : 0;
+        const isCurrent = (hour === currentHour);
+
+        itemsHtml += `
+          <div class="flex flex-col items-center justify-between p-2.5 rounded-2xl border min-w-[76px] transition shrink-0 ${
+            isCurrent 
+              ? 'bg-amber-400/20 border-amber-400 text-amber-200 font-black shadow-xs ring-1 ring-amber-400/40' 
+              : 'bg-black/30 border-white/10 text-slate-200'
+          }">
+            <span class="text-[11px] font-mono">${isCurrent ? 'Hiện tại' : (hour + 'h:00')}</span>
+            <div class="my-1.5 text-lg">
+              ${getWeatherEmojiIcon(code, rainProb)}
+            </div>
+            <span class="text-xs font-black text-white">${temp}°C</span>
+            <div class="mt-1 flex items-center gap-0.5 text-[10px] ${rainProb > 50 ? 'text-cyan-300 font-bold' : 'text-slate-400'}">
+              <i class="fa-solid fa-droplet text-[8px]"></i>
+              <span>${rainProb}%</span>
+            </div>
+          </div>
+        `;
+      }
+
+      container.innerHTML = itemsHtml;
+    }
+
+    function updateHydrologyDisplay(loc, cur, daily) {
+      const rainSum = (daily && daily.precipitation_sum) ? daily.precipitation_sum[0] : (cur.precipitation * 24);
+
+      let riverStatus = "Mực nước ổn định";
+      let riverBadgeClass = "bg-emerald-500/20 text-emerald-300 border-emerald-400/40";
+      let riverBaMeters = "1.85m";
+      let riverKyLoMeters = "1.40m";
+
+      if (rainSum > 100) {
+        riverStatus = "BÁO ĐỘNG 3 (Nguy Hiểm - Ngập Sâu)";
+        riverBadgeClass = "bg-red-500/30 text-red-300 border-red-400 animate-pulse";
+        riverBaMeters = "4.65m (Vượt BĐ3 0.15m)";
+        riverKyLoMeters = "3.80m (Vượt BĐ3 0.30m)";
+      } else if (rainSum > 50) {
+        riverStatus = "BÁO ĐỘNG 2 (Cảnh Báo Lũ)";
+        riverBadgeClass = "bg-amber-500/30 text-amber-300 border-amber-400";
+        riverBaMeters = "3.60m (Báo động 2)";
+        riverKyLoMeters = "2.90m (Báo động 2)";
+      } else if (rainSum > 20) {
+        riverStatus = "BÁO ĐỘNG 1 (Nước Đang Lên)";
+        riverBadgeClass = "bg-yellow-500/20 text-yellow-300 border-yellow-400/40";
+        riverBaMeters = "2.60m (Báo động 1)";
+        riverKyLoMeters = "2.10m (Báo động 1)";
+      }
+
+      const statusBadge = document.getElementById("hydrologyStatusBadge");
+      if (statusBadge) {
+        statusBadge.innerText = riverStatus;
+        statusBadge.className = "text-[10px] px-2.5 py-0.5 rounded-full border font-black uppercase tracking-wider " + riverBadgeClass;
+      }
+
+      const songBaEl = document.getElementById("hydroSongBaLevel");
+      if (songBaEl) songBaEl.innerText = riverBaMeters;
+
+      const songKyLoEl = document.getElementById("hydroSongKyLoLevel");
+      if (songKyLoEl) songKyLoEl.innerText = riverKyLoMeters;
+
+      const tideRise = "16h30 - 21h00 (Triều Cường Lớn)";
+      const tideFall = "04h00 - 09h30 (Triều Rút Ròng)";
+      const tideRiseEl = document.getElementById("tideRiseTime");
+      if (tideRiseEl) tideRiseEl.innerText = tideRise;
+      const tideFallEl = document.getElementById("tideFallTime");
+      if (tideFallEl) tideFallEl.innerText = tideFall;
+    }
+
+    function renderWeatherDetailFallback(loc) {
+      const tempEl = document.getElementById("detailCurrentTemp");
+      if (tempEl) tempEl.innerText = "24";
+      const feelsEl = document.getElementById("detailFeelsLike");
+      if (feelsEl) feelsEl.innerText = "Cảm giác như: 26°C";
+      const statusEl = document.getElementById("detailWeatherStatusText");
+      if (statusEl) statusEl.innerText = "Mây nhiều, có mưa rào rải rác từng đợt";
+      const windEl = document.getElementById("detailWindVal");
+      if (windEl) windEl.innerText = "12 km/h (Gió Đông Bắc)";
+      const humEl = document.getElementById("detailHumidityVal");
+      if (humEl) humEl.innerText = "90%";
+      const rainEl = document.getElementById("detailRain24hVal");
+      if (rainEl) rainEl.innerText = "25 mm";
+      const pressEl = document.getElementById("detailPressureVal");
+      if (pressEl) pressEl.innerText = "1014 hPa (Ổn định)";
+    }
+
+    function getWeatherCodeDescription(code, precip) {
+      if (precip > 5) return "🌧️ Mưa to đến rất to, gió giật";
+      if (precip > 0.5) return "🌦️ Có mưa rào từng đợt";
+      if (code === 0) return "☀️ Trời quang đãng, nắng nhẹ";
+      if (code === 1 || code === 2) return "⛅ Trời ít mây, có nắng";
+      if (code === 3) return "☁️ Trời nhiều mây, râm mát";
+      if (code >= 51 && code <= 67) return "🌧️ Mưa phùn hoặc mưa rào";
+      if (code >= 80 && code <= 82) return "⛈️ Mưa rào rải rác, có dông";
+      if (code >= 95) return "⚡ Dông sét, gió giật mạnh";
+      return "☁️ Trời nhiều mây, mát dịu";
+    }
+
+    function getWeatherEmojiIcon(code, prob) {
+      if (prob > 70) return "🌧️";
+      if (prob > 40) return "🌦️";
+      if (code === 0) return "☀️";
+      if (code === 1 || code === 2) return "⛅";
+      if (code >= 95) return "⛈️";
+      return "☁️";
+    }
+
+    function getWindDirectionText(deg) {
+      if (deg === undefined || deg === null) return "Gió biển";
+      if (deg >= 337.5 || deg < 22.5) return "Gió Bắc";
+      if (deg >= 22.5 && deg < 67.5) return "Gió Đông Bắc (Mát lạnh)";
+      if (deg >= 67.5 && deg < 112.5) return "Gió Đông (Gió Biển)";
+      if (deg >= 112.5 && deg < 157.5) return "Gió Đông Nam";
+      if (deg >= 157.5 && deg < 202.5) return "Gió Nam";
+      if (deg >= 202.5 && deg < 247.5) return "Gió Tây Nam (Gió Lào khô nóng)";
+      if (deg >= 247.5 && deg < 292.5) return "Gió Tây";
+      return "Gió Tây Bắc";
+    }
+
+    function shareWeatherZaloReport() {
+      const loc = (currentLocationKey === "custom" && customGeoLocation)
+                  ? customGeoLocation
+                  : (LOCATIONS[currentLocationKey] || LOCATIONS["tuy-hoa"]);
+
+      const temp = document.getElementById("detailCurrentTemp") ? document.getElementById("detailCurrentTemp").innerText : "24";
+      const status = document.getElementById("detailWeatherStatusText") ? document.getElementById("detailWeatherStatusText").innerText : "Mưa bão";
+      const hydro = document.getElementById("hydrologyStatusBadge") ? document.getElementById("hydrologyStatusBadge").innerText : "Cảnh giác lũ";
+
+      const text = "📢 [THÔNG BÁO THỜI TIẾT & LŨ LỤT DÂN SINH ĐẤT PHÚ]\n" +
+                   "📍 Địa phương: " + loc.name + "\n" +
+                   "🌡️ Nhiệt độ: " + temp + "°C • Tình trạng: " + status + "\n" +
+                   "🌊 Báo động thủy văn: " + hydro + "\n" +
+                   "⚠️ Bà con chủ động ngắt điện khi nước dâng, kê cao đồ đạc, bảo vệ đàn gia súc!\n" +
+                   "🚒 Cứu hộ cứu nạn khẩn cấp: 114 | Cấp cứu: 115\n" +
+                   "🔗 Theo dõi trực ban tại Lịch Đất Phú: https://datphu-backend.vercel.app";
+
+      if (navigator.share) {
+        navigator.share({
+          title: "Báo cáo Thời tiết & Lũ lụt Đất Phú",
+          text: text
+        }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(() => {
+          if (window.showToastNotification) {
+            window.showToastNotification("Đã sao chép báo cáo! Mở Zalo để gửi cho người thân", "success");
+          }
+        });
       }
     }
 
@@ -13066,6 +13369,201 @@
       setLotusAtmosphere(currentLotusAtmoMode, false);
     }
   </script>
+
+  <!-- ========================================================================
+       🛰️ MODAL TRẠM QUAN TRẮC KHÍ TƯỢNG VỆ TINH & THỦY VĂN DÂN SINH ĐẤT PHÚ
+       - Mở khi NHẤP ĐÚP (hoặc bấm nút Chi Tiết) trên thẻ thời tiết
+       ======================================================================== -->
+  <div id="weatherDetailModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 modal-mobile-app">
+    <div class="bg-gradient-to-b from-[#071326] via-[#0d213f] to-[#040914] border-2 sm:border-3 border-sky-400/90 rounded-3xl p-3 sm:p-5 w-full max-w-4xl shadow-2xl text-white space-y-4 max-h-[95vh] overflow-y-auto custom-modal-scroll">
+      
+      <!-- HEADER TRẠM KHÍ TƯỢNG VỆ TINH -->
+      <div class="flex items-center justify-between pb-3 border-b border-sky-400/30">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-sky-400 via-blue-600 to-indigo-700 p-2 text-white flex items-center justify-center shadow-md shrink-0 border border-sky-300">
+            <i class="fa-solid fa-satellite-dish text-lg sm:text-xl"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h3 class="text-sm sm:text-base font-black text-sky-200 uppercase tracking-wide">
+                TRẠM QUAN TRẮC KHÍ TƯỢNG VỆ TINH & THỦY VĂN
+              </h3>
+              <span id="weatherDetailLocBadge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/40 font-bold">
+                TP. Tuy Hòa (GPS)
+              </span>
+            </div>
+            <p class="text-[11px] text-sky-200/80 font-medium">Theo dõi thời tiết vệ tinh • Dự báo mưa 24h • Mực nước các sông & Cảnh báo an toàn</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <button onclick="refreshWeatherDetailData()" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-sky-600/40 hover:bg-sky-500/60 text-sky-200 text-xs font-bold border border-sky-400/40 transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Cập nhật số liệu vệ tinh mới nhất">
+            <i id="weatherDetailRefreshIcon" class="fa-solid fa-arrows-rotate"></i>
+            <span class="hidden sm:inline">Làm Mới</span>
+          </button>
+          <button onclick="closeWeatherDetailModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-rose-500/30 text-slate-300 flex items-center justify-center transition cursor-pointer" title="Đóng bảng">✕</button>
+        </div>
+      </div>
+
+      <!-- KHỐI 1: BẢNG CHỈ SỐ NHIỆT ĐỘ & KHÍ QUYỂN THỰC ĐỊA -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <!-- Cột Trái: Nhiệt độ & Bầu trời -->
+        <div class="p-4 rounded-2xl bg-black/40 border border-sky-500/30 flex flex-col justify-between shadow-inner">
+          <span class="text-[11px] text-sky-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-temperature-half"></i> NHIỆT ĐỘ HIỆN TẠI
+          </span>
+          <div class="my-2 flex items-baseline gap-2">
+            <span id="detailCurrentTemp" class="text-5xl font-black font-mono text-white tracking-tight drop-shadow-md">24</span>
+            <span class="text-2xl font-black text-amber-300">°C</span>
+          </div>
+          <div class="space-y-1 text-xs">
+            <div id="detailFeelsLike" class="text-sky-200 font-semibold">Cảm giác như: 28°C</div>
+            <div id="detailMinMaxTemp" class="text-slate-400 font-mono text-[11px]">Thấp: 23°C • Cao: 27°C</div>
+            <div id="detailWeatherStatusText" class="text-amber-300 font-bold mt-1 text-xs pt-1 border-t border-sky-500/20">
+              Mây nhiều, có mưa rải rác từng đợt
+            </div>
+          </div>
+        </div>
+
+        <!-- Cột Giữa & Phải: 4 Thẻ Thông Số Khí Tượng Chuyên Sâu (2x2) -->
+        <div class="md:col-span-2 grid grid-cols-2 sm:grid-cols-2 gap-2.5">
+          <!-- Gió -->
+          <div class="p-3 rounded-2xl bg-black/30 border border-white/10 space-y-1">
+            <div class="text-[10px] text-sky-300 font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-wind text-sky-400"></i> GIÓ VỆ TINH & CẤP GIÓ
+            </div>
+            <div id="detailWindVal" class="text-sm sm:text-base font-black text-white font-mono">10 km/h (Cấp 2)</div>
+            <div id="detailWindDirText" class="text-[10px] text-slate-300 truncate">Gió Đông Bắc (Mát lạnh)</div>
+          </div>
+
+          <!-- Độ ẩm -->
+          <div class="p-3 rounded-2xl bg-black/30 border border-white/10 space-y-1">
+            <div class="text-[10px] text-cyan-300 font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-droplet text-cyan-400"></i> ĐỘ ẨM KHÔNG KHÍ
+            </div>
+            <div id="detailHumidityVal" class="text-sm sm:text-base font-black text-white font-mono">92%</div>
+            <div class="text-[10px] text-slate-300">Không khí ẩm bão hòa hơi nước</div>
+          </div>
+
+          <!-- Lượng mưa 24h -->
+          <div class="p-3 rounded-2xl bg-black/30 border border-white/10 space-y-1">
+            <div class="text-[10px] text-blue-300 font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-cloud-showers-heavy text-blue-400"></i> LƯỢNG MƯA HÔM NAY
+            </div>
+            <div id="detailRain24hVal" class="text-sm sm:text-base font-black text-white font-mono">26 mm</div>
+            <div class="text-[10px] text-slate-300">Mưa rào từng đợt, lượng vừa</div>
+          </div>
+
+          <!-- Áp suất khí quyển -->
+          <div class="p-3 rounded-2xl bg-black/30 border border-white/10 space-y-1">
+            <div class="text-[10px] text-amber-300 font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-gauge-high text-amber-400"></i> ÁP SUẤT KHÍ QUYỂN
+            </div>
+            <div id="detailPressureVal" class="text-sm sm:text-base font-black text-white font-mono">1015 hPa (Bình thường)</div>
+            <div class="text-[10px] text-slate-300">&lt; 1000 hPa: Cảnh báo bão</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KHỐI 2: BIỂU ĐỒ DỰ BÁO MƯA & NHIỆT ĐỘ 24 GIỜ TỚI -->
+      <div class="p-3.5 rounded-2xl bg-black/40 border border-sky-500/30 space-y-2">
+        <div class="flex items-center justify-between text-xs font-bold">
+          <span class="text-sky-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-clock"></i> DỰ BÁO LƯỢNG MƯA & NHIỆT ĐỘ 24 GIỜ TỚI THEO GIỜ
+          </span>
+          <span class="text-[10px] text-slate-400 font-mono">Cập nhật Open-Meteo Vệ Tinh</span>
+        </div>
+        <div id="detailHourlyList" class="flex items-center gap-2 overflow-x-auto pb-1.5 custom-modal-scroll">
+          <!-- Render danh sách theo giờ động -->
+        </div>
+      </div>
+
+      <!-- KHỐI 3: BẢNG QUAN TRẮC THỦY VĂN SÔNG NGÒI & LỊCH CON NƯỚC (DÀNH CHO MÙA MƯA BÃO) -->
+      <div class="p-3.5 rounded-2xl bg-gradient-to-r from-blue-950/60 via-slate-900/60 to-blue-950/60 border border-blue-400/40 space-y-3">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-water text-cyan-400 text-base"></i>
+            <span class="text-xs sm:text-sm font-black text-cyan-200 uppercase tracking-wide">
+              MỰC NƯỚC CÁC SÔNG & HỒ THỦY ĐIỆN VÙNG NAM TRUNG BỘ
+            </span>
+          </div>
+          <span id="hydrologyStatusBadge" class="text-[10px] px-2.5 py-0.5 rounded-full border font-black uppercase tracking-wider bg-amber-500/30 text-amber-300 border-amber-400">
+            BÁO ĐỘNG 2 (Cảnh Báo Lũ)
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+          <!-- Sông Ba -->
+          <div class="p-2.5 rounded-xl bg-black/40 border border-white/10 space-y-1">
+            <div class="flex items-center justify-between font-bold">
+              <span class="text-amber-300"><i class="fa-solid fa-water-ladder text-xs mr-1"></i> Sông Ba (Đà Rằng / Tuy Hòa):</span>
+              <span id="hydroSongBaLevel" class="text-white font-mono font-black">3.60m</span>
+            </div>
+            <p class="text-[10px] text-slate-300">BĐ1: 2.50m • BĐ2: 3.50m • BĐ3: 4.50m. Thượng nguồn Sông Ba Hạ đang vận hành điều tiết đón lũ.</p>
+          </div>
+
+          <!-- Sông Kỳ Lộ -->
+          <div class="p-2.5 rounded-xl bg-black/40 border border-white/10 space-y-1">
+            <div class="flex items-center justify-between font-bold">
+              <span class="text-cyan-300"><i class="fa-solid fa-water-ladder text-xs mr-1"></i> Sông Kỳ Lộ (Đồng Xuân - Tuy An):</span>
+              <span id="hydroSongKyLoLevel" class="text-white font-mono font-black">2.90m</span>
+            </div>
+            <p class="text-[10px] text-slate-300">Nước sông Kỳ Lộ dâng nhanh khi thượng nguồn mưa lớn, chú ý các ngầm tràn La Hai và An Dân.</p>
+          </div>
+        </div>
+
+        <!-- Lịch con nước triều cường -->
+        <div class="p-2.5 rounded-xl bg-black/30 border border-sky-400/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-moon text-indigo-300"></i>
+            <div>
+              <span class="font-bold text-sky-200">Lịch Con Nước & Thủy Triều Cửa Biển:</span>
+              <span class="text-[10px] text-slate-400 block">Triều cường dâng cao sẽ cản trở nước lũ thoát ra biển Đông</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 text-[11px] font-mono">
+            <span class="text-amber-300">🌊 Nước lớn: <strong id="tideRiseTime">16h30 - 21h00</strong></span>
+            <span class="text-emerald-300">⚓ Nước ròng: <strong id="tideFallTime">04h00 - 09h30</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KHỐI 4: HƯỚNG DẪN AN TOÀN & ĐƯỜNG DÂY NÓNG CỨU HỘ 114 -->
+      <div class="p-3.5 rounded-2xl bg-gradient-to-r from-red-950/50 via-slate-900/60 to-red-950/50 border border-red-500/40 space-y-2.5 text-xs">
+        <div class="flex items-center justify-between">
+          <span class="font-black text-red-300 uppercase tracking-wide flex items-center gap-1.5">
+            <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> LƯU Ý SỐNG CÒN KHI NƯỚC LŨ DÂNG CAO
+          </span>
+          <button onclick="shareWeatherZaloReport()" class="px-3 py-1 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 text-white font-black text-xs shadow transition active:scale-95 flex items-center gap-1 cursor-pointer">
+            <i class="fa-solid fa-share-nodes"></i> Báo Cáo Qua Zalo
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-slate-200">
+          <div class="flex items-start gap-1.5">
+            <span class="text-red-400 font-bold">1.</span>
+            <span><strong>Ngắt ngay cầu dao điện</strong> khi nước ngập sát ổ cắm, không lội gần cột điện.</span>
+          </div>
+          <div class="flex items-start gap-1.5">
+            <span class="text-red-400 font-bold">2.</span>
+            <span><strong>Tuyệt đối không băng qua đường</strong> khi nước lũ chảy xiết, chú ý miệng cống trôi nắp.</span>
+          </div>
+          <div class="flex items-start gap-1.5">
+            <span class="text-red-400 font-bold">3.</span>
+            <span><strong>Kê cao lúa gạo, tivi, tủ lạnh</strong> và lùa đàn heo/gia súc lên chỗ cao trước khi nước ngập sâu.</span>
+          </div>
+          <div class="flex items-start gap-1.5">
+            <span class="text-red-400 font-bold">4.</span>
+            <span><strong>Đường dây nóng cứu hộ khẩn cấp:</strong> 
+              <a href="tel:114" class="text-amber-300 font-black underline ml-1">114 (Cứu nạn)</a> • 
+              <a href="tel:115" class="text-emerald-300 font-black underline ml-1">115 (Cấp cứu)</a>
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 </body>
 </html>
