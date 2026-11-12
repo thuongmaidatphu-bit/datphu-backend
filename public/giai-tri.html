@@ -3912,101 +3912,101 @@ function changeArtSlide(delta) {
 
 <canvas id="tetBlossomCanvas" class="fixed inset-0 pointer-events-none z-40 w-full h-full"></canvas>
 
-  <!-- ================= MODAL CHUYÊN BIỆT ĐĂNG ẢNH TỪ ĐIỆN THOẠI & MÁY TÍNH ================= -->
-  <div id="modalDedicatedPhoto" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-5" onclick="if(event.target === this) closeDedicatedPhotoModal()">
-    <div class="bg-slate-900 border-2 border-emerald-500/60 rounded-3xl p-4 sm:p-6 w-full max-w-lg text-white space-y-4 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto no-scrollbar">
+  <!-- ================= MODAL CHUYÊN BIỆT ĐĂNG ẢNH TỪ ĐIỆN THOẠI & MÁY TÍNH (STICKY FOOTER KHÔNG BAO GIỜ BỊ KHUẤT) ================= -->
+  <div id="modalDedicatedPhoto" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4" onclick="if(event.target === this) closeDedicatedPhotoModal()">
+    <div class="bg-slate-900 border-2 border-emerald-500/80 rounded-3xl w-full max-w-lg text-white shadow-2xl relative flex flex-col max-h-[94vh] sm:max-h-[90vh] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
       
-      <!-- Tiêu đề modal -->
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+      <!-- 1. HEADER CỐ ĐỊNH Ở ĐỈNH (STICKY TOP HEADER) -->
+      <div class="shrink-0 px-4 py-3 sm:px-5 sm:py-3.5 border-b border-slate-800 bg-slate-900/95 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-white flex items-center justify-center font-black text-base shadow">
+          <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-slate-950 flex items-center justify-center font-black text-sm shadow">
             <i class="fa-solid fa-camera text-amber-300"></i>
           </span>
           <div>
-            <h3 class="text-sm sm:text-base font-black text-white">ĐĂNG TẢI ẢNH TỪ ĐIỆN THOẠI & MÁY TÍNH</h3>
-            <p class="text-[11px] text-emerald-300/80">Ảnh thiện nguyện, đạo tràng niệm Phật, nụ cười quê hương</p>
+            <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wide">ĐĂNG TẢI ẢNH TỪ ĐIỆN THOẠI & MÁY TÍNH</h3>
+            <p class="text-[10.5px] text-emerald-300/80">Ảnh thiện nguyện, đạo tràng niệm Phật, nụ cười tuổi thơ</p>
           </div>
         </div>
-        <button onclick="closeDedicatedPhotoModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer">
+        <button onclick="closeDedicatedPhotoModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer" title="Đóng">
           <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
 
-      <!-- KHU VỰC CHỌN ẢNH THÔNG MINH CHO ĐIỆN THOẠI VÀ MÁY TÍNH -->
-      <div class="p-4 rounded-2xl bg-slate-950 border-2 border-dashed border-emerald-500/60 text-center space-y-3">
-        <div class="text-xs text-emerald-200 font-bold">
-          📸 Chạm vào nút bên dưới để chụp ảnh trực tiếp hoặc chọn ảnh từ máy của Bác:
-        </div>
+      <!-- 2. THÂN MODAL CUỘN TỰ DO CÓ THANH CUỘN (SCROLLABLE BODY) -->
+      <div class="flex-1 overflow-y-auto px-4 py-3 sm:px-5 sm:py-4 space-y-3 text-xs" style="scrollbar-width: thin; scrollbar-color: #10b981 #0f172a;">
+        
+        <!-- KHU VỰC CHỌN ẢNH VÀ CHỤP CAMERA -->
+        <div class="p-3 sm:p-3.5 rounded-2xl bg-slate-950 border-2 border-dashed border-emerald-500/60 text-center space-y-2.5">
+          <div class="text-[11px] sm:text-xs text-emerald-200 font-bold">
+            📸 Chạm vào nút bên dưới để chụp ảnh trực tiếp hoặc chọn ảnh từ máy của Bác:
+          </div>
 
-        <!-- Input ẩn cho file picker và camera -->
-        <input type="file" id="dedicatedPhotoPickerFile" accept="image/*" class="hidden" onchange="processDedicatedPhotoFile(this)" />
-        <input type="file" id="dedicatedPhotoPickerCamera" accept="image/*" capture="environment" class="hidden" onchange="processDedicatedPhotoFile(this)" />
+          <input type="file" id="dedicatedPhotoPickerFile" accept="image/*" class="hidden" onchange="processDedicatedPhotoFile(this)" />
+          <input type="file" id="dedicatedPhotoPickerCamera" accept="image/*" capture="environment" class="hidden" onchange="processDedicatedPhotoFile(this)" />
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <button type="button" onclick="document.getElementById('dedicatedPhotoPickerCamera').click()" class="py-3 px-3 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-xs shadow transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-camera text-base"></i>
-            <span>Chụp Bằng Camera Điện Thoại</span>
-          </button>
-          
-          <button type="button" onclick="document.getElementById('dedicatedPhotoPickerFile').click()" class="py-3 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-images text-base text-amber-300"></i>
-            <span>Chọn Ảnh Trong Máy</span>
-          </button>
-        </div>
-
-        <!-- Khung xem trước ảnh sắc nét kèm thông tin -->
-        <div id="dedicatedPhotoPreviewBox" class="hidden pt-2 border-t border-slate-800 space-y-2">
-          <div class="relative max-w-sm mx-auto rounded-xl overflow-hidden border-2 border-emerald-400 shadow-lg">
-            <img id="dedicatedPhotoPreviewImg" src="" alt="Xem trước ảnh" class="w-full max-h-56 object-contain bg-black" />
-            <button type="button" onclick="clearDedicatedPhotoPreview()" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/80 hover:bg-red-600 text-white flex items-center justify-center text-xs transition" title="Xóa ảnh để chọn lại">
-              <i class="fa-solid fa-trash"></i>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="document.getElementById('dedicatedPhotoPickerCamera').click()" class="py-2.5 px-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-[11px] sm:text-xs shadow transition active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-camera"></i>
+              <span>Chụp Camera</span>
             </button>
-            <div class="absolute bottom-0 inset-x-0 bg-black/70 px-2 py-1 text-[10px] text-emerald-300 font-mono flex items-center justify-between">
-              <span id="dedicatedPhotoDimText">Độ phân giải: Đã tối ưu</span>
-              <span class="text-amber-300 font-bold">✨ Sắc nét chuẩn 4K</span>
+            
+            <button type="button" onclick="document.getElementById('dedicatedPhotoPickerFile').click()" class="py-2.5 px-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-[11px] sm:text-xs shadow transition active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-images text-amber-300"></i>
+              <span>Chọn Ảnh Trong Máy</span>
+            </button>
+          </div>
+
+          <!-- Khung xem trước ảnh sắc nét -->
+          <div id="dedicatedPhotoPreviewBox" class="hidden pt-2 border-t border-slate-800 space-y-1.5">
+            <div class="relative max-w-xs mx-auto rounded-xl overflow-hidden border-2 border-emerald-400 shadow-md">
+              <img id="dedicatedPhotoPreviewImg" src="" alt="Xem trước ảnh" class="w-full max-h-44 object-contain bg-black" />
+              <button type="button" onclick="clearDedicatedPhotoPreview()" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/80 hover:bg-red-600 text-white flex items-center justify-center text-[10px] transition" title="Xóa ảnh để chọn lại">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+              <div class="absolute bottom-0 inset-x-0 bg-black/75 px-2 py-0.5 text-[9.5px] text-emerald-300 font-mono flex items-center justify-between">
+                <span id="dedicatedPhotoDimText">Độ phân giải: Đã tối ưu</span>
+                <span class="text-amber-300 font-bold">✨ Sắc nét 4K</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- FORM ĐIỀN THÔNG TIN BỨC ẢNH -->
-      <div class="space-y-3 text-xs">
-        <!-- Gợi ý chủ đề nhanh -->
+        <!-- GỢI Ý CHỌN NHANH TIÊU ĐỀ -->
         <div>
-          <label class="block font-bold text-amber-200 mb-1.5">
+          <label class="block font-bold text-amber-200 mb-1">
             <i class="fa-solid fa-tag text-amber-400 mr-1"></i> Gợi Ý Chọn Nhanh Tiêu Đề:
           </label>
-          <div class="flex items-center gap-1.5 flex-wrap">
-            <button type="button" onclick="setDedicatedPhotoTitle('Khóa Tu Thiếu Nhi & Đạo Tràng Niệm Phật')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 text-[11px] font-bold border border-emerald-500/30 transition">
+          <div class="flex items-center gap-1 flex-wrap">
+            <button type="button" onclick="setDedicatedPhotoTitle('Khóa Tu Thiếu Nhi & Đạo Tràng Niệm Phật')" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 text-[10.5px] font-bold border border-emerald-500/30 transition cursor-pointer">
               🙏 Khóa Tu Tuổi Thơ
             </button>
-            <button type="button" onclick="setDedicatedPhotoTitle('Bữa Cơm Tình Thương & Phát Quà Từ Thiện')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[11px] font-bold border border-amber-500/30 transition">
+            <button type="button" onclick="setDedicatedPhotoTitle('Bữa Cơm Tình Thương & Phát Quà Từ Thiện')" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[10.5px] font-bold border border-amber-500/30 transition cursor-pointer">
               🤝 Bữa Cơm Bác Ái
             </button>
-            <button type="button" onclick="setDedicatedPhotoTitle('Nụ Cười Hồn Nhiên Ngày Hội')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-rose-300 text-[11px] font-bold border border-rose-500/30 transition">
+            <button type="button" onclick="setDedicatedPhotoTitle('Nụ Cười Hồn Nhiên Ngày Hội')" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-rose-300 text-[10.5px] font-bold border border-rose-500/30 transition cursor-pointer">
               🌸 Nụ Cười Tuổi Thơ
             </button>
-            <button type="button" onclick="setDedicatedPhotoTitle('Cảnh Đẹp Quê Hương Đất Phú')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-[11px] font-bold border border-cyan-500/30 transition">
+            <button type="button" onclick="setDedicatedPhotoTitle('Cảnh Đẹp Quê Hương Đất Phú')" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-[10.5px] font-bold border border-cyan-500/30 transition cursor-pointer">
               🌾 Quê Hương Xứ Nẫu
             </button>
           </div>
         </div>
 
-        <!-- Tiêu đề chính -->
+        <!-- TIÊU ĐỀ BỨC ẢNH -->
         <div>
           <label class="block font-bold text-slate-300 mb-1">Tiêu Đề Bức Ảnh (*):</label>
-          <input type="text" id="dedicatedPhotoTitle" placeholder="Ví dụ: Lễ Phật Trước Giờ Đi Học, Trao Quà Người Nghèo..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none" />
+          <input type="text" id="dedicatedPhotoTitle" placeholder="Ví dụ: Lễ Phật Trước Giờ Đi Học, Trao Quà Người Nghèo..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none" />
         </div>
 
-        <!-- Người chụp / Đạo tràng -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <!-- TÁC GIẢ & THỂ LOẠI -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div>
             <label class="block font-bold text-slate-300 mb-1">Tác Giả / Đạo Tràng / Đoàn:</label>
-            <input type="text" id="dedicatedPhotoAuthor" placeholder="Ví dụ: Đạo Tràng Đất Phú, Bác Hai..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none" />
+            <input type="text" id="dedicatedPhotoAuthor" placeholder="Ví dụ: Đạo Tràng Đất Phú, Bác Hai..." class="w-full px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none" />
           </div>
           <div>
             <label class="block font-bold text-slate-300 mb-1">Phân Loại Thể Loại:</label>
-            <select id="dedicatedPhotoCategory" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-emerald-300 font-bold focus:border-emerald-400 focus:outline-none">
+            <select id="dedicatedPhotoCategory" class="w-full px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-emerald-300 font-bold focus:border-emerald-400 focus:outline-none">
               <option value="Tâm Linh & Hiếu Hạnh">🙏 Tâm Linh, Niệm Phật & Khóa Tu</option>
               <option value="Thiện Nguyện & Bác Ái">🤝 Thiện Nguyện & Bữa Cơm Bác Ái</option>
               <option value="Nụ Cười Tuổi Thơ & Lễ Hội">🌸 Nụ Cười Tuổi Thơ & Lễ Hội</option>
@@ -4015,29 +4015,28 @@ function changeArtSlide(delta) {
           </div>
         </div>
 
-        <!-- Lời bình / Cảm xúc -->
+        <!-- LỜI BÌNH / CẢM XÚC -->
         <div>
-          <label class="block font-bold text-slate-300 mb-1">Lời Bình / Câu Thơ / Cảm Xúc Kèm Theo:</label>
-          <textarea id="dedicatedPhotoIntro" rows="2" placeholder="Ghi lại vài lời chúc bình an, bài thơ hay câu chuyện đằng sau bức ảnh..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none"></textarea>
+          <label class="block font-bold text-slate-300 mb-1">Lời Bình / Cảm Xúc Kèm Theo:</label>
+          <textarea id="dedicatedPhotoIntro" rows="2" placeholder="Ghi lại vài lời chúc bình an, bài thơ hay câu chuyện đằng sau bức ảnh..." class="w-full px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none"></textarea>
         </div>
+
+        <!-- Thông báo trạng thái lưu -->
+        <div id="dedicatedPhotoFeedback" class="hidden p-2 rounded-xl text-xs font-bold text-center"></div>
+
       </div>
 
-      <!-- Phản hồi trạng thái -->
-      <div id="dedicatedPhotoFeedback" class="hidden p-2 rounded-xl text-xs font-bold text-center"></div>
-
-      <!-- Nút hành động chính -->
-      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-        <button type="button" onclick="closeDedicatedPhotoModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition cursor-pointer">
+      <!-- 3. FOOTER CỐ ĐỊNH Ở ĐÁY KHÔNG BAO GIỜ BỊ KHUẤT (STICKY BOTTOM FOOTER) -->
+      <div class="shrink-0 px-4 py-3 sm:px-5 sm:py-3.5 border-t border-slate-800 bg-slate-950 flex items-center justify-between gap-2 shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
+        <button type="button" onclick="closeDedicatedPhotoModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition cursor-pointer active:scale-95">
           Hủy Bỏ
         </button>
-        <button type="button" onclick="submitDedicatedPhotoUpload()" id="btnSubmitDedicatedPhoto" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow-lg active:scale-95 transition flex items-center gap-2 cursor-pointer">
-          <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i>
+        <button type="button" onclick="submitDedicatedPhotoUpload()" id="btnSubmitDedicatedPhoto" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs sm:text-sm shadow-xl active:scale-95 transition flex items-center gap-2 cursor-pointer border border-emerald-300/40">
+          <i class="fa-solid fa-cloud-arrow-up text-slate-950 text-sm"></i>
           <span>LƯU & ĐĂNG LÊN TRANG WEB NGAY</span>
         </button>
       </div>
 
     </div>
-  </div>
-
-</body>
+  </div></body>
 </html>
