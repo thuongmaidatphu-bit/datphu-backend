@@ -134,63 +134,60 @@
     <!-- ========================================================================= -->
     <!-- PHÂN HỆ DUY NHẤT: MÀN HÌNH LỚN 4K Ở TRÊN & CHUỖI TƯƠNG TÁC CHẠY DỌC DƯỚI   -->
     <!-- ========================================================================= -->
-    <!-- ================= BANNER ĐÓN TẾT SUM VẦY & ĐẾM NGƯỢC GIAO THỪA ================= -->
-      <div class="p-3 sm:p-4 rounded-3xl bg-gradient-to-r from-red-950 via-amber-950/70 to-red-950 border-2 border-amber-500/50 shadow-xl text-white flex flex-wrap items-center justify-between gap-3 relative overflow-hidden">
-        <div class="absolute -right-4 -bottom-6 text-7xl opacity-15 pointer-events-none select-none">🌸</div>
-        <div class="flex items-center gap-3 relative z-10">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center text-xl shadow-lg shrink-0">
-            🧧
+    <!-- ================= BANNER MÙA LỄ HỘI NOEL & TẾT SUM VẦY COMPACT ================= -->
+      <div class="py-2 px-3 sm:px-4 rounded-2xl bg-gradient-to-r from-red-950 via-slate-900 to-emerald-950 border border-amber-500/40 shadow-lg text-white flex flex-wrap items-center justify-between gap-2 relative overflow-hidden">
+        <div class="flex items-center gap-2.5 relative z-10 min-w-0">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-600 flex items-center justify-center text-sm shadow shrink-0 text-white font-bold">
+            <i class="fa-solid fa-gift text-amber-200"></i>
           </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="text-xs sm:text-sm font-black text-amber-300 tracking-wide">XUÂN ĐẤT PHÚ SUM VẦY • CHÀO ĐÓN NĂM MỚI</span>
-              <span class="px-2 py-0.2 rounded-full bg-red-600/80 text-white text-[9.5px] font-bold border border-amber-400/40 hidden sm:inline-block">Tết Nguyên Đán</span>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-xs font-black text-amber-300 tracking-wide uppercase">MÙA LỄ HỘI GIÁNG SINH & XUÂN ĐẤT PHÚ</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-700/80 text-emerald-100 text-[9px] font-bold border border-emerald-400/30">Noel & Tết 2027</span>
             </div>
-            <p id="tetCountdownText" class="text-[11px] text-amber-100 font-mono font-medium">Đang tính thời khắc Giao Thừa thiêng liêng...</p>
+            <p id="tetCountdownText" class="text-[10.5px] sm:text-[11px] text-amber-100/90 font-mono font-medium truncate">Đang tính thời khắc mùa lễ hội...</p>
           </div>
         </div>
 
-        <div class="flex items-center gap-2 relative z-10 text-xs">
-          <button onclick="toggleTetPetals()" id="btnTetPetalsToggle" class="px-3 py-1.5 rounded-xl bg-black/40 hover:bg-black/60 border border-amber-400/40 text-amber-200 font-bold transition flex items-center gap-1.5 active:scale-95 cursor-pointer" title="Bật/Tắt hiệu ứng hoa mai rơi">
-            <span id="petalsStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>❄️ Tuyết & Mai Rơi 🌸</span>
+        <div class="flex items-center gap-1.5 relative z-10 text-xs shrink-0">
+          <button onclick="toggleTetPetals()" id="btnTetPetalsToggle" class="px-2.5 py-1 rounded-xl bg-black/50 hover:bg-black/70 border border-amber-400/40 text-amber-200 font-bold transition flex items-center gap-1 active:scale-95 cursor-pointer text-[11px]" title="Bật/Tắt hiệu ứng tuyết rơi & mai vàng">
+            <span id="petalsStatusDot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>❄️ Tuyết & Mai 🌸</span>
           </button>
-          <button onclick="filterRadioTheme('noel')" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black shadow-md transition flex items-center gap-1.5 active:scale-95 cursor-pointer border border-emerald-300/40" title="Nghe tuyển tập Giáng Sinh & Noel vui vẻ">
-            <span>🎄</span>
-            <span>Giáng Sinh Noel ❄️</span>
+          <button onclick="filterRadioTheme('noel')" class="px-2.5 py-1 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black shadow transition flex items-center gap-1 active:scale-95 cursor-pointer border border-emerald-300/40 text-[11px]" title="Nghe tuyển tập Giáng Sinh & Noel">
+            <span>🎄 Noel</span>
           </button>
-          <button onclick="filterRadioTheme('nhacxuan')" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black shadow-md transition flex items-center gap-1.5 active:scale-95 cursor-pointer">
-            <span>🌸</span>
-            <span>Nhạc Xuân 🎶</span>
+          <button onclick="filterRadioTheme('nhacxuan')" class="px-2.5 py-1 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black shadow transition flex items-center gap-1 active:scale-95 cursor-pointer text-[11px]">
+            <span>🌸 Nhạc Xuân</span>
           </button>
         </div>
       </div>
 
-      <section id="channelSection_radio" class="space-y-4">
+      <section id="channelSection_radio" class="space-y-3">
       
       <!-- 1. MÀN HÌNH LỚN 4K (HERO CINEMA SCREEN) TÍCH HỢP NÚT PLAY / PAUSE LỚN -->
       <div class="p-3 sm:p-5 rounded-3xl bg-slate-900 border border-amber-500/30 shadow-2xl space-y-3 relative overflow-hidden">
         
         <!-- Khung chiếu video/ảnh tỉ lệ 16:9 với viền Ambilight -->
-        <div id="heroTheaterContainer" class="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 aspect-video shadow-2xl group flex items-center justify-center border-2 border-amber-500/40 select-none">
+        <div id="heroTheaterContainer" class="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 aspect-video max-h-[50vh] sm:max-h-[54vh] md:max-h-[460px] shadow-2xl group flex items-center justify-center border-2 border-amber-500/40 select-none">
           
-          <div id="ambilightGlow" class="absolute -inset-4 bg-gradient-to-r from-amber-500/20 via-rose-500/20 to-cyan-500/20 blur-2xl pointer-events-none transition-all duration-700"></div>
+          <div id="ambilightGlow" class="absolute -inset-4 bg-gradient-to-r from-emerald-500/20 via-amber-500/20 to-rose-500/20 blur-2xl pointer-events-none transition-all duration-700"></div>
 
-          <!-- Ảnh nền tranh 4K (Dành cho bản thu Âm thanh mộc) -->
-          <img id="artMainImage" src="img/landmarks/ganh_da_dia.jpg" alt="Danh Thắng Đất Phú" class="relative z-10 w-full h-full object-cover transition-all duration-700 select-none scale-100 group-hover:scale-105" />
+          <!-- Ảnh nền tranh 4K Sắc Nét Chuẩn Điện Ảnh (Zero Crop, High Contrast) -->
+          <img id="artMainImage" src="img/ong_gia_noel_va_cong_chua_tuyet_4k.jpg" alt="Ông Già Noel & Công Chúa Tuyết 4K" class="relative z-10 w-full h-full object-contain bg-slate-950 transition-all duration-500 select-none" style="image-rendering: -webkit-optimize-contrast;" />
           
           <!-- Khung YouTube Video Player (Dành cho Video Clip / Nhạc Phim 4K) -->
           <div id="heroVideoWrapper" class="absolute inset-0 z-15 hidden w-full h-full bg-black">
             <iframe id="heroYoutubeIframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
           </div>
 
-          <div id="heroOverlayGradient" class="absolute inset-0 z-20 bg-gradient-to-t from-black/90 via-black/25 to-black/40 pointer-events-none transition-opacity duration-300"></div>
+          <div id="heroOverlayGradient" class="absolute inset-0 z-20 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none transition-opacity duration-300"></div>
 
           <!-- Huy hiệu thể loại góc trên trái -->
           <div class="absolute top-3 left-3 sm:top-5 sm:left-5 z-30 flex items-center gap-2">
             <span id="artCategoryBadge" class="px-3 py-1 rounded-full bg-amber-500/90 text-slate-950 text-[10px] sm:text-xs font-black shadow backdrop-blur-md flex items-center gap-1.5">
-              <i id="artCategoryIcon" class="fa-solid fa-music"></i>
-              <span id="artCategoryBadgeText">ĐỘC TẤU SÁO TRÚC</span>
+              <i id="artCategoryIcon" class="fa-solid fa-gift text-emerald-300"></i>
+              <span id="artCategoryBadgeText">GIÁNG SINH & NOEL</span>
             </span>
             <span id="mediaTypeBadge" class="px-2.5 py-1 rounded-full bg-slate-900/80 text-emerald-400 text-[10px] sm:text-xs font-bold border border-emerald-500/40 backdrop-blur-md hidden sm:inline-flex items-center gap-1">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -200,8 +197,12 @@
 
           <!-- Nút phóng to toàn màn hình góc trên phải -->
           <div class="absolute top-3 right-3 sm:top-5 sm:right-5 z-30 flex items-center gap-2">
-            <button onclick="toggleTheaterFullscreen()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition border border-white/20 backdrop-blur-md active:scale-95 cursor-pointer" title="Phóng to toàn màn hình">
-              <i class="fa-solid fa-expand text-xs sm:text-sm"></i>
+            <button onclick="toggleImageFitMode()" id="btnImageFit" class="px-2.5 py-1.5 rounded-full bg-black/60 hover:bg-black/80 text-amber-300 text-[10px] sm:text-xs font-bold border border-white/20 backdrop-blur-md active:scale-95 cursor-pointer flex items-center gap-1.5 transition" title="Đổi chế độ: Vừa vặn sắc nét 4K hoặc Tràn viền">
+              <i id="fitIcon" class="fa-solid fa-expand"></i>
+              <span id="fitText" class="hidden sm:inline">Nét 4K</span>
+            </button>
+            <button onclick="toggleTheaterFullscreen()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition border border-white/20 backdrop-blur-md active:scale-95 cursor-pointer" title="Phóng to toàn màn hình">
+              <i class="fa-solid fa-maximize text-xs"></i>
             </button>
           </div>
 
@@ -216,8 +217,8 @@
           <div id="heroBottomControls" class="absolute bottom-2 inset-x-2 sm:bottom-4 sm:inset-x-6 z-30 text-white space-y-1.5 pointer-events-none">
             <div class="flex items-center justify-between text-xs sm:text-sm font-bold pointer-events-auto">
               <div class="truncate max-w-[70%]">
-                <h3 id="radioCurrentTitle" class="text-sm sm:text-lg font-black text-white drop-shadow-md truncate">Độc Tấu Sáo Trúc: Phượng Vũ</h3>
-                <p id="radioCurrentArtist" class="text-[10px] sm:text-xs text-amber-300 font-medium truncate">Nghệ Nhân Dân Gian • Sáo Trúc Mộc</p>
+                <h3 id="radioCurrentTitle" class="text-sm sm:text-lg font-black text-white drop-shadow-md truncate">Jingle Bells - Tiếng Chuông Ngân Vang Rộn Rã (Noel 4K)</h3>
+                <p id="radioCurrentArtist" class="text-[10px] sm:text-xs text-amber-300 font-medium truncate">Giai Điệu Giáng Sinh Kinh Điển • Rộn Ràng Lễ Hội</p>
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
                 <button onclick="playPrevRadioTrack()" class="w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition border border-white/20 active:scale-95 cursor-pointer" title="Bài trước">
@@ -3385,9 +3386,36 @@ function changeArtSlide(delta) {
       renderRadioPlaylist();
       renderArtGallery();
       renderBuddhistPlaylist();
+      // Khởi tạo hiển thị tác phẩm đầu tiên sắc nét
+      if (typeof selectRadioTrack === 'function' && MEDIA_PLAYLIST.length > 0) {
+        // Cập nhật giao diện không tự ý phát âm thanh khi chưa có tương tác
+        const t0 = MEDIA_PLAYLIST[0];
+        const mainImg = document.getElementById('artMainImage');
+        if (mainImg && t0.coverImg) mainImg.src = t0.coverImg;
+      }
     });
   </script>
 <script>
+
+        // CHUYỂN ĐỔI CHẾ ĐỘ XEM ẢNH: NÉT CĂNG NGUYÊN BẢN (CONTAIN) HOẶC TRÀN VIỀN (COVER)
+    let isCoverMode = false;
+    function toggleImageFitMode() {
+      const img = document.getElementById('artMainImage');
+      const fitText = document.getElementById('fitText');
+      const fitIcon = document.getElementById('fitIcon');
+      if (!img) return;
+
+      isCoverMode = !isCoverMode;
+      if (isCoverMode) {
+        img.className = "relative z-10 w-full h-full object-cover transition-all duration-500 select-none";
+        if (fitText) fitText.innerText = "Tràn Viền";
+        if (fitIcon) fitIcon.className = "fa-solid fa-compress";
+      } else {
+        img.className = "relative z-10 w-full h-full object-contain bg-slate-950 transition-all duration-500 select-none";
+        if (fitText) fitText.innerText = "Nét 4K";
+        if (fitIcon) fitIcon.className = "fa-solid fa-expand";
+      }
+    }
 
     function toggleTheaterFullscreen() {
       const container = document.getElementById('heroTheaterContainer') || document.getElementById('artMainImage');
