@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đài Tiếng Nói Quê Hương & Bài Chòi Đất Phú • Lịch Đất Phú</title>
+  <meta name="description" content="Kênh phát thanh dân ca, bài chòi Xứ Nẫu, vọng cổ quê hương, tiếng sóng biển và âm nhạc thư giãn Đất Phú.">
+  <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 9999px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    @keyframes eqWave {
+      0%, 100% { height: 20%; }
+      50% { height: 95%; }
+    }
+    .eq-bar-anim { animation: eqWave 0.8s ease-in-out infinite; }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-slate-50 via-white to-amber-50/50 min-h-screen text-slate-800 flex flex-col font-sans antialiased">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-200/80 shadow-xs px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+      <a href="/" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-black shadow-2xs transition active:scale-95 flex items-center gap-1.5 shrink-0" title="Trở về Trang Chủ Lịch Đất Phú">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span class="hidden sm:inline">Về Lịch Đất Phú</span>
+      </a>
+
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 text-white flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0 border border-amber-300">
+          <i class="fa-solid fa-radio text-base sm:text-lg"></i>
+        </div>
+        <div class="min-w-0">
+          <h1 class="text-xs sm:text-sm md:text-base font-black text-amber-950 uppercase tracking-wide truncate">
+            ĐÀI TIẾNG NÓI QUÊ HƯƠNG & BÀI CHÒI ĐẤT PHÚ
+          </h1>
+          <p class="text-[10.5px] text-slate-500 font-medium truncate hidden sm:block">Hô Bài Chòi Xứ Nẫu • Dân ca Nam Trung Bộ • Tản văn viễn xứ & Hẹn giờ ngủ</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nút sang trang Khí tượng -->
+    <a href="/thoi-tiet" class="px-2.5 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 text-xs font-bold shadow-2xs transition active:scale-95 flex items-center gap-1.5 shrink-0">
+      <i class="fa-solid fa-cloud-sun-rain text-sky-600"></i>
+      <span class="hidden sm:inline">Trạm Khí Tượng</span>
+    </a>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="flex-1 max-w-4xl w-full mx-auto p-3 sm:p-5 space-y-4">
+
+    <!-- MASTER PLAYER CARD -->
+    <div class="p-4 sm:p-6 rounded-3xl bg-white border border-amber-200 shadow-xl space-y-4">
+      <div class="flex flex-col sm:flex-row items-center gap-4">
+        <!-- Đĩa hát quay hoặc Badge nhạc -->
+        <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 p-1 shadow-lg shrink-0 flex items-center justify-center text-white">
+          <div class="w-full h-full rounded-xl bg-slate-900/40 backdrop-blur-xs flex flex-col items-center justify-center text-center p-2">
+            <i id="playerDiscIcon" class="fa-solid fa-music text-3xl text-amber-200"></i>
+            <div id="equalizerBox" class="flex items-end gap-1 h-4 mt-2 hidden">
+              <span class="w-1 bg-amber-300 rounded-full eq-bar-anim" style="animation-delay: 0.1s;"></span>
+              <span class="w-1 bg-amber-300 rounded-full eq-bar-anim" style="animation-delay: 0.3s;"></span>
+              <span class="w-1 bg-amber-300 rounded-full eq-bar-anim" style="animation-delay: 0.5s;"></span>
+              <span class="w-1 bg-amber-300 rounded-full eq-bar-anim" style="animation-delay: 0.2s;"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin bài đang phát -->
+        <div class="flex-1 text-center sm:text-left min-w-0 space-y-1">
+          <span id="currentCategoryBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 uppercase">
+            Dân Ca & Bài Chòi
+          </span>
+          <h2 id="currentTrackTitle" class="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug">
+            Hô Bài Chòi Xứ Nẫu: Hội Xuân Đất Phú
+          </h2>
+          <p id="currentTrackArtist" class="text-xs text-slate-500 font-medium">
+            Đoàn Nghệ Thuật Dân Gian Miền Trung
+          </p>
+          <p id="currentTrackDesc" class="text-[11px] text-amber-900/80 italic pt-1 line-clamp-2">
+            "Tiếng hô giòn giã mở đầu ngày hội làng, thắm đượm tình làng nghĩa xóm."
+          </p>
+        </div>
+      </div>
+
+      <!-- BỘ NÚT ĐIỀU KHIỂN PHÁT NHẠC -->
+      <div class="flex items-center justify-between border-t border-slate-100 pt-3">
+        <!-- Chế độ lặp / trộn bài -->
+        <button id="repeatModeBtn" onclick="toggleRepeatMode()" class="p-2 sm:px-3 sm:py-1.5 rounded-xl text-slate-600 hover:text-slate-900 text-xs font-bold transition cursor-pointer flex items-center gap-1.5" title="Chế độ phát">
+          <i id="repeatModeIcon" class="fa-solid fa-repeat text-amber-600"></i>
+          <span id="repeatModeText" class="hidden sm:inline">Liên tục</span>
+        </button>
+
+        <!-- Cụm Play / Pause / Next -->
+        <div class="flex items-center gap-3">
+          <button onclick="prevTrack()" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-backward-step"></i>
+          </button>
+          <button id="mainPlayBtn" onclick="togglePlayPause()" class="w-13 h-13 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white flex items-center justify-center text-xl shadow-lg shadow-amber-500/30 transition active:scale-95 cursor-pointer">
+            <i id="mainPlayIcon" class="fa-solid fa-play ml-0.5"></i>
+          </button>
+          <button onclick="nextTrack()" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-forward-step"></i>
+          </button>
+        </div>
+
+        <!-- Hẹn giờ tắt trước khi ngủ -->
+        <div class="flex items-center gap-1.5">
+          <button onclick="cycleSleepTimer()" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-900 text-xs font-bold transition cursor-pointer flex items-center gap-1" title="Hẹn giờ tắt trước khi ngủ">
+            <i class="fa-solid fa-moon text-indigo-500"></i>
+            <span id="sleepTimerBadge">Hẹn giờ</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BỘ LỌC THỂ LOẠI -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs font-bold">
+      <button onclick="filterCategory('all')" id="catBtn_all" class="px-3 py-1.5 rounded-xl bg-amber-500 text-white shadow-xs cursor-pointer whitespace-nowrap active:scale-95">
+        Tất Cả (8 bài)
+      </button>
+      <button onclick="filterCategory('baichoi')" id="catBtn_baichoi" class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap active:scale-95">
+        🎋 Dân Ca & Bài Chòi
+      </button>
+      <button onclick="filterCategory('radio')" id="catBtn_radio" class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap active:scale-95">
+        📻 Radio Viễn Xứ
+      </button>
+      <button onclick="filterCategory('nature')" id="catBtn_nature" class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap active:scale-95">
+        🌊 Tiếng Sóng & Mưa Quê Hương
+      </button>
+    </div>
+
+    <!-- DANH SÁCH BÀI PHÁT (PLAYLIST) -->
+    <div id="playlistContainer" class="space-y-2">
+      <!-- Render dynamic items -->
+    </div>
+
+  </main>
+
+  <script>
+    const PLAYLIST = [
+      {
+        id: "bc_1",
+        title: "Hô Bài Chòi Xứ Nẫu: Hội Xuân Đất Phú",
+        artist: "Đoàn Nghệ Thuật Dân Gian Miền Trung",
+        category: "baichoi",
+        categoryName: "Dân Ca & Bài Chòi",
+        duration: "04:30",
+        desc: "Tiếng hô giòn giã mở đầu ngày hội làng, thắm đượm tình làng nghĩa xóm."
+      },
+      {
+        id: "bc_2",
+        title: "Hò Khoan Miền Trung & Khúc Ca Sông Ba",
+        artist: "Nghệ Nhân Làng Chài & Thợ Cày Đất Phú",
+        category: "baichoi",
+        categoryName: "Dân Ca & Bài Chòi",
+        duration: "05:15",
+        desc: "Điệu hò sông nước dạt dào, gắn liền với mồ hôi và chuyến bè xuôi ngược."
+      },
+      {
+        id: "bc_3",
+        title: "Dân Ca Nam Trung Bộ: Lý Ngựa Ô & Lý Chiều Chiều",
+        artist: "Tiếng Hát Quê Nhà Xứ Quảng - Phú Yên",
+        category: "baichoi",
+        categoryName: "Dân Ca & Bài Chòi",
+        duration: "04:50",
+        desc: "Làn điệu dân ca thanh bình rộn ràng bên rặng tre đầu làng."
+      },
+      {
+        id: "bc_4",
+        title: "Vọng Cổ Hoài Niệm: Nhớ Quê Hương & Tình Mẹ",
+        artist: "Tiếng Đàn Kìm & Câu Ca Mộc Mạc",
+        category: "baichoi",
+        categoryName: "Dân Ca & Bài Chòi",
+        duration: "06:10",
+        desc: "Khúc ca cổ thấm đượm nỗi nhớ cội nguồn của người con xa xứ."
+      },
+      {
+        id: "rd_1",
+        title: "Radio Đêm Khuya: Tiếng Mưa Trên Mái Tôn & Nỗi Niềm Đất Cằn",
+        artist: "Giọng Đọc Tản Văn • Đất Phú Radio",
+        category: "radio",
+        categoryName: "Radio Viễn Xứ",
+        duration: "07:20",
+        desc: "Tiếng mưa rào gõ nhịp mái tôn, gợi nhớ căn nhà xưa nơi thôn quê yêu dấu."
+      },
+      {
+        id: "rd_2",
+        title: "Thương Nhớ Mùa Gặt & Bát Nước Chè Xanh Ngày Mưa",
+        artist: "Câu Chuyện Làng Quê • Truyền Thanh Phú Yên",
+        category: "radio",
+        categoryName: "Radio Viễn Xứ",
+        duration: "06:40",
+        desc: "Hương thơm rơm rạ mùa gặt mới và tình làng nghĩa xóm bình dị."
+      },
+      {
+        id: "nt_1",
+        title: "Tiếng Sóng Biển Đêm Vũng Rô & Gió Lộng Đèo Cả",
+        artist: "Âm Thanh Tự Nhiên Thu Âm Thực Địa",
+        category: "nature",
+        categoryName: "Tiếng Sóng & Mưa Quê Hương",
+        duration: "10:00",
+        desc: "Âm thanh sóng vỗ rì rào ru giấc ngủ thanh bình của biển trời Nam Phú Yên."
+      },
+      {
+        id: "nt_2",
+        title: "Mưa Rào Đồng Lúa Tuy Hòa & Tiếng Ếch Nhái Đồng Quê",
+        artist: "Thiên Nhiên Đất Phú Hòa Âm",
+        category: "nature",
+        categoryName: "Tiếng Sóng & Mưa Quê Hương",
+        duration: "08:30",
+        desc: "Bản hòa ca của thiên nhiên miền Trung sau cơn mưa dông mát lành."
+      }
+    ];
+
+    let currentTrackIdx = 0;
+    let isPlaying = false;
+    let currentCategory = "all";
+    let repeatMode = "continuous"; // 'continuous', 'one', 'shuffle'
+    let sleepTimerMinutes = 0;
+    let sleepTimerInterval = null;
+    let synthCtx = null;
+    let synthOscillators = [];
+    let synthMelodyTimer = null;
+
+    function renderPlaylist() {
+      const container = document.getElementById("playlistContainer");
+      if (!container) return;
+
+      const filtered = PLAYLIST.filter(t => currentCategory === "all" || t.category === currentCategory);
+
+      container.innerHTML = filtered.map((track, i) => {
+        const actualIdx = PLAYLIST.indexOf(track);
+        const isCurrent = (actualIdx === currentTrackIdx);
+
+        return `
+          <div onclick="playTrackByIdx(${actualIdx})" class="p-3 sm:p-4 rounded-2xl border transition-all duration-200 flex items-center justify-between gap-3 cursor-pointer ${
+            isCurrent 
+              ? 'bg-amber-100/80 border-amber-400 shadow-sm ring-1 ring-amber-400/50' 
+              : 'bg-white hover:bg-amber-50/50 border-slate-200 shadow-2xs'
+          }">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                isCurrent 
+                  ? 'bg-amber-500 text-white font-black' 
+                  : 'bg-slate-100 text-slate-600 font-bold'
+              }">
+                ${isCurrent && isPlaying ? '<i class="fa-solid fa-volume-high animate-bounce text-xs"></i>' : (actualIdx + 1)}
+              </div>
+              <div class="min-w-0">
+                <h3 class="text-xs sm:text-sm font-bold text-slate-900 truncate ${isCurrent ? 'text-amber-950 font-black' : ''}">
+                  ${track.title}
+                </h3>
+                <div class="text-[11px] text-slate-500 truncate flex items-center gap-2">
+                  <span>${track.artist}</span>
+                  <span>•</span>
+                  <span>${track.duration}</span>
+                </div>
+              </div>
+            </div>
+
+            <button class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+              isCurrent && isPlaying ? 'bg-amber-500 text-white' : 'text-slate-400 hover:text-amber-600'
+            }">
+              <i class="fa-solid ${isCurrent && isPlaying ? 'fa-pause' : 'fa-play'} text-xs"></i>
+            </button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function updatePlayerUI() {
+      const track = PLAYLIST[currentTrackIdx];
+      if (!track) return;
+
+      document.getElementById("currentTrackTitle").innerText = track.title;
+      document.getElementById("currentTrackArtist").innerText = track.artist;
+      document.getElementById("currentTrackDesc").innerText = `"${track.desc}"`;
+      document.getElementById("currentCategoryBadge").innerText = track.categoryName;
+
+      const mainIcon = document.getElementById("mainPlayIcon");
+      if (mainIcon) {
+        mainIcon.className = isPlaying ? "fa-solid fa-pause" : "fa-solid fa-play ml-0.5";
+      }
+
+      const eq = document.getElementById("equalizerBox");
+      if (eq) eq.classList.toggle("hidden", !isPlaying);
+
+      renderPlaylist();
+    }
+
+    function togglePlayPause() {
+      if (isPlaying) {
+        pauseAudio();
+      } else {
+        startPlayCurrentTrack();
+      }
+    }
+
+    function playTrackByIdx(idx) {
+      currentTrackIdx = idx;
+      startPlayCurrentTrack();
+    }
+
+    function nextTrack() {
+      if (repeatMode === "shuffle") {
+        currentTrackIdx = Math.floor(Math.random() * PLAYLIST.length);
+      } else {
+        currentTrackIdx = (currentTrackIdx + 1) % PLAYLIST.length;
+      }
+      startPlayCurrentTrack();
+    }
+
+    function prevTrack() {
+      currentTrackIdx = (currentTrackIdx - 1 + PLAYLIST.length) % PLAYLIST.length;
+      startPlayCurrentTrack();
+    }
+
+    function toggleRepeatMode() {
+      if (repeatMode === "continuous") {
+        repeatMode = "one";
+        document.getElementById("repeatModeIcon").className = "fa-solid fa-repeat-1 text-amber-600";
+        document.getElementById("repeatModeText").innerText = "Lặp 1 bài";
+      } else if (repeatMode === "one") {
+        repeatMode = "shuffle";
+        document.getElementById("repeatModeIcon").className = "fa-solid fa-shuffle text-amber-600";
+        document.getElementById("repeatModeText").innerText = "Trộn bài";
+      } else {
+        repeatMode = "continuous";
+        document.getElementById("repeatModeIcon").className = "fa-solid fa-repeat text-amber-600";
+        document.getElementById("repeatModeText").innerText = "Liên tục";
+      }
+    }
+
+    function cycleSleepTimer() {
+      const steps = [0, 15, 30, 45, 60];
+      const nextIdx = (steps.indexOf(sleepTimerMinutes) + 1) % steps.length;
+      sleepTimerMinutes = steps[nextIdx];
+
+      clearInterval(sleepTimerInterval);
+      const badge = document.getElementById("sleepTimerBadge");
+
+      if (sleepTimerMinutes === 0) {
+        badge.innerText = "Hẹn giờ";
+      } else {
+        badge.innerText = sleepTimerMinutes + "p";
+        let sec = sleepTimerMinutes * 60;
+        sleepTimerInterval = setInterval(() => {
+          sec--;
+          badge.innerText = Math.floor(sec / 60) + "p";
+          if (sec <= 0) {
+            clearInterval(sleepTimerInterval);
+            pauseAudio();
+            badge.innerText = "Hẹn giờ";
+            sleepTimerMinutes = 0;
+          }
+        }, 1000);
+      }
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      ['all', 'baichoi', 'radio', 'nature'].forEach(c => {
+        const btn = document.getElementById("catBtn_" + c);
+        if (btn) {
+          if (c === cat) {
+            btn.className = "px-3 py-1.5 rounded-xl bg-amber-500 text-white shadow-xs cursor-pointer whitespace-nowrap active:scale-95";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer whitespace-nowrap active:scale-95";
+          }
+        }
+      });
+      renderPlaylist();
+    }
+
+    // PENTATONIC SYNTHESIZER FOR SMOOTH OFFLINE PLAYBACK
+    function startPlayCurrentTrack() {
+      isPlaying = true;
+      updatePlayerUI();
+      startOfflineSynthesizer();
+    }
+
+    function pauseAudio() {
+      isPlaying = false;
+      stopOfflineSynthesizer();
+      updatePlayerUI();
+    }
+
+    function startOfflineSynthesizer() {
+      stopOfflineSynthesizer();
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!synthCtx) synthCtx = new AudioCtx();
+        if (synthCtx.state === "suspended") synthCtx.resume();
+
+        // Thang âm ngũ cung Hò Ba Lý / Bài Chòi (C, D, F, G, A)
+        const notes = [261.63, 293.66, 349.23, 392.00, 440.00, 523.25, 587.33];
+        let step = 0;
+
+        synthMelodyTimer = setInterval(() => {
+          if (!isPlaying || !synthCtx) return;
+          const freq = notes[step % notes.length];
+          step = (step + 1) % notes.length;
+
+          const osc = synthCtx.createOscillator();
+          const gain = synthCtx.createGain();
+
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, synthCtx.currentTime);
+
+          gain.gain.setValueAtTime(0.001, synthCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.08, synthCtx.currentTime + 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.0001, synthCtx.currentTime + 1.2);
+
+          osc.connect(gain);
+          gain.connect(synthCtx.destination);
+
+          osc.start();
+          osc.stop(synthCtx.currentTime + 1.2);
+        }, 800);
+
+      } catch(e) {}
+    }
+
+    function stopOfflineSynthesizer() {
+      clearInterval(synthMelodyTimer);
+      if (synthCtx && synthCtx.state === "running") {
+        try { synthCtx.suspend(); } catch(e) {}
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderPlaylist();
+      updatePlayerUI();
+    });
+  </script>
+</body>
+</html>
