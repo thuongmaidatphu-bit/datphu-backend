@@ -487,6 +487,36 @@
             </div>
           </div>
 
+          
+          <!-- CHỌN VÙNG MIỀN ĐƠN VỊ ĐẤT 3 MIỀN & TRỢ LÝ GIỌNG NÓI TIẾNG VIỆT -->
+          <div class="p-3 rounded-2xl bg-gradient-to-r from-emerald-900/80 to-teal-950 border border-emerald-500/40 space-y-2.5 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-emerald-200 flex items-center gap-1.5 text-[11px]">
+                <i class="fa-solid fa-earth-asia text-amber-400"></i>
+                <span>Tập Quán Đo Đất 3 Miền:</span>
+              </span>
+
+              <!-- Nút Loa Trợ Lý Giọng Nói -->
+              <button onclick="speakMeasurementResult()" id="btnVoiceSpeak" class="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer" title="Bấm để máy đọc to kết quả bằng giọng tiếng Việt">
+                <i class="fa-solid fa-volume-high text-slate-950"></i>
+                <span>Bác Ơi Nghe Đọc Kết Quả</span>
+              </button>
+            </div>
+
+            <!-- 3 Nút Chọn Vùng Miền -->
+            <div class="grid grid-cols-3 gap-1.5 text-center text-[10px] font-bold">
+              <button onclick="switchRegionMode('central')" id="btnReg_central" class="p-1.5 rounded-xl bg-emerald-600 text-white transition shadow-xs">
+                Miền Trung • Sào 500m²
+              </button>
+              <button onclick="switchRegionMode('south')" id="btnReg_south" class="p-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900 text-emerald-200 transition">
+                Miền Nam • Công 1.000m²
+              </button>
+              <button onclick="switchRegionMode('north')" id="btnReg_north" class="p-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900 text-emerald-200 transition">
+                Miền Bắc • Sào 360m²
+              </button>
+            </div>
+          </div>
+
           <!-- BẢNG QUY ĐỔI ĐƠN VỊ ĐẤT TRUYỀN THỐNG MIỀN TRUNG -->
           <div class="space-y-2 pt-1 border-t border-emerald-500/30">
             <div class="grid grid-cols-2 gap-2 text-xs">
@@ -580,12 +610,13 @@
           </div>
 
           <!-- 5 Tabs Chọn Ngành Nghề -->
-          <div class="grid grid-cols-5 gap-1 text-center text-[9.5px] font-bold">
+          <div class="grid grid-cols-3 sm:grid-cols-6 gap-1 text-center text-[9.5px] font-bold">
             <button onclick="switchCalcType('watermelon')" id="calcTab_watermelon" class="p-1 rounded-xl bg-emerald-600 text-white transition">🍉 Dưa</button>
             <button onclick="switchCalcType('sugarcane')" id="calcTab_sugarcane" class="p-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">🎋 Mía/Sắn</button>
             <button onclick="switchCalcType('plow')" id="calcTab_plow" class="p-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">🚜 Máy Cày</button>
             <button onclick="switchCalcType('forest')" id="calcTab_forest" class="p-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">🌲 Keo Lai</button>
             <button onclick="switchCalcType('fence')" id="calcTab_fence" class="p-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">🧱 Rào Đất</button>
+            <button onclick="switchCalcType('team')" id="calcTab_team" class="p-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">👥 Chia Công</button>
           </div>
 
           <!-- 1. Dưa hấu -->
@@ -649,6 +680,33 @@
             </div>
           </div>
 
+          
+          <!-- 6. Chia tiền công tổ đội thợ nông nghiệp -->
+          <div id="calcBox_team" class="space-y-2.5 text-xs hidden">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-600 mb-1">Số thợ trong tổ/đội:</label>
+                <input type="number" id="inTeamWorkers" value="5" oninput="calcTeamSplitting()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono font-bold text-slate-800 focus:outline-emerald-500">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-600 mb-1">Tiền ăn uống/xăng xe (trừ chung):</label>
+                <input type="number" id="inTeamExpenses" value="300000" oninput="calcTeamSplitting()" class="w-full p-2 rounded-xl bg-slate-50 border border-slate-200 font-mono font-bold text-slate-800 focus:outline-emerald-500">
+              </div>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-1">
+              <div class="flex justify-between items-center text-slate-700">
+                <span>Tổng tiền công thửa ruộng:</span>
+                <span id="teamTotalPayout" class="font-bold font-mono text-slate-900">0 đ</span>
+              </div>
+              <div class="flex justify-between items-center text-slate-700 border-t border-emerald-200/60 pt-1">
+                <span class="font-bold text-emerald-900">Mỗi anh em thợ được chia:</span>
+                <span id="teamWorkerShare" class="font-black font-mono text-emerald-800 text-sm">0 đ</span>
+              </div>
+            </div>
+            <p class="text-[10px] text-slate-400 italic">* Tính tự động từ tiền công cày/gặt/khoán dưa để chia đều minh bạch cho cả tổ.</p>
+          </div>
+
           <!-- 5. Rào đất -->
           <div id="calcBox_fence" class="space-y-2 text-xs hidden">
             <div class="flex justify-between items-center text-slate-600">
@@ -704,6 +762,63 @@
           </div>
         </div>
         <button onclick="closeVn2000Modal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center font-bold text-sm">✕</button>
+      </div>
+
+      
+      <!-- CHỌN TỈNH THÀNH TOÀN QUỐC (KINH TUYẾN TRỤC VN-2000) -->
+      <div class="space-y-1">
+        <label class="block text-[10px] font-bold text-slate-700">Chọn Tỉnh / Thành phố cấp Sổ Đỏ:</label>
+        <select id="selVn2000Province" onchange="onProvinceChange(this.value)" class="w-full p-2 rounded-xl bg-slate-50 border border-amber-300 font-bold text-xs text-slate-800 focus:outline-amber-500">
+          <optgroup label="📍 Duyên Hải Miền Trung & Tây Nguyên">
+            <option value="108.5" selected>Phú Yên (Kinh tuyến trục 108°30')</option>
+            <option value="108.25">Bình Định (Kinh tuyến trục 108°15')</option>
+            <option value="108.25">Khánh Hòa (Kinh tuyến trục 108°15')</option>
+            <option value="107.75">Gia Lai (Kinh tuyến trục 107°45')</option>
+            <option value="108.5">Đắk Lắk (Kinh tuyến trục 108°30')</option>
+            <option value="107.75">Lâm Đồng (Kinh tuyến trục 107°45')</option>
+            <option value="108.5">Đắk Nông (Kinh tuyến trục 108°30')</option>
+            <option value="107.75">Kon Tum (Kinh tuyến trục 107°45')</option>
+            <option value="108.0">Quảng Ngãi (Kinh tuyến trục 108°00')</option>
+            <option value="108.0">Quảng Nam (Kinh tuyến trục 108°00')</option>
+            <option value="107.75">Đà Nẵng (Kinh tuyến trục 107°45')</option>
+            <option value="107.5">Thừa Thiên Huế (Kinh tuyến trục 107°30')</option>
+            <option value="108.5">Ninh Thuận (Kinh tuyến trục 108°30')</option>
+            <option value="107.75">Bình Thuận (Kinh tuyến trục 107°45')</option>
+          </optgroup>
+          <optgroup label="📍 Đông Nam Bộ & TP. Hồ Chí Minh">
+            <option value="105.75">TP. Hồ Chí Minh (Kinh tuyến trục 105°45')</option>
+            <option value="107.75">Đồng Nai (Kinh tuyến trục 107°45')</option>
+            <option value="105.75">Bình Dương (Kinh tuyến trục 105°45')</option>
+            <option value="107.75">Bà Rịa - Vũng Tàu (Kinh tuyến trục 107°45')</option>
+            <option value="106.25">Tây Ninh (Kinh tuyến trục 106°15')</option>
+            <option value="106.25">Bình Phước (Kinh tuyến trục 106°15')</option>
+          </optgroup>
+          <optgroup label="📍 Đồng Bằng Sông Cửu Long (Miền Tây)">
+            <option value="105.0">Cần Thơ (Kinh tuyến trục 105°00')</option>
+            <option value="105.75">Long An (Kinh tuyến trục 105°45')</option>
+            <option value="105.75">Tiền Giang (Kinh tuyến trục 105°45')</option>
+            <option value="105.75">Bến Tre (Kinh tuyến trục 105°45')</option>
+            <option value="105.0">Đồng Tháp (Kinh tuyến trục 105°00')</option>
+            <option value="104.5">Kiên Giang (Kinh tuyến trục 104°30')</option>
+            <option value="104.5">An Giang (Kinh tuyến trục 104°30')</option>
+            <option value="105.0">Vĩnh Long (Kinh tuyến trục 105°00')</option>
+            <option value="105.0">Trà Vinh (Kinh tuyến trục 105°00')</option>
+            <option value="105.0">Sóc Trăng (Kinh tuyến trục 105°00')</option>
+            <option value="104.5">Cà Mau (Kinh tuyến trục 104°30')</option>
+          </optgroup>
+          <optgroup label="📍 Miền Bắc & Thủ Đô Hà Nội">
+            <option value="105.0">Hà Nội (Kinh tuyến trục 105°00')</option>
+            <option value="105.75">Hải Phòng (Kinh tuyến trục 105°45')</option>
+            <option value="105.0">Thanh Hóa (Kinh tuyến trục 105°00')</option>
+            <option value="104.75">Nghệ An (Kinh tuyến trục 104°45')</option>
+            <option value="105.5">Hà Tĩnh (Kinh tuyến trục 105°30')</option>
+            <option value="105.75">Quảng Ninh (Kinh tuyến trục 105°45')</option>
+            <option value="106.0">Bắc Giang (Kinh tuyến trục 106°00')</option>
+            <option value="105.75">Bắc Ninh (Kinh tuyến trục 105°45')</option>
+            <option value="105.5">Thái Nguyên (Kinh tuyến trục 105°30')</option>
+            <option value="104.75">Phú Thọ (Kinh tuyến trục 104°45')</option>
+          </optgroup>
+        </select>
       </div>
 
       <p class="text-xs text-slate-600">
@@ -946,6 +1061,127 @@
       return { x, y };
     }
 
+    
+    // QUẢN LÝ TẬP QUÁN ĐO ĐẤT 3 MIỀN TOÀN QUỐC
+    let currentRegion = 'central'; // 'central' (Trung), 'south' (Nam), 'north' (Bắc)
+    let selectedCentralMeridian = 108.5; // Mặc định Phú Yên
+
+    function switchRegionMode(reg) {
+      currentRegion = reg;
+      ['central', 'south', 'north'].forEach(r => {
+        const btn = document.getElementById('btnReg_' + r);
+        if (btn) {
+          btn.className = r === reg 
+            ? 'p-1.5 rounded-xl bg-emerald-600 text-white font-bold transition shadow-xs'
+            : 'p-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900 text-emerald-200 transition';
+        }
+      });
+      renderResults(currentCalculatedArea, currentCalculatedPerimeter);
+    }
+
+    function onProvinceChange(meridianVal) {
+      selectedCentralMeridian = parseFloat(meridianVal) || 108.5;
+    }
+
+    // TRỢ LÝ GIỌNG NÓI TIẾNG VIỆT ĐỌC KẾT QUẢ ĐO ĐẠC CHO BÀ CON
+    function speakMeasurementResult() {
+      if (!('speechSynthesis' in window)) {
+        alert("Thiết bị của bạn chưa hỗ trợ phát giọng nói tự động!");
+        return;
+      }
+
+      if (currentCalculatedArea === 0) {
+        speakText("Bác ơi, bác chưa chấm điểm mốc nào trên bản đồ cả. Hãy chấm các góc ranh đất để máy đo nhé!");
+        return;
+      }
+
+      let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
+
+      const m2 = Math.round(netArea);
+      const saoTB = (netArea / 500).toFixed(1);
+      const pricePerSao = parseFloat(document.getElementById('inLeasePricePerSao').value) || 0;
+      const totalRent = Math.round((netArea / 500) * pricePerSao);
+      const claimedSao = parseFloat(document.getElementById('inClaimedSao').value) || 0;
+
+      let msg = "Kính thưa bà con. Thửa đất này đo được thực tế là " + m2.toLocaleString('vi-VN') + " mét vuông, quy đổi ra là " + saoTB + " sào Trung Bộ. ";
+
+      if (currentDeductRate > 0) {
+        msg += "Đã trừ hao " + currentDeductRate + " phần trăm mương rãnh đất chết. ";
+      }
+
+      if (pricePerSao > 0) {
+        msg += "Tiền thuê khoán phải thanh toán là " + totalRent.toLocaleString('vi-VN') + " đồng. ";
+      }
+
+      if (claimedSao > 0 && claimedSao > (netArea / 500)) {
+        const diffSao = (claimedSao - (netArea / 500)).toFixed(1);
+        const savedMoney = Math.round(diffSao * pricePerSao);
+        msg += "Chủ đất báo thừa " + diffSao + " sào. Bà con đã tiết kiệm được " + savedMoney.toLocaleString('vi-VN') + " đồng tiền thuê!";
+      }
+
+      speakText(msg);
+    }
+
+    function speakText(text) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'vi-VN';
+      utterance.rate = 0.95; // Tốc độ vừa phải, trầm ấm dễ nghe
+      utterance.pitch = 1.0;
+
+      const btn = document.getElementById('btnVoiceSpeak');
+      if (btn) btn.classList.add('animate-pulse', 'bg-amber-300');
+
+      utterance.onend = () => {
+        if (btn) btn.classList.remove('animate-pulse', 'bg-amber-300');
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // THUẬT TOÁN KIỂM TRA ĐA GIÁC TỰ CẮT CHÉO (SELF-INTERSECTION DETECTOR)
+    function checkSegmentsIntersect(a, b, c, d) {
+      function ccw(p1, p2, p3) {
+        return (p3[1] - p1[1]) * (p2[0] - p1[0]) > (p2[1] - p1[1]) * (p3[0] - p1[0]);
+      }
+      return (ccw(a, c, d) !== ccw(b, c, d)) && (ccw(a, b, c) !== ccw(a, b, d));
+    }
+
+    function detectPolygonSelfIntersection(pts) {
+      const n = pts.length;
+      if (n < 4) return false;
+      for (let i = 0; i < n; i++) {
+        const a = pts[i];
+        const b = pts[(i + 1) % n];
+        for (let j = i + 2; j < n; j++) {
+          if ((i === 0 && j === n - 1)) continue;
+          const c = pts[j];
+          const d = pts[(j + 1) % n];
+          if (checkSegmentsIntersect(a, b, c, d)) return true;
+        }
+      }
+      return false;
+    }
+
+    // CHIA TIỀN CÔNG TỔ ĐỘI THỢ
+    function calcTeamSplitting() {
+      const workers = parseInt(document.getElementById('inTeamWorkers').value) || 1;
+      const expenses = parseFloat(document.getElementById('inTeamExpenses').value) || 0;
+
+      let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
+      const saoCount = netArea / 500;
+
+      // Tiền công gặt hoặc cày ước tính
+      const plowTotal = Math.round(saoCount * 250000); // 250k/sào gặt
+      document.getElementById('teamTotalPayout').innerText = plowTotal.toLocaleString('vi-VN') + ' đ';
+
+      const remainPayout = Math.max(0, plowTotal - expenses);
+      const eachShare = Math.round(remainPayout / Math.max(1, workers));
+      document.getElementById('teamWorkerShare').innerText = eachShare.toLocaleString('vi-VN') + ' đ / người';
+    }
+
     function initMap() {
       map = L.map('mapMeasure', {
         zoomControl: true,
@@ -1124,8 +1360,17 @@
       if (polyline) { map.removeLayer(polyline); polyline = null; }
 
       if (!polygon) {
-        polygon = L.polygon(latlngs, {
-          color: '#10b981',
+        const isSelfIntersecting = detectPolygonSelfIntersection(latlngs);
+      const polyColor = isSelfIntersecting ? '#ef4444' : '#10b981';
+      const polyFillColor = isSelfIntersecting ? '#f87171' : '#34d399';
+
+      if (isSelfIntersecting) {
+        console.warn('Cảnh báo: Ranh đất bị tự cắt chéo hình số 8!');
+      }
+
+      polygon = L.polygon(latlngs, {
+          color: polyColor,
+          fillColor: polyFillColor,
           fillColor: '#34d399',
           fillOpacity: 0.35,
           weight: 2.5
@@ -1535,7 +1780,7 @@
         const x = parseFloat(xInputs[i].value);
         const y = parseFloat(yInputs[i].value);
         if (!isNaN(x) && !isNaN(y) && x > 1000000) {
-          const wgs = vn2000ToWgs84(x, y, 108.5, 0.9999);
+          const wgs = vn2000ToWgs84(x, y, selectedCentralMeridian, 0.9999);
           pts.push(wgs);
         }
       }
