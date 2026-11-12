@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sàn Lao Động Dân Sinh & Thợ Lành Nghề • Lịch Đất Phú</title>
+  <meta name="description" content="Sàn kết nối thợ xây, thợ sắt, cơ điện lạnh, việc làm mùa vụ và điều phối lao động công trình tỉnh Phú Yên.">
+  <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    body.dark-mode {
+      background: linear-gradient(180deg, #090e17 0%, #0d1527 50%, #05080f 100%);
+      color: #f1f5f9;
+    }
+    body.dark-mode .card-box {
+      background-color: rgba(15, 23, 42, 0.9);
+      border-color: rgba(245, 158, 11, 0.25);
+      color: #f1f5f9;
+    }
+    body.dark-mode .nav-bar-bg {
+      background-color: rgba(15, 23, 42, 0.95);
+      border-color: rgba(245, 158, 11, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-slate-50 via-white to-orange-50/30 min-h-screen text-slate-800 flex flex-col font-sans antialiased">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="nav-bar-bg sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-orange-200/80 shadow-xs px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+      <a href="/" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-900 border border-orange-200 text-xs font-black shadow-2xs transition active:scale-95 flex items-center gap-1.5 shrink-0" title="Trở về Trang Chủ Lịch Đất Phú">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span class="hidden sm:inline">Về Lịch Đất Phú</span>
+      </a>
+
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 text-white flex items-center justify-center shadow-md shadow-orange-500/20 shrink-0 border border-orange-300">
+          <i class="fa-solid fa-person-digging text-base sm:text-lg"></i>
+        </div>
+        <div class="min-w-0">
+          <h1 class="text-xs sm:text-sm md:text-base font-black text-slate-900 uppercase tracking-wide truncate">
+            SÀN LAO ĐỘNG DÂN SINH ĐẤT PHÚ
+          </h1>
+          <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate hidden sm:block">Kết nối thợ xây, thợ sắt, cơ điện lạnh & việc làm mùa vụ Phú Yên</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- KHU VỰC NÚT ĐIỀU HƯỚNG & APP LAUNCHER -->
+    <div class="flex items-center gap-2 shrink-0">
+      <button onclick="toggleDatPhuAppLauncher()" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-black shadow-xs transition active:scale-95 flex items-center gap-1.5" title="Mở khay ứng dụng Hệ Sinh Thái Đất Phú">
+        <i class="fa-solid fa-grip text-amber-600 text-sm"></i>
+        <span class="hidden sm:inline">Hệ Sinh Thái</span>
+      </button>
+
+      <button onclick="toggleTheme()" id="btnThemeToggle" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition active:scale-95" title="Đổi màu nền">
+        <i id="themeToggleIcon" class="fa-solid fa-moon text-amber-600"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= MASTER HERO BANNER ================= -->
+  <section class="max-w-5xl w-full mx-auto p-3 sm:p-5">
+    <div class="card-box rounded-3xl bg-gradient-to-r from-orange-600 via-amber-600 to-amber-500 text-white p-5 sm:p-7 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5">
+      <div class="relative z-10 space-y-2 max-w-xl text-center md:text-left">
+        <span class="text-[10px] sm:text-xs font-black px-3 py-1 rounded-full bg-white/20 border border-white/30 uppercase tracking-wider">
+          🛠️ Dịch Vụ Dân Sinh • Thợ Uy Tín Địa Phương
+        </span>
+        <h2 class="text-lg sm:text-2xl md:text-3xl font-black leading-tight drop-shadow">
+          TÌM THỢ TẬN TÂM - VIỆC LÀM TẬN TAY
+        </h2>
+        <p class="text-xs sm:text-sm text-orange-100 font-medium leading-relaxed">
+          Đội ngũ thợ lành nghề Đất Phú sẵn sàng phục vụ từ xây sửa nhà cửa, hàn khung sắt, sửa máy lạnh đến phụ hồ mùa vụ với giá cả công khai minh bạch.
+        </p>
+        <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-2">
+          <a href="#danh-sach-tho" class="px-4 py-2 rounded-2xl bg-white text-orange-900 font-black text-xs shadow-md hover:bg-orange-50 transition active:scale-95 flex items-center gap-1.5">
+            <i class="fa-solid fa-phone"></i> Gọi Thợ Ngay
+          </a>
+          <button onclick="openRegisterWorkerModal()" class="px-4 py-2 rounded-2xl bg-orange-950/40 hover:bg-orange-950/60 border border-white/30 text-white font-bold text-xs transition active:scale-95">
+            + Đăng Ký Đội Thợ
+          </button>
+        </div>
+      </div>
+
+      <div class="relative z-10 w-32 h-32 sm:w-40 sm:h-40 rounded-3xl overflow-hidden border-2 border-white/40 shadow-2xl shrink-0">
+        <img src="img/lao_dong_nu_cuoi_cong_trinh.jpg" alt="Thợ Đất Phú" class="w-full h-full object-cover" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BỘ LỌC NGÀNH NGHỀ & HUYỆN THỊ ================= -->
+  <section class="max-w-5xl w-full mx-auto px-3 sm:px-5 space-y-3">
+    <!-- Phân loại ngành nghề -->
+    <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar text-xs font-black py-1">
+      <button onclick="filterTrade('all')" id="tradeBtn_all" class="px-3.5 py-2 rounded-2xl bg-orange-500 text-white shadow-sm shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+        <i class="fa-solid fa-list-check"></i> Tất Cả
+      </button>
+      <button onclick="filterTrade('xay_dung')" id="tradeBtn_xay_dung" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+        <i class="fa-solid fa-trowel-bricks text-amber-600"></i> Thợ Xây & Lát Nền
+      </button>
+      <button onclick="filterTrade('co_khi')" id="tradeBtn_co_khi" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+        <i class="fa-solid fa-wrench text-blue-600"></i> Thợ Sắt & Cơ Khí
+      </button>
+      <button onclick="filterTrade('dien_lanh')" id="tradeBtn_dien_lanh" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+        <i class="fa-solid fa-snowflake text-sky-500"></i> Cơ Điện Lạnh & Nước
+      </button>
+      <button onclick="filterTrade('mua_vu')" id="tradeBtn_mua_vu" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+        <i class="fa-solid fa-wheat-awn text-emerald-600"></i> Lao Động Mùa Vụ
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= DANH SÁCH ĐỘI THỢ & DỊCH VỤ ================= -->
+  <main id="danh-sach-tho" class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-5 space-y-4">
+    <div id="workerListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+      <!-- Render bằng JavaScript -->
+    </div>
+
+    <!-- BẢNG GIÁ DÂN SINH THAM KHẢO -->
+    <div class="card-box bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-sm space-y-4 mt-6">
+      <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+        <i class="fa-solid fa-tags text-orange-500 text-lg"></i>
+        <div>
+          <h3 class="text-sm font-black text-slate-900 uppercase">Khung Giá Công Lao Động Dân Sinh (Tham Khảo)</h3>
+          <p class="text-[11px] text-slate-500">Áp dụng bình ổn địa bàn Phú Yên, bà con thỏa thuận trực tiếp với thợ</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1">
+          <div class="font-black text-amber-900">Thợ Chính (Thợ Cả)</div>
+          <div class="text-base font-black text-amber-700 font-mono">400k - 500k <span class="text-xs font-normal">/ ngày</span></div>
+          <p class="text-[10px] text-slate-600">Thợ xây dựng móng, tô trát, thợ hàn sắt kết cấu, thợ điện lạnh tay nghề cao.</p>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+          <div class="font-black text-slate-800">Thợ Phụ (Phụ Hồ / Trợ Lý)</div>
+          <div class="text-base font-black text-slate-700 font-mono">300k - 350k <span class="text-xs font-normal">/ ngày</span></div>
+          <p class="text-[10px] text-slate-600">Trộn hồ, vận chuyển vật tư, phụ dựng giàn giáo, dọn dẹp vệ sinh công trình.</p>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1">
+          <div class="font-black text-emerald-900">Bảo Dưỡng Máy Lạnh / Điện Nước</div>
+          <div class="text-base font-black text-emerald-700 font-mono">150k - 250k <span class="text-xs font-normal">/ máy</span></div>
+          <p class="text-[10px] text-slate-600">Vệ sinh xịt rửa cục nóng/lạnh, kiểm tra gas, xử lý rò rỉ điện nước sinh hoạt.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= UNIVERSAL APP LAUNCHER MODAL ================= -->
+  <div id="datPhuAppLauncherModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-start justify-end p-3 sm:p-5" onclick="if(event.target === this) toggleDatPhuAppLauncher()">
+    <div class="bg-white rounded-3xl border-2 border-amber-400 shadow-2xl p-4 sm:p-5 w-full max-w-sm mt-12 sm:mt-14 space-y-4 animate-in fade-in zoom-in-95 duration-200">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+        <div class="flex items-center gap-2">
+          <img src="img/logo_datphu_brand.jpg" alt="Logo" class="h-6 rounded object-contain" />
+          <span class="text-xs font-black text-slate-900 uppercase tracking-wider">HỆ SINH THÁI ĐẤT PHÚ</span>
+        </div>
+        <button onclick="toggleDatPhuAppLauncher()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 flex items-center justify-center text-xs font-bold transition">✕</button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5 text-center">
+        <a href="/" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-amber-50 hover:border-amber-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-11 h-11 rounded-2xl bg-amber-500/15 text-amber-700 flex items-center justify-center text-xl mb-1.5 group-hover:scale-110 transition">
+            <i class="fa-solid fa-calendar-days text-amber-600"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">Lịch Dân Sinh</span>
+          <span class="text-[10px] text-slate-500">Âm dương & Cát nhật</span>
+        </a>
+
+        <a href="/thoi-tiet" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-11 h-11 rounded-2xl bg-sky-500/15 text-sky-700 flex items-center justify-center text-xl mb-1.5 group-hover:scale-110 transition">
+            <i class="fa-solid fa-cloud-bolt text-sky-600"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">Trạm Khí Tượng</span>
+          <span class="text-[10px] text-slate-500">Radar bão & Cứu hộ</span>
+        </a>
+
+        <a href="/giai-tri" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-rose-50 hover:border-rose-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-11 h-11 rounded-2xl bg-rose-500/15 text-rose-700 flex items-center justify-center text-xl mb-1.5 group-hover:scale-110 transition">
+            <i class="fa-solid fa-radio text-rose-600"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">Văn Hóa & Giải Trí</span>
+          <span class="text-[10px] text-slate-500">Bài Chòi, 4K & Niệm Phật</span>
+        </a>
+
+        <a href="/lao-dong" class="p-3 rounded-2xl border border-orange-300 bg-orange-50 shadow-xs flex flex-col items-center group">
+          <div class="w-11 h-11 rounded-2xl bg-orange-500 text-white flex items-center justify-center text-xl mb-1.5 shadow-sm">
+            <i class="fa-solid fa-person-digging"></i>
+          </div>
+          <span class="text-xs font-black text-orange-950">Sàn Lao Động</span>
+          <span class="text-[10px] text-orange-700">Đang truy cập</span>
+        </a>
+
+        <a href="/tu-thien" class="col-span-2 p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 hover:shadow-md transition flex items-center justify-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-500/15 text-emerald-700 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition">
+            <i class="fa-solid fa-hand-holding-heart text-emerald-600"></i>
+          </div>
+          <div class="text-left">
+            <div class="text-xs font-black text-slate-800">Trạm Nhân Ái & Cứu Trợ</div>
+            <div class="text-[10px] text-slate-500">Bát cơm nghĩa tình • Cứu trợ bão lũ</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white/80 border-t border-slate-200 py-4 px-3 text-center text-xs text-slate-500 font-medium">
+    <p>SÀN LAO ĐỘNG DÂN SINH & VIỆC LÀM ĐẮT PHÚ • HỆ SINH THÁI ĐẤT PHÚ</p>
+    <p class="text-[11px] text-slate-400 mt-0.5">Kết nối nghĩa tình • Lao động là vinh quang • Đóng góp vì quê hương</p>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    const WORKERS_DATA = [
+      {
+        id: 1,
+        name: "Đội Thợ Xây Cả Tám Đất Phú",
+        trade: "xay_dung",
+        tradeName: "Thợ Xây & Nề Lát",
+        district: "Tuy Hòa & Phú Hòa",
+        experience: "18 năm kinh nghiệm",
+        skills: "Đổ móng kiên cố, xây tường, lát đá sân chùa, trùng tu di tích",
+        phone: "0914.821.567",
+        status: "Sẵn sàng nhận việc",
+        statusColor: "emerald"
+      },
+      {
+        id: 2,
+        name: "Xưởng Cơ Khí Hàn Sắt Ba Bình",
+        trade: "co_khi",
+        tradeName: "Thợ Sắt & Cơ Khí",
+        district: "Đông Hòa & Tây Hòa",
+        experience: "12 năm tay nghề",
+        skills: "Làm cổng sắt mỹ nghệ, mái che tôn, giàn giáo xây dựng, khung kèo thép",
+        phone: "0905.342.118",
+        status: "Đang rảnh 3 thợ",
+        statusColor: "emerald"
+      },
+      {
+        id: 3,
+        name: "Cơ Điện Lạnh Dân Sinh Chú Mười",
+        trade: "dien_lanh",
+        tradeName: "Cơ Điện Lạnh & Nước",
+        district: "Tuy Hòa & Tuy An",
+        experience: "15 năm sửa chữa",
+        skills: "Vệ sinh máy lạnh, sửa tủ lạnh, máy giặt, xử lý rò rỉ điện nước gia đình",
+        phone: "0982.671.309",
+        status: "Đến tận nhà trong 30p",
+        statusColor: "sky"
+      },
+      {
+        id: 4,
+        name: "Tổ Công Nhật Mùa Vụ Tuy Hòa",
+        trade: "mua_vu",
+        tradeName: "Lao Động Mùa Vụ",
+        district: "Đồng bằng Tuy Hòa",
+        experience: "Đội ngũ 10 người",
+        skills: "Gặt lúa, bốc vác nông sản, phụ hồ công trình, dọn dẹp vệ sinh vườn tược",
+        phone: "0935.129.874",
+        status: "Sẵn sàng đi công nhật",
+        statusColor: "emerald"
+      },
+      {
+        id: 5,
+        name: "Đội Thợ Lát Đá Sân Vườn Tư Dũng",
+        trade: "xay_dung",
+        tradeName: "Thợ Xây & Lát Nền",
+        district: "Sông Cầu & Đồng Xuân",
+        experience: "10 năm nghề đá",
+        skills: "Lát đá chẻ tự nhiên, ốp lát gạch men, làm đường bê tông nông thôn mới",
+        phone: "0977.452.901",
+        status: "Sẵn sàng nhận việc",
+        statusColor: "emerald"
+      },
+      {
+        id: 6,
+        name: "Điện Nước Công Trình Bảy Hoàng",
+        trade: "dien_lanh",
+        tradeName: "Cơ Điện Lạnh & Nước",
+        district: "Sơn Hòa & Sông Hinh",
+        experience: "14 năm thi công",
+        skills: "Lắp đặt hệ thống điện 3 pha, máy bơm nước giếng khoan, ống tưới tiêu",
+        phone: "0918.992.341",
+        status: "Sẵn sàng đi huyện xa",
+        statusColor: "emerald"
+      }
+    ];
+
+    let currentTradeFilter = 'all';
+
+    function renderWorkersList() {
+      const c = document.getElementById('workerListContainer');
+      if (!c) return;
+      const filtered = WORKERS_DATA.filter(w => currentTradeFilter === 'all' || w.trade === currentTradeFilter);
+
+      c.innerHTML = filtered.map(w => {
+        return `
+          <div class="card-box bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-xs hover:shadow-md transition space-y-3">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-orange-100 text-orange-700 flex items-center justify-center font-black text-xl shrink-0">
+                  <i class="fa-solid ${w.trade === 'xay_dung' ? 'fa-trowel-bricks' : (w.trade === 'co_khi' ? 'fa-wrench' : (w.trade === 'dien_lanh' ? 'fa-snowflake' : 'fa-wheat-awn'))}"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-black text-slate-900">${w.name}</h3>
+                  <div class="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
+                    <span class="text-orange-600 font-bold">${w.tradeName}</span> • <span>${w.district}</span>
+                  </div>
+                </div>
+              </div>
+
+              <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
+                ${w.status}
+              </span>
+            </div>
+
+            <p class="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-2xl border border-slate-100">
+              <b>Chuyên môn:</b> ${w.skills} • ${w.experience}
+            </p>
+
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-xs font-mono font-bold text-slate-500">ĐT: ${w.phone}</span>
+              <a href="tel:${w.phone.replace(/\./g, '')}" class="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs shadow-xs transition active:scale-95 flex items-center gap-1.5">
+                <i class="fa-solid fa-phone"></i> Gọi Trực Tiếp
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterTrade(trade) {
+      currentTradeFilter = trade;
+      const trades = ['all', 'xay_dung', 'co_khi', 'dien_lanh', 'mua_vu'];
+      trades.forEach(t => {
+        const btn = document.getElementById('tradeBtn_' + t);
+        if (btn) {
+          if (t === trade) {
+            btn.className = "px-3.5 py-2 rounded-2xl bg-orange-500 text-white shadow-sm shrink-0 flex items-center gap-1.5 active:scale-95 transition font-black";
+          } else {
+            btn.className = "px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition font-bold";
+          }
+        }
+      });
+      renderWorkersList();
+    }
+
+    function toggleDatPhuAppLauncher() {
+      const modal = document.getElementById('datPhuAppLauncherModal');
+      if (modal) modal.classList.toggle('hidden');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      const icon = document.getElementById('themeToggleIcon');
+      if (icon) {
+        icon.className = isDark ? "fa-solid fa-sun text-yellow-400" : "fa-solid fa-moon text-amber-600";
+      }
+    }
+
+    function openRegisterWorkerModal() {
+      alert("Chức năng đăng ký đội thợ trực tuyến đang sẵn sàng. Xin liên hệ ban điều phối qua số 0914.821.567 để xác thực danh tính!");
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderWorkersList();
+    });
+  </script>
+</body>
+</html>

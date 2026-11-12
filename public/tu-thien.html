@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trạm Nhân Ái & Cứu Trợ Cộng Đồng • Lịch Đất Phú</title>
+  <meta name="description" content="Trạm cứu trợ thiên tai lũ lụt, bếp ăn 0 đồng, bát cơm nghĩa tình và kết nối nhà hảo tâm tỉnh Phú Yên.">
+  <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    body.dark-mode {
+      background: linear-gradient(180deg, #090e17 0%, #0d1527 50%, #05080f 100%);
+      color: #f1f5f9;
+    }
+    body.dark-mode .card-box {
+      background-color: rgba(15, 23, 42, 0.9);
+      border-color: rgba(16, 185, 129, 0.25);
+      color: #f1f5f9;
+    }
+    body.dark-mode .nav-bar-bg {
+      background-color: rgba(15, 23, 42, 0.95);
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-slate-50 via-white to-emerald-50/30 min-h-screen text-slate-800 flex flex-col font-sans antialiased">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="nav-bar-bg sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-emerald-200/80 shadow-xs px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+      <a href="/" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 text-xs font-black shadow-2xs transition active:scale-95 flex items-center gap-1.5 shrink-0" title="Trở về Trang Chủ Lịch Đất Phú">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span class="hidden sm:inline">Về Lịch Đất Phú</span>
+      </a>
+
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-md shadow-emerald-500/20 shrink-0 border border-emerald-300">
+          <i class="fa-solid fa-hand-holding-heart text-base sm:text-lg"></i>
+        </div>
+        <div class="min-w-0">
+          <h1 class="text-xs sm:text-sm md:text-base font-black text-slate-900 uppercase tracking-wide truncate">
+            TRẠM NHÂN ÁI & CỨU TRỢ ĐẤT PHÚ
+          </h1>
+          <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate hidden sm:block">Bát cơm nghĩa tình • Cứu trợ bão lũ • Bếp ăn 0 đồng Phú Yên</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- KHU VỰC NÚT ĐIỀU HƯỚNG & APP LAUNCHER -->
+    <div class="flex items-center gap-2 shrink-0">
+      <button onclick="toggleDatPhuAppLauncher()" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-black shadow-xs transition active:scale-95 flex items-center gap-1.5" title="Mở khay ứng dụng Hệ Sinh Thái Đất Phú">
+        <i class="fa-solid fa-grip text-amber-600 text-sm"></i>
+        <span class="hidden sm:inline">Hệ Sinh Thái</span>
+      </button>
+
+      <button onclick="toggleTheme()" id="btnThemeToggle" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition active:scale-95" title="Đổi màu nền">
+        <i id="themeToggleIcon" class="fa-solid fa-moon text-emerald-600"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= MASTER HERO BANNER ================= -->
+  <section class="max-w-5xl w-full mx-auto p-3 sm:p-5">
+    <div class="card-box rounded-3xl bg-gradient-to-r from-emerald-700 via-teal-700 to-teal-600 text-white p-5 sm:p-7 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5">
+      <div class="relative z-10 space-y-2 max-w-xl text-center md:text-left">
+        <span class="text-[10px] sm:text-xs font-black px-3 py-1 rounded-full bg-white/20 border border-white/30 uppercase tracking-wider">
+          ❤️ Tình Thương & Lòng Nhân Ái Đất Phú
+        </span>
+        <h2 class="text-lg sm:text-2xl md:text-3xl font-black leading-tight drop-shadow">
+          LÁ LÀNH ĐÙM LÁ RÁCH - NGHĨA TÌNH SÔNG NÚI
+        </h2>
+        <p class="text-xs sm:text-sm text-emerald-100 font-medium leading-relaxed">
+          Nơi kết nối những tấm lòng vàng, kịp thời chuyển từng suất cơm nóng, từng chiếc áo phao và phần quà cứu trợ đến tận tay bà con vùng lũ lụt, người già neo đơn và trẻ em khó khăn khắp Phú Yên.
+        </p>
+        <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-2">
+          <a href="#chuong-trinh" class="px-4 py-2 rounded-2xl bg-white text-emerald-900 font-black text-xs shadow-md hover:bg-emerald-50 transition active:scale-95 flex items-center gap-1.5">
+            <i class="fa-solid fa-heart text-rose-500"></i> Các Chương Trình
+          </a>
+          <button onclick="openDonateInfoModal()" class="px-4 py-2 rounded-2xl bg-emerald-950/40 hover:bg-emerald-950/60 border border-white/30 text-white font-bold text-xs transition active:scale-95">
+            🤝 Chung Tay Đóng Góp
+          </button>
+        </div>
+      </div>
+
+      <div class="relative z-10 w-32 h-32 sm:w-44 sm:h-44 rounded-3xl overflow-hidden border-2 border-white/40 shadow-2xl shrink-0">
+        <img src="img/tinh_thuong_nhan_ai_4k.jpg" alt="Tình Thương Đất Phú" class="w-full h-full object-cover" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 3 CHƯƠNG TRÌNH TRỌNG ĐIỂM ================= -->
+  <main id="chuong-trinh" class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-5 space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+      <!-- 1. Bát cơm nghĩa tình -->
+      <div class="card-box bg-white border border-slate-200 rounded-3xl p-5 shadow-xs hover:shadow-md transition space-y-3">
+        <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center font-black text-xl">
+          <i class="fa-solid fa-bowl-rice"></i>
+        </div>
+        <h3 class="text-sm font-black text-slate-900">Bát Cơm Nghĩa Tình Đất Phú</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Phục vụ các suất cơm trưa và bữa cháo ấm 0 đồng tại các bệnh viện đa khoa, trung tâm y tế cho bệnh nhân nghèo và thân nhân nuôi bệnh.
+        </p>
+        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="text-emerald-700 font-bold">300 suất / tuần</span>
+          <span class="text-slate-400">TP. Tuy Hòa</span>
+        </div>
+      </div>
+
+      <!-- 2. Quỹ cứu trợ bão lũ -->
+      <div class="card-box bg-white border border-slate-200 rounded-3xl p-5 shadow-xs hover:shadow-md transition space-y-3">
+        <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center font-black text-xl">
+          <i class="fa-solid fa-life-ring"></i>
+        </div>
+        <h3 class="text-sm font-black text-slate-900">Cứu Trợ Bão Lũ Sông Ba & Kỳ Lộ</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Ứng trực 24/7 mùa mưa lũ: Vận chuyển áo phao cứu sinh, nước sạch, lương khô và đèn pin năng lượng mặt trời cho các thôn xã bị ngập sâu chia cắt.
+        </p>
+        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="text-sky-700 font-bold">Ứng trực khẩn cấp</span>
+          <span class="text-slate-400">Đồng Xuân & Tuy An</span>
+        </div>
+      </div>
+
+      <!-- 3. Mái ấm tình thương -->
+      <div class="card-box bg-white border border-slate-200 rounded-3xl p-5 shadow-xs hover:shadow-md transition space-y-3">
+        <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-black text-xl">
+          <i class="fa-solid fa-house-chimney-crack"></i>
+        </div>
+        <h3 class="text-sm font-black text-slate-900">Mái Ấm Dân Sinh Cho Người Neo Đơn</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Đội thợ Đất Phú hỗ trợ lợp lại mái tôn, chằng chống nhà trước mùa mưa bão, xây sửa nhà vệ sinh sạch sẽ cho các cụ già neo đơn nghèo khó.
+        </p>
+        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="text-amber-700 font-bold">Hỗ trợ vật tư 100%</span>
+          <span class="text-slate-400">Sơn Hòa & Sông Hinh</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DANH SÁCH ĐIỂM TIẾP NHẬN CỨU TRỢ -->
+    <div class="card-box bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4 mt-6">
+      <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+        <i class="fa-solid fa-location-dot text-emerald-600 text-lg"></i>
+        <div>
+          <h3 class="text-sm font-black text-slate-900 uppercase">Điểm Tiếp Nhận Cứu Trợ & Nhu Yếu Phẩm</h3>
+          <p class="text-[11px] text-slate-500">Bà con và các nhà hảo tâm có thể gửi lương thực, áo phao tại các địa điểm sau</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+          <div class="font-black text-slate-900">Điểm 1: Văn Phòng Dân Sinh TP. Tuy Hòa</div>
+          <p class="text-slate-600">Đường Hùng Vương, Phường 7, TP. Tuy Hòa (Gần Bệnh viện Đa khoa Phú Yên).</p>
+          <div class="text-[11px] text-emerald-700 font-bold">Người phụ trách: Chú Hai • ĐT: 0914.821.567</div>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+          <div class="font-black text-slate-900">Điểm 2: Trạm Tiếp Ứng Khẩn Cấp Huyện Đồng Xuân</div>
+          <p class="text-slate-600">Khu phố Long Bình, Thị trấn La Hai, Huyện Đồng Xuân (Gần cầu sắt La Hai).</p>
+          <div class="text-[11px] text-sky-700 font-bold">Người phụ trách: Anh Ba Nghĩa • ĐT: 0905.342.118</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= UNIVERSAL APP LAUNCHER MODAL ================= -->
+  <div id="datPhuAppLauncherModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-start justify-end p-3 sm:p-5" onclick="if(event.target === this) toggleDatPhuAppLauncher()">
+    <div class="bg-white rounded-3xl border-2 border-amber-400 shadow-2xl p-4 sm:p-5 w-full max-w-sm mt-12 sm:mt-14 space-y-4 animate-in fade-in zoom-in-95 duration-200">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+        <div class="flex items-center gap-2">
+          <img src="img/logo_datphu_brand.jpg" alt="Logo" class="h-6 rounded object-contain" />
+          <span class="text-xs font-black text-slate-900 uppercase tracking-wider">HỆ SINH THÁI ĐẤT PHÚ</span>
+        </div>
+        <button onclick="toggleDatPhuAppLauncher()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 flex items-center justify-center text-xs font-bold transition">✕</button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5 text-center">
+        <a href="/" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-amber-50 hover:border-amber-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-11 h-11 rounded-2xl bg-amber-500/15 text-amber-700 flex items-center justify-center text-xl mb-1.5 group-hover:scale-110 transition">
+            <i class="fa-solid fa-calendar-days text-amber-600"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">Lịch Dân Sinh</span>
+          <span class="text-[10px] text-slate-500">Âm dương & Cát nhật</span>
+        </a>
+
+        <a href="/thoi-tiet" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-11 h-11 rounded-2xl bg-sky-500/15 text-sky-700 flex items-center justify-center text-xl mb-1.5 group-hover:scale-110 transition">
+            <i class="fa-solid fa-cloud-bolt text-sky-600"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">Trạm Khí Tượng</span>
+          <span class="text-[10px] text-slate-500">Radar bão & Cứu hộ</span>
+        </a>
+
+        <a href="/giai-tri" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-rose-50 hover:border-rose-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-11 h-11 rounded-2xl bg-rose-500/15 text-rose-700 flex items-center justify-center text-xl mb-1.5 group-hover:scale-110 transition">
+            <i class="fa-solid fa-radio text-rose-600"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">Văn Hóa & Giải Trí</span>
+          <span class="text-[10px] text-slate-500">Bài Chòi, 4K & Niệm Phật</span>
+        </a>
+
+        <a href="/lao-dong" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-orange-50 hover:border-orange-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-11 h-11 rounded-2xl bg-orange-500/15 text-orange-700 flex items-center justify-center text-xl mb-1.5 group-hover:scale-110 transition">
+            <i class="fa-solid fa-person-digging text-orange-600"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">Sàn Lao Động</span>
+          <span class="text-[10px] text-slate-500">Thợ lành nghề & Việc làm</span>
+        </a>
+
+        <a href="/tu-thien" class="col-span-2 p-3 rounded-2xl border border-emerald-300 bg-emerald-50 shadow-xs flex items-center justify-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-xl shrink-0 shadow-sm">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+          </div>
+          <div class="text-left">
+            <div class="text-xs font-black text-emerald-950">Trạm Nhân Ái & Cứu Trợ</div>
+            <div class="text-[10px] text-emerald-700 font-bold">Đang truy cập</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white/80 border-t border-slate-200 py-4 px-3 text-center text-xs text-slate-500 font-medium">
+    <p>TRẠM NHÂN ÁI & CỨU TRỢ DÂN SINH • HỆ SINH THÁI ĐẤT PHÚ</p>
+    <p class="text-[11px] text-slate-400 mt-0.5">Một miếng khi đói bằng một gói khi no • Tình làng nghĩa xóm thiêng liêng</p>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    function toggleDatPhuAppLauncher() {
+      const modal = document.getElementById('datPhuAppLauncherModal');
+      if (modal) modal.classList.toggle('hidden');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      const icon = document.getElementById('themeToggleIcon');
+      if (icon) {
+        icon.className = isDark ? "fa-solid fa-sun text-yellow-400" : "fa-solid fa-moon text-emerald-600";
+      }
+    }
+
+    function openDonateInfoModal() {
+      alert("Mọi đóng góp hiện vật (gạo, áo phao, nước sạch) xin gửi trực tiếp về các điểm tiếp nhận hoặc liên hệ số Hotline Nhân Ái: 0914.821.567. Chân thành tri ân tấm lòng vàng của quý vị!");
+    }
+  </script>
+</body>
+</html>
