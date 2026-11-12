@@ -153,11 +153,15 @@
         <div class="flex items-center gap-2 relative z-10 text-xs">
           <button onclick="toggleTetPetals()" id="btnTetPetalsToggle" class="px-3 py-1.5 rounded-xl bg-black/40 hover:bg-black/60 border border-amber-400/40 text-amber-200 font-bold transition flex items-center gap-1.5 active:scale-95 cursor-pointer" title="Bật/Tắt hiệu ứng hoa mai rơi">
             <span id="petalsStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>🌸 Cánh Mai Rơi</span>
+            <span>❄️ Tuyết & Mai Rơi 🌸</span>
           </button>
-          <button onclick="filterRadioTheme('nhacxuan')" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black shadow-md transition flex items-center gap-1.5 active:scale-95 cursor-pointer">
-            <i class="fa-solid fa-music"></i>
-            <span>Nghe Nhạc Xuân 🎶</span>
+          <button onclick="filterRadioTheme('noel')" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black shadow-md transition flex items-center gap-1.5 active:scale-95 cursor-pointer border border-emerald-300/40" title="Nghe tuyển tập Giáng Sinh & Noel vui vẻ">
+            <span>🎄</span>
+            <span>Giáng Sinh Noel ❄️</span>
+          </button>
+          <button onclick="filterRadioTheme('nhacxuan')" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black shadow-md transition flex items-center gap-1.5 active:scale-95 cursor-pointer">
+            <span>🌸</span>
+            <span>Nhạc Xuân 🎶</span>
           </button>
         </div>
       </div>
@@ -288,12 +292,18 @@
             <span>Tất Cả (<span id="themeCount_all">25</span>)</span>
           </button>
 
+          <button onclick="filterRadioTheme('noel')" id="themeBtn_noel" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-900 to-teal-900 hover:from-emerald-800 hover:to-teal-800 text-emerald-200 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer border border-emerald-400/50 shadow-xs">
+            <span class="w-5 h-5 rounded-md bg-emerald-400 text-slate-950 flex items-center justify-center text-[10px] font-black">
+              🎄
+            </span>
+            <span>Giáng Sinh & Noel (<span id="themeCount_noel">6</span>)</span>
+          </button>
+
           <button onclick="filterRadioTheme('nhacxuan')" id="themeBtn_nhacxuan" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-red-900 to-amber-900 hover:from-red-800 hover:to-amber-800 text-amber-200 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer border border-amber-400/50 shadow-xs">
             <span class="w-5 h-5 rounded-md bg-amber-400 text-red-950 flex items-center justify-center text-[10px] font-black">
               🌸
             </span>
             <span>Nhạc Xuân & Tết</span>
-          </button>
           </button>
 
           <button onclick="filterRadioTheme('baichoi')" id="themeBtn_baichoi" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
@@ -1271,6 +1281,79 @@
 
     // 2. KHO DỮ LIỆU BÀI HÁT, BÀI CHÒI & VIDEO THEO CHỦ ĐỀ
     const DEFAULT_MEDIA_PLAYLIST = [
+      // === NHÓM 0: GIÁNG SINH & NOEL AN LÀNH VUI VẺ (MÙA LỄ HỘI) ===
+      {
+        id: "med_noel_jinglebells",
+        title: "Jingle Bells - Tiếng Chuông Ngân Vang Rộn Rã (Noel 4K)",
+        artist: "Giai Điệu Giáng Sinh Kinh Điển • Rộn Ràng Lễ Hội",
+        theme: "noel",
+        themeName: "Giáng Sinh & Noel",
+        type: "youtube",
+        youtubeId: "3CWJNqyub3o",
+        coverImg: "img/landmarks/thap_nhan.jpg",
+        chant: "“Jingle bells, jingle bells, jingle all the way! Tiếng chuông ngân giòn tan cùng cỗ xe tuần lộc mang niềm vui, tiếng cười ấm áp đến mọi mái nhà!”",
+        duration: "03:45"
+      },
+      {
+        id: "med_noel_wewish",
+        title: "We Wish You A Merry Christmas & Happy New Year (4K)",
+        artist: "Điệp Khúc Chúc Phúc • Mùa Lễ Hội An Lành & May Mắn",
+        theme: "noel",
+        themeName: "Giáng Sinh & Noel",
+        type: "youtube",
+        youtubeId: "g-OF7KGyDis",
+        coverImg: "img/landmarks/bien_tuy_hoa.jpg",
+        chant: "“We wish you a Merry Christmas and a Happy New Year! Cầu chúc một mùa Giáng Sinh an lành, nhà nhà no ấm thuận hòa và một năm mới vạn sự cát tường!”",
+        duration: "03:20"
+      },
+      {
+        id: "med_noel_feliz",
+        title: "Feliz Navidad - Giáng Sinh Rực Rỡ & Nồng Nhiệt",
+        artist: "José Feliciano • Vũ Điệu Noel Vui Nhộn Toàn Cầu",
+        theme: "noel",
+        themeName: "Giáng Sinh & Noel",
+        type: "youtube",
+        youtubeId: "xMtuVP8Mj4o",
+        coverImg: "img/landmarks/ganh_da_dia.jpg",
+        chant: "“Feliz Navidad, próspero año y felicidad! Giai điệu rộn rã bừng sáng tinh thần lạc quan, xua tan lạnh giá mùa đông bằng những nụ cười rạng rỡ!”",
+        duration: "03:15"
+      },
+      {
+        id: "med_noel_lastxmas",
+        title: "Last Christmas - Khúc Ca Mùa Tuyết Trắng (4K Remastered)",
+        artist: "Wham! • Bản Tình Ca Giáng Sinh Bất Hủ",
+        theme: "noel",
+        themeName: "Giáng Sinh & Noel",
+        type: "youtube",
+        youtubeId: "E8gmARGvPlI",
+        coverImg: "img/landmarks/mui_dien.jpg",
+        chant: "“Last Christmas I gave you my heart... Khúc tình ca mùa đông ấm áp bên ngọn lửa hồng, gửi trao kỷ niệm và tình thương chân thành.”",
+        duration: "04:38"
+      },
+      {
+        id: "med_noel_silentnight",
+        title: "Đêm Thánh Vô Cùng (Silent Night) - Khúc Ca Bình Yên",
+        artist: "Thánh Ca Mùa Noel • Giai Điệu Mộc Thanh Tịnh",
+        theme: "noel",
+        themeName: "Giáng Sinh & Noel",
+        type: "audio",
+        src: "/audio/sao_truc_phuong_vu.mp3",
+        coverImg: "img/landmarks/dam_o_loan.jpg",
+        chant: "“Đêm thánh vô cùng, giây phút tưng bừng... Ánh sao đêm dẫn lối, nguyện cầu nhân gian thái bình, mọi gia đình an khang hạnh phúc.”",
+        duration: "04:12"
+      },
+      {
+        id: "med_noel_thanhca",
+        title: "Bài Thánh Ca Buồn - Kỷ Niệm Chuông Ngân Đêm Đông",
+        artist: "Giai Điệu Trữ Tình • Ký Ức Đêm Noel Việt Nam",
+        theme: "noel",
+        themeName: "Giáng Sinh & Noel",
+        type: "audio",
+        src: "/audio/hoa_tau_luu_thuy.mp3",
+        coverImg: "img/landmarks/song_ba.jpg",
+        chant: "“Bài thánh ca đó còn nhớ không em? Noel năm nào chúng mình có nhau... Tiếng chuông giáo đường vọng ngân trong đêm se lạnh miền Trung.”",
+        duration: "05:10"
+      },
       // === NHÓM 1: NHẠC XUÂN & TẾT RỘN RÃ ===
       {
         id: "med_xuan_abba",
@@ -1599,7 +1682,7 @@
     // Lọc theo chủ đề
     function filterRadioTheme(theme) {
       currentThemeFilter = theme;
-      const themes = ['all', 'nhacxuan', 'baichoi', 'dieuly', 'nhaccu', 'taynguyen', 'tieulam', 'phim4k', 'community'];
+      const themes = ['all', 'noel', 'nhacxuan', 'baichoi', 'dieuly', 'nhaccu', 'taynguyen', 'tieulam', 'phim4k', 'community'];
       themes.forEach(t => {
         const btn = document.getElementById('themeBtn_' + t);
         if (btn) {
@@ -1649,7 +1732,8 @@
 
         let badgeBg = 'bg-slate-800 text-slate-300';
         let badgeIcon = 'fa-music';
-        if (t.theme === 'nhacxuan') { badgeBg = 'bg-rose-950 text-amber-300 border border-amber-400/50'; badgeIcon = 'fa-fan'; }
+        if (t.theme === 'noel') { badgeBg = 'bg-emerald-950 text-emerald-300 border border-emerald-400/50'; badgeIcon = 'fa-snowflake'; }
+        else if (t.theme === 'nhacxuan') { badgeBg = 'bg-rose-950 text-amber-300 border border-amber-400/50'; badgeIcon = 'fa-fan'; }
         else if (t.theme === 'baichoi') { badgeBg = 'bg-amber-950 text-amber-300 border border-amber-600/40'; badgeIcon = 'fa-dice'; }
         else if (t.theme === 'dieuly') { badgeBg = 'bg-cyan-950 text-cyan-300 border border-cyan-600/40'; badgeIcon = 'fa-water'; }
         else if (t.theme === 'nhaccu') { badgeBg = 'bg-emerald-950 text-emerald-300 border border-emerald-600/40'; badgeIcon = 'fa-guitar'; }
@@ -3159,34 +3243,43 @@ function changeArtSlide(delta) {
 
     // KHỞI TẠO BAN ĐẦU
     
-    // ĐẾM NGƯỢC GIAO THỪA TẾT NGUYÊN ĐÁN
+    // ĐẾM NGƯỢC GIÁNG SINH NOEL & GIAO THỪA TẾT SUM VẦY
     function startTetCountdown() {
-      // Thời khắc Giao Thừa Tết Nguyên Đán tiếp theo (Năm mới)
-      // Mùng 1 Tết Đinh Mùi: 06/02/2027 => Giao thừa: 05/02/2027 23:59:59
+      // Thời khắc Đêm Giáng Sinh Noel: 24/12/2026 23:59:59
+      const noelEve = new Date(2026, 11, 24, 23, 59, 59).getTime();
+      // Thời khắc Giao Thừa Tết Nguyên Đán: 05/02/2027 23:59:59
       const tetEve = new Date(2027, 1, 5, 23, 59, 59).getTime();
 
       function update() {
         const now = new Date().getTime();
-        const diff = tetEve - now;
-
         const el = document.getElementById('tetCountdownText');
         if (!el) return;
 
-        if (diff <= 0) {
+        const diffNoel = noelEve - now;
+        const diffTet = tetEve - now;
+
+        if (diffNoel > 0) {
+          const dNoel = Math.floor(diffNoel / (1000 * 60 * 60 * 24));
+          const hNoel = Math.floor((diffNoel % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const mNoel = Math.floor((diffNoel % (1000 * 60 * 60)) / (1000 * 60));
+          const sNoel = Math.floor((diffNoel % (1000 * 60)) / 1000);
+
+          const dTet = Math.floor(diffTet / (1000 * 60 * 60 * 24));
+          el.innerHTML = '🎄 Còn <b>' + dNoel + '</b> ngày <b>' + hNoel + '</b> giờ đến <b>Đêm Noel Giáng Sinh</b> • 🌸 Còn <b>' + dTet + '</b> ngày đến <b>Tết Sum Vầy</b>';
+        } else if (diffTet > 0) {
+          const days = Math.floor(diffTet / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diffTet % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((diffTet % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((diffTet % (1000 * 60)) / 1000);
+
+          el.innerHTML = '🌸 Còn <b>' + days + '</b> ngày <b>' + hours + '</b> giờ <b>' + minutes + '</b> phút <b>' + seconds + '</b> giây đến Giao Thừa';
+        } else {
           el.innerHTML = "🎉 <b>CUNG CHÚC TÂN XUÂN • VẠN SỰ NHƯ Ý • AN KHANG THỊNH VƯỢNG!</b>";
           const abbaIdx = MEDIA_PLAYLIST.findIndex(t => t.id === 'med_xuan_abba');
           if (abbaIdx !== -1 && currentRadioIdx !== abbaIdx && !isRadioPlaying) {
             selectRadioTrack(abbaIdx);
           }
-          return;
         }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        el.innerHTML = 'Còn <b>' + days + '</b> ngày <b>' + hours + '</b> giờ <b>' + minutes + '</b> phút <b>' + seconds + '</b> giây đến Giao Thừa';
       }
 
       update();
@@ -3213,12 +3306,14 @@ function changeArtSlide(delta) {
       const petalCount = 22; // Nhẹ nhàng, không tốn pin
 
       for (let i = 0; i < petalCount; i++) {
+        const isSnowflake = (i % 2 === 0); // Xen kẽ hoa tuyết giáng sinh và cánh mai vàng
         petals.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          r: Math.random() * 4 + 3,
+          r: isSnowflake ? (Math.random() * 2.5 + 2) : (Math.random() * 4 + 3),
           d: Math.random() * petalCount,
-          color: Math.random() > 0.3 ? '#facc15' : '#fbbf24', // Vàng mai rực rỡ
+          isSnowflake: isSnowflake,
+          color: isSnowflake ? 'rgba(255, 255, 255, 0.85)' : (Math.random() > 0.3 ? '#facc15' : '#fbbf24'),
           tilt: Math.random() * 10 - 10,
           tiltAngleIncremental: (Math.random() * 0.07) + 0.03,
           tiltAngle: 0
