@@ -532,6 +532,31 @@
           <p class="text-[10px] text-amber-300/80 pt-0.5">Cầu chúc quê hương mưa thuận gió hòa, bão lũ tiêu trừ, toàn gia bình an cát tường.</p>
         </div>
 
+        
+          <!-- TÙY CHỌN BẢN THU THẬT & NẠP FILE MP3 TỪ ĐIỆN THOẠI -->
+          <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-2xl bg-black/60 border border-amber-500/30 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] text-amber-200/80 font-bold uppercase">Chế độ phát:</span>
+              <button onclick="setBuddhistAudioMode('audio')" id="btnModeAudio" class="px-2.5 py-1 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition">
+                🎙️ Bản Thu Âm Thật
+              </button>
+              <button onclick="setBuddhistAudioMode('metronome')" id="btnModeMetronome" class="px-2.5 py-1 rounded-xl bg-slate-800 text-amber-200 font-bold text-xs transition">
+                📿 Chỉ Chuông Mõ Tự Niệm
+              </button>
+            </div>
+
+            <div>
+              <input type="file" id="buddhistFileInput" accept="audio/*" class="hidden" onchange="handleBuddhistFileUpload(event)">
+              <button onclick="document.getElementById('buddhistFileInput').click()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow-md transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-folder-open"></i>
+                <span>📁 Chọn File MP3 Của Bạn</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Audio Element phát bản thu MP3 thật -->
+          <audio id="buddhistAudioElement" class="hidden" preload="auto"></audio>
+
         <!-- BÀN PHÍM CƠ NỔI 3D CHỌN BÀI (TACTILE MECHANICAL KEYPAD 0 - 9) -->
         <div class="relative z-10 pt-2 border-t border-amber-500/30 space-y-2">
           <div class="flex items-center justify-between text-xs text-amber-200/90 font-bold px-1">
@@ -1308,9 +1333,74 @@
       }
     }
 
+
+    // =========================================================================
+    // NÂNG CẤP ÂM THANH TỰ NHIÊN 100%: PHÁT BẢN THU MP3 THẬT TỪ MÁY HOẶC LINK
+    // =========================================================================
+    let buddhistAudioMode = 'audio'; // 'audio' (bản thu thật) hoặc 'metronome' (chỉ chuông mõ)
+
+    function setBuddhistAudioMode(mode) {
+      buddhistAudioMode = mode;
+      const btnA = document.getElementById('btnModeAudio');
+      const btnM = document.getElementById('btnModeMetronome');
+
+      if (btnA) btnA.className = (mode === 'audio') ? "px-2.5 py-1 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition" : "px-2.5 py-1 rounded-xl bg-slate-800 text-amber-200 font-bold text-xs transition";
+      if (btnM) btnM.className = (mode === 'metronome') ? "px-2.5 py-1 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition" : "px-2.5 py-1 rounded-xl bg-slate-800 text-amber-200 font-bold text-xs transition";
+
+      if (isBuddhistPlaying) {
+        toggleBuddhistPlay(); // Restart with new mode
+        toggleBuddhistPlay();
+      }
+    }
+
+    function handleBuddhistFileUpload(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+
+      const file = files[0];
+      const objectUrl = URL.createObjectURL(file);
+      const cleanName = file.name.replace(/\.[^/.]+$/, "");
+
+      // Thêm bài mới vào danh sách và chọn phát ngay
+      const newTrack = {
+        id: BUDDHIST_CHENTS.length + 1,
+        title: cleanName,
+        line: "Bản thu âm thanh thật nạp từ điện thoại của bạn",
+        url: objectUrl,
+        isCustom: true
+      };
+
+      BUDDHIST_CHENTS.unshift(newTrack);
+      currentBuddhistIdx = 0;
+      setBuddhistAudioMode('audio');
+      selectBuddhistTrack(0);
+
+      const audioEl = document.getElementById('buddhistAudioElement');
+      if (audioEl) {
+        audioEl.src = objectUrl;
+        audioEl.play().catch(e => {});
+        isBuddhistPlaying = true;
+        document.getElementById('buddhistMasterPlayIcon').className = "fa-solid fa-pause drop-shadow";
+        updateBuddhistStateUI();
+      }
+
+      alert("Đã nạp thành công bài niệm Phật: " + cleanName + " từ máy của bạn! Âm thanh giờ đây là giọng người thật 100% tự nhiên.");
+    }
+
+    function updateBuddhistStateUI() {
+      const dot = document.getElementById('buddhistLiveDot');
+      const stateText = document.getElementById('buddhistLiveState');
+      if (dot) dot.className = isBuddhistPlaying ? "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" : "w-2.5 h-2.5 rounded-full bg-slate-600";
+      if (stateText) stateText.innerText = isBuddhistPlaying ? "ĐANG TỤNG NIỆM" : "SẴN SÀNG";
+    }
+
     function toggleBuddhistPlay() {
+      const audioEl = document.getElementById('buddhistAudioElement');
+      const track = BUDDHIST_CHENTS[currentBuddhistIdx];
+
       if (isBuddhistPlaying) {
         isBuddhistPlaying = false;
+        if (audioEl) audioEl.pause();
         if ('speechSynthesis' in window) window.speechSynthesis.cancel();
         if (buddhistChantSpeechTimer) {
           clearTimeout(buddhistChantSpeechTimer);
@@ -1319,28 +1409,23 @@
         clearInterval(woodblockTimer);
         woodblockTimer = null;
         document.getElementById('buddhistMasterPlayIcon').className = "fa-solid fa-play ml-1 drop-shadow";
-
-        // Cập nhật đèn trạng thái
-        const dot = document.getElementById('buddhistLiveDot');
-        const stateText = document.getElementById('buddhistLiveState');
-        if (dot) dot.className = isBuddhistPlaying ? "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" : "w-2.5 h-2.5 rounded-full bg-slate-600";
-        if (stateText) stateText.innerText = isBuddhistPlaying ? "ĐANG TỤNG NIỆM" : "SẴN SÀNG";
+        updateBuddhistStateUI();
 
       } else {
         isBuddhistPlaying = true;
         document.getElementById('buddhistMasterPlayIcon').className = "fa-solid fa-pause drop-shadow";
+        updateBuddhistStateUI();
 
-        // Cập nhật đèn trạng thái
-        const dot = document.getElementById('buddhistLiveDot');
-        const stateText = document.getElementById('buddhistLiveState');
-        if (dot) dot.className = isBuddhistPlaying ? "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" : "w-2.5 h-2.5 rounded-full bg-slate-600";
-        if (stateText) stateText.innerText = isBuddhistPlaying ? "ĐANG TỤNG NIỆM" : "SẴN SÀNG";
+        // Nếu có bản thu âm MP3 của bài đang chọn hoặc bài nạp từ máy
+        if (buddhistAudioMode === 'audio' && track && track.url && audioEl) {
+          audioEl.src = track.url;
+          audioEl.loop = true;
+          audioEl.play().catch(err => {
+            console.log('Audio autoplay prevented, fallback to temple chime');
+          });
+        }
 
-        
-        // 1. Cất tiếng tụng niệm Phật trang nghiêm
-        speakBuddhistVerse();
-
-        // 2. Gõ mõ nhịp nhàng đệm theo
+        // Đệm tiếng mõ gỗ chùa trầm ấm
         if (isWoodblockActive) {
           startWoodblockLoop();
         }
