@@ -242,9 +242,27 @@
         </div>
       </div>
 
-      <!-- 2. NỘI DUNG TƯƠNG TÁC CHẠY DỌC DƯỚI MÀN HÌNH -->
+      <!-- ================= 3 PHÂN KHU NỘI DUNG GỌN GÀNG & KHOA HỌC ================= -->
+      <div class="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-900 border border-slate-800 text-xs font-black shadow-lg">
+        <button onclick="switchMediaSubTab('playlist')" id="subTabBtn_playlist" class="flex-1 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black transition flex items-center justify-center gap-1.5 shadow active:scale-95 cursor-pointer text-xs">
+          <i class="fa-solid fa-music"></i>
+          <span>1. Nhạc & Video (<span id="subTabCount_media">37</span>)</span>
+        </button>
 
-      <!-- KHỐI 1: LỜI CA DAO & BÀI CHÒI CHẠY CHỮ TRỰC TIẾP (LIVE KARAOKE LYRICS) -->
+        <button onclick="switchMediaSubTab('gallery')" id="subTabBtn_gallery" class="flex-1 py-2 sm:py-2.5 rounded-xl bg-transparent hover:bg-slate-800 text-slate-300 font-bold transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer text-xs">
+          <i class="fa-solid fa-images text-emerald-400"></i>
+          <span>2. Thư Viện Ảnh (<span id="subTabCount_gallery">14</span>)</span>
+        </button>
+
+        <button onclick="switchMediaSubTab('games')" id="subTabBtn_games" class="flex-1 py-2 sm:py-2.5 rounded-xl bg-transparent hover:bg-slate-800 text-slate-300 font-bold transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer text-xs">
+          <i class="fa-solid fa-dice text-rose-400"></i>
+          <span>3. Góc Vui Dân Gian (4)</span>
+        </button>
+      </div>
+
+      <!-- PHÂN KHU 1: KHO NHẠC & VIDEO (HIỂN THỊ MẶC ĐỊNH) -->
+      <div id="subPanel_playlist" class="space-y-3">
+        <!-- KHỐI 1: LỜI CA DAO & BÀI CHÒI CHẠY CHỮ TRỰC TIẾP (LIVE KARAOKE LYRICS) -->
       <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-2 text-white">
         <div class="flex items-center justify-between border-b border-slate-800 pb-2">
           <span class="text-xs font-black text-amber-400 flex items-center gap-2">
@@ -262,7 +280,7 @@
         </div>
       </div>
 
-      <!-- KHỐI 2: DANH SÁCH BÀI HÁT & VIDEO THEO CHỦ ĐỀ (THEMATIC PLAYLIST FEED) -->
+        <!-- KHỐI 2: DANH SÁCH BÀI HÁT & VIDEO THEO CHỦ ĐỀ (THEMATIC PLAYLIST FEED) -->
       <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-3.5 text-white">
         
         <!-- Hàng tiêu đề & Nút đăng tải nhạc phẩm -->
@@ -363,8 +381,29 @@
         </div>
 
       </div>
+      </div>
 
-      <!-- KHỐI 3: HỘI BÀI CHÒI XỨ NẪU BỐC QUÂN & NGHE CÂU HÔ TƯƠNG TÁC -->
+      <!-- PHÂN KHU 2: THƯ VIỆN ẢNH 4K DI SẢN, ĐẠO TRÀNG & THIỆN NGUYỆN (GỌN GÀNG, SANG TRỌNG) -->
+      <div id="subPanel_gallery" class="space-y-3 hidden">
+        <!-- KHỐI 5: THƯ VIỆN THẮNG CẢNH & HUYỀN THOẠI XỨ NẪU -->
+      <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-3 text-white">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+          <span class="text-xs font-black text-rose-400 flex items-center gap-2">
+            <i class="fa-solid fa-images text-sm"></i>
+            <span>THƯ VIỆN THẮNG CẢNH, ĐẠO TRÀNG & THIỆN NGUYỆN</span>
+          </span>
+          <button onclick="openDedicatedPhotoModal()" class="px-3 py-1 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[11px] shadow transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i>
+            <span>+ Tải Ảnh Lên (Máy tính / ĐT)</span>
+          </button>
+        </div>
+        <div id="artGalleryContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5"></div>
+      </div>
+      </div>
+
+      <!-- PHÂN KHU 3: GÓC VUI DÂN GIAN & DI SẢN XỨ NẪU (BÀI CHÒI, BỐC QUẺ, ĐỐ VUI) -->
+      <div id="subPanel_games" class="space-y-3 hidden">
+        <!-- KHỐI 3: HỘI BÀI CHÒI XỨ NẪU BỐC QUÂN & NGHE CÂU HÔ TƯƠNG TÁC -->
       <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-amber-500/30 shadow-xl space-y-3.5 text-white">
         <div class="flex items-center justify-between border-b border-slate-800 pb-2">
           <span class="text-xs font-black text-amber-400 flex items-center gap-2">
@@ -483,22 +522,7 @@
           </div>
         </div>
       </div>
-
-      <!-- KHỐI 5: THƯ VIỆN THẮNG CẢNH & HUYỀN THOẠI XỨ NẪU -->
-      <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-3 text-white">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-          <span class="text-xs font-black text-rose-400 flex items-center gap-2">
-            <i class="fa-solid fa-images text-sm"></i>
-            <span>THƯ VIỆN THẮNG CẢNH, ĐẠO TRÀNG & THIỆN NGUYỆN</span>
-          </span>
-          <button onclick="openDedicatedPhotoModal()" class="px-3 py-1 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[11px] shadow transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i>
-            <span>+ Tải Ảnh Lên (Máy tính / ĐT)</span>
-          </button>
-        </div>
-        <div id="artGalleryContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5"></div>
       </div>
-
     </section>
 
     <section id="channelSection_buddhist" class="space-y-4 hidden">
@@ -2339,6 +2363,7 @@
 
       loadSavedCommunityPhotos();
       renderArtGallery();
+      updateSubTabCounts();
 
       // Cuộn êm màn hình lên màn hình lớn nếu người dùng đang ở dưới
       const cinema = document.getElementById('channelSection_radio');
@@ -3646,6 +3671,8 @@ function changeArtSlide(delta) {
 
       setTimeout(() => {
         closeDedicatedPhotoModal();
+        switchMediaSubTab('gallery');
+        updateSubTabCounts();
         const galleryEl = document.getElementById('artGalleryContainer');
         if (galleryEl) galleryEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 1000);
@@ -3660,6 +3687,34 @@ function changeArtSlide(delta) {
           if (typeof renderArtGallery === 'function') renderArtGallery();
         }
       } catch(e) {}
+    }
+
+    
+    // ĐIỀU HƯỚNG 3 PHÂN KHU GỌN GÀNG (NHẠC & VIDEO / THƯ VIỆN ẢNH / GÓC VUI DÂN GIAN)
+    function switchMediaSubTab(tab) {
+      const tabs = ['playlist', 'gallery', 'games'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('subTabBtn_' + t);
+        const panel = document.getElementById('subPanel_' + t);
+        if (t === tab) {
+          if (btn) btn.className = "flex-1 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black transition flex items-center justify-center gap-1.5 shadow active:scale-95 cursor-pointer text-xs";
+          if (panel) panel.classList.remove('hidden');
+        } else {
+          if (btn) btn.className = "flex-1 py-2 sm:py-2.5 rounded-xl bg-transparent hover:bg-slate-800 text-slate-300 font-bold transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer text-xs";
+          if (panel) panel.classList.add('hidden');
+        }
+      });
+
+      if (tab === 'gallery' && typeof renderArtGallery === 'function') {
+        renderArtGallery();
+      }
+    }
+
+    function updateSubTabCounts() {
+      const mCount = document.getElementById('subTabCount_media');
+      const gCount = document.getElementById('subTabCount_gallery');
+      if (mCount && typeof MEDIA_PLAYLIST !== 'undefined') mCount.innerText = MEDIA_PLAYLIST.length;
+      if (gCount && typeof ARTWORKS_DATA !== 'undefined') gCount.innerText = ARTWORKS_DATA.length;
     }
 
     window.addEventListener('DOMContentLoaded', () => {
