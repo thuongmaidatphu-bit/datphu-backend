@@ -245,20 +245,29 @@
 
         <!-- THANH LỌC CHỦ ĐỀ 1 CHẠM (THEMATIC TABS) -->
         <div class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
-          <button onclick="filterRadioTheme('all')" id="themeBtn_all" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition active:scale-95 shadow shrink-0">
-            Tất Cả (<span id="themeCount_all">8</span>)
+          <button onclick="filterRadioTheme('all')" id="themeBtn_all" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition active:scale-95 shadow shrink-0 cursor-pointer">
+            Tất Cả (<span id="themeCount_all">11</span>)
           </button>
           <button onclick="filterRadioTheme('baichoi')" id="themeBtn_baichoi" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
-            <span>🎋 Bài Chòi Xứ Nẫu</span>
+            <span>🎋 Bài Chòi Cổ</span>
           </button>
           <button onclick="filterRadioTheme('dieuly')" id="themeBtn_dieuly" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
-            <span>🌊 Điệu Lý Quê Mẹ</span>
+            <span>🌊 Điệu Lý & Ca Dao</span>
           </button>
           <button onclick="filterRadioTheme('nhaccu')" id="themeBtn_nhaccu" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
             <span>🎶 Nhạc Cụ Mộc</span>
           </button>
+          <button onclick="filterRadioTheme('taynguyen')" id="themeBtn_taynguyen" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
+            <span>🏔️ Cồng Chiêng Tây Nguyên</span>
+          </button>
+          <button onclick="filterRadioTheme('tieulam')" id="themeBtn_tieulam" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
+            <span>😂 Tiếu Lâm & Góc Cười</span>
+          </button>
           <button onclick="filterRadioTheme('phim4k')" id="themeBtn_phim4k" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer">
-            <span>🎬 Phim Danh Thắng 4K</span>
+            <span>🎬 Phim 4K</span>
+          </button>
+          <button onclick="filterRadioTheme('community')" id="themeBtn_community" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-700 hover:to-teal-700 text-emerald-200 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer border border-emerald-500/40">
+            <span>🌟 Bà Con Đóng Góp</span>
           </button>
         </div>
 
@@ -298,6 +307,70 @@
               “Tháng Mười mây phủ sườn Tây / Sông Ba réo rắt vơi đầy xót xa... Trổ con Nhì Nghèo!”
             </p>
           </div>
+        </div>
+      </div>
+
+      <!-- KHỐI VUI TƯƠI 1: BỐC QUẺ NÔNG DÂN ĐẦU NGÀY (CƯỜI VUI XẢ STRESS) -->
+      <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-slate-900 via-amber-950/30 to-slate-900 border-2 border-amber-500/40 shadow-xl space-y-3.5 text-white">
+        <div class="flex items-center justify-between border-b border-amber-500/30 pb-2.5">
+          <span class="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-2">
+            <span class="text-base">🎋</span>
+            <span>BỐC QUẺ NÔNG DÂN ĐẦU NGÀY • VUI CẢ HÔM NAY</span>
+          </span>
+          <span class="text-[10px] text-amber-400 bg-amber-950 px-2.5 py-0.5 rounded-full border border-amber-500/40">Nụ Cười Ngày Mới</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+          <div class="sm:col-span-1 p-3.5 rounded-2xl bg-slate-950 border border-amber-500/30 text-center space-y-2">
+            <div class="text-4xl animate-bounce">🧧</div>
+            <div class="text-[11px] text-amber-200/80 font-bold">Ống Thẻ Cười Dân Gian</div>
+            <button onclick="drawNongDanFortune()" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition cursor-pointer">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>Bốc Một Quẻ Vui</span>
+            </button>
+          </div>
+
+          <div id="nongDanFortuneBox" class="sm:col-span-2 p-4 rounded-2xl bg-slate-950/80 border border-amber-500/30 space-y-1.5 text-left relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="font-black text-sm text-yellow-300" id="fortuneTitle">Quẻ: Đại Cát Vui Vẻ</span>
+              <span class="text-[10px] text-emerald-400 font-mono">May Mắn • An Nhiên</span>
+            </div>
+            <p id="fortuneContent" class="text-xs sm:text-sm text-amber-100 leading-relaxed italic">
+              “Sáng nay ra rẫy gió thổi mát rượi, trưa về ghé quán bà Năm làm tô bánh canh hẹ thơm nức mũi, cả ngày hanh thông vui vẻ!”
+            </p>
+            <p id="fortuneAdvice" class="text-[10.5px] text-amber-300/80 pt-0.5">
+              Lời khuyên: Cười nhiều một chút cho trẻ lâu, gặp bà con nhớ chào một tiếng lấy thảo!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- KHỐI VUI TƯƠI 2: ĐỐ VUI TIẾNG NẪU & TỪ VỰNG DÂN GIAN ĐỘC LẠ -->
+      <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-3.5 text-white">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+          <span class="text-xs sm:text-sm font-black text-cyan-300 flex items-center gap-2">
+            <i class="fa-solid fa-comments text-sm"></i>
+            <span>GIẢI MÃ TIẾNG NẪU • TỪ VỰNG QUÊ MÌNH ĐỘC LẠ</span>
+          </span>
+          <span class="text-[10px] text-cyan-400 bg-cyan-950/80 px-2 py-0.5 rounded-full border border-cyan-500/30">Học Mà Vui</span>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-300" id="dialectQuizQuestion">
+              ❓ Câu đố: Bà con xứ Nẫu nói "Đi ra TRỦNG" nghĩa là đi đâu?
+            </span>
+            <button onclick="nextDialectQuiz()" class="text-[11px] text-slate-400 hover:text-amber-300 flex items-center gap-1 transition">
+              <i class="fa-solid fa-rotate-right"></i> Đổi câu khác
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold" id="dialectQuizOptions">
+            <button onclick="checkDialectAnswer(0)" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-left transition cursor-pointer">A. Đi lên đồi cát cao</button>
+            <button onclick="checkDialectAnswer(1)" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-left transition cursor-pointer">B. Đi ra vùng đất thấp, sình lầy ngập nước</button>
+          </div>
+
+          <div id="dialectQuizFeedback" class="hidden p-2.5 rounded-xl text-xs font-bold"></div>
         </div>
       </div>
 
@@ -1167,7 +1240,7 @@
         themeName: "Điệu Lý Quê Mẹ",
         type: "audio",
         src: "/audio/ho_ru_con_lullaby.mp3",
-        coverImg: "img/tinh_thuong_nhan_ai_4k.jpg",
+        coverImg: "img/landmarks/bien_tuy_hoa.jpg",
         chant: "À ơi... Ví dầu cầu ván đóng đinh, cầu tre lắc lẻo gập ghềnh khó đi... Khó đi mẹ dắt con đi...",
         duration: "03:55"
       },
@@ -1215,12 +1288,47 @@
         themeName: "Phim Danh Thắng 4K",
         type: "youtube",
         youtubeId: "L7bUa5K-x48",
-        coverImg: "img/landmarks/mui_dien.jpg",
+        coverImg: "img/landmarks/dam_o_loan.jpg",
         chant: "Bạt ngàn đồng lúa Tuy Hòa vào mùa gặt, cánh cò bay lả trên dòng nước ngọt đập Đồng Cam dẫn lối.",
         duration: "04:15"
+      },
+      {
+        id: "med_9",
+        title: "Âm Vang Cồng Chiêng & Điệu Hát Khan Buôn Ma Lôi",
+        artist: "Đồng Bào Dân Tộc Ê Đê • Huyện Sông Hinh",
+        theme: "taynguyen",
+        themeName: "Cồng Chiêng Tây Nguyên",
+        type: "audio",
+        src: "/audio/dan_trung_to_rung.mp3",
+        coverImg: "img/landmarks/song_ba.jpg",
+        chant: "Tiếng cồng chiêng ngân vang giữa núi rừng Sông Hinh, mừng lúa mới trĩu bông, buôn làng ấm no hạnh phúc.",
+        duration: "04:50"
+      },
+      {
+        id: "med_10",
+        title: "Chuyện Tiếu Lâm: Con Cá Tràu Sông Ba & Bác Ba Phi Xứ Nẫu",
+        artist: "Nghệ Nhân Kể Chuyện Thôn Quê • Tuy An",
+        theme: "tieulam",
+        themeName: "Tiếu Lâm & Góc Cười",
+        type: "audio",
+        src: "/audio/ho_mai_nhi_song_nuoc.mp3",
+        coverImg: "img/landmarks/dam_o_loan.jpg",
+        chant: "“Nói giỡn chơi mà cười thiệt rôm rả! Con cá tràu sông Ba nó quẫy một cái rớt luôn cái ấm chè xanh!”",
+        duration: "03:15"
+      },
+      {
+        id: "med_11",
+        title: "Lý Ngựa Ô Rộn Rã & Hò Đối Đáp Ghẹo Nhau",
+        artist: "Tiếng Hát Quê Nhà Xứ Nẫu",
+        theme: "dieuly",
+        themeName: "Điệu Lý Quê Mẹ",
+        type: "audio",
+        src: "/audio/hoa_tau_luu_thuy.mp3",
+        coverImg: "img/landmarks/bien_tuy_hoa.jpg",
+        chant: "“Khớp con ngựa ô ngựa ô thắng kiệu... Anh đem kiệu vàng rước nàng về dinh!”",
+        duration: "03:40"
       }
     ];
-
     // Khởi tạo danh sách bài hát (hỗ trợ lưu thêm bài tùy chỉnh)
     let customMediaList = [];
     try {
@@ -1241,7 +1349,8 @@
     // Lọc theo chủ đề
     function filterRadioTheme(theme) {
       currentThemeFilter = theme;
-      ['all', 'baichoi', 'dieuly', 'nhaccu', 'phim4k'].forEach(t => {
+      const themes = ['all', 'baichoi', 'dieuly', 'nhaccu', 'taynguyen', 'tieulam', 'phim4k', 'community'];
+      themes.forEach(t => {
         const btn = document.getElementById('themeBtn_' + t);
         if (btn) {
           if (t === theme) {
@@ -1252,6 +1361,7 @@
         }
       });
       renderRadioPlaylist();
+      renderDialectQuiz();
     }
 
     // Hiển thị danh sách phát
@@ -1261,6 +1371,7 @@
 
       const filtered = MEDIA_PLAYLIST.filter(item => {
         if (currentThemeFilter === 'all') return true;
+        if (currentThemeFilter === 'community') return item.theme === 'community' || (item.id && item.id.startsWith('custom_'));
         return item.theme === currentThemeFilter;
       });
 
@@ -1291,7 +1402,10 @@
         if (t.theme === 'baichoi') { badgeBg = 'bg-amber-950 text-amber-300 border border-amber-600/40'; badgeIcon = 'fa-dice'; }
         else if (t.theme === 'dieuly') { badgeBg = 'bg-cyan-950 text-cyan-300 border border-cyan-600/40'; badgeIcon = 'fa-water'; }
         else if (t.theme === 'nhaccu') { badgeBg = 'bg-emerald-950 text-emerald-300 border border-emerald-600/40'; badgeIcon = 'fa-guitar'; }
+        else if (t.theme === 'taynguyen') { badgeBg = 'bg-amber-900 text-yellow-300 border border-amber-500/50'; badgeIcon = 'fa-mountain-sun'; }
+        else if (t.theme === 'tieulam') { badgeBg = 'bg-pink-950 text-pink-300 border border-pink-500/40'; badgeIcon = 'fa-face-laugh-beam'; }
         else if (t.theme === 'phim4k') { badgeBg = 'bg-rose-950 text-rose-300 border border-rose-600/40'; badgeIcon = 'fa-film'; }
+        else if (t.theme === 'community') { badgeBg = 'bg-teal-950 text-teal-300 border border-teal-500/40'; badgeIcon = 'fa-star'; }
 
         return `
           <div onclick="selectRadioTrack(${actualIdx})" class="p-3 rounded-2xl cursor-pointer transition-all flex items-center justify-between gap-3 ${isCurrent ? 'bg-amber-500/15 border-2 border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800/80'}">
@@ -1351,7 +1465,10 @@
         if (track.theme === 'baichoi') catIcon.className = 'fa-solid fa-dice mr-1';
         else if (track.theme === 'dieuly') catIcon.className = 'fa-solid fa-water mr-1';
         else if (track.theme === 'nhaccu') catIcon.className = 'fa-solid fa-music mr-1';
+        else if (track.theme === 'taynguyen') catIcon.className = 'fa-solid fa-mountain-sun mr-1 text-amber-400';
+        else if (track.theme === 'tieulam') catIcon.className = 'fa-solid fa-face-laugh-beam mr-1 text-pink-400';
         else if (track.theme === 'phim4k') catIcon.className = 'fa-solid fa-film mr-1';
+        else if (track.theme === 'community') catIcon.className = 'fa-solid fa-star mr-1 text-teal-400';
       }
 
       // 4. Cập nhật Thẻ Chế độ phát (Audio hay YouTube)
@@ -1560,7 +1677,10 @@
         'baichoi': 'Bài Chòi Xứ Nẫu',
         'dieuly': 'Điệu Lý Quê Mẹ',
         'nhaccu': 'Nhạc Cụ Mộc',
-        'phim4k': 'Phim Danh Thắng 4K'
+        'taynguyen': 'Cồng Chiêng Tây Nguyên',
+        'tieulam': 'Tiếu Lâm & Góc Cười',
+        'phim4k': 'Phim Danh Thắng 4K',
+        'community': 'Bà Con & Nghệ Sĩ Góp'
       };
 
       const newItem = {
@@ -2848,16 +2968,34 @@ function changeArtSlide(delta) {
           <p class="text-[10px] text-slate-400 mt-1">Hệ thống tự động phát hiện mã Video YouTube và lấy ảnh bìa HD chất lượng cao.</p>
         </div>
 
+        <!-- Vai trò người đăng -->
+        <div>
+          <label class="block font-bold text-amber-200 mb-1">
+            <i class="fa-solid fa-user-check text-amber-400 mr-1"></i> Bạn là:
+          </label>
+          <select id="addMediaRole" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-amber-300 font-bold focus:border-amber-400 focus:outline-none">
+            <option value="farmer">🌾 Bà con nông dân / Ngư dân</option>
+            <option value="artisan">🎋 Nghệ nhân dân gian cổ truyền</option>
+            <option value="ethnic_ede">🏔️ Đồng bào dân tộc Ê Đê (Sông Hinh)</option>
+            <option value="ethnic_bana">🏔️ Đồng bào dân tộc Ba Na / Chăm H'Roi (Sơn Hòa, Đồng Xuân)</option>
+            <option value="singer">🎙️ Ca sĩ / Nghệ sĩ địa phương</option>
+            <option value="overseas">🌊 Người con Đất Phú xa xứ</option>
+          </select>
+        </div>
+
         <!-- Phân loại Chủ đề -->
         <div>
           <label class="block font-bold text-amber-200 mb-1">
-            <i class="fa-solid fa-layer-group text-amber-400 mr-1"></i> Chọn Chủ Đề Nhạc Phẩm:
+            <i class="fa-solid fa-layer-group text-amber-400 mr-1"></i> Chọn Thể Loại Di Sản / Âm Nhạc:
           </label>
           <select id="addMediaTheme" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-amber-300 font-bold focus:border-amber-400 focus:outline-none">
             <option value="baichoi">🎋 Bài Chòi Cổ Truyền Xứ Nẫu</option>
             <option value="dieuly">🌊 Điệu Lý & Dân Ca Quê Mẹ</option>
             <option value="nhaccu">🎶 Độc Tấu Nhạc Cụ Mộc</option>
+            <option value="taynguyen">🏔️ Cồng Chiêng & Sử Thi Tây Nguyên - Đất Phú</option>
+            <option value="tieulam">😂 Tiếu Lâm & Chuyện Hài Thôn Quê</option>
             <option value="phim4k">🎬 Phim Danh Thắng & Làng Nghề 4K</option>
+            <option value="community">🌟 Tiếng Hát Bà Con & Nghệ Sĩ Góp</option>
           </select>
         </div>
 
