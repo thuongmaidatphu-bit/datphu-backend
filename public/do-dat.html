@@ -126,7 +126,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        z-index: 45;
+        z-index: 9999;
         background: rgba(10, 16, 29, 0.96);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
@@ -313,55 +313,7 @@
         </div>
   
         
-        <!-- NÚT BẤM TO RÕ CHUYÊN DỤNG CHO NGƯỜI ĐI BỘ NGOÀI ĐỒNG (HIỆN TRÊN ĐIỆN THOẠI) -->
-        <div class="md:hidden absolute bottom-14 inset-x-3 z-30 flex items-center justify-between gap-2 pointer-events-none">
-          
-          <!-- Nút giữ sáng màn hình không bị tắt khi đi đo -->
-          <button onclick="toggleScreenWakeLock()" id="btnWakeLock" class="pointer-events-auto px-3 py-2 rounded-2xl bg-slate-900/90 backdrop-blur-md border border-slate-700/80 text-amber-300 font-bold text-[10.5px] flex items-center gap-1.5 shadow-lg active:scale-95 transition" title="Giữ màn hình điện thoại luôn sáng khi đang đi bộ đo đất">
-            <i class="fa-solid fa-sun" id="wakeLockIcon"></i>
-            <span id="wakeLockText">Giữ Sáng</span>
-          </button>
-
-          <!-- Nút Chấm mốc ngay tại vị trí đang đứng -->
-          <button onclick="markCurrentGpsPoint()" id="btnMarkGpsHere" class="pointer-events-auto flex-1 max-w-[200px] py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(16,185,129,0.45)] border-2 border-white/40 active:scale-95 transition cursor-pointer">
-            <i class="fa-solid fa-location-pin text-sm text-slate-950"></i>
-            <span class="tracking-wide">CHẤM MỐC TẠI ĐÂY</span>
-          </button>
-
-        </div>
-  
-        <!-- THANH CÔNG CỤ CHÂN BẢN ĐỒ: TOẠ ĐỘ THỜI GIAN THỰC & ĐI BỘ ĐO GPS -->
-        <div class="pro-glass border-t border-slate-800 p-3 flex flex-wrap items-center justify-between gap-3 text-xs z-20">
-          
-          <!-- Nút bấm Định vị & Đi bộ đo ngoài đồng -->
-          <button onclick="document.getElementById('surveyorInspectorDock').scrollIntoView({behavior: 'smooth'})" id="btnJumpToInspector" class="md:hidden px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-md active:scale-95 transition" title="Xem bảng số liệu"><i class="fa-solid fa-chart-pie"></i><span>Xem Bảng Số Liệu</span></button>
-            <div class="flex items-center gap-2">
-            <button onclick="getUserGPSLocation()" id="btnMyGpsLocation" class="px-3.5 py-2 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
-              <i id="iconMyGpsLocation" class="fa-solid fa-location-crosshairs text-sm"></i>
-              <span id="textMyGpsLocation">Vị Trí Của Tôi</span>
-            </button>
-
-            <button onclick="toggleGpsTracking()" id="btnGpsTrack" class="px-3.5 py-2 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
-              <i id="gpsTrackIcon" class="fa-solid fa-person-walking"></i>
-              <span id="gpsTrackText">Đi Bộ Đo Ranh</span>
-            </button>
-
-            <button onclick="finishGpsTracking()" id="btnFinishGps" class="hidden px-3 py-2 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs transition active:scale-95 shadow">
-              <i class="fa-solid fa-check mr-1"></i> Khép Góc
-            </button>
-          </div>
-
-          <!-- Toạ độ con trỏ chuột thời gian thực -->
-          <div class="flex items-center gap-3 font-mono text-[11px] text-slate-400 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-slate-800">
-            <div>
-              <span class="text-slate-500">WGS84:</span>
-              <span id="cursorWgs84" class="text-emerald-300 font-bold">13.0882°N, 109.3097°E</span>
-            </div>
-            <div class="hidden sm:block">
-              <span class="text-slate-500">VN-2000:</span>
-              <span id="cursorVn2000" class="text-amber-300 font-bold">X: 1.447.450 | Y: 533.580</span>
-            </div>
-          </div>
+        
 
         </div>
 
@@ -3633,5 +3585,40 @@
     </div>
   </div>
   
+
+  <!-- ==================== THANH ĐIỀU HƯỚNG ĐÁY MÀN HÌNH ĐIỆN THOẠI (BOTTOM NAV BAR) ==================== -->
+  <nav id="appMobileBottomNav" class="md:hidden mobile-bottom-bar flex items-center justify-around text-center">
+    
+    <!-- Tab Bản đồ -->
+    <button onclick="document.getElementById('mapMeasure').scrollIntoView({behavior: 'smooth'})" class="flex flex-col items-center gap-0.5 text-emerald-400 font-bold text-[10px] active:scale-95 transition">
+      <i class="fa-solid fa-map-location-dot text-base"></i>
+      <span>Bản Đồ</span>
+    </button>
+
+    <!-- Tab Số Đo -->
+    <button onclick="mobileSwitchTab('area')" id="mobNav_area" class="flex flex-col items-center gap-0.5 text-white font-bold text-[10px] active:scale-95 transition">
+      <i class="fa-solid fa-chart-area text-base text-amber-300"></i>
+      <span>Số Đo</span>
+    </button>
+
+    <!-- Nút Loa Đọc To Vàng Nhô Cao Ở Giữa -->
+    <button onclick="speakMeasurementResult()" class="w-12 h-12 -mt-5 rounded-full bg-gradient-to-tr from-amber-500 via-amber-400 to-amber-300 text-slate-950 flex items-center justify-center shadow-[0_6px_20px_rgba(245,158,11,0.6)] border-2 border-slate-900 active:scale-90 transition cursor-pointer" title="Bác ơi nghe đọc kết quả">
+      <i class="fa-solid fa-volume-high text-lg"></i>
+    </button>
+
+    <!-- Tab Mùa Vụ -->
+    <button onclick="mobileSwitchTab('crop')" id="mobNav_crop" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white font-bold text-[10px] active:scale-95 transition">
+      <i class="fa-solid fa-seedling text-base text-emerald-400"></i>
+      <span>Mùa Vụ</span>
+    </button>
+
+    <!-- Tab Thủy Lợi -->
+    <button onclick="mobileSwitchTab('hydro')" id="mobNav_hydro" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white font-bold text-[10px] active:scale-95 transition">
+      <i class="fa-solid fa-water text-base text-cyan-400"></i>
+      <span>Nước Lũ</span>
+    </button>
+
+  </nav>
+
 </body>
 </html>
