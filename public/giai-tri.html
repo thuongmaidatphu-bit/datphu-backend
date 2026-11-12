@@ -223,6 +223,60 @@
         </div>
       </div>
 
+      
+      <!-- SÂN KHẤU HỘI BÀI CHÒI DÂN GIAN TƯƠNG TÁC (INTERACTIVE BÀI CHÒI STAGE) -->
+      <div class="card-box bg-gradient-to-r from-amber-900/90 via-[#3a1d06] to-amber-950 text-white rounded-3xl p-4 sm:p-6 border-2 border-amber-400 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-amber-500/30 pb-3">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-sm shadow">
+              🎲
+            </span>
+            <div>
+              <h3 class="text-xs sm:text-sm font-black text-amber-200 uppercase tracking-wider">
+                HỘI BÀI CHÒI XỨ NẪU • BỐC QUÂN & NGHE CÂU HÔ
+              </h3>
+              <p class="text-[10px] text-amber-200/70">Mô phỏng hội chơi bài chòi cổ truyền mùa xuân Đất Phú</p>
+            </div>
+          </div>
+
+          <button onclick="drawBaiChoiCard()" id="btnDrawBaiChoi" class="px-4 py-2 rounded-2xl bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black text-xs shadow-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-dice text-sm"></i>
+            <span>Bốc Quân Bài</span>
+          </button>
+        </div>
+
+        <!-- MÀN HÌNH QUÂN BÀI CHÒI ĐƯỢC BỐC -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 bg-black/40 p-4 rounded-2xl border border-amber-500/20">
+          <!-- Thẻ bài chòi gỗ truyền thống -->
+          <div id="baiChoiCardFrame" class="w-24 h-32 sm:w-28 sm:h-36 rounded-2xl bg-gradient-to-b from-[#f8f1e5] to-[#eedbc0] border-4 border-[#8c5214] shadow-2xl p-2 flex flex-col items-center justify-between text-slate-900 shrink-0 select-none transform transition duration-500">
+            <div class="text-[10px] font-black uppercase text-[#8c5214]">ĐẤT PHÚ</div>
+            <div id="baiChoiCardSymbol" class="text-3xl sm:text-4xl my-1">🎴</div>
+            <div id="baiChoiCardName" class="text-xs sm:text-sm font-black font-serif text-[#8c5214] uppercase tracking-wide">NHỨT NỌC</div>
+            <div class="text-[9px] font-bold text-slate-500">Pho Văn</div>
+          </div>
+
+          <!-- Lời hô bài chòi & Thuyết minh -->
+          <div class="flex-1 text-center sm:text-left space-y-1.5 min-w-0">
+            <div class="flex items-center justify-center sm:justify-start gap-2">
+              <span id="baiChoiBadgePho" class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/50 uppercase">
+                Pho Văn • Quân Số 1
+              </span>
+              <button onclick="playChantVoice()" class="text-xs text-amber-300 hover:text-white flex items-center gap-1 underline font-bold" title="Nghe lại câu hô">
+                <i class="fa-solid fa-volume-high"></i> Hô Lại
+              </button>
+            </div>
+
+            <h4 id="baiChoiChantTitle" class="text-sm sm:text-base font-black text-amber-100">
+              "Đi đâu mà vội mà vàng, dừng chân đứng lại coi làng hát chơi... Là con Nhứt Nọc!"
+            </h4>
+
+            <p id="baiChoiMeaningText" class="text-xs text-amber-200/80 leading-relaxed italic">
+              Ý nghĩa: Lời chào mừng đầu hội rộn rã, chúc bà con một năm mới an khang, làm ăn thuận buồm xuôi gió.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <!-- KHO BẢN THU BÀI CHÒI & DÂN CA MIỀN TRUNG -->
       <div class="card-box bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm space-y-3">
         <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
@@ -271,6 +325,28 @@
             <i class="fa-solid fa-chevron-right text-sm"></i>
           </button>
         </div>
+
+        
+          <!-- THANH ĐIỀU HƯỚNG BẢN ĐỒ & TỌA ĐỘ GPS -->
+          <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-2xl bg-slate-900/80 border border-slate-700/80 text-xs text-slate-300">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-location-dot text-rose-500 text-sm"></i>
+              <span>Tọa độ thực tế: <b id="landmarkGpsCoords" class="font-mono text-amber-300">13.3512° N, 109.2974° E</b></span>
+              <span class="text-slate-500">•</span>
+              <span>Cách Tuy Hòa: <b id="landmarkDistance" class="text-emerald-400">~35 km</b></span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="toggleCinemaLights()" id="btnCinemaLights" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-600 font-bold flex items-center gap-1.5 transition active:scale-95">
+                <i id="cinemaLightsIcon" class="fa-solid fa-lightbulb"></i>
+                <span id="cinemaLightsText">Tắt Đèn Rạp</span>
+              </button>
+              <a id="landmarkMapLink" href="https://maps.google.com/?q=Ganh+Da+Dia+Phu+Yen" target="_blank" class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black flex items-center gap-1.5 shadow transition active:scale-95">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>Chỉ Đường ↗</span>
+              </a>
+            </div>
+          </div>
 
         <!-- BỘ ĐIỀU KHIỂN CHIẾU & THUYẾT MINH -->
         <div class="flex items-center justify-between border-t border-slate-100 pt-3">
@@ -1294,6 +1370,218 @@
         icon.className = isDark ? "fa-solid fa-sun text-yellow-400" : "fa-solid fa-moon text-amber-600";
       }
     }
+
+    
+    // =========================================================================
+    // DỮ LIỆU 10 QUÂN BÀI CHÒI XỨ NẪU CỔ TRUYỀN
+    // =========================================================================
+    const BAI_CHOI_DECK = [
+      {
+        name: "NHỨT NỌC",
+        pho: "Pho Văn • Quân 1",
+        symbol: "🪵",
+        chant: "Đi đâu mà vội mà vàng, dừng chân đứng lại coi làng hát chơi... Là con Nhứt Nọc!",
+        meaning: "Lời mở đầu lễ hội tưng bừng, chúc bà con làm ăn một năm mới thuận buồm xuôi gió, nhà nhà no ấm."
+      },
+      {
+        name: "NHÌ NGHÈO",
+        pho: "Pho Văn • Quân 2",
+        symbol: "🛖",
+        chant: "Nghèo tiền nghèo bạc chớ nghèo nhân nghĩa, sắm cái áo mới đi trẩy hội xuân... Là con Nhì Nghèo!",
+        meaning: "Đề cao đạo lý sống thủy chung, nghĩa tình xóm làng Xứ Nẫu luôn bền chặt qua bao mùa giông bão."
+      },
+      {
+        name: "TAM QUĂNG",
+        pho: "Pho Vạn • Quân 3",
+        symbol: "🎣",
+        chant: "Quăng chài thả lưới giữa dòng sông Ba, cá tôm đầy rổ tiếng cười giòn tan... Là con Tam Quăng!",
+        meaning: "Hình ảnh lao động khỏe khoắn của ngư dân sông Ba và vịnh Xuân Đài, biểu trưng cho sự sung túc tài lộc."
+      },
+      {
+        name: "TỨ CẲNG",
+        pho: "Pho Sách • Quân 4",
+        symbol: "🏃",
+        chant: "Bốn chân bốn cẳng chạy vội về quê, mẹ chờ cơm nóng ấm nồng tình thương... Là con Tứ Cẳng!",
+        meaning: "Lời nhắc nhở tha thiết những người con Đất Phú xa quê mau chóng quay về sum vầy bên mái ấm gia đình."
+      },
+      {
+        name: "NGŨ TRỢT",
+        pho: "Pho Vạn • Quân 5",
+        symbol: "🌱",
+        chant: "Bước thấp bước cao trượt bờ cỏ biếc, nắm tay em lại lòng dạ xốn xang... Là con Ngũ Trợt!",
+        meaning: "Nét duyên dáng hóm hỉnh của tình yêu đôi lứa miền quê Đất Phú trên những triền đồi ngát xanh."
+      },
+      {
+        name: "LỤC HỘT",
+        pho: "Pho Văn • Quân 6",
+        symbol: "🌾",
+        chant: "Hột lúa vàng ươm đồng bằng Tuy Hòa, mồ hôi một giọt ngọc trời ban cho... Là con Lục Hột!",
+        meaning: "Tôn vinh hạt ngọc trời của vựa lúa Tuy Hòa lớn nhất miền Trung, chở che đời sống nhân dân."
+      },
+      {
+        name: "THẤT VUNG",
+        pho: "Pho Sách • Quân 7",
+        symbol: "🍲",
+        chant: "Mở nắp vung nồi bánh canh hẹ thơm, khói bay nghi ngút mời anh xơi liền... Là con Thất Vung!",
+        meaning: "Giới thiệu món ẩm thực trứ danh bánh canh hẹ Đất Phú, ấm lòng người viễn xứ mỗi khi nhớ về."
+      },
+      {
+        name: "BÁT BỒNG",
+        pho: "Pho Vạn • Quân 8",
+        symbol: "👶",
+        chant: "Bồng con ngồi ngóng bóng thuyền ngoài khơi, bao mùa giông bão vẫn trọn thủy chung... Là con Bát Bồng!",
+        meaning: "Tấm lòng kiên trinh son sắt của người mẹ, người vợ miền biển ngóng đợi con thuyền trở về bình an."
+      },
+      {
+        name: "CỬU CHÙA",
+        pho: "Pho Văn • Quân 9",
+        symbol: "🛕",
+        chant: "Chuông chùa thanh tịnh văng vẳng sườn non, khói hương nghi ngút an lạc thân tâm... Là con Cửu Chùa!",
+        meaning: "Sự bình an, thanh thản nơi chốn tổ đình di tích lịch sử Đất Phú, cầu chúc phước lành cho muôn dân."
+      },
+      {
+        name: "ÔNG ẦM",
+        pho: "Pho Sách • Quân 10",
+        symbol: "⚡",
+        chant: "Trời gầm một tiếng sấm rền ngoài khơi, mưa thuận gió hòa được mùa lúa thơm... Là con Ông Ầm!",
+        meaning: "Tiếng sấm đầu mùa báo hiệu mưa lành tưới mát ruộng đồng, xua tan hạn hán cho bà con nông nghiệp."
+      }
+    ];
+
+    let currentBaiChoiIdx = 0;
+
+    function drawBaiChoiCard() {
+      // Hiệu ứng âm thanh gõ trống Tum & thanh la bài chòi
+      playBaiChoiDrum();
+
+      const nextIdx = Math.floor(Math.random() * BAI_CHOI_DECK.length);
+      currentBaiChoiIdx = nextIdx;
+      const card = BAI_CHOI_DECK[nextIdx];
+
+      const frame = document.getElementById('baiChoiCardFrame');
+      if (frame) {
+        frame.style.transform = 'scale(0.85) rotate(-8deg)';
+        setTimeout(() => {
+          document.getElementById('baiChoiCardSymbol').innerText = card.symbol;
+          document.getElementById('baiChoiCardName').innerText = card.name;
+          document.getElementById('baiChoiBadgePho').innerText = card.pho;
+          document.getElementById('baiChoiChantTitle').innerText = '"' + card.chant + '"';
+          document.getElementById('baiChoiMeaningText').innerText = 'Ý nghĩa: ' + card.meaning;
+          frame.style.transform = 'scale(1) rotate(0deg)';
+          playChantVoice();
+        }, 200);
+      }
+    }
+
+    function playChantVoice() {
+      const card = BAI_CHOI_DECK[currentBaiChoiIdx];
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(card.chant);
+        utter.lang = 'vi-VN';
+        utter.rate = 0.95;
+        window.speechSynthesis.speak(utter);
+      }
+    }
+
+    // ÂM THANH TRỐNG CHIẾN / TRỐNG TUM BÀI CHÒI
+    function playBaiChoiDrum() {
+      try {
+        if (!radioAudioContext) radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (radioAudioContext.state === 'suspended') radioAudioContext.resume();
+
+        // 1. Tiếng Trống Tum Trầm Hùng
+        const osc = radioAudioContext.createOscillator();
+        const gain = radioAudioContext.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(150, radioAudioContext.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(45, radioAudioContext.currentTime + 0.25);
+
+        gain.gain.setValueAtTime(0.6, radioAudioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, radioAudioContext.currentTime + 0.3);
+
+        osc.connect(gain);
+        gain.connect(radioAudioContext.destination);
+
+        osc.start();
+        osc.stop(radioAudioContext.currentTime + 0.32);
+
+        // 2. Tiếng Thanh La Giòn Giã sau 100ms
+        setTimeout(() => {
+          if (!radioAudioContext) return;
+          const oscLa = radioAudioContext.createOscillator();
+          const gainLa = radioAudioContext.createGain();
+
+          oscLa.type = "triangle";
+          oscLa.frequency.setValueAtTime(1200, radioAudioContext.currentTime);
+          oscLa.frequency.exponentialRampToValueAtTime(800, radioAudioContext.currentTime + 0.15);
+
+          gainLa.gain.setValueAtTime(0.25, radioAudioContext.currentTime);
+          gainLa.gain.exponentialRampToValueAtTime(0.001, radioAudioContext.currentTime + 0.2);
+
+          oscLa.connect(gainLa);
+          gainLa.connect(radioAudioContext.destination);
+
+          oscLa.start();
+          oscLa.stop(radioAudioContext.currentTime + 0.22);
+        }, 120);
+
+        if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
+      } catch(e) {}
+    }
+
+    // =========================================================================
+    // NÂNG CẤP RẠP CHIẾU 4K: TẮT ĐÈN RẠP & TỌA ĐỘ GPS
+    // =========================================================================
+    let isCinemaLightsOff = false;
+
+    function toggleCinemaLights() {
+      isCinemaLightsOff = !isCinemaLightsOff;
+      const btn = document.getElementById('btnCinemaLights');
+      const text = document.getElementById('cinemaLightsText');
+      const icon = document.getElementById('cinemaLightsIcon');
+
+      if (isCinemaLightsOff) {
+        document.body.style.backgroundColor = '#020408';
+        if (text) text.innerText = 'Bật Đèn Rạp';
+        if (icon) icon.className = 'fa-solid fa-lightbulb text-yellow-400';
+        // Ambilight sáng rực rỡ hơn
+        const amb = document.getElementById('ambilightGlow');
+        if (amb) amb.style.filter = 'blur(45px)';
+      } else {
+        document.body.style.backgroundColor = '';
+        if (text) text.innerText = 'Tắt Đèn Rạp';
+        if (icon) icon.className = 'fa-solid fa-lightbulb';
+        const amb = document.getElementById('ambilightGlow');
+        if (amb) amb.style.filter = 'blur(20px)';
+      }
+    }
+
+    // Dữ liệu GPS & Tuyến đường thắng cảnh
+    const LANDMARK_LOCATIONS = [
+      { coords: "13.0882° N, 109.3087° E", dist: "Trung Tâm TP. Tuy Hòa", map: "https://maps.google.com/?q=Tuy+Hoa+Phu+Yen" },
+      { coords: "13.0910° N, 109.3100° E", dist: "Tại 9 Huyện Thị Phú Yên", map: "https://maps.google.com/?q=Phu+Yen+Vietnam" },
+      { coords: "13.0500° N, 109.2800° E", dist: "Huyện Tây Hòa & Đông Hòa", map: "https://maps.google.com/?q=Dong+Hoa+Phu+Yen" },
+      { coords: "13.0200° N, 109.1500° E", dist: "Sơn Hòa & Sông Hinh", map: "https://maps.google.com/?q=Song+Hinh+Phu+Yen" },
+      { coords: "13.0950° N, 109.2900° E", dist: "Chùa Cổ Di Tích Phú Yên", map: "https://maps.google.com/?q=Chua+Bao+Tinh+Tuy+Hoa" },
+      { coords: "13.1200° N, 109.2700° E", dist: "Tổ Đình Thập Phương", map: "https://maps.google.com/?q=To+Dinh+Phu+Yen" },
+      { coords: "13.3512° N, 109.2974° E", dist: "~35 km (Về Phía Bắc Tuy Hòa)", map: "https://maps.google.com/?q=Ganh+Da+Dia+Phu+Yen" },
+      { coords: "12.8833° N, 109.4667° E", dist: "~32 km (Về Phía Nam Tuy Hòa)", map: "https://maps.google.com/?q=Mui+Dien+Dai+Lanh+Phu+Yen" }
+    ];
+
+    const originalSelectArtSlide = selectArtSlide;
+    selectArtSlide = function(idx) {
+      originalSelectArtSlide(idx);
+      const loc = LANDMARK_LOCATIONS[idx] || LANDMARK_LOCATIONS[0];
+      const gpsEl = document.getElementById('landmarkGpsCoords');
+      const distEl = document.getElementById('landmarkDistance');
+      const mapEl = document.getElementById('landmarkMapLink');
+
+      if (gpsEl) gpsEl.innerText = loc.coords;
+      if (distEl) distEl.innerText = loc.dist;
+      if (mapEl) mapEl.href = loc.map;
+    };
 
     // KHỞI TẠO BAN ĐẦU
     window.addEventListener('DOMContentLoaded', () => {
