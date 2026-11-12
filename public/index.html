@@ -734,6 +734,21 @@
       background: #fbbf24;
     }
 
+    .custom-weather-scroll::-webkit-scrollbar {
+      width: 5px;
+    }
+    .custom-weather-scroll::-webkit-scrollbar-track {
+      background: rgba(7, 19, 38, 0.6);
+      border-radius: 8px;
+    }
+    .custom-weather-scroll::-webkit-scrollbar-thumb {
+      background: rgba(56, 189, 248, 0.45);
+      border-radius: 8px;
+    }
+    .custom-weather-scroll::-webkit-scrollbar-thumb:hover {
+      background: rgba(56, 189, 248, 0.85);
+    }
+
     /* ========================================================================= */
     /* ========================================================================= */
     /* 2 PHONG CÁCH MỸ THUẬT: SEN THIÊN NHIÊN & SEN VÀNG CUNG ĐÌNH 3D */
@@ -3841,34 +3856,49 @@
 
     function renderHourlyForecastUI(hourly) {
       const container = document.getElementById("detailHourlyList");
-      if (!container || !hourly.time) return;
+      if (!container || !hourly || !hourly.time || hourly.time.length === 0) return;
 
       const now = new Date();
       const currentHour = now.getHours();
 
+      let startIndex = 0;
+      for (let i = 0; i < hourly.time.length; i++) {
+        const d = new Date(hourly.time[i]);
+        if (d.getHours() >= currentHour || d.getDate() > now.getDate()) {
+          startIndex = i;
+          break;
+        }
+      }
+
       let itemsHtml = "";
-      const times = hourly.time.slice(0, 24);
-      for (let i = 0; i < times.length; i += 2) {
-        const timeStr = times[i];
+      const timesToShow = hourly.time.slice(startIndex, startIndex + 18);
+      for (let i = 0; i < timesToShow.length; i += 2) {
+        const actualIdx = startIndex + i;
+        const timeStr = hourly.time[actualIdx];
+        if (!timeStr) continue;
         const dateObj = new Date(timeStr);
         const hour = dateObj.getHours();
-        const temp = Math.round(hourly.temperature_2m[i] || 25);
-        const rainProb = hourly.precipitation_probability ? hourly.precipitation_probability[i] : 0;
-        const code = hourly.weather_code ? hourly.weather_code[i] : 0;
-        const isCurrent = (hour === currentHour);
+        const temp = Math.round(hourly.temperature_2m ? hourly.temperature_2m[actualIdx] : 24);
+        const rainProb = (hourly.precipitation_probability && hourly.precipitation_probability[actualIdx] !== undefined)
+                         ? hourly.precipitation_probability[actualIdx]
+                         : 75;
+        const code = (hourly.weather_code && hourly.weather_code[actualIdx] !== undefined)
+                     ? hourly.weather_code[actualIdx]
+                     : 61;
+        const isCurrent = (i === 0);
 
         itemsHtml += `
-          <div class="flex flex-col items-center justify-between p-2.5 rounded-2xl border min-w-[76px] transition shrink-0 ${
+          <div class="flex flex-col items-center justify-between p-2 rounded-2xl border min-w-[72px] transition shrink-0 ${
             isCurrent 
-              ? 'bg-amber-400/20 border-amber-400 text-amber-200 font-black shadow-xs ring-1 ring-amber-400/40' 
-              : 'bg-black/30 border-white/10 text-slate-200'
+              ? 'bg-amber-400/25 border-amber-400 text-amber-200 font-black shadow-xs ring-1 ring-amber-400/50' 
+              : 'bg-black/40 border-white/10 text-slate-200 hover:bg-white/5'
           }">
-            <span class="text-[11px] font-mono">${isCurrent ? 'Hiện tại' : (hour + 'h:00')}</span>
-            <div class="my-1.5 text-lg">
+            <span class="text-[10px] font-mono font-bold">${isCurrent ? 'Bây giờ' : (hour < 10 ? '0' + hour : hour) + ':00'}</span>
+            <div class="my-1 text-base">
               ${getWeatherEmojiIcon(code, rainProb)}
             </div>
             <span class="text-xs font-black text-white">${temp}°C</span>
-            <div class="mt-1 flex items-center gap-0.5 text-[10px] ${rainProb > 50 ? 'text-cyan-300 font-bold' : 'text-slate-400'}">
+            <div class="mt-1 flex items-center gap-0.5 text-[9px] ${rainProb > 50 ? 'text-cyan-300 font-bold' : 'text-slate-400'}">
               <i class="fa-solid fa-droplet text-[8px]"></i>
               <span>${rainProb}%</span>
             </div>
@@ -3939,6 +3969,24 @@
       if (rainEl) rainEl.innerText = "25 mm";
       const pressEl = document.getElementById("detailPressureVal");
       if (pressEl) pressEl.innerText = "1014 hPa (Ổn định)";
+
+      // Tự động tạo dữ liệu dự báo theo giờ ngay cả khi mất mạng hoặc đang tải
+      const fallbackHourly = {
+        time: [],
+        temperature_2m: [],
+        precipitation_probability: [],
+        weather_code: []
+      };
+      const now = new Date();
+      for (let i = 0; i < 24; i += 2) {
+        const d = new Date(now.getTime() + i * 3600000);
+        fallbackHourly.time.push(d.toISOString());
+        fallbackHourly.temperature_2m.push(24 + (i > 4 && i < 14 ? 3 : 0));
+        fallbackHourly.precipitation_probability.push(Math.min(95, 65 + ((i * 7) % 30)));
+        fallbackHourly.weather_code.push(61);
+      }
+      renderHourlyForecastUI(fallbackHourly);
+      updateHydrologyDisplay(loc, { precipitation: 1.0 }, { precipitation_sum: [25] });
     }
 
     function getWeatherCodeDescription(code, precip) {
@@ -13375,7 +13423,7 @@
        - Mở khi NHẤP ĐÚP (hoặc bấm nút Chi Tiết) trên thẻ thời tiết
        ======================================================================== -->
   <div id="weatherDetailModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 modal-mobile-app">
-    <div class="bg-gradient-to-b from-[#071326] via-[#0d213f] to-[#040914] border-2 sm:border-3 border-sky-400/90 rounded-3xl p-3 sm:p-5 w-full max-w-4xl shadow-2xl text-white space-y-4 max-h-[95vh] overflow-y-auto custom-modal-scroll">
+    <div class="bg-gradient-to-b from-[#071326] via-[#0d213f] to-[#040914] border-2 sm:border-3 border-sky-400/90 rounded-3xl p-3 sm:p-4 w-full max-w-4xl shadow-2xl text-white space-y-3 max-h-[92vh] overflow-y-auto custom-weather-scroll">
       
       <!-- HEADER TRẠM KHÍ TƯỢNG VỆ TINH -->
       <div class="flex items-center justify-between pb-3 border-b border-sky-400/30">
