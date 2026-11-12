@@ -285,7 +285,7 @@
             <span class="w-5 h-5 rounded-md bg-black/15 text-slate-950 flex items-center justify-center text-[10px]">
               <i class="fa-solid fa-shapes"></i>
             </span>
-            <span>Tất Cả (<span id="themeCount_all">16</span>)</span>
+            <span>Tất Cả (<span id="themeCount_all">25</span>)</span>
           </button>
 
           <button onclick="filterRadioTheme('nhacxuan')" id="themeBtn_nhacxuan" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-red-900 to-amber-900 hover:from-red-800 hover:to-amber-800 text-amber-200 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer border border-amber-400/50 shadow-xs">
@@ -328,7 +328,7 @@
             <span class="w-5 h-5 rounded-md bg-pink-500/20 text-pink-400 flex items-center justify-center text-[10px] border border-pink-500/30">
               <i class="fa-solid fa-face-laugh-beam"></i>
             </span>
-            <span>Tiếu Lâm Quê Mình</span>
+            <span>Hài Tết & Tiếu Lâm</span>
           </button>
 
           <button onclick="filterRadioTheme('phim4k')" id="themeBtn_phim4k" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
@@ -1271,6 +1271,7 @@
 
     // 2. KHO DỮ LIỆU BÀI HÁT, BÀI CHÒI & VIDEO THEO CHỦ ĐỀ
     const DEFAULT_MEDIA_PLAYLIST = [
+      // === NHÓM 1: NHẠC XUÂN & TẾT RỘN RÃ ===
       {
         id: "med_xuan_abba",
         title: "Happy New Year - Khúc Ca Giao Thừa Bất Hủ (ABBA 4K)",
@@ -1282,6 +1283,90 @@
         coverImg: "img/tet_sum_vay_dat_phu.jpg",
         chant: "“Happy New Year, Happy New Year... May we all have a vision now and then of a world where every neighbor is a friend... Cầu chúc năm mới an khang thịnh vượng, xóm giềng hòa thuận, toàn gia hạnh phúc!”",
         duration: "04:25"
+      },
+      {
+        id: "med_xuan_ngaytet",
+        title: "Ngày Tết Quê Em - Tết Tết Tết Đến Rồi! (Rộn Ràng)",
+        artist: "Ca Khúc Quốc Dân • Mừng Xuân Đất Phú",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "audio",
+        src: "/audio/hoa_tau_luu_thuy.mp3",
+        coverImg: "img/tet_sum_vay_dat_phu.jpg",
+        chant: "“Tết Tết Tết Tết đến rồi! Tết đến trong tim mọi người! Chúc cho muôn nhà yên vui, mùa xuân đơm hoa kết trái!”",
+        duration: "03:50"
+      },
+      {
+        id: "med_xuan_muaxuanoi",
+        title: "Mùa Xuân Ơi - Xuân Xuân Ơi Xuân Đã Về (Tươi Vui)",
+        artist: "Giai Điệu Rực Rỡ • Đón Chào Năm Mới",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "audio",
+        src: "/audio/sao_truc_phuong_vu.mp3",
+        coverImg: "img/landmarks/thap_nhan.jpg",
+        chant: "“Xuân xuân ơi xuân đã về, có nỗi vui nào vui hơn ngày xuân đến! Cành mai vàng rực rỡ chào đón giao thừa!”",
+        duration: "04:10"
+      },
+      {
+        id: "med_xuan_doanxuanca",
+        title: "Đoản Xuân Ca - Trống Lân Rộn Rã Đón Tết",
+        artist: "Nhịp Điệu Tưng Bừng • Hội Xuân Miền Trung",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "audio",
+        src: "/audio/hoa_tau_luu_thuy.mp3",
+        coverImg: "img/landmarks/bien_tuy_hoa.jpg",
+        chant: "“Nghe xuân sang thấy trong lòng mình nở hoa! Tiếng trống múa lân vang lừng ngợp trời chào đón mùa xuân mới!”",
+        duration: "03:45"
+      },
+      {
+        id: "med_xuan_diepkhuc",
+        title: "Điệp Khúc Mùa Xuân - Nắng Vàng Sông Ba",
+        artist: "Tiếng Hát Tuổi Trẻ • Sức Sống Mới",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "audio",
+        src: "/audio/dan_trung_to_rung.mp3",
+        coverImg: "img/landmarks/song_ba.jpg",
+        chant: "“Nắng chiếu lung linh muôn hoa vàng... Hát với quê hương bao ân tình, hát với em khi xuân vừa sang!”",
+        duration: "04:00"
+      },
+      {
+        id: "med_xuan_cauchuyen",
+        title: "Câu Chuyện Đầu Năm - Đi Chùa Hái Lộc Cầu An",
+        artist: "Làn Điệu Duyên Dáng • Khói Hương Trầm Đất Mẹ",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "audio",
+        src: "/audio/ho_mai_nhi_song_nuoc.mp3",
+        coverImg: "img/landmarks/thap_nhan.jpg",
+        chant: "“Trên đường đi lễ xuân đầu năm, qua một năm ruột rối tơ tằm, cầu cho cha mẹ trường thọ, gia đạo bình an cát tường!”",
+        duration: "04:30"
+      },
+      {
+        id: "med_xuan_canhthiep",
+        title: "Cánh Thiệp Đầu Xuân - Lời Chúc Tết Xóm Giềng",
+        artist: "Tình Nghĩa Quê Hương Đất Phú",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "audio",
+        src: "/audio/ho_ru_con_lullaby.mp3",
+        coverImg: "img/landmarks/bien_tuy_hoa.jpg",
+        chant: "“Hoa lá xôn xao đón mùa xuân sang, tôi chúc muôn người mọi điều an khang, hòa thuận ấm êm tình làng nghĩa xóm!”",
+        duration: "04:15"
+      },
+      {
+        id: "med_xuan_lynguao",
+        title: "Lý Ngựa Ô Mùa Xuân - Rước Dâu Kiệu Vàng Ngày Tết",
+        artist: "Đoàn Dân Ca Nam Trung Bộ",
+        theme: "nhacxuan",
+        themeName: "Nhạc Xuân & Tết",
+        type: "audio",
+        src: "/audio/hoa_tau_luu_thuy.mp3",
+        coverImg: "img/tet_sum_vay_dat_phu.jpg",
+        chant: "“Khớp con ngựa ô ngựa ô thắng kiệu... Kiệu vàng rước nàng về dinh đón Tết, tiếng pháo rộn vang xóm thôn!”",
+        duration: "03:40"
       },
       {
         id: "med_xuan1",
@@ -1331,6 +1416,58 @@
         chant: "“Tiếng củi nổ lách tách canh nồi bánh tét thâu đêm, khói lam chiều quyện mùi nếp mới nhớ thương đất mẹ.”",
         duration: "05:00"
       },
+
+      // === NHÓM 2: HÀI TẾT & TIẾU LÂM THÔN QUÊ VUI NHỘN ===
+      {
+        id: "med_hai_tet1",
+        title: "Hài Tết Xứ Nẫu: Bác Ba Đi Chợ Tết Mua Nhầm Con Gà Trống Cồ",
+        artist: "Tiểu Phẩm Hài Thôn Quê • Cười Té Ghế",
+        theme: "tieulam",
+        themeName: "Hài Tết & Tiếu Lâm",
+        type: "audio",
+        src: "/audio/ho_mai_nhi_song_nuoc.mp3",
+        coverImg: "img/tet_sum_vay_dat_phu.jpg",
+        chant: "“Trời ơi là trời! Đi chợ sắm Tết mua gà cúng giao thừa mà lựa trúng con gà chọi, nó nhảy tót lên bàn thờ nó gáy vang xóm!”",
+        duration: "04:15"
+      },
+      {
+        id: "med_hai_tet2",
+        title: "Chuyện Vui Thôn Quê: Rước Dâu Bằng Xe Máy Cày Ngày Mùng Một Tết",
+        artist: "Kịch Truyền Thanh Hài • Đất Phú Cười Rôm Rả",
+        theme: "tieulam",
+        themeName: "Hài Tết & Tiếu Lâm",
+        type: "audio",
+        src: "/audio/sao_truc_phuong_vu.mp3",
+        coverImg: "img/tet_sum_vay_dat_phu.jpg",
+        chant: "“Đám cưới đầu xuân rước dâu bằng xe máy cày chở cả họ nhà trai qua đập tràn, xóc một cái rớt luôn đôi guốc cười bể bụng!”",
+        duration: "03:50"
+      },
+      {
+        id: "med_hai_tet3",
+        title: "Hài Kịch Bài Chòi: Anh Hiệu Hô Thai Bắt Lỗi Chàng Rể Mới",
+        artist: "Anh Hiệu Tếu Táo • Hội Xuân Đất Phú",
+        theme: "tieulam",
+        themeName: "Hài Tết & Tiếu Lâm",
+        type: "audio",
+        src: "/audio/hoa_tau_luu_thuy.mp3",
+        coverImg: "img/tet_sum_vay_dat_phu.jpg",
+        chant: "“Rể mới về quê ăn Tết, uống ba chén rượu nếp say quắc cần câu đi nhầm sang chuồng bò... Là con Chín Gối!”",
+        duration: "03:30"
+      },
+      {
+        id: "med_hai_tet4",
+        title: "Tiếu Lâm: Bác Ba Phi Kể Chuyện Củ Khoai Mài Đón Tết",
+        artist: "Chuyện Cười Dân Gian • Nẫu Kể Nẫu Cười",
+        theme: "tieulam",
+        themeName: "Hài Tết & Tiếu Lâm",
+        type: "audio",
+        src: "/audio/dan_trung_to_rung.mp3",
+        coverImg: "img/landmarks/dam_o_loan.jpg",
+        chant: "“Củ khoai mài đào trên núi Chóp Chài to bằng cái ghe bầu, luộc chín chia cho cả làng ăn ba ngày Tết không hết!”",
+        duration: "03:15"
+      },
+
+      // === NHÓM 3: DI SẢN CỔ TRUYỀN & ĐỘC TẤU MỘC ===
       {
         id: "med_1",
         title: "Độc Tấu Sáo Trúc: Phượng Vũ",
@@ -1404,6 +1541,20 @@
         duration: "03:20"
       },
       {
+        id: "med_9",
+        title: "Âm Vang Cồng Chiêng & Điệu Hát Khan Buôn Ma Lôi",
+        artist: "Đồng Bào Dân Tộc Ê Đê • Huyện Sông Hinh",
+        theme: "taynguyen",
+        themeName: "Cồng Chiêng Tây Nguyên",
+        type: "audio",
+        src: "/audio/dan_trung_to_rung.mp3",
+        coverImg: "img/landmarks/song_ba.jpg",
+        chant: "Tiếng cồng chiêng ngân vang giữa núi rừng Sông Hinh, mừng lúa mới trĩu bông, buôn làng ấm no hạnh phúc.",
+        duration: "04:50"
+      },
+
+      // === NHÓM 4: PHIM DANH THẮNG 4K ===
+      {
         id: "med_7",
         title: "Kỳ Quan Gành Đá Đĩa & Bờ Biển Nam Trung Bộ (4K)",
         artist: "Phim Tư Liệu • Danh Thắng Đất Phú",
@@ -1426,42 +1577,6 @@
         coverImg: "img/landmarks/dam_o_loan.jpg",
         chant: "Bạt ngàn đồng lúa Tuy Hòa vào mùa gặt, cánh cò bay lả trên dòng nước ngọt đập Đồng Cam dẫn lối.",
         duration: "04:15"
-      },
-      {
-        id: "med_9",
-        title: "Âm Vang Cồng Chiêng & Điệu Hát Khan Buôn Ma Lôi",
-        artist: "Đồng Bào Dân Tộc Ê Đê • Huyện Sông Hinh",
-        theme: "taynguyen",
-        themeName: "Cồng Chiêng Tây Nguyên",
-        type: "audio",
-        src: "/audio/dan_trung_to_rung.mp3",
-        coverImg: "img/landmarks/song_ba.jpg",
-        chant: "Tiếng cồng chiêng ngân vang giữa núi rừng Sông Hinh, mừng lúa mới trĩu bông, buôn làng ấm no hạnh phúc.",
-        duration: "04:50"
-      },
-      {
-        id: "med_10",
-        title: "Chuyện Tiếu Lâm: Con Cá Tràu Sông Ba & Bác Ba Phi Xứ Nẫu",
-        artist: "Nghệ Nhân Kể Chuyện Thôn Quê • Tuy An",
-        theme: "tieulam",
-        themeName: "Tiếu Lâm & Góc Cười",
-        type: "audio",
-        src: "/audio/ho_mai_nhi_song_nuoc.mp3",
-        coverImg: "img/landmarks/dam_o_loan.jpg",
-        chant: "“Nói giỡn chơi mà cười thiệt rôm rả! Con cá tràu sông Ba nó quẫy một cái rớt luôn cái ấm chè xanh!”",
-        duration: "03:15"
-      },
-      {
-        id: "med_11",
-        title: "Lý Ngựa Ô Rộn Rã & Hò Đối Đáp Ghẹo Nhau",
-        artist: "Tiếng Hát Quê Nhà Xứ Nẫu",
-        theme: "dieuly",
-        themeName: "Điệu Lý Quê Mẹ",
-        type: "audio",
-        src: "/audio/hoa_tau_luu_thuy.mp3",
-        coverImg: "img/landmarks/bien_tuy_hoa.jpg",
-        chant: "“Khớp con ngựa ô ngựa ô thắng kiệu... Anh đem kiệu vàng rước nàng về dinh!”",
-        duration: "03:40"
       }
     ];
     // Khởi tạo danh sách bài hát (hỗ trợ lưu thêm bài tùy chỉnh)
@@ -3333,7 +3448,7 @@ function changeArtSlide(delta) {
       <!-- Nút hành động -->
       <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-800">
         <button onclick="resetDefaultMediaList()" class="text-[11px] text-slate-400 hover:text-rose-400 transition underline underline-offset-2 cursor-pointer">
-          Khôi phục 11 bài gốc
+          Khôi phục 25 bài gốc
         </button>
         <div class="flex items-center gap-2">
           <button onclick="closeAddMediaModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition cursor-pointer">
