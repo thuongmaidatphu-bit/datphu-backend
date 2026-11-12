@@ -490,9 +490,9 @@
           <div class="p-2.5 rounded-2xl bg-black/50 border border-amber-500/30 flex flex-col justify-between">
             <span class="text-[9.5px] text-amber-200/80 font-bold uppercase">Nhịp Niệm:</span>
             <div class="flex items-center gap-1 mt-1.5">
-              <button onclick="setBuddhistSpeed(1.2)" id="bSpeed_1" class="flex-1 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[10px] transition">x1.0</button>
-              <button onclick="setBuddhistSpeed(0.9)" id="bSpeed_2" class="flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[10px] transition">x1.3</button>
-              <button onclick="setBuddhistSpeed(0.65)" id="bSpeed_3" class="flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[10px] transition">x1.6</button>
+              <button onclick="setBuddhistSpeed(2.0)" id="bSpeed_1" class="flex-1 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[10px] transition" title="Nhịp thong dong thiền môn">Chậm</button>
+              <button onclick="setBuddhistSpeed(1.5)" id="bSpeed_2" class="flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[10px] transition" title="Nhịp đều đặn tụng niệm">Vừa</button>
+              <button onclick="setBuddhistSpeed(1.0)" id="bSpeed_3" class="flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[10px] transition" title="Nhịp tinh tấn">Nhanh</button>
             </div>
           </div>
 
@@ -1269,6 +1269,9 @@
     // =========================================================================
     let buddhistChantSpeechTimer = null;
 
+    // =========================================================================
+    // ĐIỆU NIỆM PHẬT THIỀN MÔN THONG DONG • CHẬM RÃI • TRANG NGHIÊM
+    // =========================================================================
     function speakBuddhistVerse() {
       if (!isBuddhistPlaying) return;
       const track = BUDDHIST_CHENTS[currentBuddhistIdx];
@@ -1276,17 +1279,20 @@
 
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(track.line);
+        
+        // Ngắt nhịp chữ thong dong như chư Tăng tụng trong chùa
+        const solemnText = track.line.replace(/•/g, ', ');
+        const utter = new SpeechSynthesisUtterance(solemnText);
         utter.lang = 'vi-VN';
-        utter.rate = 0.85; // Giọng tụng chậm rãi, trang nghiêm
-        utter.pitch = 0.9; // Giọng trầm ấm thanh tịnh
+        utter.rate = 0.68; // Chậm rãi, thư thái, từng chữ tròn vành rõ chữ
+        utter.pitch = 0.82; // Âm vực trầm ấm thanh tịnh
         
         utter.onend = () => {
           if (isBuddhistPlaying) {
-            // Đợi 1 chút rồi tụng biến tiếp theo
+            // Khoảng lặng 1.5 giây giữa các biến niệm để Phật tử thở sâu và nhiếp tâm
             buddhistChantSpeechTimer = setTimeout(() => {
               speakBuddhistVerse();
-            }, 800);
+            }, 1500);
           }
         };
 
@@ -1294,7 +1300,7 @@
           if (isBuddhistPlaying) {
             buddhistChantSpeechTimer = setTimeout(() => {
               speakBuddhistVerse();
-            }, 1200);
+            }, 2000);
           }
         };
 
@@ -1827,7 +1833,7 @@
     // =========================================================================
     // NÂNG CẤP CHUYÊN SÂU: MÁY NIỆM PHẬT (CHUÔNG ĐỒNG & TỐC ĐỘ NIỆM)
     // =========================================================================
-    let buddhistSpeedMs = 1200; // 1.2s mặc định
+    let buddhistSpeedMs = 2000; // 1.2s mặc định
     let lifetimeMalaCount = parseInt(localStorage.getItem('datphu_lifetime_mala') || '1080');
 
     function updateLifetimeMalaDisplay() {
@@ -1835,16 +1841,14 @@
       if (el) el.innerText = lifetimeMalaCount.toLocaleString('vi-VN');
     }
 
-    function setBuddhistSpeed(speedFactor) {
-      if (speedFactor === 1.2) buddhistSpeedMs = 1200;
-      else if (speedFactor === 0.9) buddhistSpeedMs = 900;
-      else if (speedFactor === 0.65) buddhistSpeedMs = 650;
+    function setBuddhistSpeed(speedSec) {
+      buddhistSpeedMs = speedSec * 1000;
 
       // Update button styles
       ['bSpeed_1', 'bSpeed_2', 'bSpeed_3'].forEach((id, i) => {
         const btn = document.getElementById(id);
         if (btn) {
-          const isMatch = (i === 0 && speedFactor === 1.2) || (i === 1 && speedFactor === 0.9) || (i === 2 && speedFactor === 0.65);
+          const isMatch = (i === 0 && speedSec === 2.0) || (i === 1 && speedSec === 1.5) || (i === 2 && speedSec === 1.0);
           btn.className = isMatch ? "flex-1 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[10px] transition" : "flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[10px] transition";
         }
       });
