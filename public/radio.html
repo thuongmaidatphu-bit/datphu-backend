@@ -394,85 +394,38 @@
       updatePlayerUI();
     }
 
+    let realFolkAudio = null;
+
     function startOfflineSynthesizer() {
       stopOfflineSynthesizer();
-
       const track = RADIO_PLAYLIST[currentTrackIdx];
 
-      // 1. NGÂM CÂU CA DAO / BÀI CHÒI BẰNG GIỌNG ĐỌC TRUYỀN CẢM TIẾNG VIỆT
-      if ('speechSynthesis' in window && track && track.chant) {
-        window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(track.title + ". " + track.chant);
-        utter.lang = 'vi-VN';
-        utter.rate = 0.82;
-        utter.pitch = 1.0;
-
-        const voices = window.speechSynthesis.getVoices();
-        const viVoice = voices.find(v => v.lang === 'vi-VN' || v.lang.startsWith('vi'));
-        if (viVoice) utter.voice = viVoice;
-
-        utter.onend = function() {
-          if (isPlaying) {
-            setTimeout(() => {
-              if (isPlaying) playNextTrack();
-            }, 3000);
-          }
-        };
-
-        window.speechSynthesis.speak(utter);
+      if (!realFolkAudio) {
+        realFolkAudio = new Audio();
+        realFolkAudio.addEventListener('ended', () => {
+          if (isPlaying) playNextTrack();
+        });
+        realFolkAudio.addEventListener('error', (e) => {
+          console.warn('Real audio playback error:', e);
+        });
       }
 
-      // 2. HÒA ÂM ĐÀN TRANH NGŨ CUNG MỘC LÀM NHẠC NỀN DỊU ÊM
-      try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!synthCtx) synthCtx = new AudioCtx();
-        if (synthCtx.state === "suspended") synthCtx.resume();
-
-        const notes = [261.63, 293.66, 349.23, 392.00, 440.00, 523.25];
-        let step = 0;
-
-        synthMelodyTimer = setInterval(() => {
-          if (!isPlaying || !synthCtx) return;
-          const freq = notes[step % notes.length];
-          step = (step + 1) % notes.length;
-
-          const osc = synthCtx.createOscillator();
-          const gain = synthCtx.createGain();
-          const filter = synthCtx.createBiquadFilter();
-
-          filter.type = "lowpass";
-          filter.frequency.setValueAtTime(750, synthCtx.currentTime);
-
-          osc.type = "sine";
-          osc.frequency.setValueAtTime(freq, synthCtx.currentTime);
-
-          gain.gain.setValueAtTime(0.0001, synthCtx.currentTime);
-          gain.gain.linearRampToValueAtTime(0.04, synthCtx.currentTime + 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.0001, synthCtx.currentTime + 1.2);
-
-          osc.connect(filter);
-          filter.connect(gain);
-          gain.connect(synthCtx.destination);
-
-          osc.start();
-          osc.stop(synthCtx.currentTime + 1.25);
-        }, 1500);
-
-      } catch(e) {
-        console.warn('AudioContext synth error:', e);
+      if (track && track.src) {
+        realFolkAudio.src = track.src;
+        realFolkAudio.currentTime = 0;
+        realFolkAudio.play().catch(err => console.warn(err));
       }
     }
 
     function stopOfflineSynthesizer() {
+      if (realFolkAudio) {
+        realFolkAudio.pause();
+      }
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
       }
-      clearInterval(synthMelodyTimer);
-      if (synthCtx && synthCtx.state === "running") {
-        try { synthCtx.suspend(); } catch(e) {}
-      }
     }
-
+  
     document.addEventListener("DOMContentLoaded", () => {
       renderPlaylist();
       updatePlayerUI();
