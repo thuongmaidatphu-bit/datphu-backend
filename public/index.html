@@ -3738,6 +3738,76 @@
        ======================================================================== */
 
     let cachedWeatherDetailData = null;
+    let currentWeatherDetailTab = 'dashboard';
+
+    function switchWeatherDetailTab(tab) {
+      currentWeatherDetailTab = tab;
+
+      const dashboardSec = document.getElementById("weatherSec_dashboard");
+      const radarSec = document.getElementById("weatherSec_radar");
+      const handbookSec = document.getElementById("weatherSec_handbook");
+
+      const btnDashboard = document.getElementById("weatherTab_dashboard");
+      const btnRadar = document.getElementById("weatherTab_radar");
+      const btnHandbook = document.getElementById("weatherTab_handbook");
+
+      const activeCls = "px-3 py-1.5 rounded-xl bg-gradient-to-r from-sky-400 to-blue-500 text-slate-950 font-black shadow transition active:scale-95 whitespace-nowrap flex items-center gap-1.5 text-xs cursor-pointer";
+      const idleCls = "px-3 py-1.5 rounded-xl text-sky-200 hover:text-white hover:bg-white/10 transition active:scale-95 whitespace-nowrap flex items-center gap-1.5 text-xs font-bold cursor-pointer";
+
+      if (btnDashboard) btnDashboard.className = (tab === 'dashboard') ? activeCls : idleCls;
+      if (btnRadar) btnRadar.className = (tab === 'radar') ? activeCls : idleCls;
+      if (btnHandbook) btnHandbook.className = (tab === 'handbook') ? activeCls : idleCls;
+
+      if (dashboardSec) {
+        if (tab === 'dashboard') dashboardSec.classList.remove("hidden");
+        else dashboardSec.classList.add("hidden");
+      }
+      if (radarSec) {
+        if (tab === 'radar') {
+          radarSec.classList.remove("hidden");
+          loadLiveSatelliteRadarFrame();
+        } else {
+          radarSec.classList.add("hidden");
+        }
+      }
+      if (handbookSec) {
+        if (tab === 'handbook') handbookSec.classList.remove("hidden");
+        else handbookSec.classList.add("hidden");
+      }
+    }
+
+    function loadLiveSatelliteRadarFrame() {
+      const frame = document.getElementById("liveSatelliteRadarIframe");
+      if (frame && !frame.src) {
+        const loc = (currentLocationKey === "custom" && customGeoLocation)
+                    ? customGeoLocation
+                    : (LOCATIONS[currentLocationKey] || LOCATIONS["tuy-hoa"]);
+        frame.src = "https://www.rainviewer.com/map.html?loc=" + loc.lat + "," + loc.lon + ",8&oFa=0&oC=1&oU=0&oCS=1&oF=0&oAP=1&c=3&o=83&lm=1&layer=radar&sm=1&sn=1";
+      }
+    }
+
+    function setSatelliteRadarMode(mode) {
+      const frame = document.getElementById("liveSatelliteRadarIframe");
+      if (!frame) return;
+      const loc = (currentLocationKey === "custom" && customGeoLocation)
+                  ? customGeoLocation
+                  : (LOCATIONS[currentLocationKey] || LOCATIONS["tuy-hoa"]);
+
+      const btnRain = document.getElementById("radarModeBtn_rain");
+      const btnWind = document.getElementById("radarModeBtn_wind");
+      const activeBtn = "px-2.5 py-1 rounded-lg bg-sky-500 text-slate-950 font-black text-[11px] shadow-xs active:scale-95 cursor-pointer";
+      const idleBtn = "px-2.5 py-1 rounded-lg bg-white/10 text-sky-200 hover:text-white text-[11px] font-bold active:scale-95 cursor-pointer";
+
+      if (mode === 'wind') {
+        if (btnWind) btnWind.className = activeBtn;
+        if (btnRain) btnRain.className = idleBtn;
+        frame.src = "https://embed.windy.com/embed2.html?lat=" + loc.lat + "&lon=" + loc.lon + "&detailLat=" + loc.lat + "&detailLon=" + loc.lon + "&width=650&height=320&zoom=7&level=surface&overlay=radar&product=radar&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1";
+      } else {
+        if (btnRain) btnRain.className = activeBtn;
+        if (btnWind) btnWind.className = idleBtn;
+        frame.src = "https://www.rainviewer.com/map.html?loc=" + loc.lat + "," + loc.lon + ",8&oFa=0&oC=1&oU=0&oCS=1&oF=0&oAP=1&c=3&o=83&lm=1&layer=radar&sm=1&sn=1";
+      }
+    };
 
     function openWeatherDetailModal() {
       const modal = document.getElementById("weatherDetailModal");
@@ -13454,6 +13524,24 @@
       </div>
 
       <!-- KHỐI 1: BẢNG CHỈ SỐ NHIỆT ĐỘ & KHÍ QUYỂN THỰC ĐỊA -->
+      <!-- THANH CHUYỂN CHẾ ĐỘ QUAN SÁT (TABS) -->
+      <div class="flex items-center gap-1.5 p-1 bg-slate-950/80 border border-sky-400/30 rounded-2xl overflow-x-auto text-xs font-bold no-scrollbar">
+        <button id="weatherTab_dashboard" onclick="switchWeatherDetailTab('dashboard')" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-sky-400 to-blue-500 text-slate-950 font-black shadow transition active:scale-95 whitespace-nowrap flex items-center gap-1.5 text-xs cursor-pointer">
+          <i class="fa-solid fa-chart-simple"></i>
+          <span>Bảng Chỉ Số & Dự Báo</span>
+        </button>
+        <button id="weatherTab_radar" onclick="switchWeatherDetailTab('radar')" class="px-3 py-1.5 rounded-xl text-sky-200 hover:text-white hover:bg-white/10 transition active:scale-95 whitespace-nowrap flex items-center gap-1.5 text-xs font-bold cursor-pointer">
+          <i class="fa-solid fa-satellite text-amber-300"></i>
+          <span>Mắt Thần Vệ Tinh Trực Tiếp</span>
+        </button>
+        <button id="weatherTab_handbook" onclick="switchWeatherDetailTab('handbook')" class="px-3 py-1.5 rounded-xl text-sky-200 hover:text-white hover:bg-white/10 transition active:scale-95 whitespace-nowrap flex items-center gap-1.5 text-xs font-bold cursor-pointer">
+          <i class="fa-solid fa-book-open-reader text-emerald-300"></i>
+          <span>Cẩm Nang Cứu Hộ & Sống Còn</span>
+        </button>
+      </div>
+
+      <!-- ================= PHẦN 1: BẢNG CHỈ SỐ & DỰ BÁO ================= -->
+      <div id="weatherSec_dashboard" class="space-y-3">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
         <!-- Cột Trái: Nhiệt độ & Bầu trời -->
         <div class="p-4 rounded-2xl bg-black/40 border border-sky-500/30 flex flex-col justify-between shadow-inner">
@@ -13606,6 +13694,100 @@
               <a href="tel:114" class="text-amber-300 font-black underline ml-1">114 (Cứu nạn)</a> • 
               <a href="tel:115" class="text-emerald-300 font-black underline ml-1">115 (Cấp cứu)</a>
             </span>
+          </div>
+        </div>
+      </div>
+      </div> <!-- KẾT THÚC weatherSec_dashboard -->
+
+      <!-- ================= PHẦN 2: MẮT THẦN VỆ TINH TRỰC TIẾP ================= -->
+      <div id="weatherSec_radar" class="space-y-3 hidden">
+        <!-- Thanh điều khiển chế độ radar -->
+        <div class="flex items-center justify-between flex-wrap gap-2 p-2.5 rounded-2xl bg-black/40 border border-sky-500/30">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+            <span class="text-xs font-bold text-sky-200 uppercase tracking-wide">
+              RADAR MÂY VỆ TINH HIMAWARI & ĐO MƯA THỜI GIAN THỰC
+            </span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button id="radarModeBtn_rain" onclick="setSatelliteRadarMode('rain')" class="px-2.5 py-1 rounded-lg bg-sky-500 text-slate-950 font-black text-[11px] shadow-xs active:scale-95 cursor-pointer">
+              🌧️ Quét Vùng Mưa
+            </button>
+            <button id="radarModeBtn_wind" onclick="setSatelliteRadarMode('wind')" class="px-2.5 py-1 rounded-lg bg-white/10 text-sky-200 hover:text-white text-[11px] font-bold active:scale-95 cursor-pointer">
+              💨 Gió & Mây Bão
+            </button>
+          </div>
+        </div>
+
+        <!-- Khung iframe bản đồ vệ tinh tương tác trực tiếp -->
+        <div class="relative w-full h-80 sm:h-96 rounded-2xl overflow-hidden border border-sky-400/40 bg-black/80 shadow-inner">
+          <iframe id="liveSatelliteRadarIframe" class="w-full h-full border-0" loading="lazy" allowfullscreen></iframe>
+        </div>
+
+        <!-- Chú thích nguyên lý đọc radar -->
+        <div class="p-3 rounded-2xl bg-sky-950/40 border border-sky-400/30 text-xs text-slate-300 space-y-1">
+          <div class="font-bold text-sky-200 flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-info text-amber-300"></i> Cách đọc bản đồ radar vệ tinh:
+          </div>
+          <p class="text-[11px] text-slate-300 leading-relaxed">
+            • <strong>Vệt màu xanh lam/lục:</strong> Mưa nhỏ đến mưa vừa rải rác.<br>
+            • <strong>Vệt màu vàng/cam/đỏ:</strong> Mưa rất to, giông lốc dữ dội. Khi thấy mảng màu đỏ di chuyển về phía sông Ba, sông Kỳ Lộ, nước lũ hạ du sẽ dâng cao sau vài giờ.<br>
+            • <strong>Đốm trắng xoáy tròn:</strong> Tâm mắt bão hoặc áp thấp nhiệt đới ngoài biển Đông.
+          </p>
+        </div>
+      </div>
+
+      <!-- ================= PHẦN 3: CẨM NANG MẮT THẦN VỆ TINH & CỨU HỘ ================= -->
+      <div id="weatherSec_handbook" class="space-y-3 hidden">
+        <!-- 4 Nguyên lý Mắt Thần Vệ Tinh -->
+        <div class="p-3.5 rounded-2xl bg-gradient-to-r from-blue-950/70 via-slate-900/80 to-blue-950/70 border border-sky-400/40 space-y-2.5 text-xs">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-satellite text-amber-300 text-base"></i>
+            <span class="text-xs sm:text-sm font-black text-amber-200 uppercase tracking-wide">
+              VÌ SAO VỆ TINH NHÂN TẠO CẢNH BÁO SỚM ĐƯỢC THIÊN TAI?
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px] text-slate-200">
+            <div class="p-2.5 rounded-xl bg-black/40 border border-white/10 space-y-1">
+              <div class="font-bold text-sky-300 flex items-center gap-1">
+                <span class="w-5 h-5 rounded-full bg-sky-500/20 text-sky-300 flex items-center justify-center font-mono text-[10px] font-black">1</span>
+                Phát hiện bão từ đốm mây nhỏ (Trước 5-7 ngày)
+              </div>
+              <p class="text-slate-300 text-[10.5px] leading-tight">
+                Vệ tinh bay ở độ cao 36.000km, chụp ảnh hồng ngoại xuyên đêm 10 phút/lần, đo nhiệt độ đỉnh mây để phát hiện tâm xoáy từ ngoài khơi xa.
+              </p>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-black/40 border border-white/10 space-y-1">
+              <div class="font-bold text-cyan-300 flex items-center gap-1">
+                <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-300 flex items-center justify-center font-mono text-[10px] font-black">2</span>
+                Cân đong lượng mưa thượng nguồn rừng sâu
+              </div>
+              <p class="text-slate-300 text-[10.5px] leading-tight">
+                Radar mưa xuyên mây đo lượng nước trút xuống rừng Trường Sơn, tính trước hàng triệu mét khối nước sắp đổ về các hồ thủy điện và hạ du.
+              </p>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-black/40 border border-white/10 space-y-1">
+              <div class="font-bold text-indigo-300 flex items-center gap-1">
+                <span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-mono text-[10px] font-black">3</span>
+                Radar SAR xuyên mây vẽ bản đồ ngập lụt
+              </div>
+              <p class="text-slate-300 text-[10.5px] leading-tight">
+                Sóng radar xuyên mây mưa đập xuống đất: mặt nước lũ phản xạ sóng đi hướng khác, vẽ ra ngay bản đồ các thôn xóm đang bị cô lập để cứu hộ.
+              </p>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-black/40 border border-white/10 space-y-1">
+              <div class="font-bold text-amber-300 flex items-center gap-1">
+                <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-300 flex items-center justify-center font-mono text-[10px] font-black">4</span>
+                Cảnh báo sạt lở núi & đo độ bão hòa đất
+              </div>
+              <p class="text-slate-300 text-[10.5px] leading-tight">
+                Vệ tinh đo độ ẩm của đất đá trên sườn dốc. Khi đất no nước 100%, kết hợp mưa to dồn dập sẽ phát báo động đỏ nguy cơ lũ ống, lũ quét.
+              </p>
+            </div>
           </div>
         </div>
       </div>
