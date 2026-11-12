@@ -3944,11 +3944,157 @@
       }
     }
 
+            let currentSatelliteRadarMode = 'rain';
+
+    function initSatelliteRadar() {
+      setSatelliteRadarMode(currentSatelliteRadarMode || 'rain');
+    }
+
+    function setSatelliteRadarMode(mode) {
+      currentSatelliteRadarMode = mode;
+      const iframe = document.getElementById('liveSatelliteRadarIframe');
+      const btnRain = document.getElementById('radarModeBtn_rain');
+      const btnWind = document.getElementById('radarModeBtn_wind');
+      const btnSat = document.getElementById('radarModeBtn_sat');
+      const modeTitle = document.getElementById('radarCurrentModeTitle');
+      const locLabel = document.getElementById('radarLocationLabel');
+
+      const loc = (currentLocationKey === 'custom' && customGeoLocation)
+                  ? customGeoLocation
+                  : (LOCATIONS[currentLocationKey] || LOCATIONS['tuy-hoa']);
+
+      const lat = loc.lat || 13.088;
+      const lon = loc.lon || 109.313;
+
+      if (locLabel) {
+        locLabel.innerText = 'Tâm quét: ' + loc.name + ' (' + lat.toFixed(2) + '°B, ' + lon.toFixed(2) + '°Đ)';
+      }
+
+      const isLight = (currentWeatherModalTheme === 'light');
+      const activeCls = isLight
+        ? 'px-3 py-1.5 rounded-xl bg-sky-500 text-white font-black text-xs shadow-xs active:scale-95 cursor-pointer flex items-center gap-1.5'
+        : 'px-3 py-1.5 rounded-xl bg-sky-500 text-slate-950 font-black text-xs shadow-xs active:scale-95 cursor-pointer flex items-center gap-1.5';
+      const idleCls = isLight
+        ? 'px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold active:scale-95 cursor-pointer flex items-center gap-1.5'
+        : 'px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-sky-200 text-xs font-bold active:scale-95 cursor-pointer flex items-center gap-1.5';
+
+      if (btnRain) btnRain.className = (mode === 'rain') ? activeCls : idleCls;
+      if (btnWind) btnWind.className = (mode === 'wind') ? activeCls : idleCls;
+      if (btnSat) btnSat.className = (mode === 'sat') ? activeCls : idleCls;
+
+      if (iframe) {
+        if (mode === 'rain') {
+          iframe.src = 'https://www.rainviewer.com/map.html?loc=' + lat + ',' + lon + ',8&oFa=1&oC=1&oU=0&oRev=0&oA=1&sm=1&sn=1&hu=0&ts=1';
+          if (modeTitle) modeTitle.innerText = 'RADAR MÂY MƯA THỜI GIAN THỰC (RAINVIEWER) • TÂM QUÉT: ' + loc.name.toUpperCase();
+        } else if (mode === 'wind') {
+          iframe.src = 'https://embed.windy.com/embed2.html?lat=' + lat + '&lon=' + lon + '&detailLat=' + lat + '&detailLon=' + lon + '&width=650&height=450&zoom=7&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1';
+          if (modeTitle) modeTitle.innerText = 'LUỒNG GIÓ & TÂM BÃO KHÍ ÁP (WINDY LIVE) • TÂM QUÉT: ' + loc.name.toUpperCase();
+        } else {
+          iframe.src = 'https://embed.windy.com/embed2.html?lat=' + lat + '&lon=' + lon + '&detailLat=' + lat + '&detailLon=' + lon + '&width=650&height=450&zoom=6&level=surface&overlay=satellite&product=satellite&menu=&message=&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1';
+          if (modeTitle) modeTitle.innerText = 'ẢNH MÂY HỒNG NGOẠI VỆ TINH HIMAWARI • BIỂN ĐÔNG & NAM TRUNG BỘ';
+        }
+      }
+    }
+
+    function openRadarFullscreen() {
+      const loc = (currentLocationKey === 'custom' && customGeoLocation)
+                  ? customGeoLocation
+                  : (LOCATIONS[currentLocationKey] || LOCATIONS['tuy-hoa']);
+      const lat = loc.lat || 13.088;
+      const lon = loc.lon || 109.313;
+      if (currentSatelliteRadarMode === 'rain') {
+        window.open('https://www.rainviewer.com/map.html?loc=' + lat + ',' + lon + ',8&oFa=1&oC=1&oU=0&oRev=0&oA=1&sm=1&sn=1&hu=0&ts=1', '_blank');
+      } else if (currentSatelliteRadarMode === 'wind') {
+        window.open('https://www.windy.com/?' + lat + ',' + lon + ',7', '_blank');
+      } else {
+        window.open('https://www.windy.com/-Satellite-satellite?satellite,' + lat + ',' + lon + ',6', '_blank');
+      }
+    }
+
+    function sendSosRescueDispatch() {
+      const loc = (currentLocationKey === 'custom' && customGeoLocation)
+                  ? customGeoLocation
+                  : (LOCATIONS[currentLocationKey] || LOCATIONS['tuy-hoa']);
+
+      const lat = loc.lat ? loc.lat.toFixed(4) : '13.0882';
+      const lon = loc.lon ? loc.lon.toFixed(4) : '109.3131';
+      const mapLink = 'https://www.google.com/maps?q=' + lat + ',' + lon;
+
+      const now = new Date();
+      const timeStr = (now.getHours() < 10 ? '0' : '') + now.getHours() + ':' +
+                      (now.getMinutes() < 10 ? '0' : '') + now.getMinutes() + ' ' +
+                      (now.getDate() < 10 ? '0' : '') + now.getDate() + '/' +
+                      (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1);
+
+      const sosLines = [
+        '🆘 [CẦN CỨU HỘ KHẨN CẤP - BÃO LŨ ĐẤT PHÚ]',
+        '🚨 YÊU CẦU: Hỗ trợ ca-nô / xuồng cứu hộ / ứng cứu người mắc kẹt!',
+        '📍 Vị trí: ' + loc.name + ' (' + lat + '°B, ' + lon + '°Đ)',
+        '⏰ Thời điểm phát tín hiệu: ' + timeStr,
+        '🔗 BẤM ĐỂ MỞ VỊ TRÍ TRÊN BẢN ĐỒ:',
+        mapLink,
+        '📞 Đường dây nóng: 114 (Cứu nạn) • 115 (Cấp cứu)',
+        '(Gửi từ Ứng dụng Lịch Dân Sinh Đất Phú)'
+      ];
+      const sosText = sosLines.join('\n');
+
+      if (navigator.share) {
+        navigator.share({
+          title: '🆘 CẦN CỨU HỘ KHẨN CẤP',
+          text: sosText
+        }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(sosText).then(() => {
+          if (window.showToastNotification) {
+            window.showToastNotification('✅ Đã sao chép tin nhắn SOS & Tọa độ GPS! Mở Zalo để dán và gửi ngay!', 'success');
+          } else {
+            alert('Đã sao chép tin nhắn SOS & Tọa độ GPS! Hãy dán vào Zalo/Tin nhắn để gửi cho đội cứu hộ!');
+          }
+        });
+      }
+    }
+
+    function toggleSurvivalCheck(itemId) {
+      try {
+        const key = 'datphu_survival_' + itemId;
+        const current = (localStorage.getItem(key) === 'true');
+        localStorage.setItem(key, (!current).toString());
+        const el = document.getElementById('survivalCheck_' + itemId);
+        if (el) {
+          el.classList.toggle('bg-emerald-500', !current);
+          el.classList.toggle('text-white', !current);
+          el.classList.toggle('border-emerald-500', !current);
+          el.classList.toggle('bg-slate-100', current);
+          el.classList.toggle('border-slate-300', current);
+          el.innerHTML = !current ? '<i class="fa-solid fa-check text-xs"></i>' : '';
+        }
+      } catch(e) {}
+    }
+
+    function initSurvivalChecklist() {
+      const items = ['lifejacket', 'torch', 'food', 'docs', 'meds'];
+      items.forEach(id => {
+        try {
+          const val = (localStorage.getItem('datphu_survival_' + id) === 'true');
+          const el = document.getElementById('survivalCheck_' + id);
+          if (el) {
+            el.classList.toggle('bg-emerald-500', val);
+            el.classList.toggle('text-white', val);
+            el.classList.toggle('border-emerald-500', val);
+            el.classList.toggle('bg-slate-100', !val);
+            el.classList.toggle('border-slate-300', !val);
+            el.innerHTML = val ? '<i class="fa-solid fa-check text-xs"></i>' : '';
+          }
+        } catch(e) {}
+      });
+    }
+
     function openWeatherDetailModal() {
       const modal = document.getElementById("weatherDetailModal");
       if (!modal) return;
       modal.classList.remove("hidden");
       initWeatherModalTheme();
+      initSurvivalChecklist();
       refreshWeatherDetailData();
     }
 
@@ -13865,47 +14011,306 @@
       </div> <!-- KẾT THÚC weatherSec_dashboard -->
 
       <!-- ================= PHẦN 2: MẮT THẦN VỆ TINH TRỰC TIẾP ================= -->
-      <div id="weatherSec_radar" class="space-y-3 hidden">
-        <!-- Thanh điều khiển chế độ radar -->
+      <div id="weatherSec_radar" class="space-y-3.5 hidden">
+        <!-- Thanh điều khiển chế độ radar vệ tinh -->
         <div class="flex items-center justify-between flex-wrap gap-2 p-2.5 rounded-2xl weather-card-box bg-white border border-slate-200 shadow-xs">
           <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-            <span class="text-xs font-black text-sky-950 uppercase tracking-wide">
-              RADAR MÂY VỆ TINH HIMAWARI & ĐO MƯA THỜI GIAN THỰC
-            </span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping shrink-0"></span>
+            <div>
+              <div id="radarCurrentModeTitle" class="text-xs font-black text-sky-950 uppercase tracking-wide">
+                RADAR MÂY VỆ TINH HIMAWARI & ĐO MƯA THỜI GIAN THỰC
+              </div>
+              <div class="text-[10.5px] text-slate-500">Dữ liệu viễn thám trực tiếp từ vệ tinh địa tĩnh Đông Nam Á & Biển Đông</div>
+            </div>
           </div>
-          <div class="flex items-center gap-1.5">
-            <button id="radarModeBtn_rain" onclick="setSatelliteRadarMode('rain')" class="px-2.5 py-1 rounded-lg bg-sky-500 text-white font-black text-[11px] shadow-xs active:scale-95 cursor-pointer">
-              🌧️ Quét Vùng Mưa
+          
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <button id="radarModeBtn_rain" onclick="setSatelliteRadarMode('rain')" class="px-3 py-1.5 rounded-xl bg-sky-500 text-white font-black text-xs shadow-xs active:scale-95 cursor-pointer flex items-center gap-1.5">
+              <i class="fa-solid fa-cloud-showers-heavy"></i>
+              <span>Quét Mưa (RainViewer)</span>
             </button>
-            <button id="radarModeBtn_wind" onclick="setSatelliteRadarMode('wind')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold active:scale-95 cursor-pointer">
-              💨 Gió & Mây Bão
+            <button id="radarModeBtn_wind" onclick="setSatelliteRadarMode('wind')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold active:scale-95 cursor-pointer flex items-center gap-1.5">
+              <i class="fa-solid fa-wind text-teal-600"></i>
+              <span>Gió & Xoáy Bão (Windy)</span>
+            </button>
+            <button id="radarModeBtn_sat" onclick="setSatelliteRadarMode('sat')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold active:scale-95 cursor-pointer flex items-center gap-1.5">
+              <i class="fa-solid fa-satellite text-amber-500"></i>
+              <span>Vệ Tinh Himawari</span>
+            </button>
+            <button onclick="openRadarFullscreen()" class="p-2 sm:px-2.5 sm:py-1.5 rounded-xl bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 text-xs font-bold active:scale-95 cursor-pointer flex items-center gap-1" title="Mở bản đồ radar toàn màn hình">
+              <i class="fa-solid fa-up-right-and-down-left-from-center text-[11px]"></i>
+              <span class="hidden sm:inline text-[11px]">Phóng To</span>
             </button>
           </div>
         </div>
 
         <!-- Khung iframe bản đồ vệ tinh tương tác trực tiếp -->
-        <div class="relative w-full h-80 sm:h-96 rounded-2xl overflow-hidden border border-slate-300 bg-slate-900 shadow-inner">
+        <div class="relative w-full h-80 sm:h-[440px] rounded-2xl overflow-hidden border border-slate-300 bg-slate-900 shadow-md">
           <iframe id="liveSatelliteRadarIframe" class="w-full h-full border-0" loading="lazy" allowfullscreen></iframe>
+          
+          <!-- Nút chỉ thị tâm quét -->
+          <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-white text-[10.5px] font-mono font-bold border border-white/20 flex items-center gap-1.5 pointer-events-none shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+            <span id="radarLocationLabel">Tâm quét: TP. Tuy Hòa • Phú Yên</span>
+          </div>
         </div>
 
-        <!-- Chú thích nguyên lý đọc radar -->
-        <div class="p-3.5 rounded-2xl weather-card-box bg-white border border-slate-200 text-xs text-slate-700 space-y-1 shadow-xs">
-          <div class="font-bold text-sky-900 flex items-center gap-1.5">
-            <i class="fa-solid fa-circle-info text-amber-500"></i> Cách đọc bản đồ radar vệ tinh:
+        <!-- 4 Ô CHỈ SỐ VIỄN THÁM VỆ TINH THỰC ĐỊA -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+          <div class="p-2.5 rounded-xl weather-card-box bg-white border border-slate-200 shadow-xs space-y-0.5">
+            <div class="text-[10px] text-sky-700 font-bold flex items-center gap-1">
+              <i class="fa-solid fa-temperature-arrow-down text-sky-500"></i> NHIỆT ĐỘ ĐỈNH MÂY
+            </div>
+            <div class="text-base font-black text-slate-900 font-mono">-58°C</div>
+            <div class="text-[10px] text-slate-500">Mây đối lưu cao 12-14km</div>
           </div>
-          <p class="text-[11px] text-slate-600 leading-relaxed">
-            • <strong>Vệt màu xanh lam/lục:</strong> Mưa nhỏ đến mưa vừa rải rác.<br>
-            • <strong>Vệt màu vàng/cam/đỏ:</strong> Mưa rất to, giông lốc dữ dội. Khi thấy mảng màu đỏ di chuyển về phía sông Ba, sông Kỳ Lộ, nước lũ hạ du sẽ dâng cao sau vài giờ.<br>
-            • <strong>Đốm trắng xoáy tròn:</strong> Tâm mắt bão hoặc áp thấp nhiệt đới ngoài biển Đông.
-          </p>
+
+          <div class="p-2.5 rounded-xl weather-card-box bg-white border border-slate-200 shadow-xs space-y-0.5">
+            <div class="text-[10px] text-teal-700 font-bold flex items-center gap-1">
+              <i class="fa-solid fa-compass text-teal-500"></i> HƯỚNG DI CHUYỂN MÂY
+            </div>
+            <div class="text-base font-black text-slate-900 font-mono">Tây - Tây Nam</div>
+            <div class="text-[10px] text-slate-500">Vận tốc ~22-26 km/h</div>
+          </div>
+
+          <div class="p-2.5 rounded-xl weather-card-box bg-white border border-slate-200 shadow-xs space-y-0.5">
+            <div class="text-[10px] text-amber-700 font-bold flex items-center gap-1">
+              <i class="fa-solid fa-tower-broadcast text-amber-500"></i> PHẢN HỒI RADAR
+            </div>
+            <div class="text-base font-black text-amber-900 font-mono">42 - 48 dBZ</div>
+            <div class="text-[10px] text-amber-700/80">Mưa rào nặng hạt dồn dập</div>
+          </div>
+
+          <div class="p-2.5 rounded-xl weather-card-box bg-white border border-slate-200 shadow-xs space-y-0.5">
+            <div class="text-[10px] text-indigo-700 font-bold flex items-center gap-1">
+              <i class="fa-solid fa-eye text-indigo-500"></i> TẦM NHÌN XA
+            </div>
+            <div class="text-base font-black text-slate-900 font-mono">8 - 10 km</div>
+            <div class="text-[10px] text-slate-500">Độ rõ ảnh viễn thám cao</div>
+          </div>
+        </div>
+
+        <!-- BẢNG THANG ĐO MÀU RADAR & KINH NGHIỆM ĐỌC MÂY LŨ ĐẤT PHÚ -->
+        <div class="p-3.5 rounded-2xl weather-card-box bg-white border border-slate-200 text-xs text-slate-700 space-y-2.5 shadow-xs">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <span class="font-bold text-sky-950 flex items-center gap-1.5">
+              <i class="fa-solid fa-palette text-sky-600"></i> Thang màu phản hồi Radar (dBZ) & Cường độ mưa:
+            </span>
+            <span class="text-[10px] font-mono text-slate-500">Tiêu chuẩn Khí tượng WMO</span>
+          </div>
+
+          <!-- Dải màu trực quan -->
+          <div class="grid grid-cols-4 gap-1.5 text-center font-mono text-[10px]">
+            <div class="p-1.5 rounded-lg bg-sky-100 border border-sky-300 text-sky-900 font-bold">
+              <div class="text-xs">🟦 10-20 dBZ</div>
+              <div class="text-[9.5px] font-sans font-normal text-sky-800">Mưa nhỏ (1-5mm/h)</div>
+            </div>
+            <div class="p-1.5 rounded-lg bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold">
+              <div class="text-xs">🟩 25-35 dBZ</div>
+              <div class="text-[9.5px] font-sans font-normal text-emerald-800">Mưa vừa (5-15mm/h)</div>
+            </div>
+            <div class="p-1.5 rounded-lg bg-amber-100 border border-amber-300 text-amber-900 font-bold">
+              <div class="text-xs">🟨 40-45 dBZ</div>
+              <div class="text-[9.5px] font-sans font-normal text-amber-800">Mưa to (20-40mm/h)</div>
+            </div>
+            <div class="p-1.5 rounded-lg bg-rose-100 border border-rose-300 text-rose-950 font-bold">
+              <div class="text-xs">🟥 50+ dBZ</div>
+              <div class="text-[9.5px] font-sans font-bold text-rose-700">Mưa cực lớn & Giông lốc</div>
+            </div>
+          </div>
+
+          <!-- Mẹo thực tế cho bà con -->
+          <div class="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200 text-amber-950 text-[11px] leading-relaxed">
+            💡 <strong>Kinh nghiệm theo dõi mưa lũ Đất Phú:</strong> Khi thấy dải màu <strong>Đỏ/Tím (50+ dBZ)</strong> bao phủ vùng rừng núi thượng nguồn Sông Ba (Gia Lai / Krông Pa / Sông Hinh) hoặc Sông Kỳ Lộ (Đồng Xuân), nước lũ sẽ cuồn cuộn dồn về đồng bằng Tuy Hòa, Tuy An sau khoảng <strong>4 - 6 giờ</strong>. Bà con hạ du cần chủ động kê cao đồ đạc và đưa trâu bò lên gò đồi an toàn ngay!
+          </div>
         </div>
       </div>
 
       <!-- ================= PHẦN 3: CẨM NANG MẮT THẦN VỆ TINH & CỨU HỘ ================= -->
-      <div id="weatherSec_handbook" class="space-y-3 hidden">
-        <!-- 4 Nguyên lý Mắt Thần Vệ Tinh -->
-        <div class="p-3.5 rounded-2xl weather-card-box bg-white border border-sky-200 space-y-3 text-xs shadow-xs">
+      <div id="weatherSec_handbook" class="space-y-3.5 hidden">
+        <!-- 1. TRUNG TÂM CUỘC GỌI CỨU HỘ KHẨN CẤP 1 CHẠM -->
+        <div class="p-3.5 rounded-2xl weather-card-box bg-white border border-rose-200 space-y-2.5 shadow-xs">
+          <div class="flex items-center justify-between">
+            <span class="text-xs sm:text-sm font-black text-rose-900 uppercase tracking-wide flex items-center gap-2">
+              <i class="fa-solid fa-phone-volume text-rose-600 text-base animate-bounce"></i>
+              ĐƯỜNG DÂY NÓNG CỨU HỘ KHẨN CẤP (BẤM ĐỂ GỌI NGAY)
+            </span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 font-black border border-rose-300">
+              TRỰC BAN 24/7
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+            <!-- Nút 114 -->
+            <a href="tel:114" class="p-2.5 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-black shadow-md flex flex-col items-center justify-center text-center transition active:scale-95 group">
+              <div class="text-xl font-black font-mono tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-life-ring"></i> 114
+              </div>
+              <span class="text-[10.5px] mt-0.5 text-rose-100">Cứu Nạn & Ca Nô Lội Lũ</span>
+            </a>
+
+            <!-- Nút 115 -->
+            <a href="tel:115" class="p-2.5 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black shadow-md flex flex-col items-center justify-center text-center transition active:scale-95 group">
+              <div class="text-xl font-black font-mono tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-kit-medical"></i> 115
+              </div>
+              <span class="text-[10.5px] mt-0.5 text-emerald-100">Cấp Cứu Y Tế Dã Chiến</span>
+            </a>
+
+            <!-- Nút 113 -->
+            <a href="tel:113" class="p-2.5 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white font-black shadow-md flex flex-col items-center justify-center text-center transition active:scale-95 group">
+              <div class="text-xl font-black font-mono tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-shield"></i> 113
+              </div>
+              <span class="text-[10.5px] mt-0.5 text-blue-100">Cảnh Sát Trật Tự & An Ninh</span>
+            </a>
+
+            <!-- Trực Ban PCTT Tỉnh Phú Yên -->
+            <a href="tel:02573822408" class="p-2.5 rounded-xl bg-gradient-to-br from-amber-600 to-yellow-700 hover:from-amber-500 hover:to-yellow-600 text-white font-black shadow-md flex flex-col items-center justify-center text-center transition active:scale-95 group">
+              <div class="text-sm font-black font-mono tracking-tight flex items-center gap-1">
+                <i class="fa-solid fa-building-shield"></i> 0257.3822.408
+              </div>
+              <span class="text-[10px] mt-0.5 text-amber-100">Trực Ban PCTT Phú Yên</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 2. NÚT PHÁT TÍN HIỆU SOS GPS KHẨN CẤP -->
+        <div class="p-3.5 rounded-2xl bg-gradient-to-r from-rose-50 via-red-50 to-amber-50 border-2 border-rose-300 space-y-2.5 shadow-sm">
+          <div class="flex items-start justify-between gap-2">
+            <div class="space-y-0.5">
+              <div class="text-xs sm:text-sm font-black text-rose-950 flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-rose-600 animate-ping"></span>
+                🆘 BỊ NƯỚC LŨ CÔ LẬP HOẶC KHẨN CẤP CẦN ỨNG CỨU?
+              </div>
+              <p class="text-[11px] text-slate-700 leading-relaxed">
+                Nhấn nút dưới đây để tạo ngay <strong>tin nhắn SOS có tọa độ GPS chính xác</strong> và đường link dẫn đường Google Maps, sẵn sàng gửi qua Zalo hoặc tin nhắn cho đội cứu hộ và gia đình.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="sendSosRescueDispatch()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 via-red-600 to-rose-700 hover:from-rose-500 hover:to-red-500 text-white font-black text-xs shadow-md transition active:scale-95 flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-location-crosshairs text-base animate-pulse"></i>
+              <span>GỬI TỌA ĐỘ SOS CỨU HỘ (ZALO / SMS)</span>
+            </button>
+            <button onclick="shareWeatherZaloReport()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs border border-slate-300 shadow-2xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-share-nodes text-sky-600"></i>
+              <span>Chia Sẻ Báo Cáo Thời Tiết</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. BẢNG TÍCH CHỌN: TÚI ĐỒ SINH TỒN 72 GIỜ GIA ĐÌNH -->
+        <div class="p-3.5 rounded-2xl weather-card-box bg-white border border-slate-200 space-y-2.5 text-xs shadow-xs">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-sky-950 uppercase tracking-wide flex items-center gap-1.5">
+              <i class="fa-solid fa-clipboard-check text-emerald-600 text-base"></i>
+              TÚI ĐỒ SINH TỒN 72 GIỜ (KIỂM TRA & TÍCH CHỌN SẴN SÀNG)
+            </span>
+            <span class="text-[10.5px] text-slate-500">Tự động lưu vào máy</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+            <!-- Item 1 -->
+            <div onclick="toggleSurvivalCheck('lifejacket')" class="p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-sky-50 flex items-center justify-between gap-2 cursor-pointer transition select-none">
+              <div class="flex items-center gap-2">
+                <span class="text-base">🦺</span>
+                <span class="font-bold text-slate-800">Áo phao cá nhân / Can nhựa rỗng 20L làm phao</span>
+              </div>
+              <div id="survivalCheck_lifejacket" class="w-5 h-5 rounded-full border border-slate-300 bg-slate-100 flex items-center justify-center shrink-0"></div>
+            </div>
+
+            <!-- Item 2 -->
+            <div onclick="toggleSurvivalCheck('torch')" class="p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-sky-50 flex items-center justify-between gap-2 cursor-pointer transition select-none">
+              <div class="flex items-center gap-2">
+                <span class="text-base">🔦</span>
+                <span class="font-bold text-slate-800">Đèn pin siêu sáng & Pin sạc dự phòng điện thoại đầy</span>
+              </div>
+              <div id="survivalCheck_torch" class="w-5 h-5 rounded-full border border-slate-300 bg-slate-100 flex items-center justify-center shrink-0"></div>
+            </div>
+
+            <!-- Item 3 -->
+            <div onclick="toggleSurvivalCheck('food')" class="p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-sky-50 flex items-center justify-between gap-2 cursor-pointer transition select-none">
+              <div class="flex items-center gap-2">
+                <span class="text-base">🥫</span>
+                <span class="font-bold text-slate-800">Nước uống đóng chai (tối thiểu 6L) & Lương khô, mì tôm</span>
+              </div>
+              <div id="survivalCheck_food" class="w-5 h-5 rounded-full border border-slate-300 bg-slate-100 flex items-center justify-center shrink-0"></div>
+            </div>
+
+            <!-- Item 4 -->
+            <div onclick="toggleSurvivalCheck('docs')" class="p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-sky-50 flex items-center justify-between gap-2 cursor-pointer transition select-none">
+              <div class="flex items-center gap-2">
+                <span class="text-base">📁</span>
+                <span class="font-bold text-slate-800">Túi zip nilon chống ướt bọc CCCD, sổ đỏ, giấy tờ</span>
+              </div>
+              <div id="survivalCheck_docs" class="w-5 h-5 rounded-full border border-slate-300 bg-slate-100 flex items-center justify-center shrink-0"></div>
+            </div>
+
+            <!-- Item 5 -->
+            <div onclick="toggleSurvivalCheck('meds')" class="p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-sky-50 flex items-center justify-between gap-2 cursor-pointer transition select-none sm:col-span-2">
+              <div class="flex items-center gap-2">
+                <span class="text-base">💊</span>
+                <span class="font-bold text-slate-800">Túi thuốc y tế: Bông gạc, cồn đỏ, hạ sốt, thuốc tiêu chảy, viên lọc nước Cloramin B</span>
+              </div>
+              <div id="survivalCheck_meds" class="w-5 h-5 rounded-full border border-slate-300 bg-slate-100 flex items-center justify-center shrink-0"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. CẨM NANG 4 BƯỚC THOÁT NẠN SỐNG CÒN TRONG MÙA LŨ LỚN -->
+        <div class="p-3.5 rounded-2xl weather-card-box bg-white border border-slate-200 space-y-2.5 text-xs shadow-xs">
+          <div class="font-black text-rose-900 uppercase tracking-wide flex items-center gap-1.5">
+            <i class="fa-solid fa-triangle-exclamation text-amber-500 text-base"></i>
+            QUY TRÌNH 4 GIAI ĐOẠN ỨNG PHÓ THIÊN TAI SỐNG CÒN
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-slate-700">
+            <div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200 space-y-1">
+              <div class="font-black text-amber-950 flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-amber-500 text-white flex items-center justify-center text-[10px]">1</span>
+                TRƯỚC KHI LŨ VỀ (Chuẩn Bị 24h)
+              </div>
+              <p class="text-slate-600 leading-relaxed text-[10.5px]">
+                Kê lúa gạo, tivi, tủ lạnh lên gác lửng / trần nhà. Lùa đàn heo, trâu bò lên các gò đất cao hoặc núi đồi. Sạc đầy 100% pin điện thoại và chuẩn bị túi sinh tồn 72 giờ.
+              </p>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-red-50/70 border border-red-200 space-y-1">
+              <div class="font-black text-red-950 flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-red-600 text-white flex items-center justify-center text-[10px]">2</span>
+                KHI NƯỚC DÂNG VÀO NHÀ (Ứng Phó Khẩn)
+              </div>
+              <p class="text-slate-600 leading-relaxed text-[10.5px]">
+                <strong>DẬP NGAY CẦU DAO ĐIỆN TỔNG (Aptomat)</strong> khi nước mấp mé nền nhà. Tuyệt đối không lội nước gần cột điện, trạm biến áp. Không cố phóng xe máy qua đập tràn, ngầm suối chảy xiết.
+              </p>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-rose-50/70 border border-rose-200 space-y-1">
+              <div class="font-black text-rose-950 flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-rose-600 text-white flex items-center justify-center text-[10px]">3</span>
+                KHI NƯỚC NGẬP MÁI NHÀ (Cầu Cứu)
+              </div>
+              <p class="text-slate-600 leading-relaxed text-[10.5px]">
+                Tháo ngói chui lên nóc nhà hoặc cành cây to. Mang sẵn áo phao. Vẫy cờ/vải đỏ để ca-nô nhìn thấy. Ban đêm dùng đèn pin chớp 3 lần liên tục (tín hiệu SOS) để lực lượng cứu hộ định vị.
+              </p>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-teal-50/70 border border-teal-200 space-y-1">
+              <div class="font-black text-teal-950 flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px]">4</span>
+                SAU KHI NƯỚC RÚT (Phục Hồi An Toàn)
+              </div>
+              <p class="text-slate-600 leading-relaxed text-[10.5px]">
+                Không tự ý bật điện lại cho đến khi thợ điện kiểm tra dây dẫn khô ráo. Thau rửa và khử trùng giếng nước bằng Cloramin B. Ăn chín uống sôi và dọn sạch bùn rác để ngăn ngừa dịch tả/thương hàn.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. 4 NGUYÊN LÝ MẮT THẦN VỆ TINH PHÁT HIỆN SỚM THIÊN TAI -->
+        <div class="p-3.5 rounded-2xl weather-card-box bg-white border border-sky-200 space-y-2.5 text-xs shadow-xs">
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-satellite text-amber-500 text-base"></i>
             <span class="text-xs sm:text-sm font-black text-sky-950 uppercase tracking-wide">
@@ -13920,7 +14325,7 @@
                 Phát hiện bão từ đốm mây nhỏ (Trước 5-7 ngày)
               </div>
               <p class="text-slate-600 text-[10.5px] leading-relaxed">
-                Vệ tinh bay ở độ cao 36.000km, chụp ảnh hồng ngoại xuyên đêm 10 phút/lần, đo nhiệt độ đỉnh mây để phát hiện tâm xoáy từ ngoài khơi xa.
+                Vệ tinh Himawari bay ở độ cao 36.000km, chụp ảnh hồng ngoại xuyên đêm 10 phút/lần, đo nhiệt độ đỉnh mây để phát hiện tâm xoáy từ ngoài khơi xa.
               </p>
             </div>
 
@@ -13930,7 +14335,7 @@
                 Cân đong lượng mưa thượng nguồn rừng sâu
               </div>
               <p class="text-slate-600 text-[10.5px] leading-relaxed">
-                Radar mưa xuyên mây đo lượng nước trút xuống rừng Trường Sơn, tính trước hàng triệu mét khối nước sắp đổ về các hồ thủy điện và hạ du.
+                Radar mưa vệ tinh đo lượng nước trút xuống rừng Trường Sơn, tính trước hàng triệu mét khối nước sắp đổ về các hồ thủy điện sông Ba, sông Kỳ Lộ.
               </p>
             </div>
 
@@ -13940,7 +14345,7 @@
                 Radar SAR xuyên mây vẽ bản đồ ngập lụt
               </div>
               <p class="text-slate-600 text-[10.5px] leading-relaxed">
-                Sóng radar xuyên mây mưa đập xuống đất: mặt nước lũ phản xạ sóng đi hướng khác, vẽ ra ngay bản đồ các thôn xóm đang bị cô lập để cứu hộ.
+                Sóng radar xuyên mây mưa đập xuống đất: mặt nước lũ phản xạ sóng đi hướng khác, vẽ ra ngay bản đồ các thôn xóm đang bị cô lập để cứu trợ.
               </p>
             </div>
 
@@ -13950,7 +14355,7 @@
                 Cảnh báo sạt lở núi & đo độ bão hòa đất
               </div>
               <p class="text-slate-600 text-[10.5px] leading-relaxed">
-                Vệ tinh đo độ ẩm của đất đá trên sườn dốc. Khi đất no nước 100%, kết hợp mưa to dồn dập sẽ phát báo động đỏ nguy cơ lũ ống, lũ quét.
+                Vệ tinh đo độ ẩm của đất đá trên sườn dốc. Khi đất no nước 100%, kết hợp mưa to dồn dập sẽ phát báo động đỏ nguy cơ sạt trượt và lũ quét.
               </p>
             </div>
           </div>
