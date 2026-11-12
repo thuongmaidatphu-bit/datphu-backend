@@ -1198,17 +1198,69 @@
       document.getElementById('buddhistKaraokeLine').innerText = '"' + track.line + '"';
       renderBuddhistPlaylist();
       updateLifetimeMalaDisplay();
+      if (isBuddhistPlaying) {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        speakBuddhistVerse();
+      }
+    }
+
+    // =========================================================================
+    // PHÁT TIẾNG TỤNG NIỆM PHẬT THẬT KÈM TIẾNG MÕ GỖ
+    // =========================================================================
+    let buddhistChantSpeechTimer = null;
+
+    function speakBuddhistVerse() {
+      if (!isBuddhistPlaying) return;
+      const track = BUDDHIST_CHENTS[currentBuddhistIdx];
+      if (!track) return;
+
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(track.line);
+        utter.lang = 'vi-VN';
+        utter.rate = 0.85; // Giọng tụng chậm rãi, trang nghiêm
+        utter.pitch = 0.9; // Giọng trầm ấm thanh tịnh
+        
+        utter.onend = () => {
+          if (isBuddhistPlaying) {
+            // Đợi 1 chút rồi tụng biến tiếp theo
+            buddhistChantSpeechTimer = setTimeout(() => {
+              speakBuddhistVerse();
+            }, 800);
+          }
+        };
+
+        utter.onerror = () => {
+          if (isBuddhistPlaying) {
+            buddhistChantSpeechTimer = setTimeout(() => {
+              speakBuddhistVerse();
+            }, 1200);
+          }
+        };
+
+        window.speechSynthesis.speak(utter);
+      }
     }
 
     function toggleBuddhistPlay() {
       if (isBuddhistPlaying) {
         isBuddhistPlaying = false;
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        if (buddhistChantSpeechTimer) {
+          clearTimeout(buddhistChantSpeechTimer);
+          buddhistChantSpeechTimer = null;
+        }
         clearInterval(woodblockTimer);
         woodblockTimer = null;
         document.getElementById('buddhistMasterPlayIcon').className = "fa-solid fa-play ml-0.5";
       } else {
         isBuddhistPlaying = true;
         document.getElementById('buddhistMasterPlayIcon').className = "fa-solid fa-pause ml-0";
+        
+        // 1. Cất tiếng tụng niệm Phật trang nghiêm
+        speakBuddhistVerse();
+
+        // 2. Gõ mõ nhịp nhàng đệm theo
         if (isWoodblockActive) {
           startWoodblockLoop();
         }
@@ -1240,6 +1292,9 @@
       if (navigator.vibrate) navigator.vibrate(25);
     }
 
+    // =========================================================================
+    // TIẾNG MÕ GỖ MÍT CHÙA CỔ TRẦM ẤM (REALISTIC ACOUSTIC TEMPLE WOODBLOCK)
+    // =========================================================================
     function playWoodblockSound() {
       try {
         if (!radioAudioContext) {
@@ -1249,21 +1304,45 @@
           radioAudioContext.resume();
         }
 
-        const osc = radioAudioContext.createOscillator();
-        const gain = radioAudioContext.createGain();
+        const now = radioAudioContext.currentTime;
 
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(800, radioAudioContext.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(320, radioAudioContext.currentTime + 0.08);
+        // 1. Tiếng Dùi Bọc Vải Gõ (Felt Mallet Transient Thump - Trầm ấm 220Hz)
+        const oscThump = radioAudioContext.createOscillator();
+        const gainThump = radioAudioContext.createGain();
+        oscThump.type = "sine";
+        oscThump.frequency.setValueAtTime(220, now);
+        oscThump.frequency.exponentialRampToValueAtTime(110, now + 0.04);
 
-        gain.gain.setValueAtTime(0.4, radioAudioContext.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, radioAudioContext.currentTime + 0.12);
+        gainThump.gain.setValueAtTime(0.45, now);
+        gainThump.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
 
-        osc.connect(gain);
-        gain.connect(radioAudioContext.destination);
+        oscThump.connect(gainThump);
+        gainThump.connect(radioAudioContext.destination);
+        oscThump.start(now);
+        oscThump.stop(now + 0.06);
 
-        osc.start();
-        osc.stop(radioAudioContext.currentTime + 0.15);
+        // 2. Thân Mõ Gỗ Rỗng (Hollow Wooden Fish Body Acoustic Resonance)
+        const oscBody = radioAudioContext.createOscillator();
+        const filter = radioAudioContext.createBiquadFilter();
+        const gainBody = radioAudioContext.createGain();
+
+        oscBody.type = "triangle";
+        oscBody.frequency.setValueAtTime(480, now);
+
+        filter.type = "bandpass";
+        filter.frequency.setValueAtTime(480, now);
+        filter.Q.setValueAtTime(4.8, now);
+
+        gainBody.gain.setValueAtTime(0.5, now);
+        gainBody.gain.exponentialRampToValueAtTime(0.001, now + 0.075);
+
+        oscBody.connect(filter);
+        filter.connect(gainBody);
+        gainBody.connect(radioAudioContext.destination);
+
+        oscBody.start(now);
+        oscBody.stop(now + 0.08);
+
       } catch(e) {}
     }
 
