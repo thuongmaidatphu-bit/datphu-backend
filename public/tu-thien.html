@@ -82,6 +82,29 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.5);
       white-space: nowrap;
     }
+  
+    /* ==================== ĐỊNH DẠNG IN BIÊN BẢN NGHIỆM THU A4 ==================== */
+    @media print {
+      body * { visibility: hidden; }
+      #printableDeedModal, #printableDeedModal * { visibility: visible; }
+      #printableDeedModal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        display: block !important;
+      }
+      .no-print { display: none !important; }
+      @page {
+        size: A4 portrait;
+        margin: 15mm 15mm 15mm 15mm;
+      }
+    }
+  
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950">
@@ -410,6 +433,12 @@
           </div>
 
           <!-- NÚT SAO CHÉP & XUẤT BIÊN BẢN ZALO -->
+          
+            <button onclick="openPrintableDeedModal()" class="w-full py-2.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg transition active:scale-95 cursor-pointer border border-blue-400/40">
+              <i class="fa-solid fa-print text-sm text-amber-300"></i>
+              <span>In Biên Bản Nghiệm Thu Khổ A4 / Xuất PDF</span>
+            </button>
+
           <div class="grid grid-cols-2 gap-2">
             <button onclick="copyMeasurementReport()" class="p-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/40 font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95 shadow cursor-pointer">
               <i class="fa-solid fa-copy"></i>
@@ -2529,6 +2558,49 @@
       alert("✅ Đã lưu thửa đất: " + plotName);
     }
 
+    
+    // 16. IN BIÊN BẢN NGHIỆM THU A4 CHUẨN ĐẤT ĐAI
+    function openPrintableDeedModal() {
+      if (currentCalculatedArea === 0) {
+        alert("Vui lòng đo thửa đất trên bản đồ trước khi in biên bản!");
+        return;
+      }
+
+      let netArea = currentCalculatedArea * (1 - currentDeductRate / 100);
+      if (currentSlopeAngle > 0) netArea = netArea / Math.cos(currentSlopeAngle * Math.PI / 180);
+      const saoTB = netArea / 500;
+      const mauTB = netArea / 5000;
+      const pricePerSao = parseFloat(document.getElementById('inLeasePricePerSao').value) || 0;
+      const totalRent = Math.round(saoTB * pricePerSao);
+      const deposit30 = Math.round(totalRent * 0.3);
+      const remain70 = totalRent - deposit30;
+
+      const now = new Date();
+      const dateStr = String(now.getDate()).padStart(2, '0') + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + now.getFullYear() + ' (' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ')';
+
+      document.getElementById('deedDateText').innerText = dateStr;
+      document.getElementById('deedMeridianText').innerText = currentCentralMeridian + "° (" + (currentProvinceName || "Phú Yên") + ")";
+      document.getElementById('deedMarkerCount').innerText = markers.length + " mốc";
+
+      document.getElementById('deedAreaM2').innerText = Math.round(currentCalculatedArea).toLocaleString('vi-VN') + " m²";
+      document.getElementById('deedDeductText').innerText = currentDeductRate + "%";
+      document.getElementById('deedNetAreaM2').innerText = Math.round(netArea).toLocaleString('vi-VN') + " m²";
+      document.getElementById('deedSaoTB').innerText = saoTB.toFixed(2) + " Sào";
+      document.getElementById('deedMauTB').innerText = mauTB.toFixed(3) + " Mẫu";
+      document.getElementById('deedPerimeterM').innerText = Math.round(currentCalculatedPerimeter).toLocaleString('vi-VN') + " m";
+
+      document.getElementById('deedPricePerSao').innerText = pricePerSao.toLocaleString('vi-VN') + " đ";
+      document.getElementById('deedTotalRent').innerText = totalRent.toLocaleString('vi-VN') + " đ";
+      document.getElementById('deedDeposit30').innerText = deposit30.toLocaleString('vi-VN') + " đ";
+      document.getElementById('deedRemain70').innerText = remain70.toLocaleString('vi-VN') + " đ";
+
+      document.getElementById('printableDeedModal').classList.remove('hidden');
+    }
+
+    function closePrintableDeedModal() {
+      document.getElementById('printableDeedModal').classList.add('hidden');
+    }
+  
     function loadSavedPlots() {
       const plots = JSON.parse(localStorage.getItem('datphu_saved_plots') || '[]');
       const countEl = document.getElementById('savedPlotsCount');
@@ -2578,6 +2650,132 @@
       initMap();
     });
   </script>
+
+
+  <!-- ==================== MODAL BIÊN BẢN NGHIỆM THU KHỔ A4 IN ẤN ==================== -->
+  <div id="printableDeedModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/85 backdrop-blur-md p-3 sm:p-6 flex items-center justify-center">
+    <div class="bg-white text-slate-900 rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl space-y-6 relative border border-slate-200">
+      
+      <!-- Nút đóng và nút In (Ẩn khi in thực tế) -->
+      <div class="no-print flex items-center justify-between pb-4 border-b border-slate-200">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-sm">
+          <i class="fa-solid fa-file-contract text-lg"></i>
+          <span>Xem Trước Biên Bản Bàn Giao Nghiệm Thu (Khổ A4)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow transition cursor-pointer">
+            <i class="fa-solid fa-print"></i> In Ngay / Lưu PDF
+          </button>
+          <button onclick="closePrintableDeedModal()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer">
+            ✕ Đóng
+          </button>
+        </div>
+      </div>
+
+      <!-- NỘI DUNG VĂN BẢN IN TRANG TRỌNG -->
+      <div class="space-y-4 text-xs sm:text-sm font-sans leading-relaxed">
+        
+        <!-- Quốc hiệu & Tiêu ngữ -->
+        <div class="text-center space-y-1">
+          <div class="font-bold text-xs uppercase tracking-wider text-slate-700">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+          <div class="font-bold text-xs text-slate-800">Độc lập - Tự do - Hạnh phúc</div>
+          <div class="text-[10px] text-slate-500 italic">❖ ❖ ❖</div>
+          <h2 class="text-base sm:text-lg font-black uppercase text-slate-900 pt-2 tracking-tight">BIÊN BẢN NGHIỆM THU ĐO ĐẠC RANH GIỚI & KHOÁN ĐẤT NÔNG VỤ</h2>
+          <div class="text-[11px] text-slate-600 italic">(Được xác lập tự động qua Hệ thống Trắc địa Số Vệ tinh • Lịch Đất Phú)</div>
+        </div>
+
+        <!-- Thông tin thời gian & địa điểm -->
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs grid grid-cols-2 gap-2">
+          <div><b>Thời gian đo:</b> <span id="deedDateText">--/--/----</span></div>
+          <div><b>Kinh tuyến trục:</b> <span id="deedMeridianText">108°30' (Phú Yên)</span></div>
+          <div><b>Phương pháp đo:</b> Vệ tinh GPS Kalman WGS-84 / VN-2000</div>
+          <div><b>Tổng số điểm mốc cắm:</b> <span id="deedMarkerCount" class="font-bold text-emerald-700">0 mốc</span></div>
+        </div>
+
+        <!-- Bảng số liệu đo đạc thực địa -->
+        <div class="space-y-1.5">
+          <div class="font-bold text-slate-800 uppercase text-xs flex items-center gap-1">
+            <span>I. KẾT QUẢ DIỆN TÍCH VÀ QUY ĐỔI BẢN ĐỊA:</span>
+          </div>
+          <table class="w-full border-collapse border border-slate-300 text-xs">
+            <tbody class="divide-y divide-slate-200">
+              <tr class="bg-slate-50">
+                <td class="p-2 border border-slate-300 font-bold text-slate-700">Diện tích đo thực địa (2D):</td>
+                <td id="deedAreaM2" class="p-2 border border-slate-300 font-bold text-slate-900 font-mono text-right">0 m²</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-slate-300 font-bold text-slate-700">Trừ hao mương rãnh / mô đá:</td>
+                <td id="deedDeductText" class="p-2 border border-slate-300 font-mono text-right">0%</td>
+              </tr>
+              <tr class="bg-emerald-50/60 text-emerald-950 font-bold">
+                <td class="p-2 border border-slate-300">DIỆN TÍCH THỰC CANH TÁC (NET):</td>
+                <td id="deedNetAreaM2" class="p-2 border border-slate-300 font-mono text-right text-sm">0 m²</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-slate-300">Quy đổi Sào Trung Bộ (500m²):</td>
+                <td id="deedSaoTB" class="p-2 border border-slate-300 font-mono text-right font-bold text-amber-800">0.00 Sào</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-slate-300">Quy đổi Mẫu Trung Bộ (5.000m²):</td>
+                <td id="deedMauTB" class="p-2 border border-slate-300 font-mono text-right">0.000 Mẫu</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-slate-300">Chu vi toàn bộ ranh giới:</td>
+                <td id="deedPerimeterM" class="p-2 border border-slate-300 font-mono text-right">0 m</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Thỏa thuận kinh tế khoán -->
+        <div class="space-y-1.5">
+          <div class="font-bold text-slate-800 uppercase text-xs flex items-center gap-1">
+            <span>II. THỎA THUẬN TÀI CHÍNH & TIỀN THUÊ KHOÁN:</span>
+          </div>
+          <table class="w-full border-collapse border border-slate-300 text-xs">
+            <tbody class="divide-y divide-slate-200">
+              <tr>
+                <td class="p-2 border border-slate-300 font-medium text-slate-700">Đơn giá thuê khoán 1 sào/vụ:</td>
+                <td id="deedPricePerSao" class="p-2 border border-slate-300 font-mono text-right">0 đ</td>
+              </tr>
+              <tr class="bg-slate-50 font-bold">
+                <td class="p-2 border border-slate-300 text-slate-800">TỔNG TIỀN THUÊ PHẢI THANH TOÁN:</td>
+                <td id="deedTotalRent" class="p-2 border border-slate-300 font-mono text-right text-sm text-emerald-700">0 đ</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-slate-300 text-slate-700">Tiền đặt cọc đợt 1 (30% khi ký biên bản):</td>
+                <td id="deedDeposit30" class="p-2 border border-slate-300 font-mono text-right font-bold text-amber-700">0 đ</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-slate-300 text-slate-700">Tiền còn lại thanh toán khi thu hoạch (70%):</td>
+                <td id="deedRemain70" class="p-2 border border-slate-300 font-mono text-right font-bold">0 đ</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Cam kết hai bên & Chữ ký -->
+        <div class="pt-4 space-y-2">
+          <div class="text-[11px] text-slate-600 italic">
+            * Hai bên đã cùng nhau đi bộ kiểm tra thực địa, đối chiếu tọa độ vệ tinh và thống nhất 100% ranh giới mốc, không có tranh chấp khiếu nại.
+          </div>
+          
+          <div class="grid grid-cols-2 gap-8 pt-6 text-center">
+            <div class="space-y-12">
+              <div class="font-bold uppercase text-xs text-slate-800">BÊN CHO THUÊ ĐẤT (BÊN A)<br><span class="text-[10px] font-normal text-slate-500 italic">(Ký và ghi rõ họ tên)</span></div>
+              <div class="text-xs text-slate-400">....................................................</div>
+            </div>
+            <div class="space-y-12">
+              <div class="font-bold uppercase text-xs text-slate-800">BÊN THUÊ KHOÁN CANH TÁC (BÊN B)<br><span class="text-[10px] font-normal text-slate-500 italic">(Ký và ghi rõ họ tên)</span></div>
+              <div class="text-xs text-slate-400">....................................................</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 
 </body>
 </html>
