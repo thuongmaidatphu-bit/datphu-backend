@@ -145,6 +145,18 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950">
 
+  <!-- BANNER TỰ ĐỘNG PHÁT HIỆN TRÌNH DUYỆT MESSENGER / ZALO -->
+  <div id="inAppBrowserAlert" class="hidden bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 px-3 py-2 text-xs font-bold sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-triangle-exclamation text-base animate-bounce"></i>
+        <span>Đang mở trong Messenger/Zalo (bị chặn GPS): Bấm dấu <b>(•••)</b> ở góc trên cùng bên phải ➔ Chọn <b>"Mở trong Chrome"</b> để định vị vệ tinh mượt mà!</span>
+      </div>
+      <button onclick="document.getElementById('inAppBrowserAlert').classList.add('hidden')" class="px-2 py-0.5 rounded-lg bg-black/20 hover:bg-black/30 text-slate-900 font-black">✕</button>
+    </div>
+  </div>
+  
+
   <!-- ==================== HEADER TRẠM TRẮC ĐỊA KỸ THUẬT SỐ ==================== -->
   <header class="sticky top-0 z-50 pro-glass border-b border-slate-800 shadow-xl">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-3">
@@ -2778,6 +2790,17 @@
       loadSavedPlots();
     }
 
+    
+    // Tự động kiểm tra nếu đang mở trong Facebook Messenger hoặc Zalo
+    (function checkInAppBrowser() {
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      const isInApp = /FBAN|FBAV|Messenger|Zalo/i.test(ua);
+      if (isInApp) {
+        const banner = document.getElementById('inAppBrowserAlert');
+        if (banner) banner.classList.remove('hidden');
+      }
+    })();
+  
     document.addEventListener('DOMContentLoaded', () => {
       initMap();
     });
