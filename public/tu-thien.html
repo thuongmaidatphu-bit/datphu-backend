@@ -242,12 +242,18 @@
         <div class="absolute top-3 inset-x-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
           
           <!-- Nhóm trái: Đổi lớp bản đồ & Nhảy địa điểm nhanh -->
-          <div class="flex items-center gap-1.5 pointer-events-auto bg-slate-900/90 backdrop-blur-md p-1 rounded-2xl border border-slate-700/80 shadow-lg text-xs">
-            <button onclick="switchMapLayer('satellite')" id="btnLayerSat" class="px-2.5 py-1 rounded-xl bg-emerald-600 text-white font-bold transition shadow-xs">
-              <i class="fa-solid fa-satellite mr-1"></i> Vệ Tinh
+          <div class="flex items-center gap-1 pointer-events-auto bg-slate-900/95 backdrop-blur-md p-1 rounded-2xl border border-slate-700/80 shadow-lg text-xs overflow-x-auto max-w-[96vw] no-scrollbar">
+            <button onclick="switchMapLayer('satellite')" id="btnLayerSat" class="px-2 py-1 rounded-xl bg-emerald-600 text-white font-bold transition shadow-xs flex items-center gap-1 shrink-0 whitespace-nowrap">
+              <i class="fa-solid fa-satellite text-xs"></i> <span>Vệ Tinh</span>
             </button>
-            <button onclick="switchMapLayer('street')" id="btnLayerStreet" class="px-2.5 py-1 rounded-xl hover:bg-slate-800 text-slate-300 font-bold transition">
-              <i class="fa-solid fa-map mr-1"></i> Bản Đồ
+            <button onclick="switchMapLayer('street')" id="btnLayerStreet" class="px-2 py-1 rounded-xl hover:bg-slate-800 text-slate-300 font-bold transition flex items-center gap-1 shrink-0 whitespace-nowrap">
+              <i class="fa-solid fa-map text-xs"></i> <span>Bản Đồ</span>
+            </button>
+            <button onclick="toggleFloodSimulationLayer()" id="btnLayerFlood" class="px-2 py-1 rounded-xl hover:bg-slate-800 text-cyan-300 font-bold transition flex items-center gap-1 shrink-0 whitespace-nowrap" title="Bật mô phỏng túi ngập lụt Sông Ba">
+              <i class="fa-solid fa-water text-xs text-blue-400"></i> <span>Nước Lũ</span>
+            </button>
+            <button onclick="toggleRoadHazardsLayer()" id="btnLayerRoadHazards" class="px-2 py-1 rounded-xl hover:bg-slate-800 text-rose-300 font-bold transition flex items-center gap-1 shrink-0 whitespace-nowrap" title="Bản đồ các điểm sạt lở đèo núi và đập tràn ngập nước">
+              <i class="fa-solid fa-triangle-exclamation text-xs text-rose-400"></i> <span>Sạt Lở</span>
             </button>
             
             <!-- Chọn nhanh xã huyện -->
@@ -409,7 +415,7 @@
       <!-- HỘP ĐIỀU KHIỂN TRUNG TÂM DẠNG COCKPIT -->
       <div class="pro-hud-card rounded-3xl p-4 sm:p-5 space-y-4 flex flex-col">
         
-        <div class="md:hidden flex justify-end pb-1"><button onclick="document.getElementById('mapMeasure').scrollIntoView({behavior: 'smooth'})" id="btnJumpToMap" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 font-bold text-xs flex items-center gap-1.5 shadow active:scale-95 transition"><i class="fa-solid fa-map-location-dot"></i><span>Lên Bản Đồ Vệ Tinh</span></button></div>
+        <div class="md:hidden flex justify-end pb-1"><button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="btnJumpToMap" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 font-bold text-xs flex items-center gap-1.5 shadow active:scale-95 transition"><i class="fa-solid fa-map-location-dot"></i><span>Lên Bản Đồ Vệ Tinh</span></button></div>
         <!-- THANH 4 TAB CHỨC NĂNG CHUYÊN NGHIỆP -->
         <div class="grid grid-cols-4 gap-1 p-1 rounded-2xl bg-slate-900 border border-slate-800 text-center text-xs font-bold">
           <button onclick="switchInspectorTab('area')" id="tabInsp_area" class="py-2 rounded-xl bg-emerald-600 text-white transition shadow-sm flex flex-col items-center gap-0.5">
@@ -3735,7 +3741,7 @@
   <nav id="appMobileBottomNav" class="md:hidden mobile-bottom-bar flex items-center justify-around text-center">
     
     <!-- Tab Bản đồ -->
-    <button onclick="document.getElementById('mapMeasure').scrollIntoView({behavior: 'smooth'})" class="flex flex-col items-center gap-0.5 text-emerald-400 font-bold text-[10px] active:scale-95 transition">
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex flex-col items-center gap-0.5 text-emerald-400 font-bold text-[10px] active:scale-95 transition">
       <i class="fa-solid fa-map-location-dot text-base"></i>
       <span>Bản Đồ</span>
     </button>
@@ -3833,5 +3839,48 @@
     </div>
   </div>
   
+<script>
+
+    // =========================================================================
+    // 26. ĐIỀU HƯỚNG TAB ĐIỆN THOẠI (MOBILE BOTTOM NAVIGATION)
+    // =========================================================================
+    function mobileSwitchTab(tabKey) {
+      if (typeof switchInspectorTab === 'function') {
+        switchInspectorTab(tabKey);
+      }
+
+      // Cập nhật màu sắc các nút ở thanh đáy điện thoại
+      const navItems = ['area', 'crop', 'hydro'];
+      navItems.forEach(t => {
+        const btn = document.getElementById('mobNav_' + t);
+        if (btn) {
+          if (t === tabKey) {
+            btn.classList.add('text-amber-400');
+            btn.classList.remove('text-slate-400', 'text-white');
+          } else {
+            btn.classList.remove('text-amber-400');
+            btn.classList.add('text-slate-400');
+          }
+        }
+      });
+
+      // Cuộn êm màn hình xuống khung thanh tra chi tiết
+      const dock = document.getElementById('dockInspector');
+      if (dock) {
+        dock.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // Nếu người dùng chọn tab Nước Lũ, tự động kích hoạt lớp cảnh báo trên bản đồ
+      if (tabKey === 'hydro') {
+        if (typeof toggleFloodSimulationLayer === 'function' && !isFloodSimulationActive) {
+          toggleFloodSimulationLayer();
+        }
+        if (typeof toggleRoadHazardsLayer === 'function' && !isRoadHazardsActive) {
+          toggleRoadHazardsLayer();
+        }
+      }
+    }
+  
+</script>
 </body>
 </html>
