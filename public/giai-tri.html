@@ -1858,7 +1858,14 @@
         const nextStored = stored.filter(p => (p.title || '').replace(/'/g, '') !== title);
         localStorage.setItem('datphu_uploaded_photos', JSON.stringify(nextStored));
         const idx = ARTWORKS_DATA.findIndex(a => (a.title || '').replace(/'/g, '') === title);
+        const removedItem = idx !== -1 ? ARTWORKS_DATA[idx] : null;
         if (idx !== -1) ARTWORKS_DATA.splice(idx, 1);
+        if (typeof deletePhotoFromVault === 'function') deletePhotoFromVault(title);
+        fetch('/api/gallery/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: removedItem && removedItem.id, title: removedItem ? removedItem.title : title })
+        }).catch(() => {});
         renderArtGallery();
         updateSubTabCounts();
       } catch(e) {}
@@ -3521,8 +3528,64 @@
       loadFilesIntoDedicatedPhoto(input.files);
     }
 
-    function submitDedicatedPhotoUpload() {
+    // =========================================================================
+    // KHO LƯU TRỮ VĨNH VIỄN INDEXEDDB (KHÔNG GIỚI HẠN 5MB) + ĐỒNG BỘ CLOUD WEB
+    // =========================================================================
+    function openMediaVaultDB() {
+      return new Promise((resolve, reject) => {
+        if (!('indexedDB' in window)) return reject(new Error('No IndexedDB'));
+        const req = indexedDB.open('datphu_media_vault', 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('photos')) {
+            db.createObjectStore('photos', { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = (e) => resolve(e.target.result);
+        req.onerror = (e) => reject(e.target.error);
+      });
+    }
+
+    async function savePhotosToVault(items) {
+      try {
+        const db = await openMediaVaultDB();
+        const tx = db.transaction('photos', 'readwrite');
+        const store = tx.objectStore('photos');
+        items.forEach(it => store.put(it));
+        return new Promise((res) => { tx.oncomplete = () => res(true); tx.onerror = () => res(false); });
+      } catch(e) { return false; }
+    }
+
+    async function loadPhotosFromVault() {
+      try {
+        const db = await openMediaVaultDB();
+        const tx = db.transaction('photos', 'readonly');
+        const store = tx.objectStore('photos');
+        const req = store.getAll();
+        return new Promise((res) => {
+          req.onsuccess = () => {
+            const list = req.result || [];
+            list.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+            res(list);
+          };
+          req.onerror = () => res([]);
+        });
+      } catch(e) { return []; }
+    }
+
+    async function deletePhotoFromVault(cleanTitle) {
+      try {
+        const db = await openMediaVaultDB();
+        const all = await loadPhotosFromVault();
+        const tx = db.transaction('photos', 'readwrite');
+        const store = tx.objectStore('photos');
+        all.filter(p => (p.title || '').replace(/'/g, '') === cleanTitle).forEach(p => store.delete(p.id));
+      } catch(e) {}
+    }
+
+    async function submitDedicatedPhotoUpload() {
       const fb = document.getElementById('dedicatedPhotoFeedback');
+      const btnSubmit = document.getElementById('btnSubmitDedicatedPhoto');
       const title = (document.getElementById('dedicatedPhotoTitle').value || '').trim();
       const author = (document.getElementById('dedicatedPhotoAuthor').value || 'Đạo Tràng / Bà Con').trim();
       const category = document.getElementById('dedicatedPhotoCategory').value;
@@ -3546,32 +3609,73 @@
         return;
       }
 
+      if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.classList.add('opacity-70');
+        btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>ĐANG LƯU & ĐĂNG WEB...</span>';
+      }
+
+      const nowIso = new Date().toISOString();
       const toSave = (currentDedicatedPhotoList.length > 1)
         ? currentDedicatedPhotoList.map((item, idx) => ({
+            id: 'art_' + Date.now() + '_' + idx + '_' + Math.random().toString(36).slice(2, 6),
             title: (idx === 0 ? title : (title + ' #' + (idx + 1))).toUpperCase(),
             district: author,
             category: category,
             poem: intro || "Nghĩa tình nhân ái và phước lành lan tỏa muôn nơi.",
             img: item.dataUrl,
             intro: intro || ("Khoảnh khắc ý nghĩa được bà con đóng góp: " + title),
-            isUserUpload: true
+            isUserUpload: true,
+            createdAt: nowIso
           }))
         : [{
+            id: 'art_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
             title: title.toUpperCase(),
             district: author,
             category: category,
             poem: intro || "Nghĩa tình nhân ái và phước lành lan tỏa muôn nơi.",
             img: currentDedicatedPhotoBase64,
             intro: intro || ("Khoảnh khắc ý nghĩa được bà con đóng góp: " + title),
-            isUserUpload: true
+            isUserUpload: true,
+            createdAt: nowIso
           }];
+
+      if (fb) {
+        fb.className = "p-2 rounded-xl text-xs font-bold text-center bg-amber-500/20 text-amber-200 border border-amber-500/30";
+        fb.innerHTML = '⏳ Bước 1/2: Đang lưu ảnh 4K vào Kho Vĩnh Viễn...';
+        fb.classList.remove('hidden');
+      }
 
       for (let i = toSave.length - 1; i >= 0; i--) {
         ARTWORKS_DATA.unshift(toSave[i]);
       }
       currentArtIdx = 0;
 
-      // Cập nhật lên màn hình chính và thư viện ảnh
+      // 1. Lưu không giới hạn vào IndexedDB + fallback localStorage
+      await savePhotosToVault(toSave);
+      try {
+        const stored = JSON.parse(localStorage.getItem('datphu_uploaded_photos') || '[]');
+        for (let i = toSave.length - 1; i >= 0; i--) stored.unshift(toSave[i]);
+        while (stored.length > 12) stored.pop();
+        localStorage.setItem('datphu_uploaded_photos', JSON.stringify(stored));
+      } catch(e) {}
+
+      // 2. Đồng bộ đăng lên Server Web (/api/gallery/publish)
+      if (fb) fb.innerHTML = '☁️ Bước 2/2: Đang đồng bộ đăng lên Trang Web Cộng Đồng...';
+      let cloudSynced = false;
+      try {
+        const resp = await fetch('/api/gallery/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: toSave })
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          cloudSynced = (data && data.status === 'ok');
+        }
+      } catch(e) {}
+
+      // Cập nhật giao diện ngay lập tức
       if (typeof renderArtGallery === 'function') renderArtGallery();
       const mainImg = document.getElementById('artMainImage');
       if (mainImg) mainImg.src = toSave[0].img;
@@ -3580,21 +3684,17 @@
       const currentArtistEl = document.getElementById('radioCurrentArtist');
       if (currentArtistEl) currentArtistEl.innerText = author + " • Ảnh Đóng Góp Mới";
 
-      // Lưu trữ ảnh người dùng vào localStorage an toàn
-      try {
-        const stored = JSON.parse(localStorage.getItem('datphu_uploaded_photos') || '[]');
-        for (let i = toSave.length - 1; i >= 0; i--) {
-          stored.unshift(toSave[i]);
-        }
-        while (stored.length > 30) stored.pop();
-        localStorage.setItem('datphu_uploaded_photos', JSON.stringify(stored));
-      } catch(e) {
-        console.warn('LocalStorage Quota:', e);
+      if (btnSubmit) {
+        btnSubmit.disabled = false;
+        btnSubmit.classList.remove('opacity-70');
+        btnSubmit.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-slate-950 text-sm"></i><span>LƯU & ĐĂNG LÊN TRANG WEB NGAY</span>';
       }
 
       if (fb) {
         fb.className = "p-2 rounded-xl text-xs font-bold text-center bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
-        fb.innerHTML = `🎉 <b>Đã đăng ${toSave.length} ảnh thành công!</b> Đã đưa vào Thư viện cá nhân & Triển lãm 4K.`;
+        fb.innerHTML = cloudSynced
+          ? `🎉 <b>Đã lưu & đăng ${toSave.length} ảnh lên Web thành công!</b>`
+          : `🎉 <b>Đã lưu ${toSave.length} ảnh vào Kho Vĩnh Viễn trên máy!</b>`;
         fb.classList.remove('hidden');
       }
 
@@ -3604,18 +3704,43 @@
         updateSubTabCounts();
         const galleryEl = document.getElementById('artGalleryContainer');
         if (galleryEl) galleryEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 900);
+      }, 950);
     }
 
-    // Tự động nạp các ảnh đã lưu từ localStorage khi khởi động
-    function loadSavedCommunityPhotos() {
+    // Tự động nạp ảnh đã lưu từ IndexedDB, localStorage và Server Web khi khởi động
+    async function loadSavedCommunityPhotos() {
+      const seen = new Set(ARTWORKS_DATA.map(a => a.title));
+      const merged = [];
+      const addUnique = (list) => {
+        (list || []).forEach(it => {
+          if (it && it.title && it.img && !seen.has(it.title)) {
+            seen.add(it.title);
+            merged.push(it);
+          }
+        });
+      };
+
+      const vaultItems = await loadPhotosFromVault();
+      addUnique(vaultItems);
+
       try {
         const stored = JSON.parse(localStorage.getItem('datphu_uploaded_photos') || '[]');
-        if (stored.length > 0) {
-          ARTWORKS_DATA.unshift(...stored);
-          if (typeof renderArtGallery === 'function') renderArtGallery();
+        addUnique(stored);
+      } catch(e) {}
+
+      try {
+        const resp = await fetch('/api/gallery/list');
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && Array.isArray(data.items)) addUnique(data.items);
         }
       } catch(e) {}
+
+      if (merged.length > 0) {
+        ARTWORKS_DATA.unshift(...merged);
+        if (typeof renderArtGallery === 'function') renderArtGallery();
+        if (typeof updateSubTabCounts === 'function') updateSubTabCounts();
+      }
     }
 
     
