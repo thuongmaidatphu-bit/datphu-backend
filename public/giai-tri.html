@@ -4543,6 +4543,38 @@
       if (m) m.classList.remove('hidden');
     }
 
+    let ADMIN_SECRET_UNLOCKED = false;
+    let ADMIN_TAP_COUNT = 0;
+    let ADMIN_TAP_TIMER = null;
+
+    function unlockSecretAdminEntry() {
+      ADMIN_SECRET_UNLOCKED = true;
+      openCommunityAuthModal();
+      switchCommunityAuthTab('register');
+      const adminWrap = document.getElementById('authAdminCodeWrap');
+      if (adminWrap) adminWrap.classList.remove('hidden');
+      const inp = document.getElementById('authInputAdminCode');
+      if (inp) inp.focus();
+      showCommunityRealtimeToast('🔓 Đã mở lối đi Quản trị viên');
+    }
+
+    function triggerSecretAdminEntry() {
+      ADMIN_TAP_COUNT++;
+      if (ADMIN_TAP_TIMER) clearTimeout(ADMIN_TAP_TIMER);
+      ADMIN_TAP_TIMER = setTimeout(() => { ADMIN_TAP_COUNT = 0; }, 2500);
+      if (ADMIN_TAP_COUNT >= 5) {
+        ADMIN_TAP_COUNT = 0;
+        unlockSecretAdminEntry();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        unlockSecretAdminEntry();
+      }
+    });
+
     function closeCommunityAuthModal() {
       const m = document.getElementById('modalCommunityAuth');
       if (m) m.classList.add('hidden');
@@ -4559,7 +4591,7 @@
         if (tR) tR.className = 'py-1.5 rounded-lg bg-red-600 text-white font-bold cursor-pointer transition';
         if (tL) tL.className = 'py-1.5 rounded-lg bg-transparent text-blue-200 font-semibold cursor-pointer transition';
         if (nameWrap) nameWrap.classList.remove('hidden');
-        if (adminWrap) adminWrap.classList.remove('hidden');
+        if (adminWrap) adminWrap.classList.toggle('hidden', !ADMIN_SECRET_UNLOCKED);
         if (btn) btn.innerText = 'TẠO TÀI KHOẢN NGAY';
       } else {
         if (tL) tL.className = 'py-1.5 rounded-lg bg-red-600 text-white font-bold cursor-pointer transition';
@@ -5067,6 +5099,17 @@
         }, { passive: true });
       }
       initCommunityAuth();
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        if (sp.get('quantri') === '1' || sp.get('admin') === '1') {
+          unlockSecretAdminEntry();
+          if (window.history && window.history.replaceState) {
+            sp.delete('quantri'); sp.delete('admin');
+            const qs = sp.toString();
+            window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : ''));
+          }
+        }
+      } catch (e) {}
       loadSavedCommunityPhotos();
       initCommunityScrollObserver();
       startTetCountdown();
@@ -5498,12 +5541,12 @@
     <div class="bg-[#0d2244] border-2 border-blue-500/80 rounded-3xl w-full max-w-sm text-white shadow-2xl overflow-hidden">
       <div class="px-4 py-3 bg-[#091833] border-b border-blue-800/80 flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-red-600 flex items-center justify-center text-white text-sm shadow">
+          <span id="authSecretTriggerIcon" onclick="triggerSecretAdminEntry()" class="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-red-600 flex items-center justify-center text-white text-sm shadow select-none">
             <i class="fa-solid fa-user-shield"></i>
           </span>
           <div>
-            <h3 class="text-xs font-black uppercase tracking-wide">Tài Khoản &amp; Phân Quyền</h3>
-            <p class="text-[10px] text-sky-300/85">Khách • Thành viên • Quản trị (Admin)</p>
+            <h3 class="text-xs font-black uppercase tracking-wide">Tài Khoản Thành Viên</h3>
+            <p class="text-[10px] text-sky-300/85">Khách • Thành viên Cộng Đồng</p>
           </div>
         </div>
         <button onclick="closeCommunityAuthModal()" class="w-7 h-7 rounded-full bg-blue-900/70 hover:bg-red-600 text-blue-200 hover:text-white flex items-center justify-center text-xs cursor-pointer transition">
@@ -5521,8 +5564,7 @@
           <div class="text-[11px] text-sky-300/80" id="authProfileAccount"></div>
         </div>
         <div class="text-[11px] text-blue-100/90 space-y-1 bg-blue-950/60 p-2.5 rounded-xl border border-blue-900">
-          <div>• <b>Thành viên:</b> Đăng ảnh/video, xóa bài của mình, gửi lời chúc.</div>
-          <div>• <b>Quản trị (Admin):</b> Ghim bài nổi bật lên đầu &amp; kiểm duyệt bài.</div>
+          <div>• <b>Thành viên:</b> Đăng ảnh/video, chỉnh sửa &amp; xóa bài của mình, gửi lời chúc.</div>
         </div>
         <button type="button" id="btnAuthOpenAdmin" onclick="closeCommunityAuthModal(); openCommunityAdminModal();" class="hidden w-full py-2 rounded-xl bg-blue-700 hover:bg-blue-600 text-white font-black text-xs cursor-pointer transition flex items-center justify-center gap-1.5">
           <i class="fa-solid fa-shield-halved text-red-300"></i>
