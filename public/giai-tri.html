@@ -285,8 +285,37 @@
         </div>
       </div>
 
-      <!-- PHÂN KHU 3: THƯ VIỆN ẢNH 4K LƯỚI 2 CỘT (THEO ĐÚNG MẪU 2) -->
+      <!-- PHÂN KHU 3: THƯ VIỆN ẢNH 4K LƯỚI 2 CỘT (THEO ĐÚNG MẪU 2 & MẪU THƯ VIỆN CÁ NHÂN) -->
       <div id="subPanel_gallery" class="space-y-2.5 hidden">
+        <!-- KHỐI ĐĂNG TẢI & THƯ VIỆN CÁ NHÂN (NHƯ MẪU THIẾT KẾ) -->
+        <div class="p-3 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="text-sm font-black text-slate-900">Đăng tải</h3>
+            <span class="text-[10.5px] text-slate-500">Lưu trữ ảnh & video của bạn</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <button onclick="openDedicatedPhotoModal()" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs active:scale-95 transition shrink-0 cursor-pointer">
+              <i class="fa-solid fa-plus text-[11px]"></i>
+              <span>Tải lên</span>
+            </button>
+            <button onclick="openAddMediaModal()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition shrink-0 cursor-pointer">
+              <i class="fa-solid fa-video text-[11px] text-amber-600"></i>
+              <span>+ Video/Nhạc</span>
+            </button>
+            <span class="text-[11px] text-slate-500 truncate hidden sm:inline">Đăng ảnh & video lưu trữ của bạn</span>
+          </div>
+
+          <div class="pt-1 border-t border-slate-100 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-700">Thư viện cá nhân</span>
+              <span id="personalLibCount" class="text-[10px] text-slate-400 font-medium">Ảnh & Video của bạn</span>
+            </div>
+            <div id="personalLibraryStrip" class="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-1">
+              <!-- Đổ tự động bởi renderPersonalLibraryStrip() -->
+            </div>
+          </div>
+        </div>
+
         <!-- THANH LỌC DANH MỤC ẢNH + NÚT TẢI ẢNH LÊN -->
         <div class="flex items-center justify-between gap-2">
           <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-[11px] flex-1">
@@ -2580,7 +2609,52 @@
       return 'heritage';
     }
 
+    function renderPersonalLibraryStrip() {
+      const strip = document.getElementById('personalLibraryStrip');
+      const countLbl = document.getElementById('personalLibCount');
+      if (!strip) return;
+
+      let uploadedPhotos = [];
+      let uploadedMedia = [];
+      try { uploadedPhotos = JSON.parse(localStorage.getItem('datphu_uploaded_photos') || '[]'); } catch(e) {}
+      try { uploadedMedia = JSON.parse(localStorage.getItem('datphu_custom_media') || '[]'); } catch(e) {}
+
+      const items = [
+        ...uploadedPhotos.map((p, i) => ({ type: 'photo', title: p.title, img: p.img, date: p.district || 'Ảnh của bạn', idx: ARTWORKS_DATA.findIndex(a => a.title === p.title) })),
+        ...uploadedMedia.map((m, i) => ({ type: 'video', title: m.title, img: m.youtubeId ? 'https://img.youtube.com/vi/' + m.youtubeId + '/mqdefault.jpg' : (m.coverImg || 'img/ganh_da_dia_4k.jpg'), date: 'Video/Nhạc', idx: MEDIA_PLAYLIST.findIndex(x => x.id === m.id) }))
+      ];
+
+      if (countLbl) countLbl.innerText = items.length > 0 ? items.length + ' mục đã lưu' : 'Chạm + Tải lên để lưu';
+
+      if (items.length === 0) {
+        // Hiển thị 4 thẻ gợi ý di sản nổi bật để thanh Thư viện cá nhân luôn sinh động như mẫu
+        const samples = ARTWORKS_DATA.slice(0, 4).map((a, i) => ({ type: 'photo', title: a.title, img: a.img, date: a.category, idx: i }));
+        strip.innerHTML = samples.map(it => `
+          <div onclick="selectArtSlide(${it.idx})" class="w-24 shrink-0 cursor-pointer group space-y-1">
+            <div class="w-24 h-16 rounded-xl overflow-hidden bg-slate-100 relative border border-slate-200">
+              <img src="${it.img}" alt="${it.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
+            </div>
+            <div class="text-[10px] font-bold text-slate-800 truncate">${it.title}</div>
+            <div class="text-[8.5px] text-slate-400 truncate">${it.date}</div>
+          </div>
+        `).join('');
+        return;
+      }
+
+      strip.innerHTML = items.map(it => `
+        <div onclick="${it.type === 'photo' ? 'selectArtSlide(' + Math.max(0, it.idx) + ')' : 'switchMasterView(\'playlist\'); selectRadioTrack(' + Math.max(0, it.idx) + ')'}" class="w-24 shrink-0 cursor-pointer group space-y-1">
+          <div class="w-24 h-16 rounded-xl overflow-hidden bg-slate-900 relative border border-slate-200 shadow-2xs">
+            <img src="${it.img}" alt="${it.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
+            ${it.type === 'video' ? '<div class="absolute inset-0 bg-black/30 flex items-center justify-center"><i class="fa-solid fa-play text-white text-xs"></i></div>' : ''}
+          </div>
+          <div class="text-[10px] font-bold text-slate-800 truncate">${it.title}</div>
+          <div class="text-[8.5px] text-slate-400 truncate">${it.date}</div>
+        </div>
+      `).join('');
+    }
+
     function renderArtGallery() {
+      renderPersonalLibraryStrip();
       const c = document.getElementById('artGalleryContainer');
       if (!c) return;
 
