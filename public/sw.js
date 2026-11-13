@@ -1,14 +1,20 @@
 // =========================================================================
 // SERVICE WORKER: LỊCH DÂN SINH & VĂN HÓA ĐẤT PHÚ (OFFLINE-FIRST PWA)
 // =========================================================================
-const CACHE_NAME = 'datphu-pwa-v3';
+const CACHE_NAME = 'datphu-pwa-v4';
 
 const CORE_PRECACHE_URLS = [
   '/',
   '/index.html',
+  '/tam-linh',
+  '/tam-linh.html',
+  '/niem-phat',
   '/manifest.json',
   '/img/logo_datphu_brand.jpg',
   '/img/logo_hoa_sen_real.png',
+  '/img/phat_phap_cong_dong/ton_tuong_phat_dat_vang.jpg',
+  '/img/phat_phap_cong_dong/ban_tho_tam_bao_tay_phuong_tam_thanh.jpg',
+  '/img/chuong_mo_phat_giao_thien_vien.jpg',
   '/img/lotus_lagoon_real_dawn.jpg',
   '/img/lotus_throne_cinematic_3d.jpg',
   '/img/lao_dong_nu_cuoi_cong_trinh.jpg',
@@ -67,8 +73,14 @@ self.addEventListener('fetch', (event) => {
           return networkRes;
         })
         .catch(() => {
-          return caches.match('/index.html').then((cached) => {
-            return cached || caches.match('/');
+          return caches.match(req).then((exactCached) => {
+            if (exactCached) return exactCached;
+            if (url.pathname === '/tam-linh' || url.pathname === '/niem-phat' || url.pathname === '/tam-linh.html') {
+              return caches.match('/tam-linh.html').then((tl) => tl || caches.match('/tam-linh'));
+            }
+            return caches.match('/index.html').then((cached) => {
+              return cached || caches.match('/');
+            });
           });
         })
     );

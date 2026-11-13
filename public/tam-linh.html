@@ -6,6 +6,12 @@
   <title>Niệm Phật, Trà Đạo & Thiền Tâm Đất Phú • Ứng Dụng Thứ 6</title>
   <meta name="description" content="Kênh phát thanh dân ca Bài Chòi Xứ Nẫu, Rạp chiếu cảnh đẹp 4K, Máy Niệm Phật Số cầm tay, Hòa âm thiên nhiên trị liệu và Thiền thở đóa sen Đất Phú.">
   <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#3b200d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Niệm Phật Đất Phú">
+  <link rel="apple-touch-icon" href="/img/logo_hoa_sen_real.png">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -248,17 +254,62 @@
             <button onclick="toggleBuddhistAltarView()" id="btnToggleAltarView" class="py-1.5 px-1 rounded-xl bg-black/35 hover:bg-amber-950/70 border border-amber-500/30 flex items-center justify-center gap-1 text-amber-200 active:scale-95 transition cursor-pointer"><span id="altarToggleText">👁️ Chiêm Bái</span></button>
             <button onclick="toggleSeniorMode()" id="btnSeniorMode" class="py-1.5 px-1 rounded-xl bg-black/35 hover:bg-amber-950/70 border border-amber-500/30 flex items-center justify-center gap-1 text-amber-200 active:scale-95 transition cursor-pointer">👴 Chữ To</button>
             <button onclick="startBuddhistRitualCeremony()" id="btnStartRitual" class="py-1.5 px-1 rounded-xl bg-black/35 hover:bg-amber-950/70 border border-amber-500/30 flex items-center justify-center gap-1 text-amber-300 active:scale-95 transition cursor-pointer"><span id="btnStartRitualText">☸️ Khai Lễ</span></button>
-            <button onclick="toggleDedicationDrawer()" class="py-1.5 px-1 rounded-xl bg-black/35 hover:bg-amber-950/70 border border-amber-500/30 flex items-center justify-center gap-1 text-rose-200 active:scale-95 transition cursor-pointer">🙏 Hồi Hướng</button>
-            <button onclick="resetCurrentMalaSession()" class="py-1.5 px-1 rounded-xl bg-black/35 hover:bg-amber-950/70 border border-amber-500/30 flex items-center justify-center gap-1 text-amber-200 active:scale-95 transition cursor-pointer">↺ Đặt lại</button>
+            <button onclick="toggleDedicationDrawer()" class="py-1.5 px-1 rounded-xl bg-black/35 hover:bg-amber-950/70 border border-amber-500/30 flex items-center justify-center gap-1 text-rose-200 active:scale-95 transition cursor-pointer">🙏 Sổ Hồi Hướng</button>
+            <button onclick="toggleLunarPracticeDrawer()" class="py-1.5 px-1 rounded-xl bg-black/35 hover:bg-amber-950/70 border border-amber-500/30 flex items-center justify-center gap-1 text-emerald-200 active:scale-95 transition cursor-pointer">📅 Lịch Chay</button>
             <button onclick="document.getElementById('buddhistFileInput').click()" class="py-1.5 px-1 rounded-xl bg-emerald-700/60 hover:bg-emerald-600/80 border border-emerald-400/40 flex items-center justify-center gap-1 text-white active:scale-95 transition cursor-pointer">+ Nạp MP3</button>
+          </div>
+          <div class="flex items-center justify-between gap-2 pt-0.5 text-[9.5px]">
+            <button onclick="resetCurrentMalaSession()" class="px-2 py-1 rounded-lg bg-black/30 hover:bg-black/50 border border-amber-500/25 text-amber-200/90 cursor-pointer transition">↺ Đặt lại vòng 108</button>
+            <div class="flex items-center gap-1.5">
+              <span id="pwaOfflineBadge" class="text-emerald-300/90 font-semibold">🟢 Sẵn sàng Offline</span>
+              <button onclick="installDatPhuPwa()" id="btnInstallPwaOffline" class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/35 border border-amber-400/50 text-amber-200 font-bold cursor-pointer transition">📲 Cài Offline</button>
+            </div>
           </div>
           <input type="file" id="buddhistFileInput" accept="audio/*" class="hidden" onchange="handleBuddhistFileUpload(event)">
         </div>
 
-        <!-- KHUNG KỆ HỒI HƯỚNG CÔNG ĐỨC (ẨN/HIỆN) -->
-        <div id="dedicationPrayerDrawer" class="hidden relative z-10 p-2.5 rounded-xl bg-amber-950/90 border border-amber-400/50 text-center space-y-1 text-[11px]">
-          <div class="font-black text-amber-300 uppercase">KỆ HỒI HƯỚNG CÔNG ĐỨC ĐẤT PHÚ</div>
-          <p class="text-amber-100 font-serif italic">"Nguyện đem công đức này • Hướng về khắp tất cả • Đệ tử và chúng sanh • Đều trọn thành Phật đạo."</p>
+        <!-- SỔ HỒI HƯỚNG CÁ NHÂN & KỆ HỒI HƯỚNG (ẨN/HIỆN) -->
+        <div id="dedicationPrayerDrawer" class="hidden relative z-10 p-3 rounded-xl bg-amber-950/95 border border-amber-400/50 space-y-2.5 text-[11px]">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-amber-300 uppercase">📝 SỔ HỒI HƯỚNG CÔNG ĐỨC</span>
+            <button onclick="speakDedicationPrayer()" class="px-2 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black text-[10px] cursor-pointer hover:bg-amber-400 transition">🗣️ Đọc Kệ</button>
+          </div>
+          <p id="personalizedDedicationText" class="text-amber-100 font-serif italic text-center leading-relaxed bg-black/35 p-2 rounded-lg border border-amber-500/25">
+            "Nguyện đem công đức này • Hướng về khắp tất cả • Đệ tử và chúng sanh • Đều trọn thành Phật đạo."
+          </p>
+          <div class="space-y-1.5 text-[10px]">
+            <input type="text" id="dedicationNamesInput" placeholder="Tên Phật tử / Gia đình / Người thân cầu an, cầu siêu..." class="w-full px-2.5 py-1.5 rounded-lg bg-black/50 border border-amber-500/35 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400" />
+            <div class="flex gap-1.5">
+              <input type="text" id="dedicationWishInput" placeholder="Tâm nguyện (VD: gia đạo bình an, thân tâm an lạc...)" class="flex-1 px-2.5 py-1.5 rounded-lg bg-black/50 border border-amber-500/35 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400" />
+              <button onclick="saveDedicationNotebook()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold cursor-pointer shrink-0 transition">💾 Lưu Sổ</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LỊCH CÔNG PHU & NGÀY CHAY / VÍA PHẬT THEO ÂM LỊCH ĐẤT PHÚ (ẨN/HIỆN) -->
+        <div id="lunarPracticeDrawer" class="hidden relative z-10 p-3 rounded-xl bg-[#0b241f]/95 border border-emerald-400/40 space-y-2 text-[10.5px]">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-emerald-300">📅 LỊCH CÔNG PHU & NGÀY CHAY</span>
+            <span id="lunarTodayBadge" class="px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-200 font-bold text-[9.5px]">Âm lịch...</span>
+          </div>
+          <div id="lunarTodayStatusBox" class="p-2 rounded-lg bg-black/35 border border-emerald-500/25 text-amber-100 leading-relaxed"></div>
+          <div id="lunarUpcomingList" class="text-[10px] text-emerald-200/90 space-y-1"></div>
+          <div class="pt-1.5 border-t border-emerald-500/25 space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-bold text-amber-200">⏰ Nhắc giờ Công Phu:</span>
+              <button onclick="toggleCongPhuReminder()" id="btnToggleCongPhu" class="px-2.5 py-0.5 rounded-lg bg-slate-800 text-amber-200 font-bold cursor-pointer transition">TẮT</button>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-[10px]">
+              <label class="flex items-center justify-between bg-black/40 px-2 py-1 rounded-lg border border-emerald-500/20">
+                <span class="text-amber-100/80">Sáng:</span>
+                <input type="time" id="congPhuMorningTime" value="05:00" onchange="saveCongPhuTimes()" class="bg-transparent text-amber-300 font-mono font-bold focus:outline-none" />
+              </label>
+              <label class="flex items-center justify-between bg-black/40 px-2 py-1 rounded-lg border border-emerald-500/20">
+                <span class="text-amber-100/80">Tối:</span>
+                <input type="time" id="congPhuEveningTime" value="19:30" onchange="saveCongPhuTimes()" class="bg-transparent text-amber-300 font-mono font-bold focus:outline-none" />
+              </label>
+            </div>
+          </div>
         </div>
 
         <audio id="buddhistAudioElement" class="hidden" preload="auto"></audio>
@@ -2426,12 +2477,285 @@
       }
     }
 
+    // =========================================================================
+    // 1. SỔ HỒI HƯỚNG CÁ NHÂN
+    // =========================================================================
+    function loadDedicationNotebook() {
+      const names = localStorage.getItem('datphu_dedication_names') || '';
+      const wish = localStorage.getItem('datphu_dedication_wish') || '';
+      const nInput = document.getElementById('dedicationNamesInput');
+      const wInput = document.getElementById('dedicationWishInput');
+      const pEl = document.getElementById('personalizedDedicationText');
+      if (nInput) nInput.value = names;
+      if (wInput) wInput.value = wish;
+      if (pEl) {
+        if (names.trim() || wish.trim()) {
+          const who = names.trim() ? `Đệ tử con cùng gia đình (${names.trim()}), ` : 'Đệ tử con ';
+          const goal = wish.trim() ? `cầu nguyện ${wish.trim()}, ` : '';
+          pEl.innerText = `"${who}nguyện đem công đức này • Hướng về khắp tất cả • ${goal}Đệ tử và chúng sanh • Đều trọn thành Phật đạo."`;
+        } else {
+          pEl.innerText = '"Nguyện đem công đức này • Hướng về khắp tất cả • Đệ tử và chúng sanh • Đều trọn thành Phật đạo."';
+        }
+      }
+    }
+
+    function saveDedicationNotebook() {
+      const nInput = document.getElementById('dedicationNamesInput');
+      const wInput = document.getElementById('dedicationWishInput');
+      localStorage.setItem('datphu_dedication_names', (nInput ? nInput.value : '').trim());
+      localStorage.setItem('datphu_dedication_wish', (wInput ? wInput.value : '').trim());
+      loadDedicationNotebook();
+      alert('Đã lưu Sổ Hồi Hướng Cá Nhân! Tên gia đình & tâm nguyện sẽ hiện sẵn ở cuối mỗi buổi tụng.');
+    }
+
+    function speakDedicationPrayer() {
+      const pEl = document.getElementById('personalizedDedicationText');
+      if (!pEl || !('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const text = pEl.innerText.replace(/["•]/g, ', ');
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'vi-VN';
+      utter.rate = 0.72;
+      utter.pitch = 0.85;
+      window.speechSynthesis.speak(utter);
+    }
+
+    // =========================================================================
+    // 2. LỊCH CÔNG PHU & NGÀY CHAY / VÍA PHẬT THEO ÂM LỊCH ĐẤT PHÚ (OFFLINE)
+    // =========================================================================
+    function jdFromDateVN(dd, mm, yy) {
+      const a = Math.floor((14 - mm) / 12);
+      const y = yy + 4800 - a;
+      const m = mm + 12 * a - 3;
+      let jd = dd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+      if (jd < 2299161) jd = dd + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - 32083;
+      return jd;
+    }
+
+    function getNewMoonDayVN(k, timeZone) {
+      const T = k / 1236.85, T2 = T * T, T3 = T2 * T, dr = Math.PI / 180;
+      let Jd1 = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3;
+      Jd1 += 0.00033 * Math.sin((166.56 + 132.87 * T - 0.009173 * T2) * dr);
+      const M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.00000347 * T3;
+      const Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.00001236 * T3;
+      const F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3;
+      let C1 = (0.1734 - 0.000393 * T) * Math.sin(M * dr) + 0.0021 * Math.sin(2 * dr * M)
+        - 0.4068 * Math.sin(Mpr * dr) + 0.0161 * Math.sin(dr * 2 * Mpr)
+        - 0.0004 * Math.sin(dr * 3 * Mpr) + 0.0104 * Math.sin(dr * 2 * F)
+        - 0.0051 * Math.sin(dr * (M + Mpr)) - 0.0074 * Math.sin(dr * (M - Mpr))
+        + 0.0004 * Math.sin(dr * (2 * F + M)) - 0.0004 * Math.sin(dr * (2 * F - M))
+        - 0.0006 * Math.sin(dr * (2 * F + Mpr)) + 0.0010 * Math.sin(dr * (2 * F - Mpr))
+        + 0.0005 * Math.sin(dr * (2 * Mpr + M));
+      const deltat = (T < -11) ? (0.001 + 0.000839 * T + 0.0002261 * T2 - 0.00000845 * T3 - 0.000000081 * T * T3) : (-0.000278 + 0.000265 * T + 0.000262 * T2);
+      return Math.floor(Jd1 + C1 - deltat + 0.5 + timeZone / 24);
+    }
+
+    function getSunLongitudeVN(jdn, timeZone) {
+      const T = (jdn - 2451545.5 - timeZone / 24) / 36525, T2 = T * T, dr = Math.PI / 180;
+      const M = 357.52910 + 35999.05030 * T - 0.0001559 * T2 - 0.00000048 * T * T2;
+      const L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T2;
+      let DL = (1.914600 - 0.004817 * T - 0.000014 * T2) * Math.sin(dr * M)
+        + (0.019993 - 0.000101 * T) * Math.sin(dr * 2 * M) + 0.000290 * Math.sin(dr * 3 * M);
+      let L = (L0 + DL) * dr;
+      L = L - Math.PI * 2 * Math.floor(L / (Math.PI * 2));
+      return Math.floor(L / Math.PI * 6);
+    }
+
+    function getLunarMonth11VN(yy, timeZone) {
+      const off = jdFromDateVN(31, 12, yy) - 2415021;
+      const k = Math.floor(off / 29.530588853);
+      let nm = getNewMoonDayVN(k, timeZone);
+      if (getSunLongitudeVN(nm, timeZone) >= 9) nm = getNewMoonDayVN(k - 1, timeZone);
+      return nm;
+    }
+
+    function getLeapMonthOffsetVN(a11, timeZone) {
+      let k = Math.floor((a11 - 2415021.076998695) / 29.530588853 + 0.5);
+      let last = 0, i = 1, arc = getSunLongitudeVN(getNewMoonDayVN(k + i, timeZone), timeZone);
+      do { last = arc; i++; arc = getSunLongitudeVN(getNewMoonDayVN(k + i, timeZone), timeZone); } while (arc !== last && i < 14);
+      return i - 1;
+    }
+
+    function solarToLunarVN(dd, mm, yy) {
+      const tz = 7, dayNumber = jdFromDateVN(dd, mm, yy);
+      const k = Math.floor((dayNumber - 2415021.076998695) / 29.530588853);
+      let monthStart = getNewMoonDayVN(k + 1, tz);
+      if (monthStart > dayNumber) monthStart = getNewMoonDayVN(k, tz);
+      let a11 = getLunarMonth11VN(yy, tz), b11 = a11, lunarYear;
+      if (a11 >= monthStart) { lunarYear = yy; a11 = getLunarMonth11VN(yy - 1, tz); }
+      else { lunarYear = yy + 1; b11 = getLunarMonth11VN(yy + 1, tz); }
+      const lunarDay = dayNumber - monthStart + 1;
+      const diff = Math.floor((monthStart - a11) / 29);
+      let lunarLeap = 0, lunarMonth = diff + 11;
+      if (b11 - a11 > 365) {
+        const leapMonthDiff = getLeapMonthOffsetVN(a11, tz);
+        if (diff >= leapMonthDiff) { lunarMonth = diff + 10; if (diff === leapMonthDiff) lunarLeap = 1; }
+      }
+      if (lunarMonth > 12) lunarMonth -= 12;
+      if (lunarMonth >= 11 && diff < 4) lunarYear -= 1;
+      return { day: lunarDay, month: lunarMonth, year: lunarYear, leap: lunarLeap };
+    }
+
+    const BUDDHIST_VOW_DAYS = {
+      '1/1': 'Vía Đức Phật Di Lặc',
+      '8/2': 'Ngày Đức Phật Thích Ca Xuất Gia',
+      '15/2': 'Ngày Đức Phật Thích Ca Nhập Niết Bàn',
+      '19/2': 'Vía Đức Quán Thế Âm Bồ Tát Đản Sanh',
+      '8/4': 'Đại Lễ Phật Đản (Đức Bổn Sư Thích Ca)',
+      '19/6': 'Vía Đức Quán Thế Âm Thành Đạo',
+      '15/7': 'Đại Lễ Vu Lan Báo Hiếu',
+      '30/7': 'Vía Đức Địa Tạng Vương Bồ Tát',
+      '19/9': 'Vía Đức Quán Thế Âm Xuất Gia',
+      '30/9': 'Vía Đức Phật Dược Sư',
+      '17/11': 'Vía Đức Phật A Di Đà',
+      '8/12': 'Ngày Đức Phật Thích Ca Thành Đạo'
+    };
+
+    function toggleLunarPracticeDrawer() {
+      const d = document.getElementById('lunarPracticeDrawer');
+      if (d) {
+        d.classList.toggle('hidden');
+        if (!d.classList.contains('hidden')) renderLunarPracticeInfo();
+      }
+    }
+
+    function renderLunarPracticeInfo() {
+      const now = new Date();
+      const lunar = solarToLunarVN(now.getDate(), now.getMonth() + 1, now.getFullYear());
+      const badge = document.getElementById('lunarTodayBadge');
+      const statusBox = document.getElementById('lunarTodayStatusBox');
+      const upcomingEl = document.getElementById('lunarUpcomingList');
+      if (badge) badge.innerText = `ÂL: ${lunar.day}/${lunar.month}${lunar.leap ? ' (Nhuận)' : ''}`;
+
+      const key = `${lunar.day}/${lunar.month}`;
+      const via = BUDDHIST_VOW_DAYS[key];
+      const isChay = [1, 14, 15, 29, 30].includes(lunar.day);
+      if (statusBox) {
+        let msg = `Hôm nay Dương lịch <b>${now.toLocaleDateString('vi-VN')}</b> (<b>${lunar.day}/${lunar.month} Âm lịch</b>). `;
+        if (via) msg += `<br><span class="text-amber-300 font-black">🪷 Hôm nay là ${via}!</span>`;
+        else if (isChay) msg += `<br><span class="text-emerald-300 font-bold">🌿 Hôm nay là Ngày Chay (Mùng ${lunar.day === 1 ? '1' : lunar.day}) — Rất tốt để ăn chay, trì danh.</span>`;
+        else msg += `<br><span class="text-amber-100/80">Chúc bác một ngày tinh tấn, thân tâm an lạc.</span>`;
+        statusBox.innerHTML = msg;
+      }
+
+      if (upcomingEl) {
+        const upcoming = [];
+        for (let i = 1; i <= 16; i++) {
+          const d = new Date(now.getTime() + i * 86400000);
+          const l = solarToLunarVN(d.getDate(), d.getMonth() + 1, d.getFullYear());
+          const k = `${l.day}/${l.month}`;
+          if (BUDDHIST_VOW_DAYS[k]) {
+            upcoming.push(`• <b>${l.day}/${l.month} ÂL</b> (${d.getDate()}/${d.getMonth() + 1} DL): <span class="text-amber-300">${BUDDHIST_VOW_DAYS[k]}</span>`);
+          } else if (l.day === 1 || l.day === 15) {
+            upcoming.push(`• <b>${l.day}/${l.month} ÂL</b> (${d.getDate()}/${d.getMonth() + 1} DL): ${l.day === 1 ? 'Ngày Mùng 1 (Ăn chay)' : 'Ngày Rằm (Ăn chay)'}`);
+          }
+        }
+        upcomingEl.innerHTML = `<div class="font-bold text-amber-200/90">Sắp tới trong 16 ngày:</div>` + (upcoming.length ? upcoming.slice(0, 4).join('<br>') : '• Tiếp tục duy trì thời khóa công phu hằng ngày.');
+      }
+      updateCongPhuBtnUI();
+    }
+
+    let isCongPhuReminderOn = localStorage.getItem('datphu_congphu_on') === '1';
+    let lastCongPhuTriggered = '';
+
+    function updateCongPhuBtnUI() {
+      const btn = document.getElementById('btnToggleCongPhu');
+      const mIn = document.getElementById('congPhuMorningTime');
+      const eIn = document.getElementById('congPhuEveningTime');
+      if (mIn) mIn.value = localStorage.getItem('datphu_congphu_morning') || '05:00';
+      if (eIn) eIn.value = localStorage.getItem('datphu_congphu_evening') || '19:30';
+      if (btn) {
+        btn.innerText = isCongPhuReminderOn ? 'ĐANG BẬT' : 'TẮT';
+        btn.className = isCongPhuReminderOn
+          ? "px-2.5 py-0.5 rounded-lg bg-emerald-500 text-slate-950 font-black cursor-pointer transition"
+          : "px-2.5 py-0.5 rounded-lg bg-slate-800 text-amber-200 font-bold cursor-pointer transition";
+      }
+    }
+
+    function saveCongPhuTimes() {
+      const mIn = document.getElementById('congPhuMorningTime');
+      const eIn = document.getElementById('congPhuEveningTime');
+      if (mIn) localStorage.setItem('datphu_congphu_morning', mIn.value);
+      if (eIn) localStorage.setItem('datphu_congphu_evening', eIn.value);
+    }
+
+    function toggleCongPhuReminder() {
+      isCongPhuReminderOn = !isCongPhuReminderOn;
+      localStorage.setItem('datphu_congphu_on', isCongPhuReminderOn ? '1' : '0');
+      if (isCongPhuReminderOn && 'Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission().catch(() => {});
+      }
+      updateCongPhuBtnUI();
+    }
+
+    setInterval(() => {
+      if (!isCongPhuReminderOn) return;
+      const now = new Date();
+      const hhmm = now.toTimeString().slice(0, 5);
+      const mTime = localStorage.getItem('datphu_congphu_morning') || '05:00';
+      const eTime = localStorage.getItem('datphu_congphu_evening') || '19:30';
+      const stamp = now.toISOString().slice(0, 10) + '_' + hhmm;
+      if ((hhmm === mTime || hhmm === eTime) && lastCongPhuTriggered !== stamp) {
+        lastCongPhuTriggered = stamp;
+        playTempleBronzeBell();
+        const label = (hhmm === mTime) ? 'Công Phu Sáng' : 'Công Phu Tối';
+        if ('Notification' in window && Notification.permission === 'granted') {
+          new Notification(`⏰ Đến giờ ${label} Đất Phú`, { body: 'Mời bác ổn định tâm ý, bắt đầu thời khóa niệm Phật.', icon: '/img/logo_hoa_sen_real.png' });
+        }
+      }
+    }, 20000);
+
+    // =========================================================================
+    // 3. CÀI ĐẶT PWA OFFLINE (DÙNG MƯỢT KHI TẮT 4G/WIFI)
+    // =========================================================================
+    let deferredPwaPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPwaPrompt = e;
+      const btn = document.getElementById('btnInstallPwaOffline');
+      if (btn) btn.innerText = '📲 Cài App Ngay';
+    });
+
+    async function installDatPhuPwa() {
+      if (deferredPwaPrompt) {
+        deferredPwaPrompt.prompt();
+        await deferredPwaPrompt.userChoice;
+        deferredPwaPrompt = null;
+      } else {
+        alert('Để dùng Offline mượt khi tắt 4G/Wifi:\n• Trên iPhone (Safari): Bấm nút Chia sẻ (↑) ➔ "Thêm vào MH chính".\n• Trên Android (Chrome): Bấm menu (⋮) ➔ "Cài đặt ứng dụng / Thêm vào màn hình chính".\nDữ liệu trang và chuông mõ đã được lưu sẵn vào bộ nhớ máy!');
+      }
+    }
+
+    function updateOnlineOfflineBadge() {
+      const b = document.getElementById('pwaOfflineBadge');
+      if (!b) return;
+      if (navigator.onLine) {
+        b.innerText = '🟢 Sẵn sàng Offline';
+        b.className = 'text-emerald-300/90 font-semibold';
+      } else {
+        b.innerText = '📶 Đang Offline (Vẫn dùng mượt)';
+        b.className = 'text-amber-300 font-bold';
+      }
+    }
+
+    window.addEventListener('online', updateOnlineOfflineBadge);
+    window.addEventListener('offline', updateOnlineOfflineBadge);
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       if (typeof renderBuddhistPlaylist === 'function') renderBuddhistPlaylist();
       if (typeof updateLifetimeMalaDisplay === 'function') updateLifetimeMalaDisplay();
       if (typeof updateMalaProgressUI === 'function') updateMalaProgressUI();
       if (typeof updateBuddhistStreak === 'function') updateBuddhistStreak(false);
       if (typeof applySeniorModeUI === 'function') applySeniorModeUI();
+      if (typeof loadDedicationNotebook === 'function') loadDedicationNotebook();
+      if (typeof renderLunarPracticeInfo === 'function') renderLunarPracticeInfo();
+      if (typeof updateOnlineOfflineBadge === 'function') updateOnlineOfflineBadge();
       if (typeof renderDialectQuiz === 'function') renderDialectQuiz();
     });
   </script>
