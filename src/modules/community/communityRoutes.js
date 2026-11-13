@@ -201,6 +201,49 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
   // ------------------------------------------------------------------------
   // B. WORKFLOW LƯU TRỮ & PHÂN QUYỀN BẢNG TIN CỘNG ĐỒNG (CLOUD + FALLBACK)
   // ------------------------------------------------------------------------
+  if (pathname === '/api/gallery/upload-video' && req.method === 'POST') {
+    const actor = verifyTokenFromReq(req);
+    const MAX_BYTES = 50 * 1024 * 1024;
+    const chunks = [];
+    let totalBytes = 0;
+    let aborted = false;
+
+    await new Promise((resolve) => {
+      req.on('data', (chunk) => {
+        totalBytes += chunk.length;
+        if (totalBytes > MAX_BYTES) {
+          aborted = true;
+          req.destroy();
+          return resolve();
+        }
+        chunks.push(chunk);
+      });
+      req.on('end', resolve);
+      req.on('error', resolve);
+    });
+
+    if (aborted) {
+      return sendJson(res, 413, { status: 'error', message: 'Video vượt quá giới hạn 50MB.' });
+    }
+    if (chunks.length === 0) {
+      return sendJson(res, 400, { status: 'error', message: 'Không nhận được dữ liệu video.' });
+    }
+
+    const buffer = Buffer.concat(chunks);
+    const mimeType = req.headers['content-type'] || 'video/mp4';
+    const postId = 'vid_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+    const uploaded = await cloudRepo.uploadVideoBufferToCloudStorage(buffer, mimeType, actor ? actor.id : 'guest', postId);
+
+    if (!uploaded.uploaded) {
+      return sendJson(res, 500, { status: 'error', message: 'Không thể lưu video lên Storage.' });
+    }
+    return sendJson(res, 200, {
+      status: 'ok',
+      url: uploaded.url,
+      cloudStorageUsed: uploaded.cloudStorageUsed
+    });
+  }
+
   if (pathname === '/api/gallery/cloud-health' && req.method === 'GET') {
     const [postsCheck, usersCheck] = await Promise.all([
       cloudRepo.listCloudPosts(1, false),

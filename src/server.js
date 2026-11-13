@@ -54,7 +54,11 @@ const MIME_TYPES = {
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
   '.svg': 'image/svg+xml',
-  '.ico': 'image/x-icon'
+  '.ico': 'image/x-icon',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+  '.mov': 'video/quicktime',
+  '.m4v': 'video/mp4'
 };
 
 function parseBody(req) {
@@ -75,7 +79,7 @@ function parseBody(req) {
 function setCORS(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Secure-Token');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Secure-Token, X-File-Name');
 }
 
 const server = http.createServer(async (req, res) => {
@@ -88,7 +92,8 @@ const server = http.createServer(async (req, res) => {
 
   const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   const pathname = parsedUrl.pathname;
-  const body = ['POST', 'PUT', 'PATCH'].includes(req.method) ? await parseBody(req) : {};
+  const isRawBinaryUpload = (pathname === '/api/gallery/upload-video' && req.method === 'POST');
+  const body = (!isRawBinaryUpload && ['POST', 'PUT', 'PATCH'].includes(req.method)) ? await parseBody(req) : {};
 
   // ========================================================================
   // LÁ CHẮN AN NINH AI THỜI GIAN THỰC (AI CYBER-SECURITY SHIELD)

@@ -204,9 +204,57 @@ async function createCloudUser(user) {
   }
 }
 
+async function uploadVideoBufferToCloudStorage(buffer, mimeType, ownerId, postId) {
+  const fs = require('fs');
+  const path = require('path');
+  const ext = (mimeType && mimeType.includes('webm')) ? 'webm' : ((mimeType && mimeType.includes('quicktime')) ? 'mov' : 'mp4');
+  const now = new Date();
+  const ym = `${now.getUTCFullYear()}/${String(now.getUTCMonth() + 1).padStart(2, '0')}`;
+  const safeOwner = String(ownerId || 'guest').replace(/[^a-zA-Z0-9_-]/g, '_');
+  const filePath = `community/videos/${ym}/${safeOwner}/${postId}.${ext}`;
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${COMMUNITY_BUCKET}/${filePath}`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_WRITE_KEY,
+        Authorization: `Bearer ${SUPABASE_WRITE_KEY}`,
+        'Content-Type': mimeType || 'video/mp4',
+        'x-upsert': 'true'
+      },
+      body: buffer
+    });
+    if (res.ok) {
+      return {
+        uploaded: true,
+        cloudStorageUsed: true,
+        url: `${SUPABASE_URL}/storage/v1/object/public/${COMMUNITY_BUCKET}/${filePath}`
+      };
+    }
+  } catch (e) {}
+
+  // Fallback lưu vào public/uploads/community nếu chạy trên server Node thông thường
+  try {
+    if (!process.env.VERCEL) {
+      const uploadDir = path.join(__dirname, '..', '..', '..', 'public', 'uploads', 'community');
+      if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+      const fileName = `${postId}.${ext}`;
+      fs.writeFileSync(path.join(uploadDir, fileName), buffer);
+      return {
+        uploaded: true,
+        cloudStorageUsed: false,
+        url: `/uploads/community/${fileName}`
+      };
+    }
+  } catch (e) {}
+
+  return { uploaded: false, cloudStorageUsed: false, url: '' };
+}
+
 module.exports = {
   COMMUNITY_BUCKET,
   uploadDataUrlToCloudStorage,
+  uploadVideoBufferToCloudStorage,
   listCloudPosts,
   upsertCloudPosts,
   updateCloudPost,
