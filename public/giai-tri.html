@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trung Tâm Văn Hóa & Giải Trí Đất Phú • Lịch Đất Phú</title>
   <meta name="description" content="Kênh phát thanh dân ca Bài Chòi Xứ Nẫu, Rạp chiếu cảnh đẹp 4K, Máy Niệm Phật Số cầm tay, Hòa âm thiên nhiên trị liệu và Thiền thở đóa sen Đất Phú.">
+  <meta name="theme-color" content="#be123c">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/img/logo_hoa_sen_real.png">
   <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -323,6 +328,10 @@
             <button onclick="filterArtCategory('heritage')" id="artFilterBtn_heritage" class="px-2.5 py-1 rounded-full bg-white border border-blue-200 text-blue-900 hover:bg-blue-50 font-semibold shrink-0 cursor-pointer transition">🏛️ Văn Hóa &amp; Di Sản</button>
             <button onclick="filterArtCategory('my_saved')" id="artFilterBtn_my_saved" class="px-2.5 py-1 rounded-full bg-white border border-blue-200 text-blue-900 hover:bg-blue-50 font-semibold shrink-0 cursor-pointer transition">💾 Đã Lưu</button>
           </div>
+          <button onclick="installCommunityPwa()" id="btnInstallCommunityPwa" class="hidden px-2.5 py-1 rounded-full bg-red-600 hover:bg-red-500 text-white font-bold text-[11px] shrink-0 flex items-center gap-1 cursor-pointer transition shadow-2xs" title="Cài đặt ứng dụng Đất Phú lên màn hình chính">
+            <i class="fa-solid fa-download"></i>
+            <span class="hidden sm:inline">Cài App</span>
+          </button>
           <button onclick="openCommunityAdminModal()" id="btnOpenAdminModeration" class="hidden px-2.5 py-1 rounded-full bg-[#0d2244] hover:bg-red-600 text-white border border-blue-700 font-bold text-[11px] shrink-0 flex items-center gap-1 cursor-pointer transition shadow-2xs" title="Bảng kiểm duyệt Admin">
             <i class="fa-solid fa-shield-halved text-red-400"></i>
             <span>Admin</span>
@@ -2323,7 +2332,7 @@
             <!-- ĐẦU THẺ CỘNG ĐỒNG: TÁC GIẢ / ĐẠO TRÀNG + THỂ LOẠI -->
             <div class="px-3 py-2 flex items-center justify-between gap-2 border-b border-blue-900/90">
               <div onclick="filterByCommunityAuthor('${(item.district || '').replace(/'/g, "\\'")}', event)" class="flex items-center gap-2 min-w-0 cursor-pointer group/auth" title="Xem tất cả bài của tác giả này">
-                <img src="${item.img}" alt="" class="w-7 h-7 rounded-full object-cover border-2 border-red-500/80 shrink-0" />
+                <img src="${item.img}" alt="" loading="lazy" decoding="async" class="w-7 h-7 rounded-full object-cover border-2 border-red-500/80 shrink-0" />
                 <div class="min-w-0">
                   <div class="text-[11px] font-bold text-white group-hover/auth:text-sky-300 group-hover/auth:underline truncate">${item.district}</div>
                   <div class="text-[9.5px] text-sky-300/80 truncate">${item.category}</div>
@@ -2342,7 +2351,7 @@
             <!-- ẢNH / VIDEO CHÍNH -->
             <div id="communityMediaSlot_${item.domKey}" onclick="${cardClick}" class="relative aspect-[16/10] overflow-hidden bg-[#08152b] cursor-pointer group">
               ${isVideo ? renderCommunityVideoThumbHtml(item) : `
-                <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <img src="${item.img}" alt="${item.title}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0d2244]/80 via-transparent to-transparent"></div>
                 <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-blue-700/85 backdrop-blur-xs text-white text-[9.5px] font-semibold">4K Photo</span>
                 <button onclick="shareCommunityCard('${item.domKey}', event)" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-[#0d2244]/80 hover:bg-red-600 backdrop-blur-xs text-white flex items-center justify-center text-[10px] transition cursor-pointer" title="Chia sẻ">
@@ -5023,7 +5032,27 @@
       } catch(e) {}
     }
 
+    let deferredPwaInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPwaInstallPrompt = e;
+      const btn = document.getElementById('btnInstallCommunityPwa');
+      if (btn) btn.classList.remove('hidden');
+    });
+
+    async function installCommunityPwa() {
+      if (!deferredPwaInstallPrompt) return;
+      deferredPwaInstallPrompt.prompt();
+      try { await deferredPwaInstallPrompt.userChoice; } catch (e) {}
+      deferredPwaInstallPrompt = null;
+      const btn = document.getElementById('btnInstallCommunityPwa');
+      if (btn) btn.classList.add('hidden');
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      }
       initCommunityRealtimeSSE();
       const lbStage = document.getElementById('lightboxStage');
       if (lbStage) {

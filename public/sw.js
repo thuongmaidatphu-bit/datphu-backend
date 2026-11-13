@@ -1,11 +1,13 @@
 // =========================================================================
 // SERVICE WORKER: LỊCH DÂN SINH & VĂN HÓA ĐẤT PHÚ (OFFLINE-FIRST PWA)
 // =========================================================================
-const CACHE_NAME = 'datphu-pwa-v4';
+const CACHE_NAME = 'datphu-pwa-v5';
 
 const CORE_PRECACHE_URLS = [
   '/',
   '/index.html',
+  '/giai-tri',
+  '/giai-tri.html',
   '/tam-linh',
   '/tam-linh.html',
   '/niem-phat',
@@ -61,6 +63,9 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(req.url);
 
+  // Luôn bỏ qua cache đối với API và luồng SSE thời gian thực
+  if (url.pathname.startsWith('/api/')) return;
+
   // Xử lý Navigation / HTML
   if (req.mode === 'navigate' || req.destination === 'document') {
     event.respondWith(
@@ -75,6 +80,9 @@ self.addEventListener('fetch', (event) => {
         .catch(() => {
           return caches.match(req).then((exactCached) => {
             if (exactCached) return exactCached;
+            if (url.pathname === '/giai-tri' || url.pathname === '/giai-tri.html') {
+              return caches.match('/giai-tri.html').then((gt) => gt || caches.match('/giai-tri'));
+            }
             if (url.pathname === '/tam-linh' || url.pathname === '/niem-phat' || url.pathname === '/tam-linh.html') {
               return caches.match('/tam-linh.html').then((tl) => tl || caches.match('/tam-linh'));
             }
