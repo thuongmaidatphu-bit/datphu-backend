@@ -57,52 +57,52 @@
     }
   </style>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-900 flex flex-col font-sans antialiased transition-colors duration-300">
+<body class="bg-gradient-to-b from-blue-50/70 via-white to-red-50/40 min-h-screen text-slate-900 flex flex-col font-sans antialiased transition-colors duration-300">
 
-  <!-- ================= TOP NAVIGATION BAR (SIÊU GỌN CHUẨN APP DI ĐỘNG) ================= -->
-  <header class="nav-bar-bg sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-2xs px-3 sm:px-6 py-2 flex items-center justify-between gap-2">
+  <!-- ================= TOP NAVIGATION BAR (CHỦ ĐẠO XANH & ĐỎ) ================= -->
+  <header class="nav-bar-bg sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-blue-200/80 shadow-2xs px-3 sm:px-6 py-2 flex items-center justify-between gap-2">
     <div class="flex items-center gap-2 min-w-0">
-      <a href="/" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 flex items-center justify-center text-xs font-black transition active:scale-95 shrink-0" title="Trở về Trang Chủ Lịch Đất Phú">
+      <a href="/" class="w-8 h-8 rounded-full bg-blue-50 hover:bg-red-50 text-blue-800 hover:text-red-600 flex items-center justify-center text-xs font-black transition active:scale-95 shrink-0" title="Trở về Trang Chủ Lịch Đất Phú">
         <i class="fa-solid fa-arrow-left"></i>
       </a>
 
       <div class="flex items-center gap-2 min-w-0">
-        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 text-white flex items-center justify-center shadow-xs shrink-0">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-700 via-blue-600 to-red-600 text-white flex items-center justify-center shadow-xs shrink-0">
           <i class="fa-solid fa-masks-theater text-sm"></i>
         </div>
         <div class="min-w-0">
-          <h1 id="headerMainTitle" class="text-xs sm:text-sm md:text-base font-black text-amber-950 uppercase tracking-tight truncate">
-            GIẢI TRÍ & VĂN HÓA ĐẤT PHÚ
+          <h1 id="headerMainTitle" class="text-xs sm:text-sm md:text-base font-black text-blue-950 uppercase tracking-tight truncate">
+            CỘNG ĐỒNG &amp; GIẢI TRÍ ĐẤT PHÚ
           </h1>
-          <p class="text-[10px] text-slate-500 font-medium truncate hidden sm:block">Nhạc & Video 4K • Niệm Phật Số • Thư Viện Di Sản</p>
+          <p class="text-[10px] text-blue-700/80 font-medium truncate hidden sm:block">Lưu Giữ Video • Ảnh Cuộc Sống • Văn Hóa &amp; Giải Trí</p>
         </div>
       </div>
     </div>
 
     <!-- CỤM ICON HÀNH ĐỘNG GỌN GÀNG (TÌM KIẾM, ĐĂNG ẢNH, TÀI KHOẢN / HỆ SINH THÁI) -->
     <div class="flex items-center gap-1.5 shrink-0">
-      <button onclick="toggleQuickSearchBar()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-xs transition active:scale-95 cursor-pointer" title="Tìm kiếm bài hát, video, hình ảnh">
+      <button onclick="toggleQuickSearchBar()" class="w-8 h-8 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-800 flex items-center justify-center text-xs transition active:scale-95 cursor-pointer" title="Tìm kiếm bài hát, video, hình ảnh">
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
 
-      <button onclick="openDedicatedPhotoModal()" class="w-8 h-8 sm:w-auto sm:px-3 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center justify-center gap-1.5 text-xs font-bold transition active:scale-95 cursor-pointer" title="Đăng ảnh từ điện thoại hoặc máy tính">
+      <button onclick="openDedicatedPhotoModal()" class="w-8 h-8 sm:w-auto sm:px-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white border border-blue-700 flex items-center justify-center gap-1.5 text-xs font-bold transition active:scale-95 cursor-pointer shadow-2xs" title="Đăng ảnh từ điện thoại hoặc máy tính">
         <i class="fa-solid fa-camera text-xs"></i>
         <span class="hidden sm:inline">Đăng Ảnh</span>
       </button>
 
-      <button onclick="toggleDatPhuAppLauncher()" id="universalAppLauncherBtn" class="w-8 h-8 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 flex items-center justify-center text-xs transition active:scale-95 cursor-pointer" title="Khay ứng dụng Đất Phú">
+      <button onclick="toggleDatPhuAppLauncher()" id="universalAppLauncherBtn" class="w-8 h-8 rounded-full bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 flex items-center justify-center text-xs transition active:scale-95 cursor-pointer" title="Khay ứng dụng Đất Phú">
         <i class="fa-solid fa-circle-user text-sm"></i>
       </button>
     </div>
   </header>
 
   <!-- THANH TÌM KIẾM NHANH (ẨN MẶC ĐỊNH) -->
-  <div id="quickSearchBarWrapper" class="hidden bg-white border-b border-slate-200 px-3 py-2 sticky top-12 z-30 shadow-xs">
+  <div id="quickSearchBarWrapper" class="hidden bg-white border-b border-blue-200 px-3 py-2 sticky top-12 z-30 shadow-xs">
     <div class="max-w-4xl mx-auto flex items-center gap-2">
       <div class="relative flex-1">
-        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-        <input type="text" id="quickSearchInput" oninput="handleQuickSearch(this.value)" placeholder="Tìm tên bài hát, video, nghệ sĩ, hoặc ảnh di sản..." class="w-full pl-8 pr-8 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-amber-500">
-        <button onclick="clearQuickSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 text-xs cursor-pointer">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 text-xs"></i>
+        <input type="text" id="quickSearchInput" oninput="handleQuickSearch(this.value)" placeholder="Tìm tên bài hát, video, nghệ sĩ, hoặc ảnh di sản..." class="w-full pl-8 pr-8 py-1.5 rounded-xl bg-blue-50/60 border border-blue-200 text-xs text-slate-800 focus:outline-none focus:border-red-500">
+        <button onclick="clearQuickSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-600 text-xs cursor-pointer">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -114,16 +114,16 @@
 
     <!-- THANH MỜI CHIA SẺ CỘNG ĐỒNG 1 DÒNG + THƯ VIỆN ĐÃ LƯU -->
     <section id="uploadAndPersonalLibSection" class="space-y-1.5">
-      <div class="p-2 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center gap-2">
-        <img src="img/logo_datphu_brand.jpg" alt="Cộng đồng Đất Phú" class="w-8 h-8 rounded-full object-cover border border-amber-300 shrink-0" />
-        <button onclick="openDedicatedPhotoModal()" class="flex-1 text-left px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200/80 text-slate-500 text-xs truncate cursor-pointer transition">
-          Chia sẻ khoảnh khắc cuộc sống, văn hóa, đạo tràng...
+      <div class="p-2 rounded-2xl bg-white border border-blue-200/90 shadow-2xs flex items-center gap-2">
+        <img src="img/logo_datphu_brand.jpg" alt="Cộng đồng Đất Phú" class="w-8 h-8 rounded-full object-cover border-2 border-red-500 shrink-0" />
+        <button onclick="openDedicatedPhotoModal()" class="flex-1 text-left px-3 py-1.5 rounded-full bg-blue-50/70 hover:bg-blue-100/70 text-blue-900/70 text-xs truncate cursor-pointer transition">
+          Chia sẻ khoảnh khắc cuộc sống, văn hóa, giải trí...
         </button>
-        <button onclick="openDedicatedPhotoModal()" class="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95" title="Đăng ảnh">
+        <button onclick="openDedicatedPhotoModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95 shadow-2xs" title="Đăng ảnh">
           <i class="fa-solid fa-camera"></i>
           <span>Ảnh</span>
         </button>
-        <button onclick="openAddMediaModal()" class="px-2.5 py-1.5 rounded-xl bg-[#10182b] hover:bg-slate-800 text-amber-300 font-bold text-[11px] flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95" title="Đăng video hoặc nhạc">
+        <button onclick="openAddMediaModal()" class="px-2.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95 shadow-2xs" title="Đăng video hoặc nhạc">
           <i class="fa-solid fa-video"></i>
           <span>Video</span>
         </button>
@@ -131,8 +131,8 @@
 
       <div class="space-y-1">
         <div class="flex items-center justify-between px-0.5">
-          <span class="text-[11px] font-bold text-slate-700">💾 Đã lưu &amp; chia sẻ gần đây</span>
-          <span id="personalLibCount" class="text-[10px] text-slate-400 font-medium">Kho lưu trữ cá nhân</span>
+          <span class="text-[11px] font-bold text-blue-950">💾 Đã lưu &amp; chia sẻ gần đây</span>
+          <span id="personalLibCount" class="text-[10px] text-red-600 font-semibold">Kho lưu trữ cá nhân</span>
         </div>
         <div id="personalLibraryStrip" class="flex items-start gap-2 overflow-x-auto no-scrollbar pb-0.5">
           <!-- Đổ tự động bởi renderPersonalLibraryStrip() -->
@@ -247,20 +247,20 @@
       </div>
     </section>
 
-    <!-- THANH PILL TABS NỀN XANH ĐEN (1. CỘNG ĐỒNG | 2. RADIO & VIDEO | 3. DI SẢN 4K) -->
-    <div class="bg-[#10182b] rounded-full p-1 flex items-center gap-1 overflow-x-auto no-scrollbar text-[11px] sm:text-xs font-bold shadow-sm">
-      <button onclick="switchMasterView('heritage')" id="masterTab_heritage" class="px-3.5 py-1.5 rounded-full bg-orange-500 text-white shadow-xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-bold">
+    <!-- THANH PILL TABS NỀN XANH ĐẬM & ĐỎ (1. CỘNG ĐỒNG | 2. RADIO & VIDEO | 3. DI SẢN 4K) -->
+    <div class="bg-[#0d2244] border border-blue-800/60 rounded-full p-1 flex items-center gap-1 overflow-x-auto no-scrollbar text-[11px] sm:text-xs font-bold shadow-sm">
+      <button onclick="switchMasterView('heritage')" id="masterTab_heritage" class="px-3.5 py-1.5 rounded-full bg-red-600 text-white shadow-xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-bold">
         <i class="fa-solid fa-people-group text-[10px]"></i>
         <span>1. Cộng Đồng</span>
       </button>
 
-      <button onclick="switchMasterView('playlist')" id="masterTab_playlist" class="px-3 py-1.5 rounded-full bg-transparent hover:bg-white/10 text-slate-200 shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-semibold">
-        <i class="fa-solid fa-radio text-amber-400 text-[10px]"></i>
+      <button onclick="switchMasterView('playlist')" id="masterTab_playlist" class="px-3 py-1.5 rounded-full bg-transparent hover:bg-blue-800/50 text-blue-100 shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-semibold">
+        <i class="fa-solid fa-radio text-red-400 text-[10px]"></i>
         <span>2. Radio &amp; Video (<span id="subTabCount_media">37</span>)</span>
       </button>
 
-      <button onclick="switchMasterView('gallery')" id="masterTab_gallery" class="px-3 py-1.5 rounded-full bg-transparent hover:bg-white/10 text-slate-200 shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-semibold">
-        <i class="fa-solid fa-images text-emerald-400 text-[10px]"></i>
+      <button onclick="switchMasterView('gallery')" id="masterTab_gallery" class="px-3 py-1.5 rounded-full bg-transparent hover:bg-blue-800/50 text-blue-100 shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-semibold">
+        <i class="fa-solid fa-images text-sky-400 text-[10px]"></i>
         <span>3. Di Sản 4K (<span id="subTabCount_gallery">20</span>)</span>
       </button>
     </div>
@@ -311,12 +311,12 @@
         <!-- THANH LỌC CHỦ ĐỀ CỘNG ĐỒNG -->
         <div id="galleryFilterBar" class="flex items-center justify-between gap-2">
           <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-[11px] flex-1">
-            <button onclick="filterArtCategory('all')" id="artFilterBtn_all" class="px-2.5 py-1 rounded-full bg-amber-500 text-white font-bold shrink-0 cursor-pointer transition">Tất cả</button>
-            <button onclick="filterArtCategory('video')" id="artFilterBtn_video" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🎬 Video</button>
-            <button onclick="filterArtCategory('buddhist')" id="artFilterBtn_buddhist" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🙏 Đạo Tràng</button>
-            <button onclick="filterArtCategory('community')" id="artFilterBtn_community" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🤝 Đời Sống &amp; Thiện Nguyện</button>
-            <button onclick="filterArtCategory('heritage')" id="artFilterBtn_heritage" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🏛️ Văn Hóa &amp; Di Sản</button>
-            <button onclick="filterArtCategory('my_saved')" id="artFilterBtn_my_saved" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">💾 Đã Lưu</button>
+            <button onclick="filterArtCategory('all')" id="artFilterBtn_all" class="px-2.5 py-1 rounded-full bg-red-600 text-white font-bold shrink-0 cursor-pointer transition shadow-2xs">Tất cả</button>
+            <button onclick="filterArtCategory('video')" id="artFilterBtn_video" class="px-2.5 py-1 rounded-full bg-white border border-blue-200 text-blue-900 hover:bg-blue-50 font-semibold shrink-0 cursor-pointer transition">🎬 Video</button>
+            <button onclick="filterArtCategory('buddhist')" id="artFilterBtn_buddhist" class="px-2.5 py-1 rounded-full bg-white border border-blue-200 text-blue-900 hover:bg-blue-50 font-semibold shrink-0 cursor-pointer transition">🙏 Đạo Tràng</button>
+            <button onclick="filterArtCategory('community')" id="artFilterBtn_community" class="px-2.5 py-1 rounded-full bg-white border border-blue-200 text-blue-900 hover:bg-blue-50 font-semibold shrink-0 cursor-pointer transition">🤝 Đời Sống &amp; Thiện Nguyện</button>
+            <button onclick="filterArtCategory('heritage')" id="artFilterBtn_heritage" class="px-2.5 py-1 rounded-full bg-white border border-blue-200 text-blue-900 hover:bg-blue-50 font-semibold shrink-0 cursor-pointer transition">🏛️ Văn Hóa &amp; Di Sản</button>
+            <button onclick="filterArtCategory('my_saved')" id="artFilterBtn_my_saved" class="px-2.5 py-1 rounded-full bg-white border border-blue-200 text-blue-900 hover:bg-blue-50 font-semibold shrink-0 cursor-pointer transition">💾 Đã Lưu</button>
           </div>
         </div>
 
@@ -1044,9 +1044,9 @@
         const btn = document.getElementById('masterTab_' + v);
         if (btn) {
           if (v === view) {
-            btn.className = "px-3.5 py-1.5 rounded-full bg-orange-500 text-white shadow-xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-bold";
+            btn.className = "px-3.5 py-1.5 rounded-full bg-red-600 text-white shadow-xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-bold";
           } else {
-            btn.className = "px-3 py-1.5 rounded-full bg-transparent hover:bg-white/10 text-slate-200 shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-semibold";
+            btn.className = "px-3 py-1.5 rounded-full bg-transparent hover:bg-blue-800/50 text-blue-100 shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-semibold";
           }
         }
       });
@@ -1190,8 +1190,8 @@
         const btn = document.getElementById('artFilterBtn_' + c);
         if (btn) {
           btn.className = (c === cat)
-            ? "px-2.5 py-1 rounded-full bg-amber-500 text-white font-bold shrink-0 cursor-pointer transition"
-            : "px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition";
+            ? "px-2.5 py-1 rounded-full bg-red-600 text-white font-bold shrink-0 cursor-pointer transition shadow-2xs"
+            : "px-2.5 py-1 rounded-full bg-white border border-blue-200 text-blue-900 hover:bg-blue-50 font-semibold shrink-0 cursor-pointer transition";
         }
       });
       renderArtGallery();
@@ -1836,11 +1836,11 @@
         ];
         strip.innerHTML = samples.map((it, i) => `
           <div onclick="${it.type === 'video' ? `playPersonalVideoInCommunity('${it.id}', ${Math.max(0, it.idx)})` : `selectArtSlide(${Math.max(0, it.idx)})`}" class="w-22 shrink-0 cursor-pointer group space-y-0.5">
-            <div class="w-22 h-14 rounded-xl overflow-hidden bg-slate-900 relative border border-slate-200 shadow-2xs">
+            <div class="w-22 h-14 rounded-xl overflow-hidden bg-[#0d2244] relative border border-blue-200 shadow-2xs">
               <img src="${it.img}" alt="${it.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
-              ${it.type === 'video' ? '<div class="absolute inset-0 bg-black/25 flex items-center justify-center"><span class="w-6 h-6 rounded-full bg-orange-500/95 text-white flex items-center justify-center shadow"><i class="fa-solid fa-play text-[10px] ml-0.5"></i></span></div>' : ''}
+              ${it.type === 'video' ? '<div class="absolute inset-0 bg-black/25 flex items-center justify-center"><span class="w-6 h-6 rounded-full bg-red-600/95 text-white flex items-center justify-center shadow"><i class="fa-solid fa-play text-[10px] ml-0.5"></i></span></div>' : ''}
             </div>
-            <div class="text-[10px] font-bold text-slate-800 truncate leading-tight">${it.title}</div>
+            <div class="text-[10px] font-bold text-blue-950 truncate leading-tight">${it.title}</div>
           </div>
         `).join('');
         return;
@@ -1848,12 +1848,12 @@
 
       strip.innerHTML = items.map(it => `
         <div onclick="${it.type === 'photo' ? 'selectArtSlide(' + Math.max(0, it.idx) + ')' : `playPersonalVideoInCommunity('${it.id}', ${Math.max(0, it.idx)})`}" class="w-22 shrink-0 cursor-pointer group space-y-0.5">
-          <div class="w-22 h-14 rounded-xl overflow-hidden bg-slate-900 relative border border-slate-200 shadow-2xs">
+          <div class="w-22 h-14 rounded-xl overflow-hidden bg-[#0d2244] relative border border-blue-200 shadow-2xs">
             <img src="${it.img}" alt="${it.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
-            ${it.type === 'video' ? '<div class="absolute inset-0 bg-black/25 flex items-center justify-center"><span class="w-6 h-6 rounded-full bg-orange-500/90 text-white flex items-center justify-center shadow"><i class="fa-solid fa-play text-[10px] ml-0.5"></i></span></div>' : ''}
-            ${it.type === 'photo' ? `<button onclick="deletePersonalPhoto('${(it.title || '').replace(/'/g, '')}', event)" class="absolute top-1 right-1 w-4 h-4 rounded-full bg-black/70 hover:bg-rose-600 text-white flex items-center justify-center text-[8px] opacity-85 hover:opacity-100 cursor-pointer transition" title="Xóa ảnh này"><i class="fa-solid fa-xmark"></i></button>` : ''}
+            ${it.type === 'video' ? '<div class="absolute inset-0 bg-black/25 flex items-center justify-center"><span class="w-6 h-6 rounded-full bg-red-600/95 text-white flex items-center justify-center shadow"><i class="fa-solid fa-play text-[10px] ml-0.5"></i></span></div>' : ''}
+            ${it.type === 'photo' ? `<button onclick="deletePersonalPhoto('${(it.title || '').replace(/'/g, '')}', event)" class="absolute top-1 right-1 w-4 h-4 rounded-full bg-black/70 hover:bg-red-600 text-white flex items-center justify-center text-[8px] opacity-85 hover:opacity-100 cursor-pointer transition" title="Xóa ảnh này"><i class="fa-solid fa-xmark"></i></button>` : ''}
           </div>
-          <div class="text-[10px] font-bold text-slate-800 truncate leading-tight">${it.title}</div>
+          <div class="text-[10px] font-bold text-blue-950 truncate leading-tight">${it.title}</div>
         </div>
       `).join('');
     }
@@ -1938,14 +1938,14 @@
     function renderCommunityVideoThumbHtml(item) {
       return `
         <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#111a2e]/80 via-black/20 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0d2244]/85 via-black/20 to-transparent"></div>
         <div class="absolute inset-0 flex items-center justify-center">
-          <span class="w-12 h-12 rounded-full bg-orange-500/95 group-hover:bg-orange-400 text-white flex items-center justify-center shadow-lg ring-4 ring-white/25 transition transform group-hover:scale-110">
+          <span class="w-12 h-12 rounded-full bg-red-600/95 group-hover:bg-red-500 text-white flex items-center justify-center shadow-lg ring-4 ring-white/25 transition transform group-hover:scale-110">
             <i class="fa-solid fa-play text-base ml-0.5"></i>
           </span>
         </div>
-        <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-rose-600/90 backdrop-blur-xs text-white text-[9.5px] font-bold flex items-center gap-1"><i class="fa-solid fa-video text-[8px]"></i> Video${item.duration ? ' • ' + item.duration : ''}</span>
-        <button onclick="shareCommunityCard('${item.domKey}', event)" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-xs text-white flex items-center justify-center text-[10px] transition cursor-pointer" title="Chia sẻ">
+        <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-red-600/95 backdrop-blur-xs text-white text-[9.5px] font-bold flex items-center gap-1"><i class="fa-solid fa-video text-[8px]"></i> Video${item.duration ? ' • ' + item.duration : ''}</span>
+        <button onclick="shareCommunityCard('${item.domKey}', event)" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-[#0d2244]/80 hover:bg-red-600 backdrop-blur-xs text-white flex items-center justify-center text-[10px] transition cursor-pointer" title="Chia sẻ">
           <i class="fa-solid fa-share-nodes"></i>
         </button>
       `;
@@ -2051,7 +2051,7 @@
       });
 
       if (filtered.length === 0) {
-        c.innerHTML = '<div class="col-span-1 sm:col-span-2 p-6 rounded-2xl bg-[#111a2e] border border-slate-800 text-center text-xs text-slate-300">Chưa có bài chia sẻ trong mục này. Bác hãy bấm nút <b>Ảnh</b> hoặc <b>Video</b> phía trên để đăng bài đầu tiên nhé!</div>';
+        c.innerHTML = '<div class="col-span-1 sm:col-span-2 p-6 rounded-2xl bg-[#0d2244] border border-blue-800/80 text-center text-xs text-blue-100">Chưa có bài chia sẻ trong mục này. Bác hãy bấm nút <b class="text-sky-300">Ảnh</b> hoặc <b class="text-red-400">Video</b> phía trên để đăng bài đầu tiên nhé!</div>';
         return;
       }
 
@@ -2066,26 +2066,26 @@
         const commentsList = [...(localComments[item.title] || []), ...(item.comments || [])];
         const cardClick = isVideo ? `playCommunityVideo('${item.domKey}', event)` : `selectArtSlide(${item.artIdx})`;
         return `
-          <article class="rounded-2xl overflow-hidden bg-[#111a2e] border ${isCurrent ? 'border-orange-500 ring-2 ring-orange-400/40' : 'border-slate-800/90 hover:border-amber-400/50'} shadow-md transition flex flex-col">
+          <article class="rounded-2xl overflow-hidden bg-[#0d2244] border ${isCurrent ? 'border-red-500 ring-2 ring-red-500/40' : 'border-blue-800/80 hover:border-red-500/70'} shadow-md transition flex flex-col">
             <!-- ĐẦU THẺ CỘNG ĐỒNG: TÁC GIẢ / ĐẠO TRÀNG + THỂ LOẠI -->
-            <div class="px-3 py-2 flex items-center justify-between gap-2 border-b border-slate-800/80">
+            <div class="px-3 py-2 flex items-center justify-between gap-2 border-b border-blue-900/90">
               <div class="flex items-center gap-2 min-w-0">
-                <img src="${item.img}" alt="" class="w-7 h-7 rounded-full object-cover border border-amber-400/50 shrink-0" />
+                <img src="${item.img}" alt="" class="w-7 h-7 rounded-full object-cover border-2 border-red-500/80 shrink-0" />
                 <div class="min-w-0">
-                  <div class="text-[11px] font-bold text-amber-200 truncate">${item.district}</div>
-                  <div class="text-[9.5px] text-slate-400 truncate">${item.category}</div>
+                  <div class="text-[11px] font-bold text-white truncate">${item.district}</div>
+                  <div class="text-[9.5px] text-sky-300/80 truncate">${item.category}</div>
                 </div>
               </div>
-              <span class="px-2 py-0.5 rounded-full bg-slate-800 ${isVideo ? 'text-amber-300' : 'text-emerald-300'} text-[9px] font-bold shrink-0">${item.isUserUpload ? '✨ Mới đăng' : (isVideo ? '🎬 Video' : '4K Di Sản')}</span>
+              <span class="px-2 py-0.5 rounded-full ${isVideo ? 'bg-red-600/20 text-red-300 border border-red-500/40' : 'bg-blue-800/70 text-sky-200 border border-blue-600/40'} text-[9px] font-bold shrink-0">${item.isUserUpload ? '✨ Mới đăng' : (isVideo ? '🎬 Video' : '4K Di Sản')}</span>
             </div>
 
             <!-- ẢNH / VIDEO CHÍNH -->
-            <div id="communityMediaSlot_${item.domKey}" onclick="${cardClick}" class="relative aspect-[16/10] overflow-hidden bg-slate-950 cursor-pointer group">
+            <div id="communityMediaSlot_${item.domKey}" onclick="${cardClick}" class="relative aspect-[16/10] overflow-hidden bg-[#08152b] cursor-pointer group">
               ${isVideo ? renderCommunityVideoThumbHtml(item) : `
                 <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                <div class="absolute inset-0 bg-gradient-to-t from-[#111a2e]/75 via-transparent to-transparent"></div>
-                <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-xs text-white text-[9.5px] font-semibold">4K Photo</span>
-                <button onclick="shareCommunityCard('${item.domKey}', event)" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-xs text-white flex items-center justify-center text-[10px] transition cursor-pointer" title="Chia sẻ">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0d2244]/80 via-transparent to-transparent"></div>
+                <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-blue-700/85 backdrop-blur-xs text-white text-[9.5px] font-semibold">4K Photo</span>
+                <button onclick="shareCommunityCard('${item.domKey}', event)" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-[#0d2244]/80 hover:bg-red-600 backdrop-blur-xs text-white flex items-center justify-center text-[10px] transition cursor-pointer" title="Chia sẻ">
                   <i class="fa-solid fa-share-nodes"></i>
                 </button>
               `}
@@ -2094,37 +2094,37 @@
             <!-- TIÊU ĐỀ & LỜI BÌNH CUỘC SỐNG -->
             <div onclick="${cardClick}" class="px-3 pt-2.5 pb-2 space-y-1 cursor-pointer flex-1">
               <h4 class="text-xs sm:text-[13px] font-bold text-white leading-snug line-clamp-2">${item.title}</h4>
-              <p class="text-[10.5px] text-slate-300/90 italic line-clamp-2">${item.poem}</p>
+              <p class="text-[10.5px] text-blue-100/80 italic line-clamp-2">${item.poem}</p>
             </div>
 
             <!-- THANH TƯƠNG TÁC CỘNG ĐỒNG: HOAN HỶ • LỜI CHÚC • CHIA SẺ -->
-            <div class="px-2.5 py-2 border-t border-slate-800/80 flex items-center justify-between gap-1 text-[10.5px] font-bold">
-              <button onclick="toggleCommunityLike('${item.domKey}', event)" class="flex-1 py-1.5 rounded-xl ${isFav || localLikes[item.title] ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-slate-800/70 hover:bg-slate-800 text-slate-200'} flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
-                <i class="${isFav || localLikes[item.title] ? 'fa-solid text-rose-400' : 'fa-regular'} fa-heart"></i>
+            <div class="px-2.5 py-2 border-t border-blue-900/90 flex items-center justify-between gap-1 text-[10.5px] font-bold">
+              <button onclick="toggleCommunityLike('${item.domKey}', event)" class="flex-1 py-1.5 rounded-xl ${isFav || localLikes[item.title] ? 'bg-red-600/25 text-red-300 border border-red-500/60' : 'bg-blue-900/70 hover:bg-blue-800 text-blue-100'} flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
+                <i class="${isFav || localLikes[item.title] ? 'fa-solid text-red-400' : 'fa-regular'} fa-heart"></i>
                 <span>Hoan hỷ (${likeCount})</span>
               </button>
-              <button onclick="toggleCommunityCommentBox('${item.domKey}', event)" class="flex-1 py-1.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-amber-200 flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
+              <button onclick="toggleCommunityCommentBox('${item.domKey}', event)" class="flex-1 py-1.5 rounded-xl bg-blue-900/70 hover:bg-blue-800 text-sky-200 flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
                 <i class="fa-regular fa-comment-dots"></i>
                 <span>Lời chúc (${commentsList.length})</span>
               </button>
-              <button onclick="shareCommunityCard('${item.domKey}', event)" class="px-2.5 py-1.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-emerald-300 flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
+              <button onclick="shareCommunityCard('${item.domKey}', event)" class="px-2.5 py-1.5 rounded-xl bg-red-600/85 hover:bg-red-500 text-white flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
                 <i class="fa-solid fa-share"></i>
                 <span>Gửi</span>
               </button>
             </div>
 
             <!-- KHAY GỬI LỜI CHÚC NHANH 1 CHẠM (ẨN MẶC ĐỊNH) -->
-            <div id="communityCommentBox_${item.domKey}" class="hidden px-3 pb-3 pt-1.5 bg-slate-950/70 border-t border-slate-800 space-y-2 text-[10px]">
+            <div id="communityCommentBox_${item.domKey}" class="hidden px-3 pb-3 pt-1.5 bg-[#091833] border-t border-blue-900 space-y-2 text-[10px]">
               <div class="flex items-center gap-1 flex-wrap">
-                <button onclick="sendQuickBlessing('${item.domKey}', 'A Di Đà Phật 🙏', event)" class="px-2 py-0.5 rounded-full bg-amber-500/20 hover:bg-amber-500/35 text-amber-200 border border-amber-400/30 cursor-pointer">🙏 A Di Đà Phật</button>
-                <button onclick="sendQuickBlessing('${item.domKey}', 'Chúc bà con bình an! 🌸', event)" class="px-2 py-0.5 rounded-full bg-emerald-500/20 hover:bg-emerald-500/35 text-emerald-200 border border-emerald-400/30 cursor-pointer">🌸 Chúc bình an!</button>
-                <button onclick="sendQuickBlessing('${item.domKey}', 'Hoan hỷ công đức! 👏', event)" class="px-2 py-0.5 rounded-full bg-rose-500/20 hover:bg-rose-500/35 text-rose-200 border border-rose-400/30 cursor-pointer">👏 Hoan hỷ!</button>
+                <button onclick="sendQuickBlessing('${item.domKey}', 'A Di Đà Phật 🙏', event)" class="px-2 py-0.5 rounded-full bg-blue-800/60 hover:bg-blue-700 text-sky-200 border border-blue-500/40 cursor-pointer">🙏 A Di Đà Phật</button>
+                <button onclick="sendQuickBlessing('${item.domKey}', 'Chúc bà con bình an! 🌸', event)" class="px-2 py-0.5 rounded-full bg-blue-800/60 hover:bg-blue-700 text-blue-100 border border-blue-500/40 cursor-pointer">🌸 Chúc bình an!</button>
+                <button onclick="sendQuickBlessing('${item.domKey}', 'Hoan hỷ công đức! 👏', event)" class="px-2 py-0.5 rounded-full bg-red-600/25 hover:bg-red-600/40 text-red-200 border border-red-500/40 cursor-pointer">👏 Hoan hỷ!</button>
               </div>
               <div class="flex gap-1.5">
-                <input type="text" id="communityCommentInput_${item.domKey}" placeholder="Viết lời chúc hoặc cảm nghĩ..." class="flex-1 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" onclick="event.stopPropagation()" />
-                <button onclick="submitCommunityComment('${item.domKey}', event)" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-black cursor-pointer">Gửi</button>
+                <input type="text" id="communityCommentInput_${item.domKey}" placeholder="Viết lời chúc hoặc cảm nghĩ..." class="flex-1 px-2.5 py-1 rounded-lg bg-[#0d2244] border border-blue-800 text-white placeholder-blue-300/60 focus:outline-none focus:border-red-500" onclick="event.stopPropagation()" />
+                <button onclick="submitCommunityComment('${item.domKey}', event)" class="px-2.5 py-1 rounded-lg bg-red-600 hover:bg-red-500 text-white font-black cursor-pointer">Gửi</button>
               </div>
-              ${commentsList.length > 0 ? `<div class="space-y-1 max-h-24 overflow-y-auto pt-1">${commentsList.slice(0, 4).map(cm => `<div class="text-slate-300"><b class="text-amber-300">${cm.author || 'Bà con'}:</b> ${cm.text}</div>`).join('')}</div>` : ''}
+              ${commentsList.length > 0 ? `<div class="space-y-1 max-h-24 overflow-y-auto pt-1">${commentsList.slice(0, 4).map(cm => `<div class="text-blue-100"><b class="text-red-300">${cm.author || 'Bà con'}:</b> ${cm.text}</div>`).join('')}</div>` : ''}
             </div>
           </article>
         `;
