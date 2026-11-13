@@ -10,9 +10,13 @@ const wisdomHandler = require('./wisdom');
 module.exports = (req, res) => {
   const rawUrl = req.url || '';
   const preParsed = new URL(rawUrl, 'http://localhost');
-  const origPath = preParsed.searchParams.get('__origPath');
+  let origPath = preParsed.searchParams.get('__origPath');
+  if (!origPath && preParsed.pathname.startsWith('/api/index') && req.query && Array.isArray(req.query.slug)) {
+    origPath = '/api/' + req.query.slug.join('/');
+  }
   if (origPath) {
     preParsed.searchParams.delete('__origPath');
+    preParsed.searchParams.delete('slug');
     const restQs = preParsed.searchParams.toString();
     req.url = origPath + (restQs ? '?' + restQs : '');
   }

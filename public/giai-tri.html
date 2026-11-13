@@ -4622,7 +4622,8 @@
         if (!resp.ok || data.status !== 'ok') {
           if (fb) {
             fb.className = 'p-2 rounded-xl text-[11px] font-bold text-center bg-red-600/25 text-red-200 border border-red-500/40';
-            fb.innerText = data.message || data.reason || data.error || `Không thể xác thực (HTTP ${resp.status}), vui lòng kiểm tra lại.`;
+            const errDetail = data.message || data.reason || (data.error ? `${data.error}${data.path ? ' (' + data.path + ')' : ''}` : '');
+            fb.innerText = errDetail || `Không thể xác thực (HTTP ${resp.status}), vui lòng kiểm tra lại.`;
             fb.classList.remove('hidden');
           }
           return;
