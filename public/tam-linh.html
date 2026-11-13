@@ -57,428 +57,224 @@
     }
   </style>
 
+
+
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-900 flex flex-col font-sans antialiased">
 
-  <!-- TOP HEADER GỌN GÀNG -->
+  <!-- TOP HEADER GỌN GÀNG CHUẨN APP -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-200/70 shadow-2xs px-3 sm:px-6 py-2 flex items-center justify-between gap-2">
     <div class="flex items-center gap-2 min-w-0">
-      <a href="/" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 flex items-center justify-center text-xs font-black transition active:scale-95 shrink-0" title="Về Trang Chủ Lịch Đất Phú">
-        <i class="fa-solid fa-arrow-left"></i>
-      </a>
-      <div class="flex items-center gap-2 min-w-0">
-        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-700 text-white flex items-center justify-center shadow-xs shrink-0">
-          <i class="fa-solid fa-dharmachakra text-sm"></i>
-        </div>
-        <div class="min-w-0">
-          <h1 class="text-xs sm:text-sm md:text-base font-black text-amber-950 uppercase tracking-tight truncate">
-            NIỆM PHẬT, TRÀ ĐẠO & THIỀN TÂM
-          </h1>
-          <p class="text-[10px] text-slate-500 font-medium truncate hidden sm:block">Ứng Dụng Thứ 6 • Bảo Đài Tịnh Độ • Trà Đạo Thư Quán • Góc Vui Dân Gian</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex items-center gap-1.5 shrink-0">
-      <a href="/giai-tri" class="px-2.5 py-1 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] font-bold flex items-center gap-1 transition">
-        <i class="fa-solid fa-clapperboard text-[10px]"></i>
-        <span class="hidden sm:inline">Giải Trí</span>
-      </a>
-      <button onclick="toggleDatPhuAppLauncher()" class="w-8 h-8 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 flex items-center justify-center text-xs transition active:scale-95 cursor-pointer" title="Hệ Sinh Thái 6 Ứng Dụng Đất Phú">
-        <i class="fa-solid fa-grip text-sm"></i>
+      <button onclick="toggleDatPhuAppLauncher()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-amber-50 text-slate-700 flex items-center justify-center text-sm cursor-pointer transition shrink-0" title="Menu Hệ Sinh Thái 6 App">
+        <i class="fa-solid fa-bars"></i>
       </button>
+      <h1 class="text-xs sm:text-sm md:text-base font-black text-slate-900 truncate">
+        Ứng dụng Máy Niệm Phật Số
+      </h1>
+    </div>
+    <div class="flex items-center gap-1.5 shrink-0">
+      <a href="/" class="px-2.5 py-1 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-[11px] font-bold">Lịch Đất Phú</a>
+      <a href="/giai-tri" class="px-2.5 py-1 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] font-bold">Giải Trí</a>
     </div>
   </header>
 
-  <main class="flex-1 max-w-4xl w-full mx-auto px-2.5 sm:px-5 pt-3 pb-20 space-y-3">
-    <!-- THANH 3 TAB VIÊN THUỐC GỌN ĐẸP -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-2.5 sm:px-5 pt-2.5 pb-20 space-y-3">
+    <!-- 3 TAB VIÊN THUỐC GỌN ĐẸP -->
     <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs font-bold">
       <button onclick="switchTamLinhTab('buddhist')" id="tlTab_buddhist" class="px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs font-black">
         <i class="fa-solid fa-dharmachakra text-[10px]"></i>
         <span>1. Máy Niệm Phật Số</span>
       </button>
-
       <button onclick="switchTamLinhTab('tea')" id="tlTab_tea" class="px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs">
         <i class="fa-solid fa-mug-hot text-emerald-600 text-[10px]"></i>
         <span>2. Trà Đạo Thư Quán</span>
       </button>
-
       <button onclick="switchTamLinhTab('mindful_games')" id="tlTab_mindful_games" class="px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs">
         <i class="fa-solid fa-spa text-rose-500 text-[10px]"></i>
         <span>3. Góc Vui & Thiền Thở</span>
       </button>
     </div>
 
-    <!-- TAB 1: MÁY NIỆM PHẬT SỐ -->
-    <section id="tlPanel_buddhist">
-      <div id="subBlock_buddhist" class="space-y-3 sm:space-y-4">
-        <!-- KHUNG THÂN MÁY NIỆM PHẬT CỔ ĐIỂN THẾP VÀNG GỖ QUÝ TRẦM HƯƠNG -->
-        <div class="relative max-w-xl mx-auto rounded-3xl bg-gradient-to-b from-[#241306] via-[#160a03] to-[#0c0401] p-3.5 sm:p-5 border-2 border-amber-500/70 shadow-[0_15px_45px_rgba(0,0,0,0.85),inset_0_1px_2px_rgba(255,215,0,0.25)] text-white space-y-3 select-none overflow-hidden">
-          
-          <!-- Hào quang hoàng kim dịu mắt -->
-          <div class="pointer-events-none absolute -top-16 -right-16 w-48 h-48 bg-amber-500/15 rounded-full blur-3xl"></div>
-          <div class="pointer-events-none absolute -bottom-16 -left-16 w-48 h-48 bg-orange-600/15 rounded-full blur-3xl"></div>
+    <!-- TAB 1: MÁY NIỆM PHẬT SỐ (THEO ĐÚNG MẪU GỖ TRẦM, HOA SEN & TRÀNG HẠT 108) -->
+    <section id="tlPanel_buddhist" class="space-y-3">
+      <div class="relative max-w-md mx-auto rounded-3xl bg-gradient-to-b from-[#4f2e15] via-[#3b200d] to-[#231105] p-3.5 sm:p-4 border-2 border-amber-500/60 shadow-[0_18px_50px_rgba(0,0,0,0.65),inset_0_1px_2px_rgba(255,215,0,0.3)] text-white space-y-3 select-none overflow-hidden">
+        <!-- Vân gỗ trầm dọc tinh tế -->
+        <div class="pointer-events-none absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 14px, rgba(0,0,0,0.4) 14px, rgba(0,0,0,0.4) 16px);"></div>
 
-          <!-- ĐỈNH MÁY: TIÊU ĐỀ & CHẾ ĐỘ CHIÊM BÁI / SỐ -->
-          <div class="relative z-10 flex items-center justify-between border-b border-amber-500/30 pb-2.5">
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 flex items-center justify-center font-black text-xs sm:text-sm shadow-md border border-amber-200 shrink-0">
-                📿
-              </div>
-              <div>
-                <h3 class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-normal font-sans">
-                  MÁY NIỆM PHẬT SỐ ĐẤT PHÚ
-                </h3>
-                <p class="text-[9.5px] text-amber-200/80 font-sans">Tịnh Độ Thiền Môn • Tần Số Trị Liệu 432Hz</p>
-              </div>
-            </div>
-
-            <!-- Cụm chuyển Chế độ Ban Thờ Tam Bảo & Trạng thái -->
-            <div class="flex items-center gap-1.5">
-              <button onclick="toggleBuddhistAltarView()" id="btnToggleAltarView" class="px-2 py-1 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-[10px] text-amber-300 font-bold transition flex items-center gap-1 cursor-pointer" title="Bật / Tắt Ảnh Ban Thờ Tây Phương Tam Thánh">
-                <i class="fa-solid fa-eye text-[9px]"></i>
-                <span id="altarToggleText">Chiêm Bái</span>
-              </button>
-              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/60 border border-amber-400/30">
-                <span id="buddhistLiveDot" class="w-2 h-2 rounded-full bg-slate-500"></span>
-                <span id="buddhistLiveState" class="text-[9.5px] font-mono text-amber-300 font-bold uppercase">
-                  SẴN SÀNG
-                </span>
-              </div>
+        <!-- MÀN HÌNH CHÍNH: VÒNG TRÀNG HẠT 108 HẠT & ĐÓA HOA SEN TỎA SÁNG (HOẶC CHIÊM BÁI BAN THỜ) -->
+        <div class="relative z-10 rounded-2xl bg-gradient-to-b from-[#0b2723] via-[#0d332d] to-[#061815] border border-amber-400/50 aspect-video max-h-[230px] flex items-center justify-center overflow-hidden shadow-inner">
+          <!-- Chế độ 1: Hoa Sen & Vòng Tràng Hạt 108 Hạt Phát Sáng (Mặc định giống mẫu) -->
+          <div id="lotusMalaScreenView" class="relative w-full h-full flex items-center justify-center">
+            <!-- Hào quang dịu tỏa từ tâm -->
+            <div class="absolute w-40 h-40 rounded-full bg-amber-300/15 blur-2xl animate-pulse"></div>
+            <!-- Vòng Tràng Hạt 108 Hạt SVG -->
+            <svg id="malaRingSvg" class="w-40 h-40 sm:w-44 sm:h-44 drop-shadow-[0_0_12px_rgba(251,191,36,0.4)]" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="76" fill="none" stroke="rgba(251,191,36,0.18)" stroke-width="1.5" />
+              <circle cx="100" cy="100" r="64" fill="none" stroke="rgba(251,191,36,0.25)" stroke-width="1" stroke-dasharray="2 3" />
+              <g id="malaBeadsGroup"></g>
+              <!-- Hạt chủ (Guru Bead & Tua rua) -->
+              <circle cx="100" cy="176" r="5.5" fill="#fbbf24" stroke="#fef08a" stroke-width="1.2" />
+              <path d="M100 182 L97 195 M100 182 L100 197 M100 182 L103 195" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            <!-- Đóa Hoa Sen Trắng Phát Sáng ở giữa -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <img src="img/logo_hoa_sen_real.png" alt="Hoa Sen Thanh Tịnh" class="w-16 h-16 sm:w-18 sm:h-18 rounded-full object-cover shadow-[0_0_25px_rgba(255,255,255,0.6)] border border-amber-200/60" />
+              <span class="mt-1 px-2 py-0.5 rounded-full bg-black/55 border border-amber-400/40 text-[9.5px] font-mono font-bold text-amber-200">
+                Hạt <b id="malaCurrentBead" class="text-amber-300">108</b>/108 • Vòng <b id="malaRoundCount">1</b>
+              </span>
             </div>
           </div>
 
-          <!-- BAN THỜ TAM BẢO & PHÁP BẢO CHUÔNG MÕ (CÓ THỂ ẨN/HIỆN) -->
-          <div id="buddhistAltarDisplay" class="hidden relative z-10 rounded-2xl overflow-hidden border border-amber-500/50 shadow-inner bg-black">
-            <!-- Tabs chuyển đổi giữa Ban Thờ Tam Bảo & Chuông Mõ -->
-            <div class="absolute top-2 right-2 z-20 flex items-center gap-1 bg-black/75 backdrop-blur-md p-1 rounded-xl border border-amber-400/40 text-[9.5px] font-bold">
-              <button onclick="setAltarSubView('altar')" id="btnAltarTab_altar" class="px-2 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer">
-                🏛️ Ban Thờ
-              </button>
-              <button onclick="setAltarSubView('bells')" id="btnAltarTab_bells" class="px-2 py-0.5 rounded-lg text-amber-200 hover:text-white transition cursor-pointer">
-                🔔 Chuông Mõ
-              </button>
+          <!-- Chế độ 2: Ban Thờ Tây Phương Tam Thánh & Chuông Mõ (Ẩn mặc định) -->
+          <div id="buddhistAltarDisplay" class="hidden absolute inset-0 w-full h-full bg-black">
+            <div class="absolute top-2 left-2 z-20 flex items-center gap-1 bg-black/75 p-0.5 rounded-lg border border-amber-400/40 text-[9px] font-bold">
+              <button onclick="setAltarSubView('altar')" id="btnAltarTab_altar" class="px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-black cursor-pointer">🏛️ Ban Thờ</button>
+              <button onclick="setAltarSubView('bells')" id="btnAltarTab_bells" class="px-2 py-0.5 rounded text-amber-200 cursor-pointer">🔔 Chuông Mõ</button>
             </div>
-
-            <!-- Khung 1: Ban Thờ Tam Bảo -->
-            <div id="altarView_altar" class="relative">
-              <img src="img/phat_phap_cong_dong/ban_tho_tam_bao_tay_phuong_tam_thanh.jpg" alt="Ban Thờ Tây Phương Tam Thánh Đất Phú" class="w-full max-h-52 sm:max-h-60 object-cover object-center filter brightness-95">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent flex flex-col justify-end p-3">
-                <div class="text-[11px] font-black text-amber-300 uppercase font-sans">Tây Phương Tam Thánh Tiếp Dẫn Chúng Sanh</div>
-                <div class="text-[9.5px] text-amber-100/90 font-serif italic">Nam Mô A Di Đà Phật • Nam Mô Quán Thế Âm Bồ Tát • Nam Mô Đại Thế Chí Bồ Tát</div>
-              </div>
+            <div id="altarView_altar" class="w-full h-full relative">
+              <img src="img/phat_phap_cong_dong/ban_tho_tam_bao_tay_phuong_tam_thanh.jpg" alt="Tây Phương Tam Thánh" class="w-full h-full object-cover" />
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2 text-[9.5px] text-amber-200 font-bold text-center">Tây Phương Tam Thánh Tiếp Dẫn Chúng Sanh</div>
             </div>
-
-            <!-- Khung 2: Pháp Bảo Chuông Bát & Mõ Gỗ Thiền Tự -->
-            <div id="altarView_bells" class="hidden relative">
-              <img src="img/chuong_mo_phat_giao_thien_vien.jpg" alt="Chuông Bát Đồng & Mõ Gỗ Thiền Tự Đất Phú" class="w-full max-h-52 sm:max-h-60 object-cover object-center filter brightness-95">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent flex flex-col justify-end p-3">
-                <div class="text-[11px] font-black text-amber-300 uppercase font-sans flex items-center gap-1.5">
-                  <span>Pháp Bảo Chuông Bát & Mõ Gỗ Cá Chép</span>
-                  <span class="text-[9px] px-1.5 py-0.2 bg-amber-500/30 text-amber-200 rounded border border-amber-400/40 font-mono">Bảo Khí</span>
-                </div>
-                <div class="text-[9.5px] text-amber-100/90 font-serif italic">Tiếng chuông thanh tịnh cảnh tỉnh trần tâm • Tiếng mõ điều hòa nhiếp tâm tụng niệm</div>
-              </div>
+            <div id="altarView_bells" class="hidden w-full h-full relative">
+              <img src="img/chuong_mo_phat_giao_thien_vien.jpg" alt="Chuông Bát & Mõ Gỗ" class="w-full h-full object-cover" />
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2 text-[9.5px] text-amber-200 font-bold text-center">Pháp Bảo Chuông Bát & Mõ Gỗ Thiền Tự</div>
             </div>
           </div>
 
-          <!-- MÀN HÌNH OLED HỔ PHÁCH HUYỀN ẢO (AMBER OLED DISPLAY) -->
-          <div id="buddhistOledDisplay" class="relative z-10 rounded-2xl bg-gradient-to-b from-[#120802] to-[#070301] p-3 sm:p-3.5 border-2 border-amber-500/60 shadow-[inset_0_3px_10px_rgba(0,0,0,0.95)] space-y-2">
-            <!-- Hàng trên: Tần số và Danh mục -->
-            <div class="flex items-center justify-between text-[10px] font-mono">
-              <div class="flex items-center gap-1.5 text-amber-400 font-bold">
-                <i class="fa-solid fa-dharmachakra animate-spin" style="animation-duration: 12s;"></i>
-                <span id="buddhistTrackCategoryText">NIỆM PHẬT TỊNH ĐỘ</span>
-              </div>
-              <div class="text-amber-300/80 font-bold">
-                Tần Số: <span class="text-amber-200 font-black">432 Hz Solfeggio</span>
-              </div>
-            </div>
+          <!-- Nút góc trên trái: Chuyển Chiêm Bái -->
+          <button onclick="toggleBuddhistAltarView()" id="btnToggleAltarView" class="absolute top-2 left-2 z-30 px-2 py-1 rounded-lg bg-black/55 hover:bg-black/75 border border-amber-400/40 text-[9.5px] text-amber-200 font-bold flex items-center gap-1 cursor-pointer transition">
+            <i class="fa-solid fa-eye text-[9px]"></i>
+            <span id="altarToggleText">Chiêm Bái</span>
+          </button>
 
-            <!-- Giữa màn hình: Tiêu đề & Bộ đếm LED biến niệm -->
-            <div class="flex items-center justify-between gap-2.5 pt-0.5">
-              <div class="min-w-0 flex-1">
-                <h2 id="buddhistLcdTitle" class="text-xs sm:text-sm font-black text-amber-100 truncate font-sans leading-tight">
-                  Nam Mô A Di Đà Phật (Điệu Trầm Hùng)
-                </h2>
-                <div class="text-[10.5px] text-amber-300/80 truncate mt-0.5 font-medium font-sans">
-                  Đạo Tràng Đất Phú • Tịnh Độ Tông
-                </div>
-              </div>
+          <!-- Nút góc trên phải: Bật/Tắt Tiếng Mõ -->
+          <button onclick="toggleBuddhistMetronome()" id="btnBuddhistWoodblock" class="absolute top-2 right-2 z-30 w-8 h-8 rounded-lg bg-black/55 hover:bg-black/75 border border-amber-400/40 text-amber-300 flex items-center justify-center cursor-pointer transition" title="Bật / Tắt Tiếng Mõ">
+            <i id="woodblockSpeakerIcon" class="fa-solid fa-volume-high text-xs"></i>
+          </button>
 
-              <!-- BỘ ĐẾM BIẾN LED GỌN GÀNG -->
-              <div class="text-right shrink-0 bg-black/85 px-2.5 py-1 rounded-xl border border-amber-400/40 shadow-inner">
-                <div id="buddhistMalaCount" class="text-2xl sm:text-3xl font-black font-mono text-amber-300 tracking-wider drop-shadow-[0_0_8px_rgba(245,158,11,0.6)] leading-none">
-                  108
-                </div>
-                <div class="text-[8px] text-amber-200/70 font-bold uppercase tracking-wider mt-0.5">BIẾN NIỆM</div>
-              </div>
-            </div>
+          <!-- Nút góc dưới phải: Phát nền -->
+          <button onclick="toggleBackgroundWakeLock()" id="btnBgPlayMode" class="absolute bottom-2 right-2 z-30 px-2 py-1 rounded-lg bg-black/60 hover:bg-black/80 border border-amber-400/40 text-amber-200 text-[9.5px] font-bold flex items-center gap-1 cursor-pointer transition" title="Giữ màn hình sáng khi niệm Phật">
+            <i class="fa-solid fa-mobile-screen-button text-[10px]"></i>
+            <span id="bgPlayText">Phát nền</span>
+          </button>
+        </div>
 
-            <!-- TIẾN ĐỘ CHUỖI TRÀNG HẠT 108 HẠT TRỰC QUAN -->
-            <div class="pt-1.5 border-t border-amber-500/20 space-y-1">
-              <div class="flex items-center justify-between text-[9px] font-mono font-bold text-amber-200/85">
-                <span class="flex items-center gap-1">
-                  📿 Hạt thứ: <b id="malaCurrentBead" class="text-amber-300 font-mono text-[10.5px]">108</b> / 108
-                </span>
-                <span class="text-amber-300 flex items-center gap-1">
-                  Vòng Chuỗi: <b id="malaRoundCount" class="text-amber-300 font-mono text-[10.5px]">1</b>
-                </span>
-              </div>
-              <!-- Thanh hạt tiến độ hiển thị trực quan lấp lánh -->
-              <div class="relative w-full h-1.5 sm:h-2 rounded-full bg-black/85 border border-amber-500/40 overflow-hidden shadow-inner flex items-center">
-                <div id="malaProgressBar" class="h-full bg-gradient-to-r from-amber-600 via-amber-400 to-yellow-300 rounded-full transition-all duration-200 shadow-[0_0_8px_rgba(245,158,11,0.8)]" style="width: 100%;"></div>
-              </div>
-            </div>
-
-            <!-- Dưới màn hình: Dòng tụng niệm Karaoke chữ thư thái -->
-            <div class="pt-1 border-t border-amber-500/20 text-center">
-              <p id="buddhistKaraokeLine" class="text-[11px] sm:text-xs font-bold text-amber-200 font-serif italic tracking-wide">
-                "Nam Mô A Di Đà Phật • Nam Mô A Di Đà Phật"
-              </p>
-            </div>
+        <!-- KHUNG "BÂY GIỜ ĐANG PHÁT" -->
+        <div class="relative z-10 rounded-xl bg-black/45 border border-amber-500/35 px-3 py-2 text-center space-y-0.5 shadow-inner">
+          <div class="text-[10px] text-amber-200/80 font-medium">bây giờ đang phát</div>
+          <h2 id="buddhistLcdTitle" class="text-xs sm:text-sm font-black text-white truncate">
+            Nam Mô A Di Đà Phật (Điệu Trầm Hùng)
+          </h2>
+          <p id="buddhistKaraokeLine" class="text-[10.5px] text-amber-200/90 italic font-serif truncate">
+            "Nam Mô A Di Đà Phật • Nam Mô A Di Đà Phật"
+          </p>
+          <div class="flex items-center justify-center gap-3 pt-0.5 text-[10px] text-amber-300 font-mono">
+            <span id="buddhistLiveState" class="font-bold">SẴN SÀNG</span>
+            <span>•</span>
+            <span>Biến: <b id="buddhistMalaCount" class="text-amber-200">108</b></span>
+            <span>•</span>
+            <span id="ritualTimerDisplay">⏳ Tự Do</span>
           </div>
+        </div>
 
-          <!-- THANH KHAI KHÓA LỄ & HẸN GIỜ THỜI KHÓA TU TẬP -->
-          <div class="relative z-10 p-2 sm:p-2.5 rounded-2xl bg-black/60 border border-amber-500/40 text-[10.5px] font-sans space-y-1.5 shadow-md">
-            <div class="flex items-center justify-between gap-2">
-              <!-- Nút Khai Khóa Lễ Chuông Mõ Tự Động -->
-              <button onclick="startBuddhistRitualCeremony()" id="btnStartRitual" class="px-2.5 py-1 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-slate-950 font-black text-[10.5px] flex items-center gap-1.5 shadow active:scale-95 transition cursor-pointer" title="Tự động Khai 3 tiếng Chuông & Hồi Mõ Đạo Tràng">
-                <i class="fa-solid fa-dharmachakra"></i>
-                <span id="btnStartRitualText">Khai Khóa Lễ Chuông Mõ</span>
-              </button>
-              <!-- Đồng hồ đếm ngược thời khóa -->
-              <div id="ritualTimerDisplay" class="font-mono text-amber-300 font-bold text-[10px] bg-black/80 px-2 py-0.5 rounded-lg border border-amber-400/30 shrink-0">
-                ⏳ Tự Do
-              </div>
-            </div>
+        <!-- 3 NÚT ĐIỀU KHIỂN CHÍNH (BÀI TRƯỚC - PHÁT/TẠM DỪNG - BÀI TIẾP THEO) -->
+        <div class="relative z-10 flex items-center justify-around px-2 py-1">
+          <button onclick="prevBuddhistTrack()" class="flex flex-col items-center gap-1 text-amber-100 hover:text-white active:scale-95 transition cursor-pointer">
+            <i class="fa-solid fa-backward-step text-xl"></i>
+            <span class="text-[10px] font-bold">Bài trước</span>
+          </button>
 
-            <!-- Các mốc hẹn giờ thời khóa tu tập -->
-            <div class="flex items-center gap-1 text-[9.5px] font-bold">
-              <span class="text-amber-200/70 uppercase text-[8.5px] shrink-0">Thời lượng:</span>
-              <button onclick="setRitualTimer(0)" id="timerBtn_0" class="flex-1 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer">Tự Do</button>
-              <button onclick="setRitualTimer(15)" id="timerBtn_15" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">15 Phút</button>
-              <button onclick="setRitualTimer(30)" id="timerBtn_30" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">30 Phút</button>
-              <button onclick="setRitualTimer(45)" id="timerBtn_45" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">45 Phút</button>
-              <button onclick="setRitualTimer(60)" id="timerBtn_60" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">60 Phút</button>
-            </div>
-          </div>
-
-          <!-- CỤM NÚT ĐIỀU KHIỂN CHÍNH (ICON CHUÔNG MÕ CHẠM KHẮC TINH XẢO) -->
-          <div class="relative z-10 flex items-center justify-around gap-2 pt-1">
-            <!-- Nút bật/tắt Mõ Thiền Viện (Icon Mõ Gỗ Cá Chép) -->
-            <button onclick="toggleBuddhistMetronome()" id="btnBuddhistWoodblock" class="group flex flex-col items-center gap-1 cursor-pointer active:scale-95 transition" title="Bật / Tắt Tiếng Mõ">
-              <div id="woodblockIconBox" class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-gradient-to-b from-[#3a1f0a] to-[#201004] border-2 border-amber-500/60 hover:border-amber-400 shadow-md flex items-center justify-center p-1.5 transition group-hover:scale-105">
-                <!-- ICON MÕ GỖ CÁ CHÉP THIỀN MÔN (ĐỒNG ĐIỆU VỚI PHÁP BẢO THẬT) -->
-                <svg class="w-8 h-8 drop-shadow" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="moWoodGrad" x1="8" y1="4" x2="40" y2="44" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stop-color="#fef08a"/>
-                      <stop offset="35%" stop-color="#f59e0b"/>
-                      <stop offset="75%" stop-color="#b45309"/>
-                      <stop offset="100%" stop-color="#78350f"/>
-                    </linearGradient>
-                    <linearGradient id="moWoodHole" x1="16" y1="28" x2="32" y2="36" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stop-color="#451a03"/>
-                      <stop offset="100%" stop-color="#120401"/>
-                    </linearGradient>
-                  </defs>
-                  <!-- Vòm thân Mõ hình Ngư Đầu cá chép -->
-                  <path d="M24 5C13.5 5 7 14 7 24.5C7 34 11 41 13 41.5C14.5 42 16.5 40 18.5 40C20.5 40 21 42 24 42C27 42 27.5 40 29.5 40C31.5 40 33.5 42 35 41.5C37 41 41 34 41 24.5C41 14 34.5 5 24 5Z" fill="url(#moWoodGrad)" stroke="#fde047" stroke-width="1.2" stroke-linejoin="round"/>
-                  <!-- Họa tiết chữ Thọ & Vòng tròn Pháp Luân trên đỉnh -->
-                  <circle cx="24" cy="14" r="5" fill="#fef9c3" stroke="#92400e" stroke-width="0.9" fill-opacity="0.3"/>
-                  <path d="M24 10.5V17.5M20.5 14H27.5M21.5 12.5H26.5M21.5 15.5H26.5" stroke="#78350f" stroke-width="0.8" stroke-linecap="round"/>
-                  <!-- Họa tiết vảy cá chép hóa rồng tinh xảo -->
-                  <path d="M14 18C16 19.5 17 22 17 25M34 18C32 19.5 31 22 31 25" stroke="#92400e" stroke-width="0.9" stroke-linecap="round" fill="none"/>
-                  <path d="M18 17C20.5 18 22 20 22 22.5M30 17C27.5 18 26 20 26 22.5" stroke="#92400e" stroke-width="0.9" stroke-linecap="round" fill="none"/>
-                  <path d="M12 24C13.5 26.5 15 28 17 29M36 24C34.5 26.5 33 28 31 29" stroke="#92400e" stroke-width="0.8" stroke-linecap="round" fill="none"/>
-                  <!-- Khe miệng mõ (Lỗ cộng hưởng âm thanh) -->
-                  <path d="M17 31.5C17 29.5 19 28 24 28C29 28 31 29.5 31 31.5C31 33.5 28.5 34.5 24 34.5C19.5 34.5 17 33.5 17 31.5Z" fill="url(#moWoodHole)" stroke="#fef08a" stroke-width="0.8"/>
-                  <ellipse cx="24" cy="31.2" rx="4.5" ry="1.5" fill="#0c0301"/>
-                  <path d="M9 37.5C12 36 14.5 37 15 39M39 37.5C36 36 33.5 37 33 39" stroke="#78350f" stroke-width="0.9" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <span class="text-[9.5px] font-bold text-amber-200 font-sans">Mõ: <b id="woodblockStateText" class="text-emerald-400">BẬT</b></span>
-            </button>
-
-            <!-- NÚT PHÁT TRUNG TÂM MẠ VÀNG 3D -->
-            <button onclick="toggleBuddhistPlay()" id="btnBuddhistMasterPlay" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 border-2 sm:border-3 border-amber-200 shadow-[0_8px_20px_rgba(245,158,11,0.6)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.8)] hover:scale-105 active:scale-95 text-slate-950 flex items-center justify-center font-black text-2xl sm:text-3xl transition duration-150 cursor-pointer" title="Bấm để Phát / Dừng Tụng Niệm">
+          <button onclick="toggleBuddhistPlay()" id="btnBuddhistMasterPlay" class="flex flex-col items-center gap-1 cursor-pointer group">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-amber-300 via-orange-400 to-amber-600 border-2 border-amber-100 shadow-[0_6px_20px_rgba(245,158,11,0.65)] group-hover:scale-105 group-active:scale-95 flex items-center justify-center text-white text-2xl transition">
               <i id="buddhistMasterPlayIcon" class="fa-solid fa-play ml-0.5 drop-shadow"></i>
-            </button>
-
-            <!-- Nút Gõ Mõ Thủ Công (+1) kèm dùi gỗ bọc gấm vàng -->
-            <button onclick="manualHitWoodblock()" class="group flex flex-col items-center gap-1 cursor-pointer active:scale-95 transition" title="Gõ Mõ Thủ Công +1">
-              <div id="duiMalaBox" class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-gradient-to-b from-[#3a1f0a] to-[#201004] border-2 border-amber-500/60 hover:border-amber-400 shadow-md flex items-center justify-center p-1.5 transition group-hover:scale-105">
-                <!-- ICON DÙI GÕ MÕ GỖ BỌC GẤM VÀNG (ĐỒNG ĐIỆU VỚI DÙI GẤM THẬT) -->
-                <svg class="w-8 h-8 drop-shadow" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="duiHandleGrad" x1="6" y1="42" x2="32" y2="16" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stop-color="#451a03"/>
-                      <stop offset="40%" stop-color="#78350f"/>
-                      <stop offset="70%" stop-color="#9a3412"/>
-                      <stop offset="100%" stop-color="#431407"/>
-                    </linearGradient>
-                    <linearGradient id="duiBrocadeGrad" x1="26" y1="8" x2="44" y2="26" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stop-color="#fef08a"/>
-                      <stop offset="40%" stop-color="#f59e0b"/>
-                      <stop offset="80%" stop-color="#d97706"/>
-                      <stop offset="100%" stop-color="#b45309"/>
-                    </linearGradient>
-                  </defs>
-                  <!-- Cán dùi bằng gỗ tiện tròn màu cánh gián -->
-                  <path d="M9 41L27 23" stroke="url(#duiHandleGrad)" stroke-width="4.5" stroke-linecap="round"/>
-                  <!-- Khớp tiện tròn hoa văn trên cán dùi -->
-                  <circle cx="14" cy="36" r="3.2" fill="#92400e" stroke="#fde047" stroke-width="0.8"/>
-                  <circle cx="20" cy="30" r="2.8" fill="#92400e" stroke="#fde047" stroke-width="0.8"/>
-                  <circle cx="8" cy="42" r="3.2" fill="#78350f" stroke="#ca8a04" stroke-width="0.8"/>
-                  <!-- Đầu dùi bọc lụa gấm vàng hoa văn sang trọng -->
-                  <g transform="rotate(45 35 15)">
-                    <rect x="29" y="9" width="12" height="15" rx="5" fill="url(#duiBrocadeGrad)" stroke="#fef08a" stroke-width="1"/>
-                    <line x1="29" y1="13" x2="41" y2="13" stroke="#78350f" stroke-width="1"/>
-                    <line x1="29" y1="20" x2="41" y2="20" stroke="#78350f" stroke-width="1"/>
-                    <circle cx="35" cy="16.5" r="1.8" fill="#78350f" fill-opacity="0.6"/>
-                  </g>
-                </svg>
-              </div>
-              <span class="text-[9.5px] font-bold text-amber-200 font-sans">Gõ Mõ +1</span>
-            </button>
-          </div>
-
-          <!-- BẢNG ĐIỀU KHIỂN BỔ TRỢ: TỐC ĐỘ, THỈNH CHUÔNG, TỔNG BIẾN & HỒI HƯỚNG -->
-          <div class="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-0.5 text-xs font-sans">
-            <!-- Tốc độ niệm -->
-            <div class="p-2 rounded-xl bg-black/50 border border-amber-500/30 flex flex-col justify-between">
-              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Nhịp Niệm:</span>
-              <div class="flex items-center gap-1 mt-1">
-                <button onclick="setBuddhistSpeed(2.0)" id="bSpeed_1" class="flex-1 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[9.5px] transition" title="Nhịp thong dong">Chậm</button>
-                <button onclick="setBuddhistSpeed(1.5)" id="bSpeed_2" class="flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[9.5px] transition" title="Nhịp vừa">Vừa</button>
-                <button onclick="setBuddhistSpeed(1.0)" id="bSpeed_3" class="flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[9.5px] transition" title="Nhịp nhanh">Nhanh</button>
-              </div>
             </div>
+            <span class="text-[10px] font-bold text-amber-100">Phát / Tạm dừng</span>
+          </button>
 
-            <!-- Nút thỉnh chuông đồng bát (Icon Chuông Bát Đồng Đen Viền Vàng Trên Đệm Sen Gấm) -->
-            <button onclick="playTempleBronzeBell()" id="btnTempleBell" class="p-2 rounded-xl bg-black/50 hover:bg-amber-950/80 border border-amber-500/30 text-left flex flex-col justify-between transition active:scale-95 cursor-pointer group">
-              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Chuông Bát:</span>
-              <div class="flex items-center gap-1.5 text-amber-300 font-bold mt-1 text-[11px]">
-                <div class="w-5 h-5 shrink-0 group-hover:scale-115 transition">
-                  <svg class="w-full h-full drop-shadow" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <linearGradient id="bellCushion" x1="10" y1="36" x2="38" y2="44" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#b91c1c"/>
-                        <stop offset="45%" stop-color="#dc2626"/>
-                        <stop offset="100%" stop-color="#991b1b"/>
-                      </linearGradient>
-                      <linearGradient id="bellBronzeBody" x1="8" y1="12" x2="40" y2="36" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#475569"/>
-                        <stop offset="25%" stop-color="#1e293b"/>
-                        <stop offset="60%" stop-color="#0f172a"/>
-                        <stop offset="100%" stop-color="#020617"/>
-                      </linearGradient>
-                      <linearGradient id="bellGoldRim" x1="6" y1="12" x2="42" y2="15" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#fef08a"/>
-                        <stop offset="30%" stop-color="#facc15"/>
-                        <stop offset="70%" stop-color="#eab308"/>
-                        <stop offset="100%" stop-color="#ca8a04"/>
-                      </linearGradient>
-                    </defs>
-                    <!-- Đệm sen gấm đỏ viền vàng -->
-                    <ellipse cx="24" cy="40" rx="17" ry="5.5" fill="url(#bellCushion)" stroke="#facc15" stroke-width="0.9"/>
-                    <path d="M12 40C15 42 19 43 24 43C29 43 33 42 36 40" stroke="#fef08a" stroke-width="0.8" stroke-dasharray="1.5 1.5"/>
-                    <!-- Thân Chuông Bát đồng đen -->
-                    <path d="M7.5 15C7.5 28 14 36 24 36C34 36 40.5 28 40.5 15C36 18 28 19 24 19C20 19 12 18 7.5 15Z" fill="url(#bellBronzeBody)" stroke="#64748b" stroke-width="0.8"/>
-                    <!-- Lòng chuông đen tuyền -->
-                    <ellipse cx="24" cy="14" rx="16.5" ry="5" fill="#090d16" stroke="#facc15" stroke-width="0.5"/>
-                    <ellipse cx="24" cy="14" rx="14" ry="3.8" fill="#020408"/>
-                    <!-- Vành chuông dát đồng vàng sáng bóng -->
-                    <ellipse cx="24" cy="13.5" rx="16.5" ry="4.5" fill="none" stroke="url(#bellGoldRim)" stroke-width="1.8"/>
-                    <path d="M11 14.5C14 16 19 16.8 24 16.8C29 16.8 34 16 37 14.5" stroke="#fef9c3" stroke-width="0.9" stroke-linecap="round" opacity="0.8"/>
-                  </svg>
-                </div>
-                <span>Thỉnh Chuông 🔔</span>
-              </div>
-            </button>
+          <button onclick="nextBuddhistTrack()" class="flex flex-col items-center gap-1 text-amber-100 hover:text-white active:scale-95 transition cursor-pointer">
+            <i class="fa-solid fa-forward-step text-xl"></i>
+            <span class="text-[10px] font-bold">Bài tiếp theo</span>
+          </button>
+        </div>
 
-            <!-- Tổng công đức tích lũy -->
-            <div class="p-2 rounded-xl bg-black/50 border border-amber-500/30 flex flex-col justify-between">
-              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Tổng Biến:</span>
-              <div id="buddhistLifetimeCount" class="text-xs sm:text-sm font-black text-amber-300 font-mono mt-1">
-                1,080
-              </div>
-            </div>
+        <!-- HÀNG 3 NÚT CHẾ ĐỘ (VÒNG LẶP | PHÁT NGẪU NHIÊN | HẸN GIỜ TẮT) -->
+        <div class="relative z-10 grid grid-cols-3 gap-2 text-center">
+          <button onclick="toggleBuddhistLoopMode()" id="btnLoopOneMode" class="p-2 rounded-xl bg-black/45 hover:bg-black/65 border border-amber-500/45 flex flex-col items-center gap-1 transition active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-repeat text-sm text-amber-300"></i>
+            <span id="loopModeText" class="text-[9.5px] font-bold text-amber-100">Vòng Lặp (1 Bài)</span>
+          </button>
 
-            <!-- Nút kệ hồi hướng -->
-            <button onclick="toggleDedicationDrawer()" class="p-2 rounded-xl bg-black/50 hover:bg-amber-950/80 border border-amber-500/30 text-left flex flex-col justify-between transition active:scale-95 cursor-pointer">
-              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Cầu An:</span>
-              <div class="flex items-center gap-1 text-rose-300 font-bold mt-1 text-[11px]">
-                <i class="fa-solid fa-hands-praying text-rose-400"></i>
-                <span>Khấn Hồi Hướng</span>
-              </div>
-            </button>
+          <button onclick="toggleBuddhistShuffle()" id="btnShuffleMode" class="p-2 rounded-xl bg-black/45 hover:bg-black/65 border border-amber-500/30 flex flex-col items-center gap-1 transition active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-shuffle text-sm text-amber-200/80"></i>
+            <span id="shuffleModeText" class="text-[9.5px] font-bold text-amber-100/90">Phát ngẫu nhiên</span>
+          </button>
+
+          <button onclick="toggleRitualTimerDrawer()" id="btnTimerDrawerToggle" class="p-2 rounded-xl bg-black/45 hover:bg-black/65 border border-amber-500/30 flex flex-col items-center gap-1 transition active:scale-95 cursor-pointer">
+            <i class="fa-regular fa-clock text-sm text-amber-200/80"></i>
+            <span class="text-[9.5px] font-bold text-amber-100/90">Hẹn giờ tắt</span>
+          </button>
+        </div>
+
+        <!-- KHAY HẸN GIỜ TẮT & NHỊP MÕ (ẨN/HIỆN KHI BẤM "HẸN GIỜ TẮT") -->
+        <div id="ritualTimerDrawer" class="hidden relative z-10 p-2.5 rounded-xl bg-black/60 border border-amber-400/40 space-y-2 text-[10px]">
+          <div class="flex items-center gap-1 font-bold">
+            <span class="text-amber-200/80 shrink-0">Hẹn giờ:</span>
+            <button onclick="setRitualTimer(0)" id="timerBtn_0" class="flex-1 py-1 rounded bg-amber-500 text-slate-950 font-black cursor-pointer">Tự Do</button>
+            <button onclick="setRitualTimer(15)" id="timerBtn_15" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">15p</button>
+            <button onclick="setRitualTimer(30)" id="timerBtn_30" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">30p</button>
+            <button onclick="setRitualTimer(45)" id="timerBtn_45" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">45p</button>
+            <button onclick="setRitualTimer(60)" id="timerBtn_60" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">60p</button>
           </div>
-
-          <!-- KHUNG KỆ HỒI HƯỚNG CÔNG ĐỨC (ẨN/HIỆN) -->
-          <div id="dedicationPrayerDrawer" class="hidden relative z-10 p-3 rounded-2xl bg-gradient-to-r from-amber-950/90 to-[#291304] border border-amber-400/60 text-center space-y-1 animate-fade-in text-xs shadow-lg">
-            <div class="text-[10.5px] font-black text-amber-300 uppercase tracking-wide font-sans">KỆ HỒI HƯỚNG CÔNG ĐỨC ĐẤT PHÚ</div>
-            <p class="text-amber-100 font-serif leading-relaxed italic text-xs">
-              "Nguyện đem công đức này • Hướng về khắp tất cả • Đệ tử và chúng sanh • Đều trọn thành Phật đạo."
-            </p>
-            <p class="text-[9.5px] text-amber-300/80 pt-0.5">Cầu chúc quê hương mưa thuận gió hòa, bão lũ tiêu trừ, toàn gia bình an cát tường.</p>
+          <div class="flex items-center gap-1 font-bold">
+            <span class="text-amber-200/80 shrink-0">Nhịp mõ:</span>
+            <button onclick="setBuddhistSpeed(2.0)" id="bSpeed_1" class="flex-1 py-1 rounded bg-amber-500 text-slate-950 font-black cursor-pointer">Chậm</button>
+            <button onclick="setBuddhistSpeed(1.5)" id="bSpeed_2" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">Vừa</button>
+            <button onclick="setBuddhistSpeed(1.0)" id="bSpeed_3" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">Nhanh</button>
           </div>
+        </div>
 
-          <!-- CHẾ ĐỘ PHÁT & NẠP FILE MP3 TỪ MÁY -->
-          <div class="relative z-10 flex flex-wrap items-center justify-between gap-1.5 p-2 rounded-xl bg-black/60 border border-amber-500/30 text-[11px] font-sans">
-            <div class="flex items-center gap-1.5">
-              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Chế độ:</span>
-              <button onclick="setBuddhistAudioMode('audio')" id="btnModeAudio" class="px-2 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black text-[10.5px] transition cursor-pointer">
-                🎙️ Bản Thu Âm
-              </button>
-              <button onclick="setBuddhistAudioMode('metronome')" id="btnModeMetronome" class="px-2 py-0.5 rounded-lg bg-slate-800 text-amber-200 font-bold text-[10.5px] transition cursor-pointer">
-                📿 Chuông Mõ Tự Niệm
-              </button>
-            </div>
+        <!-- THANH PHÁP KHÍ NHANH: GÕ MÕ (+1) • THỈNH CHUÔNG BÁT • KHAI KHÓA LỄ • HỒI HƯỚNG -->
+        <div class="relative z-10 grid grid-cols-4 gap-1.5 text-[9.5px] font-bold">
+          <button onclick="manualHitWoodblock()" id="duiMalaBox" class="py-1.5 px-1 rounded-xl bg-black/45 hover:bg-amber-950/70 border border-amber-500/35 flex items-center justify-center gap-1 text-amber-200 active:scale-95 transition cursor-pointer">
+            <span>🪵 Gõ Mõ +1</span>
+          </button>
+          <button onclick="playTempleBronzeBell()" id="btnTempleBell" class="py-1.5 px-1 rounded-xl bg-black/45 hover:bg-amber-950/70 border border-amber-500/35 flex items-center justify-center gap-1 text-amber-200 active:scale-95 transition cursor-pointer">
+            <span>🔔 Chuông</span>
+          </button>
+          <button onclick="startBuddhistRitualCeremony()" id="btnStartRitual" class="py-1.5 px-1 rounded-xl bg-black/45 hover:bg-amber-950/70 border border-amber-500/35 flex items-center justify-center gap-1 text-amber-300 active:scale-95 transition cursor-pointer">
+            <span id="btnStartRitualText">☸️ Khai Lễ</span>
+          </button>
+          <button onclick="toggleDedicationDrawer()" class="py-1.5 px-1 rounded-xl bg-black/45 hover:bg-amber-950/70 border border-amber-500/35 flex items-center justify-center gap-1 text-rose-200 active:scale-95 transition cursor-pointer">
+            <span>🙏 Hồi Hướng</span>
+          </button>
+        </div>
 
+        <!-- KHUNG KỆ HỒI HƯỚNG CÔNG ĐỨC (ẨN/HIỆN) -->
+        <div id="dedicationPrayerDrawer" class="hidden relative z-10 p-2.5 rounded-xl bg-amber-950/90 border border-amber-400/50 text-center space-y-1 text-[11px]">
+          <div class="font-black text-amber-300 uppercase">KỆ HỒI HƯỚNG CÔNG ĐỨC ĐẤT PHÚ</div>
+          <p class="text-amber-100 font-serif italic">"Nguyện đem công đức này • Hướng về khắp tất cả • Đệ tử và chúng sanh • Đều trọn thành Phật đạo."</p>
+        </div>
+
+        <!-- DANH SÁCH BÀI NIỆM CHIA THEO CHƯƠNG (NHƯ MẪU THIẾT KẾ) -->
+        <div class="relative z-10 space-y-1.5">
+          <div class="flex items-center justify-between px-0.5">
+            <h3 class="text-xs sm:text-sm font-black text-amber-100">Danh sách bài niệm</h3>
             <div>
               <input type="file" id="buddhistFileInput" accept="audio/*" class="hidden" onchange="handleBuddhistFileUpload(event)">
-              <button onclick="document.getElementById('buddhistFileInput').click()" class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-[10.5px] shadow transition active:scale-95 flex items-center gap-1 cursor-pointer">
-                <i class="fa-solid fa-folder-open text-[10px]"></i>
-                <span>📁 Nạp File MP3 Của Bạn</span>
+              <button onclick="document.getElementById('buddhistFileInput').click()" class="px-2 py-0.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] cursor-pointer flex items-center gap-1">
+                <i class="fa-solid fa-folder-open text-[9px]"></i>
+                <span>+ Nạp MP3</span>
               </button>
             </div>
           </div>
 
-          <!-- Audio Element phát bản thu MP3 thật -->
-          <audio id="buddhistAudioElement" class="hidden" preload="auto"></audio>
-
-          <!-- DẢI CHỌN BÀI NHANH 1 - 6 (COMPACT QUICK SELECTOR) -->
-          <div class="relative z-10 pt-1.5 border-t border-amber-500/30 flex items-center justify-between gap-1 text-[11px]">
-            <span class="text-[9.5px] text-amber-200/80 font-bold uppercase flex items-center gap-1 shrink-0">
-              <i class="fa-solid fa-list-ol text-amber-400"></i> Bài:
-            </span>
-            <div class="flex items-center gap-1 flex-1 justify-end font-mono font-black text-xs">
-              <button onclick="selectBuddhistTrack(0)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">1</button>
-              <button onclick="selectBuddhistTrack(1)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">2</button>
-              <button onclick="selectBuddhistTrack(2)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">3</button>
-              <button onclick="selectBuddhistTrack(3)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">4</button>
-              <button onclick="selectBuddhistTrack(4)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">5</button>
-              <button onclick="selectBuddhistTrack(5)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">6</button>
-            </div>
+          <div id="buddhistPlaylistContainer" class="rounded-2xl bg-[#091c18]/95 border border-amber-500/35 p-2.5 space-y-2 max-h-60 overflow-y-auto" style="scrollbar-width: thin; scrollbar-color: #d97706 #061815;">
+            <!-- Đổ tự động chia Chương 1 & Chương 2 bởi renderBuddhistPlaylist() -->
           </div>
         </div>
 
-        <!-- KHO THẺ NHỚ PHÁP ÂM (MICROSD DHARMA PLAYLIST) -->
-        <div class="card-box bg-white border border-amber-200/80 rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-2.5">
-          <div class="flex items-center justify-between border-b border-amber-100 pb-2">
-            <h3 class="text-xs sm:text-sm font-black text-amber-950 uppercase tracking-normal flex items-center gap-1.5 font-sans">
-              <i class="fa-solid fa-dharmachakra text-amber-600"></i>
-              <span>Kho Thẻ Nhớ Pháp Âm • Tuyển Tập Danh Hiệu & Kinh Chú</span>
-            </h3>
-            <span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">6 Danh mục chuẩn mực</span>
-          </div>
-          <div id="buddhistPlaylistContainer" class="space-y-1.5"></div>
-        </div>
+        <audio id="buddhistAudioElement" class="hidden" preload="auto"></audio>
       </div>
-
-      
     </section>
 
     <!-- TAB 2: TRÀ ĐẠO THƯ QUÁN -->
@@ -876,6 +672,10 @@
     
     </section>
 
+    
+
+    
+
     <!-- TAB 3: GÓC VUI & THIỀN THỞ 4-7-8 -->
     <section id="tlPanel_mindful_games" class="hidden space-y-4">
       <section id="channelSection_mindful" class="space-y-4">
@@ -1009,6 +809,10 @@
     </section>
   </main>
 
+  
+
+  
+
   <!-- BOTTOM NAVIGATION BAR -->
   <nav class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
     <div class="max-w-xl mx-auto grid grid-cols-4 gap-1 text-center">
@@ -1031,7 +835,6 @@
     </div>
   </nav>
 
-  
   <!-- ================= UNIVERSAL APP LAUNCHER MODAL (6 ỨNG DỤNG HỆ SINH THÁI ĐẤT PHÚ) ================= -->
   <div id="datPhuAppLauncherModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-start justify-end p-3 sm:p-5" onclick="if(event.target === this) toggleDatPhuAppLauncher()">
     <div class="bg-white rounded-3xl border-2 border-amber-400 shadow-2xl p-4 sm:p-5 w-full max-w-sm mt-12 sm:mt-14 space-y-4 text-slate-800">
@@ -1122,8 +925,1309 @@
       if (modal) modal.classList.toggle('hidden');
     }
 
+    // Dữ liệu & hàm Máy Niệm Phật + Trà Đạo + Thiền Thở 4-7-8
+    // 4. MÁY NIỆM PHẬT SỐ & TIẾNG MÕ
+    const BUDDHIST_CHENTS = [
+      { id: 1, title: "Nam Mô A Di Đà Phật (Điệu Trầm Hùng)", line: "Nam Mô A Di Đà Phật • Nam Mô A Di Đà Phật", freq: 432 },
+      { id: 2, title: "Nam Mô Quán Thế Âm Bồ Tát (Cứu Khổ Cứu Nạn)", line: "Nam Mô Đại Bi Quán Thế Âm Bồ Tát", freq: 528 },
+      { id: 3, title: "Kinh Chú Đại Bi 84 Câu (Thanh Tịnh)", line: "Thiên thủ thiên nhãn vô ngại đại bi tâm đà la ni...", freq: 396 },
+      { id: 4, title: "Nam Mô Bổn Sư Thích Ca Mâu Ni Phật", line: "Nam Mô Bổn Sư Thích Ca Mâu Ni Phật", freq: 432 },
+      { id: 5, title: "Nam Mô Địa Tạng Vương Bồ Tát", line: "Nam Mô Đại Nguyện Địa Tạng Vương Bồ Tát", freq: 432 },
+      { id: 6, title: "Chú Vãng Sanh Tịnh Độ (An Lành)", line: "Nam mô a di đa bà dạ, đá tha già đá dạ...", freq: 528 }
+    ];
+
+    let currentBuddhistIdx = 0;
+    let isBuddhistPlaying = false;
+    let isWoodblockActive = true;
+    let woodblockTimer = null;
+    let buddhistCount = 108;
+
     
+    function setAltarSubView(mode) {
+      const vAltar = document.getElementById('altarView_altar');
+      const vBells = document.getElementById('altarView_bells');
+      const btnA = document.getElementById('btnAltarTab_altar');
+      const btnB = document.getElementById('btnAltarTab_bells');
+      if (mode === 'altar') {
+        if (vAltar) vAltar.classList.remove('hidden');
+        if (vBells) vBells.classList.add('hidden');
+        if (btnA) btnA.className = "px-2 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer";
+        if (btnB) btnB.className = "px-2 py-0.5 rounded-lg text-amber-200 hover:text-white transition cursor-pointer";
+      } else {
+        if (vAltar) vAltar.classList.add('hidden');
+        if (vBells) vBells.classList.remove('hidden');
+        if (btnB) btnB.className = "px-2 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer";
+        if (btnA) btnA.className = "px-2 py-0.5 rounded-lg text-amber-200 hover:text-white transition cursor-pointer";
+      }
+    }
+
+    function toggleBuddhistAltarView() {
+      const altar = document.getElementById('buddhistAltarDisplay');
+      const btnText = document.getElementById('altarToggleText');
+      if (!altar) return;
+      const isHidden = altar.classList.contains('hidden');
+      if (isHidden) {
+        altar.classList.remove('hidden');
+        if (btnText) btnText.innerText = 'Ẩn Ảnh';
+      } else {
+        altar.classList.add('hidden');
+        if (btnText) btnText.innerText = 'Chiêm Bái';
+      }
+    }
+
+    function renderBuddhistPlaylist() {
+      const c = document.getElementById('buddhistPlaylistContainer');
+      if (!c) return;
+      c.innerHTML = BUDDHIST_CHENTS.map((item, idx) => {
+        const isCurrent = (idx === currentBuddhistIdx);
+        return `
+          <div onclick="selectBuddhistTrack(${idx})" class="p-2.5 sm:p-3 rounded-xl cursor-pointer transition flex items-center justify-between gap-2.5 ${isCurrent ? 'bg-gradient-to-r from-amber-100 via-amber-50 to-orange-50 border-2 border-amber-500/80 shadow-xs' : 'bg-slate-50 hover:bg-amber-50/60 border border-slate-200/80'}">
+            <div class="flex items-center gap-2.5 min-w-0 flex-1">
+              <span class="w-7 h-7 rounded-lg ${isCurrent ? 'bg-amber-500 text-slate-950 font-black' : 'bg-amber-500/15 text-amber-900 font-bold'} font-mono text-xs flex items-center justify-center shrink-0">
+                ${isCurrent ? '<i class="fa-solid fa-volume-high text-[11px] animate-pulse"></i>' : (idx + 1)}
+              </span>
+              <div class="min-w-0 flex-1">
+                <h4 class="text-xs sm:text-sm font-black truncate font-sans ${isCurrent ? 'text-amber-950' : 'text-slate-800'}">${item.title}</h4>
+                <p class="text-[10px] text-slate-500 truncate italic font-serif mt-0.5">"${item.line}"</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-[9.5px] font-bold ${isCurrent ? 'text-amber-900 bg-amber-200/80 border border-amber-300' : 'text-amber-800 bg-amber-100/70'} px-2 py-0.5 rounded-full font-mono">${item.freq || 432}Hz</span>
+              <button class="w-6 h-6 rounded-full ${isCurrent ? 'bg-amber-500 text-slate-950' : 'bg-slate-200 text-slate-600'} flex items-center justify-center text-[10px] shadow-xs">
+                <i class="fa-solid ${isCurrent && isBuddhistPlaying ? 'fa-pause' : 'fa-play'} ml-0.5"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectBuddhistTrack(idx) {
+      if (idx === currentBuddhistIdx && isBuddhistPlaying) {
+        toggleBuddhistPlay();
+        return;
+      }
+      currentBuddhistIdx = idx;
+      const track = BUDDHIST_CHENTS[idx];
+      const lcdTitle = document.getElementById('buddhistLcdTitle');
+      const karaokeLine = document.getElementById('buddhistKaraokeLine');
+      if (lcdTitle) lcdTitle.innerText = track.title;
+      if (karaokeLine) karaokeLine.innerText = '"' + track.line + '"';
+      renderBuddhistPlaylist();
+      updateLifetimeMalaDisplay();
+      updateMalaProgressUI();
+      if (!isBuddhistPlaying) {
+        toggleBuddhistPlay();
+      } else {
+        const audioEl = document.getElementById('buddhistAudioElement');
+        if (buddhistAudioMode === 'audio' && track && track.url && audioEl) {
+          audioEl.src = track.url;
+          audioEl.loop = true;
+          audioEl.play().catch(e => {});
+        }
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          speakBuddhistVerse();
+        }
+      }
+    }
+
+    // =========================================================================
+    // PHÁT TIẾNG TỤNG NIỆM PHẬT THẬT KÈM TIẾNG MÕ GỖ
+    // =========================================================================
+    let buddhistChantSpeechTimer = null;
+
+    // =========================================================================
+    // ĐIỆU NIỆM PHẬT THIỀN MÔN THONG DONG • CHẬM RÃI • TRANG NGHIÊM
+    // =========================================================================
+    function speakBuddhistVerse() {
+      if (!isBuddhistPlaying) return;
+      const track = BUDDHIST_CHENTS[currentBuddhistIdx];
+      if (!track) return;
+
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        
+        // Ngắt nhịp chữ thong dong như chư Tăng tụng trong chùa
+        const solemnText = track.line.replace(/•/g, ', ');
+        const utter = new SpeechSynthesisUtterance(solemnText);
+        utter.lang = 'vi-VN';
+        utter.rate = 0.68; // Chậm rãi, thư thái, từng chữ tròn vành rõ chữ
+        utter.pitch = 0.82; // Âm vực trầm ấm thanh tịnh
+        
+        utter.onend = () => {
+          if (isBuddhistPlaying) {
+            // Khoảng lặng 1.5 giây giữa các biến niệm để Phật tử thở sâu và nhiếp tâm
+            buddhistChantSpeechTimer = setTimeout(() => {
+              speakBuddhistVerse();
+            }, 1500);
+          }
+        };
+
+        utter.onerror = () => {
+          if (isBuddhistPlaying) {
+            buddhistChantSpeechTimer = setTimeout(() => {
+              speakBuddhistVerse();
+            }, 2000);
+          }
+        };
+
+        window.speechSynthesis.speak(utter);
+      }
+    }
+
+
+    // =========================================================================
+    // NÂNG CẤP ÂM THANH TỰ NHIÊN 100%: PHÁT BẢN THU MP3 THẬT TỪ MÁY HOẶC LINK
+    // =========================================================================
+    let buddhistAudioMode = 'audio'; // 'audio' (bản thu thật) hoặc 'metronome' (chỉ chuông mõ)
+
+    function setBuddhistAudioMode(mode) {
+      buddhistAudioMode = mode;
+      const btnA = document.getElementById('btnModeAudio');
+      const btnM = document.getElementById('btnModeMetronome');
+
+      if (btnA) btnA.className = (mode === 'audio') ? "px-2.5 py-1 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition" : "px-2.5 py-1 rounded-xl bg-slate-800 text-amber-200 font-bold text-xs transition";
+      if (btnM) btnM.className = (mode === 'metronome') ? "px-2.5 py-1 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition" : "px-2.5 py-1 rounded-xl bg-slate-800 text-amber-200 font-bold text-xs transition";
+
+      if (isBuddhistPlaying) {
+        toggleBuddhistPlay(); // Restart with new mode
+        toggleBuddhistPlay();
+      }
+    }
+
+    function handleBuddhistFileUpload(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+
+      const file = files[0];
+      const objectUrl = URL.createObjectURL(file);
+      const cleanName = file.name.replace(/\.[^/.]+$/, "");
+
+      // Thêm bài mới vào danh sách và chọn phát ngay
+      const newTrack = {
+        id: BUDDHIST_CHENTS.length + 1,
+        title: cleanName,
+        line: "Bản thu âm thanh thật nạp từ điện thoại của bạn",
+        url: objectUrl,
+        isCustom: true
+      };
+
+      BUDDHIST_CHENTS.unshift(newTrack);
+      currentBuddhistIdx = 0;
+      setBuddhistAudioMode('audio');
+      selectBuddhistTrack(0);
+
+      const audioEl = document.getElementById('buddhistAudioElement');
+      if (audioEl) {
+        audioEl.src = objectUrl;
+        audioEl.play().catch(e => {});
+        isBuddhistPlaying = true;
+        document.getElementById('buddhistMasterPlayIcon').className = "fa-solid fa-pause drop-shadow";
+        updateBuddhistStateUI();
+      }
+
+      alert("Đã nạp thành công bài niệm Phật: " + cleanName + " từ máy của bạn! Âm thanh giờ đây là giọng người thật 100% tự nhiên.");
+    }
+
+    function updateBuddhistStateUI() {
+      const dot = document.getElementById('buddhistLiveDot');
+      const stateText = document.getElementById('buddhistLiveState');
+      if (dot) dot.className = isBuddhistPlaying ? "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" : "w-2.5 h-2.5 rounded-full bg-slate-600";
+      if (stateText) stateText.innerText = isBuddhistPlaying ? "ĐANG TỤNG NIỆM" : "SẴN SÀNG";
+    }
+
+    function toggleBuddhistPlay() {
+      const audioEl = document.getElementById('buddhistAudioElement');
+      const track = BUDDHIST_CHENTS[currentBuddhistIdx];
+
+      if (isBuddhistPlaying) {
+        isBuddhistPlaying = false;
+        if (audioEl) audioEl.pause();
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        if (buddhistChantSpeechTimer) {
+          clearTimeout(buddhistChantSpeechTimer);
+          buddhistChantSpeechTimer = null;
+        }
+        clearInterval(woodblockTimer);
+        woodblockTimer = null;
+        document.getElementById('buddhistMasterPlayIcon').className = "fa-solid fa-play ml-1 drop-shadow";
+        updateBuddhistStateUI();
+
+      } else {
+        isBuddhistPlaying = true;
+        document.getElementById('buddhistMasterPlayIcon').className = "fa-solid fa-pause drop-shadow";
+        updateBuddhistStateUI();
+
+        // Nếu có bản thu âm MP3 của bài đang chọn hoặc bài nạp từ máy
+        if (buddhistAudioMode === 'audio' && track && track.url && audioEl) {
+          audioEl.src = track.url;
+          audioEl.loop = true;
+          audioEl.play().catch(err => {
+            console.log('Audio autoplay prevented, fallback to temple chime');
+          });
+        }
+
+        // Đệm tiếng mõ gỗ chùa trầm ấm
+        if (isWoodblockActive) {
+          startWoodblockLoop();
+        }
+      }
+    }
+
+    function toggleBuddhistMetronome() {
+      isWoodblockActive = !isWoodblockActive;
+      document.getElementById('woodblockStateText').innerText = isWoodblockActive ? "BẬT" : "TẮT";
+      if (!isWoodblockActive && woodblockTimer) {
+        clearInterval(woodblockTimer);
+        woodblockTimer = null;
+      } else if (isWoodblockActive && isBuddhistPlaying) {
+        startWoodblockLoop();
+      }
+    }
+
+    function startWoodblockLoop() {
+      if (woodblockTimer) clearInterval(woodblockTimer);
+      woodblockTimer = setInterval(() => {
+        manualHitWoodblock();
+      }, 1200);
+    }
+
+    function manualHitWoodblock() {
+      buddhistCount++;
+      const malaEl = document.getElementById('buddhistMalaCount');
+      if (malaEl) malaEl.innerText = buddhistCount;
+      
+      // Hiệu ứng gõ mõ cơ học nảy nhẹ 3D
+      const moBox = document.getElementById('woodblockIconBox');
+      const duiBox = document.getElementById('duiMalaBox');
+      if (moBox) {
+        moBox.classList.add('scale-90', 'border-amber-300');
+        setTimeout(() => moBox.classList.remove('scale-90', 'border-amber-300'), 120);
+      }
+      if (duiBox) {
+        duiBox.classList.add('-rotate-12');
+        setTimeout(() => duiBox.classList.remove('-rotate-12'), 120);
+      }
+
+      playWoodblockSound();
+      updateMalaProgressUI();
+      if (navigator.vibrate) navigator.vibrate(25);
+    }
+
+    // =========================================================================
+    // TIẾNG MÕ GỖ MÍT CHÙA CỔ TRẦM ẤM (REALISTIC ACOUSTIC TEMPLE WOODBLOCK)
+    // =========================================================================
+    function playWoodblockSound() {
+      try {
+        if (!radioAudioContext) {
+          radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (radioAudioContext.state === 'suspended') {
+          radioAudioContext.resume();
+        }
+
+        const now = radioAudioContext.currentTime;
+
+        // 1. Tiếng Dùi Bọc Vải Gõ (Felt Mallet Transient Thump - Trầm ấm 220Hz)
+        const oscThump = radioAudioContext.createOscillator();
+        const gainThump = radioAudioContext.createGain();
+        oscThump.type = "sine";
+        oscThump.frequency.setValueAtTime(220, now);
+        oscThump.frequency.exponentialRampToValueAtTime(110, now + 0.04);
+
+        gainThump.gain.setValueAtTime(0.45, now);
+        gainThump.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+
+        oscThump.connect(gainThump);
+        gainThump.connect(radioAudioContext.destination);
+        oscThump.start(now);
+        oscThump.stop(now + 0.06);
+
+        // 2. Thân Mõ Gỗ Rỗng (Hollow Wooden Fish Body Acoustic Resonance)
+        const oscBody = radioAudioContext.createOscillator();
+        const filter = radioAudioContext.createBiquadFilter();
+        const gainBody = radioAudioContext.createGain();
+
+        oscBody.type = "triangle";
+        oscBody.frequency.setValueAtTime(480, now);
+
+        filter.type = "bandpass";
+        filter.frequency.setValueAtTime(480, now);
+        filter.Q.setValueAtTime(4.8, now);
+
+        gainBody.gain.setValueAtTime(0.5, now);
+        gainBody.gain.exponentialRampToValueAtTime(0.001, now + 0.075);
+
+        oscBody.connect(filter);
+        filter.connect(gainBody);
+        gainBody.connect(radioAudioContext.destination);
+
+        oscBody.start(now);
+        oscBody.stop(now + 0.08);
+
+      } catch(e) {}
+    }
+
+    function pressBuddhistDigit(digit) {
+      document.getElementById('buddhistKeypadDisplay').innerText = digit;
+      const targetIdx = digit - 1;
+      if (targetIdx >= 0 && targetIdx < BUDDHIST_CHENTS.length) {
+        selectBuddhistTrack(targetIdx);
+      }
+    }
+
+    // 5. BỘ TRỘN ÂM THANH THIÊN NHIÊN (SOUNDSCAPE MIXER)
+    let isHealingPlaying = false;
+    let mixerTimer = null;
+    let mixerVolumes = { rain: 60, ocean: 50, wind: 40, flute: 35 };
+
     
+    function resetAllMixerVolumes() {
+      updateMixerVolume('rain', 60);
+      updateMixerVolume('ocean', 50);
+      updateMixerVolume('wind', 40);
+      updateMixerVolume('flute', 35);
+      document.getElementById('sliderVolRain').value = 60;
+      document.getElementById('sliderVolOcean').value = 50;
+      document.getElementById('sliderVolWind').value = 40;
+      document.getElementById('sliderVolFlute').value = 35;
+    }
+
+    function updateMixerVolume(type, val) {
+      mixerVolumes[type] = parseInt(val);
+      const textEl = document.getElementById('vol' + type.charAt(0).toUpperCase() + type.slice(1) + 'Text');
+      if (textEl) textEl.innerText = val + '%';
+    }
+
+    
+    // BỘ TỔNG HỢP ÂM THANH ĐÀN TRANH NGŨ CUNG & TỰ ĐỘNG RU NGỦ (ZEN HARP SYNTHESIS)
+    const ZEN_PENTATONIC_FREQS = [261.63, 293.66, 349.23, 392.00, 440.00, 523.25, 587.33];
+    let isAutoLullabyPlaying = false;
+    let autoLullabyTimer = null;
+
+    function pluckZenString(stringIndex, freq) {
+      try {
+        if (!radioAudioContext) {
+          radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (radioAudioContext.state === 'suspended') radioAudioContext.resume();
+
+        const now = radioAudioContext.currentTime;
+
+        // Âm cơ bản (Sine wave)
+        const osc1 = radioAudioContext.createOscillator();
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(freq, now);
+
+        // Họa âm dây tơ tằm (Triangle wave)
+        const osc2 = radioAudioContext.createOscillator();
+        osc2.type = "triangle";
+        osc2.frequency.setValueAtTime(freq * 2, now);
+
+        // Bộ lọc Lowpass mô phỏng độ cộng hưởng thùng gỗ đàn tranh
+        const filter = radioAudioContext.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(2200, now);
+        filter.frequency.exponentialRampToValueAtTime(500, now + 0.35);
+
+        // Gain envelope: Attack cực nhanh 3ms, Decay êm dịu ngân dài 2.8s
+        const gainNode = radioAudioContext.createGain();
+        const baseVol = (mixerVolumes.rain / 100) * 0.28; // Tương thích với volume đàn tranh
+        gainNode.gain.setValueAtTime(0.0001, now);
+        gainNode.gain.linearRampToValueAtTime(baseVol, now + 0.003);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
+
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(radioAudioContext.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 2.9);
+        osc2.stop(now + 2.9);
+
+        // Hiệu ứng thị giác dây đàn rung
+        const stringBtn = document.getElementById('zenString_' + stringIndex);
+        if (stringBtn) {
+          stringBtn.classList.add('ring-2', 'ring-amber-300', 'bg-amber-900/80');
+          setTimeout(() => {
+            stringBtn.classList.remove('ring-2', 'ring-amber-300', 'bg-amber-900/80');
+          }, 350);
+        }
+
+      } catch (e) {
+        console.warn('pluckZenString error:', e);
+      }
+    }
+
+    function toggleZenAutoLullaby() {
+      if (isAutoLullabyPlaying) {
+        stopZenAutoLullaby();
+      } else {
+        startZenAutoLullaby();
+      }
+    }
+
+    function startZenAutoLullaby() {
+      isAutoLullabyPlaying = true;
+      const btn = document.getElementById('btnAutoLullaby');
+      const icon = document.getElementById('autoLullabyIcon');
+      const text = document.getElementById('autoLullabyText');
+      if (btn) btn.classList.add('border-amber-300', 'bg-amber-900/90', 'shadow-[0_0_15px_rgba(245,158,11,0.5)]');
+      if (icon) icon.className = "fa-solid fa-circle-pause text-amber-300";
+      if (text) text.innerText = "Dừng Điệu Ru";
+
+      if (!isHealingPlaying) {
+        toggleHealingMasterPlay();
+      }
+
+      // Vòng lặp ngẫu hứng ngũ cung ru ngủ
+      const lullabySequence = [0, 2, 4, 3, 1, 3, 5, 4, 2, 0, 3, 4, 6, 5, 3];
+      let step = 0;
+
+      function playNextLullabyNote() {
+        if (!isAutoLullabyPlaying) return;
+        const noteIdx = lullabySequence[step % lullabySequence.length];
+        pluckZenString(noteIdx, ZEN_PENTATONIC_FREQS[noteIdx]);
+        step++;
+
+        // Nhịp điệu chậm rãi êm đềm (2.2s đến 3.4s giữa các nốt)
+        const nextDelay = 2200 + Math.random() * 1200;
+        autoLullabyTimer = setTimeout(playNextLullabyNote, nextDelay);
+      }
+
+      playNextLullabyNote();
+    }
+
+    function stopZenAutoLullaby() {
+      isAutoLullabyPlaying = false;
+      if (autoLullabyTimer) {
+        clearTimeout(autoLullabyTimer);
+        autoLullabyTimer = null;
+      }
+      const btn = document.getElementById('btnAutoLullaby');
+      const icon = document.getElementById('autoLullabyIcon');
+      const text = document.getElementById('autoLullabyText');
+      if (btn) btn.classList.remove('border-amber-300', 'bg-amber-900/90', 'shadow-[0_0_15px_rgba(245,158,11,0.5)]');
+      if (icon) icon.className = "fa-solid fa-wand-magic-sparkles text-amber-400 group-hover:rotate-12 transition";
+      if (text) text.innerText = "Đàn Tự Động Ru";
+    }
+
+    function toggleHealingMasterPlay() {
+      if (isHealingPlaying) {
+        isHealingPlaying = false;
+        clearInterval(mixerTimer);
+        stopZenAutoLullaby();
+        mixerTimer = null;
+        document.getElementById('healingMasterPlayIcon').className = "fa-solid fa-play ml-1 drop-shadow";
+      const hBadge = document.getElementById('healingLiveBadge'); if (hBadge) hBadge.classList.add('hidden');
+      } else {
+        isHealingPlaying = true;
+        document.getElementById('healingMasterPlayIcon').className = "fa-solid fa-pause drop-shadow";
+      const hBadge = document.getElementById('healingLiveBadge'); if (hBadge) hBadge.classList.remove('hidden');
+        startHealingSoundscape();
+      }
+    }
+
+    function startHealingSoundscape() {
+      try {
+        if (!radioAudioContext) {
+          radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (radioAudioContext.state === 'suspended') radioAudioContext.resume();
+
+        mixerTimer = setInterval(() => {
+          if (!isHealingPlaying || !radioAudioContext) return;
+
+          // Tiếng mưa nhẹ + chuông gió
+          const osc = radioAudioContext.createOscillator();
+          const gain = radioAudioContext.createGain();
+
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(432, radioAudioContext.currentTime);
+
+          const volFactor = (mixerVolumes.wind / 100) * 0.15;
+          gain.gain.setValueAtTime(0.001, radioAudioContext.currentTime);
+          gain.gain.exponentialRampToValueAtTime(volFactor, radioAudioContext.currentTime + 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.0001, radioAudioContext.currentTime + 2.5);
+
+          osc.connect(gain);
+          gain.connect(radioAudioContext.destination);
+
+          osc.start();
+          osc.stop(radioAudioContext.currentTime + 2.6);
+        }, 2800);
+
+      } catch(e) {}
+    }
+
+    function playSolfeggioTone(freq) {
+      try {
+        if (!radioAudioContext) radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (radioAudioContext.state === 'suspended') radioAudioContext.resume();
+
+        const osc = radioAudioContext.createOscillator();
+        const gain = radioAudioContext.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, radioAudioContext.currentTime);
+
+        gain.gain.setValueAtTime(0.001, radioAudioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.2, radioAudioContext.currentTime + 0.2);
+        gain.gain.exponentialRampToValueAtTime(0.0001, radioAudioContext.currentTime + 3.0);
+
+        osc.connect(gain);
+        gain.connect(radioAudioContext.destination);
+
+        osc.start();
+        osc.stop(radioAudioContext.currentTime + 3.1);
+
+        if (navigator.vibrate) navigator.vibrate(50);
+      } catch(e) {}
+    }
+
+    // 6. THIỀN THỞ ĐÓA SEN 4-7-8 & ĐẾM HẠT 108
+    let isBreathingActive = false;
+    let breathTimer = null;
+    let breathPhase = 'inhale'; // inhale (4), hold (7), exhale (8)
+    let breathCounter = 4;
+
+    function toggleBreathPractice() {
+      const btn = document.getElementById('btnToggleBreath');
+      if (isBreathingActive) {
+        isBreathingActive = false;
+        clearInterval(breathTimer);
+        breathTimer = null;
+        if (btn) btn.innerText = "Bắt Đầu Luyện Thở";
+        document.getElementById('breathPhaseText').innerText = "NGHỈ NGƠI";
+        document.getElementById('breathCountdown').innerText = "--";
+        document.getElementById('lotusPulseAnimCircle').style.transform = "scale(1)";
+      } else {
+        isBreathingActive = true;
+        if (btn) btn.innerText = "Dừng Luyện Thở";
+        breathPhase = 'inhale';
+        breathCounter = 4;
+        updateBreathUI();
+
+        breathTimer = setInterval(() => {
+          breathCounter--;
+          if (breathCounter <= 0) {
+            if (breathPhase === 'inhale') {
+              breathPhase = 'hold';
+              breathCounter = 7;
+              playSolfeggioTone(528); // Chuông chuyển nhịp
+            } else if (breathPhase === 'hold') {
+              breathPhase = 'exhale';
+              breathCounter = 8;
+            } else {
+              breathPhase = 'inhale';
+              breathCounter = 4;
+              playSolfeggioTone(432); // Chuông bắt đầu chu kỳ
+            }
+          }
+          updateBreathUI();
+        }, 1000);
+      }
+    }
+
+    function updateBreathUI() {
+      const phaseMap = {
+        inhale: { label: "HÍT VÀO TỪ TỐN (4s)", color: "text-emerald-600", scale: "scale(1.2)" },
+        hold: { label: "NÍN THỞ TĨNH TÂM (7s)", color: "text-amber-600", scale: "scale(1.2)" },
+        exhale: { label: "THỞ RA NHẸ NHÀNG (8s)", color: "text-rose-600", scale: "scale(0.85)" }
+      };
+      const info = phaseMap[breathPhase];
+      const phaseEl = document.getElementById('breathPhaseText');
+      if (phaseEl) {
+        phaseEl.innerText = info.label;
+        phaseEl.className = "text-sm font-black uppercase " + info.color;
+      }
+      const countEl = document.getElementById('breathCountdown');
+      if (countEl) countEl.innerText = breathCounter + "s";
+
+      const circle = document.getElementById('lotusPulseAnimCircle');
+      if (circle) circle.style.transform = info.scale;
+    }
+
+    // ĐẾM CHUỖI TRÀNG HẠT 108 HẠT CÓ RUNG
+    let malaBeadCount = 0;
+    let malaRounds = 0;
+
+    function countMalaBead() {
+      malaBeadCount++;
+      if (navigator.vibrate) navigator.vibrate(30);
+
+      if (malaBeadCount >= 108) {
+        malaBeadCount = 0;
+        malaRounds++;
+        document.getElementById('malaCompletedRounds').innerText = "Đã xong: " + malaRounds + " vòng";
+        playSolfeggioTone(528);
+        alert("Chúc mừng bạn đã hoàn thành trọn vẹn 1 chuỗi 108 hạt chánh niệm!");
+      }
+      document.getElementById('malaMainCounter').innerText = malaBeadCount;
+      playWoodblockSound();
+    }
+
+    function resetMalaCount() {
+      malaBeadCount = 0;
+      document.getElementById('malaMainCounter').innerText = "0";
+    }
+
+    // HỆ SINH THÁI & THEME
+    
+
+    // Dữ liệu & hàm Hội Bài Chòi
+    const BAI_CHOI_DECK = [
+      {
+        name: "NHỨT NỌC",
+        pho: "Pho Văn • Quân 1",
+        symbol: "🪵",
+        chant: "Đi đâu mà vội mà vàng, dừng chân đứng lại coi làng hát chơi... Là con Nhứt Nọc!",
+        meaning: "Lời mở đầu lễ hội tưng bừng, chúc bà con làm ăn một năm mới thuận buồm xuôi gió, nhà nhà no ấm."
+      },
+      {
+        name: "NHÌ NGHÈO",
+        pho: "Pho Văn • Quân 2",
+        symbol: "🛖",
+        chant: "Nghèo tiền nghèo bạc chớ nghèo nhân nghĩa, sắm cái áo mới đi trẩy hội xuân... Là con Nhì Nghèo!",
+        meaning: "Đề cao đạo lý sống thủy chung, nghĩa tình xóm làng Xứ Nẫu luôn bền chặt qua bao mùa giông bão."
+      },
+      {
+        name: "TAM QUĂNG",
+        pho: "Pho Vạn • Quân 3",
+        symbol: "🎣",
+        chant: "Quăng chài thả lưới giữa dòng sông Ba, cá tôm đầy rổ tiếng cười giòn tan... Là con Tam Quăng!",
+        meaning: "Hình ảnh lao động khỏe khoắn của ngư dân sông Ba và vịnh Xuân Đài, biểu trưng cho sự sung túc tài lộc."
+      },
+      {
+        name: "TỨ CẲNG",
+        pho: "Pho Sách • Quân 4",
+        symbol: "🏃",
+        chant: "Bốn chân bốn cẳng chạy vội về quê, mẹ chờ cơm nóng ấm nồng tình thương... Là con Tứ Cẳng!",
+        meaning: "Lời nhắc nhở tha thiết những người con Đất Phú xa quê mau chóng quay về sum vầy bên mái ấm gia đình."
+      },
+      {
+        name: "NGŨ TRỢT",
+        pho: "Pho Vạn • Quân 5",
+        symbol: "🌱",
+        chant: "Bước thấp bước cao trượt bờ cỏ biếc, nắm tay em lại lòng dạ xốn xang... Là con Ngũ Trợt!",
+        meaning: "Nét duyên dáng hóm hỉnh của tình yêu đôi lứa miền quê Đất Phú trên những triền đồi ngát xanh."
+      },
+      {
+        name: "LỤC HỘT",
+        pho: "Pho Văn • Quân 6",
+        symbol: "🌾",
+        chant: "Hột lúa vàng ươm đồng bằng Tuy Hòa, mồ hôi một giọt ngọc trời ban cho... Là con Lục Hột!",
+        meaning: "Tôn vinh hạt ngọc trời của vựa lúa Tuy Hòa lớn nhất miền Trung, chở che đời sống nhân dân."
+      },
+      {
+        name: "THẤT VUNG",
+        pho: "Pho Sách • Quân 7",
+        symbol: "🍲",
+        chant: "Mở nắp vung nồi bánh canh hẹ thơm, khói bay nghi ngút mời anh xơi liền... Là con Thất Vung!",
+        meaning: "Giới thiệu món ẩm thực trứ danh bánh canh hẹ Đất Phú, ấm lòng người viễn xứ mỗi khi nhớ về."
+      },
+      {
+        name: "BÁT BỒNG",
+        pho: "Pho Vạn • Quân 8",
+        symbol: "👶",
+        chant: "Bồng con ngồi ngóng bóng thuyền ngoài khơi, bao mùa giông bão vẫn trọn thủy chung... Là con Bát Bồng!",
+        meaning: "Tấm lòng kiên trinh son sắt của người mẹ, người vợ miền biển ngóng đợi con thuyền trở về bình an."
+      },
+      {
+        name: "CỬU CHÙA",
+        pho: "Pho Văn • Quân 9",
+        symbol: "🛕",
+        chant: "Chuông chùa thanh tịnh văng vẳng sườn non, khói hương nghi ngút an lạc thân tâm... Là con Cửu Chùa!",
+        meaning: "Sự bình an, thanh thản nơi chốn tổ đình di tích lịch sử Đất Phú, cầu chúc phước lành cho muôn dân."
+      },
+      {
+        name: "ÔNG ẦM",
+        pho: "Pho Sách • Quân 10",
+        symbol: "⚡",
+        chant: "Trời gầm một tiếng sấm rền ngoài khơi, mưa thuận gió hòa được mùa lúa thơm... Là con Ông Ầm!",
+        meaning: "Tiếng sấm đầu mùa báo hiệu mưa lành tưới mát ruộng đồng, xua tan hạn hán cho bà con nông nghiệp."
+      }
+    ];
+
+    let currentBaiChoiIdx = 0;
+
+    function drawBaiChoiCard() {
+      // Hiệu ứng âm thanh gõ trống Tum & thanh la bài chòi
+      playBaiChoiDrum();
+
+      const nextIdx = Math.floor(Math.random() * BAI_CHOI_DECK.length);
+      currentBaiChoiIdx = nextIdx;
+      const card = BAI_CHOI_DECK[nextIdx];
+
+      const frame = document.getElementById('baiChoiCardFrame');
+      if (frame) {
+        frame.style.transform = 'scale(0.85) rotate(-8deg)';
+        setTimeout(() => {
+          document.getElementById('baiChoiCardSymbol').innerText = card.symbol;
+          document.getElementById('baiChoiCardName').innerText = card.name;
+          document.getElementById('baiChoiBadgePho').innerText = card.pho;
+          document.getElementById('baiChoiChantTitle').innerText = '"' + card.chant + '"';
+          document.getElementById('baiChoiMeaningText').innerText = 'Ý nghĩa: ' + card.meaning;
+          frame.style.transform = 'scale(1) rotate(0deg)';
+          playChantVoice();
+        }, 200);
+      }
+    }
+
+    function playChantVoice() {
+      const card = BAI_CHOI_DECK[currentBaiChoiIdx];
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(card.chant);
+        utter.lang = 'vi-VN';
+        utter.rate = 0.95;
+        window.speechSynthesis.speak(utter);
+      }
+    }
+
+    // ÂM THANH TRỐNG CHIẾN / TRỐNG TUM BÀI CHÒI
+    function playBaiChoiDrum() {
+      try {
+        if (!radioAudioContext) radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (radioAudioContext.state === 'suspended') radioAudioContext.resume();
+
+        // 1. Tiếng Trống Tum Trầm Hùng
+        const osc = radioAudioContext.createOscillator();
+        const gain = radioAudioContext.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(150, radioAudioContext.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(45, radioAudioContext.currentTime + 0.25);
+
+        gain.gain.setValueAtTime(0.6, radioAudioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, radioAudioContext.currentTime + 0.3);
+
+        osc.connect(gain);
+        gain.connect(radioAudioContext.destination);
+
+        osc.start();
+        osc.stop(radioAudioContext.currentTime + 0.32);
+
+        // 2. Tiếng Thanh La Giòn Giã sau 100ms
+        setTimeout(() => {
+          if (!radioAudioContext) return;
+          const oscLa = radioAudioContext.createOscillator();
+          const gainLa = radioAudioContext.createGain();
+
+          oscLa.type = "triangle";
+          oscLa.frequency.setValueAtTime(1200, radioAudioContext.currentTime);
+          oscLa.frequency.exponentialRampToValueAtTime(800, radioAudioContext.currentTime + 0.15);
+
+          gainLa.gain.setValueAtTime(0.25, radioAudioContext.currentTime);
+          gainLa.gain.exponentialRampToValueAtTime(0.001, radioAudioContext.currentTime + 0.2);
+
+          oscLa.connect(gainLa);
+          gainLa.connect(radioAudioContext.destination);
+
+          oscLa.start();
+          oscLa.stop(radioAudioContext.currentTime + 0.22);
+        }, 120);
+
+        if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
+      } catch(e) {}
+    }
+
+    
+
+    // Hẹn giờ, Chuông đồng & Mưa thiền
+    // NÂNG CẤP CHUYÊN SÂU: MÁY NIỆM PHẬT (CHUÔNG ĐỒNG & TỐC ĐỘ NIỆM)
+    // =========================================================================
+    let buddhistSpeedMs = 2000; // 1.2s mặc định
+    let lifetimeMalaCount = parseInt(localStorage.getItem('datphu_lifetime_mala') || '1080');
+
+    
+    // =========================================================================
+    // NÂNG CẤP BẢO ĐÀI: CHUỖI TRÀNG HẠT 108 HẠT, HẸN GIỜ & KHAI KHÓA LỄ
+    // =========================================================================
+    let ritualTimerInterval = null;
+    let ritualRemainingSeconds = 0;
+    let isRitualCeremonyRunning = false;
+
+    function updateMalaProgressUI() {
+      const currentBead = ((buddhistCount - 1) % 108) + 1;
+      const malaRounds = Math.floor((buddhistCount - 1) / 108) + 1;
+
+      const beadEl = document.getElementById('malaCurrentBead');
+      const roundEl = document.getElementById('malaRoundCount');
+      const barEl = document.getElementById('malaProgressBar');
+
+      if (beadEl) beadEl.innerText = currentBead;
+      if (roundEl) roundEl.innerText = malaRounds;
+      if (barEl) barEl.style.width = ((currentBead / 108) * 100) + '%';
+    }
+
+    // Hẹn giờ khóa lễ tu tập (15, 30, 45, 60 phút hoặc Tự Do)
+    function setRitualTimer(minutes) {
+      if (ritualTimerInterval) {
+        clearInterval(ritualTimerInterval);
+        ritualTimerInterval = null;
+      }
+
+      ['timerBtn_0', 'timerBtn_15', 'timerBtn_30', 'timerBtn_45', 'timerBtn_60'].forEach((btnId, idx) => {
+        const btn = document.getElementById(btnId);
+        const match = (idx === 0 && minutes === 0) || (idx === 1 && minutes === 15) || (idx === 2 && minutes === 30) || (idx === 3 && minutes === 45) || (idx === 4 && minutes === 60);
+        if (btn) {
+          btn.className = match ? "flex-1 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer" : "flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer";
+        }
+      });
+
+      const display = document.getElementById('ritualTimerDisplay');
+      if (minutes === 0) {
+        ritualRemainingSeconds = 0;
+        if (display) display.innerText = "⏳ Tự Do";
+        return;
+      }
+
+      ritualRemainingSeconds = minutes * 60;
+      updateRitualTimerDisplay();
+
+      // Nếu máy chưa phát, tự động khởi động phát luôn
+      if (!isBuddhistPlaying) {
+        toggleBuddhistPlay();
+      }
+
+      ritualTimerInterval = setInterval(() => {
+        if (!isBuddhistPlaying) return; // Chỉ đếm khi đang hành trì
+
+        ritualRemainingSeconds--;
+        updateRitualTimerDisplay();
+
+        if (ritualRemainingSeconds <= 0) {
+          clearInterval(ritualTimerInterval);
+          ritualTimerInterval = null;
+          finishRitualWithHamMoAndBell();
+        }
+      }, 1000);
+    }
+
+    function updateRitualTimerDisplay() {
+      const display = document.getElementById('ritualTimerDisplay');
+      if (!display) return;
+      if (ritualRemainingSeconds <= 0) {
+        display.innerText = "⏳ Hoàn Tất";
+        return;
+      }
+      const mins = Math.floor(ritualRemainingSeconds / 60);
+      const secs = ritualRemainingSeconds % 60;
+      display.innerText = "⏳ " + mins.toString().padStart(2, '0') + ":" + secs.toString().padStart(2, '0');
+    }
+
+    // Kết thúc khóa lễ: Hãm mõ 3 tiếng chậm dần + Thỉnh chuông đại hồng chung + Mở Kệ Hồi Hướng
+    function finishRitualWithHamMoAndBell() {
+      if (isBuddhistPlaying) {
+        toggleBuddhistPlay(); // Tạm ngưng nhịp phát thông thường
+      }
+
+      // Hãm mõ 3 tiếng thong thả
+      setTimeout(() => playWoodblockSound(), 400);
+      setTimeout(() => playWoodblockSound(), 1400);
+      setTimeout(() => playWoodblockSound(), 2600);
+
+      // Thỉnh chuông đồng ngân vang dứt bài
+      setTimeout(() => {
+        playTempleBronzeBell();
+        const drawer = document.getElementById('dedicationPrayerDrawer');
+        if (drawer && drawer.classList.contains('hidden')) {
+          drawer.classList.remove('hidden');
+        }
+        alert("Khóa lễ tu tập đã hoàn tất viên mãn! Nguyện hồi hướng công đức an lạc, cát tường đến khắp muôn nơi.");
+      }, 3500);
+    }
+
+    // Tự động Khai Khóa Lễ Chuông Mõ chuẩn mực thiền môn
+    function startBuddhistRitualCeremony() {
+      if (isRitualCeremonyRunning) return;
+      isRitualCeremonyRunning = true;
+
+      const btnText = document.getElementById('btnStartRitualText');
+      if (btnText) btnText.innerText = "Đang Khai Chuông Mõ...";
+
+      // Chuỗi Khai Chuông Mõ (3 tiếng chuông + hồi mõ dồn + hãm 3 tiếng)
+      // 1. Tiếng chuông 1
+      playTempleBronzeBell();
+
+      // 2. Tiếng chuông 2 (sau 2.2s)
+      setTimeout(() => playTempleBronzeBell(), 2200);
+
+      // 3. Tiếng chuông 3 (sau 4.4s)
+      setTimeout(() => playTempleBronzeBell(), 4400);
+
+      // 4. Khai mõ: 3 tiếng thong dong
+      setTimeout(() => playWoodblockSound(), 6600);
+      setTimeout(() => playWoodblockSound(), 7500);
+      setTimeout(() => playWoodblockSound(), 8400);
+
+      // 5. Hồi mõ dồn nhanh dần
+      setTimeout(() => playWoodblockSound(), 9000);
+      setTimeout(() => playWoodblockSound(), 9300);
+      setTimeout(() => playWoodblockSound(), 9550);
+      setTimeout(() => playWoodblockSound(), 9750);
+      setTimeout(() => playWoodblockSound(), 9900);
+      setTimeout(() => playWoodblockSound(), 10050);
+
+      // 6. Hãm mõ 3 tiếng dứt khoát
+      setTimeout(() => playWoodblockSound(), 10700);
+      setTimeout(() => playWoodblockSound(), 11500);
+      setTimeout(() => playWoodblockSound(), 12400);
+
+      // 7. Thỉnh chuông dẫn vào nhịp niệm chính thức!
+      setTimeout(() => {
+        playTempleBronzeBell();
+        isRitualCeremonyRunning = false;
+        if (btnText) btnText.innerText = "Khai Khóa Lễ Chuông Mõ";
+        if (!isBuddhistPlaying) {
+          toggleBuddhistPlay();
+        }
+      }, 13200);
+    }
+
+    function updateLifetimeMalaDisplay() {
+      const el = document.getElementById('buddhistLifetimeCount');
+      if (el) el.innerText = lifetimeMalaCount.toLocaleString('vi-VN');
+    }
+
+    function setBuddhistSpeed(speedSec) {
+      buddhistSpeedMs = speedSec * 1000;
+
+      // Update button styles
+      ['bSpeed_1', 'bSpeed_2', 'bSpeed_3'].forEach((id, i) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          const isMatch = (i === 0 && speedSec === 2.0) || (i === 1 && speedSec === 1.5) || (i === 2 && speedSec === 1.0);
+          btn.className = isMatch ? "flex-1 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[10px] transition" : "flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[10px] transition";
+        }
+      });
+
+      if (isWoodblockActive && isBuddhistPlaying) {
+        startWoodblockLoop();
+      }
+    }
+
+    function toggleDedicationDrawer() {
+      const drawer = document.getElementById('dedicationPrayerDrawer');
+      if (drawer) drawer.classList.toggle('hidden');
+    }
+
+    // Tiếng Chuông Đồng Thiền Tự Ngân Vang 4 Giây
+    function playTempleBronzeBell() {
+      try {
+        const bellBtn = document.getElementById('btnTempleBell');
+        if (bellBtn) {
+          bellBtn.classList.add('ring-2', 'ring-amber-400', 'bg-amber-900/60');
+          setTimeout(() => bellBtn.classList.remove('ring-2', 'ring-amber-400', 'bg-amber-900/60'), 1500);
+        }
+        if (!radioAudioContext) radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (radioAudioContext.state === 'suspended') radioAudioContext.resume();
+
+        // Âm bồi chuông đồng (108Hz và 216Hz, 432Hz)
+        const fundamental = 216;
+        const freqs = [fundamental, fundamental * 1.5, fundamental * 2.76, fundamental * 4.2];
+
+        freqs.forEach((freq, idx) => {
+          const osc = radioAudioContext.createOscillator();
+          const gain = radioAudioContext.createGain();
+
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, radioAudioContext.currentTime);
+
+          const initialGain = 0.3 / (idx + 1);
+          gain.gain.setValueAtTime(0.001, radioAudioContext.currentTime);
+          gain.gain.exponentialRampToValueAtTime(initialGain, radioAudioContext.currentTime + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.00001, radioAudioContext.currentTime + 4.2);
+
+          osc.connect(gain);
+          gain.connect(radioAudioContext.destination);
+
+          osc.start();
+          osc.stop(radioAudioContext.currentTime + 4.3);
+        });
+
+        if (navigator.vibrate) navigator.vibrate([60, 80, 60]);
+      } catch(e) {}
+    }
+
+    // Override startWoodblockLoop to use buddhistSpeedMs
+    const originalStartWoodblock = startWoodblockLoop;
+    startWoodblockLoop = function() {
+      if (woodblockTimer) clearInterval(woodblockTimer);
+      woodblockTimer = setInterval(() => {
+        manualHitWoodblock();
+      }, buddhistSpeedMs);
+    };
+
+    // Override manualHitWoodblock to increment lifetime count
+    const originalManualHit = manualHitWoodblock;
+    manualHitWoodblock = function() {
+      originalManualHit();
+      lifetimeMalaCount++;
+      localStorage.setItem('datphu_lifetime_mala', lifetimeMalaCount.toString());
+      updateLifetimeMalaDisplay();
+
+      // Mỗi khi đạt tròn 108 biến tự động thỉnh chuông đồng!
+      if (buddhistCount % 108 === 0) {
+        playTempleBronzeBell();
+      }
+    };
+
+    // =========================================================================
+    // NÂNG CẤP CHUYÊN SÂU: ÂM THANH TRỊ LIỆU & TIẾNG MƯA THẬT (SOUNDSCAPE ENGINE)
+    // =========================================================================
+    let rainNoiseNode = null;
+    let rainGainNode = null;
+
+    function applyHealingPreset(preset) {
+      if (preset === 'rain_sleep') {
+        updateMixerVolume('rain', 85);
+        updateMixerVolume('ocean', 20);
+        updateMixerVolume('wind', 45);
+        updateMixerVolume('flute', 10);
+      } else if (preset === 'ocean_sunset') {
+        updateMixerVolume('rain', 10);
+        updateMixerVolume('ocean', 80);
+        updateMixerVolume('wind', 25);
+        updateMixerVolume('flute', 40);
+      } else if (preset === 'zen_tea') {
+        updateMixerVolume('rain', 25);
+        updateMixerVolume('ocean', 15);
+        updateMixerVolume('wind', 60);
+        updateMixerVolume('flute', 65);
+      }
+
+      // Cập nhật lại thanh trượt
+      document.getElementById('sliderVolRain').value = mixerVolumes.rain;
+      document.getElementById('sliderVolOcean').value = mixerVolumes.ocean;
+      document.getElementById('sliderVolWind').value = mixerVolumes.wind;
+      document.getElementById('sliderVolFlute').value = mixerVolumes.flute;
+
+      if (!isHealingPlaying) {
+        toggleHealingMasterPlay();
+      }
+    }
+
+    // Khởi tạo tiếng mưa rơi tự nhiên (Pink Noise Buffer)
+    function createRainAudioSource() {
+      if (!radioAudioContext) return;
+      try {
+        const bufferSize = radioAudioContext.sampleRate * 2;
+        const noiseBuffer = radioAudioContext.createBuffer(1, bufferSize, radioAudioContext.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          b0 = 0.99886 * b0 + white * 0.0555179;
+          b1 = 0.99332 * b1 + white * 0.0750759;
+          b2 = 0.96900 * b2 + white * 0.1538520;
+          b3 = 0.86650 * b3 + white * 0.3104856;
+          b4 = 0.55000 * b4 + white * 0.5329522;
+          b5 = -0.7616 * b5 - white * 0.0168980;
+          output[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.04;
+          b6 = white * 0.115926;
+        }
+
+        const whiteNoise = radioAudioContext.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+        whiteNoise.loop = true;
+
+        // Bộ lọc Lowpass tạo âm sắc mưa rơi ấm áp
+        const filter = radioAudioContext.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(1000, radioAudioContext.currentTime);
+
+        rainGainNode = radioAudioContext.createGain();
+        const rainVol = (mixerVolumes.rain / 100) * 0.35;
+        rainGainNode.gain.setValueAtTime(rainVol, radioAudioContext.currentTime);
+
+        whiteNoise.connect(filter);
+        filter.connect(rainGainNode);
+        rainGainNode.connect(radioAudioContext.destination);
+
+        whiteNoise.start();
+        rainNoiseNode = whiteNoise;
+      } catch(e) {}
+    }
+
+    // Override startHealingSoundscape to include rain noise
+    const originalStartHealing = startHealingSoundscape;
+    startHealingSoundscape = function() {
+      originalStartHealing();
+      createRainAudioSource();
+    };
+
+    // Override stopHealingSynth to stop rain noise
+    const originalStopHealing = stopHealingSynth;
+    stopHealingSynth = function() {
+      originalStopHealing();
+      if (rainNoiseNode) {
+        try { rainNoiseNode.stop(); } catch(e) {}
+        rainNoiseNode = null;
+      }
+    };
+
+    
+
+    // Nâng cấp danh sách bài niệm chia Chương 1 & Chương 2 + Vòng Tràng Hạt 108 Hạt SVG
+    const ENHANCED_BUDDHIST_CHENTS = [
+      { id: 1, chapter: 1, title: "Nam Mô A Di Đà Phật (Điệu Trầm Hùng)", line: "Nam Mô A Di Đà Phật • Nam Mô A Di Đà Phật", freq: 432 },
+      { id: 2, chapter: 1, title: "Nam Mô Quán Thế Âm Bồ Tát (Cứu Khổ Cứu Nạn)", line: "Nam Mô Đại Bi Quán Thế Âm Bồ Tát", freq: 528 },
+      { id: 3, chapter: 1, title: "Nam Mô Địa Tạng Vương Bồ Tát", line: "Nam Mô Đại Nguyện Địa Tạng Vương Bồ Tát", freq: 432 },
+      { id: 4, chapter: 1, title: "Nam Mô Dược Sư Lưu Ly Quang Vương Phật", line: "Nam Mô Tiêu Tai Diên Thọ Dược Sư Phật", freq: 528 },
+      { id: 5, chapter: 1, title: "Nam Mô Bổn Sư Thích Ca Mâu Ni Phật", line: "Nam Mô Bổn Sư Thích Ca Mâu Ni Phật", freq: 432 },
+      { id: 6, chapter: 2, title: "Chú Đại Bi 84 Câu (Thanh Tịnh)", line: "Thiên thủ thiên nhãn vô ngại đại bi tâm đà la ni...", freq: 396 },
+      { id: 7, chapter: 2, title: "Kinh Bát Nhã Ba La Mật Đa Tâm Kinh", line: "Quán Tự Tại Bồ Tát, hành thâm Bát Nhã Ba La Mật Đa thời...", freq: 432 },
+      { id: 8, chapter: 2, title: "Chú Vãng Sanh Tịnh Độ (An Lành)", line: "Nam mô a di đa bà dạ, đá tha già đá dạ...", freq: 528 }
+    ];
+    BUDDHIST_CHENTS.length = 0;
+    BUDDHIST_CHENTS.push(...ENHANCED_BUDDHIST_CHENTS);
+
+    let buddhistLoopOne = true;
+    let buddhistShuffle = false;
+    let buddhistWakeLock = null;
+
+    function renderMalaRingSvg(activeBead) {
+      const g = document.getElementById('malaBeadsGroup');
+      if (!g) return;
+      const totalBeads = 54; // 54 hạt trực quan đại diện tinh tế cho 108 biến (2 vòng)
+      const activeIdx = Math.floor(((activeBead - 1) % 108) / 2);
+      let dots = '';
+      for (let i = 0; i < totalBeads; i++) {
+        const angle = (i / totalBeads) * Math.PI * 2 + Math.PI / 2;
+        const x = (100 + 76 * Math.cos(angle)).toFixed(1);
+        const y = (100 + 76 * Math.sin(angle)).toFixed(1);
+        const isLit = i <= activeIdx;
+        dots += `<circle cx="${x}" cy="${y}" r="${isLit ? '3.3' : '2.7'}" fill="${isLit ? '#fbbf24' : '#78350f'}" stroke="${isLit ? '#fef08a' : '#b45309'}" stroke-width="0.6" />`;
+      }
+      g.innerHTML = dots;
+    }
+
+    // Override updateMalaProgressUI to also update circular SVG beads
+    const _baseUpdateMalaUI = typeof updateMalaProgressUI === 'function' ? updateMalaProgressUI : null;
+    updateMalaProgressUI = function() {
+      const currentBead = ((buddhistCount - 1) % 108) + 1;
+      const malaRounds = Math.floor((buddhistCount - 1) / 108) + 1;
+      const beadEl = document.getElementById('malaCurrentBead');
+      const roundEl = document.getElementById('malaRoundCount');
+      if (beadEl) beadEl.innerText = currentBead;
+      if (roundEl) roundEl.innerText = malaRounds;
+      renderMalaRingSvg(currentBead);
+    };
+
+    // Override toggleBuddhistAltarView to swap between Lotus Mala Screen & Altar Photos
+    toggleBuddhistAltarView = function() {
+      const altar = document.getElementById('buddhistAltarDisplay');
+      const lotus = document.getElementById('lotusMalaScreenView');
+      const btnText = document.getElementById('altarToggleText');
+      if (!altar || !lotus) return;
+      const isAltarHidden = altar.classList.contains('hidden');
+      if (isAltarHidden) {
+        altar.classList.remove('hidden');
+        lotus.classList.add('hidden');
+        if (btnText) btnText.innerText = 'Hoa Sen';
+      } else {
+        altar.classList.add('hidden');
+        lotus.classList.remove('hidden');
+        if (btnText) btnText.innerText = 'Chiêm Bái';
+      }
+    };
+
+    // Override renderBuddhistPlaylist to match Chương 1 & Chương 2 from mockup
+    renderBuddhistPlaylist = function() {
+      const c = document.getElementById('buddhistPlaylistContainer');
+      if (!c) return;
+      const ch1 = BUDDHIST_CHENTS.filter(t => !t.chapter || t.chapter === 1);
+      const ch2 = BUDDHIST_CHENTS.filter(t => t.chapter === 2);
+
+      const renderGroup = (title, items) => {
+        if (items.length === 0) return '';
+        return `
+          <div class="space-y-1">
+            <div class="px-2.5 py-1 rounded-lg bg-[#14332d] text-amber-300 font-bold text-[11px]">${title}</div>
+            <div class="space-y-0.5 pl-1">
+              ${items.map(item => {
+                const idx = BUDDHIST_CHENTS.indexOf(item);
+                const isCur = (idx === currentBuddhistIdx);
+                return `
+                  <div onclick="selectBuddhistTrack(${idx})" class="px-2.5 py-1.5 rounded-lg cursor-pointer transition flex items-center justify-between gap-2 ${isCur ? 'bg-amber-500/20 text-amber-200 font-black border border-amber-400/50' : 'text-stone-200 hover:bg-white/5'}">
+                    <span class="text-xs truncate">${item.title}</span>
+                    ${isCur && isBuddhistPlaying ? '<i class="fa-solid fa-volume-high text-amber-400 text-[10px] animate-pulse shrink-0"></i>' : ''}
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      };
+
+      c.innerHTML = renderGroup('Chương 1: Danh hiệu Phật', ch1) + renderGroup('Chương 2: Kinh Chú', ch2);
+    };
+
+    function prevBuddhistTrack() {
+      const nextIdx = (currentBuddhistIdx - 1 + BUDDHIST_CHENTS.length) % BUDDHIST_CHENTS.length;
+      selectBuddhistTrack(nextIdx);
+    }
+
+    function nextBuddhistTrack() {
+      let nextIdx;
+      if (buddhistShuffle) {
+        nextIdx = Math.floor(Math.random() * BUDDHIST_CHENTS.length);
+      } else {
+        nextIdx = (currentBuddhistIdx + 1) % BUDDHIST_CHENTS.length;
+      }
+      selectBuddhistTrack(nextIdx);
+    }
+
+    function toggleBuddhistLoopMode() {
+      buddhistLoopOne = !buddhistLoopOne;
+      const txt = document.getElementById('loopModeText');
+      const btn = document.getElementById('btnLoopOneMode');
+      if (txt) txt.innerText = buddhistLoopOne ? 'Vòng Lặp (1 Bài)' : 'Lặp Danh Sách';
+      if (btn) btn.className = buddhistLoopOne
+        ? "p-2 rounded-xl bg-black/45 hover:bg-black/65 border border-amber-500/45 flex flex-col items-center gap-1 transition active:scale-95 cursor-pointer"
+        : "p-2 rounded-xl bg-black/35 hover:bg-black/55 border border-amber-500/20 flex flex-col items-center gap-1 transition active:scale-95 cursor-pointer";
+    }
+
+    function toggleBuddhistShuffle() {
+      buddhistShuffle = !buddhistShuffle;
+      const btn = document.getElementById('btnShuffleMode');
+      const txt = document.getElementById('shuffleModeText');
+      if (btn) btn.className = buddhistShuffle
+        ? "p-2 rounded-xl bg-amber-500/20 border border-amber-400 flex flex-col items-center gap-1 transition active:scale-95 cursor-pointer"
+        : "p-2 rounded-xl bg-black/45 hover:bg-black/65 border border-amber-500/30 flex flex-col items-center gap-1 transition active:scale-95 cursor-pointer";
+      if (txt) txt.innerText = buddhistShuffle ? 'Ngẫu nhiên: BẬT' : 'Phát ngẫu nhiên';
+    }
+
+    function toggleRitualTimerDrawer() {
+      const d = document.getElementById('ritualTimerDrawer');
+      if (d) d.classList.toggle('hidden');
+    }
+
+    async function toggleBackgroundWakeLock() {
+      const txt = document.getElementById('bgPlayText');
+      if (buddhistWakeLock) {
+        try { await buddhistWakeLock.release(); } catch(e) {}
+        buddhistWakeLock = null;
+        if (txt) txt.innerText = 'Phát nền';
+      } else {
+        if ('wakeLock' in navigator) {
+          try {
+            buddhistWakeLock = await navigator.wakeLock.request('screen');
+            if (txt) txt.innerText = 'Đang giữ sáng';
+          } catch(e) {
+            if (txt) txt.innerText = 'Nền: BẬT';
+          }
+        } else {
+          if (txt) txt.innerText = 'Nền: BẬT';
+        }
+      }
+    }
 
     // Dữ liệu Bốc Quẻ Nông Dân & Đố Vui Tiếng Nẫu
     const NONG_DAN_FORTUNES = [
