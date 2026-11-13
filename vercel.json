@@ -3,10 +3,6 @@
   "outputDirectory": "public",
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/index.js?__origPath=/api/$1"
-    },
-    {
       "source": "/thoi-tiet",
       "destination": "/thoi-tiet.html"
     },
@@ -39,7 +35,7 @@
       "destination": "/tam-linh.html"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api/).*)",
       "destination": "/$1"
     }
   ],
