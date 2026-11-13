@@ -193,7 +193,7 @@ const server = http.createServer(async (req, res) => {
   // ========================================================================
   // 1B. KHO ẢNH & NGHỆ THUẬT CỘNG ĐỒNG ĐẤT PHÚ (LƯU & ĐĂNG WEB)
   // ========================================================================
-  if (pathname === '/api/gallery/list' || pathname === '/api/gallery/publish' || pathname === '/api/gallery/delete') {
+  if (pathname === '/api/gallery/list' || pathname === '/api/gallery/publish' || pathname === '/api/gallery/delete' || pathname === '/api/gallery/react' || pathname === '/api/gallery/comment') {
     const os = require('os');
     const galleryDir = process.env.VERCEL ? os.tmpdir() : path.join(__dirname, '..', 'data');
     const galleryFile = path.join(galleryDir, 'community_gallery.json');
@@ -258,6 +258,49 @@ const server = http.createServer(async (req, res) => {
         writeGallery(next);
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
         return res.end(JSON.stringify({ status: 'ok', remaining: next.length }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+        return res.end(JSON.stringify({ status: 'error', message: err.message }));
+      }
+    }
+
+    if (pathname === '/api/gallery/react' && req.method === 'POST') {
+      try {
+        const payload = JSON.parse(body || '{}');
+        const current = readGallery();
+        const item = current.find(c => c.id === payload.id || c.title === payload.title);
+        if (item) {
+          item.likes = Math.max(0, (item.likes || 0) + (payload.delta || 1));
+          writeGallery(current);
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+        return res.end(JSON.stringify({ status: 'ok', likes: item ? item.likes : 1 }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+        return res.end(JSON.stringify({ status: 'error', message: err.message }));
+      }
+    }
+
+    if (pathname === '/api/gallery/comment' && req.method === 'POST') {
+      try {
+        const payload = JSON.parse(body || '{}');
+        const text = String(payload.text || '').trim().slice(0, 240);
+        const author = String(payload.author || 'Bà Con Đất Phú').slice(0, 60);
+        if (!text) {
+          res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+          return res.end(JSON.stringify({ status: 'error', message: 'Nội dung lời chúc trống' }));
+        }
+        const current = readGallery();
+        const item = current.find(c => c.id === payload.id || c.title === payload.title);
+        const commentObj = { author, text, time: new Date().toISOString() };
+        if (item) {
+          item.comments = Array.isArray(item.comments) ? item.comments : [];
+          item.comments.unshift(commentObj);
+          item.comments = item.comments.slice(0, 30);
+          writeGallery(current);
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+        return res.end(JSON.stringify({ status: 'ok', comment: commentObj }));
       } catch (err) {
         res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
         return res.end(JSON.stringify({ status: 'error', message: err.message }));

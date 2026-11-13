@@ -112,23 +112,27 @@
   <!-- ================= MAIN CONTENT CONTAINER (TỐI ƯU KHÍT MÀN HÌNH ĐẦU TIÊN) ================= -->
   <main class="flex-1 max-w-4xl w-full mx-auto px-2.5 sm:px-5 pt-2 pb-16 space-y-2">
 
-    <!-- KHỐI ĐĂNG TẢI & THƯ VIỆN CÁ NHÂN GỌN 1 HÀNG ĐỂ LƯỚI 2x2 HIỆN TRỌN TRANG ĐẦU -->
+    <!-- THANH MỜI CHIA SẺ CỘNG ĐỒNG 1 DÒNG + THƯ VIỆN ĐÃ LƯU -->
     <section id="uploadAndPersonalLibSection" class="space-y-1.5">
-      <div class="flex items-center justify-between gap-2">
-        <div class="min-w-0">
-          <h2 class="text-base sm:text-xl font-black text-[#10182b] tracking-tight leading-tight">Đăng tải</h2>
-          <p class="text-[11px] text-slate-500 truncate">Đăng ảnh &amp; video lưu trữ của bạn</p>
-        </div>
-        <button onclick="openDedicatedPhotoModal()" class="px-3.5 py-1.5 rounded-xl bg-[#10182b] hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs active:scale-95 transition shrink-0 cursor-pointer">
-          <i class="fa-solid fa-plus text-[11px]"></i>
-          <span>Tải lên</span>
+      <div class="p-2 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center gap-2">
+        <img src="img/logo_datphu_brand.jpg" alt="Cộng đồng Đất Phú" class="w-8 h-8 rounded-full object-cover border border-amber-300 shrink-0" />
+        <button onclick="openDedicatedPhotoModal()" class="flex-1 text-left px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200/80 text-slate-500 text-xs truncate cursor-pointer transition">
+          Chia sẻ khoảnh khắc cuộc sống, văn hóa, đạo tràng...
+        </button>
+        <button onclick="openDedicatedPhotoModal()" class="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95" title="Đăng ảnh">
+          <i class="fa-solid fa-camera"></i>
+          <span>Ảnh</span>
+        </button>
+        <button onclick="openAddMediaModal()" class="px-2.5 py-1.5 rounded-xl bg-[#10182b] hover:bg-slate-800 text-amber-300 font-bold text-[11px] flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95" title="Đăng video hoặc nhạc">
+          <i class="fa-solid fa-video"></i>
+          <span>Video</span>
         </button>
       </div>
 
       <div class="space-y-1">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-bold text-slate-800">Thư viện cá nhân</span>
-          <span id="personalLibCount" class="text-[10px] text-slate-400 font-medium">Ảnh &amp; Video của bạn</span>
+        <div class="flex items-center justify-between px-0.5">
+          <span class="text-[11px] font-bold text-slate-700">💾 Đã lưu &amp; chia sẻ gần đây</span>
+          <span id="personalLibCount" class="text-[10px] text-slate-400 font-medium">Kho lưu trữ cá nhân</span>
         </div>
         <div id="personalLibraryStrip" class="flex items-start gap-2 overflow-x-auto no-scrollbar pb-0.5">
           <!-- Đổ tự động bởi renderPersonalLibraryStrip() -->
@@ -243,21 +247,21 @@
       </div>
     </section>
 
-    <!-- THANH PILL TABS NỀN XANH ĐEN ĐỒNG BỘ THEO MẪU (1. NGHỆ THUẬT DI SẢN | 2. RADIO LÀN ĐIỆU | 3. THƯ VIỆN ẢNH) -->
+    <!-- THANH PILL TABS NỀN XANH ĐEN (1. CỘNG ĐỒNG | 2. RADIO & VIDEO | 3. DI SẢN 4K) -->
     <div class="bg-[#10182b] rounded-full p-1 flex items-center gap-1 overflow-x-auto no-scrollbar text-[11px] sm:text-xs font-bold shadow-sm">
       <button onclick="switchMasterView('heritage')" id="masterTab_heritage" class="px-3.5 py-1.5 rounded-full bg-orange-500 text-white shadow-xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-bold">
-        <i class="fa-solid fa-music text-[10px]"></i>
-        <span>1. Nghệ Thuật Di Sản</span>
+        <i class="fa-solid fa-people-group text-[10px]"></i>
+        <span>1. Cộng Đồng</span>
       </button>
 
       <button onclick="switchMasterView('playlist')" id="masterTab_playlist" class="px-3 py-1.5 rounded-full bg-transparent hover:bg-white/10 text-slate-200 shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-semibold">
         <i class="fa-solid fa-radio text-amber-400 text-[10px]"></i>
-        <span>2. Radio Làn Điệu (<span id="subTabCount_media">37</span>)</span>
+        <span>2. Radio &amp; Video (<span id="subTabCount_media">37</span>)</span>
       </button>
 
       <button onclick="switchMasterView('gallery')" id="masterTab_gallery" class="px-3 py-1.5 rounded-full bg-transparent hover:bg-white/10 text-slate-200 shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer font-semibold">
         <i class="fa-solid fa-images text-emerald-400 text-[10px]"></i>
-        <span>3. Thư Viện Ảnh (<span id="subTabCount_gallery">20</span>)</span>
+        <span>3. Di Sản 4K (<span id="subTabCount_gallery">20</span>)</span>
       </button>
     </div>
 
@@ -302,20 +306,21 @@
         </div>
       </div>
 
-      <!-- PHÂN KHU 3: THƯ VIỆN NGHỆ THUẬT DI SẢN VIỆT 4K (LƯỚI 2 CỘT XANH ĐEN GIỐNG MẪU) -->
+      <!-- PHÂN KHU 3: BẢNG TIN CỘNG ĐỒNG LƯU GIỮ ẢNH & VIDEO (CUỘC SỐNG • VĂN HÓA • GIẢI TRÍ) -->
       <div id="subPanel_gallery" class="space-y-2.5">
-        <!-- THANH LỌC DANH MỤC ẢNH (HIỆN KHI CẦN LỌC HOẶC Ở TAB 3) -->
-        <div id="galleryFilterBar" class="hidden flex items-center justify-between gap-2">
+        <!-- THANH LỌC CHỦ ĐỀ CỘNG ĐỒNG -->
+        <div id="galleryFilterBar" class="flex items-center justify-between gap-2">
           <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-[11px] flex-1">
             <button onclick="filterArtCategory('all')" id="artFilterBtn_all" class="px-2.5 py-1 rounded-full bg-amber-500 text-white font-bold shrink-0 cursor-pointer transition">Tất cả</button>
-            <button onclick="filterArtCategory('heritage')" id="artFilterBtn_heritage" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🏛️ Di sản Kiến trúc</button>
-            <button onclick="filterArtCategory('buddhist')" id="artFilterBtn_buddhist" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🪷 Phật Pháp & Thiền</button>
-            <button onclick="filterArtCategory('community')" id="artFilterBtn_community" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🎭 Lễ Hội & Từ Thiện</button>
+            <button onclick="filterArtCategory('buddhist')" id="artFilterBtn_buddhist" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🙏 Đạo Tràng</button>
+            <button onclick="filterArtCategory('community')" id="artFilterBtn_community" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🤝 Đời Sống &amp; Thiện Nguyện</button>
+            <button onclick="filterArtCategory('heritage')" id="artFilterBtn_heritage" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🏛️ Văn Hóa &amp; Di Sản</button>
+            <button onclick="filterArtCategory('my_saved')" id="artFilterBtn_my_saved" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">💾 Đã Lưu</button>
           </div>
         </div>
 
-        <!-- LƯỚI ẢNH 2 CỘT (2-COLUMN DARK NAVY 4K PHOTO GRID) -->
-        <div id="artGalleryContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5"></div>
+        <!-- BẢNG TIN CỘNG ĐỒNG (1 CỘT MOBILE / 2 CỘT DESKTOP) -->
+        <div id="artGalleryContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
       </div>
 
       <!-- PHÂN KHU 4: GÓC VUI DÂN GIAN (BÀI CHÒI, BỐC QUẺ, ĐỐ VUI) -->
@@ -1066,7 +1071,7 @@
       if (view === 'heritage') {
         if (heroArea) heroArea.classList.add('hidden');
         if (festBanner) festBanner.classList.add('hidden');
-        if (galFilterBar) galFilterBar.classList.add('hidden');
+        if (galFilterBar) galFilterBar.classList.remove('hidden');
         if (secRadio) secRadio.classList.remove('hidden');
         if (secBuddhist) secBuddhist.classList.add('hidden');
         if (secMindful) secMindful.classList.add('hidden');
@@ -1180,7 +1185,7 @@
 
     function filterArtCategory(cat) {
       currentArtFilter = cat;
-      ['all', 'heritage', 'buddhist', 'community'].forEach(c => {
+      ['all', 'heritage', 'buddhist', 'community', 'my_saved'].forEach(c => {
         const btn = document.getElementById('artFilterBtn_' + c);
         if (btn) {
           btn.className = (c === cat)
@@ -1878,41 +1883,143 @@
       if (!c) return;
 
       const filtered = ARTWORKS_DATA.filter(art => {
-        if (currentArtFilter !== 'all' && getArtGroup(art.category) !== currentArtFilter) return false;
+        if (currentArtFilter === 'my_saved' && !art.isUserUpload) return false;
+        if (currentArtFilter !== 'all' && currentArtFilter !== 'my_saved' && getArtGroup(art.category) !== currentArtFilter) return false;
         if (quickSearchQuery) {
-          return (art.title || '').toLowerCase().includes(quickSearchQuery) || (art.category || '').toLowerCase().includes(quickSearchQuery);
+          return (art.title || '').toLowerCase().includes(quickSearchQuery) || (art.category || '').toLowerCase().includes(quickSearchQuery) || (art.district || '').toLowerCase().includes(quickSearchQuery);
         }
         return true;
       });
 
       if (filtered.length === 0) {
-        c.innerHTML = '<div class="col-span-2 sm:col-span-4 p-6 rounded-2xl bg-[#111a2e] border border-slate-800 text-center text-xs text-slate-300">Không có ảnh phù hợp trong danh mục này.</div>';
+        c.innerHTML = '<div class="col-span-1 sm:col-span-2 p-6 rounded-2xl bg-[#111a2e] border border-slate-800 text-center text-xs text-slate-300">Chưa có bài chia sẻ trong mục này. Bác hãy bấm nút <b>Ảnh</b> hoặc <b>Video</b> phía trên để đăng bài đầu tiên nhé!</div>';
         return;
       }
+
+      const localComments = JSON.parse(localStorage.getItem('datphu_community_comments') || '{}');
+      const localLikes = JSON.parse(localStorage.getItem('datphu_community_likes') || '{}');
 
       c.innerHTML = filtered.map(art => {
         const idx = ARTWORKS_DATA.indexOf(art);
         const isCurrent = (idx === currentArtIdx);
         const isFav = favoriteArtIds.includes(art.title);
+        const likeCount = (art.likes || 12 + (idx % 9)) + (localLikes[art.title] ? 1 : 0);
+        const commentsList = [...(localComments[art.title] || []), ...(art.comments || [])];
+        const safeTitle = (art.title || '').replace(/'/g, '');
         return `
-          <div onclick="selectArtSlide(${idx})" class="group cursor-pointer rounded-2xl overflow-hidden bg-[#111a2e] border ${isCurrent ? 'border-orange-500 ring-2 ring-orange-400/40' : 'border-slate-800/90 hover:border-amber-400/60'} shadow-md transition flex flex-col">
-            <div class="relative aspect-[16/10] overflow-hidden bg-slate-900">
+          <article class="rounded-2xl overflow-hidden bg-[#111a2e] border ${isCurrent ? 'border-orange-500 ring-2 ring-orange-400/40' : 'border-slate-800/90 hover:border-amber-400/50'} shadow-md transition flex flex-col">
+            <!-- ĐẦU THẺ CỘNG ĐỒNG: TÁC GIẢ / ĐẠO TRÀNG + THỂ LOẠI -->
+            <div class="px-3 py-2 flex items-center justify-between gap-2 border-b border-slate-800/80">
+              <div class="flex items-center gap-2 min-w-0">
+                <img src="${art.img}" alt="" class="w-7 h-7 rounded-full object-cover border border-amber-400/50 shrink-0" />
+                <div class="min-w-0">
+                  <div class="text-[11px] font-bold text-amber-200 truncate">${art.district || 'Bà Con Đất Phú'}</div>
+                  <div class="text-[9.5px] text-slate-400 truncate">${art.category || 'Văn Hóa & Đời Sống'}</div>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full bg-slate-800 text-emerald-300 text-[9px] font-bold shrink-0">${art.isUserUpload ? '✨ Mới đăng' : '4K Di Sản'}</span>
+            </div>
+
+            <!-- ẢNH / VIDEO CHÍNH -->
+            <div onclick="selectArtSlide(${idx})" class="relative aspect-[16/10] overflow-hidden bg-slate-900 cursor-pointer group">
               <img src="${art.img}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-              <div class="absolute inset-0 bg-gradient-to-t from-[#111a2e]/70 via-transparent to-transparent"></div>
-              <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-xs text-white text-[9.5px] font-semibold">4K Photo</span>
-              <button onclick="shareArtCard(${idx}, event)" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-xs text-white flex items-center justify-center text-[10px] transition cursor-pointer" title="Chia sẻ">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#111a2e]/75 via-transparent to-transparent"></div>
+              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-xs text-white text-[9.5px] font-semibold">4K Photo</span>
+              <button onclick="shareArtCard(${idx}, event)" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-xs text-white flex items-center justify-center text-[10px] transition cursor-pointer" title="Chia sẻ">
                 <i class="fa-solid fa-share-nodes"></i>
               </button>
-              <button onclick="toggleFavoriteArt('${(art.title || '').replace(/'/g, '')}', event)" class="absolute bottom-1.5 right-1.5 w-6 h-6 rounded-full bg-black/55 hover:bg-black/80 backdrop-blur-xs flex items-center justify-center text-[10px] transition cursor-pointer ${isFav ? 'text-rose-400' : 'text-white/90 hover:text-rose-300'}" title="Yêu thích">
-                <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+            </div>
+
+            <!-- TIÊU ĐỀ & LỜI BÌNH CUỘC SỐNG -->
+            <div onclick="selectArtSlide(${idx})" class="px-3 pt-2.5 pb-2 space-y-1 cursor-pointer flex-1">
+              <h4 class="text-xs sm:text-[13px] font-bold text-white leading-snug line-clamp-2">${art.title}</h4>
+              <p class="text-[10.5px] text-slate-300/90 italic line-clamp-2">${art.poem || art.intro || ''}</p>
+            </div>
+
+            <!-- THANH TƯƠNG TÁC CỘNG ĐỒNG: HOAN HỶ • LỜI CHÚC • CHIA SẺ -->
+            <div class="px-2.5 py-2 border-t border-slate-800/80 flex items-center justify-between gap-1 text-[10.5px] font-bold">
+              <button onclick="toggleCommunityLike(${idx}, event)" class="flex-1 py-1.5 rounded-xl ${isFav || localLikes[art.title] ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-slate-800/70 hover:bg-slate-800 text-slate-200'} flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
+                <i class="${isFav || localLikes[art.title] ? 'fa-solid text-rose-400' : 'fa-regular'} fa-heart"></i>
+                <span>Hoan hỷ (${likeCount})</span>
+              </button>
+              <button onclick="toggleCommunityCommentBox(${idx}, event)" class="flex-1 py-1.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-amber-200 flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
+                <i class="fa-regular fa-comment-dots"></i>
+                <span>Lời chúc (${commentsList.length})</span>
+              </button>
+              <button onclick="shareArtCard(${idx}, event)" class="px-2.5 py-1.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-emerald-300 flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
+                <i class="fa-solid fa-share"></i>
+                <span>Gửi</span>
               </button>
             </div>
-            <div class="p-2 sm:p-2.5 bg-[#111a2e] flex-1 flex items-center">
-              <h4 class="text-[11.5px] sm:text-xs font-bold text-white leading-snug line-clamp-2">${art.title}</h4>
+
+            <!-- KHAY GỬI LỜI CHÚC NHANH 1 CHẠM (ẨN MẶC ĐỊNH) -->
+            <div id="communityCommentBox_${idx}" class="hidden px-3 pb-3 pt-1.5 bg-slate-950/70 border-t border-slate-800 space-y-2 text-[10px]">
+              <div class="flex items-center gap-1 flex-wrap">
+                <button onclick="sendQuickBlessing(${idx}, 'A Di Đà Phật 🙏', event)" class="px-2 py-0.5 rounded-full bg-amber-500/20 hover:bg-amber-500/35 text-amber-200 border border-amber-400/30 cursor-pointer">🙏 A Di Đà Phật</button>
+                <button onclick="sendQuickBlessing(${idx}, 'Chúc bà con bình an! 🌸', event)" class="px-2 py-0.5 rounded-full bg-emerald-500/20 hover:bg-emerald-500/35 text-emerald-200 border border-emerald-400/30 cursor-pointer">🌸 Chúc bình an!</button>
+                <button onclick="sendQuickBlessing(${idx}, 'Hoan hỷ công đức! 👏', event)" class="px-2 py-0.5 rounded-full bg-rose-500/20 hover:bg-rose-500/35 text-rose-200 border border-rose-400/30 cursor-pointer">👏 Hoan hỷ!</button>
+              </div>
+              <div class="flex gap-1.5">
+                <input type="text" id="communityCommentInput_${idx}" placeholder="Viết lời chúc hoặc cảm nghĩ..." class="flex-1 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" onclick="event.stopPropagation()" />
+                <button onclick="submitCommunityComment(${idx}, event)" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-black cursor-pointer">Gửi</button>
+              </div>
+              ${commentsList.length > 0 ? `<div class="space-y-1 max-h-24 overflow-y-auto pt-1">${commentsList.slice(0, 4).map(cm => `<div class="text-slate-300"><b class="text-amber-300">${cm.author || 'Bà con'}:</b> ${cm.text}</div>`).join('')}</div>` : ''}
             </div>
-          </div>
+          </article>
         `;
       }).join('');
+    }
+
+    function toggleCommunityLike(idx, ev) {
+      if (ev) ev.stopPropagation();
+      const art = ARTWORKS_DATA[idx];
+      if (!art) return;
+      const likes = JSON.parse(localStorage.getItem('datphu_community_likes') || '{}');
+      const wasLiked = !!likes[art.title];
+      if (wasLiked) delete likes[art.title];
+      else likes[art.title] = true;
+      localStorage.setItem('datphu_community_likes', JSON.stringify(likes));
+      toggleFavoriteArt((art.title || '').replace(/'/g, ''), ev);
+      fetch('/api/gallery/react', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: art.id, title: art.title, delta: wasLiked ? -1 : 1 })
+      }).catch(() => {});
+    }
+
+    function toggleCommunityCommentBox(idx, ev) {
+      if (ev) ev.stopPropagation();
+      const box = document.getElementById('communityCommentBox_' + idx);
+      if (box) box.classList.toggle('hidden');
+    }
+
+    function sendQuickBlessing(idx, text, ev) {
+      if (ev) ev.stopPropagation();
+      saveCommunityComment(idx, text);
+    }
+
+    function submitCommunityComment(idx, ev) {
+      if (ev) ev.stopPropagation();
+      const inp = document.getElementById('communityCommentInput_' + idx);
+      if (!inp || !inp.value.trim()) return;
+      saveCommunityComment(idx, inp.value.trim());
+    }
+
+    function saveCommunityComment(idx, text) {
+      const art = ARTWORKS_DATA[idx];
+      if (!art) return;
+      const all = JSON.parse(localStorage.getItem('datphu_community_comments') || '{}');
+      all[art.title] = all[art.title] || [];
+      all[art.title].unshift({ author: 'Bà Con Đất Phú', text, time: new Date().toISOString() });
+      localStorage.setItem('datphu_community_comments', JSON.stringify(all));
+      fetch('/api/gallery/comment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: art.id, title: art.title, author: 'Bà Con Đất Phú', text })
+      }).catch(() => {});
+      renderArtGallery();
+      const box = document.getElementById('communityCommentBox_' + idx);
+      if (box) box.classList.remove('hidden');
     }
 
     function selectArtSlide(idx) {
