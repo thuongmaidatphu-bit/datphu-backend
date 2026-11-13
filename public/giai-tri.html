@@ -312,6 +312,7 @@
         <div id="galleryFilterBar" class="flex items-center justify-between gap-2">
           <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-[11px] flex-1">
             <button onclick="filterArtCategory('all')" id="artFilterBtn_all" class="px-2.5 py-1 rounded-full bg-amber-500 text-white font-bold shrink-0 cursor-pointer transition">Tất cả</button>
+            <button onclick="filterArtCategory('video')" id="artFilterBtn_video" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🎬 Video</button>
             <button onclick="filterArtCategory('buddhist')" id="artFilterBtn_buddhist" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🙏 Đạo Tràng</button>
             <button onclick="filterArtCategory('community')" id="artFilterBtn_community" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🤝 Đời Sống &amp; Thiện Nguyện</button>
             <button onclick="filterArtCategory('heritage')" id="artFilterBtn_heritage" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🏛️ Văn Hóa &amp; Di Sản</button>
@@ -1185,7 +1186,7 @@
 
     function filterArtCategory(cat) {
       currentArtFilter = cat;
-      ['all', 'heritage', 'buddhist', 'community', 'my_saved'].forEach(c => {
+      ['all', 'video', 'heritage', 'buddhist', 'community', 'my_saved'].forEach(c => {
         const btn = document.getElementById('artFilterBtn_' + c);
         if (btn) {
           btn.className = (c === cat)
@@ -1542,6 +1543,7 @@
 
       const ytId = extractYouTubeId(url);
       const isYouTube = !!ytId;
+      const isDirectVideo = !isYouTube && /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(url);
 
       const themeNames = {
         'baichoi': 'Bài Chòi Xứ Nẫu',
@@ -1562,12 +1564,13 @@
         artist: artist,
         theme: theme,
         themeName: themeNames[theme] || 'Bà Con & Nghệ Sĩ Góp',
-        type: (isYouTube && !isLiveAudio) ? 'youtube' : 'audio',
+        type: (isYouTube && !isLiveAudio) ? 'youtube' : ((isDirectVideo && !isLiveAudio) ? 'video' : 'audio'),
         youtubeId: (isYouTube && !isLiveAudio) ? ytId : '',
         src: finalSrc,
         coverImg: (isYouTube && !isLiveAudio) ? ('https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg') : 'img/tet_sum_vay_dat_phu.jpg',
         chant: chant || ('Lời ca tiếng hát thân thương của quê hương Đất Phú: ' + title),
-        duration: "03:30"
+        duration: "03:30",
+        isUserUpload: true
       };
 
       customMediaList.push(newItem);
@@ -1584,6 +1587,7 @@
       currentThemeFilter = 'all';
       filterRadioTheme('all');
       selectRadioTrack(newIdx);
+      renderArtGallery();
 
       closeAddMediaModal();
 
@@ -1804,29 +1808,37 @@
       try { uploadedMedia = JSON.parse(localStorage.getItem('datphu_custom_media') || '[]'); } catch(e) {}
 
       const items = [
-        ...uploadedPhotos.map((p, i) => ({ type: 'photo', title: p.title, img: p.img, date: p.district || 'Ảnh của bạn', idx: ARTWORKS_DATA.findIndex(a => a.title === p.title) })),
-        ...uploadedMedia.map((m, i) => ({ type: 'video', title: m.title, img: m.youtubeId ? 'https://img.youtube.com/vi/' + m.youtubeId + '/mqdefault.jpg' : (m.coverImg || 'img/ganh_da_dia_4k.jpg'), date: 'Video/Nhạc', idx: MEDIA_PLAYLIST.findIndex(x => x.id === m.id) }))
+        ...uploadedPhotos.map((p, i) => ({ type: 'photo', id: p.id || '', title: p.title, img: p.img, date: p.district || 'Ảnh của bạn', idx: ARTWORKS_DATA.findIndex(a => a.title === p.title) })),
+        ...uploadedMedia.map((m, i) => ({ type: 'video', id: m.id || '', title: m.title, img: m.youtubeId ? 'https://img.youtube.com/vi/' + m.youtubeId + '/mqdefault.jpg' : (m.coverImg || 'img/ganh_da_dia_4k.jpg'), date: 'Video/Nhạc', idx: MEDIA_PLAYLIST.findIndex(x => x.id === m.id) }))
       ];
 
       if (countLbl) countLbl.innerText = items.length > 0 ? items.length + ' mục đã lưu' : 'Chạm + Tải lên để lưu';
 
       if (items.length === 0) {
-        // Hiển thị 4 thẻ mẫu sinh động giống hệt ảnh thiết kế Thư Viện Cá Nhân
-        const sampleDates = ['18.04.2023', '28.03.2024', '28.08.2023', '28.08.2024'];
-        const sampleLabels = ['Bài Chòi', 'Video Bài C...', 'Thư viện c...', 'Đất Phú 4K'];
-        const samples = ARTWORKS_DATA.slice(0, 4).map((a, i) => ({
-          type: i < 2 ? 'video' : 'photo',
-          title: sampleLabels[i] || a.title,
-          img: a.img,
-          date: sampleDates[i] || a.category,
-          idx: i
-        }));
+        // Hiển thị 4 thẻ mẫu (2 video nổi bật + 2 ảnh di sản) để chạm là phát/xem ngay trên Cộng Đồng
+        const videoSamples = MEDIA_PLAYLIST.filter(m => m.type === 'youtube' && m.youtubeId).slice(0, 2);
+        const photoSamples = ARTWORKS_DATA.slice(0, 2);
+        const samples = [
+          ...videoSamples.map((v, i) => ({
+            type: 'video',
+            id: v.id,
+            title: v.title,
+            img: 'https://img.youtube.com/vi/' + v.youtubeId + '/mqdefault.jpg',
+            idx: MEDIA_PLAYLIST.indexOf(v)
+          })),
+          ...photoSamples.map((a, i) => ({
+            type: 'photo',
+            id: a.id || '',
+            title: a.title,
+            img: a.img,
+            idx: ARTWORKS_DATA.indexOf(a)
+          }))
+        ];
         strip.innerHTML = samples.map((it, i) => `
-          <div onclick="selectArtSlide(${it.idx})" class="w-22 shrink-0 cursor-pointer group space-y-0.5">
+          <div onclick="${it.type === 'video' ? `playPersonalVideoInCommunity('${it.id}', ${Math.max(0, it.idx)})` : `selectArtSlide(${Math.max(0, it.idx)})`}" class="w-22 shrink-0 cursor-pointer group space-y-0.5">
             <div class="w-22 h-14 rounded-xl overflow-hidden bg-slate-900 relative border border-slate-200 shadow-2xs">
               <img src="${it.img}" alt="${it.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
-              ${i === 0 ? '<div class="absolute inset-0 bg-black/20 flex items-center justify-center"><span class="w-6 h-6 rounded-full bg-orange-500/95 text-white flex items-center justify-center shadow"><i class="fa-solid fa-play text-[10px] ml-0.5"></i></span></div>' : ''}
-              ${i === 1 ? '<div class="absolute inset-0 bg-black/25 flex items-center justify-center"><span class="w-6 h-6 rounded-full bg-white/30 backdrop-blur-xs text-white flex items-center justify-center"><i class="fa-solid fa-play text-[10px] ml-0.5"></i></span></div>' : ''}
+              ${it.type === 'video' ? '<div class="absolute inset-0 bg-black/25 flex items-center justify-center"><span class="w-6 h-6 rounded-full bg-orange-500/95 text-white flex items-center justify-center shadow"><i class="fa-solid fa-play text-[10px] ml-0.5"></i></span></div>' : ''}
             </div>
             <div class="text-[10px] font-bold text-slate-800 truncate leading-tight">${it.title}</div>
           </div>
@@ -1835,7 +1847,7 @@
       }
 
       strip.innerHTML = items.map(it => `
-        <div onclick="${it.type === 'photo' ? 'selectArtSlide(' + Math.max(0, it.idx) + ')' : 'switchMasterView(\'playlist\'); selectRadioTrack(' + Math.max(0, it.idx) + ')'}" class="w-22 shrink-0 cursor-pointer group space-y-0.5">
+        <div onclick="${it.type === 'photo' ? 'selectArtSlide(' + Math.max(0, it.idx) + ')' : `playPersonalVideoInCommunity('${it.id}', ${Math.max(0, it.idx)})`}" class="w-22 shrink-0 cursor-pointer group space-y-0.5">
           <div class="w-22 h-14 rounded-xl overflow-hidden bg-slate-900 relative border border-slate-200 shadow-2xs">
             <img src="${it.img}" alt="${it.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
             ${it.type === 'video' ? '<div class="absolute inset-0 bg-black/25 flex items-center justify-center"><span class="w-6 h-6 rounded-full bg-orange-500/90 text-white flex items-center justify-center shadow"><i class="fa-solid fa-play text-[10px] ml-0.5"></i></span></div>' : ''}
@@ -1866,15 +1878,149 @@
       } catch(e) {}
     }
 
-    function shareArtCard(idx, ev) {
-      if (ev) ev.stopPropagation();
-      const art = ARTWORKS_DATA[idx];
-      if (!art) return;
-      if (navigator.share) {
-        navigator.share({ title: art.title, text: art.poem || art.title, url: window.location.href }).catch(() => {});
-      } else if (navigator.clipboard) {
-        navigator.clipboard.writeText(window.location.href).then(() => alert('Đã sao chép liên kết ảnh: ' + art.title));
+    let activeCommunityVideoKey = null;
+    let COMMUNITY_FEED_MAP = {};
+
+    function getCommunityFeedItems() {
+      const videoItems = MEDIA_PLAYLIST
+        .filter(m => (m.type === 'youtube' && m.youtubeId) || (m.type === 'video' && m.src))
+        .map((m, i) => ({
+          feedKind: 'video',
+          domKey: 'v_' + i,
+          mediaId: m.id,
+          mediaIdx: MEDIA_PLAYLIST.indexOf(m),
+          id: m.id,
+          title: m.title,
+          img: m.youtubeId ? ('https://img.youtube.com/vi/' + m.youtubeId + '/hqdefault.jpg') : (m.coverImg || 'img/ganh_da_dia_4k.jpg'),
+          youtubeId: m.youtubeId || '',
+          videoSrc: m.type === 'video' ? m.src : '',
+          district: m.artist || 'Bà Con Đất Phú',
+          category: m.themeName || 'Video Văn Hóa & Giải Trí',
+          poem: m.chant || '',
+          duration: m.duration || '03:30',
+          isUserUpload: !!(m.isUserUpload || (m.id && String(m.id).startsWith('custom_'))),
+          likes: m.likes || (18 + (i % 15)),
+          comments: m.comments || []
+        }));
+
+      const photoItems = ARTWORKS_DATA.map((art, i) => ({
+        feedKind: 'photo',
+        domKey: 'p_' + i,
+        artIdx: i,
+        id: art.id || ('art_' + i),
+        title: art.title,
+        img: art.img,
+        district: art.district || 'Bà Con Đất Phú',
+        category: art.category || 'Văn Hóa & Đời Sống',
+        poem: art.poem || art.intro || '',
+        isUserUpload: !!art.isUserUpload,
+        likes: art.likes || (12 + (i % 9)),
+        comments: art.comments || []
+      }));
+
+      // Ưu tiên bài người dùng mới đăng lên đầu, sau đó đan xen Video và Ảnh
+      const userUploads = [
+        ...videoItems.filter(x => x.isUserUpload).reverse(),
+        ...photoItems.filter(x => x.isUserUpload)
+      ];
+      const baseVideos = videoItems.filter(x => !x.isUserUpload);
+      const basePhotos = photoItems.filter(x => !x.isUserUpload);
+
+      const interleaved = [];
+      const maxLen = Math.max(baseVideos.length, basePhotos.length);
+      for (let i = 0; i < maxLen; i++) {
+        if (i < baseVideos.length) interleaved.push(baseVideos[i]);
+        if (i < basePhotos.length) interleaved.push(basePhotos[i]);
       }
+      return [...userUploads, ...interleaved];
+    }
+
+    function renderCommunityVideoThumbHtml(item) {
+      return `
+        <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-[#111a2e]/80 via-black/20 to-transparent"></div>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <span class="w-12 h-12 rounded-full bg-orange-500/95 group-hover:bg-orange-400 text-white flex items-center justify-center shadow-lg ring-4 ring-white/25 transition transform group-hover:scale-110">
+            <i class="fa-solid fa-play text-base ml-0.5"></i>
+          </span>
+        </div>
+        <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-rose-600/90 backdrop-blur-xs text-white text-[9.5px] font-bold flex items-center gap-1"><i class="fa-solid fa-video text-[8px]"></i> Video${item.duration ? ' • ' + item.duration : ''}</span>
+        <button onclick="shareCommunityCard('${item.domKey}', event)" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-xs text-white flex items-center justify-center text-[10px] transition cursor-pointer" title="Chia sẻ">
+          <i class="fa-solid fa-share-nodes"></i>
+        </button>
+      `;
+    }
+
+    function playCommunityVideo(domKey, ev) {
+      if (ev) ev.stopPropagation();
+      const item = COMMUNITY_FEED_MAP[domKey];
+      if (!item || item.feedKind !== 'video') return;
+
+      // Dừng video đang phát trước đó (nếu là thẻ khác) để tránh chồng âm thanh
+      if (activeCommunityVideoKey && activeCommunityVideoKey !== domKey) {
+        const prevSlot = document.getElementById('communityMediaSlot_' + activeCommunityVideoKey);
+        const prevItem = COMMUNITY_FEED_MAP[activeCommunityVideoKey];
+        if (prevSlot && prevItem) {
+          prevSlot.innerHTML = renderCommunityVideoThumbHtml(prevItem);
+        }
+      }
+
+      const slot = document.getElementById('communityMediaSlot_' + domKey);
+      if (!slot) return;
+
+      // Dừng audio mộc nếu đang phát
+      if (typeof realFolkAudio !== 'undefined' && realFolkAudio) realFolkAudio.pause();
+
+      if (item.youtubeId) {
+        slot.innerHTML = `
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/${item.youtubeId}?autoplay=1&rel=0&modestbranding=1"
+            title="${(item.title || '').replace(/"/g, '')}"
+            class="w-full h-full border-0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        `;
+      } else if (item.videoSrc) {
+        slot.innerHTML = `
+          <video src="${item.videoSrc}" controls autoplay playsinline class="w-full h-full object-contain bg-black"></video>
+        `;
+      }
+      activeCommunityVideoKey = domKey;
+    }
+
+    function playPersonalVideoInCommunity(mediaId, fallbackIdx) {
+      const pGallery = document.getElementById('subPanel_gallery');
+      const isHeritageActive = pGallery && !pGallery.classList.contains('hidden');
+      if (!isHeritageActive) {
+        switchMasterView('heritage');
+      }
+      if (currentArtFilter !== 'all' && currentArtFilter !== 'video' && currentArtFilter !== 'my_saved') {
+        filterArtCategory('all');
+      }
+      const match = Object.values(COMMUNITY_FEED_MAP).find(x => x.feedKind === 'video' && (x.mediaId === mediaId || x.mediaIdx === fallbackIdx));
+      if (match) {
+        const slot = document.getElementById('communityMediaSlot_' + match.domKey);
+        if (slot) slot.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        playCommunityVideo(match.domKey);
+      } else if (typeof fallbackIdx === 'number' && fallbackIdx >= 0) {
+        switchMasterView('playlist');
+        selectRadioTrack(fallbackIdx);
+      }
+    }
+
+    function shareCommunityCard(keyOrIdx, ev) {
+      if (ev) ev.stopPropagation();
+      const item = COMMUNITY_FEED_MAP[keyOrIdx] || (typeof keyOrIdx === 'number' ? ARTWORKS_DATA[keyOrIdx] : null);
+      if (!item) return;
+      if (navigator.share) {
+        navigator.share({ title: item.title, text: item.poem || item.title, url: window.location.href }).catch(() => {});
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href).then(() => alert('Đã sao chép liên kết: ' + item.title));
+      }
+    }
+
+    function shareArtCard(idx, ev) {
+      shareCommunityCard(idx, ev);
     }
 
     function renderArtGallery() {
@@ -1882,11 +2028,24 @@
       const c = document.getElementById('artGalleryContainer');
       if (!c) return;
 
-      const filtered = ARTWORKS_DATA.filter(art => {
-        if (currentArtFilter === 'my_saved' && !art.isUserUpload) return false;
-        if (currentArtFilter !== 'all' && currentArtFilter !== 'my_saved' && getArtGroup(art.category) !== currentArtFilter) return false;
+      activeCommunityVideoKey = null;
+      const allItems = getCommunityFeedItems();
+      COMMUNITY_FEED_MAP = {};
+      allItems.forEach(it => { COMMUNITY_FEED_MAP[it.domKey] = it; });
+
+      const filtered = allItems.filter(item => {
+        if (currentArtFilter === 'video') {
+          if (item.feedKind !== 'video') return false;
+        } else if (currentArtFilter === 'my_saved') {
+          if (!item.isUserUpload) return false;
+        } else if (currentArtFilter !== 'all') {
+          if (item.feedKind === 'video') return false;
+          if (getArtGroup(item.category) !== currentArtFilter) return false;
+        }
         if (quickSearchQuery) {
-          return (art.title || '').toLowerCase().includes(quickSearchQuery) || (art.category || '').toLowerCase().includes(quickSearchQuery) || (art.district || '').toLowerCase().includes(quickSearchQuery);
+          return (item.title || '').toLowerCase().includes(quickSearchQuery) ||
+                 (item.category || '').toLowerCase().includes(quickSearchQuery) ||
+                 (item.district || '').toLowerCase().includes(quickSearchQuery);
         }
         return true;
       });
@@ -1899,69 +2058,71 @@
       const localComments = JSON.parse(localStorage.getItem('datphu_community_comments') || '{}');
       const localLikes = JSON.parse(localStorage.getItem('datphu_community_likes') || '{}');
 
-      c.innerHTML = filtered.map(art => {
-        const idx = ARTWORKS_DATA.indexOf(art);
-        const isCurrent = (idx === currentArtIdx);
-        const isFav = favoriteArtIds.includes(art.title);
-        const likeCount = (art.likes || 12 + (idx % 9)) + (localLikes[art.title] ? 1 : 0);
-        const commentsList = [...(localComments[art.title] || []), ...(art.comments || [])];
-        const safeTitle = (art.title || '').replace(/'/g, '');
+      c.innerHTML = filtered.map(item => {
+        const isVideo = (item.feedKind === 'video');
+        const isCurrent = (!isVideo && item.artIdx === currentArtIdx);
+        const isFav = favoriteArtIds.includes(item.title);
+        const likeCount = item.likes + (localLikes[item.title] ? 1 : 0);
+        const commentsList = [...(localComments[item.title] || []), ...(item.comments || [])];
+        const cardClick = isVideo ? `playCommunityVideo('${item.domKey}', event)` : `selectArtSlide(${item.artIdx})`;
         return `
           <article class="rounded-2xl overflow-hidden bg-[#111a2e] border ${isCurrent ? 'border-orange-500 ring-2 ring-orange-400/40' : 'border-slate-800/90 hover:border-amber-400/50'} shadow-md transition flex flex-col">
             <!-- ĐẦU THẺ CỘNG ĐỒNG: TÁC GIẢ / ĐẠO TRÀNG + THỂ LOẠI -->
             <div class="px-3 py-2 flex items-center justify-between gap-2 border-b border-slate-800/80">
               <div class="flex items-center gap-2 min-w-0">
-                <img src="${art.img}" alt="" class="w-7 h-7 rounded-full object-cover border border-amber-400/50 shrink-0" />
+                <img src="${item.img}" alt="" class="w-7 h-7 rounded-full object-cover border border-amber-400/50 shrink-0" />
                 <div class="min-w-0">
-                  <div class="text-[11px] font-bold text-amber-200 truncate">${art.district || 'Bà Con Đất Phú'}</div>
-                  <div class="text-[9.5px] text-slate-400 truncate">${art.category || 'Văn Hóa & Đời Sống'}</div>
+                  <div class="text-[11px] font-bold text-amber-200 truncate">${item.district}</div>
+                  <div class="text-[9.5px] text-slate-400 truncate">${item.category}</div>
                 </div>
               </div>
-              <span class="px-2 py-0.5 rounded-full bg-slate-800 text-emerald-300 text-[9px] font-bold shrink-0">${art.isUserUpload ? '✨ Mới đăng' : '4K Di Sản'}</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-800 ${isVideo ? 'text-amber-300' : 'text-emerald-300'} text-[9px] font-bold shrink-0">${item.isUserUpload ? '✨ Mới đăng' : (isVideo ? '🎬 Video' : '4K Di Sản')}</span>
             </div>
 
             <!-- ẢNH / VIDEO CHÍNH -->
-            <div onclick="selectArtSlide(${idx})" class="relative aspect-[16/10] overflow-hidden bg-slate-900 cursor-pointer group">
-              <img src="${art.img}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-              <div class="absolute inset-0 bg-gradient-to-t from-[#111a2e]/75 via-transparent to-transparent"></div>
-              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-xs text-white text-[9.5px] font-semibold">4K Photo</span>
-              <button onclick="shareArtCard(${idx}, event)" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-xs text-white flex items-center justify-center text-[10px] transition cursor-pointer" title="Chia sẻ">
-                <i class="fa-solid fa-share-nodes"></i>
-              </button>
+            <div id="communityMediaSlot_${item.domKey}" onclick="${cardClick}" class="relative aspect-[16/10] overflow-hidden bg-slate-950 cursor-pointer group">
+              ${isVideo ? renderCommunityVideoThumbHtml(item) : `
+                <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#111a2e]/75 via-transparent to-transparent"></div>
+                <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-xs text-white text-[9.5px] font-semibold">4K Photo</span>
+                <button onclick="shareCommunityCard('${item.domKey}', event)" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-xs text-white flex items-center justify-center text-[10px] transition cursor-pointer" title="Chia sẻ">
+                  <i class="fa-solid fa-share-nodes"></i>
+                </button>
+              `}
             </div>
 
             <!-- TIÊU ĐỀ & LỜI BÌNH CUỘC SỐNG -->
-            <div onclick="selectArtSlide(${idx})" class="px-3 pt-2.5 pb-2 space-y-1 cursor-pointer flex-1">
-              <h4 class="text-xs sm:text-[13px] font-bold text-white leading-snug line-clamp-2">${art.title}</h4>
-              <p class="text-[10.5px] text-slate-300/90 italic line-clamp-2">${art.poem || art.intro || ''}</p>
+            <div onclick="${cardClick}" class="px-3 pt-2.5 pb-2 space-y-1 cursor-pointer flex-1">
+              <h4 class="text-xs sm:text-[13px] font-bold text-white leading-snug line-clamp-2">${item.title}</h4>
+              <p class="text-[10.5px] text-slate-300/90 italic line-clamp-2">${item.poem}</p>
             </div>
 
             <!-- THANH TƯƠNG TÁC CỘNG ĐỒNG: HOAN HỶ • LỜI CHÚC • CHIA SẺ -->
             <div class="px-2.5 py-2 border-t border-slate-800/80 flex items-center justify-between gap-1 text-[10.5px] font-bold">
-              <button onclick="toggleCommunityLike(${idx}, event)" class="flex-1 py-1.5 rounded-xl ${isFav || localLikes[art.title] ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-slate-800/70 hover:bg-slate-800 text-slate-200'} flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
-                <i class="${isFav || localLikes[art.title] ? 'fa-solid text-rose-400' : 'fa-regular'} fa-heart"></i>
+              <button onclick="toggleCommunityLike('${item.domKey}', event)" class="flex-1 py-1.5 rounded-xl ${isFav || localLikes[item.title] ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-slate-800/70 hover:bg-slate-800 text-slate-200'} flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
+                <i class="${isFav || localLikes[item.title] ? 'fa-solid text-rose-400' : 'fa-regular'} fa-heart"></i>
                 <span>Hoan hỷ (${likeCount})</span>
               </button>
-              <button onclick="toggleCommunityCommentBox(${idx}, event)" class="flex-1 py-1.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-amber-200 flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
+              <button onclick="toggleCommunityCommentBox('${item.domKey}', event)" class="flex-1 py-1.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-amber-200 flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
                 <i class="fa-regular fa-comment-dots"></i>
                 <span>Lời chúc (${commentsList.length})</span>
               </button>
-              <button onclick="shareArtCard(${idx}, event)" class="px-2.5 py-1.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-emerald-300 flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
+              <button onclick="shareCommunityCard('${item.domKey}', event)" class="px-2.5 py-1.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-emerald-300 flex items-center justify-center gap-1 cursor-pointer transition active:scale-95">
                 <i class="fa-solid fa-share"></i>
                 <span>Gửi</span>
               </button>
             </div>
 
             <!-- KHAY GỬI LỜI CHÚC NHANH 1 CHẠM (ẨN MẶC ĐỊNH) -->
-            <div id="communityCommentBox_${idx}" class="hidden px-3 pb-3 pt-1.5 bg-slate-950/70 border-t border-slate-800 space-y-2 text-[10px]">
+            <div id="communityCommentBox_${item.domKey}" class="hidden px-3 pb-3 pt-1.5 bg-slate-950/70 border-t border-slate-800 space-y-2 text-[10px]">
               <div class="flex items-center gap-1 flex-wrap">
-                <button onclick="sendQuickBlessing(${idx}, 'A Di Đà Phật 🙏', event)" class="px-2 py-0.5 rounded-full bg-amber-500/20 hover:bg-amber-500/35 text-amber-200 border border-amber-400/30 cursor-pointer">🙏 A Di Đà Phật</button>
-                <button onclick="sendQuickBlessing(${idx}, 'Chúc bà con bình an! 🌸', event)" class="px-2 py-0.5 rounded-full bg-emerald-500/20 hover:bg-emerald-500/35 text-emerald-200 border border-emerald-400/30 cursor-pointer">🌸 Chúc bình an!</button>
-                <button onclick="sendQuickBlessing(${idx}, 'Hoan hỷ công đức! 👏', event)" class="px-2 py-0.5 rounded-full bg-rose-500/20 hover:bg-rose-500/35 text-rose-200 border border-rose-400/30 cursor-pointer">👏 Hoan hỷ!</button>
+                <button onclick="sendQuickBlessing('${item.domKey}', 'A Di Đà Phật 🙏', event)" class="px-2 py-0.5 rounded-full bg-amber-500/20 hover:bg-amber-500/35 text-amber-200 border border-amber-400/30 cursor-pointer">🙏 A Di Đà Phật</button>
+                <button onclick="sendQuickBlessing('${item.domKey}', 'Chúc bà con bình an! 🌸', event)" class="px-2 py-0.5 rounded-full bg-emerald-500/20 hover:bg-emerald-500/35 text-emerald-200 border border-emerald-400/30 cursor-pointer">🌸 Chúc bình an!</button>
+                <button onclick="sendQuickBlessing('${item.domKey}', 'Hoan hỷ công đức! 👏', event)" class="px-2 py-0.5 rounded-full bg-rose-500/20 hover:bg-rose-500/35 text-rose-200 border border-rose-400/30 cursor-pointer">👏 Hoan hỷ!</button>
               </div>
               <div class="flex gap-1.5">
-                <input type="text" id="communityCommentInput_${idx}" placeholder="Viết lời chúc hoặc cảm nghĩ..." class="flex-1 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" onclick="event.stopPropagation()" />
-                <button onclick="submitCommunityComment(${idx}, event)" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-black cursor-pointer">Gửi</button>
+                <input type="text" id="communityCommentInput_${item.domKey}" placeholder="Viết lời chúc hoặc cảm nghĩ..." class="flex-1 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" onclick="event.stopPropagation()" />
+                <button onclick="submitCommunityComment('${item.domKey}', event)" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-black cursor-pointer">Gửi</button>
               </div>
               ${commentsList.length > 0 ? `<div class="space-y-1 max-h-24 overflow-y-auto pt-1">${commentsList.slice(0, 4).map(cm => `<div class="text-slate-300"><b class="text-amber-300">${cm.author || 'Bà con'}:</b> ${cm.text}</div>`).join('')}</div>` : ''}
             </div>
@@ -1970,55 +2131,55 @@
       }).join('');
     }
 
-    function toggleCommunityLike(idx, ev) {
+    function toggleCommunityLike(keyOrIdx, ev) {
       if (ev) ev.stopPropagation();
-      const art = ARTWORKS_DATA[idx];
-      if (!art) return;
+      const item = COMMUNITY_FEED_MAP[keyOrIdx] || (typeof keyOrIdx === 'number' ? ARTWORKS_DATA[keyOrIdx] : null);
+      if (!item) return;
       const likes = JSON.parse(localStorage.getItem('datphu_community_likes') || '{}');
-      const wasLiked = !!likes[art.title];
-      if (wasLiked) delete likes[art.title];
-      else likes[art.title] = true;
+      const wasLiked = !!likes[item.title];
+      if (wasLiked) delete likes[item.title];
+      else likes[item.title] = true;
       localStorage.setItem('datphu_community_likes', JSON.stringify(likes));
-      toggleFavoriteArt((art.title || '').replace(/'/g, ''), ev);
+      toggleFavoriteArt((item.title || '').replace(/'/g, ''), ev);
       fetch('/api/gallery/react', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: art.id, title: art.title, delta: wasLiked ? -1 : 1 })
+        body: JSON.stringify({ id: item.id, title: item.title, delta: wasLiked ? -1 : 1 })
       }).catch(() => {});
     }
 
-    function toggleCommunityCommentBox(idx, ev) {
+    function toggleCommunityCommentBox(key, ev) {
       if (ev) ev.stopPropagation();
-      const box = document.getElementById('communityCommentBox_' + idx);
+      const box = document.getElementById('communityCommentBox_' + key);
       if (box) box.classList.toggle('hidden');
     }
 
-    function sendQuickBlessing(idx, text, ev) {
+    function sendQuickBlessing(key, text, ev) {
       if (ev) ev.stopPropagation();
-      saveCommunityComment(idx, text);
+      saveCommunityComment(key, text);
     }
 
-    function submitCommunityComment(idx, ev) {
+    function submitCommunityComment(key, ev) {
       if (ev) ev.stopPropagation();
-      const inp = document.getElementById('communityCommentInput_' + idx);
+      const inp = document.getElementById('communityCommentInput_' + key);
       if (!inp || !inp.value.trim()) return;
-      saveCommunityComment(idx, inp.value.trim());
+      saveCommunityComment(key, inp.value.trim());
     }
 
-    function saveCommunityComment(idx, text) {
-      const art = ARTWORKS_DATA[idx];
-      if (!art) return;
+    function saveCommunityComment(keyOrIdx, text) {
+      const item = COMMUNITY_FEED_MAP[keyOrIdx] || (typeof keyOrIdx === 'number' ? ARTWORKS_DATA[keyOrIdx] : null);
+      if (!item) return;
       const all = JSON.parse(localStorage.getItem('datphu_community_comments') || '{}');
-      all[art.title] = all[art.title] || [];
-      all[art.title].unshift({ author: 'Bà Con Đất Phú', text, time: new Date().toISOString() });
+      all[item.title] = all[item.title] || [];
+      all[item.title].unshift({ author: 'Bà Con Đất Phú', text, time: new Date().toISOString() });
       localStorage.setItem('datphu_community_comments', JSON.stringify(all));
       fetch('/api/gallery/comment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: art.id, title: art.title, author: 'Bà Con Đất Phú', text })
+        body: JSON.stringify({ id: item.id, title: item.title, author: 'Bà Con Đất Phú', text })
       }).catch(() => {});
       renderArtGallery();
-      const box = document.getElementById('communityCommentBox_' + idx);
+      const box = document.getElementById('communityCommentBox_' + keyOrIdx);
       if (box) box.classList.remove('hidden');
     }
 
