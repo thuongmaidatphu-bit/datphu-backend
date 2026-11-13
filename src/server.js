@@ -105,6 +105,7 @@ const server = http.createServer(async (req, res) => {
     return res.end(JSON.stringify({
       success: false,
       blocked: true,
+      message: securityCheck.reason || 'Yêu cầu tạm thời bị chặn bởi Lá Chắn An Ninh.',
       reason: securityCheck.reason,
       incidentId: securityCheck.incidentId
     }));
