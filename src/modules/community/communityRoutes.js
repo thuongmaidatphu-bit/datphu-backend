@@ -201,6 +201,21 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
   // ------------------------------------------------------------------------
   // B. WORKFLOW LƯU TRỮ & PHÂN QUYỀN BẢNG TIN CỘNG ĐỒNG (CLOUD + FALLBACK)
   // ------------------------------------------------------------------------
+  if (pathname === '/api/gallery/cloud-health' && req.method === 'GET') {
+    const [postsCheck, usersCheck] = await Promise.all([
+      cloudRepo.listCloudPosts(1, false),
+      cloudRepo.findCloudUser('__health_check__')
+    ]);
+    return sendJson(res, 200, {
+      status: 'ok',
+      postsTableReady: !!postsCheck.ok,
+      usersTableReady: !!usersCheck.ok,
+      storageBucket: cloudRepo.COMMUNITY_BUCKET,
+      serviceRoleConfigured: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+      adminCodeConfigured: !!process.env.COMMUNITY_ADMIN_CODE
+    });
+  }
+
   if (pathname === '/api/gallery/list' && req.method === 'GET') {
     const page = Math.max(1, Number(parsedUrl && parsedUrl.searchParams.get('page')) || 1);
     const limit = Math.min(100, Math.max(1, Number(parsedUrl && parsedUrl.searchParams.get('limit')) || 24));

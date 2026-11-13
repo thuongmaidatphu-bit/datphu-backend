@@ -4521,8 +4521,20 @@
       }
       const m = document.getElementById('modalCommunityAdmin');
       const listEl = document.getElementById('communityAdminList');
+      const healthEl = document.getElementById('adminCloudHealthBadge');
       if (m) m.classList.remove('hidden');
       if (listEl) listEl.innerHTML = '<div class="text-center py-6 text-sky-300"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải dữ liệu từ Đám mây...</div>';
+
+      communityFetch('/api/gallery/cloud-health').then(r => r.json()).then(h => {
+        if (!healthEl || !h) return;
+        const ready = h.postsTableReady && h.usersTableReady;
+        healthEl.className = ready
+          ? 'px-2.5 py-1.5 rounded-xl bg-blue-900/50 border border-sky-500/40 text-[10.5px] text-sky-200 flex items-center justify-between gap-2'
+          : 'px-2.5 py-1.5 rounded-xl bg-red-950/60 border border-red-500/50 text-[10.5px] text-red-200 flex items-center justify-between gap-2';
+        healthEl.innerHTML = ready
+          ? `<span>✅ <b>Supabase Cloud Sẵn Sàng</b> (Bucket: ${h.storageBucket})</span><span class="text-[9.5px] text-sky-300">${h.serviceRoleConfigured ? 'Service Key OK' : 'Anon Key'}</span>`
+          : `<span>⚠️ <b>Chưa tạo bảng SQL trên Supabase</b> (Đang lưu dự phòng cục bộ)</span><span class="text-[9.5px] text-red-300">Chạy sql/community_cloud_schema.sql</span>`;
+      }).catch(() => {});
 
       try {
         const resp = await communityFetch('/api/gallery/admin-summary');
@@ -5124,6 +5136,9 @@
       </div>
 
       <div class="shrink-0 px-4 py-2.5 bg-[#0a1c3a] border-b border-blue-900/80 space-y-2">
+        <div id="adminCloudHealthBadge" class="px-2.5 py-1.5 rounded-xl bg-[#091833] border border-blue-800 text-[10.5px] text-sky-200 flex items-center justify-between gap-2">
+          <span>☁️ Đang kiểm tra kết nối Supabase Cloud...</span>
+        </div>
         <div class="grid grid-cols-3 gap-2 text-center text-[11px]">
           <div class="p-2 rounded-xl bg-[#091833] border border-blue-800">
             <div class="text-lg font-black text-sky-300" id="adminStatPublished">0</div>
