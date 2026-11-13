@@ -1838,6 +1838,7 @@
           <div class="w-24 h-20 rounded-xl overflow-hidden bg-slate-900 relative border border-slate-200 shadow-2xs">
             <img src="${it.img}" alt="${it.title}" class="w-full h-full object-cover group-hover:scale-105 transition" />
             ${it.type === 'video' ? '<div class="absolute inset-0 bg-black/25 flex items-center justify-center"><span class="w-8 h-8 rounded-full bg-orange-500/90 text-white flex items-center justify-center shadow"><i class="fa-solid fa-play text-xs ml-0.5"></i></span></div>' : ''}
+            ${it.type === 'photo' ? `<button onclick="deletePersonalPhoto('${(it.title || '').replace(/'/g, '')}', event)" class="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/70 hover:bg-rose-600 text-white flex items-center justify-center text-[9px] opacity-85 hover:opacity-100 cursor-pointer transition" title="Xóa ảnh này"><i class="fa-solid fa-xmark"></i></button>` : ''}
           </div>
           <div class="flex items-center gap-1.5">
             <img src="${it.img}" alt="" class="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200" />
@@ -1848,6 +1849,19 @@
           </div>
         </div>
       `).join('');
+    }
+
+    function deletePersonalPhoto(title, ev) {
+      if (ev) ev.stopPropagation();
+      try {
+        const stored = JSON.parse(localStorage.getItem('datphu_uploaded_photos') || '[]');
+        const nextStored = stored.filter(p => (p.title || '').replace(/'/g, '') !== title);
+        localStorage.setItem('datphu_uploaded_photos', JSON.stringify(nextStored));
+        const idx = ARTWORKS_DATA.findIndex(a => (a.title || '').replace(/'/g, '') === title);
+        if (idx !== -1) ARTWORKS_DATA.splice(idx, 1);
+        renderArtGallery();
+        updateSubTabCounts();
+      } catch(e) {}
     }
 
     function shareArtCard(idx, ev) {
@@ -3319,12 +3333,18 @@
     }
 
     
-    // QUẢN LÝ ĐĂNG TẢI ẢNH TỪ ĐIỆN THOẠI & MÁY TÍNH
+    // QUẢN LÝ ĐĂNG TẢI ẢNH TỪ ĐIỆN THOẠI & MÁY TÍNH (NÂNG CẤP ĐA ẢNH, KÉO THẢ, DÁN, XOAY & LỌC MÀU 4K)
     let currentDedicatedPhotoBase64 = null;
+    let currentDedicatedPhotoList = [];
+    let currentDedicatedPhotoRawImg = null;
+    let currentDedicatedPhotoRotation = 0;
+    let currentDedicatedPhotoFilter = 'none';
 
     function openDedicatedPhotoModal() {
       const m = document.getElementById('modalDedicatedPhoto');
       if (m) m.classList.remove('hidden');
+      const fb = document.getElementById('dedicatedPhotoFeedback');
+      if (fb) fb.classList.add('hidden');
     }
 
     function closeDedicatedPhotoModal() {
@@ -3340,59 +3360,165 @@
 
     function clearDedicatedPhotoPreview() {
       currentDedicatedPhotoBase64 = null;
+      currentDedicatedPhotoList = [];
+      currentDedicatedPhotoRawImg = null;
+      currentDedicatedPhotoRotation = 0;
+      currentDedicatedPhotoFilter = 'none';
       const box = document.getElementById('dedicatedPhotoPreviewBox');
       const img = document.getElementById('dedicatedPhotoPreviewImg');
+      const badge = document.getElementById('dedicatedPhotoBatchBadge');
       const fileInp = document.getElementById('dedicatedPhotoPickerFile');
       const camInp = document.getElementById('dedicatedPhotoPickerCamera');
       if (box) box.classList.add('hidden');
       if (img) img.src = '';
+      if (badge) badge.classList.add('hidden');
       if (fileInp) fileInp.value = '';
       if (camInp) camInp.value = '';
+      ['none', 'warm', 'vivid', 'bw'].forEach(f => {
+        const b = document.getElementById('pFilter_' + f);
+        if (b) b.className = (f === 'none')
+          ? "px-2 py-1 rounded-lg bg-emerald-600 text-white cursor-pointer transition"
+          : "px-2 py-1 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition";
+      });
     }
+
+    function compressImageToBase64(rawImg, rotationDeg, filterMode) {
+      const canvas = document.createElement('canvas');
+      let width = rawImg.width;
+      let height = rawImg.height;
+      const MAX_SIZE = 1600;
+      if (width > height && width > MAX_SIZE) {
+        height = Math.round((height * MAX_SIZE) / width);
+        width = MAX_SIZE;
+      } else if (height > MAX_SIZE) {
+        width = Math.round((width * MAX_SIZE) / height);
+        height = MAX_SIZE;
+      }
+      const swap = (rotationDeg % 180 !== 0);
+      canvas.width = swap ? height : width;
+      canvas.height = swap ? width : height;
+      const ctx = canvas.getContext('2d');
+      if (filterMode === 'warm') ctx.filter = 'sepia(0.25) saturate(1.25) brightness(1.04)';
+      else if (filterMode === 'vivid') ctx.filter = 'contrast(1.12) saturate(1.28) brightness(1.03)';
+      else if (filterMode === 'bw') ctx.filter = 'grayscale(1) contrast(1.15)';
+      else ctx.filter = 'none';
+
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate((rotationDeg * Math.PI) / 180);
+      ctx.drawImage(rawImg, -width / 2, -height / 2, width, height);
+      return {
+        dataUrl: canvas.toDataURL('image/jpeg', 0.86),
+        width: canvas.width,
+        height: canvas.height
+      };
+    }
+
+    function renderEditedDedicatedPhoto() {
+      if (!currentDedicatedPhotoRawImg) return;
+      const res = compressImageToBase64(currentDedicatedPhotoRawImg, currentDedicatedPhotoRotation, currentDedicatedPhotoFilter);
+      currentDedicatedPhotoBase64 = res.dataUrl;
+      if (currentDedicatedPhotoList.length > 0) {
+        currentDedicatedPhotoList[0].dataUrl = res.dataUrl;
+      }
+      const previewImg = document.getElementById('dedicatedPhotoPreviewImg');
+      const dimText = document.getElementById('dedicatedPhotoDimText');
+      const sizeText = document.getElementById('dedicatedPhotoSizeText');
+      const kb = Math.round((res.dataUrl.length * 3) / 4 / 1024);
+      if (previewImg) previewImg.src = res.dataUrl;
+      if (dimText) dimText.innerText = res.width + ' x ' + res.height + ' px';
+      if (sizeText) sizeText.innerText = '~' + kb + ' KB • 4K';
+    }
+
+    function rotateDedicatedPhoto() {
+      currentDedicatedPhotoRotation = (currentDedicatedPhotoRotation + 90) % 360;
+      renderEditedDedicatedPhoto();
+    }
+
+    function setDedicatedPhotoFilter(mode) {
+      currentDedicatedPhotoFilter = mode;
+      ['none', 'warm', 'vivid', 'bw'].forEach(f => {
+        const b = document.getElementById('pFilter_' + f);
+        if (b) b.className = (f === mode)
+          ? "px-2 py-1 rounded-lg bg-emerald-600 text-white cursor-pointer transition"
+          : "px-2 py-1 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition";
+      });
+      renderEditedDedicatedPhoto();
+    }
+
+    function loadFilesIntoDedicatedPhoto(files) {
+      const imgFiles = Array.from(files || []).filter(f => f && f.type && f.type.startsWith('image/'));
+      if (imgFiles.length === 0) return;
+
+      const titleInp = document.getElementById('dedicatedPhotoTitle');
+      if (titleInp && !titleInp.value.trim()) {
+        titleInp.value = imgFiles[0].name.replace(/\.[^/.]+$/, '').replace(/[_-]+/g, ' ');
+      }
+
+      currentDedicatedPhotoList = [];
+      currentDedicatedPhotoRotation = 0;
+      currentDedicatedPhotoFilter = 'none';
+
+      imgFiles.slice(0, 10).forEach((file, idx) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const rawImg = new Image();
+          rawImg.onload = function() {
+            const res = compressImageToBase64(rawImg, 0, 'none');
+            currentDedicatedPhotoList.push({
+              name: file.name.replace(/\.[^/.]+$/, '').replace(/[_-]+/g, ' '),
+              dataUrl: res.dataUrl
+            });
+            if (idx === 0) {
+              currentDedicatedPhotoRawImg = rawImg;
+              currentDedicatedPhotoBase64 = res.dataUrl;
+              const box = document.getElementById('dedicatedPhotoPreviewBox');
+              const badge = document.getElementById('dedicatedPhotoBatchBadge');
+              if (box) box.classList.remove('hidden');
+              if (badge) {
+                if (imgFiles.length > 1) {
+                  badge.innerText = imgFiles.length + ' ảnh đã chọn';
+                  badge.classList.remove('hidden');
+                } else {
+                  badge.classList.add('hidden');
+                }
+              }
+              renderEditedDedicatedPhoto();
+            }
+          };
+          rawImg.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function handleDedicatedPhotoDrop(event) {
+      event.preventDefault();
+      const dz = document.getElementById('dedicatedPhotoDropZone');
+      if (dz) dz.classList.remove('border-amber-400', 'bg-emerald-950/30');
+      if (event.dataTransfer && event.dataTransfer.files) {
+        loadFilesIntoDedicatedPhoto(event.dataTransfer.files);
+      }
+    }
+
+    window.addEventListener('paste', (event) => {
+      const m = document.getElementById('modalDedicatedPhoto');
+      if (!m || m.classList.contains('hidden')) return;
+      const items = event.clipboardData && event.clipboardData.items;
+      if (!items) return;
+      const files = [];
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const f = items[i].getAsFile();
+          if (f) files.push(f);
+        }
+      }
+      if (files.length > 0) loadFilesIntoDedicatedPhoto(files);
+    });
 
     // Xử lý nén ảnh thông minh bằng HTML5 Canvas để ảnh điện thoại 10MB mượt mà thành ~200KB nét căng
     function processDedicatedPhotoFile(input) {
-      if (!input.files || !input.files[0]) return;
-      const file = input.files[0];
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const rawImg = new Image();
-        rawImg.onload = function() {
-          const canvas = document.createElement('canvas');
-          let width = rawImg.width;
-          let height = rawImg.height;
-
-          // Giới hạn cạnh lớn nhất tối đa 1600px để đảm bảo siêu nét 2K/4K mà dung lượng nhẹ tênh
-          const MAX_SIZE = 1600;
-          if (width > height && width > MAX_SIZE) {
-            height = Math.round((height * MAX_SIZE) / width);
-            width = MAX_SIZE;
-          } else if (height > MAX_SIZE) {
-            width = Math.round((width * MAX_SIZE) / height);
-            height = MAX_SIZE;
-          }
-
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(rawImg, 0, 0, width, height);
-
-          // Nén chuẩn JPEG chất lượng cao 0.86
-          currentDedicatedPhotoBase64 = canvas.toDataURL('image/jpeg', 0.86);
-
-          const box = document.getElementById('dedicatedPhotoPreviewBox');
-          const previewImg = document.getElementById('dedicatedPhotoPreviewImg');
-          const dimText = document.getElementById('dedicatedPhotoDimText');
-          if (box && previewImg) {
-            previewImg.src = currentDedicatedPhotoBase64;
-            if (dimText) dimText.innerText = width + ' x ' + height + ' px';
-            box.classList.remove('hidden');
-          }
-        };
-        rawImg.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      if (!input.files || !input.files.length) return;
+      loadFilesIntoDedicatedPhoto(input.files);
     }
 
     function submitDedicatedPhotoUpload() {
@@ -3420,23 +3546,35 @@
         return;
       }
 
-      // Thêm ảnh mới vào đầu mảng ARTWORKS_DATA
-      const newArt = {
-        title: title.toUpperCase(),
-        district: author,
-        category: category,
-        poem: intro || "Nghĩa tình nhân ái và phước lành lan tỏa muôn nơi.",
-        img: currentDedicatedPhotoBase64,
-        intro: intro || ("Khoảnh khắc ý nghĩa được bà con đóng góp: " + title)
-      };
+      const toSave = (currentDedicatedPhotoList.length > 1)
+        ? currentDedicatedPhotoList.map((item, idx) => ({
+            title: (idx === 0 ? title : (title + ' #' + (idx + 1))).toUpperCase(),
+            district: author,
+            category: category,
+            poem: intro || "Nghĩa tình nhân ái và phước lành lan tỏa muôn nơi.",
+            img: item.dataUrl,
+            intro: intro || ("Khoảnh khắc ý nghĩa được bà con đóng góp: " + title),
+            isUserUpload: true
+          }))
+        : [{
+            title: title.toUpperCase(),
+            district: author,
+            category: category,
+            poem: intro || "Nghĩa tình nhân ái và phước lành lan tỏa muôn nơi.",
+            img: currentDedicatedPhotoBase64,
+            intro: intro || ("Khoảnh khắc ý nghĩa được bà con đóng góp: " + title),
+            isUserUpload: true
+          }];
 
-      ARTWORKS_DATA.unshift(newArt);
+      for (let i = toSave.length - 1; i >= 0; i--) {
+        ARTWORKS_DATA.unshift(toSave[i]);
+      }
       currentArtIdx = 0;
 
       // Cập nhật lên màn hình chính và thư viện ảnh
       if (typeof renderArtGallery === 'function') renderArtGallery();
       const mainImg = document.getElementById('artMainImage');
-      if (mainImg) mainImg.src = currentDedicatedPhotoBase64;
+      if (mainImg) mainImg.src = toSave[0].img;
       const currentTitleEl = document.getElementById('radioCurrentTitle');
       if (currentTitleEl) currentTitleEl.innerText = title;
       const currentArtistEl = document.getElementById('radioCurrentArtist');
@@ -3445,8 +3583,10 @@
       // Lưu trữ ảnh người dùng vào localStorage an toàn
       try {
         const stored = JSON.parse(localStorage.getItem('datphu_uploaded_photos') || '[]');
-        stored.unshift(newArt);
-        if (stored.length > 30) stored.pop(); // Giữ tối đa 30 ảnh mới nhất
+        for (let i = toSave.length - 1; i >= 0; i--) {
+          stored.unshift(toSave[i]);
+        }
+        while (stored.length > 30) stored.pop();
         localStorage.setItem('datphu_uploaded_photos', JSON.stringify(stored));
       } catch(e) {
         console.warn('LocalStorage Quota:', e);
@@ -3454,17 +3594,17 @@
 
       if (fb) {
         fb.className = "p-2 rounded-xl text-xs font-bold text-center bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
-        fb.innerHTML = "🎉 <b>Đã đăng ảnh thành công!</b> Bức ảnh đã được đưa lên Triển Lãm và Màn Hình Lớn.";
+        fb.innerHTML = `🎉 <b>Đã đăng ${toSave.length} ảnh thành công!</b> Đã đưa vào Thư viện cá nhân & Triển lãm 4K.`;
         fb.classList.remove('hidden');
       }
 
       setTimeout(() => {
         closeDedicatedPhotoModal();
-        switchMediaSubTab('gallery');
+        switchMasterView('heritage');
         updateSubTabCounts();
         const galleryEl = document.getElementById('artGalleryContainer');
-        if (galleryEl) galleryEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 1000);
+        if (galleryEl) galleryEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 900);
     }
 
     // Tự động nạp các ảnh đã lưu từ localStorage khi khởi động
@@ -3775,38 +3915,51 @@
       <!-- 2. THÂN MODAL CUỘN TỰ DO CÓ THANH CUỘN (SCROLLABLE BODY) -->
       <div class="flex-1 overflow-y-auto px-4 py-3 sm:px-5 sm:py-4 space-y-3 text-xs" style="scrollbar-width: thin; scrollbar-color: #10b981 #0f172a;">
         
-        <!-- KHU VỰC CHỌN ẢNH VÀ CHỤP CAMERA -->
-        <div class="p-3 sm:p-3.5 rounded-2xl bg-slate-950 border-2 border-dashed border-emerald-500/60 text-center space-y-2.5">
+        <!-- KHU VỰC CHỌN ẢNH, KÉO THẢ, DÁN & CHỤP CAMERA -->
+        <div id="dedicatedPhotoDropZone" ondragover="event.preventDefault(); this.classList.add('border-amber-400','bg-emerald-950/30')" ondragleave="this.classList.remove('border-amber-400','bg-emerald-950/30')" ondrop="handleDedicatedPhotoDrop(event)" class="p-3 sm:p-3.5 rounded-2xl bg-slate-950 border-2 border-dashed border-emerald-500/60 text-center space-y-2.5 transition">
           <div class="text-[11px] sm:text-xs text-emerald-200 font-bold">
-            📸 Chạm vào nút bên dưới để chụp ảnh trực tiếp hoặc chọn ảnh từ máy của Bác:
+            📸 Chạm nút dưới, kéo thả ảnh vào đây, hoặc dán (<kbd class="px-1 py-0.5 rounded bg-slate-800 text-amber-300 text-[10px]">Ctrl+V</kbd>):
           </div>
 
-          <input type="file" id="dedicatedPhotoPickerFile" accept="image/*" class="hidden" onchange="processDedicatedPhotoFile(this)" />
+          <input type="file" id="dedicatedPhotoPickerFile" accept="image/*" multiple class="hidden" onchange="processDedicatedPhotoFile(this)" />
           <input type="file" id="dedicatedPhotoPickerCamera" accept="image/*" capture="environment" class="hidden" onchange="processDedicatedPhotoFile(this)" />
 
-          <div class="grid grid-cols-2 gap-2">
-            <button type="button" onclick="document.getElementById('dedicatedPhotoPickerCamera').click()" class="py-2.5 px-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-[11px] sm:text-xs shadow transition active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer">
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" onclick="document.getElementById('dedicatedPhotoPickerCamera').click()" class="py-2.5 px-1.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-[11px] shadow transition active:scale-95 flex items-center justify-center gap-1 cursor-pointer">
               <i class="fa-solid fa-camera"></i>
-              <span>Chụp Camera</span>
+              <span>Chụp Ảnh</span>
             </button>
             
-            <button type="button" onclick="document.getElementById('dedicatedPhotoPickerFile').click()" class="py-2.5 px-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-[11px] sm:text-xs shadow transition active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer">
+            <button type="button" onclick="document.getElementById('dedicatedPhotoPickerFile').click()" class="py-2.5 px-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-[11px] shadow transition active:scale-95 flex items-center justify-center gap-1 cursor-pointer">
               <i class="fa-solid fa-images text-amber-300"></i>
-              <span>Chọn Ảnh Trong Máy</span>
+              <span>Chọn Nhiều Ảnh</span>
+            </button>
+
+            <button type="button" onclick="closeDedicatedPhotoModal(); openAddMediaModal();" class="py-2.5 px-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 font-black text-[11px] shadow transition active:scale-95 flex items-center justify-center gap-1 cursor-pointer">
+              <i class="fa-solid fa-video"></i>
+              <span>Video / MP3</span>
             </button>
           </div>
 
-          <!-- Khung xem trước ảnh sắc nét -->
-          <div id="dedicatedPhotoPreviewBox" class="hidden pt-2 border-t border-slate-800 space-y-1.5">
+          <!-- Khung xem trước & chỉnh sửa ảnh nhanh (Xoay 90° + Bộ lọc 4K) -->
+          <div id="dedicatedPhotoPreviewBox" class="hidden pt-2 border-t border-slate-800 space-y-2">
             <div class="relative max-w-xs mx-auto rounded-xl overflow-hidden border-2 border-emerald-400 shadow-md">
               <img id="dedicatedPhotoPreviewImg" src="" alt="Xem trước ảnh" class="w-full max-h-44 object-contain bg-black" />
-              <button type="button" onclick="clearDedicatedPhotoPreview()" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/80 hover:bg-red-600 text-white flex items-center justify-center text-[10px] transition" title="Xóa ảnh để chọn lại">
+              <span id="dedicatedPhotoBatchBadge" class="hidden absolute top-1.5 left-1.5 px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] shadow">+0 ảnh</span>
+              <button type="button" onclick="clearDedicatedPhotoPreview()" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/80 hover:bg-red-600 text-white flex items-center justify-center text-[10px] transition cursor-pointer" title="Xóa ảnh để chọn lại">
                 <i class="fa-solid fa-trash"></i>
               </button>
               <div class="absolute bottom-0 inset-x-0 bg-black/75 px-2 py-0.5 text-[9.5px] text-emerald-300 font-mono flex items-center justify-between">
                 <span id="dedicatedPhotoDimText">Độ phân giải: Đã tối ưu</span>
-                <span class="text-amber-300 font-bold">✨ Sắc nét 4K</span>
+                <span id="dedicatedPhotoSizeText" class="text-amber-300 font-bold">✨ Sắc nét 4K</span>
               </div>
+            </div>
+            <div class="flex items-center justify-center gap-1 flex-wrap text-[10px] font-bold">
+              <button type="button" onclick="rotateDedicatedPhoto()" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-200 border border-slate-700 cursor-pointer transition">↻ Xoay 90°</button>
+              <button type="button" onclick="setDedicatedPhotoFilter('none')" id="pFilter_none" class="px-2 py-1 rounded-lg bg-emerald-600 text-white cursor-pointer transition">Nguyên bản</button>
+              <button type="button" onclick="setDedicatedPhotoFilter('warm')" id="pFilter_warm" class="px-2 py-1 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition">Ấm áp</button>
+              <button type="button" onclick="setDedicatedPhotoFilter('vivid')" id="pFilter_vivid" class="px-2 py-1 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition">Nét 4K</button>
+              <button type="button" onclick="setDedicatedPhotoFilter('bw')" id="pFilter_bw" class="px-2 py-1 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition">Hoài cổ</button>
             </div>
           </div>
         </div>
