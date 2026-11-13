@@ -103,26 +103,30 @@
 
         <!-- MÀN HÌNH CHÍNH: VÒNG TRÀNG HẠT 108 HẠT & ĐÓA HOA SEN TỎA SÁNG (HOẶC CHIÊM BÁI BAN THỜ) -->
         <div class="relative z-10 rounded-2xl bg-gradient-to-b from-[#0b2723] via-[#0d332d] to-[#061815] border border-amber-400/50 aspect-video max-h-[230px] flex items-center justify-center overflow-hidden shadow-inner">
-          <!-- Chế độ 1: Hoa Sen & Vòng Tràng Hạt 108 Hạt Phát Sáng (Mặc định giống mẫu) -->
+          <!-- Chế độ 1: Tôn Tượng Phật Dát Vàng & Vòng Tràng Hạt 108 Hạt Phát Sáng -->
           <div id="lotusMalaScreenView" class="relative w-full h-full flex items-center justify-center">
+            <!-- Nền Tôn Tượng Phật dịu nhẹ phía sau -->
+            <img src="img/phat_phap_cong_dong/ton_tuong_phat_dat_vang.jpg" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover object-center opacity-25 blur-[2px] scale-105 pointer-events-none" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#061815]/90 via-[#0b2723]/55 to-[#061815]/80 pointer-events-none"></div>
             <!-- Hào quang dịu tỏa từ tâm -->
-            <div class="absolute w-40 h-40 rounded-full bg-amber-300/15 blur-2xl animate-pulse"></div>
+            <div class="absolute w-44 h-44 rounded-full bg-amber-300/20 blur-2xl animate-pulse"></div>
+            <!-- Tôn Tượng Phật Dát Vàng ở trung tâm vòng tràng hạt -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <img src="img/phat_phap_cong_dong/ton_tuong_phat_dat_vang.jpg" alt="Tôn Tượng Phật Dát Vàng Thiền Định" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover object-[50%_22%] shadow-[0_0_28px_rgba(251,191,36,0.65)] border-2 border-amber-300/75" />
+            </div>
             <!-- Vòng Tràng Hạt 108 Hạt SVG -->
-            <svg id="malaRingSvg" class="w-40 h-40 sm:w-44 sm:h-44 drop-shadow-[0_0_12px_rgba(251,191,36,0.4)]" viewBox="0 0 200 200">
-              <circle cx="100" cy="100" r="76" fill="none" stroke="rgba(251,191,36,0.18)" stroke-width="1.5" />
-              <circle cx="100" cy="100" r="64" fill="none" stroke="rgba(251,191,36,0.25)" stroke-width="1" stroke-dasharray="2 3" />
+            <svg id="malaRingSvg" class="relative z-10 w-44 h-44 sm:w-48 sm:h-48 drop-shadow-[0_0_12px_rgba(251,191,36,0.45)]" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="76" fill="none" stroke="rgba(251,191,36,0.22)" stroke-width="1.5" />
+              <circle cx="100" cy="100" r="64" fill="none" stroke="rgba(251,191,36,0.3)" stroke-width="1" stroke-dasharray="2 3" />
               <g id="malaBeadsGroup"></g>
               <!-- Hạt chủ (Guru Bead & Tua rua) -->
               <circle cx="100" cy="176" r="5.5" fill="#fbbf24" stroke="#fef08a" stroke-width="1.2" />
               <path d="M100 182 L97 195 M100 182 L100 197 M100 182 L103 195" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" />
             </svg>
-            <!-- Đóa Hoa Sen Trắng Phát Sáng ở giữa -->
-            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <img src="img/logo_hoa_sen_real.png" alt="Hoa Sen Thanh Tịnh" class="w-16 h-16 sm:w-18 sm:h-18 rounded-full object-cover shadow-[0_0_25px_rgba(255,255,255,0.6)] border border-amber-200/60" />
-              <span class="mt-1 px-2 py-0.5 rounded-full bg-black/55 border border-amber-400/40 text-[9.5px] font-mono font-bold text-amber-200">
-                Hạt <b id="malaCurrentBead" class="text-amber-300">108</b>/108 • Vòng <b id="malaRoundCount">1</b>
-              </span>
-            </div>
+            <!-- Bộ đếm Hạt & Vòng ở góc dưới trái để không che Tôn Tượng -->
+            <span class="absolute bottom-2 left-2 z-20 px-2 py-0.5 rounded-lg bg-black/65 border border-amber-400/40 text-[9.5px] font-mono font-bold text-amber-200 pointer-events-none">
+              Hạt <b id="malaCurrentBead" class="text-amber-300">108</b>/108 • Vòng <b id="malaRoundCount">1</b>
+            </span>
           </div>
 
           <!-- Chế độ 2: Ban Thờ Tây Phương Tam Thánh & Chuông Mõ (Ẩn mặc định) -->
