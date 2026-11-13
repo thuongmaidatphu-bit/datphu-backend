@@ -28,6 +28,22 @@
       background-color: rgba(15, 23, 42, 0.95);
       border-color: rgba(245, 158, 11, 0.2);
     }
+    body.dark-mode .card-sub {
+      background-color: rgba(30, 41, 59, 0.75);
+      border-color: rgba(71, 85, 105, 0.5);
+      color: #cbd5e1;
+    }
+    body.dark-mode .dm-title {
+      color: #f8fafc;
+    }
+    body.dark-mode .dm-muted {
+      color: #94a3b8;
+    }
+    body.dark-mode .dm-input {
+      background-color: rgba(15, 23, 42, 0.9);
+      border-color: rgba(71, 85, 105, 0.7);
+      color: #f8fafc;
+    }
   </style>
 </head>
 <body class="bg-gradient-to-b from-slate-50 via-white to-orange-50/30 min-h-screen text-slate-800 flex flex-col font-sans antialiased">
@@ -45,10 +61,10 @@
           <i class="fa-solid fa-person-digging text-base sm:text-lg"></i>
         </div>
         <div class="min-w-0">
-          <h1 class="text-xs sm:text-sm md:text-base font-black text-slate-900 uppercase tracking-wide truncate">
+          <h1 class="dm-title text-xs sm:text-sm md:text-base font-black text-slate-900 uppercase tracking-wide truncate">
             SÀN LAO ĐỘNG DÂN SINH ĐẤT PHÚ
           </h1>
-          <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate hidden sm:block">Kết nối thợ xây, thợ sắt, cơ điện lạnh & việc làm mùa vụ Phú Yên</p>
+          <p class="dm-muted text-[10px] sm:text-[11px] text-slate-500 font-medium truncate hidden sm:block">Kết nối thợ xây, thợ sắt, cơ điện lạnh & việc làm mùa vụ Phú Yên</p>
         </div>
       </div>
     </div>
@@ -67,51 +83,77 @@
   </header>
 
   <!-- ================= MASTER HERO BANNER ================= -->
-  <section class="max-w-5xl w-full mx-auto p-3 sm:p-5">
-    <div class="card-box rounded-3xl bg-gradient-to-r from-orange-600 via-amber-600 to-amber-500 text-white p-5 sm:p-7 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5">
-      <div class="relative z-10 space-y-2 max-w-xl text-center md:text-left">
-        <span class="text-[10px] sm:text-xs font-black px-3 py-1 rounded-full bg-white/20 border border-white/30 uppercase tracking-wider">
+  <section class="max-w-5xl w-full mx-auto px-3 sm:px-5 pt-3 sm:pt-5 pb-2">
+    <div class="rounded-3xl bg-gradient-to-br from-orange-600 via-amber-600 to-orange-500 text-white p-5 sm:p-7 shadow-xl shadow-orange-500/15 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5">
+      <div class="absolute -right-10 -top-10 w-44 h-44 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+      <div class="relative z-10 space-y-2.5 max-w-2xl text-center md:text-left">
+        <span class="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-black px-3 py-1 rounded-full bg-white/20 border border-white/30 uppercase tracking-wider">
           🛠️ Dịch Vụ Dân Sinh • Thợ Uy Tín Địa Phương
         </span>
-        <h2 class="text-lg sm:text-2xl md:text-3xl font-black leading-tight drop-shadow">
-          TÌM THỢ TẬN TÂM - VIỆC LÀM TẬN TAY
+        <h2 class="text-xl sm:text-2xl md:text-[27px] font-black leading-snug drop-shadow-xs tracking-tight">
+          TÌM THỢ TẬN TÂM — VIỆC LÀM TẬN TAY
         </h2>
-        <p class="text-xs sm:text-sm text-orange-100 font-medium leading-relaxed">
+        <p class="text-xs sm:text-sm text-orange-50/95 font-medium leading-relaxed max-w-xl">
           Đội ngũ thợ lành nghề Đất Phú sẵn sàng phục vụ từ xây sửa nhà cửa, hàn khung sắt, sửa máy lạnh đến phụ hồ mùa vụ với giá cả công khai minh bạch.
         </p>
-        <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-2">
-          <a href="#danh-sach-tho" class="px-4 py-2 rounded-2xl bg-white text-orange-900 font-black text-xs shadow-md hover:bg-orange-50 transition active:scale-95 flex items-center gap-1.5">
+        <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-1.5">
+          <a href="#danh-sach-tho" class="px-4 py-2.5 rounded-2xl bg-white text-orange-900 font-black text-xs shadow-md hover:bg-orange-50 transition active:scale-95 flex items-center gap-1.5">
             <i class="fa-solid fa-phone"></i> Gọi Thợ Ngay
           </a>
-          <button onclick="openRegisterWorkerModal()" class="px-4 py-2 rounded-2xl bg-orange-950/40 hover:bg-orange-950/60 border border-white/30 text-white font-bold text-xs transition active:scale-95">
-            + Đăng Ký Đội Thợ
+          <button onclick="openRegisterWorkerModal()" class="px-4 py-2.5 rounded-2xl bg-orange-950/35 hover:bg-orange-950/55 border border-white/35 text-white font-bold text-xs transition active:scale-95 cursor-pointer flex items-center gap-1.5">
+            <i class="fa-solid fa-plus"></i> Đăng Ký Đội Thợ
           </button>
+          <span class="text-[11px] font-bold text-orange-100/95 px-2.5 py-1 rounded-xl bg-black/15">
+            <i class="fa-solid fa-shield-check mr-1"></i>0% phí trung gian
+          </span>
         </div>
       </div>
 
-      <div class="relative z-10 w-32 h-32 sm:w-40 sm:h-40 rounded-3xl overflow-hidden border-2 border-white/40 shadow-2xl shrink-0">
+      <div class="relative z-10 w-36 h-36 sm:w-44 sm:h-40 rounded-3xl overflow-hidden border-2 border-white/50 shadow-2xl shrink-0">
         <img src="img/lao_dong_nu_cuoi_cong_trinh.jpg" alt="Thợ Đất Phú" class="w-full h-full object-cover" />
       </div>
     </div>
   </section>
 
-  <!-- ================= BỘ LỌC NGÀNH NGHỀ & HUYỆN THỊ ================= -->
-  <section class="max-w-5xl w-full mx-auto px-3 sm:px-5 space-y-3">
+  <!-- ================= BỘ LỌC NGÀNH NGHỀ & TÌM KIẾM ================= -->
+  <section class="max-w-5xl w-full mx-auto px-3 sm:px-5 pt-2 space-y-2.5">
+    <!-- Thanh tìm kiếm & lọc khu vực -->
+    <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+      <div class="sm:col-span-7 relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-orange-500 text-xs"></i>
+        <input type="text" id="workerSearchInput" oninput="renderWorkersList()" placeholder="Tìm tên đội thợ, kỹ năng (lát đá, hàn sắt, máy lạnh...)" class="dm-input w-full pl-9 pr-3 py-2.5 rounded-2xl bg-white border border-slate-200 text-xs font-medium text-slate-800 shadow-2xs focus:outline-none focus:border-orange-500 transition" />
+      </div>
+      <div class="sm:col-span-5 flex items-center gap-2">
+        <div class="relative flex-1">
+          <i class="fa-solid fa-location-dot absolute left-3.5 top-1/2 -translate-y-1/2 text-orange-500 text-xs"></i>
+          <select id="workerDistrictSelect" onchange="renderWorkersList()" class="dm-input w-full pl-9 pr-3 py-2.5 rounded-2xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-2xs focus:outline-none focus:border-orange-500 transition cursor-pointer">
+            <option value="all">Tất cả khu vực Phú Yên</option>
+            <option value="Tuy Hòa">Tuy Hòa &amp; Phú Hòa</option>
+            <option value="Đông Hòa">Đông Hòa &amp; Tây Hòa</option>
+            <option value="Tuy An">Tuy An</option>
+            <option value="Sông Cầu">Sông Cầu &amp; Đồng Xuân</option>
+            <option value="Sơn Hòa">Sơn Hòa &amp; Sông Hinh</option>
+          </select>
+        </div>
+        <span id="workerCountBadge" class="px-3 py-2.5 rounded-2xl bg-orange-100 text-orange-800 text-[11px] font-black shrink-0 border border-orange-200">0 đội</span>
+      </div>
+    </div>
+
     <!-- Phân loại ngành nghề -->
-    <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar text-xs font-black py-1">
-      <button onclick="filterTrade('all')" id="tradeBtn_all" class="px-3.5 py-2 rounded-2xl bg-orange-500 text-white shadow-sm shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+    <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar text-xs font-black py-0.5">
+      <button onclick="filterTrade('all')" id="tradeBtn_all" class="px-3.5 py-2 rounded-2xl bg-orange-500 text-white shadow-sm shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer">
         <i class="fa-solid fa-list-check"></i> Tất Cả
       </button>
-      <button onclick="filterTrade('xay_dung')" id="tradeBtn_xay_dung" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
-        <i class="fa-solid fa-trowel-bricks text-amber-600"></i> Thợ Xây & Lát Nền
+      <button onclick="filterTrade('xay_dung')" id="tradeBtn_xay_dung" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer">
+        <i class="fa-solid fa-trowel-bricks text-amber-600"></i> Thợ Xây &amp; Lát Nền
       </button>
-      <button onclick="filterTrade('co_khi')" id="tradeBtn_co_khi" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
-        <i class="fa-solid fa-wrench text-blue-600"></i> Thợ Sắt & Cơ Khí
+      <button onclick="filterTrade('co_khi')" id="tradeBtn_co_khi" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer">
+        <i class="fa-solid fa-wrench text-blue-600"></i> Thợ Sắt &amp; Cơ Khí
       </button>
-      <button onclick="filterTrade('dien_lanh')" id="tradeBtn_dien_lanh" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
-        <i class="fa-solid fa-snowflake text-sky-500"></i> Cơ Điện Lạnh & Nước
+      <button onclick="filterTrade('dien_lanh')" id="tradeBtn_dien_lanh" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer">
+        <i class="fa-solid fa-snowflake text-sky-500"></i> Cơ Điện Lạnh &amp; Nước
       </button>
-      <button onclick="filterTrade('mua_vu')" id="tradeBtn_mua_vu" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition">
+      <button onclick="filterTrade('mua_vu')" id="tradeBtn_mua_vu" class="px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer">
         <i class="fa-solid fa-wheat-awn text-emerald-600"></i> Lao Động Mùa Vụ
       </button>
     </div>
@@ -127,31 +169,30 @@
     <div class="card-box bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-sm space-y-4 mt-6">
       <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
         <i class="fa-solid fa-tags text-orange-500 text-lg"></i>
-        <div>
-          <h3 class="text-sm font-black text-slate-900 uppercase">Khung Giá Công Lao Động Dân Sinh (Tham Khảo)</h3>
-          <p class="text-[11px] text-slate-500">Áp dụng bình ổn địa bàn Phú Yên, bà con thỏa thuận trực tiếp với thợ</p>
-        </div>
+        <div class="dm-title text-xs sm:text-sm font-black text-slate-900 uppercase">Khung Giá Công Lao Động Dân Sinh (Tham Khảo)</div>
+        <p class="dm-muted text-[11px] text-slate-500">Áp dụng bình ổn địa bàn Phú Yên, bà con thỏa thuận trực tiếp với thợ</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+      <div class="card-sub p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1">
+        <div class="font-black text-amber-900">Thợ Chính (Thợ Cả)</div>
+        <div class="text-base font-black text-amber-700 font-mono">400k - 500k <span class="text-xs font-normal">/ ngày</span></div>
+        <p class="dm-muted text-[10.5px] text-slate-600">Thợ xây dựng móng, tô trát, thợ hàn sắt kết cấu, thợ điện lạnh tay nghề cao.</p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-        <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1">
-          <div class="font-black text-amber-900">Thợ Chính (Thợ Cả)</div>
-          <div class="text-base font-black text-amber-700 font-mono">400k - 500k <span class="text-xs font-normal">/ ngày</span></div>
-          <p class="text-[10px] text-slate-600">Thợ xây dựng móng, tô trát, thợ hàn sắt kết cấu, thợ điện lạnh tay nghề cao.</p>
-        </div>
-
-        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
-          <div class="font-black text-slate-800">Thợ Phụ (Phụ Hồ / Trợ Lý)</div>
-          <div class="text-base font-black text-slate-700 font-mono">300k - 350k <span class="text-xs font-normal">/ ngày</span></div>
-          <p class="text-[10px] text-slate-600">Trộn hồ, vận chuyển vật tư, phụ dựng giàn giáo, dọn dẹp vệ sinh công trình.</p>
-        </div>
-
-        <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1">
-          <div class="font-black text-emerald-900">Bảo Dưỡng Máy Lạnh / Điện Nước</div>
-          <div class="text-base font-black text-emerald-700 font-mono">150k - 250k <span class="text-xs font-normal">/ máy</span></div>
-          <p class="text-[10px] text-slate-600">Vệ sinh xịt rửa cục nóng/lạnh, kiểm tra gas, xử lý rò rỉ điện nước sinh hoạt.</p>
-        </div>
+      <div class="card-sub p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+        <div class="dm-title font-black text-slate-800">Thợ Phụ (Phụ Hồ / Trợ Lý)</div>
+        <div class="dm-title text-base font-black text-slate-700 font-mono">300k - 350k <span class="text-xs font-normal">/ ngày</span></div>
+        <p class="dm-muted text-[10.5px] text-slate-600">Trộn hồ, vận chuyển vật tư, phụ dựng giàn giáo, dọn dẹp vệ sinh công trình.</p>
       </div>
+
+      <div class="card-sub p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1">
+        <div class="font-black text-emerald-900">Bảo Dưỡng Máy Lạnh / Điện Nước</div>
+        <div class="text-base font-black text-emerald-700 font-mono">150k - 250k <span class="text-xs font-normal">/ máy</span></div>
+        <p class="dm-muted text-[10.5px] text-slate-600">Vệ sinh xịt rửa cục nóng/lạnh, kiểm tra gas, xử lý rò rỉ điện nước sinh hoạt.</p>
+      </div>
+    </div>
     </div>
   </main>
 
@@ -199,7 +240,7 @@
           <span class="text-[10px] text-orange-700">Đang truy cập</span>
         </a>
 
-        <a href="/do-dat" class="flex items-center gap-3 p-2.5 rounded-2xl border border-slate-100 hover:border-emerald-300 hover:bg-emerald-50/60 transition group">
+        <a href="/do-dat" class="col-span-2 flex items-center gap-3 p-2.5 rounded-2xl border border-slate-100 hover:border-emerald-300 hover:bg-emerald-50/60 transition group">
           <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-lg group-hover:scale-105 transition">
             <i class="fa-solid fa-draw-polygon text-emerald-600"></i>
           </div>
@@ -212,9 +253,55 @@
     </div>
   </div>
 
+  <!-- ================= MODAL ĐĂNG KÝ ĐỘI THỢ ================= -->
+  <div id="modalRegisterWorker" class="hidden fixed inset-0 z-50 bg-black/65 backdrop-blur-xs flex items-center justify-center p-3" onclick="if(event.target === this) closeRegisterWorkerModal()">
+    <div class="card-box bg-white rounded-3xl border border-orange-200 shadow-2xl w-full max-w-md overflow-hidden">
+      <div class="px-4 py-3 bg-gradient-to-r from-orange-600 to-amber-500 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-helmet-safety"></i>
+          <h3 class="text-xs sm:text-sm font-black uppercase">Đăng Ký Đội Thợ Lên Sàn</h3>
+        </div>
+        <button type="button" onclick="closeRegisterWorkerModal()" class="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-xs cursor-pointer">✕</button>
+      </div>
+      <div class="p-4 space-y-2.5 text-xs">
+        <div>
+          <label class="dm-title block font-bold text-slate-700 mb-1">Tên đội thợ / Cá nhân (*)</label>
+          <input type="text" id="regWorkerName" placeholder="VD: Đội Thợ Xây Chú Tư Tuy An" class="dm-input w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="dm-title block font-bold text-slate-700 mb-1">Ngành nghề</label>
+            <select id="regWorkerTrade" class="dm-input w-full px-2.5 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500">
+              <option value="xay_dung">Thợ Xây &amp; Lát Nền</option>
+              <option value="co_khi">Thợ Sắt &amp; Cơ Khí</option>
+              <option value="dien_lanh">Cơ Điện Lạnh &amp; Nước</option>
+              <option value="mua_vu">Lao Động Mùa Vụ</option>
+            </select>
+          </div>
+          <div>
+            <label class="dm-title block font-bold text-slate-700 mb-1">Số điện thoại (*)</label>
+            <input type="tel" id="regWorkerPhone" placeholder="09xx.xxx.xxx" class="dm-input w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500" />
+          </div>
+        </div>
+        <div>
+          <label class="dm-title block font-bold text-slate-700 mb-1">Khu vực hoạt động</label>
+          <input type="text" id="regWorkerDistrict" placeholder="VD: Tuy Hòa & Phú Hòa" class="dm-input w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500" />
+        </div>
+        <div>
+          <label class="dm-title block font-bold text-slate-700 mb-1">Chuyên môn &amp; Kinh nghiệm</label>
+          <textarea id="regWorkerSkills" rows="2" placeholder="VD: Đổ móng, xây tô, lát gạch, 10 năm kinh nghiệm..." class="dm-input w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500"></textarea>
+        </div>
+        <div class="flex items-center justify-end gap-2 pt-1">
+          <button type="button" onclick="closeRegisterWorkerModal()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold cursor-pointer">Hủy</button>
+          <button type="button" onclick="submitRegisterWorker()" class="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black cursor-pointer shadow">Đăng Lên Sàn</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= FOOTER ================= -->
-  <footer class="bg-white/80 border-t border-slate-200 py-4 px-3 text-center text-xs text-slate-500 font-medium">
-    <p>SÀN LAO ĐỘNG DÂN SINH & VIỆC LÀM ĐẮT PHÚ • HỆ SINH THÁI ĐẤT PHÚ</p>
+  <footer class="nav-bar-bg bg-white/80 border-t border-slate-200 py-4 px-3 text-center text-xs text-slate-500 font-medium">
+    <p>SÀN LAO ĐỘNG DÂN SINH &amp; VIỆC LÀM ĐẤT PHÚ • HỆ SINH THÁI ĐẤT PHÚ</p>
     <p class="text-[11px] text-slate-400 mt-0.5">Kết nối nghĩa tình • Lao động là vinh quang • Đóng góp vì quê hương</p>
   </footer>
 
@@ -297,45 +384,91 @@
 
     let currentTradeFilter = 'all';
 
+    function getAllWorkers() {
+      let custom = [];
+      try { custom = JSON.parse(localStorage.getItem('datphu_custom_workers') || '[]'); } catch(e) {}
+      return [...custom, ...WORKERS_DATA];
+    }
+
     function renderWorkersList() {
       const c = document.getElementById('workerListContainer');
       if (!c) return;
-      const filtered = WORKERS_DATA.filter(w => currentTradeFilter === 'all' || w.trade === currentTradeFilter);
+      const q = (document.getElementById('workerSearchInput')?.value || '').trim().toLowerCase();
+      const dist = document.getElementById('workerDistrictSelect')?.value || 'all';
+      const filtered = getAllWorkers().filter(w => {
+        if (currentTradeFilter !== 'all' && w.trade !== currentTradeFilter) return false;
+        if (dist !== 'all' && !(w.district || '').toLowerCase().includes(dist.toLowerCase())) return false;
+        if (q) {
+          const hay = `${w.name} ${w.tradeName} ${w.district} ${w.skills}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      const badgeCount = document.getElementById('workerCountBadge');
+      if (badgeCount) badgeCount.innerText = `${filtered.length} đội`;
+
+      if (filtered.length === 0) {
+        c.innerHTML = `<div class="md:col-span-2 card-box bg-white border border-slate-200 rounded-3xl p-8 text-center text-xs text-slate-500">Không tìm thấy đội thợ phù hợp với bộ lọc hiện tại.</div>`;
+        return;
+      }
 
       c.innerHTML = filtered.map(w => {
+        const badgeCls = w.statusColor === 'sky'
+          ? 'bg-sky-100 text-sky-800 border-sky-300'
+          : 'bg-emerald-100 text-emerald-800 border-emerald-300';
+        const cleanPhone = (w.phone || '').replace(/\./g, '');
         return `
-          <div class="card-box bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-xs hover:shadow-md transition space-y-3">
-            <div class="flex items-start justify-between gap-3">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-orange-100 text-orange-700 flex items-center justify-center font-black text-xl shrink-0">
-                  <i class="fa-solid ${w.trade === 'xay_dung' ? 'fa-trowel-bricks' : (w.trade === 'co_khi' ? 'fa-wrench' : (w.trade === 'dien_lanh' ? 'fa-snowflake' : 'fa-wheat-awn'))}"></i>
-                </div>
-                <div>
-                  <h3 class="text-sm font-black text-slate-900">${w.name}</h3>
-                  <div class="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
-                    <span class="text-orange-600 font-bold">${w.tradeName}</span> • <span>${w.district}</span>
+          <div class="card-box bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-xs hover:shadow-md hover:border-orange-300 transition flex flex-col justify-between gap-3">
+            <div class="space-y-3">
+              <div class="flex items-start justify-between gap-2.5">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="w-11 h-11 rounded-2xl bg-orange-100 text-orange-700 flex items-center justify-center font-black text-lg shrink-0">
+                    <i class="fa-solid ${w.trade === 'xay_dung' ? 'fa-trowel-bricks' : (w.trade === 'co_khi' ? 'fa-wrench' : (w.trade === 'dien_lanh' ? 'fa-snowflake' : 'fa-wheat-awn'))}"></i>
+                  </div>
+                  <div class="min-w-0">
+                    <h3 class="dm-title text-sm font-black text-slate-900 leading-snug truncate">${w.name}</h3>
+                    <div class="dm-muted flex items-center gap-1.5 text-[11px] text-slate-500 font-medium truncate">
+                      <span class="text-orange-600 font-bold">${w.tradeName}</span> • <span>${w.district}</span>
+                    </div>
                   </div>
                 </div>
+
+                <span class="text-[10px] font-bold px-2.5 py-1 rounded-full border shrink-0 ${badgeCls}">
+                  ${w.status}
+                </span>
               </div>
 
-              <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
-                ${w.status}
-              </span>
+              <p class="card-sub text-xs text-slate-600 bg-slate-50 p-2.5 rounded-2xl border border-slate-100 leading-relaxed">
+                <b>Chuyên môn:</b> ${w.skills}${w.experience ? ' • ' + w.experience : ''}
+              </p>
             </div>
 
-            <p class="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-2xl border border-slate-100">
-              <b>Chuyên môn:</b> ${w.skills} • ${w.experience}
-            </p>
-
-            <div class="flex items-center justify-between pt-1">
-              <span class="text-xs font-mono font-bold text-slate-500">ĐT: ${w.phone}</span>
-              <a href="tel:${w.phone.replace(/\./g, '')}" class="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs shadow-xs transition active:scale-95 flex items-center gap-1.5">
-                <i class="fa-solid fa-phone"></i> Gọi Trực Tiếp
-              </a>
+            <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100/80">
+              <span class="dm-muted text-xs font-mono font-bold text-slate-600">ĐT: ${w.phone}</span>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" onclick="copyWorkerPhone('${w.phone}', this)" class="px-2.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition active:scale-95 cursor-pointer" title="Sao chép số điện thoại">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <a href="tel:${cleanPhone}" class="px-3.5 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs shadow-xs transition active:scale-95 flex items-center gap-1.5">
+                  <i class="fa-solid fa-phone"></i> Gọi Trực Tiếp
+                </a>
+              </div>
             </div>
           </div>
         `;
       }).join('');
+    }
+
+    function copyWorkerPhone(phone, btn) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(phone).catch(() => {});
+      }
+      if (btn) {
+        const old = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i>';
+        setTimeout(() => { btn.innerHTML = old; }, 1400);
+      }
     }
 
     function filterTrade(trade) {
@@ -369,7 +502,50 @@
     }
 
     function openRegisterWorkerModal() {
-      alert("Chức năng đăng ký đội thợ trực tuyến đang sẵn sàng. Xin liên hệ ban điều phối qua số 0914.821.567 để xác thực danh tính!");
+      const m = document.getElementById('modalRegisterWorker');
+      if (m) m.classList.remove('hidden');
+    }
+
+    function closeRegisterWorkerModal() {
+      const m = document.getElementById('modalRegisterWorker');
+      if (m) m.classList.add('hidden');
+    }
+
+    function submitRegisterWorker() {
+      const name = (document.getElementById('regWorkerName')?.value || '').trim();
+      const trade = document.getElementById('regWorkerTrade')?.value || 'xay_dung';
+      const phone = (document.getElementById('regWorkerPhone')?.value || '').trim();
+      const district = (document.getElementById('regWorkerDistrict')?.value || '').trim() || 'Phú Yên';
+      const skills = (document.getElementById('regWorkerSkills')?.value || '').trim() || 'Nhận thi công theo yêu cầu';
+      if (!name || !phone) {
+        alert('Vui lòng nhập Tên đội thợ và Số điện thoại!');
+        return;
+      }
+      const tradeNames = {
+        xay_dung: 'Thợ Xây & Nề Lát',
+        co_khi: 'Thợ Sắt & Cơ Khí',
+        dien_lanh: 'Cơ Điện Lạnh & Nước',
+        mua_vu: 'Lao Động Mùa Vụ'
+      };
+      const newWorker = {
+        id: 'w_' + Date.now(),
+        name,
+        trade,
+        tradeName: tradeNames[trade] || 'Thợ Lành Nghề',
+        district,
+        experience: 'Mới đăng ký',
+        skills,
+        phone,
+        status: 'Sẵn sàng nhận việc',
+        statusColor: 'emerald'
+      };
+      try {
+        const cur = JSON.parse(localStorage.getItem('datphu_custom_workers') || '[]');
+        cur.unshift(newWorker);
+        localStorage.setItem('datphu_custom_workers', JSON.stringify(cur.slice(0, 30)));
+      } catch(e) {}
+      closeRegisterWorkerModal();
+      renderWorkersList();
     }
 
     window.addEventListener('DOMContentLoaded', () => {
