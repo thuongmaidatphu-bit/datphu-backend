@@ -28,6 +28,7 @@ const exportRoutes = require('./modules/export/exportRoutes');
 const financeRoutes = require('./modules/finance/financeRoutes');
 const core6kRoutes = require('./modules/core6k/core6kRoutes');
 const calendarRoutes = require('./modules/calendar/calendarRoutes');
+const communityRoutes = require('./modules/community/communityRoutes');
 
 // 2. NẠP CÁC PHÂN HỆ HẠ TẦNG ĐÁM MÂY & ĐIỀU HÀNH
 const webhookController = require('./controllers/webhookController');
@@ -191,122 +192,9 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ========================================================================
-  // 1B. KHO ẢNH & NGHỆ THUẬT CỘNG ĐỒNG ĐẤT PHÚ (LƯU & ĐĂNG WEB)
+  // 1B. WORKFLOW CỘNG ĐỒNG, TÀI KHOẢN & PHÂN QUYỀN (GUEST / MEMBER / ADMIN)
   // ========================================================================
-  if (pathname === '/api/gallery/list' || pathname === '/api/gallery/publish' || pathname === '/api/gallery/delete' || pathname === '/api/gallery/react' || pathname === '/api/gallery/comment') {
-    const os = require('os');
-    const galleryDir = process.env.VERCEL ? os.tmpdir() : path.join(__dirname, '..', 'data');
-    const galleryFile = path.join(galleryDir, 'community_gallery.json');
-    const readGallery = () => {
-      try {
-        if (fs.existsSync(galleryFile)) {
-          return JSON.parse(fs.readFileSync(galleryFile, 'utf8') || '[]');
-        }
-      } catch (e) {}
-      return [];
-    };
-    const writeGallery = (items) => {
-      try {
-        if (!fs.existsSync(galleryDir)) fs.mkdirSync(galleryDir, { recursive: true });
-        fs.writeFileSync(galleryFile, JSON.stringify(items.slice(0, 60)), 'utf8');
-        return true;
-      } catch (e) {
-        return false;
-      }
-    };
-
-    if (pathname === '/api/gallery/list' && req.method === 'GET') {
-      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
-      return res.end(JSON.stringify({ status: 'ok', items: readGallery() }));
-    }
-
-    if (pathname === '/api/gallery/publish' && req.method === 'POST') {
-      try {
-        const payload = JSON.parse(body || '{}');
-        const newItems = Array.isArray(payload.items) ? payload.items : [payload];
-        const valid = newItems.filter(it => it && it.title && it.img).map(it => ({
-          id: it.id || ('art_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7)),
-          title: String(it.title).slice(0, 140),
-          district: String(it.district || 'Đạo Tràng / Bà Con').slice(0, 80),
-          category: String(it.category || 'Tâm Linh & Hiếu Hạnh').slice(0, 80),
-          poem: String(it.poem || '').slice(0, 240),
-          intro: String(it.intro || '').slice(0, 400),
-          img: it.img,
-          isUserUpload: true,
-          createdAt: it.createdAt || new Date().toISOString()
-        }));
-        if (valid.length === 0) {
-          res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
-          return res.end(JSON.stringify({ status: 'error', message: 'Thiếu dữ liệu ảnh hoặc tiêu đề' }));
-        }
-        const current = readGallery();
-        const merged = [...valid, ...current.filter(c => !valid.some(v => v.id === c.id))];
-        const saved = writeGallery(merged);
-        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
-        return res.end(JSON.stringify({ status: 'ok', savedToCloud: saved, count: valid.length, items: valid }));
-      } catch (err) {
-        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
-        return res.end(JSON.stringify({ status: 'error', message: err.message }));
-      }
-    }
-
-    if (pathname === '/api/gallery/delete' && req.method === 'POST') {
-      try {
-        const payload = JSON.parse(body || '{}');
-        const current = readGallery();
-        const next = current.filter(c => c.id !== payload.id && c.title !== payload.title);
-        writeGallery(next);
-        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
-        return res.end(JSON.stringify({ status: 'ok', remaining: next.length }));
-      } catch (err) {
-        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
-        return res.end(JSON.stringify({ status: 'error', message: err.message }));
-      }
-    }
-
-    if (pathname === '/api/gallery/react' && req.method === 'POST') {
-      try {
-        const payload = JSON.parse(body || '{}');
-        const current = readGallery();
-        const item = current.find(c => c.id === payload.id || c.title === payload.title);
-        if (item) {
-          item.likes = Math.max(0, (item.likes || 0) + (payload.delta || 1));
-          writeGallery(current);
-        }
-        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
-        return res.end(JSON.stringify({ status: 'ok', likes: item ? item.likes : 1 }));
-      } catch (err) {
-        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
-        return res.end(JSON.stringify({ status: 'error', message: err.message }));
-      }
-    }
-
-    if (pathname === '/api/gallery/comment' && req.method === 'POST') {
-      try {
-        const payload = JSON.parse(body || '{}');
-        const text = String(payload.text || '').trim().slice(0, 240);
-        const author = String(payload.author || 'Bà Con Đất Phú').slice(0, 60);
-        if (!text) {
-          res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
-          return res.end(JSON.stringify({ status: 'error', message: 'Nội dung lời chúc trống' }));
-        }
-        const current = readGallery();
-        const item = current.find(c => c.id === payload.id || c.title === payload.title);
-        const commentObj = { author, text, time: new Date().toISOString() };
-        if (item) {
-          item.comments = Array.isArray(item.comments) ? item.comments : [];
-          item.comments.unshift(commentObj);
-          item.comments = item.comments.slice(0, 30);
-          writeGallery(current);
-        }
-        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
-        return res.end(JSON.stringify({ status: 'ok', comment: commentObj }));
-      } catch (err) {
-        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
-        return res.end(JSON.stringify({ status: 'error', message: err.message }));
-      }
-    }
-  }
+  if (await communityRoutes.handle(pathname, req, res, body, sseClients, parsedUrl)) return;
 
   // ========================================================================
   // ĐIỀU HƯỚNG QUA 4 MODULE NGHIỆP VỤ CỐT LÕI

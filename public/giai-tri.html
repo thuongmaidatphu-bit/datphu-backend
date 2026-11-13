@@ -90,8 +90,13 @@
         <span class="hidden sm:inline">Đăng Ảnh</span>
       </button>
 
+      <button onclick="openCommunityAuthModal()" id="btnCommunityAuthStatus" class="px-2.5 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white border border-red-700 flex items-center justify-center gap-1 text-[11px] font-bold transition active:scale-95 cursor-pointer shadow-2xs" title="Đăng nhập / Phân quyền tài khoản">
+        <i class="fa-solid fa-user-shield text-[11px]"></i>
+        <span id="communityAuthLabel">Đăng nhập</span>
+      </button>
+
       <button onclick="toggleDatPhuAppLauncher()" id="universalAppLauncherBtn" class="w-8 h-8 rounded-full bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 flex items-center justify-center text-xs transition active:scale-95 cursor-pointer" title="Khay ứng dụng Đất Phú">
-        <i class="fa-solid fa-circle-user text-sm"></i>
+        <i class="fa-solid fa-grip text-sm"></i>
       </button>
     </div>
   </header>
@@ -1583,6 +1588,28 @@
       }
 
       MEDIA_PLAYLIST = [...DEFAULT_MEDIA_PLAYLIST, ...customMediaList];
+
+      // Đồng bộ Video/Nhạc theo Unified Schema lên Cloud Workflow
+      if (newItem.type === 'youtube' || newItem.type === 'video') {
+        communityFetch('/api/gallery/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: [{
+              id: newItem.id,
+              mediaType: newItem.type,
+              title: newItem.title,
+              district: newItem.artist,
+              category: newItem.themeName,
+              poem: newItem.chant,
+              img: newItem.coverImg,
+              youtubeId: newItem.youtubeId,
+              videoSrc: newItem.type === 'video' ? newItem.src : '',
+              duration: newItem.duration
+            }]
+          })
+        }).catch(() => {});
+      }
       
       // Chuyển ngay sang bài mới thêm và phát trên màn hình lớn
       const newIdx = MEDIA_PLAYLIST.length - 1;
@@ -1610,6 +1637,28 @@
       } catch (e) {}
 
       MEDIA_PLAYLIST = [...DEFAULT_MEDIA_PLAYLIST, ...customMediaList];
+
+      // Đồng bộ Video/Nhạc theo Unified Schema lên Cloud Workflow
+      if (newItem.type === 'youtube' || newItem.type === 'video') {
+        communityFetch('/api/gallery/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: [{
+              id: newItem.id,
+              mediaType: newItem.type,
+              title: newItem.title,
+              district: newItem.artist,
+              category: newItem.themeName,
+              poem: newItem.chant,
+              img: newItem.coverImg,
+              youtubeId: newItem.youtubeId,
+              videoSrc: newItem.type === 'video' ? newItem.src : '',
+              duration: newItem.duration
+            }]
+          })
+        }).catch(() => {});
+      }
       if (currentRadioIdx >= MEDIA_PLAYLIST.length) currentRadioIdx = 0;
       renderRadioPlaylist();
       selectRadioTrack(currentRadioIdx);
@@ -1870,7 +1919,7 @@
         const removedItem = idx !== -1 ? ARTWORKS_DATA[idx] : null;
         if (idx !== -1) ARTWORKS_DATA.splice(idx, 1);
         if (typeof deletePhotoFromVault === 'function') deletePhotoFromVault(title);
-        fetch('/api/gallery/delete', {
+        communityFetch('/api/gallery/delete', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id: removedItem && removedItem.id, title: removedItem ? removedItem.title : title })
@@ -1901,6 +1950,8 @@
           poem: m.chant || '',
           duration: m.duration || '03:30',
           isUserUpload: !!(m.isUserUpload || (m.id && String(m.id).startsWith('custom_'))),
+          ownerId: m.ownerId || 'guest',
+          status: m.status || 'published',
           likes: m.likes || (18 + (i % 15)),
           comments: m.comments || []
         }));
@@ -1916,17 +1967,21 @@
         category: art.category || 'Văn Hóa & Đời Sống',
         poem: art.poem || art.intro || '',
         isUserUpload: !!art.isUserUpload,
+        ownerId: art.ownerId || 'guest',
+        status: art.status || 'published',
         likes: art.likes || (12 + (i % 9)),
         comments: art.comments || []
       }));
 
-      // Ưu tiên bài người dùng mới đăng lên đầu, sau đó đan xen Video và Ảnh
+      // Trình tự khoa học: Bài Ghim (Admin) -> Bài người dùng mới đăng -> Đan xen Video & Ảnh
+      const allBase = [...videoItems, ...photoItems];
+      const pinned = allBase.filter(x => x.status === 'pinned');
       const userUploads = [
-        ...videoItems.filter(x => x.isUserUpload).reverse(),
-        ...photoItems.filter(x => x.isUserUpload)
+        ...videoItems.filter(x => x.status !== 'pinned' && x.isUserUpload).reverse(),
+        ...photoItems.filter(x => x.status !== 'pinned' && x.isUserUpload)
       ];
-      const baseVideos = videoItems.filter(x => !x.isUserUpload);
-      const basePhotos = photoItems.filter(x => !x.isUserUpload);
+      const baseVideos = videoItems.filter(x => x.status !== 'pinned' && !x.isUserUpload);
+      const basePhotos = photoItems.filter(x => x.status !== 'pinned' && !x.isUserUpload);
 
       const interleaved = [];
       const maxLen = Math.max(baseVideos.length, basePhotos.length);
@@ -1934,7 +1989,7 @@
         if (i < baseVideos.length) interleaved.push(baseVideos[i]);
         if (i < basePhotos.length) interleaved.push(basePhotos[i]);
       }
-      return [...userUploads, ...interleaved];
+      return [...pinned, ...userUploads, ...interleaved];
     }
 
     function renderCommunityVideoThumbHtml(item) {
@@ -2067,8 +2122,13 @@
         const likeCount = item.likes + (localLikes[item.title] ? 1 : 0);
         const commentsList = [...(localComments[item.title] || []), ...(item.comments || [])];
         const cardClick = isVideo ? `playCommunityVideo('${item.domKey}', event)` : `selectArtSlide(${item.artIdx})`;
+        const isAdmin = (COMMUNITY_CURRENT_USER && COMMUNITY_CURRENT_USER.role === 'admin');
+        const isOwner = (COMMUNITY_CURRENT_USER && item.ownerId && item.ownerId === COMMUNITY_CURRENT_USER.id);
+        const canPin = isAdmin && item.isUserUpload;
+        const canDelete = item.isUserUpload && (isAdmin || isOwner || item.ownerId === 'guest');
+        const isPinned = (item.status === 'pinned');
         return `
-          <article class="rounded-2xl overflow-hidden bg-[#0d2244] border ${isCurrent ? 'border-red-500 ring-2 ring-red-500/40' : 'border-blue-800/80 hover:border-red-500/70'} shadow-md transition flex flex-col">
+          <article class="rounded-2xl overflow-hidden bg-[#0d2244] border ${isPinned ? 'border-red-500 ring-2 ring-red-500/50' : (isCurrent ? 'border-red-500 ring-2 ring-red-500/40' : 'border-blue-800/80 hover:border-red-500/70')} shadow-md transition flex flex-col">
             <!-- ĐẦU THẺ CỘNG ĐỒNG: TÁC GIẢ / ĐẠO TRÀNG + THỂ LOẠI -->
             <div class="px-3 py-2 flex items-center justify-between gap-2 border-b border-blue-900/90">
               <div class="flex items-center gap-2 min-w-0">
@@ -2078,7 +2138,12 @@
                   <div class="text-[9.5px] text-sky-300/80 truncate">${item.category}</div>
                 </div>
               </div>
-              <span class="px-2 py-0.5 rounded-full ${isVideo ? 'bg-red-600/20 text-red-300 border border-red-500/40' : 'bg-blue-800/70 text-sky-200 border border-blue-600/40'} text-[9px] font-bold shrink-0">${item.isUserUpload ? '✨ Mới đăng' : (isVideo ? '🎬 Video' : '4K Di Sản')}</span>
+              <div class="flex items-center gap-1 shrink-0">
+                ${isPinned ? '<span class="px-1.5 py-0.5 rounded-full bg-red-600 text-white text-[9px] font-black">📌 Ghim</span>' : ''}
+                <span class="px-2 py-0.5 rounded-full ${isVideo ? 'bg-red-600/20 text-red-300 border border-red-500/40' : 'bg-blue-800/70 text-sky-200 border border-blue-600/40'} text-[9px] font-bold">${item.isUserUpload ? '✨ Mới đăng' : (isVideo ? '🎬 Video' : '4K Di Sản')}</span>
+                ${canPin ? `<button onclick="pinCommunityPost('${item.domKey}', event)" class="w-6 h-6 rounded-full bg-blue-900/80 hover:bg-red-600 text-sky-200 hover:text-white flex items-center justify-center text-[10px] cursor-pointer transition" title="${isPinned ? 'Bỏ ghim' : 'Ghim nổi bật (Admin)'}"><i class="fa-solid fa-thumbtack"></i></button>` : ''}
+                ${canDelete ? `<button onclick="deleteCommunityPost('${item.domKey}', event)" class="w-6 h-6 rounded-full bg-blue-900/80 hover:bg-red-600 text-red-300 hover:text-white flex items-center justify-center text-[10px] cursor-pointer transition" title="Xóa bài"><i class="fa-solid fa-trash"></i></button>` : ''}
+              </div>
             </div>
 
             <!-- ẢNH / VIDEO CHÍNH -->
@@ -4056,7 +4121,7 @@
       if (fb) fb.innerHTML = '☁️ Bước 2/2: Đang đồng bộ đăng lên Trang Web Cộng Đồng...';
       let cloudSynced = false;
       try {
-        const resp = await fetch('/api/gallery/publish', {
+        const resp = await communityFetch('/api/gallery/publish', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ items: toSave })
@@ -4167,7 +4232,228 @@
       if (gCount && typeof ARTWORKS_DATA !== 'undefined') gCount.innerText = ARTWORKS_DATA.length;
     }
 
+    // ========================================================================
+    // TÀI KHOẢN, PHÂN QUYỀN (GUEST / MEMBER / ADMIN) & CLOUD FETCH HELPER
+    // ========================================================================
+    let COMMUNITY_AUTH_MODE = 'login';
+    let COMMUNITY_CURRENT_USER = { id: 'guest', name: 'Khách', role: 'guest' };
+
+    function getCommunityToken() {
+      try { return localStorage.getItem('datphu_community_token') || ''; } catch(e) { return ''; }
+    }
+
+    function communityFetch(url, options = {}) {
+      const token = getCommunityToken();
+      const headers = Object.assign({}, options.headers || {});
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      return fetch(url, Object.assign({}, options, { headers }));
+    }
+
+    function updateCommunityAuthUI() {
+      const lbl = document.getElementById('communityAuthLabel');
+      const btn = document.getElementById('btnCommunityAuthStatus');
+      const loggedView = document.getElementById('communityAuthLoggedInView');
+      const formView = document.getElementById('communityAuthFormView');
+      const isLogged = COMMUNITY_CURRENT_USER && COMMUNITY_CURRENT_USER.role !== 'guest';
+
+      if (lbl) {
+        lbl.innerText = isLogged
+          ? (COMMUNITY_CURRENT_USER.role === 'admin' ? 'Admin' : COMMUNITY_CURRENT_USER.name.split(' ').slice(-1)[0])
+          : 'Đăng nhập';
+      }
+      if (btn) {
+        btn.className = isLogged
+          ? 'px-2.5 h-8 rounded-full bg-blue-700 hover:bg-blue-800 text-white border border-blue-800 flex items-center justify-center gap-1 text-[11px] font-bold transition active:scale-95 cursor-pointer shadow-2xs'
+          : 'px-2.5 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white border border-red-700 flex items-center justify-center gap-1 text-[11px] font-bold transition active:scale-95 cursor-pointer shadow-2xs';
+      }
+      if (loggedView && formView) {
+        if (isLogged) {
+          loggedView.classList.remove('hidden');
+          formView.classList.add('hidden');
+          const pName = document.getElementById('authProfileName');
+          const pAcc = document.getElementById('authProfileAccount');
+          const pBadge = document.getElementById('authProfileRoleBadge');
+          if (pName) pName.innerText = COMMUNITY_CURRENT_USER.name;
+          if (pAcc) pAcc.innerText = COMMUNITY_CURRENT_USER.account || '';
+          if (pBadge) {
+            pBadge.innerText = COMMUNITY_CURRENT_USER.role === 'admin' ? 'Quản trị (Admin)' : 'Thành viên';
+            pBadge.className = COMMUNITY_CURRENT_USER.role === 'admin'
+              ? 'px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-bold'
+              : 'px-2 py-0.5 rounded-full bg-blue-600 text-white text-[10px] font-bold';
+          }
+        } else {
+          loggedView.classList.add('hidden');
+          formView.classList.remove('hidden');
+        }
+      }
+    }
+
+    async function initCommunityAuth() {
+      try {
+        const cached = localStorage.getItem('datphu_community_user');
+        if (cached) COMMUNITY_CURRENT_USER = JSON.parse(cached);
+      } catch(e) {}
+      updateCommunityAuthUI();
+
+      if (getCommunityToken()) {
+        try {
+          const r = await communityFetch('/api/community/auth/me');
+          if (r.ok) {
+            const d = await r.json();
+            if (d && d.authenticated && d.user) {
+              COMMUNITY_CURRENT_USER = d.user;
+              localStorage.setItem('datphu_community_user', JSON.stringify(d.user));
+            } else {
+              COMMUNITY_CURRENT_USER = { id: 'guest', name: 'Khách', role: 'guest' };
+              localStorage.removeItem('datphu_community_token');
+              localStorage.removeItem('datphu_community_user');
+            }
+            updateCommunityAuthUI();
+            if (typeof renderArtGallery === 'function') renderArtGallery();
+          }
+        } catch(e) {}
+      }
+    }
+
+    function openCommunityAuthModal() {
+      const m = document.getElementById('modalCommunityAuth');
+      const fb = document.getElementById('communityAuthFeedback');
+      if (fb) fb.classList.add('hidden');
+      updateCommunityAuthUI();
+      if (m) m.classList.remove('hidden');
+    }
+
+    function closeCommunityAuthModal() {
+      const m = document.getElementById('modalCommunityAuth');
+      if (m) m.classList.add('hidden');
+    }
+
+    function switchCommunityAuthTab(mode) {
+      COMMUNITY_AUTH_MODE = mode;
+      const tL = document.getElementById('authTab_login');
+      const tR = document.getElementById('authTab_register');
+      const nameWrap = document.getElementById('authNameWrap');
+      const adminWrap = document.getElementById('authAdminCodeWrap');
+      const btn = document.getElementById('btnSubmitCommunityAuth');
+      if (mode === 'register') {
+        if (tR) tR.className = 'py-1.5 rounded-lg bg-red-600 text-white font-bold cursor-pointer transition';
+        if (tL) tL.className = 'py-1.5 rounded-lg bg-transparent text-blue-200 font-semibold cursor-pointer transition';
+        if (nameWrap) nameWrap.classList.remove('hidden');
+        if (adminWrap) adminWrap.classList.remove('hidden');
+        if (btn) btn.innerText = 'TẠO TÀI KHOẢN NGAY';
+      } else {
+        if (tL) tL.className = 'py-1.5 rounded-lg bg-red-600 text-white font-bold cursor-pointer transition';
+        if (tR) tR.className = 'py-1.5 rounded-lg bg-transparent text-blue-200 font-semibold cursor-pointer transition';
+        if (nameWrap) nameWrap.classList.add('hidden');
+        if (adminWrap) adminWrap.classList.add('hidden');
+        if (btn) btn.innerText = 'ĐĂNG NHẬP NGAY';
+      }
+    }
+
+    async function submitCommunityAuth() {
+      const fb = document.getElementById('communityAuthFeedback');
+      const account = (document.getElementById('authInputAccount')?.value || '').trim();
+      const password = document.getElementById('authInputPassword')?.value || '';
+      const name = (document.getElementById('authInputName')?.value || '').trim();
+      const adminCode = (document.getElementById('authInputAdminCode')?.value || '').trim();
+
+      const endpoint = (COMMUNITY_AUTH_MODE === 'register') ? '/api/community/auth/register' : '/api/community/auth/login';
+      const payload = (COMMUNITY_AUTH_MODE === 'register') ? { name, account, password, adminCode } : { account, password };
+
+      try {
+        const resp = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await resp.json();
+        if (!resp.ok || data.status !== 'ok') {
+          if (fb) {
+            fb.className = 'p-2 rounded-xl text-[11px] font-bold text-center bg-red-600/25 text-red-200 border border-red-500/40';
+            fb.innerText = data.message || 'Không thể xác thực, vui lòng kiểm tra lại.';
+            fb.classList.remove('hidden');
+          }
+          return;
+        }
+        localStorage.setItem('datphu_community_token', data.token);
+        localStorage.setItem('datphu_community_user', JSON.stringify(data.user));
+        localStorage.setItem('datphu_last_author', data.user.name);
+        COMMUNITY_CURRENT_USER = data.user;
+        updateCommunityAuthUI();
+        closeCommunityAuthModal();
+        if (typeof renderArtGallery === 'function') renderArtGallery();
+      } catch(e) {
+        if (fb) {
+          fb.className = 'p-2 rounded-xl text-[11px] font-bold text-center bg-red-600/25 text-red-200 border border-red-500/40';
+          fb.innerText = 'Lỗi kết nối máy chủ.';
+          fb.classList.remove('hidden');
+        }
+      }
+    }
+
+    function logoutCommunityUser() {
+      localStorage.removeItem('datphu_community_token');
+      localStorage.removeItem('datphu_community_user');
+      COMMUNITY_CURRENT_USER = { id: 'guest', name: 'Khách', role: 'guest' };
+      updateCommunityAuthUI();
+      closeCommunityAuthModal();
+      if (typeof renderArtGallery === 'function') renderArtGallery();
+    }
+
+    async function pinCommunityPost(domKey, ev) {
+      if (ev) ev.stopPropagation();
+      const item = COMMUNITY_FEED_MAP[domKey];
+      if (!item) return;
+      try {
+        const resp = await communityFetch('/api/gallery/pin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: item.id, title: item.title })
+        });
+        const data = await resp.json();
+        if (resp.ok && data.status === 'ok') {
+          const target = item.feedKind === 'video'
+            ? MEDIA_PLAYLIST.find(m => m.id === item.id)
+            : ARTWORKS_DATA.find(a => a.id === item.id || a.title === item.title);
+          if (target) target.status = data.itemStatus;
+          renderArtGallery();
+        } else {
+          alert(data.message || 'Không thể ghim bài viết.');
+        }
+      } catch(e) {}
+    }
+
+    async function deleteCommunityPost(domKey, ev) {
+      if (ev) ev.stopPropagation();
+      const item = COMMUNITY_FEED_MAP[domKey];
+      if (!item) return;
+      if (!confirm('Xóa bài viết "' + item.title + '" khỏi Cộng Đồng?')) return;
+      try {
+        const resp = await communityFetch('/api/gallery/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: item.id, title: item.title })
+        });
+        if (resp.status === 403) {
+          const err = await resp.json();
+          alert(err.message || 'Bạn không có quyền xóa bài viết này.');
+          return;
+        }
+        if (item.feedKind === 'video') {
+          customMediaList = customMediaList.filter(m => m.id !== item.id);
+          localStorage.setItem('datphu_custom_media', JSON.stringify(customMediaList));
+          MEDIA_PLAYLIST = [...DEFAULT_MEDIA_PLAYLIST, ...customMediaList];
+        } else {
+          deletePersonalPhoto((item.title || '').replace(/'/g, ''));
+          return;
+        }
+        renderArtGallery();
+        updateSubTabCounts();
+      } catch(e) {}
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
+      initCommunityAuth();
       loadSavedCommunityPhotos();
       startTetCountdown();
       initTetPetals();
@@ -4571,5 +4857,78 @@
       </div>
 
     </div>
-  </div></body>
+  </div>
+
+  <!-- ================= MODAL TÀI KHOẢN & PHÂN QUYỀN CỘNG ĐỒNG (GUEST / MEMBER / ADMIN) ================= -->
+  <div id="modalCommunityAuth" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3" onclick="if(event.target === this) closeCommunityAuthModal()">
+    <div class="bg-[#0d2244] border-2 border-blue-500/80 rounded-3xl w-full max-w-sm text-white shadow-2xl overflow-hidden">
+      <div class="px-4 py-3 bg-[#091833] border-b border-blue-800/80 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-red-600 flex items-center justify-center text-white text-sm shadow">
+            <i class="fa-solid fa-user-shield"></i>
+          </span>
+          <div>
+            <h3 class="text-xs font-black uppercase tracking-wide">Tài Khoản &amp; Phân Quyền</h3>
+            <p class="text-[10px] text-sky-300/85">Khách • Thành viên • Quản trị (Admin)</p>
+          </div>
+        </div>
+        <button onclick="closeCommunityAuthModal()" class="w-7 h-7 rounded-full bg-blue-900/70 hover:bg-red-600 text-blue-200 hover:text-white flex items-center justify-center text-xs cursor-pointer transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Khung khi đã đăng nhập -->
+      <div id="communityAuthLoggedInView" class="hidden p-4 space-y-3 text-xs">
+        <div class="p-3 rounded-2xl bg-[#091833] border border-blue-800 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-sm text-white" id="authProfileName">Thành viên</span>
+            <span id="authProfileRoleBadge" class="px-2 py-0.5 rounded-full bg-blue-600 text-white text-[10px] font-bold">Thành viên</span>
+          </div>
+          <div class="text-[11px] text-sky-300/80" id="authProfileAccount"></div>
+        </div>
+        <div class="text-[11px] text-blue-100/90 space-y-1 bg-blue-950/60 p-2.5 rounded-xl border border-blue-900">
+          <div>• <b>Thành viên:</b> Đăng ảnh/video, xóa bài của mình, gửi lời chúc.</div>
+          <div>• <b>Quản trị (Admin):</b> Ghim bài nổi bật lên đầu &amp; kiểm duyệt bài.</div>
+        </div>
+        <button type="button" onclick="logoutCommunityUser()" class="w-full py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs cursor-pointer transition">
+          Đăng Xuất Tài Khoản
+        </button>
+      </div>
+
+      <!-- Khung Đăng nhập / Đăng ký -->
+      <div id="communityAuthFormView" class="p-4 space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-[#091833] border border-blue-900">
+          <button type="button" id="authTab_login" onclick="switchCommunityAuthTab('login')" class="py-1.5 rounded-lg bg-red-600 text-white font-bold cursor-pointer transition">Đăng Nhập</button>
+          <button type="button" id="authTab_register" onclick="switchCommunityAuthTab('register')" class="py-1.5 rounded-lg bg-transparent text-blue-200 font-semibold cursor-pointer transition">Đăng Ký Mới</button>
+        </div>
+
+        <div id="authNameWrap" class="hidden">
+          <label class="block font-bold text-blue-100 mb-1">Tên hiển thị / Đạo tràng (*):</label>
+          <input type="text" id="authInputName" placeholder="Ví dụ: Bác Hai Tuy Hòa" class="w-full px-3 py-2 rounded-xl bg-[#091833] border border-blue-800 text-white placeholder-blue-300/50 focus:border-red-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-blue-100 mb-1">Số điện thoại hoặc Email (*):</label>
+          <input type="text" id="authInputAccount" placeholder="09xx... hoặc email@..." class="w-full px-3 py-2 rounded-xl bg-[#091833] border border-blue-800 text-white placeholder-blue-300/50 focus:border-red-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-blue-100 mb-1">Mật khẩu (*):</label>
+          <input type="password" id="authInputPassword" placeholder="Tối thiểu 4 ký tự" class="w-full px-3 py-2 rounded-xl bg-[#091833] border border-blue-800 text-white placeholder-blue-300/50 focus:border-red-500 focus:outline-none" />
+        </div>
+
+        <div id="authAdminCodeWrap" class="hidden">
+          <label class="block font-bold text-sky-300 mb-1">Mã Quản trị (tuỳ chọn, bỏ trống nếu là Thành viên):</label>
+          <input type="password" id="authInputAdminCode" placeholder="Nhập mã Admin nếu có" class="w-full px-3 py-1.5 rounded-xl bg-[#091833] border border-blue-800 text-white placeholder-blue-300/50 focus:border-red-500 focus:outline-none" />
+        </div>
+
+        <div id="communityAuthFeedback" class="hidden p-2 rounded-xl text-[11px] font-bold text-center"></div>
+
+        <button type="button" onclick="submitCommunityAuth()" id="btnSubmitCommunityAuth" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs shadow-lg cursor-pointer transition">
+          ĐĂNG NHẬP NGAY
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
 </html>
