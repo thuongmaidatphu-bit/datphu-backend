@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
+const cloudRepo = require('./communityCloudRepo');
 
 const TOKEN_SECRET = process.env.COMMUNITY_TOKEN_SECRET || 'datphu-community-rbac-secret-2026';
 const ADMIN_INVITE_CODE = process.env.COMMUNITY_ADMIN_CODE || 'DATPHU-ADMIN';
@@ -143,7 +144,8 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
     }
 
     const users = readJsonFile('community_users.json', []);
-    if (users.some(u => u.account === account)) {
+    const cloudCheck = await cloudRepo.findCloudUser(account);
+    if ((cloudCheck.ok && cloudCheck.user) || users.some(u => u.account === account)) {
       return sendJson(res, 409, { status: 'error', message: 'Tài khoản này đã được đăng ký trước đó.' });
     }
 
@@ -156,12 +158,14 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
       passwordHash: hashPassword(password),
       createdAt: new Date().toISOString()
     };
+    const cloudCreated = await cloudRepo.createCloudUser(newUser);
     users.push(newUser);
     writeJsonFile('community_users.json', users);
 
     const token = signToken(newUser);
     return sendJson(res, 200, {
       status: 'ok',
+      cloudDbUsed: cloudCreated.ok,
       token,
       user: { id: newUser.id, name: newUser.name, account: newUser.account, role: newUser.role }
     });
@@ -170,8 +174,9 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
   if (pathname === '/api/community/auth/login' && req.method === 'POST') {
     const account = String(body.account || '').trim().toLowerCase();
     const password = String(body.password || '');
+    const cloudLookup = await cloudRepo.findCloudUser(account);
     const users = readJsonFile('community_users.json', []);
-    const user = users.find(u => u.account === account);
+    const user = (cloudLookup.ok && cloudLookup.user) ? cloudLookup.user : users.find(u => u.account === account);
 
     if (!user || !verifyPassword(password, user.passwordHash)) {
       return sendJson(res, 401, { status: 'error', message: 'Sai tài khoản hoặc mật khẩu.' });
@@ -194,35 +199,60 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
   }
 
   // ------------------------------------------------------------------------
-  // B. WORKFLOW LƯU TRỮ & PHÂN QUYỀN BẢNG TIN CỘNG ĐỒNG
+  // B. WORKFLOW LƯU TRỮ & PHÂN QUYỀN BẢNG TIN CỘNG ĐỒNG (CLOUD + FALLBACK)
   // ------------------------------------------------------------------------
   if (pathname === '/api/gallery/list' && req.method === 'GET') {
-    const raw = readJsonFile('community_gallery.json', []);
+    const limit = Number(parsedUrl && parsedUrl.searchParams.get('limit')) || 60;
+    const cloudRes = await cloudRepo.listCloudPosts(limit);
+    const localRaw = readJsonFile('community_gallery.json', []);
+    const raw = (cloudRes.ok && cloudRes.items.length > 0) ? cloudRes.items : localRaw;
+
     let items = sortCommunityFeed(raw);
     const mediaType = parsedUrl && parsedUrl.searchParams.get('mediaType');
     if (mediaType) items = items.filter(it => (it.mediaType || 'photo') === mediaType);
-    const limit = Number(parsedUrl && parsedUrl.searchParams.get('limit')) || 60;
-    return sendJson(res, 200, { status: 'ok', total: items.length, items: items.slice(0, limit) });
+    return sendJson(res, 200, {
+      status: 'ok',
+      cloudDbUsed: cloudRes.ok,
+      total: items.length,
+      items: items.slice(0, limit)
+    });
   }
 
   if (pathname === '/api/gallery/publish' && req.method === 'POST') {
     const actor = verifyTokenFromReq(req);
     const newItems = Array.isArray(body.items) ? body.items : [body];
-    const valid = newItems
+    const normalized = newItems
       .filter(it => it && it.title && (it.img || it.youtubeId || it.videoSrc))
       .map(it => normalizePostSchema(it, actor));
 
-    if (valid.length === 0) {
+    if (normalized.length === 0) {
       return sendJson(res, 400, { status: 'error', message: 'Thiếu dữ liệu ảnh/video hoặc tiêu đề.' });
     }
 
+    // Bước 1: Đẩy ảnh Base64 lên Supabase Storage để lấy URL CDN gọn nhẹ
+    let cloudStorageCount = 0;
+    const valid = await Promise.all(normalized.map(async (post) => {
+      if (post.img && post.img.startsWith('data:image/')) {
+        const uploaded = await cloudRepo.uploadDataUrlToCloudStorage(post.img, post.ownerId, post.id);
+        if (uploaded.uploaded) {
+          cloudStorageCount++;
+          post.img = uploaded.url;
+        }
+      }
+      return post;
+    }));
+
+    // Bước 2: Lưu Metadata vào Supabase Cloud Database + Mirror cục bộ
+    const cloudSaved = await cloudRepo.upsertCloudPosts(valid);
     const current = readJsonFile('community_gallery.json', []);
     const merged = [...valid, ...current.filter(c => !valid.some(v => v.id === c.id))].slice(0, 120);
-    const saved = writeJsonFile('community_gallery.json', merged);
+    const localSaved = writeJsonFile('community_gallery.json', merged);
 
     return sendJson(res, 200, {
       status: 'ok',
-      savedToCloud: saved,
+      savedToCloud: !!(cloudSaved.ok || localSaved),
+      cloudDbUsed: cloudSaved.ok,
+      cloudStorageCount,
       count: valid.length,
       role: actor ? actor.role : 'guest',
       items: valid
@@ -232,7 +262,9 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
   if (pathname === '/api/gallery/delete' && req.method === 'POST') {
     const actor = verifyTokenFromReq(req);
     const current = readJsonFile('community_gallery.json', []);
-    const target = current.find(c => (body.id && c.id === body.id) || (body.title && c.title === body.title));
+    const cloudRes = await cloudRepo.listCloudPosts(100);
+    const pool = cloudRes.ok ? cloudRes.items : current;
+    const target = pool.find(c => (body.id && c.id === body.id) || (body.title && c.title === body.title));
 
     if (target) {
       const isAdmin = actor && actor.role === 'admin';
@@ -242,6 +274,9 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
         return sendJson(res, 403, { status: 'error', message: 'Bạn chỉ có quyền xóa bài viết do chính mình đăng.' });
       }
     }
+
+    if (target && target.id) await cloudRepo.deleteCloudPost(target.id);
+    else if (body.id) await cloudRepo.deleteCloudPost(body.id);
 
     const next = current.filter(c => c.id !== body.id && c.title !== body.title);
     writeJsonFile('community_gallery.json', next);
@@ -254,24 +289,37 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
       return sendJson(res, 403, { status: 'error', message: 'Chỉ Quản trị viên (Admin) mới có quyền ghim bài nổi bật.' });
     }
     const current = readJsonFile('community_gallery.json', []);
-    const item = current.find(c => (body.id && c.id === body.id) || (body.title && c.title === body.title));
+    const cloudRes = await cloudRepo.listCloudPosts(100);
+    const pool = (cloudRes.ok && cloudRes.items.length > 0) ? cloudRes.items : current;
+    const item = pool.find(c => (body.id && c.id === body.id) || (body.title && c.title === body.title));
     if (!item) return sendJson(res, 404, { status: 'error', message: 'Không tìm thấy bài viết.' });
 
-    item.status = item.status === 'pinned' ? 'published' : 'pinned';
+    const nextStatus = item.status === 'pinned' ? 'published' : 'pinned';
+    item.status = nextStatus;
     item.updatedAt = new Date().toISOString();
-    writeJsonFile('community_gallery.json', current);
-    return sendJson(res, 200, { status: 'ok', itemStatus: item.status });
+    await cloudRepo.updateCloudPost(item.id, { status: nextStatus });
+
+    const localItem = current.find(c => c.id === item.id || c.title === item.title);
+    if (localItem) {
+      localItem.status = nextStatus;
+      localItem.updatedAt = item.updatedAt;
+      writeJsonFile('community_gallery.json', current);
+    }
+    return sendJson(res, 200, { status: 'ok', itemStatus: nextStatus });
   }
 
   if (pathname === '/api/gallery/react' && req.method === 'POST') {
     const current = readJsonFile('community_gallery.json', []);
     const item = current.find(c => (body.id && c.id === body.id) || (body.title && c.title === body.title));
+    let nextLikes = 1;
     if (item) {
       item.likes = Math.max(0, (item.likes || 0) + (Number(body.delta) || 1));
       item.updatedAt = new Date().toISOString();
+      nextLikes = item.likes;
       writeJsonFile('community_gallery.json', current);
     }
-    return sendJson(res, 200, { status: 'ok', likes: item ? item.likes : 1 });
+    if (body.id) await cloudRepo.updateCloudPost(body.id, { likes: nextLikes });
+    return sendJson(res, 200, { status: 'ok', likes: nextLikes });
   }
 
   if (pathname === '/api/gallery/comment' && req.method === 'POST') {
@@ -290,6 +338,7 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
       item.comments = item.comments.slice(0, 30);
       item.updatedAt = new Date().toISOString();
       writeJsonFile('community_gallery.json', current);
+      await cloudRepo.updateCloudPost(item.id, { comments: item.comments });
     }
     return sendJson(res, 200, { status: 'ok', comment: commentObj });
   }
