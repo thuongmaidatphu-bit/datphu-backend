@@ -137,6 +137,58 @@ function broadcastCommunityEvent(sseClients, eventName, payload) {
   });
 }
 
+// ------------------------------------------------------------------------
+// BẢO VỆ NỘI DUNG & CHỐNG SPAM (RATE LIMIT + LỌC TỪ KHÓA RÁC)
+// ------------------------------------------------------------------------
+const RATE_LIMIT_STORE = new Map();
+const DEDUPE_STORE = new Map();
+
+function getClientIp(req) {
+  const fwd = String((req && req.headers && req.headers['x-forwarded-for']) || '').split(',')[0].trim();
+  return fwd || (req && req.socket && req.socket.remoteAddress) || 'unknown';
+}
+
+function checkCommunityRateLimit(req, actor, bucket, maxCount, windowMs, dedupeText = '', dedupeMs = 15000) {
+  const identity = (actor && actor.id) ? `u:${actor.id}` : `ip:${getClientIp(req)}`;
+  const key = `${bucket}:${identity}`;
+  const now = Date.now();
+  const prev = (RATE_LIMIT_STORE.get(key) || []).filter(ts => now - ts < windowMs);
+  if (prev.length >= maxCount) {
+    const waitSec = Math.max(1, Math.ceil((windowMs - (now - prev[0])) / 1000));
+    return { allowed: false, statusCode: 429, message: `Bạn thao tác quá nhanh, vui lòng thử lại sau ${waitSec} giây.` };
+  }
+  if (dedupeText) {
+    const dKey = `${key}:${crypto.createHash('md5').update(String(dedupeText).trim().toLowerCase()).digest('hex')}`;
+    const lastTs = DEDUPE_STORE.get(dKey) || 0;
+    if (now - lastTs < dedupeMs) {
+      return { allowed: false, statusCode: 429, message: 'Nội dung vừa được gửi, vui lòng không gửi lặp lại liên tiếp.' };
+    }
+    DEDUPE_STORE.set(dKey, now);
+  }
+  prev.push(now);
+  RATE_LIMIT_STORE.set(key, prev);
+  return { allowed: true };
+}
+
+function containsSpamOrAbuse(text) {
+  const s = String(text || '').toLowerCase();
+  if (!s.trim()) return { blocked: false };
+  const urlMatches = s.match(/https?:\/\/|www\./g) || [];
+  if (urlMatches.length >= 3) {
+    return { blocked: true, message: 'Nội dung chứa quá nhiều liên kết (nghi ngờ spam).' };
+  }
+  const spamPatterns = [
+    /\b(cá độ|cờ bạc|lô đề|tài xỉu|nổ hũ|kubet|789bet|jun88|hi88)\b/i,
+    /\b(vay tiền nhanh|bán sim|hack nick|spam tool)\b/i
+  ];
+  for (const rx of spamPatterns) {
+    if (rx.test(s)) {
+      return { blocked: true, message: 'Nội dung chứa từ khóa quảng cáo/spam không phù hợp cộng đồng.' };
+    }
+  }
+  return { blocked: false };
+}
+
 async function handle(pathname, req, res, body, sseClients, parsedUrl) {
   // ------------------------------------------------------------------------
   // A. ĐĂNG KÝ / ĐĂNG NHẬP / KIỂM TRA QUYỀN CỘNG ĐỒNG
@@ -299,6 +351,7 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
     const localRaw = readJsonFile('community_gallery.json', []);
     const raw = (cloudRes.ok && cloudRes.items.length > 0) ? cloudRes.items : localRaw;
     const items = sortCommunityFeed(raw, true);
+    const reports = readJsonFile('community_reports.json', []).filter(r => r && r.status === 'open');
     return sendJson(res, 200, {
       status: 'ok',
       cloudDbUsed: cloudRes.ok,
@@ -306,9 +359,11 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
         total: items.length,
         published: items.filter(x => x.status === 'published').length,
         pinned: items.filter(x => x.status === 'pinned').length,
-        archived: items.filter(x => x.status === 'archived').length
+        archived: items.filter(x => x.status === 'archived').length,
+        reported: reports.length
       },
-      items
+      items,
+      reports
     });
   }
 
@@ -318,6 +373,17 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
       return sendJson(res, 403, { status: 'error', message: 'Chỉ Quản trị viên (Admin) mới có quyền kiểm duyệt.' });
     }
     const action = String(body.action || '').trim();
+    if (action === 'dismiss_report') {
+      const reports = readJsonFile('community_reports.json', []);
+      const nextReports = reports.map(r => {
+        if ((body.reportId && r.id === body.reportId) || (body.id && r.postId === body.id)) {
+          return Object.assign({}, r, { status: 'resolved', resolvedBy: actor.name, resolvedAt: new Date().toISOString() });
+        }
+        return r;
+      });
+      writeJsonFile('community_reports.json', nextReports);
+      return sendJson(res, 200, { status: 'ok', action: 'dismiss_report' });
+    }
     const current = readJsonFile('community_gallery.json', []);
     const cloudRes = await cloudRepo.listCloudPosts(120, true);
     const pool = (cloudRes.ok && cloudRes.items.length > 0) ? cloudRes.items : current;
@@ -328,6 +394,10 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
       await cloudRepo.deleteCloudPost(target.id);
       const next = current.filter(c => c.id !== target.id && c.title !== target.title);
       writeJsonFile('community_gallery.json', next);
+      const reports = readJsonFile('community_reports.json', []).map(r =>
+        (r.postId === target.id || r.postTitle === target.title) ? Object.assign({}, r, { status: 'resolved', resolvedAt: new Date().toISOString() }) : r
+      );
+      writeJsonFile('community_reports.json', reports);
       return sendJson(res, 200, { status: 'ok', action: 'delete', id: target.id });
     }
 
@@ -349,6 +419,12 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
       current.unshift(target);
     }
     writeJsonFile('community_gallery.json', current);
+    if (nextStatus === 'archived') {
+      const reports = readJsonFile('community_reports.json', []).map(r =>
+        (r.postId === target.id || r.postTitle === target.title) ? Object.assign({}, r, { status: 'resolved', resolvedAt: new Date().toISOString() }) : r
+      );
+      writeJsonFile('community_reports.json', reports);
+    }
     return sendJson(res, 200, { status: 'ok', action, itemStatus: nextStatus, id: target.id });
   }
 
@@ -361,6 +437,16 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
 
     if (normalized.length === 0) {
       return sendJson(res, 400, { status: 'error', message: 'Thiếu dữ liệu ảnh/video hoặc tiêu đề.' });
+    }
+
+    const combinedText = normalized.map(x => `${x.title} ${x.poem} ${x.intro}`).join(' ');
+    const spamCheck = containsSpamOrAbuse(combinedText);
+    if (spamCheck.blocked) {
+      return sendJson(res, 400, { status: 'error', message: spamCheck.message });
+    }
+    const rl = checkCommunityRateLimit(req, actor, 'publish', 5, 5 * 60 * 1000, normalized[0].title, 15000);
+    if (!rl.allowed) {
+      return sendJson(res, rl.statusCode, { status: 'error', message: rl.message });
     }
 
     // Bước 1: Đẩy ảnh Base64 lên Supabase Storage để lấy URL CDN gọn nhẹ
@@ -508,6 +594,14 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
     if (!text) {
       return sendJson(res, 400, { status: 'error', message: 'Nội dung lời chúc trống.' });
     }
+    const spamCheck = containsSpamOrAbuse(text);
+    if (spamCheck.blocked) {
+      return sendJson(res, 400, { status: 'error', message: spamCheck.message });
+    }
+    const rl = checkCommunityRateLimit(req, actor, 'comment', 10, 60 * 1000, `${body.id || body.title}:${text}`, 20000);
+    if (!rl.allowed) {
+      return sendJson(res, rl.statusCode, { status: 'error', message: rl.message });
+    }
     const current = readJsonFile('community_gallery.json', []);
     const item = current.find(c => (body.id && c.id === body.id) || (body.title && c.title === body.title));
     const commentObj = { author, role: actor ? actor.role : 'guest', text, time: new Date().toISOString() };
@@ -521,6 +615,44 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
     }
     broadcastCommunityEvent(sseClients, 'COMMUNITY_UPDATE', { type: 'comment', id: body.id, title: body.title, comment: commentObj });
     return sendJson(res, 200, { status: 'ok', comment: commentObj });
+  }
+
+  if (pathname === '/api/gallery/report' && req.method === 'POST') {
+    const actor = verifyTokenFromReq(req);
+    const postId = String(body.id || '').trim();
+    const postTitle = String(body.title || '').trim().slice(0, 140);
+    const reason = String(body.reason || 'Nội dung không phù hợp').trim().slice(0, 100);
+    const detail = String(body.detail || '').trim().slice(0, 300);
+    if (!postId && !postTitle) {
+      return sendJson(res, 400, { status: 'error', message: 'Thiếu thông tin bài viết cần báo cáo.' });
+    }
+    const rl = checkCommunityRateLimit(req, actor, 'report', 5, 5 * 60 * 1000, postId || postTitle, 5 * 60 * 1000);
+    if (!rl.allowed) {
+      return sendJson(res, rl.statusCode, { status: 'error', message: rl.message });
+    }
+    const reports = readJsonFile('community_reports.json', []);
+    const reportObj = {
+      id: 'rep_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+      postId: postId || postTitle,
+      postTitle: postTitle || 'Bài viết cộng đồng',
+      reason,
+      detail,
+      reporterId: (actor && actor.id) || getClientIp(req),
+      reporterName: (actor && actor.name) || 'Bà Con Đất Phú',
+      status: 'open',
+      createdAt: new Date().toISOString()
+    };
+    reports.unshift(reportObj);
+    writeJsonFile('community_reports.json', reports.slice(0, 200));
+    const openForPost = reports.filter(r => r.status === 'open' && r.postId === reportObj.postId).length;
+    broadcastCommunityEvent(sseClients, 'COMMUNITY_UPDATE', {
+      type: 'report',
+      postId: reportObj.postId,
+      postTitle: reportObj.postTitle,
+      reason,
+      openCount: openForPost
+    });
+    return sendJson(res, 200, { status: 'ok', report: reportObj, openCount: openForPost });
   }
 
   return false;
