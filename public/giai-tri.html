@@ -57,467 +57,331 @@
     }
   </style>
 </head>
-<body class="bg-gradient-to-b from-slate-50 via-white to-amber-50/40 min-h-screen text-slate-800 flex flex-col font-sans antialiased transition-colors duration-300">
+<body class="bg-slate-50 min-h-screen text-slate-900 flex flex-col font-sans antialiased transition-colors duration-300">
 
-  <!-- ================= TOP NAVIGATION BAR (SIÊU TINH GỌN TRÊN MOBILE) ================= -->
-  <header class="nav-bar-bg sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-200/60 shadow-2xs px-2 sm:px-6 py-1.5 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-3">
-    <div class="flex items-center gap-1.5 sm:gap-3 min-w-0">
-      <a href="/" class="p-1.5 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-black shadow-2xs transition active:scale-95 flex items-center gap-1 shrink-0" title="Trở về Trang Chủ Lịch Đất Phú">
-        <i class="fa-solid fa-arrow-left text-xs"></i>
-        <span class="hidden sm:inline">Về Lịch Đất Phú</span>
+  <!-- ================= TOP NAVIGATION BAR (SIÊU GỌN CHUẨN APP DI ĐỘNG) ================= -->
+  <header class="nav-bar-bg sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-2xs px-3 sm:px-6 py-2 flex items-center justify-between gap-2">
+    <div class="flex items-center gap-2 min-w-0">
+      <a href="/" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 flex items-center justify-center text-xs font-black transition active:scale-95 shrink-0" title="Trở về Trang Chủ Lịch Đất Phú">
+        <i class="fa-solid fa-arrow-left"></i>
       </a>
 
-      <div class="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
-        <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 text-white flex items-center justify-center shadow-xs shrink-0 border border-amber-300">
-          <i class="fa-solid fa-masks-theater text-xs sm:text-base"></i>
+      <div class="flex items-center gap-2 min-w-0">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 text-white flex items-center justify-center shadow-xs shrink-0">
+          <i class="fa-solid fa-masks-theater text-sm"></i>
         </div>
         <div class="min-w-0">
-          <h1 class="text-[11px] sm:text-sm md:text-base font-black text-amber-950 uppercase tracking-tight sm:tracking-wide truncate">
+          <h1 id="headerMainTitle" class="text-xs sm:text-sm md:text-base font-black text-amber-950 uppercase tracking-tight truncate">
             GIẢI TRÍ & VĂN HÓA ĐẤT PHÚ
           </h1>
-          <p class="text-[10px] text-slate-500 font-medium truncate hidden md:block">Radio Quê Hương • Rạp Chiếu 4K • Niệm Phật Số • Trà Đạo Thư Quán</p>
+          <p class="text-[10px] text-slate-500 font-medium truncate hidden sm:block">Nhạc & Video 4K • Niệm Phật Số • Thư Viện Di Sản</p>
         </div>
       </div>
     </div>
 
-    <!-- CỤM NÚT ĐIỀU HƯỚNG GỌN GÀNG -->
-    <div class="flex items-center gap-1 sm:gap-2 shrink-0">
-      <button onclick="openDedicatedPhotoModal()" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white border border-emerald-400/40 text-[11px] sm:text-xs font-black shadow-xs transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Đăng ảnh từ điện thoại hoặc máy tính">
-        <i class="fa-solid fa-camera text-amber-300 text-xs"></i>
+    <!-- CỤM ICON HÀNH ĐỘNG GỌN GÀNG (TÌM KIẾM, ĐĂNG ẢNH, TÀI KHOẢN / HỆ SINH THÁI) -->
+    <div class="flex items-center gap-1.5 shrink-0">
+      <button onclick="toggleQuickSearchBar()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-xs transition active:scale-95 cursor-pointer" title="Tìm kiếm bài hát, video, hình ảnh">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+
+      <button onclick="openDedicatedPhotoModal()" class="w-8 h-8 sm:w-auto sm:px-3 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center justify-center gap-1.5 text-xs font-bold transition active:scale-95 cursor-pointer" title="Đăng ảnh từ điện thoại hoặc máy tính">
+        <i class="fa-solid fa-camera text-xs"></i>
         <span class="hidden sm:inline">Đăng Ảnh</span>
       </button>
 
-      <button onclick="toggleDatPhuAppLauncher()" id="universalAppLauncherBtn" class="p-1.5 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-[11px] sm:text-xs font-black shadow-2xs transition active:scale-95 flex items-center gap-1" title="Mở khay ứng dụng Hệ Sinh Thái Đất Phú">
-        <i class="fa-solid fa-grip text-amber-600 text-xs"></i>
-        <span class="hidden md:inline">Hệ Sinh Thái</span>
-      </button>
-
-      <button onclick="toggleGiaiTriTheme()" id="btnThemeToggle" class="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition active:scale-95" title="Đổi màu nền ngày / đêm">
-        <i id="themeToggleIcon" class="fa-solid fa-moon text-amber-600 text-xs"></i>
+      <button onclick="toggleDatPhuAppLauncher()" id="universalAppLauncherBtn" class="w-8 h-8 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 flex items-center justify-center text-xs transition active:scale-95 cursor-pointer" title="Khay ứng dụng Đất Phú">
+        <i class="fa-solid fa-circle-user text-sm"></i>
       </button>
     </div>
   </header>
 
-  <!-- ================= MASTER CHANNELS DOCK (SIÊU GỌN, CUỘN MƯỢT MÀ) ================= -->
-  <div class="bg-white/95 backdrop-blur-md border-b border-slate-200/70 shadow-2xs py-1.5 px-2 sm:px-6">
-    <div class="max-w-5xl mx-auto flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar text-xs font-black">
-      <button onclick="switchChannel('radio')" id="tabBtn_radio" class="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-xs shrink-0 flex items-center gap-1.5 active:scale-95 transition font-black cursor-pointer text-[11px] sm:text-xs">
-        <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-black/20 text-slate-950 flex items-center justify-center text-[10px]">
-          <i class="fa-solid fa-tower-broadcast"></i>
-        </span>
-        <span>1. Đài Radio & Phim 4K</span>
-      </button>
-
-      <button onclick="switchChannel('buddhist_tea')" id="tabBtn_buddhist_tea" class="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer text-[11px] sm:text-xs">
-        <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-amber-500/15 text-amber-700 flex items-center justify-center text-[10px]">
-          <i class="fa-solid fa-dharmachakra"></i>
-        </span>
-        <span>2. Niệm Phật & Trà Đạo</span>
-      </button>
-
-      <button onclick="switchChannel('mindful')" id="tabBtn_mindful" class="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 shrink-0 flex items-center gap-1.5 active:scale-95 transition cursor-pointer text-[11px] sm:text-xs">
-        <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-indigo-500/15 text-indigo-700 flex items-center justify-center text-[10px]">
-          <i class="fa-solid fa-spa"></i>
-        </span>
-        <span>3. Thiền Thở 4-7-8</span>
-      </button>
+  <!-- THANH TÌM KIẾM NHANH (ẨN MẶC ĐỊNH) -->
+  <div id="quickSearchBarWrapper" class="hidden bg-white border-b border-slate-200 px-3 py-2 sticky top-12 z-30 shadow-xs">
+    <div class="max-w-4xl mx-auto flex items-center gap-2">
+      <div class="relative flex-1">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input type="text" id="quickSearchInput" oninput="handleQuickSearch(this.value)" placeholder="Tìm tên bài hát, video, nghệ sĩ, hoặc ảnh di sản..." class="w-full pl-8 pr-8 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-amber-500">
+        <button onclick="clearQuickSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 text-xs cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- ================= MAIN CONTENT CONTAINER ================= -->
-  <main class="flex-1 max-w-5xl w-full mx-auto p-2 sm:p-5 space-y-2.5 sm:space-y-4">
+  <!-- ================= MAIN CONTENT CONTAINER (MOBILE-FIRST APP SHELL) ================= -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-2.5 sm:px-5 pt-2.5 pb-20 space-y-3">
 
-    <!-- ============================================================ -->
-    <!-- PHÂN HỆ 1: ĐÀI RADIO & HÔ BÀI CHÒI XỨ NẪU                     -->
+    <!-- DẢI RUY-BĂNG LỄ HỘI SIÊU MẢNH -->
+    <div id="festivalSlimBanner" class="py-1 px-2.5 rounded-xl bg-gradient-to-r from-red-900 via-slate-900 to-emerald-900 text-white flex items-center justify-between gap-1.5 text-[10.5px] shadow-xs">
+      <div class="flex items-center gap-1.5 min-w-0">
+        <span class="shrink-0">🎁</span>
+        <p id="tetCountdownText" class="text-[10px] text-amber-100 font-mono truncate">Đang tính thời khắc mùa lễ hội...</p>
+      </div>
+      <div class="flex items-center gap-1 shrink-0">
+        <button onclick="toggleTetPetals()" id="btnTetPetalsToggle" class="px-1.5 py-0.5 rounded-md bg-black/40 border border-amber-400/30 text-amber-200 font-bold text-[10px] flex items-center gap-1 cursor-pointer">
+          <span id="petalsStatusDot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>❄️🌸</span>
+        </button>
+        <button onclick="switchChannel('radio'); filterRadioTheme('noel')" class="px-1.5 py-0.5 rounded-md bg-emerald-600 text-white font-bold text-[10px] cursor-pointer">🎄 Noel</button>
+        <button onclick="switchChannel('radio'); filterRadioTheme('nhacxuan')" class="px-1.5 py-0.5 rounded-md bg-amber-500 text-slate-950 font-bold text-[10px] cursor-pointer">🌸 Xuân</button>
+        <button onclick="document.getElementById('festivalSlimBanner').classList.add('hidden')" class="text-slate-400 hover:text-white px-1 text-[10px] cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
     <!-- ========================================================================= -->
-    <!-- PHÂN HỆ DUY NHẤT: MÀN HÌNH LỚN 4K Ở TRÊN & CHUỖI TƯƠNG TÁC CHẠY DỌC DƯỚI   -->
+    <!-- FEATURED HERO AREA (VIDEO PLAYER HOẶC ĐIỂM ĐẾN DI SẢN NỔI BẬT)           -->
     <!-- ========================================================================= -->
-    <!-- ================= DẢI RUY-BĂNG LỄ HỘI SIÊU MẢNH (SLIM FESTIVAL RIBBON - KHÔNG BỊ CẤN) ================= -->
-      <div id="festivalSlimBanner" class="py-1 px-2.5 sm:py-1.5 sm:px-3.5 rounded-xl bg-gradient-to-r from-red-950 via-slate-900 to-emerald-950 border border-amber-500/30 shadow-xs text-white flex items-center justify-between gap-1.5 relative overflow-hidden text-[10.5px] sm:text-xs">
-        <div class="flex items-center gap-1.5 min-w-0">
-          <span class="text-amber-300 font-bold shrink-0">🎁</span>
-          <p id="tetCountdownText" class="text-[10px] sm:text-[11px] text-amber-100 font-mono font-medium truncate">Đang tính thời khắc mùa lễ hội...</p>
+    <section id="heroCinemaArea" class="space-y-2">
+      <!-- 1A. FEATURED VIDEO PLAYER (HIỂN THỊ Ở TAB NHẠC & VIDEO) -->
+      <div id="heroTheaterContainer" class="relative w-full rounded-2xl overflow-hidden bg-slate-950 aspect-video max-h-[42vh] sm:max-h-[400px] shadow-md group flex items-center justify-center border border-slate-200 select-none">
+        <div id="ambilightGlow" class="hidden"></div>
+
+        <!-- Ảnh bìa 4K -->
+        <img id="artMainImage" src="img/ong_gia_noel_va_cong_chua_tuyet_4k.jpg" alt="Featured Media 4K" class="relative z-10 w-full h-full object-cover bg-slate-950 transition-all duration-500 select-none" />
+
+        <!-- Khung YouTube Video Player -->
+        <div id="heroVideoWrapper" class="absolute inset-0 z-15 hidden w-full h-full bg-black">
+          <iframe id="heroYoutubeIframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
 
-        <div class="flex items-center gap-1 shrink-0">
-          <button onclick="toggleTetPetals()" id="btnTetPetalsToggle" class="px-2 py-0.5 rounded-lg bg-black/40 hover:bg-black/60 border border-amber-400/30 text-amber-200 font-bold transition flex items-center gap-1 active:scale-95 cursor-pointer text-[10px]" title="Bật/Tắt tuyết & mai rơi">
-            <span id="petalsStatusDot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>❄️🌸</span>
+        <div id="heroOverlayGradient" class="absolute inset-0 z-20 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none"></div>
+
+        <!-- Badge góc trên trái giống mẫu ("Featured Video Player") -->
+        <div class="absolute top-2.5 left-2.5 sm:top-4 sm:left-4 z-30 flex items-center gap-1.5">
+          <span id="artCategoryBadge" class="px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[10px] sm:text-xs font-bold border border-white/15 flex items-center gap-1.5">
+            <i id="artCategoryIcon" class="fa-solid fa-play-circle text-amber-400"></i>
+            <span id="artCategoryBadgeText">Featured Video Player</span>
+          </span>
+        </div>
+
+        <!-- Nút phóng to góc trên phải -->
+        <div class="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-30 flex items-center gap-1.5">
+          <button onclick="toggleImageFitMode()" id="btnImageFit" class="px-2 py-1 rounded-lg bg-black/55 hover:bg-black/75 text-amber-300 text-[10px] font-bold border border-white/15 backdrop-blur-md cursor-pointer flex items-center gap-1" title="Chuyển chế độ hiển thị ảnh">
+            <i id="fitIcon" class="fa-solid fa-expand"></i>
+            <span id="fitText" class="hidden sm:inline">Nét 4K</span>
           </button>
-          <button onclick="filterRadioTheme('noel')" class="px-2 py-0.5 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black shadow-xs transition active:scale-95 cursor-pointer text-[10px] flex items-center gap-1" title="Nhạc Giáng Sinh">
-            <span>🎄 Noel</span>
-          </button>
-          <button onclick="filterRadioTheme('nhacxuan')" class="px-2 py-0.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black shadow-xs transition active:scale-95 cursor-pointer text-[10px] flex items-center gap-1">
-            <span>🌸 Xuân</span>
-          </button>
-          <button onclick="document.getElementById('festivalSlimBanner').classList.add('hidden')" class="w-5 h-5 rounded-md hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center text-[10px] ml-0.5" title="Tạm ẩn thanh này">
-            <i class="fa-solid fa-xmark"></i>
+          <button onclick="toggleTheaterFullscreen()" class="w-7 h-7 rounded-lg bg-black/55 hover:bg-black/75 text-white flex items-center justify-center border border-white/15 backdrop-blur-md cursor-pointer" title="Toàn màn hình">
+            <i class="fa-solid fa-maximize text-[10px]"></i>
           </button>
         </div>
-      </div>
 
-      <section id="channelSection_radio" class="space-y-2 sm:space-y-3">
-      
-      <!-- 1. MÀN HÌNH LỚN 4K (HERO CINEMA SCREEN) TÍCH HỢP NÚT PLAY / PAUSE LỚN -->
-      <div class="p-2 sm:p-4 rounded-2xl sm:rounded-3xl bg-slate-900 border border-amber-500/30 shadow-xl space-y-2 sm:space-y-3 relative overflow-hidden">
-        
-        <!-- Khung chiếu video/ảnh tỉ lệ 16:9 với viền Ambilight -->
-        <div id="heroTheaterContainer" class="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 aspect-video max-h-[50vh] sm:max-h-[54vh] md:max-h-[460px] shadow-2xl group flex items-center justify-center border-2 border-amber-500/40 select-none">
-          
-          <div id="ambilightGlow" class="absolute -inset-4 bg-gradient-to-r from-emerald-500/20 via-amber-500/20 to-rose-500/20 blur-2xl pointer-events-none transition-all duration-700"></div>
+        <!-- NÚT PLAY / PAUSE TRÒN CAM GIỮA MÀN HÌNH -->
+        <div id="heroPlayCenterWrapper" class="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
+          <button onclick="toggleRadioPlay()" id="heroScreenPlayBtn" class="pointer-events-auto w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white flex items-center justify-center shadow-[0_6px_25px_rgba(249,115,22,0.7)] border-2 border-white/90 transition-all transform active:scale-90 hover:scale-105 cursor-pointer" title="Phát / Tạm dừng">
+            <i id="heroScreenPlayIcon" class="fa-solid fa-play text-xl sm:text-2xl ml-0.5 text-white"></i>
+          </button>
+        </div>
 
-          <!-- Ảnh nền tranh 4K Sắc Nét Chuẩn Điện Ảnh (Zero Crop, High Contrast) -->
-          <img id="artMainImage" src="img/ong_gia_noel_va_cong_chua_tuyet_4k.jpg" alt="Ông Già Noel & Công Chúa Tuyết 4K" class="relative z-10 w-full h-full object-contain bg-slate-950 transition-all duration-500 select-none" style="image-rendering: -webkit-optimize-contrast;" />
-          
-          <!-- Khung YouTube Video Player (Dành cho Video Clip / Nhạc Phim 4K) -->
-          <div id="heroVideoWrapper" class="absolute inset-0 z-15 hidden w-full h-full bg-black">
-            <iframe id="heroYoutubeIframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-          </div>
-
-          <div id="heroOverlayGradient" class="absolute inset-0 z-20 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none transition-opacity duration-300"></div>
-
-          <!-- Huy hiệu thể loại góc trên trái -->
-          <div class="absolute top-3 left-3 sm:top-5 sm:left-5 z-30 flex items-center gap-2">
-            <span id="artCategoryBadge" class="px-3 py-1 rounded-full bg-amber-500/90 text-slate-950 text-[10px] sm:text-xs font-black shadow backdrop-blur-md flex items-center gap-1.5">
-              <i id="artCategoryIcon" class="fa-solid fa-gift text-emerald-300"></i>
-              <span id="artCategoryBadgeText">GIÁNG SINH & NOEL</span>
-            </span>
-            <span id="mediaTypeBadge" class="px-2.5 py-1 rounded-full bg-slate-900/80 text-emerald-400 text-[10px] sm:text-xs font-bold border border-emerald-500/40 backdrop-blur-md hidden sm:inline-flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span id="mediaTypeBadgeText">Âm Thanh Mộc Thực Tế</span>
-            </span>
-          </div>
-
-          <!-- Nút phóng to toàn màn hình góc trên phải -->
-          <div class="absolute top-3 right-3 sm:top-5 sm:right-5 z-30 flex items-center gap-2">
-            <button onclick="toggleImageFitMode()" id="btnImageFit" class="px-2.5 py-1.5 rounded-full bg-black/60 hover:bg-black/80 text-amber-300 text-[10px] sm:text-xs font-bold border border-white/20 backdrop-blur-md active:scale-95 cursor-pointer flex items-center gap-1.5 transition" title="Đổi chế độ: Vừa vặn sắc nét 4K hoặc Tràn viền">
-              <i id="fitIcon" class="fa-solid fa-expand"></i>
-              <span id="fitText" class="hidden sm:inline">Nét 4K</span>
-            </button>
-            <button onclick="toggleTheaterFullscreen()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition border border-white/20 backdrop-blur-md active:scale-95 cursor-pointer" title="Phóng to toàn màn hình">
-              <i class="fa-solid fa-maximize text-xs"></i>
-            </button>
-          </div>
-
-          <!-- NÚT PLAY / PAUSE LỚN NỔI BẬT Ở CHÍNH GIỮA MÀN HÌNH -->
-          <div id="heroPlayCenterWrapper" class="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
-            <button onclick="toggleRadioPlay()" id="heroScreenPlayBtn" class="pointer-events-auto w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-white flex items-center justify-center shadow-[0_0_35px_rgba(245,158,11,0.8)] border-4 border-white/80 transition-all duration-300 transform active:scale-90 hover:scale-110 cursor-pointer" title="Bấm Phát / Tạm dừng">
-              <i id="heroScreenPlayIcon" class="fa-solid fa-play text-2xl sm:text-3xl ml-1 text-white drop-shadow"></i>
-            </button>
-          </div>
-
-          <!-- Thanh điều khiển và tiến trình phát góc dưới màn hình lớn -->
-          <div id="heroBottomControls" class="absolute bottom-2 inset-x-2 sm:bottom-4 sm:inset-x-6 z-30 text-white space-y-1.5 pointer-events-none">
-            <div class="flex items-center justify-between text-xs sm:text-sm font-bold pointer-events-auto">
-              <div class="truncate max-w-[70%]">
-                <h3 id="radioCurrentTitle" class="text-sm sm:text-lg font-black text-white drop-shadow-md truncate">Hang Bê-lem - Đêm Đông Lạnh Lẽo Chúa Sinh Ra Đời (4K)</h3>
-                <p id="radioCurrentArtist" class="text-[10px] sm:text-xs text-amber-300 font-medium truncate">Hải Linh & Minh Châu • Ca Đoàn Thiên Ca (Nhà Thờ Tân Định)</p>
-              </div>
-              <div class="flex items-center gap-1.5 shrink-0">
-                <button onclick="playPrevRadioTrack()" class="w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition border border-white/20 active:scale-95 cursor-pointer" title="Bài trước">
-                  <i class="fa-solid fa-backward-step text-xs"></i>
-                </button>
-                <button onclick="toggleRadioPlay()" id="radioMasterPlayBtn" class="w-9 h-9 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center font-bold transition shadow active:scale-95 cursor-pointer" title="Phát / Tạm dừng">
-                  <i id="radioMasterPlayIcon" class="fa-solid fa-play text-xs ml-0.5"></i>
-                </button>
-                <button onclick="playNextRadioTrack()" class="w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition border border-white/20 active:scale-95 cursor-pointer" title="Bài tiếp">
-                  <i class="fa-solid fa-forward-step text-xs"></i>
-                </button>
-              </div>
+        <!-- Thông tin bài & thanh tiến trình dưới đáy -->
+        <div id="heroBottomControls" class="absolute bottom-2 inset-x-3 sm:bottom-3.5 sm:inset-x-4 z-30 text-white space-y-1.5 pointer-events-none">
+          <div class="flex items-center justify-between gap-2 pointer-events-auto">
+            <div class="min-w-0 flex-1">
+              <h3 id="radioCurrentTitle" class="text-xs sm:text-base font-bold text-white drop-shadow truncate">Hang Bê-lem - Đêm Đông Lạnh Lẽo Chúa Sinh Ra Đời (4K)</h3>
+              <p id="radioCurrentArtist" class="text-[10px] sm:text-xs text-amber-200/90 truncate">Hải Linh & Minh Châu • Ca Đoàn Thiên Ca</p>
             </div>
-
-            <!-- Thanh tiến trình phát -->
-            <div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden backdrop-blur-md">
-              <div id="heroProgressBar" class="bg-gradient-to-r from-amber-400 to-rose-500 h-full w-0 transition-all duration-300"></div>
+            <div class="flex items-center gap-1 shrink-0">
+              <button onclick="playPrevRadioTrack()" class="w-7 h-7 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center text-[10px] cursor-pointer" title="Bài trước">
+                <i class="fa-solid fa-backward-step"></i>
+              </button>
+              <button onclick="toggleRadioPlay()" id="radioMasterPlayBtn" class="w-8 h-8 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center font-bold text-xs cursor-pointer" title="Phát / Dừng">
+                <i id="radioMasterPlayIcon" class="fa-solid fa-play ml-0.5"></i>
+              </button>
+              <button onclick="playNextRadioTrack()" class="w-7 h-7 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center text-[10px] cursor-pointer" title="Bài tiếp">
+                <i class="fa-solid fa-forward-step"></i>
+              </button>
             </div>
           </div>
-
+          <div class="w-full bg-white/25 h-1 rounded-full overflow-hidden">
+            <div id="heroProgressBar" class="bg-gradient-to-r from-amber-400 to-orange-500 h-full w-0 transition-all duration-300"></div>
+          </div>
         </div>
       </div>
 
-      <!-- ================= 3 PHÂN KHU NỘI DUNG GỌN GÀNG & KHOA HỌC ================= -->
-      <div class="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-900 border border-slate-800 text-xs font-black shadow-lg">
-        <button onclick="switchMediaSubTab('playlist')" id="subTabBtn_playlist" class="flex-1 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black transition flex items-center justify-center gap-1.5 shadow active:scale-95 cursor-pointer text-xs">
-          <i class="fa-solid fa-music"></i>
-          <span>1. Nhạc & Video (<span id="subTabCount_media">37</span>)</span>
-        </button>
-
-        <button onclick="switchMediaSubTab('gallery')" id="subTabBtn_gallery" class="flex-1 py-2 sm:py-2.5 rounded-xl bg-transparent hover:bg-slate-800 text-slate-300 font-bold transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer text-xs">
-          <i class="fa-solid fa-images text-emerald-400"></i>
-          <span>2. Thư Viện Ảnh (<span id="subTabCount_gallery">14</span>)</span>
-        </button>
-
-        <button onclick="switchMediaSubTab('games')" id="subTabBtn_games" class="flex-1 py-2 sm:py-2.5 rounded-xl bg-transparent hover:bg-slate-800 text-slate-300 font-bold transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer text-xs">
-          <i class="fa-solid fa-dice text-rose-400"></i>
-          <span>3. Góc Vui Dân Gian (4)</span>
-        </button>
-      </div>
-
-      <!-- PHÂN KHU 1: KHO NHẠC & VIDEO (HIỂN THỊ MẶC ĐỊNH) -->
-      <div id="subPanel_playlist" class="space-y-3">
-        <!-- KHỐI 1: LỜI CA DAO & BÀI CHÒI CHẠY CHỮ TRỰC TIẾP (LIVE KARAOKE LYRICS) -->
-      <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-2 text-white">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-          <span class="text-xs font-black text-amber-400 flex items-center gap-2">
-            <i class="fa-solid fa-quote-left text-sm"></i>
-            <span>LỜI CA & THƠ BÀI CHÒI TRUYỀN CẢM</span>
+      <!-- 1B. FEATURED HERITAGE CARD (HIỂN THỊ KHI CHỌN TAB THƯ VIỆN ẢNH - GIỐNG MẪU 2) -->
+      <div id="galleryFeaturedCard" class="hidden relative w-full rounded-2xl overflow-hidden bg-slate-900 aspect-video max-h-[38vh] sm:max-h-[360px] shadow-md border border-slate-200 select-none cursor-pointer group" onclick="changeArtSlide(1)">
+        <img id="galleryFeaturedImg" src="img/ganh_da_dia_4k.jpg" alt="Điểm đến Di sản nổi bật" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent"></div>
+        <div class="absolute top-2.5 left-2.5">
+          <span class="px-2.5 py-1 rounded-lg bg-white/90 backdrop-blur-md text-slate-900 text-[10px] sm:text-xs font-black shadow-xs">
+            Điểm đến Di sản nổi bật
           </span>
-          <span class="text-[10px] text-slate-400 font-mono">Ngũ Cung: Hò • Xự • Xang • Xê • Cống</span>
         </div>
-
-        <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800/80 text-center relative overflow-hidden">
-          <p id="radioChantQuote" class="text-sm sm:text-base font-bold text-amber-200 leading-relaxed italic">
-            “Gió đưa cây lách xách sậy ngã ngùi ngùi... Anh đi làm thợ xứ người nhớ em ở lại đất cằn thương nhau!”
-          </p>
-          <canvas id="radioWaveCanvas" width="400" height="24" class="w-full h-6 opacity-60 mt-2"></canvas>
-        </div>
-      </div>
-
-        <!-- KHỐI 2: DANH SÁCH BÀI HÁT & VIDEO THEO CHỦ ĐỀ (THEMATIC PLAYLIST FEED) -->
-      <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-3.5 text-white">
-        
-        <!-- Hàng tiêu đề & Nút đăng tải nhạc phẩm -->
-        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2.5">
-          <div class="flex items-center gap-2">
-            <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-slate-950 font-black text-sm">
-              <i class="fa-solid fa-clapperboard"></i>
-            </span>
-            <div>
-              <h3 class="text-xs sm:text-sm font-black text-white tracking-wide">KHO VIDEO & NHẠC PHẨM CHUYÊN ĐỀ</h3>
-              <p class="text-[10px] text-slate-400">Chọn chủ đề âm nhạc hoặc tự thêm nhạc phẩm yêu thích</p>
-            </div>
+        <div class="absolute bottom-2.5 inset-x-3 flex items-end justify-between text-white">
+          <div class="min-w-0">
+            <h3 id="galleryFeaturedTitle" class="text-sm sm:text-base font-black drop-shadow truncate">Gành Đá Đĩa - Tuyệt Tác Thiên Nhiên</h3>
+            <p id="galleryFeaturedSub" class="text-[10.5px] text-amber-200 font-medium truncate">Tuy An, Phú Yên • Chạm để xem ảnh tiếp theo</p>
           </div>
-
-          <!-- NÚT MỞ MODAL ĐĂNG TẢI NHẠC PHẨM -->
-          <button onclick="openAddMediaModal()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow-md transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-circle-plus text-sm"></i>
-            <span>+ Đăng Tải Nhạc Phẩm Mới</span>
+          <button onclick="event.stopPropagation(); changeArtSlide(1)" class="w-7 h-7 rounded-lg bg-black/50 hover:bg-black/70 text-white flex items-center justify-center text-xs shrink-0 cursor-pointer" title="Xem ảnh kế tiếp">
+            <i class="fa-solid fa-expand"></i>
           </button>
         </div>
-
-        <!-- THANH LỌC CHỦ ĐỀ 1 CHẠM (THEMATIC TABS) -->
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
-          <button onclick="filterRadioTheme('all')" id="themeBtn_all" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition active:scale-95 shadow shrink-0 cursor-pointer flex items-center gap-1.5">
-            <span class="w-5 h-5 rounded-md bg-black/15 text-slate-950 flex items-center justify-center text-[10px]">
-              <i class="fa-solid fa-shapes"></i>
-            </span>
-            <span>Tất Cả (<span id="themeCount_all">25</span>)</span>
-          </button>
-
-          <button onclick="filterRadioTheme('noel')" id="themeBtn_noel" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-900 to-teal-900 hover:from-emerald-800 hover:to-teal-800 text-emerald-200 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer border border-emerald-400/50 shadow-xs">
-            <span class="w-5 h-5 rounded-md bg-emerald-400 text-slate-950 flex items-center justify-center text-[10px] font-black">
-              🎄
-            </span>
-            <span>Giáng Sinh & Noel (<span id="themeCount_noel">12</span>)</span>
-          </button>
-
-          <button onclick="filterRadioTheme('nhacxuan')" id="themeBtn_nhacxuan" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-red-900 to-amber-900 hover:from-red-800 hover:to-amber-800 text-amber-200 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer border border-amber-400/50 shadow-xs">
-            <span class="w-5 h-5 rounded-md bg-amber-400 text-red-950 flex items-center justify-center text-[10px] font-black">
-              🌸
-            </span>
-            <span>Nhạc Xuân & Tết</span>
-          </button>
-
-          <button onclick="filterRadioTheme('baichoi')" id="themeBtn_baichoi" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
-            <span class="w-5 h-5 rounded-md bg-amber-500/20 text-amber-400 flex items-center justify-center text-[10px] border border-amber-500/30">
-              <i class="fa-solid fa-dice-d6"></i>
-            </span>
-            <span>Bài Chòi Cổ</span>
-          </button>
-
-          <button onclick="filterRadioTheme('dieuly')" id="themeBtn_dieuly" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
-            <span class="w-5 h-5 rounded-md bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-[10px] border border-cyan-500/30">
-              <i class="fa-solid fa-water"></i>
-            </span>
-            <span>Điệu Lý & Ca Dao</span>
-          </button>
-
-          <button onclick="filterRadioTheme('nhaccu')" id="themeBtn_nhaccu" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
-            <span class="w-5 h-5 rounded-md bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] border border-emerald-500/30">
-              <i class="fa-solid fa-guitar"></i>
-            </span>
-            <span>Nhạc Cụ Mộc</span>
-          </button>
-
-          <button onclick="filterRadioTheme('taynguyen')" id="themeBtn_taynguyen" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
-            <span class="w-5 h-5 rounded-md bg-orange-500/20 text-orange-400 flex items-center justify-center text-[10px] border border-orange-500/30">
-              <i class="fa-solid fa-mountain-sun"></i>
-            </span>
-            <span>Cồng Chiêng Tây Nguyên</span>
-          </button>
-
-          <button onclick="filterRadioTheme('tieulam')" id="themeBtn_tieulam" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
-            <span class="w-5 h-5 rounded-md bg-pink-500/20 text-pink-400 flex items-center justify-center text-[10px] border border-pink-500/30">
-              <i class="fa-solid fa-face-laugh-beam"></i>
-            </span>
-            <span>Hài Tết & Tiếu Lâm</span>
-          </button>
-
-          <button onclick="filterRadioTheme('phim4k')" id="themeBtn_phim4k" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
-            <span class="w-5 h-5 rounded-md bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] border border-purple-500/30">
-              <i class="fa-solid fa-film"></i>
-            </span>
-            <span>Phim 4K</span>
-          </button>
-
-          <button onclick="filterRadioTheme('community')" id="themeBtn_community" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-700 hover:to-teal-700 text-emerald-200 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer border border-emerald-500/40">
-            <span class="w-5 h-5 rounded-md bg-emerald-400 text-slate-950 flex items-center justify-center text-[10px] font-black">
-              <i class="fa-solid fa-hand-holding-heart"></i>
-            </span>
-            <span>Bà Con Đóng Góp</span>
-          </button>
-        </div>
-
-        <!-- Danh sách bài hát / video hiển thị -->
-        <div class="space-y-2" id="radioPlaylistContainer">
-          <!-- Sẽ được renderRadioPlaylist() đổ tự động -->
-        </div>
-
-      </div>
-      </div>
-
-      <!-- PHÂN KHU 2: THƯ VIỆN ẢNH 4K DI SẢN, ĐẠO TRÀNG & THIỆN NGUYỆN (GỌN GÀNG, SANG TRỌNG) -->
-      <div id="subPanel_gallery" class="space-y-3 hidden">
-        <!-- KHỐI 5: THƯ VIỆN THẮNG CẢNH & HUYỀN THOẠI XỨ NẪU -->
-      <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-3 text-white">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-          <span class="text-xs font-black text-rose-400 flex items-center gap-2">
-            <i class="fa-solid fa-images text-sm"></i>
-            <span>THƯ VIỆN THẮNG CẢNH, ĐẠO TRÀNG & THIỆN NGUYỆN</span>
-          </span>
-          <button onclick="openDedicatedPhotoModal()" class="px-3 py-1 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[11px] shadow transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i>
-            <span>+ Tải Ảnh Lên (Máy tính / ĐT)</span>
-          </button>
-        </div>
-        <div id="artGalleryContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5"></div>
-      </div>
-      </div>
-
-      <!-- PHÂN KHU 3: GÓC VUI DÂN GIAN & DI SẢN XỨ NẪU (BÀI CHÒI, BỐC QUẺ, ĐỐ VUI) -->
-      <div id="subPanel_games" class="space-y-3 hidden">
-        <!-- KHỐI 3: HỘI BÀI CHÒI XỨ NẪU BỐC QUÂN & NGHE CÂU HÔ TƯƠNG TÁC -->
-      <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-amber-500/30 shadow-xl space-y-3.5 text-white">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-          <span class="text-xs font-black text-amber-400 flex items-center gap-2">
-            <i class="fa-solid fa-dice text-sm"></i>
-            <span>HỘI BÀI CHÒI XỨ NẪU • BỐC QUÂN & NGHE ANH HIỆU HÔ</span>
-          </span>
-          <span class="text-[10px] text-yellow-300 bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-500/40">Di sản UNESCO</span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
-          <div class="sm:col-span-1 p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-2">
-            <div class="text-3xl">🎋</div>
-            <div class="text-[11px] text-slate-400 font-bold">Ống Bài Chòi Cổ Truyền</div>
-            <button onclick="drawBaiChoiCard()" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition cursor-pointer">
-              <i class="fa-solid fa-hand-holding-hand"></i>
-              <span>Bốc Quân Bài</span>
-            </button>
-          </div>
-
-          <div id="baiChoiCardResult" class="sm:col-span-2 p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/60 to-slate-950 border border-amber-500/40 space-y-1.5 text-left">
-            <div class="flex items-center justify-between">
-              <span class="font-black text-sm text-yellow-300" id="baiChoiCardName">Quân: Nhì Nghèo</span>
-              <span class="text-[10px] text-slate-400 font-mono">Hội Bài Chòi Đất Phú</span>
-            </div>
-            <p id="baiChoiCardHocau" class="text-xs text-amber-200 leading-relaxed italic">
-              “Tháng Mười mây phủ sườn Tây / Sông Ba réo rắt vơi đầy xót xa... Trổ con Nhì Nghèo!”
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- KHỐI VUI TƯƠI 1: BỐC QUẺ NÔNG DÂN ĐẦU NGÀY (CƯỜI VUI XẢ STRESS) -->
-      <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-slate-900 via-amber-950/30 to-slate-900 border-2 border-amber-500/40 shadow-xl space-y-3.5 text-white">
-        <div class="flex items-center justify-between border-b border-amber-500/30 pb-2.5">
-          <span class="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-2">
-            <span class="text-base">🎋</span>
-            <span>BỐC QUẺ NÔNG DÂN ĐẦU NGÀY • VUI CẢ HÔM NAY</span>
-          </span>
-          <span class="text-[10px] text-amber-400 bg-amber-950 px-2.5 py-0.5 rounded-full border border-amber-500/40">Nụ Cười Ngày Mới</span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
-          <div class="sm:col-span-1 p-3.5 rounded-2xl bg-slate-950 border border-amber-500/30 text-center space-y-2">
-            <div class="text-4xl animate-bounce">🧧</div>
-            <div class="text-[11px] text-amber-200/80 font-bold">Ống Thẻ Cười Dân Gian</div>
-            <button onclick="drawNongDanFortune()" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition cursor-pointer">
-              <i class="fa-solid fa-wand-magic-sparkles"></i>
-              <span>Bốc Một Quẻ Vui</span>
-            </button>
-          </div>
-
-          <div id="nongDanFortuneBox" class="sm:col-span-2 p-4 rounded-2xl bg-slate-950/80 border border-amber-500/30 space-y-1.5 text-left relative overflow-hidden">
-            <div class="flex items-center justify-between">
-              <span class="font-black text-sm text-yellow-300" id="fortuneTitle">Quẻ: Đại Cát Vui Vẻ</span>
-              <span class="text-[10px] text-emerald-400 font-mono">May Mắn • An Nhiên</span>
-            </div>
-            <p id="fortuneContent" class="text-xs sm:text-sm text-amber-100 leading-relaxed italic">
-              “Sáng nay ra rẫy gió thổi mát rượi, trưa về ghé quán bà Năm làm tô bánh canh hẹ thơm nức mũi, cả ngày hanh thông vui vẻ!”
-            </p>
-            <p id="fortuneAdvice" class="text-[10.5px] text-amber-300/80 pt-0.5">
-              Lời khuyên: Cười nhiều một chút cho trẻ lâu, gặp bà con nhớ chào một tiếng lấy thảo!
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- KHỐI VUI TƯƠI 2: ĐỐ VUI TIẾNG NẪU & TỪ VỰNG DÂN GIAN ĐỘC LẠ -->
-      <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-3.5 text-white">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-          <span class="text-xs sm:text-sm font-black text-cyan-300 flex items-center gap-2">
-            <i class="fa-solid fa-comments text-sm"></i>
-            <span>GIẢI MÃ TIẾNG NẪU • TỪ VỰNG QUÊ MÌNH ĐỘC LẠ</span>
-          </span>
-          <span class="text-[10px] text-cyan-400 bg-cyan-950/80 px-2 py-0.5 rounded-full border border-cyan-500/30">Học Mà Vui</span>
-        </div>
-
-        <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-amber-300" id="dialectQuizQuestion">
-              ❓ Câu đố: Bà con xứ Nẫu nói "Đi ra TRỦNG" nghĩa là đi đâu?
-            </span>
-            <button onclick="nextDialectQuiz()" class="text-[11px] text-slate-400 hover:text-amber-300 flex items-center gap-1 transition">
-              <i class="fa-solid fa-rotate-right"></i> Đổi câu khác
-            </button>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold" id="dialectQuizOptions">
-            <button onclick="checkDialectAnswer(0)" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-left transition cursor-pointer">A. Đi lên đồi cát cao</button>
-            <button onclick="checkDialectAnswer(1)" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-left transition cursor-pointer">B. Đi ra vùng đất thấp, sình lầy ngập nước</button>
-          </div>
-
-          <div id="dialectQuizFeedback" class="hidden p-2.5 rounded-xl text-xs font-bold"></div>
-        </div>
-      </div>
-
-      <!-- KHỐI 4: THỬ TÀI ĐỐ VUI TRẠNG NÔNG THIÊN VĂN & ĐỊA LÝ -->
-      <div class="p-4 sm:p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-3 text-white">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-          <span class="text-xs font-black text-emerald-400 flex items-center gap-2">
-            <i class="fa-solid fa-lightbulb text-sm"></i>
-            <span>ĐỐ VUI DÂN GIAN TRẠNG NÔNG THIÊN VĂN & ĐỊA LÝ</span>
-          </span>
-          <span class="text-[10px] text-slate-400">Thư Giãn</span>
-        </div>
-
-        <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2.5">
-          <p id="quizQuestion" class="text-xs font-bold text-slate-200">
-            ❓ Câu hỏi: "Chóp Chài đội mũ, mây phủ sườn non... Hỏi bà con hiện tượng này báo trước điều gì?"
-          </p>
-          <div class="grid grid-cols-2 gap-2 text-[11px] font-bold" id="quizAnswers">
-            <button onclick="answerQuiz(0)" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-left transition cursor-pointer">A. Nắng hạn kéo dài</button>
-            <button onclick="answerQuiz(1)" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-slate-800 text-left transition cursor-pointer">B. Trời sắp đổ mưa to ✅</button>
-          </div>
-          <div id="quizFeedback" class="text-[10.5px] text-emerald-400 hidden pt-1">
-            🎉 <b>Chính xác!</b> Mây ngưng tụ trên đỉnh núi Chóp Chài báo hiệu luồng ẩm biển dâng cao, trời sắp có mưa lớn!
-          </div>
-        </div>
-      </div>
       </div>
     </section>
 
+    <!-- ========================================================================= -->
+    <!-- THANH PILL TABS NGANG ĐỒNG BỘ THEO MẪU (1. NHẠC & VIDEO | 2. NIỆM PHẬT | 3. ẢNH | 4. DÂN GIAN) -->
+    <!-- ========================================================================= -->
+    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs font-bold">
+      <button onclick="switchMasterView('playlist')" id="masterTab_playlist" class="px-3 py-1.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs font-black">
+        <i class="fa-solid fa-music text-[10px]"></i>
+        <span>1. Nhạc & Video (<span id="subTabCount_media">37</span>)</span>
+      </button>
+
+      <button onclick="switchMasterView('buddhist_tea')" id="masterTab_buddhist_tea" class="px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200/90 shadow-2xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs">
+        <i class="fa-solid fa-dharmachakra text-amber-600 text-[10px]"></i>
+        <span>2. Niệm Phật & Trà Đạo</span>
+      </button>
+
+      <button onclick="switchMasterView('gallery')" id="masterTab_gallery" class="px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200/90 shadow-2xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs">
+        <i class="fa-solid fa-images text-emerald-600 text-[10px]"></i>
+        <span>3. Thư viện Ảnh (<span id="subTabCount_gallery">20</span>)</span>
+      </button>
+
+      <button onclick="switchMasterView('games_mindful')" id="masterTab_games_mindful" class="px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200/90 shadow-2xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs">
+        <i class="fa-solid fa-spa text-rose-500 text-[10px]"></i>
+        <span>4. Góc Vui & Thiền</span>
+      </button>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- PHÂN HỆ 1: DANH SÁCH NHẠC & VIDEO (THEO ĐÚNG MẪU 1)                      -->
+    <!-- ========================================================================= -->
+    <section id="channelSection_radio" class="space-y-2.5">
+      <div id="subPanel_playlist" class="space-y-2.5">
+        <!-- THANH LỌC CHỦ ĐỀ NGANG + NÚT ĐĂNG TẢI NHẠC PHẨM -->
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-[11px] flex-1">
+            <button onclick="filterRadioTheme('all')" id="themeBtn_all" class="px-2.5 py-1 rounded-full bg-slate-900 text-white font-bold shrink-0 cursor-pointer transition">Tất cả (<span id="themeCount_all">37</span>)</button>
+            <button onclick="filterRadioTheme('noel')" id="themeBtn_noel" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🎄 Noel</button>
+            <button onclick="filterRadioTheme('nhacxuan')" id="themeBtn_nhacxuan" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🌸 Nhạc Xuân</button>
+            <button onclick="filterRadioTheme('baichoi')" id="themeBtn_baichoi" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🎲 Bài Chòi</button>
+            <button onclick="filterRadioTheme('dieuly')" id="themeBtn_dieuly" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🌊 Điệu Lý</button>
+            <button onclick="filterRadioTheme('nhaccu')" id="themeBtn_nhaccu" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🎸 Nhạc Cụ</button>
+            <button onclick="filterRadioTheme('taynguyen')" id="themeBtn_taynguyen" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">⛰️ Tây Nguyên</button>
+            <button onclick="filterRadioTheme('tieulam')" id="themeBtn_tieulam" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">😄 Hài Tết</button>
+            <button onclick="filterRadioTheme('phim4k')" id="themeBtn_phim4k" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🎬 Phim 4K</button>
+            <button onclick="filterRadioTheme('community')" id="themeBtn_community" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">💚 Đóng Góp</button>
+          </div>
+          <button onclick="openAddMediaModal()" class="px-2.5 py-1 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] shrink-0 flex items-center gap-1 shadow-2xs cursor-pointer" title="Thêm nhạc phẩm mới">
+            <i class="fa-solid fa-plus text-[10px]"></i>
+            <span class="hidden sm:inline">Đăng Nhạc</span>
+          </button>
+        </div>
+
+        <!-- DANH SÁCH THẺ NHẠC & VIDEO GỌN SẠCH (MEDIA LIST CARDS) -->
+        <div class="space-y-2" id="radioPlaylistContainer"></div>
+
+        <!-- LỜI CA DAO & SÓNG ÂM (ĐẶT GỌN DƯỚI DANH SÁCH) -->
+        <div class="p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-1.5">
+          <div class="flex items-center justify-between text-[10.5px] font-bold text-amber-800">
+            <span><i class="fa-solid fa-quote-left mr-1 text-amber-500"></i> LỜI CA & CẢM HỨNG BÀI CHÒI</span>
+            <span class="text-slate-400 font-mono text-[9.5px]">Hò • Xự • Xang • Xê • Cống</span>
+          </div>
+          <p id="radioChantQuote" class="text-xs text-slate-600 italic leading-relaxed">
+            “Gió đưa cây lách xách sậy ngã ngùi ngùi... Anh đi làm thợ xứ người nhớ em ở lại đất cằn thương nhau!”
+          </p>
+          <canvas id="radioWaveCanvas" width="400" height="20" class="w-full h-5 opacity-70"></canvas>
+        </div>
+      </div>
+
+      <!-- PHÂN KHU 3: THƯ VIỆN ẢNH 4K LƯỚI 2 CỘT (THEO ĐÚNG MẪU 2) -->
+      <div id="subPanel_gallery" class="space-y-2.5 hidden">
+        <!-- THANH LỌC DANH MỤC ẢNH + NÚT TẢI ẢNH LÊN -->
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-[11px] flex-1">
+            <button onclick="filterArtCategory('all')" id="artFilterBtn_all" class="px-2.5 py-1 rounded-full bg-amber-500 text-white font-bold shrink-0 cursor-pointer transition">Tất cả</button>
+            <button onclick="filterArtCategory('heritage')" id="artFilterBtn_heritage" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🏛️ 1. Di sản Kiến trúc</button>
+            <button onclick="filterArtCategory('buddhist')" id="artFilterBtn_buddhist" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🪷 2. Phật Pháp & Thiền</button>
+            <button onclick="filterArtCategory('community')" id="artFilterBtn_community" class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition">🎭 3. Lễ Hội & Từ Thiện</button>
+          </div>
+          <button onclick="openDedicatedPhotoModal()" class="px-2.5 py-1 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] shrink-0 flex items-center gap-1 shadow-2xs cursor-pointer">
+            <i class="fa-solid fa-cloud-arrow-up text-[10px]"></i>
+            <span>Tải Ảnh</span>
+          </button>
+        </div>
+
+        <!-- LƯỚI ẢNH 2 CỘT (2-COLUMN 4K PHOTO GRID) -->
+        <div id="artGalleryContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5"></div>
+      </div>
+
+      <!-- PHÂN KHU 4: GÓC VUI DÂN GIAN (BÀI CHÒI, BỐC QUẺ, ĐỐ VUI) -->
+      <div id="subPanel_games" class="space-y-3 hidden">
+        <!-- HỘI BÀI CHÒI XỨ NẪU -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <span class="text-xs font-black text-amber-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-dice text-amber-500"></i>
+              <span>HỘI BÀI CHÒI XỨ NẪU • BỐC QUÂN</span>
+            </span>
+            <span class="text-[10px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200 font-bold">Di sản UNESCO</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-center">
+            <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200 text-center space-y-2">
+              <div class="text-2xl">🎋</div>
+              <button onclick="drawBaiChoiCard()" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-xs shadow-xs active:scale-95 transition cursor-pointer">
+                Bốc Quân Bài
+              </button>
+            </div>
+            <div id="baiChoiCardResult" class="sm:col-span-2 p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="font-black text-xs text-amber-900" id="baiChoiCardName">Quân: Nhì Nghèo</span>
+                <span class="text-[10px] text-slate-400">Hội Bài Chòi</span>
+              </div>
+              <p id="baiChoiCardHocau" class="text-xs text-slate-700 italic leading-relaxed">
+                “Tháng Mười mây phủ sườn Tây / Sông Ba réo rắt vơi đầy xót xa... Trổ con Nhì Nghèo!”
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- BỐC QUẺ NÔNG DÂN ĐẦU NGÀY -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <span class="text-xs font-black text-emerald-800 flex items-center gap-1.5">
+              <span>🎋</span>
+              <span>BỐC QUẺ NÔNG DÂN VUI TƯƠI</span>
+            </span>
+            <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">Nụ Cười Ngày Mới</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-center">
+            <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 text-center space-y-2">
+              <div class="text-2xl">🧧</div>
+              <button onclick="drawNongDanFortune()" class="w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-xs active:scale-95 transition cursor-pointer">
+                Bốc Một Quẻ Vui
+              </button>
+            </div>
+            <div id="nongDanFortuneBox" class="sm:col-span-2 p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="font-black text-xs text-emerald-900" id="fortuneTitle">Quẻ: Đại Cát Vui Vẻ</span>
+                <span class="text-[10px] text-emerald-600 font-bold">May Mắn</span>
+              </div>
+              <p id="fortuneContent" class="text-xs text-slate-700 italic leading-relaxed">
+                “Sáng nay ra rẫy gió thổi mát rượi, trưa về ghé quán bà Năm làm tô bánh canh hẹ thơm nức mũi, cả ngày hanh thông vui vẻ!”
+              </p>
+              <p id="fortuneAdvice" class="text-[10.5px] text-slate-500">
+                Lời khuyên: Cười nhiều một chút cho trẻ lâu!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ĐỐ VUI TIẾNG NẪU -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2.5">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <span class="text-xs font-black text-cyan-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-comments text-cyan-600"></i>
+              <span>ĐỐ VUI TIẾNG NẪU ĐỘC LẠ</span>
+            </span>
+          </div>
+          <div id="dialectQuizContainer"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHÂN HỆ 2: MÁY NIỆM PHẬT SỐ & TRÀ ĐẠO THƯ QUÁN -->
     <section id="channelSection_buddhist_tea" class="space-y-3 sm:space-y-4 hidden">
       <!-- THANH CHUYỂN NHẸ GIỮA MÁY NIỆM PHẬT & TRÀ ĐẠO THƯ QUÁN -->
       <div class="flex items-center justify-center p-1 max-w-xs sm:max-w-sm mx-auto rounded-2xl bg-slate-900 border border-amber-500/30 text-xs font-bold shadow-md">
@@ -1345,7 +1209,31 @@
       </div>
     </section>
 
+  
   </main>
+
+  <!-- ================= BOTTOM NAVIGATION BAR (CỐ ĐỊNH ĐÁY GIỐNG MẪU APP) ================= -->
+  <nav class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+    <div class="max-w-xl mx-auto grid grid-cols-4 gap-1 text-center">
+      <a href="/" class="flex flex-col items-center justify-center py-0.5 text-slate-500 hover:text-amber-600 transition">
+        <i class="fa-solid fa-house text-sm"></i>
+        <span class="text-[10px] font-bold mt-0.5">Trang Chủ</span>
+      </a>
+      <button onclick="switchMasterView('playlist')" id="bottomNav_media" class="flex flex-col items-center justify-center py-0.5 text-orange-600 transition cursor-pointer">
+        <i class="fa-solid fa-clapperboard text-sm"></i>
+        <span class="text-[10px] font-black mt-0.5">Giải Trí</span>
+      </button>
+      <button onclick="switchMasterView('gallery')" id="bottomNav_gallery" class="flex flex-col items-center justify-center py-0.5 text-slate-500 hover:text-emerald-600 transition cursor-pointer">
+        <i class="fa-solid fa-images text-sm"></i>
+        <span class="text-[10px] font-bold mt-0.5">Thư Viện</span>
+      </button>
+      <button onclick="openDedicatedPhotoModal()" class="flex flex-col items-center justify-center py-0.5 text-slate-500 hover:text-amber-600 transition cursor-pointer">
+        <i class="fa-solid fa-cloud-arrow-up text-sm"></i>
+        <span class="text-[10px] font-bold mt-0.5">Đăng Ảnh</span>
+      </button>
+    </div>
+  </nav>
+
 
   <!-- ================= UNIVERSAL APP LAUNCHER MODAL ================= -->
   <div id="datPhuAppLauncherModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-start justify-end p-3 sm:p-5" onclick="if(event.target === this) toggleDatPhuAppLauncher()">
@@ -1942,6 +1830,159 @@
     let radioSleepTimeout = null;
 
     // Lọc theo chủ đề
+    
+    // =========================================================================
+    // ĐIỀU HƯỚNG CHUẨN APP DI ĐỘNG (MASTER VIEW & BOTTOM NAV)
+    // =========================================================================
+    let currentMasterView = 'playlist';
+    let currentArtFilter = 'all';
+    let quickSearchQuery = '';
+    let favoriteMediaIds = JSON.parse(localStorage.getItem('datphu_fav_media') || '[]');
+    let favoriteArtIds = JSON.parse(localStorage.getItem('datphu_fav_arts') || '[]');
+
+    function switchMasterView(view) {
+      currentMasterView = view;
+      const views = ['playlist', 'buddhist_tea', 'gallery', 'games_mindful'];
+      views.forEach(v => {
+        const btn = document.getElementById('masterTab_' + v);
+        if (btn) {
+          if (v === view) {
+            btn.className = "px-3 py-1.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs font-black";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200/90 shadow-2xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs";
+          }
+        }
+      });
+
+      const heroVideo = document.getElementById('heroTheaterContainer');
+      const heroGallery = document.getElementById('galleryFeaturedCard');
+      const secRadio = document.getElementById('channelSection_radio');
+      const secBuddhist = document.getElementById('channelSection_buddhist_tea');
+      const secMindful = document.getElementById('channelSection_mindful');
+      const pPlaylist = document.getElementById('subPanel_playlist');
+      const pGallery = document.getElementById('subPanel_gallery');
+      const pGames = document.getElementById('subPanel_games');
+
+      // Bottom nav highlights
+      const bnMedia = document.getElementById('bottomNav_media');
+      const bnGal = document.getElementById('bottomNav_gallery');
+      if (bnMedia) bnMedia.className = (view === 'playlist' || view === 'buddhist_tea' || view === 'games_mindful') ? "flex flex-col items-center justify-center py-0.5 text-orange-600 transition cursor-pointer" : "flex flex-col items-center justify-center py-0.5 text-slate-500 hover:text-amber-600 transition cursor-pointer";
+      if (bnGal) bnGal.className = (view === 'gallery') ? "flex flex-col items-center justify-center py-0.5 text-emerald-600 transition cursor-pointer" : "flex flex-col items-center justify-center py-0.5 text-slate-500 hover:text-emerald-600 transition cursor-pointer";
+
+      if (view === 'playlist') {
+        if (heroVideo) heroVideo.classList.remove('hidden');
+        if (heroGallery) heroGallery.classList.add('hidden');
+        if (secRadio) secRadio.classList.remove('hidden');
+        if (secBuddhist) secBuddhist.classList.add('hidden');
+        if (secMindful) secMindful.classList.add('hidden');
+        if (pPlaylist) pPlaylist.classList.remove('hidden');
+        if (pGallery) pGallery.classList.add('hidden');
+        if (pGames) pGames.classList.add('hidden');
+      } else if (view === 'gallery') {
+        if (heroVideo) heroVideo.classList.add('hidden');
+        if (heroGallery) heroGallery.classList.remove('hidden');
+        if (secRadio) secRadio.classList.remove('hidden');
+        if (secBuddhist) secBuddhist.classList.add('hidden');
+        if (secMindful) secMindful.classList.add('hidden');
+        if (pPlaylist) pPlaylist.classList.add('hidden');
+        if (pGallery) pGallery.classList.remove('hidden');
+        if (pGames) pGames.classList.add('hidden');
+        renderArtGallery();
+      } else if (view === 'buddhist_tea') {
+        if (heroVideo) heroVideo.classList.add('hidden');
+        if (heroGallery) heroGallery.classList.add('hidden');
+        if (secRadio) secRadio.classList.add('hidden');
+        if (secBuddhist) secBuddhist.classList.remove('hidden');
+        if (secMindful) secMindful.classList.add('hidden');
+      } else if (view === 'games_mindful') {
+        if (heroVideo) heroVideo.classList.add('hidden');
+        if (heroGallery) heroGallery.classList.add('hidden');
+        if (secRadio) secRadio.classList.remove('hidden');
+        if (secBuddhist) secBuddhist.classList.add('hidden');
+        if (secMindful) secMindful.classList.remove('hidden');
+        if (pPlaylist) pPlaylist.classList.add('hidden');
+        if (pGallery) pGallery.classList.add('hidden');
+        if (pGames) pGames.classList.remove('hidden');
+        if (typeof renderDialectQuiz === 'function') renderDialectQuiz();
+      }
+    }
+
+    function switchChannel(ch) {
+      if (ch === 'radio') switchMasterView('playlist');
+      else if (ch === 'buddhist_tea') switchMasterView('buddhist_tea');
+      else if (ch === 'mindful') switchMasterView('games_mindful');
+    }
+
+    function switchMediaSubTab(tab) {
+      if (tab === 'playlist') switchMasterView('playlist');
+      else if (tab === 'gallery') switchMasterView('gallery');
+      else if (tab === 'games') switchMasterView('games_mindful');
+    }
+
+    function toggleQuickSearchBar() {
+      const w = document.getElementById('quickSearchBarWrapper');
+      if (!w) return;
+      w.classList.toggle('hidden');
+      if (!w.classList.contains('hidden')) {
+        const inp = document.getElementById('quickSearchInput');
+        if (inp) inp.focus();
+      }
+    }
+
+    function handleQuickSearch(val) {
+      quickSearchQuery = (val || '').trim().toLowerCase();
+      renderRadioPlaylist();
+      renderArtGallery();
+    }
+
+    function clearQuickSearch() {
+      const inp = document.getElementById('quickSearchInput');
+      if (inp) inp.value = '';
+      handleQuickSearch('');
+      const w = document.getElementById('quickSearchBarWrapper');
+      if (w) w.classList.add('hidden');
+    }
+
+    function toggleFavoriteMedia(id, event) {
+      if (event) event.stopPropagation();
+      const idx = favoriteMediaIds.indexOf(id);
+      if (idx === -1) favoriteMediaIds.push(id);
+      else favoriteMediaIds.splice(idx, 1);
+      localStorage.setItem('datphu_fav_media', JSON.stringify(favoriteMediaIds));
+      renderRadioPlaylist();
+    }
+
+    function toggleFavoriteArt(title, event) {
+      if (event) event.stopPropagation();
+      const idx = favoriteArtIds.indexOf(title);
+      if (idx === -1) favoriteArtIds.push(title);
+      else favoriteArtIds.splice(idx, 1);
+      localStorage.setItem('datphu_fav_arts', JSON.stringify(favoriteArtIds));
+      renderArtGallery();
+    }
+
+    function shareMediaItem(title, event) {
+      if (event) event.stopPropagation();
+      if (navigator.share) {
+        navigator.share({ title: title, text: 'Nghe & xem tại Giải Trí Đất Phú', url: window.location.href }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(window.location.href).then(() => alert('Đã chép liên kết chia sẻ: ' + title)).catch(() => {});
+      }
+    }
+
+    function filterArtCategory(cat) {
+      currentArtFilter = cat;
+      ['all', 'heritage', 'buddhist', 'community'].forEach(c => {
+        const btn = document.getElementById('artFilterBtn_' + c);
+        if (btn) {
+          btn.className = (c === cat)
+            ? "px-2.5 py-1 rounded-full bg-amber-500 text-white font-bold shrink-0 cursor-pointer transition"
+            : "px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition";
+        }
+      });
+      renderArtGallery();
+    }
+
     function filterRadioTheme(theme) {
       currentThemeFilter = theme;
       const themes = ['all', 'noel', 'nhacxuan', 'baichoi', 'dieuly', 'nhaccu', 'taynguyen', 'tieulam', 'phim4k', 'community'];
@@ -1949,9 +1990,9 @@
         const btn = document.getElementById('themeBtn_' + t);
         if (btn) {
           if (t === theme) {
-            btn.className = "px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs transition active:scale-95 shadow shrink-0 cursor-pointer";
+            btn.className = "px-2.5 py-1 rounded-full bg-slate-900 text-white font-bold shrink-0 cursor-pointer transition";
           } else {
-            btn.className = "px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1 cursor-pointer";
+            btn.className = "px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold shrink-0 cursor-pointer transition";
           }
         }
       });
@@ -1965,22 +2006,25 @@
       if (!c) return;
 
       const filtered = MEDIA_PLAYLIST.filter(item => {
-        if (currentThemeFilter === 'all') return true;
-        if (currentThemeFilter === 'community') return item.theme === 'community' || (item.id && item.id.startsWith('custom_'));
-        return item.theme === currentThemeFilter;
+        const matchTheme = (currentThemeFilter === 'all') ||
+          (currentThemeFilter === 'community' ? (item.theme === 'community' || (item.id && item.id.startsWith('custom_'))) : item.theme === currentThemeFilter);
+        if (!matchTheme) return false;
+        if (quickSearchQuery) {
+          return (item.title || '').toLowerCase().includes(quickSearchQuery) || (item.artist || '').toLowerCase().includes(quickSearchQuery);
+        }
+        return true;
       });
 
-      // Cập nhật tổng số bài
       const countEl = document.getElementById('themeCount_all');
       if (countEl) countEl.innerText = MEDIA_PLAYLIST.length;
 
       if (filtered.length === 0) {
         c.innerHTML = `
-          <div class="p-6 rounded-2xl bg-slate-950/60 border border-slate-800 text-center space-y-2">
+          <div class="p-6 rounded-2xl bg-white border border-slate-200 text-center space-y-2">
             <div class="text-3xl">📭</div>
-            <p class="text-xs text-slate-400">Chưa có nhạc phẩm nào trong chủ đề này.</p>
-            <button onclick="openAddMediaModal()" class="px-3.5 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs">
-              + Bấm để đăng tải bài đầu tiên
+            <p class="text-xs text-slate-500">Không tìm thấy nhạc phẩm phù hợp.</p>
+            <button onclick="openAddMediaModal()" class="px-3.5 py-1.5 rounded-full bg-amber-500 text-white font-bold text-xs cursor-pointer">
+              + Đăng tải bài mới
             </button>
           </div>
         `;
@@ -1991,47 +2035,51 @@
         const actualIdx = MEDIA_PLAYLIST.indexOf(t);
         const isCurrent = (actualIdx === currentRadioIdx);
         const isCustom = t.id && t.id.startsWith('custom_');
-
-        let badgeBg = 'bg-slate-800 text-slate-300';
-        let badgeIcon = 'fa-music';
-        if (t.theme === 'noel') { badgeBg = 'bg-emerald-950 text-emerald-300 border border-emerald-400/50'; badgeIcon = 'fa-snowflake'; }
-        else if (t.theme === 'nhacxuan') { badgeBg = 'bg-rose-950 text-amber-300 border border-amber-400/50'; badgeIcon = 'fa-fan'; }
-        else if (t.theme === 'baichoi') { badgeBg = 'bg-amber-950 text-amber-300 border border-amber-600/40'; badgeIcon = 'fa-dice'; }
-        else if (t.theme === 'dieuly') { badgeBg = 'bg-cyan-950 text-cyan-300 border border-cyan-600/40'; badgeIcon = 'fa-water'; }
-        else if (t.theme === 'nhaccu') { badgeBg = 'bg-emerald-950 text-emerald-300 border border-emerald-600/40'; badgeIcon = 'fa-guitar'; }
-        else if (t.theme === 'taynguyen') { badgeBg = 'bg-amber-900 text-yellow-300 border border-amber-500/50'; badgeIcon = 'fa-mountain-sun'; }
-        else if (t.theme === 'tieulam') { badgeBg = 'bg-pink-950 text-pink-300 border border-pink-500/40'; badgeIcon = 'fa-face-laugh-beam'; }
-        else if (t.theme === 'phim4k') { badgeBg = 'bg-rose-950 text-rose-300 border border-rose-600/40'; badgeIcon = 'fa-film'; }
-        else if (t.theme === 'community') { badgeBg = 'bg-teal-950 text-teal-300 border border-teal-500/40'; badgeIcon = 'fa-star'; }
+        const isFav = favoriteMediaIds.includes(t.id);
+        const thumbUrl = t.youtubeId
+          ? 'https://img.youtube.com/vi/' + t.youtubeId + '/mqdefault.jpg'
+          : (t.coverImg || 'img/ganh_da_dia_4k.jpg');
+        const isVideo = (t.type === 'youtube');
 
         return `
-          <div onclick="selectRadioTrack(${actualIdx})" class="p-3 rounded-2xl cursor-pointer transition-all flex items-center justify-between gap-3 ${isCurrent ? 'bg-amber-500/15 border-2 border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800/80'}">
-            <div class="flex items-center gap-3 min-w-0">
-              <span class="w-8 h-8 rounded-xl flex items-center justify-center font-mono font-bold text-xs shrink-0 ${isCurrent ? 'bg-amber-500 text-slate-950 font-black shadow' : 'bg-slate-800 text-slate-400'}">
-                ${isCurrent && isRadioPlaying ? '<i class="fa-solid fa-volume-high animate-pulse text-xs"></i>' : (actualIdx + 1)}
-              </span>
-              <div class="min-w-0">
-                <h4 class="text-xs sm:text-sm font-bold text-white truncate ${isCurrent ? 'text-amber-300 font-black' : ''}">${t.title}</h4>
-                <p class="text-[11px] text-slate-400 truncate flex items-center gap-1.5">
-                  <span>${t.artist}</span>
-                  ${t.type === 'youtube' ? '<span class="text-[9px] px-1.5 py-0.2 rounded bg-red-600 text-white font-bold">YouTube 4K</span>' : '<span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-700 text-white font-bold">Audio Mộc</span>'}
-                </p>
+          <div onclick="selectRadioTrack(${actualIdx})" class="p-2 sm:p-2.5 rounded-2xl cursor-pointer transition-all flex items-center justify-between gap-2.5 sm:gap-3 ${isCurrent ? 'bg-amber-50/90 border-2 border-amber-400 shadow-xs' : 'bg-white hover:bg-slate-50 border border-slate-200/80 shadow-2xs'}">
+            <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+              <!-- Thumbnail bên trái giống Mẫu 1 -->
+              <div class="w-24 h-14 sm:w-28 sm:h-16 rounded-xl overflow-hidden bg-slate-900 relative shrink-0 shadow-xs">
+                <img src="${thumbUrl}" alt="${t.title}" onerror="this.src='img/ganh_da_dia_4k.jpg'" class="w-full h-full object-cover" />
+                <span class="absolute top-1 left-1 px-1.5 py-0.2 rounded bg-black/75 text-white text-[8.5px] font-bold flex items-center gap-1">
+                  <i class="fa-solid ${isVideo ? 'fa-video text-amber-400' : 'fa-music text-emerald-400'} text-[7.5px]"></i>
+                  <span>${isVideo ? '4K Video' : 'Audio'}</span>
+                </span>
+                ${isCurrent && isRadioPlaying ? '<div class="absolute inset-0 bg-black/40 flex items-center justify-center"><i class="fa-solid fa-volume-high text-amber-400 animate-pulse text-sm"></i></div>' : ''}
+              </div>
+
+              <!-- Thông tin giữa -->
+              <div class="min-w-0 flex-1">
+                <h4 class="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1 ${isCurrent ? 'text-amber-900 font-black' : ''}">${t.title}</h4>
+                <p class="text-[11px] text-slate-500 truncate mt-0.5">${t.artist}</p>
+                <div class="text-[10px] text-slate-400 font-medium mt-0.5 flex items-center gap-1.5">
+                  <span>${isVideo ? '4K Video' : 'Radio Audio'}</span>
+                  <span>•</span>
+                  <span>${t.duration || '04:30'}</span>
+                  ${t.themeName ? '<span class="hidden sm:inline text-amber-700 font-semibold">• ' + t.themeName + '</span>' : ''}
+                </div>
               </div>
             </div>
 
-            <div class="shrink-0 flex items-center gap-2">
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeBg} hidden sm:inline-flex items-center gap-1">
-                <i class="fa-solid ${badgeIcon} text-[9px]"></i>
-                <span>${t.themeName || t.theme}</span>
-              </span>
-
+            <!-- Nút Chia sẻ & Thả tim bên phải giống Mẫu 1 -->
+            <div class="shrink-0 flex items-center gap-1 sm:gap-1.5 text-slate-400">
+              <button onclick="shareMediaItem('${(t.title || '').replace(/'/g, '')}', event)" class="w-7 h-7 rounded-full hover:bg-slate-100 hover:text-slate-700 flex items-center justify-center transition cursor-pointer" title="Chia sẻ">
+                <i class="fa-solid fa-arrow-up-from-bracket text-xs"></i>
+              </button>
+              <button onclick="toggleFavoriteMedia('${t.id}', event)" class="w-7 h-7 rounded-full hover:bg-rose-50 flex items-center justify-center transition cursor-pointer ${isFav ? 'text-rose-500' : 'hover:text-rose-500'}" title="Yêu thích">
+                <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart text-xs"></i>
+              </button>
               ${isCustom ? `
-                <button onclick="event.stopPropagation(); deleteCustomMedia('${t.id}')" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-rose-600/80 text-slate-400 hover:text-white flex items-center justify-center transition active:scale-95" title="Xóa bài này">
+                <button onclick="event.stopPropagation(); deleteCustomMedia('${t.id}')" class="w-7 h-7 rounded-full hover:bg-rose-50 text-slate-400 hover:text-rose-600 flex items-center justify-center transition cursor-pointer" title="Xóa">
                   <i class="fa-solid fa-trash text-[10px]"></i>
                 </button>
               ` : ''}
-
-              ${isCurrent && isRadioPlaying ? '<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>' : ''}
             </div>
           </div>
         `;
@@ -2525,53 +2573,86 @@
     let currentArtIdx = 0;
     let artSlideshowTimer = null;
 
+    function getArtGroup(cat) {
+      const c = (cat || '').toLowerCase();
+      if (c.includes('thiền') || c.includes('phật') || c.includes('tam bảo') || c.includes('hiếu') || c.includes('duyên')) return 'buddhist';
+      if (c.includes('dân gian') || c.includes('lễ hội') || c.includes('thiện') || c.includes('cộng đồng')) return 'community';
+      return 'heritage';
+    }
+
     function renderArtGallery() {
       const c = document.getElementById('artGalleryContainer');
       if (!c) return;
-      c.innerHTML = ARTWORKS_DATA.map((art, idx) => {
+
+      const filtered = ARTWORKS_DATA.filter(art => {
+        if (currentArtFilter !== 'all' && getArtGroup(art.category) !== currentArtFilter) return false;
+        if (quickSearchQuery) {
+          return (art.title || '').toLowerCase().includes(quickSearchQuery) || (art.category || '').toLowerCase().includes(quickSearchQuery);
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        c.innerHTML = '<div class="col-span-2 sm:col-span-4 p-6 rounded-2xl bg-white border border-slate-200 text-center text-xs text-slate-500">Không có ảnh phù hợp trong danh mục này.</div>';
+        return;
+      }
+
+      c.innerHTML = filtered.map(art => {
+        const idx = ARTWORKS_DATA.indexOf(art);
         const isCurrent = (idx === currentArtIdx);
-        return '<div onclick="selectArtSlide(' + idx + ')" class="group cursor-pointer rounded-2xl overflow-hidden border-2 ' + (isCurrent ? 'border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.6)]' : 'border-slate-800 hover:border-slate-600') + ' bg-slate-950 aspect-video relative shadow-md transition transform active:scale-95">' +
-                 '<img src="' + art.img + '" alt="' + art.title + '" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />' +
-                 '<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>' +
-                 '<div class="absolute top-1.5 left-1.5">' +
-                   '<span class="px-2 py-0.5 rounded-md bg-amber-500/90 text-slate-950 text-[9px] font-black shadow">' + art.category + '</span>' +
-                 '</div>' +
-                 '<div class="absolute bottom-1.5 inset-x-2 text-white">' +
-                   '<div class="text-[10.5px] font-black truncate drop-shadow">' + art.title + '</div>' +
-                   '<div class="text-[9px] text-amber-300 font-bold">' + art.district + ' • Bấm chiếu 4K ❯</div>' +
-                 '</div>' +
-               '</div>';
+        const isFav = favoriteArtIds.includes(art.title);
+        return `
+          <div onclick="selectArtSlide(${idx})" class="group cursor-pointer rounded-2xl overflow-hidden bg-white border ${isCurrent ? 'border-amber-500 ring-2 ring-amber-400/40' : 'border-slate-200/90 hover:border-amber-300'} shadow-2xs hover:shadow-md transition flex flex-col">
+            <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+              <img src="${art.img}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent"></div>
+              <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-xs text-white text-[9px] font-bold">4K Photo</span>
+              <button onclick="toggleFavoriteArt('${(art.title || '').replace(/'/g, '')}', event)" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/35 backdrop-blur-xs flex items-center justify-center text-xs transition cursor-pointer ${isFav ? 'text-rose-400' : 'text-white/90 hover:text-rose-300'}">
+                <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+              </button>
+              <span class="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded-full bg-black/70 text-white text-[9px] font-bold truncate max-w-[85%]">${art.category}</span>
+            </div>
+            <div class="p-2 sm:p-2.5 flex items-center justify-between gap-1.5 bg-white flex-1">
+              <div class="min-w-0">
+                <h4 class="text-[11px] sm:text-xs font-bold text-slate-900 line-clamp-1">${art.title}</h4>
+                <p class="text-[9.5px] text-slate-500 truncate">${art.district || 'Đất Phú'}</p>
+              </div>
+              <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular text-slate-400'} fa-heart text-xs shrink-0"></i>
+            </div>
+          </div>
+        `;
       }).join('');
     }
 
     function selectArtSlide(idx) {
       currentArtIdx = idx;
       const art = ARTWORKS_DATA[idx];
-      
+      if (!art) return;
+
       const mainImg = document.getElementById('artMainImage');
       if (mainImg) mainImg.src = art.img;
 
+      const gfImg = document.getElementById('galleryFeaturedImg');
+      const gfTitle = document.getElementById('galleryFeaturedTitle');
+      const gfSub = document.getElementById('galleryFeaturedSub');
+      if (gfImg) gfImg.src = art.img;
+      if (gfTitle) gfTitle.innerText = art.title;
+      if (gfSub) gfSub.innerText = (art.district || 'Đất Phú') + ' • ' + art.category;
+
       const titleEl = document.getElementById('radioCurrentTitle');
       if (titleEl) titleEl.innerText = art.title;
-
       const artistEl = document.getElementById('radioCurrentArtist');
-      if (artistEl) artistEl.innerText = art.district + " • " + art.category;
-
-      const badgeEl = document.getElementById('artCategoryBadge');
-      if (badgeEl) badgeEl.innerHTML = '<i class="fa-solid fa-film"></i> <span>' + art.title + '</span>';
-
+      if (artistEl) artistEl.innerText = (art.district || 'Đất Phú') + " • " + art.category;
       const quoteEl = document.getElementById('radioChantQuote');
-      if (quoteEl) quoteEl.innerText = '“' + art.poem + '” — ' + art.intro;
+      if (quoteEl) quoteEl.innerText = '“' + (art.poem || '') + '” — ' + (art.intro || '');
 
-      loadSavedCommunityPhotos();
       renderArtGallery();
       updateSubTabCounts();
 
-      // Cuộn êm màn hình lên màn hình lớn nếu người dùng đang ở dưới
-      const cinema = document.getElementById('channelSection_radio');
-      if (cinema) cinema.scrollIntoView({ behavior: 'smooth' });
+      const hero = document.getElementById('heroCinemaArea');
+      if (hero) hero.scrollIntoView({ behavior: 'smooth' });
     }
-function changeArtSlide(delta) {
+    function changeArtSlide(delta) {
       currentArtIdx = (currentArtIdx + delta + ARTWORKS_DATA.length) % ARTWORKS_DATA.length;
       selectArtSlide(currentArtIdx);
     }
@@ -4146,6 +4227,7 @@ function changeArtSlide(delta) {
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      loadSavedCommunityPhotos();
       startTetCountdown();
       initTetPetals();
       renderRadioPlaylist();
