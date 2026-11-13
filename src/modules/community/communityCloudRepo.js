@@ -112,9 +112,10 @@ async function uploadDataUrlToCloudStorage(dataUrl, ownerId, postId) {
   }
 }
 
-async function listCloudPosts(limit = 60) {
+async function listCloudPosts(limit = 60, includeArchived = false) {
   try {
-    const url = `${SUPABASE_URL}/rest/v1/community_posts?select=*&status=neq.archived&order=created_at.desc&limit=${limit}`;
+    const statusFilter = includeArchived ? '' : '&status=neq.archived';
+    const url = `${SUPABASE_URL}/rest/v1/community_posts?select=*${statusFilter}&order=created_at.desc&limit=${limit}`;
     const res = await fetch(url, { method: 'GET', headers: cloudHeaders() });
     if (!res.ok) return { ok: false, items: [] };
     const rows = await res.json();

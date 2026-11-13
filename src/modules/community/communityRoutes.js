@@ -119,9 +119,9 @@ function normalizePostSchema(it, actor) {
   };
 }
 
-function sortCommunityFeed(items) {
+function sortCommunityFeed(items, includeArchived = false) {
   return [...items]
-    .filter(it => it && it.status !== 'archived')
+    .filter(it => it && (includeArchived || it.status !== 'archived'))
     .sort((a, b) => {
       if (a.status === 'pinned' && b.status !== 'pinned') return -1;
       if (b.status === 'pinned' && a.status !== 'pinned') return 1;
@@ -202,20 +202,88 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
   // B. WORKFLOW LƯU TRỮ & PHÂN QUYỀN BẢNG TIN CỘNG ĐỒNG (CLOUD + FALLBACK)
   // ------------------------------------------------------------------------
   if (pathname === '/api/gallery/list' && req.method === 'GET') {
-    const limit = Number(parsedUrl && parsedUrl.searchParams.get('limit')) || 60;
-    const cloudRes = await cloudRepo.listCloudPosts(limit);
+    const page = Math.max(1, Number(parsedUrl && parsedUrl.searchParams.get('page')) || 1);
+    const limit = Math.min(100, Math.max(1, Number(parsedUrl && parsedUrl.searchParams.get('limit')) || 24));
+    const cloudRes = await cloudRepo.listCloudPosts(120, false);
     const localRaw = readJsonFile('community_gallery.json', []);
     const raw = (cloudRes.ok && cloudRes.items.length > 0) ? cloudRes.items : localRaw;
 
-    let items = sortCommunityFeed(raw);
+    let items = sortCommunityFeed(raw, false);
     const mediaType = parsedUrl && parsedUrl.searchParams.get('mediaType');
     if (mediaType) items = items.filter(it => (it.mediaType || 'photo') === mediaType);
+    const offset = (page - 1) * limit;
+    const sliced = items.slice(offset, offset + limit);
     return sendJson(res, 200, {
       status: 'ok',
       cloudDbUsed: cloudRes.ok,
+      page,
+      limit,
       total: items.length,
-      items: items.slice(0, limit)
+      hasMore: offset + sliced.length < items.length,
+      items: sliced
     });
+  }
+
+  if (pathname === '/api/gallery/admin-summary' && req.method === 'GET') {
+    const actor = verifyTokenFromReq(req);
+    if (!actor || actor.role !== 'admin') {
+      return sendJson(res, 403, { status: 'error', message: 'Chỉ Quản trị viên (Admin) mới có quyền truy cập.' });
+    }
+    const cloudRes = await cloudRepo.listCloudPosts(120, true);
+    const localRaw = readJsonFile('community_gallery.json', []);
+    const raw = (cloudRes.ok && cloudRes.items.length > 0) ? cloudRes.items : localRaw;
+    const items = sortCommunityFeed(raw, true);
+    return sendJson(res, 200, {
+      status: 'ok',
+      cloudDbUsed: cloudRes.ok,
+      counts: {
+        total: items.length,
+        published: items.filter(x => x.status === 'published').length,
+        pinned: items.filter(x => x.status === 'pinned').length,
+        archived: items.filter(x => x.status === 'archived').length
+      },
+      items
+    });
+  }
+
+  if (pathname === '/api/gallery/moderate' && req.method === 'POST') {
+    const actor = verifyTokenFromReq(req);
+    if (!actor || actor.role !== 'admin') {
+      return sendJson(res, 403, { status: 'error', message: 'Chỉ Quản trị viên (Admin) mới có quyền kiểm duyệt.' });
+    }
+    const action = String(body.action || '').trim();
+    const current = readJsonFile('community_gallery.json', []);
+    const cloudRes = await cloudRepo.listCloudPosts(120, true);
+    const pool = (cloudRes.ok && cloudRes.items.length > 0) ? cloudRes.items : current;
+    const target = pool.find(c => (body.id && c.id === body.id) || (body.title && c.title === body.title));
+    if (!target) return sendJson(res, 404, { status: 'error', message: 'Không tìm thấy bài viết.' });
+
+    if (action === 'delete') {
+      await cloudRepo.deleteCloudPost(target.id);
+      const next = current.filter(c => c.id !== target.id && c.title !== target.title);
+      writeJsonFile('community_gallery.json', next);
+      return sendJson(res, 200, { status: 'ok', action: 'delete', id: target.id });
+    }
+
+    const statusMap = { pin: 'pinned', unpin: 'published', restore: 'published', archive: 'archived' };
+    const nextStatus = statusMap[action];
+    if (!nextStatus) {
+      return sendJson(res, 400, { status: 'error', message: 'Hành động kiểm duyệt không hợp lệ.' });
+    }
+
+    target.status = nextStatus;
+    target.updatedAt = new Date().toISOString();
+    await cloudRepo.updateCloudPost(target.id, { status: nextStatus });
+
+    const localIdx = current.findIndex(c => c.id === target.id || c.title === target.title);
+    if (localIdx !== -1) {
+      current[localIdx].status = nextStatus;
+      current[localIdx].updatedAt = target.updatedAt;
+    } else {
+      current.unshift(target);
+    }
+    writeJsonFile('community_gallery.json', current);
+    return sendJson(res, 200, { status: 'ok', action, itemStatus: nextStatus, id: target.id });
   }
 
   if (pathname === '/api/gallery/publish' && req.method === 'POST') {

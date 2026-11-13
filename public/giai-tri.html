@@ -323,10 +323,23 @@
             <button onclick="filterArtCategory('heritage')" id="artFilterBtn_heritage" class="px-2.5 py-1 rounded-full bg-white border border-blue-200 text-blue-900 hover:bg-blue-50 font-semibold shrink-0 cursor-pointer transition">🏛️ Văn Hóa &amp; Di Sản</button>
             <button onclick="filterArtCategory('my_saved')" id="artFilterBtn_my_saved" class="px-2.5 py-1 rounded-full bg-white border border-blue-200 text-blue-900 hover:bg-blue-50 font-semibold shrink-0 cursor-pointer transition">💾 Đã Lưu</button>
           </div>
+          <button onclick="openCommunityAdminModal()" id="btnOpenAdminModeration" class="hidden px-2.5 py-1 rounded-full bg-[#0d2244] hover:bg-red-600 text-white border border-blue-700 font-bold text-[11px] shrink-0 flex items-center gap-1 cursor-pointer transition shadow-2xs" title="Bảng kiểm duyệt Admin">
+            <i class="fa-solid fa-shield-halved text-red-400"></i>
+            <span>Admin</span>
+          </button>
         </div>
 
         <!-- BẢNG TIN CỘNG ĐỒNG (1 CỘT MOBILE / 2 CỘT DESKTOP) -->
         <div id="artGalleryContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+
+        <!-- PHÂN TRANG KHI CUỘN (INFINITE SCROLL + XEM THÊM) -->
+        <div id="communityPaginationBar" class="hidden pt-2 pb-1 flex flex-col items-center gap-1.5">
+          <div id="communityScrollSentinel" class="h-2 w-full"></div>
+          <button type="button" onclick="loadMoreCommunityFeed()" id="btnLoadMoreCommunity" class="px-4 py-1.5 rounded-full bg-[#0d2244] hover:bg-red-600 text-white text-xs font-bold border border-blue-700/70 shadow-xs transition cursor-pointer flex items-center gap-1.5">
+            <i class="fa-solid fa-angles-down text-[10px]"></i>
+            <span id="loadMoreCommunityLabel">Xem thêm bài viết</span>
+          </button>
+        </div>
       </div>
 
       <!-- PHÂN KHU 4: GÓC VUI DÂN GIAN (BÀI CHÒI, BỐC QUẺ, ĐỐ VUI) -->
@@ -1191,8 +1204,32 @@
       }
     }
 
+    let communityVisibleLimit = 8;
+    let communityScrollObserver = null;
+
+    function loadMoreCommunityFeed() {
+      communityVisibleLimit += 8;
+      renderArtGallery();
+    }
+
+    function initCommunityScrollObserver() {
+      const sentinel = document.getElementById('communityScrollSentinel');
+      if (!sentinel || !('IntersectionObserver' in window)) return;
+      if (communityScrollObserver) communityScrollObserver.disconnect();
+      communityScrollObserver = new IntersectionObserver((entries) => {
+        if (entries.some(e => e.isIntersecting)) {
+          const bar = document.getElementById('communityPaginationBar');
+          if (bar && !bar.classList.contains('hidden')) {
+            loadMoreCommunityFeed();
+          }
+        }
+      }, { rootMargin: '180px' });
+      communityScrollObserver.observe(sentinel);
+    }
+
     function filterArtCategory(cat) {
       currentArtFilter = cat;
+      communityVisibleLimit = 8;
       ['all', 'video', 'heritage', 'buddhist', 'community', 'my_saved'].forEach(c => {
         const btn = document.getElementById('artFilterBtn_' + c);
         if (btn) {
@@ -2109,13 +2146,27 @@
 
       if (filtered.length === 0) {
         c.innerHTML = '<div class="col-span-1 sm:col-span-2 p-6 rounded-2xl bg-[#0d2244] border border-blue-800/80 text-center text-xs text-blue-100">Chưa có bài chia sẻ trong mục này. Bác hãy bấm nút <b class="text-sky-300">Ảnh</b> hoặc <b class="text-red-400">Video</b> phía trên để đăng bài đầu tiên nhé!</div>';
+        const pBar = document.getElementById('communityPaginationBar');
+        if (pBar) pBar.classList.add('hidden');
         return;
+      }
+
+      const visibleItems = filtered.slice(0, communityVisibleLimit);
+      const pBar = document.getElementById('communityPaginationBar');
+      const pLbl = document.getElementById('loadMoreCommunityLabel');
+      if (pBar) {
+        if (visibleItems.length < filtered.length) {
+          pBar.classList.remove('hidden');
+          if (pLbl) pLbl.innerText = `Xem thêm (${filtered.length - visibleItems.length} bài nữa)`;
+        } else {
+          pBar.classList.add('hidden');
+        }
       }
 
       const localComments = JSON.parse(localStorage.getItem('datphu_community_comments') || '{}');
       const localLikes = JSON.parse(localStorage.getItem('datphu_community_likes') || '{}');
 
-      c.innerHTML = filtered.map(item => {
+      c.innerHTML = visibleItems.map(item => {
         const isVideo = (item.feedKind === 'video');
         const isCurrent = (!isVideo && item.artIdx === currentArtIdx);
         const isFav = favoriteArtIds.includes(item.title);
@@ -4255,6 +4306,11 @@
       const loggedView = document.getElementById('communityAuthLoggedInView');
       const formView = document.getElementById('communityAuthFormView');
       const isLogged = COMMUNITY_CURRENT_USER && COMMUNITY_CURRENT_USER.role !== 'guest';
+      const isAdmin = COMMUNITY_CURRENT_USER && COMMUNITY_CURRENT_USER.role === 'admin';
+      const btnBarAdmin = document.getElementById('btnOpenAdminModeration');
+      const btnAuthAdmin = document.getElementById('btnAuthOpenAdmin');
+      if (btnBarAdmin) btnBarAdmin.classList.toggle('hidden', !isAdmin);
+      if (btnAuthAdmin) btnAuthAdmin.classList.toggle('hidden', !isAdmin);
 
       if (lbl) {
         lbl.innerText = isLogged
@@ -4452,9 +4508,123 @@
       } catch(e) {}
     }
 
+    // ========================================================================
+    // BẢNG KIỂM DUYỆT ADMIN (DUYỆT / GHIM / GỠ / KHÔI PHỤC / XÓA)
+    // ========================================================================
+    let ADMIN_POSTS_CACHE = [];
+    let ADMIN_FILTER_MODE = 'all';
+
+    async function openCommunityAdminModal() {
+      if (!COMMUNITY_CURRENT_USER || COMMUNITY_CURRENT_USER.role !== 'admin') {
+        openCommunityAuthModal();
+        return;
+      }
+      const m = document.getElementById('modalCommunityAdmin');
+      const listEl = document.getElementById('communityAdminList');
+      if (m) m.classList.remove('hidden');
+      if (listEl) listEl.innerHTML = '<div class="text-center py-6 text-sky-300"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải dữ liệu từ Đám mây...</div>';
+
+      try {
+        const resp = await communityFetch('/api/gallery/admin-summary');
+        const data = await resp.json();
+        if (resp.ok && data.status === 'ok') {
+          ADMIN_POSTS_CACHE = data.items || [];
+          const stPub = document.getElementById('adminStatPublished');
+          const stPin = document.getElementById('adminStatPinned');
+          const stArc = document.getElementById('adminStatArchived');
+          if (stPub) stPub.innerText = data.counts.published || 0;
+          if (stPin) stPin.innerText = data.counts.pinned || 0;
+          if (stArc) stArc.innerText = data.counts.archived || 0;
+          renderCommunityAdminList();
+        } else if (listEl) {
+          listEl.innerHTML = `<div class="text-center py-6 text-red-300">${data.message || 'Không thể tải danh sách kiểm duyệt.'}</div>`;
+        }
+      } catch(e) {
+        if (listEl) listEl.innerHTML = '<div class="text-center py-6 text-red-300">Lỗi kết nối máy chủ.</div>';
+      }
+    }
+
+    function closeCommunityAdminModal() {
+      const m = document.getElementById('modalCommunityAdmin');
+      if (m) m.classList.add('hidden');
+    }
+
+    function filterAdminPosts(mode) {
+      ADMIN_FILTER_MODE = mode;
+      ['all', 'pinned', 'archived'].forEach(t => {
+        const b = document.getElementById('adminTab_' + t);
+        if (b) {
+          b.className = (t === mode)
+            ? 'px-3 py-1 rounded-full bg-red-600 text-white cursor-pointer'
+            : 'px-3 py-1 rounded-full bg-blue-900/70 text-blue-100 hover:bg-blue-800 cursor-pointer';
+        }
+      });
+      renderCommunityAdminList();
+    }
+
+    function renderCommunityAdminList() {
+      const listEl = document.getElementById('communityAdminList');
+      if (!listEl) return;
+      const items = ADMIN_POSTS_CACHE.filter(it => {
+        if (ADMIN_FILTER_MODE === 'pinned') return it.status === 'pinned';
+        if (ADMIN_FILTER_MODE === 'archived') return it.status === 'archived';
+        return true;
+      });
+      if (items.length === 0) {
+        listEl.innerHTML = '<div class="text-center py-6 text-blue-200/70">Chưa có bài viết nào trong mục này.</div>';
+        return;
+      }
+      listEl.innerHTML = items.map(it => {
+        const isPinned = it.status === 'pinned';
+        const isArchived = it.status === 'archived';
+        const thumb = it.img || (it.youtubeId ? `https://img.youtube.com/vi/${it.youtubeId}/mqdefault.jpg` : 'img/ganh_da_dia_4k.jpg');
+        return `
+          <div class="p-2.5 rounded-2xl bg-[#091833] border ${isPinned ? 'border-red-500/70' : 'border-blue-800/80'} flex items-center gap-2.5">
+            <img src="${thumb}" alt="" class="w-14 h-12 rounded-xl object-cover shrink-0 bg-black border border-blue-800" />
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5">
+                ${isPinned ? '<span class="px-1.5 py-0.2 rounded bg-red-600 text-white text-[9px] font-black">📌 Ghim</span>' : ''}
+                ${isArchived ? '<span class="px-1.5 py-0.2 rounded bg-slate-700 text-slate-200 text-[9px] font-bold">🙈 Đã gỡ</span>' : ''}
+                <span class="text-[11px] font-bold text-white truncate">${it.title}</span>
+              </div>
+              <div class="text-[10px] text-sky-300/80 truncate">${it.ownerName || it.district || 'Khách'} • ${it.mediaType || 'photo'} • ${it.category || ''}</div>
+            </div>
+            <div class="flex items-center gap-1 shrink-0 text-[10px] font-bold">
+              <button type="button" onclick="moderateCommunityPost('${it.id}', '${isPinned ? 'unpin' : 'pin'}')" class="px-2 py-1 rounded-lg ${isPinned ? 'bg-red-600 text-white' : 'bg-blue-800 hover:bg-blue-700 text-sky-200'} cursor-pointer transition" title="${isPinned ? 'Bỏ ghim' : 'Ghim nổi bật'}">
+                <i class="fa-solid fa-thumbtack"></i>
+              </button>
+              <button type="button" onclick="moderateCommunityPost('${it.id}', '${isArchived ? 'restore' : 'archive'}')" class="px-2 py-1 rounded-lg bg-blue-900 hover:bg-blue-700 text-blue-100 cursor-pointer transition" title="${isArchived ? 'Khôi phục bài' : 'Gỡ ẩn tạm thời'}">
+                <i class="fa-solid ${isArchived ? 'fa-eye' : 'fa-eye-slash'}"></i>
+              </button>
+              <button type="button" onclick="moderateCommunityPost('${it.id}', 'delete')" class="px-2 py-1 rounded-lg bg-red-600/80 hover:bg-red-600 text-white cursor-pointer transition" title="Xóa vĩnh viễn">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function moderateCommunityPost(id, action) {
+      if (action === 'delete' && !confirm('Xóa vĩnh viễn bài viết này khỏi Đám mây?')) return;
+      try {
+        const resp = await communityFetch('/api/gallery/moderate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, action })
+        });
+        if (resp.ok) {
+          await openCommunityAdminModal();
+          await loadSavedCommunityPhotos();
+          renderArtGallery();
+        }
+      } catch(e) {}
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       initCommunityAuth();
       loadSavedCommunityPhotos();
+      initCommunityScrollObserver();
       startTetCountdown();
       initTetPetals();
       renderRadioPlaylist();
@@ -4890,6 +5060,10 @@
           <div>• <b>Thành viên:</b> Đăng ảnh/video, xóa bài của mình, gửi lời chúc.</div>
           <div>• <b>Quản trị (Admin):</b> Ghim bài nổi bật lên đầu &amp; kiểm duyệt bài.</div>
         </div>
+        <button type="button" id="btnAuthOpenAdmin" onclick="closeCommunityAuthModal(); openCommunityAdminModal();" class="hidden w-full py-2 rounded-xl bg-blue-700 hover:bg-blue-600 text-white font-black text-xs cursor-pointer transition flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-shield-halved text-red-300"></i>
+          <span>Mở Bảng Kiểm Duyệt Admin</span>
+        </button>
         <button type="button" onclick="logoutCommunityUser()" class="w-full py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs cursor-pointer transition">
           Đăng Xuất Tài Khoản
         </button>
@@ -4928,6 +5102,50 @@
           ĐĂNG NHẬP NGAY
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL KIỂM DUYỆT & QUẢN LÝ ADMIN (DUYỆT / GHIM / GỠ / XÓA) ================= -->
+  <div id="modalCommunityAdmin" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4" onclick="if(event.target === this) closeCommunityAdminModal()">
+    <div class="bg-[#0d2244] border-2 border-blue-500/80 rounded-3xl w-full max-w-2xl text-white shadow-2xl flex flex-col max-h-[92vh] overflow-hidden">
+      <div class="shrink-0 px-4 py-3 bg-[#091833] border-b border-blue-800/80 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-red-600 flex items-center justify-center text-white text-sm shadow">
+            <i class="fa-solid fa-shield-halved"></i>
+          </span>
+          <div>
+            <h3 class="text-xs sm:text-sm font-black uppercase tracking-wide">Bảng Kiểm Duyệt Cộng Đồng (Admin)</h3>
+            <p class="text-[10px] text-sky-300/85">Duyệt, ghim bài nổi bật, gỡ ẩn hoặc xóa bài viết trên Đám mây</p>
+          </div>
+        </div>
+        <button onclick="closeCommunityAdminModal()" class="w-8 h-8 rounded-full bg-blue-900/70 hover:bg-red-600 text-blue-200 hover:text-white flex items-center justify-center text-xs cursor-pointer transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="shrink-0 px-4 py-2.5 bg-[#0a1c3a] border-b border-blue-900/80 space-y-2">
+        <div class="grid grid-cols-3 gap-2 text-center text-[11px]">
+          <div class="p-2 rounded-xl bg-[#091833] border border-blue-800">
+            <div class="text-lg font-black text-sky-300" id="adminStatPublished">0</div>
+            <div class="text-[10px] text-blue-200">Đang hiển thị</div>
+          </div>
+          <div class="p-2 rounded-xl bg-[#091833] border border-red-500/40">
+            <div class="text-lg font-black text-red-400" id="adminStatPinned">0</div>
+            <div class="text-[10px] text-red-200">Đang ghim</div>
+          </div>
+          <div class="p-2 rounded-xl bg-[#091833] border border-blue-800">
+            <div class="text-lg font-black text-blue-300" id="adminStatArchived">0</div>
+            <div class="text-[10px] text-blue-200">Đã gỡ / ẩn</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 text-[11px] font-bold">
+          <button type="button" onclick="filterAdminPosts('all')" id="adminTab_all" class="px-3 py-1 rounded-full bg-red-600 text-white cursor-pointer">Tất cả</button>
+          <button type="button" onclick="filterAdminPosts('pinned')" id="adminTab_pinned" class="px-3 py-1 rounded-full bg-blue-900/70 text-blue-100 hover:bg-blue-800 cursor-pointer">📌 Đang ghim</button>
+          <button type="button" onclick="filterAdminPosts('archived')" id="adminTab_archived" class="px-3 py-1 rounded-full bg-blue-900/70 text-blue-100 hover:bg-blue-800 cursor-pointer">🙈 Đã gỡ</button>
+        </div>
+      </div>
+
+      <div id="communityAdminList" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2 text-xs"></div>
     </div>
   </div>
 </body>
