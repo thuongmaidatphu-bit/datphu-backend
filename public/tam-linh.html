@@ -163,21 +163,34 @@
           </button>
         </div>
 
-        <!-- KHUNG "BÂY GIỜ ĐANG PHÁT" -->
-        <div class="relative z-10 rounded-xl bg-black/45 border border-amber-500/35 px-3 py-2 text-center space-y-0.5 shadow-inner">
-          <div class="text-[10px] text-amber-200/80 font-medium">bây giờ đang phát</div>
-          <h2 id="buddhistLcdTitle" class="text-xs sm:text-sm font-black text-white truncate">
+        <!-- KHUNG "BÂY GIỜ ĐANG PHÁT" & CÔNG ĐỨC TÍCH LŨY -->
+        <div id="buddhistLcdBox" class="relative z-10 rounded-xl bg-black/45 border border-amber-500/35 px-3 py-2 text-center space-y-1 shadow-inner transition-all">
+          <div class="flex items-center justify-between text-[9.5px] text-amber-200/80 font-medium">
+            <span class="flex items-center gap-1.5">
+              <span id="buddhistLiveDot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+              <span>bây giờ đang phát</span>
+            </span>
+            <button onclick="toggleSeniorMode()" id="btnSeniorMode" class="px-2 py-0.5 rounded-md bg-amber-500/15 hover:bg-amber-500/30 border border-amber-400/35 text-amber-200 font-bold cursor-pointer transition">
+              👴 Chữ To
+            </button>
+          </div>
+          <h2 id="buddhistLcdTitle" class="text-xs sm:text-sm font-black text-white truncate transition-all">
             Nam Mô A Di Đà Phật (Điệu Trầm Hùng)
           </h2>
-          <p id="buddhistKaraokeLine" class="text-[10.5px] text-amber-200/90 italic font-serif truncate">
+          <p id="buddhistKaraokeLine" class="text-[10.5px] text-amber-200/90 italic font-serif truncate transition-all">
             "Nam Mô A Di Đà Phật • Nam Mô A Di Đà Phật"
           </p>
-          <div class="flex items-center justify-center gap-3 pt-0.5 text-[10px] text-amber-300 font-mono">
+          <div class="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-0.5 pt-0.5 text-[10px] text-amber-300 font-mono">
             <span id="buddhistLiveState" class="font-bold">SẴN SÀNG</span>
             <span>•</span>
             <span>Biến: <b id="buddhistMalaCount" class="text-amber-200">108</b></span>
             <span>•</span>
             <span id="ritualTimerDisplay">⏳ Tự Do</span>
+          </div>
+          <div class="flex items-center justify-between pt-1 mt-1 border-t border-amber-500/20 text-[9.5px] text-amber-200/90">
+            <span>📿 Tích lũy: <b id="buddhistLifetimeCount" class="text-amber-300 font-mono">1.080</b></span>
+            <span>🔥 Tinh tấn: <b id="buddhistStreakDays" class="text-emerald-300 font-mono">1</b> ngày</span>
+            <button onclick="resetCurrentMalaSession()" class="text-amber-300/80 hover:text-amber-200 underline cursor-pointer" title="Đưa bộ đếm phiên hiện tại về 1">↺ Đặt lại</button>
           </div>
         </div>
 
@@ -189,10 +202,10 @@
           </button>
 
           <button onclick="toggleBuddhistPlay()" id="btnBuddhistMasterPlay" class="flex flex-col items-center gap-1 cursor-pointer group">
-            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-amber-300 via-orange-400 to-amber-600 border-2 border-amber-100 shadow-[0_6px_20px_rgba(245,158,11,0.65)] group-hover:scale-105 group-active:scale-95 flex items-center justify-center text-white text-2xl transition">
+            <div id="buddhistMasterPlayCircle" class="w-14 h-14 rounded-full bg-gradient-to-br from-amber-300 via-orange-400 to-amber-600 border-2 border-amber-100 shadow-[0_6px_20px_rgba(245,158,11,0.65)] group-hover:scale-105 group-active:scale-95 flex items-center justify-center text-white text-2xl transition">
               <i id="buddhistMasterPlayIcon" class="fa-solid fa-play ml-0.5 drop-shadow"></i>
             </div>
-            <span class="text-[10px] font-bold text-amber-100">Phát / Tạm dừng</span>
+            <span id="buddhistMasterPlayLabel" class="text-[10px] font-bold text-amber-100">Phát / Tạm dừng</span>
           </button>
 
           <button onclick="nextBuddhistTrack()" class="flex flex-col items-center gap-1 text-amber-100 hover:text-white active:scale-95 transition cursor-pointer">
@@ -201,7 +214,7 @@
           </button>
         </div>
 
-        <!-- HÀNG 3 NÚT CHẾ ĐỘ (VÒNG LẶP | PHÁT NGẪU NHIÊN | HẸN GIỜ TẮT) -->
+        <!-- HÀNG 3 NÚT CHẾ ĐỘ (VÒNG LẶP | PHÁT NGẪU NHIÊN | CÀI ĐẶT & HẸN GIỜ) -->
         <div class="relative z-10 grid grid-cols-3 gap-2 text-center">
           <button onclick="toggleBuddhistLoopMode()" id="btnLoopOneMode" class="p-2 rounded-xl bg-black/45 hover:bg-black/65 border border-amber-500/45 flex flex-col items-center gap-1 transition active:scale-95 cursor-pointer">
             <i class="fa-solid fa-repeat text-sm text-amber-300"></i>
@@ -214,15 +227,15 @@
           </button>
 
           <button onclick="toggleRitualTimerDrawer()" id="btnTimerDrawerToggle" class="p-2 rounded-xl bg-black/45 hover:bg-black/65 border border-amber-500/30 flex flex-col items-center gap-1 transition active:scale-95 cursor-pointer">
-            <i class="fa-regular fa-clock text-sm text-amber-200/80"></i>
-            <span class="text-[9.5px] font-bold text-amber-100/90">Hẹn giờ tắt</span>
+            <i class="fa-solid fa-sliders text-sm text-amber-200/80"></i>
+            <span class="text-[9.5px] font-bold text-amber-100/90">Cài đặt & Hẹn giờ</span>
           </button>
         </div>
 
-        <!-- KHAY HẸN GIỜ TẮT & NHỊP MÕ (ẨN/HIỆN KHI BẤM "HẸN GIỜ TẮT") -->
-        <div id="ritualTimerDrawer" class="hidden relative z-10 p-2.5 rounded-xl bg-black/60 border border-amber-400/40 space-y-2 text-[10px]">
+        <!-- KHAY CÀI ĐẶT: HẸN GIỜ TẮT • NHỊP MÕ • ÂM CẢNH & GIỌNG ĐỌC -->
+        <div id="ritualTimerDrawer" class="hidden relative z-10 p-2.5 rounded-xl bg-black/65 border border-amber-400/40 space-y-2 text-[10px]">
           <div class="flex items-center gap-1 font-bold">
-            <span class="text-amber-200/80 shrink-0">Hẹn giờ:</span>
+            <span class="text-amber-200/80 shrink-0 w-14">Hẹn giờ:</span>
             <button onclick="setRitualTimer(0)" id="timerBtn_0" class="flex-1 py-1 rounded bg-amber-500 text-slate-950 font-black cursor-pointer">Tự Do</button>
             <button onclick="setRitualTimer(15)" id="timerBtn_15" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">15p</button>
             <button onclick="setRitualTimer(30)" id="timerBtn_30" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">30p</button>
@@ -230,15 +243,21 @@
             <button onclick="setRitualTimer(60)" id="timerBtn_60" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">60p</button>
           </div>
           <div class="flex items-center gap-1 font-bold">
-            <span class="text-amber-200/80 shrink-0">Nhịp mõ:</span>
-            <button onclick="setBuddhistSpeed(2.0)" id="bSpeed_1" class="flex-1 py-1 rounded bg-amber-500 text-slate-950 font-black cursor-pointer">Chậm</button>
-            <button onclick="setBuddhistSpeed(1.5)" id="bSpeed_2" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">Vừa</button>
-            <button onclick="setBuddhistSpeed(1.0)" id="bSpeed_3" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">Nhanh</button>
+            <span class="text-amber-200/80 shrink-0 w-14">Nhịp mõ:</span>
+            <button onclick="setBuddhistSpeed(2.0)" id="bSpeed_1" class="flex-1 py-1 rounded bg-amber-500 text-slate-950 font-black cursor-pointer">Chậm (2s)</button>
+            <button onclick="setBuddhistSpeed(1.5)" id="bSpeed_2" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">Vừa (1.5s)</button>
+            <button onclick="setBuddhistSpeed(1.0)" id="bSpeed_3" class="flex-1 py-1 rounded bg-slate-800 text-amber-200 cursor-pointer">Nhanh (1s)</button>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-1 border-t border-amber-500/20 font-bold">
+            <button onclick="toggleBuddhistVoiceMode()" id="btnToggleChantVoice" class="py-1.5 px-1.5 rounded-lg bg-slate-800 text-amber-200 hover:bg-slate-700 cursor-pointer transition">🗣️ Giọng đọc: TẮT</button>
+            <button onclick="toggleAutoBell108()" id="btnToggleAutoBell108" class="py-1.5 px-1.5 rounded-lg bg-amber-500/25 border border-amber-400/50 text-amber-200 cursor-pointer transition">🔔 Chuông 108: BẬT</button>
+            <button onclick="toggleBuddhistZenRain()" id="btnToggleZenRain" class="py-1.5 px-1.5 rounded-lg bg-slate-800 text-amber-200 hover:bg-slate-700 cursor-pointer transition">🌧️ Mưa thiền: TẮT</button>
+            <button onclick="toggleBuddhistSolfeggioDrone()" id="btnToggleSolfeggioDrone" class="py-1.5 px-1.5 rounded-lg bg-slate-800 text-amber-200 hover:bg-slate-700 cursor-pointer transition">🎶 432Hz: TẮT</button>
           </div>
         </div>
 
         <!-- THANH PHÁP KHÍ NHANH: GÕ MÕ (+1) • THỈNH CHUÔNG BÁT • KHAI KHÓA LỄ • HỒI HƯỚNG -->
-        <div class="relative z-10 grid grid-cols-4 gap-1.5 text-[9.5px] font-bold">
+        <div id="buddhistQuickActions" class="relative z-10 grid grid-cols-4 gap-1.5 text-[9.5px] font-bold">
           <button onclick="manualHitWoodblock()" id="duiMalaBox" class="py-1.5 px-1 rounded-xl bg-black/45 hover:bg-amber-950/70 border border-amber-500/35 flex items-center justify-center gap-1 text-amber-200 active:scale-95 transition cursor-pointer">
             <span>🪵 Gõ Mõ +1</span>
           </button>
@@ -1166,10 +1185,15 @@
         // Nếu có bản thu âm MP3 của bài đang chọn hoặc bài nạp từ máy
         if (buddhistAudioMode === 'audio' && track && track.url && audioEl) {
           audioEl.src = track.url;
-          audioEl.loop = true;
+          audioEl.loop = buddhistLoopOne;
+          audioEl.onended = () => {
+            if (!buddhistLoopOne && isBuddhistPlaying) nextBuddhistTrack();
+          };
           audioEl.play().catch(err => {
             console.log('Audio autoplay prevented, fallback to temple chime');
           });
+        } else if (typeof isBuddhistVoiceEnabled !== 'undefined' && isBuddhistVoiceEnabled) {
+          speakBuddhistVerse();
         }
 
         // Đệm tiếng mõ gỗ chùa trầm ấm
@@ -1181,7 +1205,14 @@
 
     function toggleBuddhistMetronome() {
       isWoodblockActive = !isWoodblockActive;
-      document.getElementById('woodblockStateText').innerText = isWoodblockActive ? "BẬT" : "TẮT";
+      const icon = document.getElementById('woodblockSpeakerIcon');
+      const btn = document.getElementById('btnBuddhistWoodblock');
+      if (icon) {
+        icon.className = isWoodblockActive ? "fa-solid fa-volume-high text-xs" : "fa-solid fa-volume-xmark text-xs text-rose-300";
+      }
+      if (btn) {
+        btn.title = isWoodblockActive ? "Đang bật tiếng Mõ (Bấm để tắt)" : "Đang tắt tiếng Mõ (Bấm để bật)";
+      }
       if (!isWoodblockActive && woodblockTimer) {
         clearInterval(woodblockTimer);
         woodblockTimer = null;
@@ -1974,9 +2005,10 @@
       lifetimeMalaCount++;
       localStorage.setItem('datphu_lifetime_mala', lifetimeMalaCount.toString());
       updateLifetimeMalaDisplay();
+      if (typeof updateBuddhistStreak === 'function') updateBuddhistStreak(true);
 
-      // Mỗi khi đạt tròn 108 biến tự động thỉnh chuông đồng!
-      if (buddhistCount % 108 === 0) {
+      // Mỗi khi đạt tròn 108 biến tự động thỉnh chuông đồng (nếu đang bật)
+      if ((typeof isAutoBell108 === 'undefined' || isAutoBell108) && buddhistCount % 108 === 0) {
         playTempleBronzeBell();
       }
     };
@@ -2095,6 +2127,13 @@
     let buddhistLoopOne = true;
     let buddhistShuffle = false;
     let buddhistWakeLock = null;
+    let isBuddhistVoiceEnabled = false;
+    let isAutoBell108 = true;
+    let isSeniorMode = localStorage.getItem('datphu_senior_mode') === '1';
+    let isZenRainOn = false;
+    let isSolfeggioDroneOn = false;
+    let solfeggioOscNode = null;
+    let solfeggioGainNode = null;
 
     function renderMalaRingSvg(activeBead) {
       const g = document.getElementById('malaBeadsGroup');
@@ -2106,10 +2145,143 @@
         const angle = (i / totalBeads) * Math.PI * 2 + Math.PI / 2;
         const x = (100 + 76 * Math.cos(angle)).toFixed(1);
         const y = (100 + 76 * Math.sin(angle)).toFixed(1);
+        const isCurrent = i === activeIdx;
         const isLit = i <= activeIdx;
-        dots += `<circle cx="${x}" cy="${y}" r="${isLit ? '3.3' : '2.7'}" fill="${isLit ? '#fbbf24' : '#78350f'}" stroke="${isLit ? '#fef08a' : '#b45309'}" stroke-width="0.6" />`;
+        const r = isCurrent ? '4.4' : (isLit ? '3.3' : '2.7');
+        const fill = isCurrent ? '#fef08a' : (isLit ? '#fbbf24' : '#78350f');
+        const stroke = isCurrent ? '#f59e0b' : (isLit ? '#fef08a' : '#b45309');
+        dots += `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="${isCurrent ? '1.2' : '0.6'}" />`;
       }
       g.innerHTML = dots;
+    }
+
+    function updateBuddhistStreak(incrementIfNewDay) {
+      const today = new Date().toISOString().slice(0, 10);
+      let lastDate = localStorage.getItem('datphu_mala_last_date') || '';
+      let streak = parseInt(localStorage.getItem('datphu_mala_streak') || '1', 10);
+      if (incrementIfNewDay && lastDate !== today) {
+        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        streak = (lastDate === yesterday) ? (streak + 1) : 1;
+        localStorage.setItem('datphu_mala_last_date', today);
+        localStorage.setItem('datphu_mala_streak', String(streak));
+      }
+      const el = document.getElementById('buddhistStreakDays');
+      if (el) el.innerText = streak;
+    }
+
+    function applySeniorModeUI() {
+      const btn = document.getElementById('btnSeniorMode');
+      const title = document.getElementById('buddhistLcdTitle');
+      const line = document.getElementById('buddhistKaraokeLine');
+      const playCircle = document.getElementById('buddhistMasterPlayCircle');
+      const quick = document.getElementById('buddhistQuickActions');
+      if (btn) {
+        btn.className = isSeniorMode
+          ? "px-2.5 py-1 rounded-md bg-amber-400 text-slate-950 font-black cursor-pointer transition text-[11px]"
+          : "px-2 py-0.5 rounded-md bg-amber-500/15 hover:bg-amber-500/30 border border-amber-400/35 text-amber-200 font-bold cursor-pointer transition";
+        btn.innerText = isSeniorMode ? "👴 Chữ To: BẬT" : "👴 Chữ To";
+      }
+      if (title) title.className = isSeniorMode ? "text-base sm:text-lg font-black text-amber-200 leading-snug transition-all" : "text-xs sm:text-sm font-black text-white truncate transition-all";
+      if (line) line.className = isSeniorMode ? "text-sm sm:text-base text-white italic font-serif leading-relaxed transition-all" : "text-[10.5px] text-amber-200/90 italic font-serif truncate transition-all";
+      if (playCircle) {
+        playCircle.className = isSeniorMode
+          ? "w-18 h-18 rounded-full bg-gradient-to-br from-amber-300 via-orange-400 to-amber-600 border-2 border-white shadow-[0_6px_24px_rgba(245,158,11,0.75)] group-hover:scale-105 group-active:scale-95 flex items-center justify-center text-white text-3xl transition"
+          : "w-14 h-14 rounded-full bg-gradient-to-br from-amber-300 via-orange-400 to-amber-600 border-2 border-amber-100 shadow-[0_6px_20px_rgba(245,158,11,0.65)] group-hover:scale-105 group-active:scale-95 flex items-center justify-center text-white text-2xl transition";
+      }
+      if (quick) {
+        quick.className = isSeniorMode
+          ? "relative z-10 grid grid-cols-2 gap-2 text-xs font-black"
+          : "relative z-10 grid grid-cols-4 gap-1.5 text-[9.5px] font-bold";
+      }
+    }
+
+    function toggleSeniorMode() {
+      isSeniorMode = !isSeniorMode;
+      localStorage.setItem('datphu_senior_mode', isSeniorMode ? '1' : '0');
+      applySeniorModeUI();
+    }
+
+    function resetCurrentMalaSession() {
+      buddhistCount = 1;
+      const malaEl = document.getElementById('buddhistMalaCount');
+      if (malaEl) malaEl.innerText = '1';
+      updateMalaProgressUI();
+    }
+
+    function toggleBuddhistVoiceMode() {
+      isBuddhistVoiceEnabled = !isBuddhistVoiceEnabled;
+      const btn = document.getElementById('btnToggleChantVoice');
+      if (btn) {
+        btn.innerText = isBuddhistVoiceEnabled ? '🗣️ Giọng đọc: BẬT' : '🗣️ Giọng đọc: TẮT';
+        btn.className = isBuddhistVoiceEnabled
+          ? "py-1.5 px-1.5 rounded-lg bg-amber-500/25 border border-amber-400/50 text-amber-200 cursor-pointer transition"
+          : "py-1.5 px-1.5 rounded-lg bg-slate-800 text-amber-200 hover:bg-slate-700 cursor-pointer transition";
+      }
+      if (!isBuddhistVoiceEnabled && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      } else if (isBuddhistVoiceEnabled && isBuddhistPlaying) {
+        speakBuddhistVerse();
+      }
+    }
+
+    function toggleAutoBell108() {
+      isAutoBell108 = !isAutoBell108;
+      const btn = document.getElementById('btnToggleAutoBell108');
+      if (btn) {
+        btn.innerText = isAutoBell108 ? '🔔 Chuông 108: BẬT' : '🔔 Chuông 108: TẮT';
+        btn.className = isAutoBell108
+          ? "py-1.5 px-1.5 rounded-lg bg-amber-500/25 border border-amber-400/50 text-amber-200 cursor-pointer transition"
+          : "py-1.5 px-1.5 rounded-lg bg-slate-800 text-amber-200 hover:bg-slate-700 cursor-pointer transition";
+      }
+    }
+
+    function toggleBuddhistZenRain() {
+      isZenRainOn = !isZenRainOn;
+      const btn = document.getElementById('btnToggleZenRain');
+      if (isZenRainOn) {
+        if (!radioAudioContext) radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (radioAudioContext.state === 'suspended') radioAudioContext.resume();
+        if (typeof createRainAudioSource === 'function') createRainAudioSource();
+        if (rainGainNode) rainGainNode.gain.setValueAtTime(0.14, radioAudioContext.currentTime);
+      } else {
+        if (typeof stopRainAudioSource === 'function') stopRainAudioSource();
+      }
+      if (btn) {
+        btn.innerText = isZenRainOn ? '🌧️ Mưa thiền: BẬT' : '🌧️ Mưa thiền: TẮT';
+        btn.className = isZenRainOn
+          ? "py-1.5 px-1.5 rounded-lg bg-emerald-500/25 border border-emerald-400/50 text-emerald-200 cursor-pointer transition"
+          : "py-1.5 px-1.5 rounded-lg bg-slate-800 text-amber-200 hover:bg-slate-700 cursor-pointer transition";
+      }
+    }
+
+    function toggleBuddhistSolfeggioDrone() {
+      isSolfeggioDroneOn = !isSolfeggioDroneOn;
+      const btn = document.getElementById('btnToggleSolfeggioDrone');
+      if (isSolfeggioDroneOn) {
+        if (!radioAudioContext) radioAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (radioAudioContext.state === 'suspended') radioAudioContext.resume();
+        const track = BUDDHIST_CHENTS[currentBuddhistIdx];
+        const freq = (track && track.freq) ? track.freq : 432;
+        solfeggioOscNode = radioAudioContext.createOscillator();
+        solfeggioGainNode = radioAudioContext.createGain();
+        solfeggioOscNode.type = 'sine';
+        solfeggioOscNode.frequency.setValueAtTime(freq, radioAudioContext.currentTime);
+        solfeggioGainNode.gain.setValueAtTime(0.035, radioAudioContext.currentTime);
+        solfeggioOscNode.connect(solfeggioGainNode);
+        solfeggioGainNode.connect(radioAudioContext.destination);
+        solfeggioOscNode.start();
+      } else if (solfeggioOscNode) {
+        try { solfeggioOscNode.stop(); } catch(e) {}
+        solfeggioOscNode.disconnect();
+        solfeggioOscNode = null;
+        solfeggioGainNode = null;
+      }
+      if (btn) {
+        btn.innerText = isSolfeggioDroneOn ? '🎶 432Hz: BẬT' : '🎶 432Hz: TẮT';
+        btn.className = isSolfeggioDroneOn
+          ? "py-1.5 px-1.5 rounded-lg bg-amber-500/25 border border-amber-400/50 text-amber-200 cursor-pointer transition"
+          : "py-1.5 px-1.5 rounded-lg bg-slate-800 text-amber-200 hover:bg-slate-700 cursor-pointer transition";
+      }
     }
 
     // Override updateMalaProgressUI to also update circular SVG beads
@@ -2292,6 +2464,8 @@
       if (typeof renderBuddhistPlaylist === 'function') renderBuddhistPlaylist();
       if (typeof updateLifetimeMalaDisplay === 'function') updateLifetimeMalaDisplay();
       if (typeof updateMalaProgressUI === 'function') updateMalaProgressUI();
+      if (typeof updateBuddhistStreak === 'function') updateBuddhistStreak(false);
+      if (typeof applySeniorModeUI === 'function') applySeniorModeUI();
       if (typeof renderDialectQuiz === 'function') renderDialectQuiz();
     });
   </script>
