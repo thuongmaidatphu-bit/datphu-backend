@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Niệm Phật, Trà Đạo & Thiền Tâm Đất Phú • Ứng Dụng Thứ 6</title>
+  <meta name="description" content="Kênh phát thanh dân ca Bài Chòi Xứ Nẫu, Rạp chiếu cảnh đẹp 4K, Máy Niệm Phật Số cầm tay, Hòa âm thiên nhiên trị liệu và Thiền thở đóa sen Đất Phú.">
+  <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 9999px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    
+    @keyframes eqWave {
+      0%, 100% { height: 18%; }
+      50% { height: 95%; }
+    }
+    .eq-bar-anim { animation: eqWave 0.8s ease-in-out infinite; }
+
+    @keyframes rotateDisc {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .rotating-disc { animation: rotateDisc 16s linear infinite; }
+    .rotating-disc-paused { animation-play-state: paused; }
+
+    /* Lotus Flower Blooming Animation */
+    @keyframes lotusPetalBreath {
+      0% { transform: scale(0.85); filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.3)); }
+      35% { transform: scale(1.18); filter: drop-shadow(0 0 25px rgba(244, 63, 94, 0.7)); }
+      65% { transform: scale(1.18); filter: drop-shadow(0 0 25px rgba(245, 158, 11, 0.7)); }
+      100% { transform: scale(0.85); filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.3)); }
+    }
+    .lotus-bloom-anim { animation: lotusPetalBreath 19s ease-in-out infinite; }
+
+    /* Dark Mode variables */
+    body.dark-mode {
+      background: linear-gradient(180deg, #070d17 0%, #0d1728 50%, #040810 100%);
+      color: #f1f5f9;
+    }
+    body.dark-mode .card-box {
+      background-color: rgba(15, 23, 42, 0.9);
+      border-color: rgba(245, 158, 11, 0.25);
+      color: #f1f5f9;
+    }
+    body.dark-mode .nav-bar-bg {
+      background-color: rgba(15, 23, 42, 0.95);
+      border-color: rgba(245, 158, 11, 0.2);
+    }
+  </style>
+
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-900 flex flex-col font-sans antialiased">
+
+  <!-- TOP HEADER GỌN GÀNG -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-200/70 shadow-2xs px-3 sm:px-6 py-2 flex items-center justify-between gap-2">
+    <div class="flex items-center gap-2 min-w-0">
+      <a href="/" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 flex items-center justify-center text-xs font-black transition active:scale-95 shrink-0" title="Về Trang Chủ Lịch Đất Phú">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
+      <div class="flex items-center gap-2 min-w-0">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-700 text-white flex items-center justify-center shadow-xs shrink-0">
+          <i class="fa-solid fa-dharmachakra text-sm"></i>
+        </div>
+        <div class="min-w-0">
+          <h1 class="text-xs sm:text-sm md:text-base font-black text-amber-950 uppercase tracking-tight truncate">
+            NIỆM PHẬT, TRÀ ĐẠO & THIỀN TÂM
+          </h1>
+          <p class="text-[10px] text-slate-500 font-medium truncate hidden sm:block">Ứng Dụng Thứ 6 • Bảo Đài Tịnh Độ • Trà Đạo Thư Quán • Góc Vui Dân Gian</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-1.5 shrink-0">
+      <a href="/giai-tri" class="px-2.5 py-1 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] font-bold flex items-center gap-1 transition">
+        <i class="fa-solid fa-clapperboard text-[10px]"></i>
+        <span class="hidden sm:inline">Giải Trí</span>
+      </a>
+      <button onclick="toggleDatPhuAppLauncher()" class="w-8 h-8 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 flex items-center justify-center text-xs transition active:scale-95 cursor-pointer" title="Hệ Sinh Thái 6 Ứng Dụng Đất Phú">
+        <i class="fa-solid fa-grip text-sm"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-4xl w-full mx-auto px-2.5 sm:px-5 pt-3 pb-20 space-y-3">
+    <!-- THANH 3 TAB VIÊN THUỐC GỌN ĐẸP -->
+    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs font-bold">
+      <button onclick="switchTamLinhTab('buddhist')" id="tlTab_buddhist" class="px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs font-black">
+        <i class="fa-solid fa-dharmachakra text-[10px]"></i>
+        <span>1. Máy Niệm Phật Số</span>
+      </button>
+
+      <button onclick="switchTamLinhTab('tea')" id="tlTab_tea" class="px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs">
+        <i class="fa-solid fa-mug-hot text-emerald-600 text-[10px]"></i>
+        <span>2. Trà Đạo Thư Quán</span>
+      </button>
+
+      <button onclick="switchTamLinhTab('mindful_games')" id="tlTab_mindful_games" class="px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs">
+        <i class="fa-solid fa-spa text-rose-500 text-[10px]"></i>
+        <span>3. Góc Vui & Thiền Thở</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: MÁY NIỆM PHẬT SỐ -->
+    <section id="tlPanel_buddhist">
+      <div id="subBlock_buddhist" class="space-y-3 sm:space-y-4">
+        <!-- KHUNG THÂN MÁY NIỆM PHẬT CỔ ĐIỂN THẾP VÀNG GỖ QUÝ TRẦM HƯƠNG -->
+        <div class="relative max-w-xl mx-auto rounded-3xl bg-gradient-to-b from-[#241306] via-[#160a03] to-[#0c0401] p-3.5 sm:p-5 border-2 border-amber-500/70 shadow-[0_15px_45px_rgba(0,0,0,0.85),inset_0_1px_2px_rgba(255,215,0,0.25)] text-white space-y-3 select-none overflow-hidden">
+          
+          <!-- Hào quang hoàng kim dịu mắt -->
+          <div class="pointer-events-none absolute -top-16 -right-16 w-48 h-48 bg-amber-500/15 rounded-full blur-3xl"></div>
+          <div class="pointer-events-none absolute -bottom-16 -left-16 w-48 h-48 bg-orange-600/15 rounded-full blur-3xl"></div>
+
+          <!-- ĐỈNH MÁY: TIÊU ĐỀ & CHẾ ĐỘ CHIÊM BÁI / SỐ -->
+          <div class="relative z-10 flex items-center justify-between border-b border-amber-500/30 pb-2.5">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 flex items-center justify-center font-black text-xs sm:text-sm shadow-md border border-amber-200 shrink-0">
+                📿
+              </div>
+              <div>
+                <h3 class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-normal font-sans">
+                  MÁY NIỆM PHẬT SỐ ĐẤT PHÚ
+                </h3>
+                <p class="text-[9.5px] text-amber-200/80 font-sans">Tịnh Độ Thiền Môn • Tần Số Trị Liệu 432Hz</p>
+              </div>
+            </div>
+
+            <!-- Cụm chuyển Chế độ Ban Thờ Tam Bảo & Trạng thái -->
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleBuddhistAltarView()" id="btnToggleAltarView" class="px-2 py-1 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-[10px] text-amber-300 font-bold transition flex items-center gap-1 cursor-pointer" title="Bật / Tắt Ảnh Ban Thờ Tây Phương Tam Thánh">
+                <i class="fa-solid fa-eye text-[9px]"></i>
+                <span id="altarToggleText">Chiêm Bái</span>
+              </button>
+              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/60 border border-amber-400/30">
+                <span id="buddhistLiveDot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+                <span id="buddhistLiveState" class="text-[9.5px] font-mono text-amber-300 font-bold uppercase">
+                  SẴN SÀNG
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAN THỜ TAM BẢO & PHÁP BẢO CHUÔNG MÕ (CÓ THỂ ẨN/HIỆN) -->
+          <div id="buddhistAltarDisplay" class="hidden relative z-10 rounded-2xl overflow-hidden border border-amber-500/50 shadow-inner bg-black">
+            <!-- Tabs chuyển đổi giữa Ban Thờ Tam Bảo & Chuông Mõ -->
+            <div class="absolute top-2 right-2 z-20 flex items-center gap-1 bg-black/75 backdrop-blur-md p-1 rounded-xl border border-amber-400/40 text-[9.5px] font-bold">
+              <button onclick="setAltarSubView('altar')" id="btnAltarTab_altar" class="px-2 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer">
+                🏛️ Ban Thờ
+              </button>
+              <button onclick="setAltarSubView('bells')" id="btnAltarTab_bells" class="px-2 py-0.5 rounded-lg text-amber-200 hover:text-white transition cursor-pointer">
+                🔔 Chuông Mõ
+              </button>
+            </div>
+
+            <!-- Khung 1: Ban Thờ Tam Bảo -->
+            <div id="altarView_altar" class="relative">
+              <img src="img/phat_phap_cong_dong/ban_tho_tam_bao_tay_phuong_tam_thanh.jpg" alt="Ban Thờ Tây Phương Tam Thánh Đất Phú" class="w-full max-h-52 sm:max-h-60 object-cover object-center filter brightness-95">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent flex flex-col justify-end p-3">
+                <div class="text-[11px] font-black text-amber-300 uppercase font-sans">Tây Phương Tam Thánh Tiếp Dẫn Chúng Sanh</div>
+                <div class="text-[9.5px] text-amber-100/90 font-serif italic">Nam Mô A Di Đà Phật • Nam Mô Quán Thế Âm Bồ Tát • Nam Mô Đại Thế Chí Bồ Tát</div>
+              </div>
+            </div>
+
+            <!-- Khung 2: Pháp Bảo Chuông Bát & Mõ Gỗ Thiền Tự -->
+            <div id="altarView_bells" class="hidden relative">
+              <img src="img/chuong_mo_phat_giao_thien_vien.jpg" alt="Chuông Bát Đồng & Mõ Gỗ Thiền Tự Đất Phú" class="w-full max-h-52 sm:max-h-60 object-cover object-center filter brightness-95">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent flex flex-col justify-end p-3">
+                <div class="text-[11px] font-black text-amber-300 uppercase font-sans flex items-center gap-1.5">
+                  <span>Pháp Bảo Chuông Bát & Mõ Gỗ Cá Chép</span>
+                  <span class="text-[9px] px-1.5 py-0.2 bg-amber-500/30 text-amber-200 rounded border border-amber-400/40 font-mono">Bảo Khí</span>
+                </div>
+                <div class="text-[9.5px] text-amber-100/90 font-serif italic">Tiếng chuông thanh tịnh cảnh tỉnh trần tâm • Tiếng mõ điều hòa nhiếp tâm tụng niệm</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MÀN HÌNH OLED HỔ PHÁCH HUYỀN ẢO (AMBER OLED DISPLAY) -->
+          <div id="buddhistOledDisplay" class="relative z-10 rounded-2xl bg-gradient-to-b from-[#120802] to-[#070301] p-3 sm:p-3.5 border-2 border-amber-500/60 shadow-[inset_0_3px_10px_rgba(0,0,0,0.95)] space-y-2">
+            <!-- Hàng trên: Tần số và Danh mục -->
+            <div class="flex items-center justify-between text-[10px] font-mono">
+              <div class="flex items-center gap-1.5 text-amber-400 font-bold">
+                <i class="fa-solid fa-dharmachakra animate-spin" style="animation-duration: 12s;"></i>
+                <span id="buddhistTrackCategoryText">NIỆM PHẬT TỊNH ĐỘ</span>
+              </div>
+              <div class="text-amber-300/80 font-bold">
+                Tần Số: <span class="text-amber-200 font-black">432 Hz Solfeggio</span>
+              </div>
+            </div>
+
+            <!-- Giữa màn hình: Tiêu đề & Bộ đếm LED biến niệm -->
+            <div class="flex items-center justify-between gap-2.5 pt-0.5">
+              <div class="min-w-0 flex-1">
+                <h2 id="buddhistLcdTitle" class="text-xs sm:text-sm font-black text-amber-100 truncate font-sans leading-tight">
+                  Nam Mô A Di Đà Phật (Điệu Trầm Hùng)
+                </h2>
+                <div class="text-[10.5px] text-amber-300/80 truncate mt-0.5 font-medium font-sans">
+                  Đạo Tràng Đất Phú • Tịnh Độ Tông
+                </div>
+              </div>
+
+              <!-- BỘ ĐẾM BIẾN LED GỌN GÀNG -->
+              <div class="text-right shrink-0 bg-black/85 px-2.5 py-1 rounded-xl border border-amber-400/40 shadow-inner">
+                <div id="buddhistMalaCount" class="text-2xl sm:text-3xl font-black font-mono text-amber-300 tracking-wider drop-shadow-[0_0_8px_rgba(245,158,11,0.6)] leading-none">
+                  108
+                </div>
+                <div class="text-[8px] text-amber-200/70 font-bold uppercase tracking-wider mt-0.5">BIẾN NIỆM</div>
+              </div>
+            </div>
+
+            <!-- TIẾN ĐỘ CHUỖI TRÀNG HẠT 108 HẠT TRỰC QUAN -->
+            <div class="pt-1.5 border-t border-amber-500/20 space-y-1">
+              <div class="flex items-center justify-between text-[9px] font-mono font-bold text-amber-200/85">
+                <span class="flex items-center gap-1">
+                  📿 Hạt thứ: <b id="malaCurrentBead" class="text-amber-300 font-mono text-[10.5px]">108</b> / 108
+                </span>
+                <span class="text-amber-300 flex items-center gap-1">
+                  Vòng Chuỗi: <b id="malaRoundCount" class="text-amber-300 font-mono text-[10.5px]">1</b>
+                </span>
+              </div>
+              <!-- Thanh hạt tiến độ hiển thị trực quan lấp lánh -->
+              <div class="relative w-full h-1.5 sm:h-2 rounded-full bg-black/85 border border-amber-500/40 overflow-hidden shadow-inner flex items-center">
+                <div id="malaProgressBar" class="h-full bg-gradient-to-r from-amber-600 via-amber-400 to-yellow-300 rounded-full transition-all duration-200 shadow-[0_0_8px_rgba(245,158,11,0.8)]" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <!-- Dưới màn hình: Dòng tụng niệm Karaoke chữ thư thái -->
+            <div class="pt-1 border-t border-amber-500/20 text-center">
+              <p id="buddhistKaraokeLine" class="text-[11px] sm:text-xs font-bold text-amber-200 font-serif italic tracking-wide">
+                "Nam Mô A Di Đà Phật • Nam Mô A Di Đà Phật"
+              </p>
+            </div>
+          </div>
+
+          <!-- THANH KHAI KHÓA LỄ & HẸN GIỜ THỜI KHÓA TU TẬP -->
+          <div class="relative z-10 p-2 sm:p-2.5 rounded-2xl bg-black/60 border border-amber-500/40 text-[10.5px] font-sans space-y-1.5 shadow-md">
+            <div class="flex items-center justify-between gap-2">
+              <!-- Nút Khai Khóa Lễ Chuông Mõ Tự Động -->
+              <button onclick="startBuddhistRitualCeremony()" id="btnStartRitual" class="px-2.5 py-1 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 hover:from-amber-500 hover:to-yellow-400 text-slate-950 font-black text-[10.5px] flex items-center gap-1.5 shadow active:scale-95 transition cursor-pointer" title="Tự động Khai 3 tiếng Chuông & Hồi Mõ Đạo Tràng">
+                <i class="fa-solid fa-dharmachakra"></i>
+                <span id="btnStartRitualText">Khai Khóa Lễ Chuông Mõ</span>
+              </button>
+              <!-- Đồng hồ đếm ngược thời khóa -->
+              <div id="ritualTimerDisplay" class="font-mono text-amber-300 font-bold text-[10px] bg-black/80 px-2 py-0.5 rounded-lg border border-amber-400/30 shrink-0">
+                ⏳ Tự Do
+              </div>
+            </div>
+
+            <!-- Các mốc hẹn giờ thời khóa tu tập -->
+            <div class="flex items-center gap-1 text-[9.5px] font-bold">
+              <span class="text-amber-200/70 uppercase text-[8.5px] shrink-0">Thời lượng:</span>
+              <button onclick="setRitualTimer(0)" id="timerBtn_0" class="flex-1 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer">Tự Do</button>
+              <button onclick="setRitualTimer(15)" id="timerBtn_15" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">15 Phút</button>
+              <button onclick="setRitualTimer(30)" id="timerBtn_30" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">30 Phút</button>
+              <button onclick="setRitualTimer(45)" id="timerBtn_45" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">45 Phút</button>
+              <button onclick="setRitualTimer(60)" id="timerBtn_60" class="flex-1 py-0.5 rounded-lg bg-slate-800 text-amber-200 transition hover:bg-slate-700 cursor-pointer">60 Phút</button>
+            </div>
+          </div>
+
+          <!-- CỤM NÚT ĐIỀU KHIỂN CHÍNH (ICON CHUÔNG MÕ CHẠM KHẮC TINH XẢO) -->
+          <div class="relative z-10 flex items-center justify-around gap-2 pt-1">
+            <!-- Nút bật/tắt Mõ Thiền Viện (Icon Mõ Gỗ Cá Chép) -->
+            <button onclick="toggleBuddhistMetronome()" id="btnBuddhistWoodblock" class="group flex flex-col items-center gap-1 cursor-pointer active:scale-95 transition" title="Bật / Tắt Tiếng Mõ">
+              <div id="woodblockIconBox" class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-gradient-to-b from-[#3a1f0a] to-[#201004] border-2 border-amber-500/60 hover:border-amber-400 shadow-md flex items-center justify-center p-1.5 transition group-hover:scale-105">
+                <!-- ICON MÕ GỖ CÁ CHÉP THIỀN MÔN (ĐỒNG ĐIỆU VỚI PHÁP BẢO THẬT) -->
+                <svg class="w-8 h-8 drop-shadow" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="moWoodGrad" x1="8" y1="4" x2="40" y2="44" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#fef08a"/>
+                      <stop offset="35%" stop-color="#f59e0b"/>
+                      <stop offset="75%" stop-color="#b45309"/>
+                      <stop offset="100%" stop-color="#78350f"/>
+                    </linearGradient>
+                    <linearGradient id="moWoodHole" x1="16" y1="28" x2="32" y2="36" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#451a03"/>
+                      <stop offset="100%" stop-color="#120401"/>
+                    </linearGradient>
+                  </defs>
+                  <!-- Vòm thân Mõ hình Ngư Đầu cá chép -->
+                  <path d="M24 5C13.5 5 7 14 7 24.5C7 34 11 41 13 41.5C14.5 42 16.5 40 18.5 40C20.5 40 21 42 24 42C27 42 27.5 40 29.5 40C31.5 40 33.5 42 35 41.5C37 41 41 34 41 24.5C41 14 34.5 5 24 5Z" fill="url(#moWoodGrad)" stroke="#fde047" stroke-width="1.2" stroke-linejoin="round"/>
+                  <!-- Họa tiết chữ Thọ & Vòng tròn Pháp Luân trên đỉnh -->
+                  <circle cx="24" cy="14" r="5" fill="#fef9c3" stroke="#92400e" stroke-width="0.9" fill-opacity="0.3"/>
+                  <path d="M24 10.5V17.5M20.5 14H27.5M21.5 12.5H26.5M21.5 15.5H26.5" stroke="#78350f" stroke-width="0.8" stroke-linecap="round"/>
+                  <!-- Họa tiết vảy cá chép hóa rồng tinh xảo -->
+                  <path d="M14 18C16 19.5 17 22 17 25M34 18C32 19.5 31 22 31 25" stroke="#92400e" stroke-width="0.9" stroke-linecap="round" fill="none"/>
+                  <path d="M18 17C20.5 18 22 20 22 22.5M30 17C27.5 18 26 20 26 22.5" stroke="#92400e" stroke-width="0.9" stroke-linecap="round" fill="none"/>
+                  <path d="M12 24C13.5 26.5 15 28 17 29M36 24C34.5 26.5 33 28 31 29" stroke="#92400e" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+                  <!-- Khe miệng mõ (Lỗ cộng hưởng âm thanh) -->
+                  <path d="M17 31.5C17 29.5 19 28 24 28C29 28 31 29.5 31 31.5C31 33.5 28.5 34.5 24 34.5C19.5 34.5 17 33.5 17 31.5Z" fill="url(#moWoodHole)" stroke="#fef08a" stroke-width="0.8"/>
+                  <ellipse cx="24" cy="31.2" rx="4.5" ry="1.5" fill="#0c0301"/>
+                  <path d="M9 37.5C12 36 14.5 37 15 39M39 37.5C36 36 33.5 37 33 39" stroke="#78350f" stroke-width="0.9" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="text-[9.5px] font-bold text-amber-200 font-sans">Mõ: <b id="woodblockStateText" class="text-emerald-400">BẬT</b></span>
+            </button>
+
+            <!-- NÚT PHÁT TRUNG TÂM MẠ VÀNG 3D -->
+            <button onclick="toggleBuddhistPlay()" id="btnBuddhistMasterPlay" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 border-2 sm:border-3 border-amber-200 shadow-[0_8px_20px_rgba(245,158,11,0.6)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.8)] hover:scale-105 active:scale-95 text-slate-950 flex items-center justify-center font-black text-2xl sm:text-3xl transition duration-150 cursor-pointer" title="Bấm để Phát / Dừng Tụng Niệm">
+              <i id="buddhistMasterPlayIcon" class="fa-solid fa-play ml-0.5 drop-shadow"></i>
+            </button>
+
+            <!-- Nút Gõ Mõ Thủ Công (+1) kèm dùi gỗ bọc gấm vàng -->
+            <button onclick="manualHitWoodblock()" class="group flex flex-col items-center gap-1 cursor-pointer active:scale-95 transition" title="Gõ Mõ Thủ Công +1">
+              <div id="duiMalaBox" class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-gradient-to-b from-[#3a1f0a] to-[#201004] border-2 border-amber-500/60 hover:border-amber-400 shadow-md flex items-center justify-center p-1.5 transition group-hover:scale-105">
+                <!-- ICON DÙI GÕ MÕ GỖ BỌC GẤM VÀNG (ĐỒNG ĐIỆU VỚI DÙI GẤM THẬT) -->
+                <svg class="w-8 h-8 drop-shadow" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="duiHandleGrad" x1="6" y1="42" x2="32" y2="16" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#451a03"/>
+                      <stop offset="40%" stop-color="#78350f"/>
+                      <stop offset="70%" stop-color="#9a3412"/>
+                      <stop offset="100%" stop-color="#431407"/>
+                    </linearGradient>
+                    <linearGradient id="duiBrocadeGrad" x1="26" y1="8" x2="44" y2="26" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#fef08a"/>
+                      <stop offset="40%" stop-color="#f59e0b"/>
+                      <stop offset="80%" stop-color="#d97706"/>
+                      <stop offset="100%" stop-color="#b45309"/>
+                    </linearGradient>
+                  </defs>
+                  <!-- Cán dùi bằng gỗ tiện tròn màu cánh gián -->
+                  <path d="M9 41L27 23" stroke="url(#duiHandleGrad)" stroke-width="4.5" stroke-linecap="round"/>
+                  <!-- Khớp tiện tròn hoa văn trên cán dùi -->
+                  <circle cx="14" cy="36" r="3.2" fill="#92400e" stroke="#fde047" stroke-width="0.8"/>
+                  <circle cx="20" cy="30" r="2.8" fill="#92400e" stroke="#fde047" stroke-width="0.8"/>
+                  <circle cx="8" cy="42" r="3.2" fill="#78350f" stroke="#ca8a04" stroke-width="0.8"/>
+                  <!-- Đầu dùi bọc lụa gấm vàng hoa văn sang trọng -->
+                  <g transform="rotate(45 35 15)">
+                    <rect x="29" y="9" width="12" height="15" rx="5" fill="url(#duiBrocadeGrad)" stroke="#fef08a" stroke-width="1"/>
+                    <line x1="29" y1="13" x2="41" y2="13" stroke="#78350f" stroke-width="1"/>
+                    <line x1="29" y1="20" x2="41" y2="20" stroke="#78350f" stroke-width="1"/>
+                    <circle cx="35" cy="16.5" r="1.8" fill="#78350f" fill-opacity="0.6"/>
+                  </g>
+                </svg>
+              </div>
+              <span class="text-[9.5px] font-bold text-amber-200 font-sans">Gõ Mõ +1</span>
+            </button>
+          </div>
+
+          <!-- BẢNG ĐIỀU KHIỂN BỔ TRỢ: TỐC ĐỘ, THỈNH CHUÔNG, TỔNG BIẾN & HỒI HƯỚNG -->
+          <div class="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-0.5 text-xs font-sans">
+            <!-- Tốc độ niệm -->
+            <div class="p-2 rounded-xl bg-black/50 border border-amber-500/30 flex flex-col justify-between">
+              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Nhịp Niệm:</span>
+              <div class="flex items-center gap-1 mt-1">
+                <button onclick="setBuddhistSpeed(2.0)" id="bSpeed_1" class="flex-1 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[9.5px] transition" title="Nhịp thong dong">Chậm</button>
+                <button onclick="setBuddhistSpeed(1.5)" id="bSpeed_2" class="flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[9.5px] transition" title="Nhịp vừa">Vừa</button>
+                <button onclick="setBuddhistSpeed(1.0)" id="bSpeed_3" class="flex-1 py-1 rounded-lg bg-slate-800 text-amber-200 font-bold text-[9.5px] transition" title="Nhịp nhanh">Nhanh</button>
+              </div>
+            </div>
+
+            <!-- Nút thỉnh chuông đồng bát (Icon Chuông Bát Đồng Đen Viền Vàng Trên Đệm Sen Gấm) -->
+            <button onclick="playTempleBronzeBell()" id="btnTempleBell" class="p-2 rounded-xl bg-black/50 hover:bg-amber-950/80 border border-amber-500/30 text-left flex flex-col justify-between transition active:scale-95 cursor-pointer group">
+              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Chuông Bát:</span>
+              <div class="flex items-center gap-1.5 text-amber-300 font-bold mt-1 text-[11px]">
+                <div class="w-5 h-5 shrink-0 group-hover:scale-115 transition">
+                  <svg class="w-full h-full drop-shadow" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="bellCushion" x1="10" y1="36" x2="38" y2="44" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#b91c1c"/>
+                        <stop offset="45%" stop-color="#dc2626"/>
+                        <stop offset="100%" stop-color="#991b1b"/>
+                      </linearGradient>
+                      <linearGradient id="bellBronzeBody" x1="8" y1="12" x2="40" y2="36" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#475569"/>
+                        <stop offset="25%" stop-color="#1e293b"/>
+                        <stop offset="60%" stop-color="#0f172a"/>
+                        <stop offset="100%" stop-color="#020617"/>
+                      </linearGradient>
+                      <linearGradient id="bellGoldRim" x1="6" y1="12" x2="42" y2="15" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#fef08a"/>
+                        <stop offset="30%" stop-color="#facc15"/>
+                        <stop offset="70%" stop-color="#eab308"/>
+                        <stop offset="100%" stop-color="#ca8a04"/>
+                      </linearGradient>
+                    </defs>
+                    <!-- Đệm sen gấm đỏ viền vàng -->
+                    <ellipse cx="24" cy="40" rx="17" ry="5.5" fill="url(#bellCushion)" stroke="#facc15" stroke-width="0.9"/>
+                    <path d="M12 40C15 42 19 43 24 43C29 43 33 42 36 40" stroke="#fef08a" stroke-width="0.8" stroke-dasharray="1.5 1.5"/>
+                    <!-- Thân Chuông Bát đồng đen -->
+                    <path d="M7.5 15C7.5 28 14 36 24 36C34 36 40.5 28 40.5 15C36 18 28 19 24 19C20 19 12 18 7.5 15Z" fill="url(#bellBronzeBody)" stroke="#64748b" stroke-width="0.8"/>
+                    <!-- Lòng chuông đen tuyền -->
+                    <ellipse cx="24" cy="14" rx="16.5" ry="5" fill="#090d16" stroke="#facc15" stroke-width="0.5"/>
+                    <ellipse cx="24" cy="14" rx="14" ry="3.8" fill="#020408"/>
+                    <!-- Vành chuông dát đồng vàng sáng bóng -->
+                    <ellipse cx="24" cy="13.5" rx="16.5" ry="4.5" fill="none" stroke="url(#bellGoldRim)" stroke-width="1.8"/>
+                    <path d="M11 14.5C14 16 19 16.8 24 16.8C29 16.8 34 16 37 14.5" stroke="#fef9c3" stroke-width="0.9" stroke-linecap="round" opacity="0.8"/>
+                  </svg>
+                </div>
+                <span>Thỉnh Chuông 🔔</span>
+              </div>
+            </button>
+
+            <!-- Tổng công đức tích lũy -->
+            <div class="p-2 rounded-xl bg-black/50 border border-amber-500/30 flex flex-col justify-between">
+              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Tổng Biến:</span>
+              <div id="buddhistLifetimeCount" class="text-xs sm:text-sm font-black text-amber-300 font-mono mt-1">
+                1,080
+              </div>
+            </div>
+
+            <!-- Nút kệ hồi hướng -->
+            <button onclick="toggleDedicationDrawer()" class="p-2 rounded-xl bg-black/50 hover:bg-amber-950/80 border border-amber-500/30 text-left flex flex-col justify-between transition active:scale-95 cursor-pointer">
+              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Cầu An:</span>
+              <div class="flex items-center gap-1 text-rose-300 font-bold mt-1 text-[11px]">
+                <i class="fa-solid fa-hands-praying text-rose-400"></i>
+                <span>Khấn Hồi Hướng</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- KHUNG KỆ HỒI HƯỚNG CÔNG ĐỨC (ẨN/HIỆN) -->
+          <div id="dedicationPrayerDrawer" class="hidden relative z-10 p-3 rounded-2xl bg-gradient-to-r from-amber-950/90 to-[#291304] border border-amber-400/60 text-center space-y-1 animate-fade-in text-xs shadow-lg">
+            <div class="text-[10.5px] font-black text-amber-300 uppercase tracking-wide font-sans">KỆ HỒI HƯỚNG CÔNG ĐỨC ĐẤT PHÚ</div>
+            <p class="text-amber-100 font-serif leading-relaxed italic text-xs">
+              "Nguyện đem công đức này • Hướng về khắp tất cả • Đệ tử và chúng sanh • Đều trọn thành Phật đạo."
+            </p>
+            <p class="text-[9.5px] text-amber-300/80 pt-0.5">Cầu chúc quê hương mưa thuận gió hòa, bão lũ tiêu trừ, toàn gia bình an cát tường.</p>
+          </div>
+
+          <!-- CHẾ ĐỘ PHÁT & NẠP FILE MP3 TỪ MÁY -->
+          <div class="relative z-10 flex flex-wrap items-center justify-between gap-1.5 p-2 rounded-xl bg-black/60 border border-amber-500/30 text-[11px] font-sans">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[9px] text-amber-200/80 font-bold uppercase">Chế độ:</span>
+              <button onclick="setBuddhistAudioMode('audio')" id="btnModeAudio" class="px-2 py-0.5 rounded-lg bg-amber-500 text-slate-950 font-black text-[10.5px] transition cursor-pointer">
+                🎙️ Bản Thu Âm
+              </button>
+              <button onclick="setBuddhistAudioMode('metronome')" id="btnModeMetronome" class="px-2 py-0.5 rounded-lg bg-slate-800 text-amber-200 font-bold text-[10.5px] transition cursor-pointer">
+                📿 Chuông Mõ Tự Niệm
+              </button>
+            </div>
+
+            <div>
+              <input type="file" id="buddhistFileInput" accept="audio/*" class="hidden" onchange="handleBuddhistFileUpload(event)">
+              <button onclick="document.getElementById('buddhistFileInput').click()" class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-[10.5px] shadow transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                <i class="fa-solid fa-folder-open text-[10px]"></i>
+                <span>📁 Nạp File MP3 Của Bạn</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Audio Element phát bản thu MP3 thật -->
+          <audio id="buddhistAudioElement" class="hidden" preload="auto"></audio>
+
+          <!-- DẢI CHỌN BÀI NHANH 1 - 6 (COMPACT QUICK SELECTOR) -->
+          <div class="relative z-10 pt-1.5 border-t border-amber-500/30 flex items-center justify-between gap-1 text-[11px]">
+            <span class="text-[9.5px] text-amber-200/80 font-bold uppercase flex items-center gap-1 shrink-0">
+              <i class="fa-solid fa-list-ol text-amber-400"></i> Bài:
+            </span>
+            <div class="flex items-center gap-1 flex-1 justify-end font-mono font-black text-xs">
+              <button onclick="selectBuddhistTrack(0)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">1</button>
+              <button onclick="selectBuddhistTrack(1)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">2</button>
+              <button onclick="selectBuddhistTrack(2)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">3</button>
+              <button onclick="selectBuddhistTrack(3)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">4</button>
+              <button onclick="selectBuddhistTrack(4)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">5</button>
+              <button onclick="selectBuddhistTrack(5)" class="w-7 h-7 rounded-lg bg-gradient-to-b from-[#3a200a] to-[#201004] hover:from-amber-500 hover:to-amber-600 hover:text-slate-950 text-amber-200 border border-amber-500/40 shadow-xs active:translate-y-0.5 transition cursor-pointer">6</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KHO THẺ NHỚ PHÁP ÂM (MICROSD DHARMA PLAYLIST) -->
+        <div class="card-box bg-white border border-amber-200/80 rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-2.5">
+          <div class="flex items-center justify-between border-b border-amber-100 pb-2">
+            <h3 class="text-xs sm:text-sm font-black text-amber-950 uppercase tracking-normal flex items-center gap-1.5 font-sans">
+              <i class="fa-solid fa-dharmachakra text-amber-600"></i>
+              <span>Kho Thẻ Nhớ Pháp Âm • Tuyển Tập Danh Hiệu & Kinh Chú</span>
+            </h3>
+            <span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">6 Danh mục chuẩn mực</span>
+          </div>
+          <div id="buddhistPlaylistContainer" class="space-y-1.5"></div>
+        </div>
+      </div>
+
+      
+    </section>
+
+    <!-- TAB 2: TRÀ ĐẠO THƯ QUÁN -->
+    <section id="tlPanel_tea" class="hidden">
+      <div id="subBlock_tea" class="space-y-4">
+      <!-- KHUNG TRÀ THẤT THƯ QUÁN THANH TAO TINH TẾ -->
+      <div class="relative rounded-[2.5rem] bg-gradient-to-b from-[#1b1614] via-[#241e1b] to-[#14100e] p-4 sm:p-7 border-4 border-amber-800/40 shadow-[0_25px_65px_rgba(0,0,0,0.85),inset_0_2px_4px_rgba(255,255,255,0.08)] text-stone-200 space-y-6 select-none overflow-hidden">
+        
+        <!-- Ánh sáng đèn lồng ấm áp & làn sương trà mờ ảo -->
+        <div class="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl"></div>
+        <div class="pointer-events-none absolute -bottom-24 -left-24 w-72 h-72 bg-emerald-600/10 rounded-full blur-3xl"></div>
+
+        <!-- HEADER TRÀ THẤT: TỰA ĐỀ & ĐIỀU KHIỂN CHÍNH -->
+        <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-amber-800/30 pb-4">
+          <div class="flex items-center gap-3.5 text-center sm:text-left">
+            <!-- Icon Ấm Trà Tử Sa Nghệ Thuật 3D -->
+            <div class="relative w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-amber-700 via-amber-800 to-stone-900 p-0.5 shadow-[0_4px_20px_rgba(217,119,6,0.35)] border border-amber-500/50 shrink-0 flex items-center justify-center group">
+              <div class="absolute inset-0 bg-amber-400/15 rounded-2xl blur-[2px]"></div>
+              <svg class="relative w-8 h-8 drop-shadow" viewBox="0 0 36 36" fill="none">
+                <!-- Ấm trà Tử Sa cổ điển -->
+                <path d="M10 14C10 10.5 13.5 8 18 8C22.5 8 26 10.5 26 14C28.5 15 31 17 31 19.5C31 22.5 28 25 24 25.5C22.5 26.5 20.3 27 18 27C15.7 27 13.5 26.5 12 25.5C8 25 5 22.5 5 19.5C5 17 7.5 15 10 14Z" fill="url(#teapotGrad)" stroke="#fde68a" stroke-width="0.8"/>
+                <!-- Nắp ấm & núm cầm nắp -->
+                <ellipse cx="18" cy="11" rx="6" ry="2.5" fill="#92400e" stroke="#fbbf24" stroke-width="0.8"/>
+                <circle cx="18" cy="7.5" r="1.8" fill="#f59e0b"/>
+                <!-- Quai ấm cong tao nhã -->
+                <path d="M7 16C4 16 3 19 3 21C3 23 4.5 25 7 25" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+                <!-- Vòi ấm trà rót dòng thanh tao -->
+                <path d="M25 15C29 13.5 32 12 33 13C33 14 31 17 25 19" fill="#b45309" stroke="#fbbf24" stroke-width="0.8"/>
+                <!-- Làn khói trà thơm ngát bốc lên -->
+                <path d="M16 5C16 3.5 17 2.5 16.5 1" stroke="#fef3c7" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+                <path d="M20 5C20 3.2 21 2.2 20.5 1" stroke="#fef3c7" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+                <defs>
+                  <linearGradient id="teapotGrad" x1="5" y1="8" x2="31" y2="27" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#b45309"/>
+                    <stop offset="0.5" stop-color="#78350f"/>
+                    <stop offset="1" stop-color="#451a03"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center justify-center sm:justify-start gap-2">
+                <span class="text-[9.5px] font-mono px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 uppercase font-black tracking-wider">
+                  TRÀ ĐẠO THƯ QUÁN • ĐẤT PHÚ
+                </span>
+                <span id="healingLiveBadge" class="hidden text-[9.5px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 font-bold flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ĐANG TẤU ĐÀN & THƯỞNG TRÀ
+                </span>
+              </div>
+              <h2 class="text-base sm:text-lg font-black text-amber-100 mt-1 font-sans tracking-tight">
+                TRÀ ĐẠO THƯ QUÁN & HÒA ÂM NGŨ CUNG RU NGỦ
+              </h2>
+              <p class="text-[11px] text-stone-300/80 font-medium">Hương trà thanh khiết • Tiếng đàn du dương • Lòng an tịnh dễ vào giấc ngủ sâu</p>
+            </div>
+          </div>
+
+          <!-- NÚT ĐIỀU KHIỂN CHÍNH THƯ QUÁN -->
+          <div class="flex items-center gap-3 shrink-0">
+            <!-- Nút Tự Động Gảy Điệu Ru Ngủ -->
+            <button onclick="toggleZenAutoLullaby()" id="btnAutoLullaby" class="px-3.5 py-2 rounded-2xl bg-gradient-to-r from-amber-900/60 to-stone-900 border border-amber-500/40 hover:border-amber-400 text-amber-200 text-xs font-bold transition active:scale-95 flex items-center gap-2 shadow cursor-pointer group" title="Bật/Tắt chế độ máy tự gảy đàn ru ngủ">
+              <i id="autoLullabyIcon" class="fa-solid fa-wand-magic-sparkles text-amber-400 group-hover:rotate-12 transition"></i>
+              <span id="autoLullabyText">Đàn Tự Động Ru</span>
+            </button>
+
+            <!-- Nút Master Play Thưởng Trà -->
+            <button onclick="toggleHealingMasterPlay()" id="btnHealingMasterPlay" class="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-gradient-to-br from-amber-400 via-amber-600 to-amber-800 border-4 border-amber-200/80 shadow-[0_8px_25px_rgba(217,119,6,0.6)] hover:shadow-[0_10px_30px_rgba(245,158,11,0.8)] hover:scale-105 active:scale-95 text-stone-950 flex items-center justify-center font-black text-2xl transition duration-200 cursor-pointer" title="Bật / Dừng Thưởng Trà & Hòa Âm">
+              <i id="healingMasterPlayIcon" class="fa-solid fa-play ml-1 drop-shadow"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- CUNG ĐÀN TRANH NGŨ CUNG TƯƠNG TÁC (7-STRING ZEN HARP / CỔ CẦM) -->
+        <div class="relative z-10 rounded-3xl bg-gradient-to-r from-[#2a1a12] via-[#382318] to-[#24150e] border-2 border-amber-700/50 shadow-2xl p-4 sm:p-5 space-y-3.5 overflow-hidden">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></div>
+              <span class="text-xs font-black uppercase tracking-wider text-amber-200 flex items-center gap-1.5">
+                <i class="fa-solid fa-music text-amber-400"></i> Cung Đàn Tranh Ngũ Cung Tương Tác (Chạm Để Gảy Dây)
+              </span>
+            </div>
+            <span class="text-[10px] text-stone-400 font-medium hidden sm:inline">Vuốt hoặc bấm vào dây đàn để ngân vang âm thanh</span>
+          </div>
+
+          <!-- 7 DÂY ĐÀN TRANH BẰNG TƠ ÓNG ÁNH -->
+          <div class="grid grid-cols-7 gap-1.5 sm:gap-2.5 text-center">
+            <!-- Dây 1: Hò (C4) -->
+            <button onclick="pluckZenString(0, 261.63)" id="zenString_0" class="group relative py-6 sm:py-8 rounded-2xl bg-stone-900/80 hover:bg-amber-950/70 border border-amber-700/30 hover:border-amber-400 transition-all duration-150 active:scale-95 flex flex-col items-center justify-between cursor-pointer overflow-hidden shadow-md">
+              <div class="text-[10px] font-mono text-stone-400 group-hover:text-amber-200">Dây 1</div>
+              <!-- Dây đàn tơ tằm vàng óng -->
+              <div class="w-full my-2 flex items-center justify-center relative">
+                <div class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-amber-200 shadow-[0_0_8px_rgba(251,191,36,0.9)] mb-1"></div>
+                <div class="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-amber-200 to-transparent group-hover:h-[3px] group-hover:via-amber-100 transition"></div>
+              </div>
+              <div>
+                <div class="text-xs sm:text-sm font-black text-amber-300 group-hover:scale-110 transition font-serif">Hò</div>
+                <div class="text-[8.5px] text-stone-400 font-mono">C4</div>
+              </div>
+            </button>
+
+            <!-- Dây 2: Xự (D4) -->
+            <button onclick="pluckZenString(1, 293.66)" id="zenString_1" class="group relative py-6 sm:py-8 rounded-2xl bg-stone-900/80 hover:bg-amber-950/70 border border-amber-700/30 hover:border-amber-400 transition-all duration-150 active:scale-95 flex flex-col items-center justify-between cursor-pointer overflow-hidden shadow-md">
+              <div class="text-[10px] font-mono text-stone-400 group-hover:text-amber-200">Dây 2</div>
+              <div class="w-full my-2 flex items-center justify-center relative">
+                <div class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-amber-200 shadow-[0_0_8px_rgba(251,191,36,0.9)] mb-1"></div>
+                <div class="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-amber-200 to-transparent group-hover:h-[3px] group-hover:via-amber-100 transition"></div>
+              </div>
+              <div>
+                <div class="text-xs sm:text-sm font-black text-amber-300 group-hover:scale-110 transition font-serif">Xự</div>
+                <div class="text-[8.5px] text-stone-400 font-mono">D4</div>
+              </div>
+            </button>
+
+            <!-- Dây 3: Xang (F4) -->
+            <button onclick="pluckZenString(2, 349.23)" id="zenString_2" class="group relative py-6 sm:py-8 rounded-2xl bg-stone-900/80 hover:bg-amber-950/70 border border-amber-700/30 hover:border-amber-400 transition-all duration-150 active:scale-95 flex flex-col items-center justify-between cursor-pointer overflow-hidden shadow-md">
+              <div class="text-[10px] font-mono text-stone-400 group-hover:text-amber-200">Dây 3</div>
+              <div class="w-full my-2 flex items-center justify-center relative">
+                <div class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-amber-200 shadow-[0_0_8px_rgba(251,191,36,0.9)] mb-1"></div>
+                <div class="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-amber-200 to-transparent group-hover:h-[3px] group-hover:via-amber-100 transition"></div>
+              </div>
+              <div>
+                <div class="text-xs sm:text-sm font-black text-amber-300 group-hover:scale-110 transition font-serif">Xang</div>
+                <div class="text-[8.5px] text-stone-400 font-mono">F4</div>
+              </div>
+            </button>
+
+            <!-- Dây 4: Xê (G4) -->
+            <button onclick="pluckZenString(3, 392.00)" id="zenString_3" class="group relative py-6 sm:py-8 rounded-2xl bg-stone-900/80 hover:bg-amber-950/70 border border-amber-700/30 hover:border-amber-400 transition-all duration-150 active:scale-95 flex flex-col items-center justify-between cursor-pointer overflow-hidden shadow-md">
+              <div class="text-[10px] font-mono text-stone-400 group-hover:text-amber-200">Dây 4</div>
+              <div class="w-full my-2 flex items-center justify-center relative">
+                <div class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-amber-200 shadow-[0_0_8px_rgba(251,191,36,0.9)] mb-1"></div>
+                <div class="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-amber-200 to-transparent group-hover:h-[3px] group-hover:via-amber-100 transition"></div>
+              </div>
+              <div>
+                <div class="text-xs sm:text-sm font-black text-amber-300 group-hover:scale-110 transition font-serif">Xê</div>
+                <div class="text-[8.5px] text-stone-400 font-mono">G4</div>
+              </div>
+            </button>
+
+            <!-- Dây 5: Cống (A4) -->
+            <button onclick="pluckZenString(4, 440.00)" id="zenString_4" class="group relative py-6 sm:py-8 rounded-2xl bg-stone-900/80 hover:bg-amber-950/70 border border-amber-700/30 hover:border-amber-400 transition-all duration-150 active:scale-95 flex flex-col items-center justify-between cursor-pointer overflow-hidden shadow-md">
+              <div class="text-[10px] font-mono text-stone-400 group-hover:text-amber-200">Dây 5</div>
+              <div class="w-full my-2 flex items-center justify-center relative">
+                <div class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-amber-200 shadow-[0_0_8px_rgba(251,191,36,0.9)] mb-1"></div>
+                <div class="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-amber-200 to-transparent group-hover:h-[3px] group-hover:via-amber-100 transition"></div>
+              </div>
+              <div>
+                <div class="text-xs sm:text-sm font-black text-amber-300 group-hover:scale-110 transition font-serif">Cống</div>
+                <div class="text-[8.5px] text-stone-400 font-mono">A4</div>
+              </div>
+            </button>
+
+            <!-- Dây 6: Líu (C5) -->
+            <button onclick="pluckZenString(5, 523.25)" id="zenString_5" class="group relative py-6 sm:py-8 rounded-2xl bg-stone-900/80 hover:bg-amber-950/70 border border-amber-700/30 hover:border-amber-400 transition-all duration-150 active:scale-95 flex flex-col items-center justify-between cursor-pointer overflow-hidden shadow-md">
+              <div class="text-[10px] font-mono text-stone-400 group-hover:text-amber-200">Dây 6</div>
+              <div class="w-full my-2 flex items-center justify-center relative">
+                <div class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-amber-200 shadow-[0_0_8px_rgba(251,191,36,0.9)] mb-1"></div>
+                <div class="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-amber-200 to-transparent group-hover:h-[3px] group-hover:via-amber-100 transition"></div>
+              </div>
+              <div>
+                <div class="text-xs sm:text-sm font-black text-amber-300 group-hover:scale-110 transition font-serif">Líu</div>
+                <div class="text-[8.5px] text-stone-400 font-mono">C5</div>
+              </div>
+            </button>
+
+            <!-- Dây 7: Ú (D5) -->
+            <button onclick="pluckZenString(6, 587.33)" id="zenString_6" class="group relative py-6 sm:py-8 rounded-2xl bg-stone-900/80 hover:bg-amber-950/70 border border-amber-700/30 hover:border-amber-400 transition-all duration-150 active:scale-95 flex flex-col items-center justify-between cursor-pointer overflow-hidden shadow-md">
+              <div class="text-[10px] font-mono text-stone-400 group-hover:text-amber-200">Dây 7</div>
+              <div class="w-full my-2 flex items-center justify-center relative">
+                <div class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-amber-200 shadow-[0_0_8px_rgba(251,191,36,0.9)] mb-1"></div>
+                <div class="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-amber-200 to-transparent group-hover:h-[3px] group-hover:via-amber-100 transition"></div>
+              </div>
+              <div>
+                <div class="text-xs sm:text-sm font-black text-amber-300 group-hover:scale-110 transition font-serif">Ú</div>
+                <div class="text-[8.5px] text-stone-400 font-mono">D5</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 KHÚC HÒA ÂM THƯ QUÁN CÀI SẴN (ZEN PRESETS) -->
+        <div class="relative z-10 space-y-2">
+          <div class="flex items-center justify-between text-xs px-1">
+            <span class="text-[10px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-leaf text-emerald-400"></i>
+              <span>3 Chế Độ Trà Đạo Cài Sẵn (1 Chạm Tự Động Phối)</span>
+            </span>
+            <span class="text-[10px] text-stone-400 font-medium">Bấm để cân chỉnh tự động</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <!-- Preset 1: Bạch Hạc Đọc Sách -->
+            <button onclick="applyHealingPreset('rain_sleep')" class="group p-3.5 rounded-2xl bg-gradient-to-br from-[#292019] to-[#1a1410] hover:from-[#352920] hover:to-[#221a14] border-2 border-amber-700/40 hover:border-amber-400 text-left transition duration-200 shadow-md active:scale-95 space-y-1.5 cursor-pointer">
+              <div class="flex items-center justify-between">
+                <div class="font-black text-sm text-stone-100 flex items-center gap-2.5 group-hover:text-amber-200">
+                  <div class="relative w-8 h-8 rounded-xl bg-gradient-to-br from-amber-600/30 to-amber-900/40 border border-amber-500/50 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-book-open text-amber-300 text-xs"></i>
+                  </div>
+                  <span>Bạch Hạc Đọc Sách</span>
+                </div>
+                <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">Định Tâm</span>
+              </div>
+              <p class="text-[11px] text-stone-300/80 leading-snug">Đàn tranh 60% • Nước rót trà 40% • Gió nhẹ ru tĩnh tâm trang sách</p>
+            </button>
+
+            <!-- Preset 2: Dạ Lan Giấc Ngủ Sâu -->
+            <button onclick="applyHealingPreset('ocean_sunset')" class="group p-3.5 rounded-2xl bg-gradient-to-br from-[#1c241e] to-[#121814] hover:from-[#253028] hover:to-[#18201a] border-2 border-emerald-700/40 hover:border-emerald-400 text-left transition duration-200 shadow-md active:scale-95 space-y-1.5 cursor-pointer">
+              <div class="flex items-center justify-between">
+                <div class="font-black text-sm text-stone-100 flex items-center gap-2.5 group-hover:text-emerald-200">
+                  <div class="relative w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-600/30 to-teal-900/40 border border-emerald-500/50 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-moon text-emerald-300 text-xs"></i>
+                  </div>
+                  <span>Dạ Lan Giấc Ngủ Sâu</span>
+                </div>
+                <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Ngủ Ngon</span>
+              </div>
+              <p class="text-[11px] text-stone-300/80 leading-snug">Tiếng mưa mái ngói 75% • Đàn tranh chậm 45% • Tần số 432Hz an thần</p>
+            </button>
+
+            <!-- Preset 3: Trúc Lâm Thiền Quán -->
+            <button onclick="applyHealingPreset('zen_tea')" class="group p-3.5 rounded-2xl bg-gradient-to-br from-[#2a1e17] to-[#18110c] hover:from-[#36271e] hover:to-[#201710] border-2 border-amber-600/40 hover:border-amber-300 text-left transition duration-200 shadow-md active:scale-95 space-y-1.5 cursor-pointer">
+              <div class="flex items-center justify-between">
+                <div class="font-black text-sm text-stone-100 flex items-center gap-2.5 group-hover:text-amber-200">
+                  <div class="relative w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500/30 to-stone-900/40 border border-amber-400/50 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-mug-hot text-amber-300 text-xs"></i>
+                  </div>
+                  <span>Trúc Lâm Thiền Quán</span>
+                </div>
+                <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">An Lạc</span>
+              </div>
+              <p class="text-[11px] text-stone-300/80 leading-snug">Gió rừng tre 65% • Nước rót chén trà 50% • Buông bỏ mọi lo âu</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 KHAY ÂM THANH TRÀ THẤT DỊU NHẸ CÔNG THÁI HỌC -->
+        <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          
+          <!-- KHAY 1: ĐÀN TRANH RU NGỦ -->
+          <div class="group p-4 rounded-3xl bg-gradient-to-br from-[#2b1f18] via-[#201712] to-[#150f0c] border-2 border-amber-700/40 hover:border-amber-400/70 shadow-lg space-y-3 transition">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-600/30 to-amber-900/50 border border-amber-500/50 shadow-[0_4px_16px_rgba(217,119,6,0.3)] flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition">
+                  <i class="fa-solid fa-guitar text-amber-300 text-lg"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs sm:text-sm font-black text-stone-100 group-hover:text-amber-200 transition">Đàn Tranh Ru Ngủ</h4>
+                  <p class="text-[10px] text-amber-200/70">Tiếng tơ mộc ngũ cung thanh thản</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span id="volRainText" class="text-base font-black text-amber-300 font-mono">60%</span>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <input type="range" id="sliderVolRain" min="0" max="100" value="60" oninput="updateMixerVolume('rain', this.value)" class="w-full h-2.5 rounded-lg appearance-none bg-stone-800 accent-amber-500 cursor-pointer">
+              <div class="flex justify-between text-[9px] text-stone-400 font-mono px-0.5">
+                <span>0% (Tắt)</span>
+                <span>Thong Thả</span>
+                <span>100% (Vang Ngân)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KHAY 2: NƯỚC RÓT CHÉN TRÀ -->
+          <div class="group p-4 rounded-3xl bg-gradient-to-br from-[#1d2621] via-[#151c18] to-[#0d120f] border-2 border-emerald-700/40 hover:border-emerald-400/70 shadow-lg space-y-3 transition">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-600/30 to-teal-900/50 border border-emerald-500/50 shadow-[0_4px_16px_rgba(16,185,129,0.3)] flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition">
+                  <i class="fa-solid fa-water text-emerald-300 text-lg"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs sm:text-sm font-black text-stone-100 group-hover:text-emerald-200 transition">Nước Rót Chén Trà</h4>
+                  <p class="text-[10px] text-emerald-200/70">Tiếng nước sôi reo tí tách bên bàn</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span id="volOceanText" class="text-base font-black text-emerald-300 font-mono">50%</span>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <input type="range" id="sliderVolOcean" min="0" max="100" value="50" oninput="updateMixerVolume('ocean', this.value)" class="w-full h-2.5 rounded-lg appearance-none bg-stone-800 accent-emerald-500 cursor-pointer">
+              <div class="flex justify-between text-[9px] text-stone-400 font-mono px-0.5">
+                <span>0% (Tắt)</span>
+                <span>Róc Rách</span>
+                <span>100% (Dạt Dào)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KHAY 3: MƯA RƠI BÊN MÁI TRÚC -->
+          <div class="group p-4 rounded-3xl bg-gradient-to-br from-[#1a232b] via-[#131b22] to-[#0c1117] border-2 border-sky-700/40 hover:border-sky-400/70 shadow-lg space-y-3 transition">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-600/30 to-blue-900/50 border border-sky-500/50 shadow-[0_4px_16px_rgba(56,189,248,0.3)] flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition">
+                  <i class="fa-solid fa-cloud-rain text-sky-300 text-lg"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs sm:text-sm font-black text-stone-100 group-hover:text-sky-200 transition">Mưa Rơi Bên Mái Trúc</h4>
+                  <p class="text-[10px] text-sky-200/70">Mưa rào Tuy Hòa rả rích đưa êm</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span id="volWindText" class="text-base font-black text-sky-300 font-mono">40%</span>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <input type="range" id="sliderVolWind" min="0" max="100" value="40" oninput="updateMixerVolume('wind', this.value)" class="w-full h-2.5 rounded-lg appearance-none bg-stone-800 accent-sky-400 cursor-pointer">
+              <div class="flex justify-between text-[9px] text-stone-400 font-mono px-0.5">
+                <span>0% (Tắt)</span>
+                <span>Tí Tách</span>
+                <span>100% (Mưa Rào)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KHAY 4: GIÓ THOẢNG RỪNG TRE -->
+          <div class="group p-4 rounded-3xl bg-gradient-to-br from-[#24211a] via-[#1a1712] to-[#110f0b] border-2 border-stone-600/40 hover:border-amber-300/70 shadow-lg space-y-3 transition">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-600/30 to-stone-800/50 border border-stone-500/50 shadow-[0_4px_16px_rgba(217,119,6,0.2)] flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition">
+                  <i class="fa-solid fa-wind text-stone-300 text-lg"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs sm:text-sm font-black text-stone-100 group-hover:text-amber-200 transition">Gió Thoảng Rừng Tre</h4>
+                  <p class="text-[10px] text-stone-300/70">Tiếng sậy xào xạc trong đêm trăng</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span id="volFluteText" class="text-base font-black text-stone-300 font-mono">35%</span>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <input type="range" id="sliderVolFlute" min="0" max="100" value="35" oninput="updateMixerVolume('flute', this.value)" class="w-full h-2.5 rounded-lg appearance-none bg-stone-800 accent-stone-400 cursor-pointer">
+              <div class="flex justify-between text-[9px] text-stone-400 font-mono px-0.5">
+                <span>0% (Tắt)</span>
+                <span>Thoang Thoảng</span>
+                <span>100% (Du Dương)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- BỘ 3 VIÊN NGỌC TẦN SỐ SOLFEGGIO AN THẦN 3D -->
+        <div class="relative z-10 space-y-2 pt-2 border-t border-amber-800/20">
+          <div class="flex items-center justify-between text-xs px-1">
+            <span class="text-[10px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-bell text-amber-400"></i>
+              <span>Chuông Ngân Tần Số Sinh Học Solfeggio (Thanh Lọc Tâm Trí)</span>
+            </span>
+            <span class="text-[10px] text-stone-400 font-medium">Bấm để ngân vang tiếng chuông</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <!-- 432 Hz -->
+            <button onclick="playSolfeggioTone(432)" class="p-3.5 rounded-2xl bg-gradient-to-b from-[#2e2318] to-[#1a140d] hover:from-[#3d2e1f] hover:to-[#241c12] border-2 border-amber-600/50 shadow-lg transition active:scale-95 space-y-1 cursor-pointer group">
+              <div class="flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-moon text-amber-400 text-xs"></i>
+                <span class="text-lg sm:text-xl font-black text-amber-300 font-mono group-hover:scale-105 transition">432 Hz</span>
+              </div>
+              <div class="text-xs font-bold text-stone-100">Định Tâm</div>
+              <div class="text-[9.5px] text-amber-200/70">An Thần • Ngủ Sâu</div>
+            </button>
+
+            <!-- 528 Hz -->
+            <button onclick="playSolfeggioTone(528)" class="p-3.5 rounded-2xl bg-gradient-to-b from-[#1e2a22] to-[#111914] hover:from-[#2a3a30] hover:to-[#18231c] border-2 border-emerald-600/50 shadow-lg transition active:scale-95 space-y-1 cursor-pointer group">
+              <div class="flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-seedling text-emerald-400 text-xs"></i>
+                <span class="text-lg sm:text-xl font-black text-emerald-300 font-mono group-hover:scale-105 transition">528 Hz</span>
+              </div>
+              <div class="text-xs font-bold text-stone-100">Tái Tạo Tế Bào</div>
+              <div class="text-[9.5px] text-emerald-200/70">Năng Lượng Tươi Mới</div>
+            </button>
+
+            <!-- 396 Hz -->
+            <button onclick="playSolfeggioTone(396)" class="p-3.5 rounded-2xl bg-gradient-to-b from-[#2d1b1c] to-[#1a0f10] hover:from-[#3d2426] hover:to-[#241516] border-2 border-rose-600/50 shadow-lg transition active:scale-95 space-y-1 cursor-pointer group">
+              <div class="flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-heart text-rose-400 text-xs"></i>
+                <span class="text-lg sm:text-xl font-black text-rose-300 font-mono group-hover:scale-105 transition">396 Hz</span>
+              </div>
+              <div class="text-xs font-bold text-stone-100">Giải Tỏa Lo Âu</div>
+              <div class="text-[9.5px] text-rose-200/70">Tâm Hồn Thanh Thản</div>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </section>
+
+    
+    </section>
+
+    <!-- TAB 3: GÓC VUI & THIỀN THỞ 4-7-8 -->
+    <section id="tlPanel_mindful_games" class="hidden space-y-4">
+      <section id="channelSection_mindful" class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- ĐÓA SEN NỞ THEO NHỊP THỞ 4-7-8 -->
+        <div class="card-box bg-white border border-rose-200 rounded-3xl p-5 sm:p-6 shadow-md flex flex-col items-center text-center space-y-3">
+          <span class="text-[10px] font-bold px-3 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-300 uppercase">
+            Điều Hòa Nhịp Tim & Giấc Ngủ
+          </span>
+          <h3 class="text-sm sm:text-base font-black text-slate-900">Thiền Thở Đóa Sen (Phương Pháp 4-7-8)</h3>
+          <p class="text-[11px] text-slate-500 max-w-xs">Hít vào 4 giây • Nín thở 7 giây • Thở ra từ tốn 8 giây giúp thư giãn hệ thần kinh.</p>
+
+          <!-- VÒNG TRÒN ĐÓA SEN NỞ THEO NHỊP -->
+          <div class="relative w-48 h-48 flex items-center justify-center my-3">
+            <div id="lotusPulseAnimCircle" class="absolute inset-0 rounded-full bg-gradient-to-tr from-rose-400/20 via-pink-300/30 to-amber-200/40 border-2 border-rose-400/60 transition-transform duration-1000"></div>
+            
+            <div class="relative z-10 flex flex-col items-center justify-center space-y-1">
+              <img src="img/logo_hoa_sen_real.png" alt="Sen" class="w-12 h-12 rounded-full object-cover shadow-md drop-shadow" />
+              <span id="breathPhaseText" class="text-sm font-black text-rose-700 uppercase">HÍT VÀO</span>
+              <span id="breathCountdown" class="text-3xl font-black font-mono text-slate-800">4s</span>
+            </div>
+          </div>
+
+          <button onclick="toggleBreathPractice()" id="btnToggleBreath" class="px-6 py-2.5 rounded-2xl bg-rose-500 hover:bg-rose-600 text-white font-black text-xs shadow-md transition active:scale-95">
+            Bắt Đầu Luyện Thở
+          </button>
+        </div>
+
+        <!-- CHUỖI TRÀNG HẠT CHÁNH NIỆM 108 HẠT CÓ RUNG HAPTIC -->
+        <div class="card-box bg-white border border-amber-200 rounded-3xl p-5 sm:p-6 shadow-md flex flex-col items-center text-center space-y-3">
+          <span class="text-[10px] font-bold px-3 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 uppercase">
+            Digital Mala Beads (Có Rung Phản Hồi)
+          </span>
+          <h3 class="text-sm sm:text-base font-black text-slate-900">Chuỗi Tràng Hạt Bồ Đề 108 Hạt</h3>
+          <p class="text-[11px] text-slate-500 max-w-xs">Mỗi lần chạm hạt là một lời chúc an lành. Điện thoại sẽ rung nhẹ tạo cảm giác như lần tràng hạt thật.</p>
+
+          <div class="my-3">
+            <button onclick="countMalaBead()" class="w-40 h-40 rounded-full bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 text-amber-100 border-4 border-amber-400 shadow-2xl flex flex-col items-center justify-center transition transform active:scale-90 hover:scale-102 cursor-pointer">
+              <span class="text-[10px] uppercase font-bold text-amber-300">Chạm Lần Hạt</span>
+              <span id="malaMainCounter" class="text-5xl font-black font-mono my-1">0</span>
+              <span class="text-[10px] text-amber-200/90 font-mono">/ 108 Hạt</span>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button onclick="resetMalaCount()" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition">
+              Đặt Lại 0
+            </button>
+            <span id="malaCompletedRounds" class="text-xs font-black text-amber-900 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200">Đã xong: 0 vòng</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  
+      <!-- PHÂN KHU 4: GÓC VUI DÂN GIAN (BÀI CHÒI, BỐC QUẺ, ĐỐ VUI) -->
+      <div id="subPanel_games" class="space-y-3">
+        <!-- HỘI BÀI CHÒI XỨ NẪU -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <span class="text-xs font-black text-amber-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-dice text-amber-500"></i>
+              <span>HỘI BÀI CHÒI XỨ NẪU • BỐC QUÂN</span>
+            </span>
+            <span class="text-[10px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200 font-bold">Di sản UNESCO</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-center">
+            <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200 text-center space-y-2">
+              <div class="text-2xl">🎋</div>
+              <button onclick="drawBaiChoiCard()" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-xs shadow-xs active:scale-95 transition cursor-pointer">
+                Bốc Quân Bài
+              </button>
+            </div>
+            <div id="baiChoiCardResult" class="sm:col-span-2 p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="font-black text-xs text-amber-900" id="baiChoiCardName">Quân: Nhì Nghèo</span>
+                <span class="text-[10px] text-slate-400">Hội Bài Chòi</span>
+              </div>
+              <p id="baiChoiCardHocau" class="text-xs text-slate-700 italic leading-relaxed">
+                “Tháng Mười mây phủ sườn Tây / Sông Ba réo rắt vơi đầy xót xa... Trổ con Nhì Nghèo!”
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- BỐC QUẺ NÔNG DÂN ĐẦU NGÀY -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <span class="text-xs font-black text-emerald-800 flex items-center gap-1.5">
+              <span>🎋</span>
+              <span>BỐC QUẺ NÔNG DÂN VUI TƯƠI</span>
+            </span>
+            <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">Nụ Cười Ngày Mới</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-center">
+            <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 text-center space-y-2">
+              <div class="text-2xl">🧧</div>
+              <button onclick="drawNongDanFortune()" class="w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-xs active:scale-95 transition cursor-pointer">
+                Bốc Một Quẻ Vui
+              </button>
+            </div>
+            <div id="nongDanFortuneBox" class="sm:col-span-2 p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="font-black text-xs text-emerald-900" id="fortuneTitle">Quẻ: Đại Cát Vui Vẻ</span>
+                <span class="text-[10px] text-emerald-600 font-bold">May Mắn</span>
+              </div>
+              <p id="fortuneContent" class="text-xs text-slate-700 italic leading-relaxed">
+                “Sáng nay ra rẫy gió thổi mát rượi, trưa về ghé quán bà Năm làm tô bánh canh hẹ thơm nức mũi, cả ngày hanh thông vui vẻ!”
+              </p>
+              <p id="fortuneAdvice" class="text-[10.5px] text-slate-500">
+                Lời khuyên: Cười nhiều một chút cho trẻ lâu!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ĐỐ VUI TIẾNG NẪU -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2.5">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <span class="text-xs font-black text-cyan-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-comments text-cyan-600"></i>
+              <span>ĐỐ VUI TIẾNG NẪU ĐỘC LẠ</span>
+            </span>
+          </div>
+          <div id="dialectQuizContainer"></div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- BOTTOM NAVIGATION BAR -->
+  <nav class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+    <div class="max-w-xl mx-auto grid grid-cols-4 gap-1 text-center">
+      <a href="/" class="flex flex-col items-center justify-center py-0.5 text-slate-500 hover:text-amber-600 transition">
+        <i class="fa-solid fa-house text-sm"></i>
+        <span class="text-[10px] font-bold mt-0.5">Trang Chủ</span>
+      </a>
+      <button onclick="switchTamLinhTab('buddhist')" id="bn_buddhist" class="flex flex-col items-center justify-center py-0.5 text-amber-600 transition cursor-pointer">
+        <i class="fa-solid fa-dharmachakra text-sm"></i>
+        <span class="text-[10px] font-black mt-0.5">Niệm Phật</span>
+      </button>
+      <button onclick="switchTamLinhTab('tea')" id="bn_tea" class="flex flex-col items-center justify-center py-0.5 text-slate-500 hover:text-emerald-600 transition cursor-pointer">
+        <i class="fa-solid fa-mug-hot text-sm"></i>
+        <span class="text-[10px] font-bold mt-0.5">Trà Đạo</span>
+      </button>
+      <a href="/giai-tri" class="flex flex-col items-center justify-center py-0.5 text-slate-500 hover:text-rose-600 transition">
+        <i class="fa-solid fa-clapperboard text-sm"></i>
+        <span class="text-[10px] font-bold mt-0.5">Giải Trí</span>
+      </a>
+    </div>
+  </nav>
+
+  
+  <!-- ================= UNIVERSAL APP LAUNCHER MODAL (6 ỨNG DỤNG HỆ SINH THÁI ĐẤT PHÚ) ================= -->
+  <div id="datPhuAppLauncherModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-start justify-end p-3 sm:p-5" onclick="if(event.target === this) toggleDatPhuAppLauncher()">
+    <div class="bg-white rounded-3xl border-2 border-amber-400 shadow-2xl p-4 sm:p-5 w-full max-w-sm mt-12 sm:mt-14 space-y-4 text-slate-800">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+        <div class="flex items-center gap-2">
+          <img src="img/logo_datphu_brand.jpg" alt="Logo" class="h-6 rounded object-contain" />
+          <span class="text-xs font-black text-slate-900 uppercase tracking-wider">HỆ SINH THÁI ĐẤT PHÚ (6 APP)</span>
+        </div>
+        <button onclick="toggleDatPhuAppLauncher()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 flex items-center justify-center text-xs font-bold transition cursor-pointer">✕</button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5 text-center">
+        <a href="/" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-amber-50 hover:border-amber-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-700 flex items-center justify-center text-lg mb-1 group-hover:scale-110 transition">
+            <i class="fa-solid fa-calendar-days text-amber-600"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">1. Lịch Dân Sinh</span>
+          <span class="text-[10px] text-slate-500">Âm dương & Cát nhật</span>
+        </a>
+
+        <a href="/thoi-tiet" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-10 h-10 rounded-2xl bg-sky-500/15 text-sky-700 flex items-center justify-center text-lg mb-1 group-hover:scale-110 transition">
+            <i class="fa-solid fa-cloud-bolt text-sky-600"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">2. Trạm Khí Tượng</span>
+          <span class="text-[10px] text-slate-500">Radar bão & Cứu hộ</span>
+        </a>
+
+        <a href="/giai-tri" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-rose-50 hover:border-rose-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-10 h-10 rounded-2xl bg-rose-500/15 text-rose-600 flex items-center justify-center text-lg mb-1 group-hover:scale-110 transition">
+            <i class="fa-solid fa-clapperboard"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">3. Văn Hóa & Giải Trí</span>
+          <span class="text-[10px] text-slate-500">Nhạc, Video & Ảnh 4K</span>
+        </a>
+
+        <a href="/lao-dong" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-orange-50 hover:border-orange-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-10 h-10 rounded-2xl bg-orange-500/15 text-orange-700 flex items-center justify-center text-lg mb-1 group-hover:scale-110 transition">
+            <i class="fa-solid fa-person-digging text-orange-600"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">4. Sàn Lao Động</span>
+          <span class="text-[10px] text-slate-500">Thợ lành nghề & Việc làm</span>
+        </a>
+
+        <a href="/do-dat" class="p-3 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-700 flex items-center justify-center text-lg mb-1 group-hover:scale-110 transition">
+            <i class="fa-solid fa-compass text-emerald-600"></i>
+          </div>
+          <span class="text-xs font-black text-slate-800">5. Đo Đạc & Từ Thiện</span>
+          <span class="text-[10px] text-slate-500">Bản đồ & Nhân ái</span>
+        </a>
+
+        <a href="/tam-linh" class="p-3 rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50 hover:shadow-md transition flex flex-col items-center group">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 text-white flex items-center justify-center text-lg mb-1 shadow-xs group-hover:scale-110 transition">
+            <i class="fa-solid fa-dharmachakra"></i>
+          </div>
+          <span class="text-xs font-black text-amber-950">6. Niệm Phật & Thiền</span>
+          <span class="text-[10px] text-amber-700 font-bold">Trà Đạo & Góc Vui</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let radioAudioContext = null;
+
+    function switchTamLinhTab(tab) {
+      ['buddhist', 'tea', 'mindful_games'].forEach(t => {
+        const btn = document.getElementById('tlTab_' + t);
+        const panel = document.getElementById('tlPanel_' + t);
+        if (t === tab) {
+          if (btn) btn.className = "px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs font-black";
+          if (panel) panel.classList.remove('hidden');
+        } else {
+          if (btn) btn.className = "px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs shrink-0 flex items-center gap-1.5 transition active:scale-95 cursor-pointer text-[11px] sm:text-xs";
+          if (panel) panel.classList.add('hidden');
+        }
+      });
+
+      const bnB = document.getElementById('bn_buddhist');
+      const bnT = document.getElementById('bn_tea');
+      if (bnB) bnB.className = (tab === 'buddhist') ? "flex flex-col items-center justify-center py-0.5 text-amber-600 transition cursor-pointer" : "flex flex-col items-center justify-center py-0.5 text-slate-500 hover:text-amber-600 transition cursor-pointer";
+      if (bnT) bnT.className = (tab === 'tea') ? "flex flex-col items-center justify-center py-0.5 text-emerald-600 transition cursor-pointer" : "flex flex-col items-center justify-center py-0.5 text-slate-500 hover:text-emerald-600 transition cursor-pointer";
+    }
+
+    function toggleDatPhuAppLauncher() {
+      const modal = document.getElementById('datPhuAppLauncherModal');
+      if (modal) modal.classList.toggle('hidden');
+    }
+
+    
+    
+
+    // Dữ liệu Bốc Quẻ Nông Dân & Đố Vui Tiếng Nẫu
+    const NONG_DAN_FORTUNES = [
+      { title: "Quẻ: Đại Cát Vui Vẻ", content: "“Sáng nay ra rẫy gió thổi mát rượi, trưa về ghé quán bà Năm làm tô bánh canh hẹ thơm nức mũi, cả ngày hanh thông vui vẻ!”", advice: "Lời khuyên: Cười nhiều một chút cho trẻ lâu, gặp bà con nhớ chào một tiếng lấy thảo!" },
+      { title: "Quẻ: Thuận Buồm Xuôi Gió", content: "“Nước sông Ba hôm nay hiền hòa, cá tôm đầy khoang, việc nhà việc cửa đều êm đẹp thuận hòa.”", advice: "Lời khuyên: Dành 15 phút uống tách trà nóng, niệm vài câu Phật cho tâm thêm tĩnh tại!" },
+      { title: "Quẻ: Lộc Trời Ban Tặng", content: "“Mưa thuận gió hòa, cây trái sum suê. Hôm nay có tin vui từ người thân phương xa gọi về thăm hỏi.”", advice: "Lời khuyên: Hãy giữ lòng bao dung và chia sẻ niềm vui với xóm giềng!" },
+      { title: "Quẻ: An Nhiên Tự Tại", content: "“Dù việc bận rộn tới đâu, giữ được tâm bình an như mặt nước hồ thu thì mọi khó khăn tự khắc hóa giải.”", advice: "Lời khuyên: Thở sâu 3 nhịp 4-7-8 trước khi bắt đầu công việc quan trọng!" }
+    ];
+
+    function drawNongDanFortune() {
+      const f = NONG_DAN_FORTUNES[Math.floor(Math.random() * NONG_DAN_FORTUNES.length)];
+      const t = document.getElementById('fortuneTitle');
+      const c = document.getElementById('fortuneContent');
+      const a = document.getElementById('fortuneAdvice');
+      if (t) t.innerText = f.title;
+      if (c) c.innerText = f.content;
+      if (a) a.innerText = f.advice;
+      if (typeof playTempleBronzeBell === 'function') playTempleBronzeBell();
+    }
+
+    const DIALECT_QUIZ_ITEMS = [
+      { q: "Trong tiếng Nẫu (Phú Yên - Bình Định), chữ 'Chóp Chài đội mũ' báo hiệu điều gì?", opts: ["Trời sắp nắng gắt", "Trời sắp đổ mưa giông to", "Sắp có lễ hội Bài Chòi"], ans: 1 },
+      { q: "Từ 'Mắc cỡ quá hà' trong tiếng Nẫu có nghĩa là gì?", opts: ["Ngại ngùng, xấu hổ", "Đắt đỏ quá", "Vội vã quá"], ans: 0 },
+      { q: "Món đặc sản nổi tiếng 'Bánh canh hẹ' thường ăn kèm với gì là chuẩn vị Đất Phú?", opts: ["Chả cá chiên & cá dầm", "Thịt bò kho", "Tôm hùm nướng"], ans: 0 }
+    ];
+    let currentDialectIdx = 0;
+
+    function renderDialectQuiz() {
+      const c = document.getElementById('dialectQuizContainer');
+      if (!c) return;
+      const item = DIALECT_QUIZ_ITEMS[currentDialectIdx % DIALECT_QUIZ_ITEMS.length];
+      c.innerHTML = `
+        <p class="text-xs font-bold text-slate-800">${item.q}</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 mt-2">
+          ${item.opts.map((o, idx) => `
+            <button onclick="checkDialectAns(${idx}, ${item.ans})" class="p-2 rounded-xl bg-slate-50 hover:bg-cyan-50 border border-slate-200 text-left text-[11px] font-semibold text-slate-700 cursor-pointer transition">${o}</button>
+          `).join('')}
+        </div>
+        <div id="quizFeedback" class="hidden pt-1 text-[11px] font-bold"></div>
+      `;
+    }
+
+    function checkDialectAns(picked, correct) {
+      const fb = document.getElementById('quizFeedback');
+      if (!fb) return;
+      fb.classList.remove('hidden');
+      if (picked === correct) {
+        fb.className = "pt-1 text-[11px] font-bold text-emerald-600";
+        fb.innerHTML = "🎉 Chính xác! Bạn rất am hiểu văn hóa Đất Phú!";
+        setTimeout(() => { currentDialectIdx++; renderDialectQuiz(); }, 1800);
+      } else {
+        fb.className = "pt-1 text-[11px] font-bold text-rose-600";
+        fb.innerHTML = "❌ Chưa đúng rồi, thử chọn lại nhé!";
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof renderBuddhistPlaylist === 'function') renderBuddhistPlaylist();
+      if (typeof updateLifetimeMalaDisplay === 'function') updateLifetimeMalaDisplay();
+      if (typeof updateMalaProgressUI === 'function') updateMalaProgressUI();
+      if (typeof renderDialectQuiz === 'function') renderDialectQuiz();
+    });
+  </script>
+</body>
+</html>
