@@ -329,6 +329,18 @@
           </button>
         </div>
 
+        <!-- BANNER HỒ SƠ THÀNH VIÊN / TÁC GIẢ (ẨN MẶC ĐỊNH) -->
+        <div id="communityAuthorBanner" class="hidden px-3 py-2 rounded-2xl bg-[#0d2244] border border-blue-700 text-white flex items-center justify-between gap-2 text-xs shadow-xs">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-7 h-7 rounded-full bg-red-600 flex items-center justify-center text-white text-[11px] shrink-0"><i class="fa-solid fa-user"></i></span>
+            <div class="min-w-0">
+              <div class="font-bold truncate">Hồ sơ: <span id="communityAuthorBannerName" class="text-sky-300"></span></div>
+              <div class="text-[10px] text-blue-200/80" id="communityAuthorBannerCount">0 bài chia sẻ</div>
+            </div>
+          </div>
+          <button type="button" onclick="clearCommunityAuthorFilter()" class="px-2.5 py-1 rounded-full bg-red-600 hover:bg-red-500 text-white text-[10.5px] font-bold shrink-0 cursor-pointer transition">Xem tất cả</button>
+        </div>
+
         <!-- BẢNG TIN CỘNG ĐỒNG (1 CỘT MOBILE / 2 CỘT DESKTOP) -->
         <div id="artGalleryContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
 
@@ -2242,6 +2254,7 @@
       allItems.forEach(it => { COMMUNITY_FEED_MAP[it.domKey] = it; });
 
       const filtered = allItems.filter(item => {
+        if (currentAuthorFilter && (item.district || '') !== currentAuthorFilter) return false;
         if (currentArtFilter === 'video') {
           if (item.feedKind !== 'video') return false;
         } else if (currentArtFilter === 'my_saved') {
@@ -2257,6 +2270,19 @@
         }
         return true;
       });
+
+      const authorBanner = document.getElementById('communityAuthorBanner');
+      if (authorBanner) {
+        if (currentAuthorFilter) {
+          authorBanner.classList.remove('hidden');
+          const bName = document.getElementById('communityAuthorBannerName');
+          const bCnt = document.getElementById('communityAuthorBannerCount');
+          if (bName) bName.innerText = currentAuthorFilter;
+          if (bCnt) bCnt.innerText = filtered.length + ' bài chia sẻ';
+        } else {
+          authorBanner.classList.add('hidden');
+        }
+      }
 
       if (filtered.length === 0) {
         c.innerHTML = '<div class="col-span-1 sm:col-span-2 p-6 rounded-2xl bg-[#0d2244] border border-blue-800/80 text-center text-xs text-blue-100">Chưa có bài chia sẻ trong mục này. Bác hãy bấm nút <b class="text-sky-300">Ảnh</b> hoặc <b class="text-red-400">Video</b> phía trên để đăng bài đầu tiên nhé!</div>';
@@ -2296,10 +2322,10 @@
           <article class="rounded-2xl overflow-hidden bg-[#0d2244] border ${isPinned ? 'border-red-500 ring-2 ring-red-500/50' : (isCurrent ? 'border-red-500 ring-2 ring-red-500/40' : 'border-blue-800/80 hover:border-red-500/70')} shadow-md transition flex flex-col">
             <!-- ĐẦU THẺ CỘNG ĐỒNG: TÁC GIẢ / ĐẠO TRÀNG + THỂ LOẠI -->
             <div class="px-3 py-2 flex items-center justify-between gap-2 border-b border-blue-900/90">
-              <div class="flex items-center gap-2 min-w-0">
+              <div onclick="filterByCommunityAuthor('${(item.district || '').replace(/'/g, "\\'")}', event)" class="flex items-center gap-2 min-w-0 cursor-pointer group/auth" title="Xem tất cả bài của tác giả này">
                 <img src="${item.img}" alt="" class="w-7 h-7 rounded-full object-cover border-2 border-red-500/80 shrink-0" />
                 <div class="min-w-0">
-                  <div class="text-[11px] font-bold text-white truncate">${item.district}</div>
+                  <div class="text-[11px] font-bold text-white group-hover/auth:text-sky-300 group-hover/auth:underline truncate">${item.district}</div>
                   <div class="text-[9.5px] text-sky-300/80 truncate">${item.category}</div>
                 </div>
               </div>
@@ -2307,6 +2333,7 @@
                 ${isPinned ? '<span class="px-1.5 py-0.5 rounded-full bg-red-600 text-white text-[9px] font-black">📌 Ghim</span>' : ''}
                 <span class="px-2 py-0.5 rounded-full ${isVideo ? 'bg-red-600/20 text-red-300 border border-red-500/40' : 'bg-blue-800/70 text-sky-200 border border-blue-600/40'} text-[9px] font-bold">${item.isUserUpload ? '✨ Mới đăng' : (isVideo ? '🎬 Video' : '4K Di Sản')}</span>
                 ${canPin ? `<button onclick="pinCommunityPost('${item.domKey}', event)" class="w-6 h-6 rounded-full bg-blue-900/80 hover:bg-red-600 text-sky-200 hover:text-white flex items-center justify-center text-[10px] cursor-pointer transition" title="${isPinned ? 'Bỏ ghim' : 'Ghim nổi bật (Admin)'}"><i class="fa-solid fa-thumbtack"></i></button>` : ''}
+                ${canDelete ? `<button onclick="openCommunityEditModal('${item.domKey}', event)" class="w-6 h-6 rounded-full bg-blue-900/80 hover:bg-blue-600 text-sky-200 hover:text-white flex items-center justify-center text-[10px] cursor-pointer transition" title="Chỉnh sửa bài"><i class="fa-solid fa-pen"></i></button>` : ''}
                 ${canDelete ? `<button onclick="deleteCommunityPost('${item.domKey}', event)" class="w-6 h-6 rounded-full bg-blue-900/80 hover:bg-red-600 text-red-300 hover:text-white flex items-center justify-center text-[10px] cursor-pointer transition" title="Xóa bài"><i class="fa-solid fa-trash"></i></button>` : ''}
               </div>
             </div>
@@ -4813,7 +4840,108 @@
       else if (e.key === 'ArrowLeft') stepCommunityLightbox(-1);
     });
 
+    // ========================================================================
+    // REALTIME SSE (/api/realtime), HỒ SƠ TÁC GIẢ & CHỈNH SỬA BÀI VIẾT
+    // ========================================================================
+    let currentAuthorFilter = '';
+    let realtimeToastTimer = null;
+
+    function filterByCommunityAuthor(authorName, ev) {
+      if (ev) ev.stopPropagation();
+      currentAuthorFilter = authorName || '';
+      communityVisibleLimit = 12;
+      renderArtGallery();
+    }
+
+    function clearCommunityAuthorFilter() {
+      currentAuthorFilter = '';
+      communityVisibleLimit = 8;
+      renderArtGallery();
+    }
+
+    function openCommunityEditModal(domKey, ev) {
+      if (ev) ev.stopPropagation();
+      const item = COMMUNITY_FEED_MAP[domKey];
+      if (!item) return;
+      const m = document.getElementById('modalCommunityEditPost');
+      document.getElementById('editPostId').value = item.id || '';
+      document.getElementById('editPostOrigTitle').value = item.title || '';
+      document.getElementById('editPostTitle').value = item.title || '';
+      document.getElementById('editPostCategory').value = item.category || '';
+      document.getElementById('editPostPoem').value = item.poem || '';
+      if (m) m.classList.remove('hidden');
+    }
+
+    function closeCommunityEditModal() {
+      const m = document.getElementById('modalCommunityEditPost');
+      if (m) m.classList.add('hidden');
+    }
+
+    async function submitCommunityPostEdit() {
+      const id = document.getElementById('editPostId')?.value || '';
+      const origTitle = document.getElementById('editPostOrigTitle')?.value || '';
+      const newTitle = (document.getElementById('editPostTitle')?.value || '').trim();
+      const category = (document.getElementById('editPostCategory')?.value || '').trim();
+      const poem = (document.getElementById('editPostPoem')?.value || '').trim();
+      if (!newTitle) return alert('Vui lòng nhập tiêu đề!');
+
+      try {
+        const resp = await communityFetch('/api/gallery/edit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, title: origTitle, newTitle, category, poem })
+        });
+        const data = await resp.json();
+        if (!resp.ok) {
+          alert(data.message || 'Không thể sửa bài viết.');
+          return;
+        }
+        const art = ARTWORKS_DATA.find(a => a.id === id || a.title === origTitle);
+        if (art) { art.title = newTitle; art.category = category; art.poem = poem; }
+        const med = MEDIA_PLAYLIST.find(m => m.id === id || m.title === origTitle);
+        if (med) { med.title = newTitle; med.themeName = category; med.chant = poem; }
+        closeCommunityEditModal();
+        renderArtGallery();
+      } catch(e) {
+        alert('Lỗi kết nối khi lưu chỉnh sửa.');
+      }
+    }
+
+    function showCommunityRealtimeToast(text) {
+      const el = document.getElementById('communityRealtimeToast');
+      const txt = document.getElementById('communityRealtimeToastText');
+      if (!el || !txt) return;
+      txt.innerText = text;
+      el.classList.remove('hidden');
+      if (realtimeToastTimer) clearTimeout(realtimeToastTimer);
+      realtimeToastTimer = setTimeout(() => el.classList.add('hidden'), 3500);
+    }
+
+    function initCommunityRealtimeSSE() {
+      if (typeof EventSource === 'undefined') return;
+      try {
+        const es = new EventSource('/api/realtime');
+        es.addEventListener('COMMUNITY_UPDATE', (ev) => {
+          try {
+            const d = JSON.parse(ev.data || '{}');
+            if (d.type === 'publish') {
+              showCommunityRealtimeToast(`✨ ${d.ownerName || 'Bà con'} vừa đăng: ${d.title || 'bài mới'}`);
+              loadSavedCommunityPhotos();
+            } else if (d.type === 'comment') {
+              showCommunityRealtimeToast(`💬 Có lời chúc mới cho "${d.title || 'bài viết'}"`);
+              loadSavedCommunityPhotos();
+            } else if (d.type === 'react') {
+              loadSavedCommunityPhotos();
+            } else if (d.type === 'edit' || d.type === 'moderate' || d.type === 'delete') {
+              loadSavedCommunityPhotos();
+            }
+          } catch(e) {}
+        });
+      } catch(e) {}
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
+      initCommunityRealtimeSSE();
       const lbStage = document.getElementById('lightboxStage');
       if (lbStage) {
         lbStage.addEventListener('touchstart', (e) => {
@@ -5409,6 +5537,47 @@
           <i class="fa-solid fa-share-nodes"></i>
           <span>Gửi</span>
         </button>
+      </div>
+    </div>
+  </div>
+  <!-- ================= TOAST THÔNG BÁO REALTIME & MODAL SỬA BÀI VIẾT ================= -->
+  <div id="communityRealtimeToast" class="hidden fixed top-14 right-3 z-50 px-3.5 py-2 rounded-2xl bg-[#0d2244] border border-red-500/80 text-white text-xs font-bold shadow-xl flex items-center gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
+    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+    <span id="communityRealtimeToastText">Có cập nhật mới trên Cộng Đồng!</span>
+  </div>
+
+  <div id="modalCommunityEditPost" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3" onclick="if(event.target === this) closeCommunityEditModal()">
+    <div class="bg-[#0d2244] border-2 border-blue-500/80 rounded-3xl w-full max-w-md text-white shadow-2xl overflow-hidden">
+      <div class="px-4 py-3 bg-[#091833] border-b border-blue-800/80 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-red-600 flex items-center justify-center text-white text-xs shadow">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </span>
+          <h3 class="text-xs font-black uppercase tracking-wide">Chỉnh Sửa Bài Viết</h3>
+        </div>
+        <button onclick="closeCommunityEditModal()" class="w-7 h-7 rounded-full bg-blue-900/70 hover:bg-red-600 text-blue-200 hover:text-white flex items-center justify-center text-xs cursor-pointer transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-4 space-y-3 text-xs">
+        <input type="hidden" id="editPostId" />
+        <input type="hidden" id="editPostOrigTitle" />
+        <div>
+          <label class="block font-bold text-blue-100 mb-1">Tiêu đề (*):</label>
+          <input type="text" id="editPostTitle" class="w-full px-3 py-2 rounded-xl bg-[#091833] border border-blue-800 text-white focus:border-red-500 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-bold text-blue-100 mb-1">Thể loại:</label>
+          <input type="text" id="editPostCategory" class="w-full px-3 py-2 rounded-xl bg-[#091833] border border-blue-800 text-sky-200 focus:border-red-500 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-bold text-blue-100 mb-1">Lời bình / Cảm xúc:</label>
+          <textarea id="editPostPoem" rows="3" class="w-full px-3 py-2 rounded-xl bg-[#091833] border border-blue-800 text-white focus:border-red-500 focus:outline-none"></textarea>
+        </div>
+        <div class="flex items-center justify-end gap-2 pt-1">
+          <button type="button" onclick="closeCommunityEditModal()" class="px-3.5 py-2 rounded-xl bg-blue-900/70 hover:bg-blue-800 text-blue-100 font-bold cursor-pointer">Hủy</button>
+          <button type="button" onclick="submitCommunityPostEdit()" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black cursor-pointer shadow">Lưu Thay Đổi</button>
+        </div>
       </div>
     </div>
   </div>

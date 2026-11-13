@@ -129,6 +129,14 @@ function sortCommunityFeed(items, includeArchived = false) {
     });
 }
 
+function broadcastCommunityEvent(sseClients, eventName, payload) {
+  if (!sseClients || sseClients.size === 0) return;
+  const msg = `event: ${eventName}\ndata: ${JSON.stringify(payload)}\n\n`;
+  sseClients.forEach((clientRes) => {
+    try { clientRes.write(msg); } catch (e) { sseClients.delete(clientRes); }
+  });
+}
+
 async function handle(pathname, req, res, body, sseClients, parsedUrl) {
   // ------------------------------------------------------------------------
   // A. ĐĂNG KÝ / ĐĂNG NHẬP / KIỂM TRA QUYỀN CỘNG ĐỒNG
@@ -374,6 +382,13 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
     const merged = [...valid, ...current.filter(c => !valid.some(v => v.id === c.id))].slice(0, 120);
     const localSaved = writeJsonFile('community_gallery.json', merged);
 
+    broadcastCommunityEvent(sseClients, 'COMMUNITY_UPDATE', {
+      type: 'publish',
+      count: valid.length,
+      title: valid[0].title,
+      ownerName: valid[0].ownerName
+    });
+
     return sendJson(res, 200, {
       status: 'ok',
       savedToCloud: !!(cloudSaved.ok || localSaved),
@@ -406,7 +421,43 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
 
     const next = current.filter(c => c.id !== body.id && c.title !== body.title);
     writeJsonFile('community_gallery.json', next);
+    broadcastCommunityEvent(sseClients, 'COMMUNITY_UPDATE', { type: 'delete', id: body.id || (target && target.id) });
     return sendJson(res, 200, { status: 'ok', remaining: next.length });
+  }
+
+  if (pathname === '/api/gallery/edit' && req.method === 'POST') {
+    const actor = verifyTokenFromReq(req);
+    const current = readJsonFile('community_gallery.json', []);
+    const cloudRes = await cloudRepo.listCloudPosts(120, false);
+    const pool = (cloudRes.ok && cloudRes.items.length > 0) ? cloudRes.items : current;
+    const target = pool.find(c => (body.id && c.id === body.id) || (body.title && c.title === body.title));
+    if (!target) return sendJson(res, 404, { status: 'error', message: 'Không tìm thấy bài viết.' });
+
+    const isAdmin = actor && actor.role === 'admin';
+    const isOwner = actor && target.ownerId && target.ownerId === actor.id;
+    const isGuestPost = !target.ownerId || target.ownerId === 'guest';
+    if (!isAdmin && !isOwner && !isGuestPost) {
+      return sendJson(res, 403, { status: 'error', message: 'Bạn chỉ có quyền sửa bài viết do chính mình đăng.' });
+    }
+
+    const nextTitle = String(body.newTitle || body.title || target.title).trim().slice(0, 140);
+    const nextCategory = String(body.category || target.category).trim().slice(0, 80);
+    const nextPoem = String(body.poem !== undefined ? body.poem : target.poem).trim().slice(0, 240);
+
+    target.title = nextTitle;
+    target.category = nextCategory;
+    target.poem = nextPoem;
+    target.updatedAt = new Date().toISOString();
+
+    await cloudRepo.updateCloudPost(target.id, { title: nextTitle, category: nextCategory, poem: nextPoem });
+    const localIdx = current.findIndex(c => c.id === target.id || c.title === body.title);
+    if (localIdx !== -1) {
+      current[localIdx] = Object.assign({}, current[localIdx], { title: nextTitle, category: nextCategory, poem: nextPoem, updatedAt: target.updatedAt });
+      writeJsonFile('community_gallery.json', current);
+    }
+
+    broadcastCommunityEvent(sseClients, 'COMMUNITY_UPDATE', { type: 'edit', id: target.id, title: nextTitle });
+    return sendJson(res, 200, { status: 'ok', item: target });
   }
 
   if (pathname === '/api/gallery/pin' && req.method === 'POST') {
@@ -431,6 +482,7 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
       localItem.updatedAt = item.updatedAt;
       writeJsonFile('community_gallery.json', current);
     }
+    broadcastCommunityEvent(sseClients, 'COMMUNITY_UPDATE', { type: 'moderate', id: item.id, itemStatus: nextStatus });
     return sendJson(res, 200, { status: 'ok', itemStatus: nextStatus });
   }
 
@@ -445,6 +497,7 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
       writeJsonFile('community_gallery.json', current);
     }
     if (body.id) await cloudRepo.updateCloudPost(body.id, { likes: nextLikes });
+    broadcastCommunityEvent(sseClients, 'COMMUNITY_UPDATE', { type: 'react', id: body.id, title: body.title, likes: nextLikes });
     return sendJson(res, 200, { status: 'ok', likes: nextLikes });
   }
 
@@ -466,6 +519,7 @@ async function handle(pathname, req, res, body, sseClients, parsedUrl) {
       writeJsonFile('community_gallery.json', current);
       await cloudRepo.updateCloudPost(item.id, { comments: item.comments });
     }
+    broadcastCommunityEvent(sseClients, 'COMMUNITY_UPDATE', { type: 'comment', id: body.id, title: body.title, comment: commentObj });
     return sendJson(res, 200, { status: 'ok', comment: commentObj });
   }
 
