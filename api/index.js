@@ -8,6 +8,15 @@ const server = require('../src/server');
 const wisdomHandler = require('./wisdom');
 
 module.exports = (req, res) => {
+  const rawUrl = req.url || '';
+  const preParsed = new URL(rawUrl, 'http://localhost');
+  const origPath = preParsed.searchParams.get('__origPath');
+  if (origPath) {
+    preParsed.searchParams.delete('__origPath');
+    const restQs = preParsed.searchParams.toString();
+    req.url = origPath + (restQs ? '?' + restQs : '');
+  }
+
   const reqUrl = req.url || '';
   const parsed = new URL(reqUrl, 'http://localhost');
 

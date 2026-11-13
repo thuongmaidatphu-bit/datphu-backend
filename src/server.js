@@ -62,6 +62,9 @@ const MIME_TYPES = {
 };
 
 function parseBody(req) {
+  if (req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body)) {
+    return Promise.resolve(req.body);
+  }
   return new Promise((resolve, reject) => {
     let body = '';
     req.on('data', chunk => body += chunk);
