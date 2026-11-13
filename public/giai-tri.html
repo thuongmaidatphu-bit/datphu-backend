@@ -3728,16 +3728,18 @@
     }
 
     // Override startHealingSoundscape to include rain noise
-    const originalStartHealing = startHealingSoundscape;
-    startHealingSoundscape = function() {
-      originalStartHealing();
-      createRainAudioSource();
-    };
+    const originalStartHealing = (typeof startHealingSoundscape === 'function') ? startHealingSoundscape : null;
+    if (originalStartHealing) {
+      startHealingSoundscape = function() {
+        originalStartHealing();
+        createRainAudioSource();
+      };
+    }
 
     // Override stopHealingSynth to stop rain noise
-    const originalStopHealing = stopHealingSynth;
-    stopHealingSynth = function() {
-      originalStopHealing();
+    const originalStopHealing = (typeof stopHealingSynth === 'function') ? stopHealingSynth : null;
+    var stopHealingSynth = function() {
+      if (originalStopHealing) originalStopHealing();
       if (rainNoiseNode) {
         try { rainNoiseNode.stop(); } catch(e) {}
         rainNoiseNode = null;
