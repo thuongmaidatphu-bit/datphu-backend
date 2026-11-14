@@ -43,6 +43,29 @@ if (!process.env.GEMINI_API_KEY) {
 function getRuleBasedAnswer(userMessage, agent) {
   const lower = userMessage.toLowerCase();
 
+  if (lower.includes('chuyển khoản') || lower.includes('sinh trắc học') || lower.includes('vneid') || lower.includes('500 triệu') || lower.includes('tài khoản ảo')) {
+    return `Dạ theo quy định quản lý ngân hàng của NHNN (Quyết định 2345/QĐ-NHNN, Thông tư 17, 18/2024/TT-NHNN) và Luật Thuế hiện hành, các quy định cốt lõi về giao dịch chuyển khoản ngân hàng gồm có:
+
+### 1. Xác thực Sinh trắc học & Liên kết tài khoản định danh VNeID:
+- **Xác thực sinh trắc học khuôn mặt:** Bắt buộc áp dụng cho mọi giao dịch chuyển tiền trực tuyến của cá nhân **từ 10 triệu đồng trở lên/lần** hoặc **tổng giá trị giao dịch vượt quá 20 triệu đồng/ngày**. Khuôn mặt phải khớp 100% với dữ liệu trên CCCD gắn chip hoặc tài khoản VNeID mức 2.
+- **Liên kết VNeID làm sạch dữ liệu:** Mọi tài khoản ngân hàng điện tử phải được định danh và đối soát với Cơ sở dữ liệu quốc gia về dân cư nhằm triệt tiêu hoàn toàn tài khoản ảo, tài khoản thuê mượn tiếp tay cho tội phạm lừa đảo.
+
+### 2. Quản lý Hạn mức & Kiểm soát Dòng tiền lớn:
+- **Phân loại hạn mức:** Ngân hàng kiểm soát chặt chẽ hạn mức giao dịch trong ngày và từng lần của từng khách hàng cá nhân/doanh nghiệp.
+- **Giám sát giao dịch từ 500 triệu đồng trở lên:** Bắt buộc thực hiện báo cáo giao dịch có giá trị lớn và xác minh mục đích chuyển tiền theo Luật Phòng, chống rửa tiền 2022 (Nghị định 19/2023/NĐ-CP).
+
+### 3. Nguyên tắc vàng về Chuyển khoản trong Kế toán & Quyết toán Thuế:
+Để các khoản thanh toán mua hàng hóa, dịch vụ được **khấu trừ thuế GTGT** và **tính vào chi phí hợp lý khi quyết toán thuế**, doanh nghiệp và hộ kinh doanh phải tuân thủ nghiêm ngặt:
+- **Khớp đúng thông tin thụ hưởng:** Tên người nhận trên ủy nhiệm chi / lệnh chuyển tiền phải trùng khớp 100% với tên pháp nhân hoặc hộ kinh doanh ghi trên hóa đơn GTGT của bên bán.
+- **Nội dung chuyển khoản chuẩn mực:** Luôn ghi rõ ràng mục đích giao dịch (Ví dụ: *"Thanh toan tien hang theo hoa don so... ngay..."*). Không ghi chung chung hoặc sai bản chất giao dịch.
+- **Ngưỡng bắt buộc chuyển khoản:**
+  + *Luật Thuế truyền thống:* Hóa đơn từ 20 triệu đồng trở lên bắt buộc thanh toán không dùng tiền mặt.
+  + *Quy định siết chặt mới nhất (Nghị định 144/2026/NĐ-CP & Nghị định 68/2026/NĐ-CP):* Ngưỡng thanh toán không dùng tiền mặt (chuyển khoản ngân hàng) đối với các khoản chi phí được trừ đã được áp dụng chặt chẽ từ **05 triệu đồng trở lên**.
+
+---
+"Dịu dàng với chính mình, nghiêm túc với con số" — Đất Phú Gen 4 hỗ trợ rà soát chuẩn hóa dòng tiền VCB DigiBiz và thủ tục thuế an toàn qua **Hotline / Zalo: 0979.991.898**!`;
+  }
+
   if (lower.includes('kinh doanh thuế') || lower.includes('quán ăn') || lower.includes('quán cơm') || lower.includes('nhỏ lẻ') || lower.includes('tạp hóa') || lower.includes('miễn thuế') || lower.includes('1 tỷ') || lower.includes('môn bài') || lower.includes('hộ kinh doanh nhỏ')) {
     return `Dạ theo quy định quản lý thuế hiện hành áp dụng cho các mô hình kinh doanh nhỏ lẻ (như quán ăn, quán cơm bình dân, tiệm tạp hóa, dịch vụ F&B...), các chính sách thuế trọng điểm được thực hiện cụ thể như sau:
 
