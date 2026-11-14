@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Support Swarm — Trung Tâm Điều Hành Đa Tác Tử Đất Phú Gen 4</title>
-  <meta name="description" content="Trải nghiệm trung tâm điều hành Đa tác tử AI Support Swarm vận hành 24/7 khép kín theo chuẩn 6K Kín Kẽ OS. Phối màu Xanh & Đỏ sáng sủa, chữ to rõ nét.">
+  <meta name="description" content="Trung tâm điều hành Đa tác tử AI Support Swarm tràn màn hình chuẩn công sở, phối màu Xanh & Đỏ, chữ to rõ nét theo chuẩn 6K Kín Kẽ OS.">
   <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
 
   <!-- Tailwind CSS CDN -->
@@ -17,14 +17,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
-    /* ================= PHỐI MÀU CHỦ ĐẠO XANH & ĐỎ DOANH NGHIỆP ================= */
+    /* ================= HỆ THỐNG MÀU CHỦ ĐẠO XANH & ĐỎ TRÀN MÀN HÌNH ================= */
     :root {
       --primary-blue: #1d4ed8;       /* Xanh dương hoàng gia */
       --primary-blue-dark: #1e3a8a;  /* Xanh navy đậm */
       --primary-red: #dc2626;        /* Đỏ cờ thương hiệu */
       --primary-red-dark: #991b1b;   /* Đỏ thẫm */
-      --bg-page: #f8fafc;            /* Nền sáng sạch sẽ dịu mắt */
-      --card-bg: #ffffff;            /* Thẻ trắng tinh khiết */
+      --bg-page: #f8fafc;            /* Nền sáng sạch sẽ */
+      --card-bg: #ffffff;            /* Thẻ trắng tinh */
       --card-border: #e2e8f0;        /* Viền sáng thanh lịch */
       --text-main: #0f172a;          /* Chữ đen than đậm rõ */
       --text-muted: #334155;         /* Chữ phụ xám đậm */
@@ -32,35 +32,31 @@
     }
 
     [data-theme="dark"] {
-      --bg-page: #0f172a;
+      --bg-page: #0b1120;
       --card-bg: #1e293b;
       --card-border: #334155;
       --text-main: #f8fafc;
       --text-muted: #cbd5e1;
     }
 
-    body {
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
       background-color: var(--bg-page);
       color: var(--text-main);
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       transition: background-color 0.2s ease, color 0.2s ease;
       font-size: calc(15px * var(--font-scale));
-      min-height: 100vh;
     }
 
     .dp-card {
       background-color: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 1.25rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .dp-card:hover {
-      box-shadow: 0 8px 24px rgba(29, 78, 216, 0.08);
-      border-color: rgba(29, 78, 216, 0.35);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
     }
 
-    /* Nút bấm Xanh & Đỏ */
     .btn-blue {
       background: linear-gradient(135deg, #1d4ed8, #1e40af);
       color: #ffffff;
@@ -85,13 +81,13 @@
       transform: translateY(-1px);
     }
 
-    /* Thanh cuộn hộp chat */
+    /* Thanh cuộn mượt mà */
     ::-webkit-scrollbar {
       width: 7px;
       height: 7px;
     }
     ::-webkit-scrollbar-track {
-      background: #f1f5f9;
+      background: rgba(241, 245, 249, 0.6);
     }
     ::-webkit-scrollbar-thumb {
       background: #cbd5e1;
@@ -102,210 +98,290 @@
     }
   </style>
 </head>
-<body class="flex flex-col justify-between antialiased p-3 sm:p-5 lg:p-6">
+<body class="flex flex-col h-screen w-screen overflow-hidden">
 
-  <!-- ================= TOP NAVIGATION (THANH ĐIỀU HƯỚNG CHỦ ĐẠO XANH & ĐỎ) ================= -->
-  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b-2 border-slate-200 dark:border-slate-800 px-3 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 shadow-sm rounded-2xl max-w-6xl w-full mx-auto">
+  <!-- ================= TOP HEADER (THANH CÔNG CỤ ĐIỀU HÀNH XANH & ĐỎ) ================= -->
+  <header class="h-16 shrink-0 bg-white dark:bg-slate-900 border-b-2 border-slate-200 dark:border-slate-800 px-4 sm:px-6 flex items-center justify-between gap-3 shadow-sm z-30">
     
+    <!-- Cụm bên trái: Toggle Sidebar + Logo + Pháp nhân -->
     <div class="flex items-center gap-3">
-      <a href="/lao-dong" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-400 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-sm">
-        <i class="fa-solid fa-arrow-left"></i>
-        <span>Về Trang Chủ Gen 4</span>
-      </a>
-      
-      <div class="flex items-center gap-2">
-        <div onclick="handleSecretLogoClick()" class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-700 to-red-600 text-white flex items-center justify-center font-black text-sm shadow-md cursor-pointer select-none" title="Bấm 5 lần để vào Cổng RAG ẩn">
+      <!-- Nút mở/thu gọn Sidebar -->
+      <button onclick="toggleSidebar()" id="sidebarToggleBtn" title="Thu gọn / Mở rộng bảng điều khiển" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center cursor-pointer transition border border-slate-300 dark:border-slate-700 shadow-sm">
+        <i class="fa-solid fa-bars-staggered text-base"></i>
+      </button>
+
+      <!-- Logo & Tên trung tâm -->
+      <div class="flex items-center gap-2.5">
+        <div onclick="handleSecretLogoClick()" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-red-600 text-white flex items-center justify-center font-black text-sm shadow-md cursor-pointer select-none shrink-0" title="Đất Phú AI Swarm (Bấm 5 lần mở RAG)">
           AI
         </div>
         <div>
-          <span class="text-sm sm:text-base font-black text-blue-900 dark:text-blue-400 uppercase tracking-tight">AI SUPPORT SWARM</span>
-          <span class="text-[10px] font-bold bg-red-600 text-white px-2 py-0.5 rounded-full ml-1 shadow-sm">24/7</span>
+          <div class="flex items-center gap-2">
+            <span class="text-base sm:text-lg font-black text-blue-900 dark:text-blue-400 tracking-tight">AI SUPPORT SWARM</span>
+            <span class="text-xs font-bold bg-red-600 text-white px-2 py-0.5 rounded-full shadow-sm">24/7 KÍN KẼ</span>
+          </div>
+          <p class="text-xs text-slate-500 font-medium hidden sm:block">Công Ty TNHH Thương Mại Đất Phú • MST: 4401020233 • Tuy Hòa, Phú Yên</p>
         </div>
       </div>
     </div>
 
-    <!-- Thanh công cụ: Chỉnh cỡ chữ A-/A+ + Đổi nền Sáng/Tối + Hotline -->
+    <!-- Cụm bên phải: Chỉnh cỡ chữ A-/A+ + Sáng/Tối + Về Trang Chủ + Hotline -->
     <div class="flex items-center gap-2 sm:gap-3">
       
-      <!-- Bộ chỉnh cỡ chữ (A- / A / A+) -->
+      <!-- Bộ chỉnh cỡ chữ (A- / Reset / A+) -->
       <div class="flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 p-1 shadow-sm">
-        <button onclick="changeFontSize(-0.1)" title="Thu nhỏ chữ" class="px-2 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-blue-700 rounded-lg cursor-pointer">A-</button>
-        <button onclick="resetFontSize()" title="Cỡ chữ chuẩn" class="px-2 py-1 text-xs font-black text-blue-700 dark:text-blue-400 rounded-lg cursor-pointer">A</button>
-        <button onclick="changeFontSize(0.1)" title="Phóng to chữ" class="px-2 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-red-600 rounded-lg cursor-pointer">A+</button>
+        <button onclick="changeFontSize(-0.1)" title="Thu nhỏ chữ" class="px-2.5 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-blue-700 rounded-lg cursor-pointer">A-</button>
+        <button onclick="resetFontSize()" title="Cỡ chữ chuẩn" class="px-2.5 py-1 text-xs font-black text-blue-700 dark:text-blue-400 rounded-lg cursor-pointer">A</button>
+        <button onclick="changeFontSize(0.1)" title="Phóng to chữ" class="px-2.5 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-red-600 rounded-lg cursor-pointer">A+</button>
       </div>
 
-      <!-- Nút đổi nền Sáng / Tối -->
+      <!-- Đổi nền Sáng / Tối -->
       <button onclick="toggleTheme()" id="themeToggleBtn" title="Chuyển đổi Sáng / Tối" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-blue-600 flex items-center gap-1.5 text-xs font-bold cursor-pointer shadow-sm transition">
         <i class="fa-solid fa-moon text-blue-600 dark:hidden"></i>
         <i class="fa-solid fa-sun text-amber-400 hidden dark:inline"></i>
-        <span class="dark:hidden">Tối</span>
-        <span class="hidden dark:inline">Sáng</span>
+        <span class="hidden md:inline dark:hidden">Nền Tối</span>
+        <span class="hidden md:dark:inline">Nền Sáng</span>
       </button>
 
-      <!-- Trạng thái Online -->
-      <span class="hidden md:inline-flex text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 px-3 py-1.5 rounded-xl border border-emerald-300 items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        Trực Tuyến
-      </span>
+      <!-- Về Trang Chủ Gen 4 -->
+      <a href="/lao-dong" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-400 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-black transition flex items-center gap-1.5 shadow-sm">
+        <i class="fa-solid fa-house"></i>
+        <span class="hidden sm:inline">Trang Chủ</span>
+      </a>
 
       <!-- Hotline đỏ thương hiệu -->
-      <a href="https://zalo.me/0979991898" target="_blank" class="btn-red px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm">
+      <a href="https://zalo.me/0979991898" target="_blank" class="btn-red px-4 py-2 rounded-xl text-xs sm:text-sm font-black flex items-center gap-1.5 shadow-sm shrink-0">
         <i class="fa-solid fa-phone"></i>
         <span>0979.991.898</span>
       </a>
     </div>
+
   </header>
 
-  <!-- ================= VÙNG NỘI DUNG CHÍNH (SÁNG SỦA, CHỮ TO RÕ) ================= -->
-  <main class="max-w-6xl w-full mx-auto my-6 space-y-6">
-    
-    <!-- TIÊU ĐỀ TRUNG TÂM -->
-    <div class="text-center space-y-2">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-300 text-xs font-bold uppercase tracking-wider">
-        <i class="fa-solid fa-microchip text-red-600"></i>
-        <span>Google Gemini 3.5 Flash Lite + RAG Pháp Lý Kín Kẽ</span>
-      </div>
-      <h1 class="text-2xl sm:text-4xl font-black text-blue-950 dark:text-white tracking-tight">
-        TRUNG TÂM ĐIỀU HÀNH ĐA TÁC TỬ AI SWARM
-      </h1>
-      <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed font-medium">
-        Hệ thống 4 tác tử AI chuyên trách vận hành tự động theo chuẩn 6K Kín Kẽ. Đặt câu hỏi về thuế GTGT, hóa đơn máy tính tiền hay chữ ký số để nhận phản hồi chuẩn xác từng điều khoản!
-      </p>
-    </div>
+  <!-- ================= BỐ CỤC CHÍNH TRÀN MÀN HÌNH (WORKSPACE 2 CỘT 100VH) ================= -->
+  <div class="flex-1 flex overflow-hidden w-full relative">
 
-    <!-- 4 TÁC TỬ ĐỒNG HÀNH (THIẾT KẾ XANH & ĐỎ RÕ NÉT) -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+    <!-- ================= CỘT TRÁI: SIDEBAR ĐIỀU PHỐI (280PX - 320PX) ================= -->
+    <aside id="mainSidebar" class="w-80 shrink-0 bg-white dark:bg-slate-900 border-r-2 border-slate-200 dark:border-slate-800 flex flex-col justify-between overflow-y-auto transition-all duration-300 z-20 shadow-lg md:shadow-none">
       
-      <!-- Tác tử 1 (Xanh) -->
-      <div class="dp-card p-4 text-center border-l-4 border-l-blue-600 space-y-1.5">
-        <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 flex items-center justify-center mx-auto text-xl font-bold">
-          <i class="fa-solid fa-headset"></i>
-        </div>
-        <div class="font-black text-slate-900 dark:text-white text-sm sm:text-base">1. Tiếp Nhận</div>
-        <div class="text-xs text-slate-500 font-semibold">Phản hồi &lt; 2 giây</div>
-      </div>
-
-      <!-- Tác tử 2 (Đỏ) -->
-      <div class="dp-card p-4 text-center border-l-4 border-l-red-600 space-y-1.5">
-        <div class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center mx-auto text-xl font-bold">
-          <i class="fa-solid fa-scale-balanced"></i>
-        </div>
-        <div class="font-black text-slate-900 dark:text-white text-sm sm:text-base">2. Thuế & NĐ 254</div>
-        <div class="text-xs text-red-600 dark:text-red-400 font-semibold">Tri thức luật chuẩn 100%</div>
-      </div>
-
-      <!-- Tác tử 3 (Xanh) -->
-      <div class="dp-card p-4 text-center border-l-4 border-l-indigo-600 space-y-1.5">
-        <div class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 flex items-center justify-center mx-auto text-xl font-bold">
-          <i class="fa-solid fa-network-wired"></i>
-        </div>
-        <div class="font-black text-slate-900 dark:text-white text-sm sm:text-base">3. Kỹ Thuật n8n</div>
-        <div class="text-xs text-slate-500 font-semibold">UltraViewer & Tự động</div>
-      </div>
-
-      <!-- Tác tử 4 (Đỏ) -->
-      <div class="dp-card p-4 text-center border-l-4 border-l-amber-600 space-y-1.5">
-        <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center mx-auto text-xl font-bold">
-          <i class="fa-solid fa-calculator"></i>
-        </div>
-        <div class="font-black text-slate-900 dark:text-white text-sm sm:text-base">4. Kiểm Soát & Quỹ</div>
-        <div class="text-xs text-slate-500 font-semibold">Nghiêm túc với con số</div>
-      </div>
-
-    </div>
-
-    <!-- KHUNG CHAT LIVE TƯƠNG TÁC (NỀN SÁNG, CHỮ TO RÕ, BONG BÓNG XANH - ĐỎ) -->
-    <div class="dp-card p-5 sm:p-7 border-2 border-blue-600 shadow-xl space-y-4">
-      
-      <!-- Thanh trạng thái phiên chat -->
-      <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-slate-200 dark:border-slate-700 pb-3">
-        <div class="flex items-center gap-2">
-          <div class="w-3.5 h-3.5 rounded-full bg-emerald-500 animate-pulse"></div>
-          <span class="text-xs sm:text-sm font-black text-blue-900 dark:text-blue-400 uppercase tracking-wider">HỘP THỬ NGHIỆM AI TRỰC TIẾP (LIVE SANDBOX)</span>
-        </div>
+      <div class="p-4 space-y-4">
         
-        <div class="flex items-center gap-2">
-          <span id="sessionProfileBadge" class="hidden text-xs text-blue-700 dark:text-blue-300 font-mono font-bold bg-blue-100 dark:bg-blue-950 px-2.5 py-1 rounded-lg border border-blue-300"></span>
-          <span id="agentActiveBadge" class="text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full border border-slate-300 dark:border-slate-700">
-            Sẵn sàng lắng nghe
-          </span>
-          <button onclick="resetSession()" title="Bắt đầu phiên hội thoại mới" class="text-xs text-slate-600 hover:text-blue-700 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 transition cursor-pointer font-bold">
-            <i class="fa-solid fa-arrows-rotate mr-1"></i>Phiên mới
-          </button>
+        <!-- THẺ TRỤ SỞ PHÁP NHÂN ĐẤT PHÚ (CHUẨN 100% TUY HÒA) -->
+        <div class="p-3.5 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border-2 border-blue-200 dark:border-blue-900 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-building-circle-check text-blue-600"></i>
+              <span>Pháp Nhân Đất Phú</span>
+            </span>
+            <span class="text-[10px] bg-red-600 text-white font-bold px-2 py-0.5 rounded-full">MST 4401020233</span>
+          </div>
+          <div class="text-xs font-bold text-slate-800 dark:text-slate-200 leading-snug">
+            172 Ngô Gia Tự, KP3, P. Phú Đông, TP. Tuy Hòa, Tỉnh Phú Yên
+          </div>
         </div>
-      </div>
 
-      <!-- VÙNG TIN NHẮN CHAT (CHIỀU CAO THOÁNG, CHỮ TO RÕ 15-16PX) -->
-      <div id="chatBox" class="h-96 overflow-y-auto space-y-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 text-sm sm:text-base">
-        
-        <!-- Tin nhắn mở đầu của AI -->
-        <div class="flex items-start gap-3">
-          <div class="w-9 h-9 rounded-xl bg-blue-700 text-white flex items-center justify-center font-black shrink-0 text-xs shadow-md">AI</div>
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border-2 border-blue-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 max-w-2xl leading-relaxed shadow-sm font-sans">
-            Dạ Đất Phú xin chào! Hệ thống Đa tác tử AI Swarm đã được kết nối trực tiếp với <b>Kho Tri Thức Pháp Lý RAG Chuẩn 6K</b>. 
-            <br><br>
-            Hệ thống có thể ghi nhớ ngữ cảnh hội thoại, nhớ thông tin người hỏi và tự động trích dẫn chuẩn xác các điều khoản thuế mới nhất (NĐ 144 ngưỡng chuyển khoản 5 triệu, NĐ 68 HKD Mẫu 01/CNKD, NĐ 254 hóa đơn máy tính tiền...). Quý khách hãy gõ câu hỏi bất kỳ nhé!
+        <!-- 4 TÁC TỬ AI ĐANG TRỰC CHIẾN -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-xs font-black text-slate-500 uppercase tracking-wider">4 Tác Tử AI Trực Tuyến</span>
+            <span class="text-[10px] font-bold text-emerald-600 flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              24/7 Sẵn sàng
+            </span>
+          </div>
+
+          <div class="space-y-1.5">
+            <!-- Tác tử 1 -->
+            <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">
+                  <i class="fa-solid fa-headset"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900 dark:text-white">1. Tiếp Nhận Khách</div>
+                  <div class="text-[10px] text-slate-500">Phản hồi &lt; 2 giây</div>
+                </div>
+              </div>
+              <i class="fa-solid fa-circle-check text-emerald-500 text-xs"></i>
+            </div>
+
+            <!-- Tác tử 2 (Thuế) -->
+            <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border-l-4 border-l-red-600 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">
+                  <i class="fa-solid fa-scale-balanced"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-red-600 dark:text-red-400">2. Thuế & NĐ 254/144</div>
+                  <div class="text-[10px] text-slate-500">RAG Luật chuẩn 100%</div>
+                </div>
+              </div>
+              <i class="fa-solid fa-circle-check text-emerald-500 text-xs"></i>
+            </div>
+
+            <!-- Tác tử 3 -->
+            <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold">
+                  <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900 dark:text-white">3. Kỹ Thuật n8n POS</div>
+                  <div class="text-[10px] text-slate-500">UltraViewer & CKS</div>
+                </div>
+              </div>
+              <i class="fa-solid fa-circle-check text-emerald-500 text-xs"></i>
+            </div>
+
+            <!-- Tác tử 4 -->
+            <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-bold">
+                  <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900 dark:text-white">4. Kiểm Soát & Quỹ</div>
+                  <div class="text-[10px] text-slate-500">Nghiêm túc với con số</div>
+                </div>
+              </div>
+              <i class="fa-solid fa-circle-check text-emerald-500 text-xs"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- BỘ CÂU HỎI MẪU 1 CHẠM (TIỆN LỢI GỢI Ý) -->
+        <div class="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+          <span class="text-xs font-black text-slate-500 uppercase tracking-wider block px-1">Câu Hỏi Thường Gặp</span>
+          <div class="space-y-1.5 text-xs font-medium">
+            <button onclick="askPreset('Hóa đơn trên 5 triệu trả tiền mặt có được khấu trừ thuế GTGT không?')" class="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-blue-700 border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center gap-2">
+              <i class="fa-solid fa-receipt text-red-600 shrink-0"></i>
+              <span class="line-clamp-2">Khấu trừ hóa đơn từ 5 triệu (NĐ 144)</span>
+            </button>
+
+            <button onclick="askPreset('Hộ kinh doanh doanh thu 2 tỷ kê khai thuế theo mẫu nào và nộp ở đâu?')" class="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-blue-700 border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center gap-2">
+              <i class="fa-solid fa-store text-blue-600 shrink-0"></i>
+              <span class="line-clamp-2">Hộ kinh doanh kê khai Mẫu 01/CNKD</span>
+            </button>
+
+            <button onclick="askPreset('Quán cà phê bán kèm cả bia rượu và đồ ăn sáng thì tính thuế GTGT và TNCN mấy % theo luật?')" class="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-blue-700 border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center gap-2">
+              <i class="fa-solid fa-mug-saucer text-amber-600 shrink-0"></i>
+              <span class="line-clamp-2">Quán cà phê bán bia tính thuế mấy %?</span>
+            </button>
+
+            <button onclick="askPreset('Thuê kế toán ngoài làm sổ sách thì Giám đốc có bị chịu trách nhiệm pháp lý không?')" class="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-blue-700 border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center gap-2">
+              <i class="fa-solid fa-gavel text-red-600 shrink-0"></i>
+              <span class="line-clamp-2">Trách nhiệm Giám đốc vs Kế toán</span>
+            </button>
+
+            <button onclick="askPreset('Báo giá chữ ký số EFY-CA gói 3 năm bao nhiêu?')" class="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-blue-700 border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center gap-2">
+              <i class="fa-solid fa-key text-blue-600 shrink-0"></i>
+              <span class="line-clamp-2">Báo giá Chữ ký số EFY-CA 3 năm</span>
+            </button>
           </div>
         </div>
 
       </div>
 
-      <!-- CÂU HỎI GỢI Ý NHANH (CHỦ ĐẠO XANH & ĐỎ) -->
-      <div class="space-y-1.5 pt-1">
-        <span class="text-xs font-black text-slate-500 uppercase tracking-wider block">Gợi ý câu hỏi kiểm tra nhanh:</span>
-        <div class="flex flex-wrap gap-2 text-xs sm:text-sm">
-          
-          <button onclick="askPreset('Hóa đơn trên 5 triệu trả tiền mặt có được khấu trừ thuế GTGT không?')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-blue-50 text-blue-700 dark:text-blue-400 border-2 border-blue-400 font-bold transition cursor-pointer shadow-sm">
-            🧾 Hóa đơn trên 5 triệu có được khấu trừ?
-          </button>
+      <!-- ĐÁY SIDEBAR: NÚT MỞ CỔNG RAG ẨN & LÀM MỚI PHIÊN -->
+      <div class="p-4 border-t-2 border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 space-y-2">
+        <a href="/quan-tri-tri-thuc.html" class="w-full py-2.5 px-3 rounded-xl bg-white dark:bg-slate-800 border-2 border-blue-600 hover:bg-blue-50 text-blue-700 dark:text-blue-300 text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
+          <i class="fa-solid fa-book-bookmark"></i>
+          <span>Mở Cổng Quản Trị RAG</span>
+        </a>
 
-          <button onclick="askPreset('Hộ kinh doanh doanh thu 2 tỷ kê khai thuế theo mẫu nào và nộp ở đâu?')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-red-50 text-red-600 dark:text-red-400 border-2 border-red-400 font-bold transition cursor-pointer shadow-sm">
-            🏪 Hộ kinh doanh kê khai Mẫu 01/CNKD?
-          </button>
+        <button onclick="resetSession()" class="w-full py-2 px-3 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-arrows-rotate"></i>
+          <span>Làm Mới Phiên Hội Thoại</span>
+        </button>
+      </div>
 
-          <button onclick="askPreset('Quán cà phê bán kèm cả bia rượu và đồ ăn sáng thì tính thuế GTGT và TNCN mấy % theo luật?')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-blue-50 text-blue-700 dark:text-blue-400 border border-slate-300 dark:border-slate-700 font-medium transition cursor-pointer shadow-sm">
-            ☕ Quán cà phê bán bia tính thuế mấy %?
-          </button>
+    </aside>
 
-          <button onclick="askPreset('Hóa đơn điện tử máy tính tiền xuất sai tiền thì xử lý theo Mẫu 04/SS thế nào?')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-red-50 text-red-600 dark:text-red-400 border border-slate-300 dark:border-slate-700 font-medium transition cursor-pointer shadow-sm">
-            📑 Xuất sai tiền xử lý Mẫu 04 ra sao?
-          </button>
+    <!-- ================= CỘT PHẢI: KHÔNG GIAN CHAT TRÀN MÀN HÌNH (MAIN WORKSPACE 100%) ================= -->
+    <main class="flex-1 flex flex-col h-full bg-slate-100/60 dark:bg-slate-950 overflow-hidden relative">
+      
+      <!-- THANH TRẠNG THÁI TRÊN ĐẦU PHÒNG CHAT -->
+      <div class="h-12 shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 flex items-center justify-between text-xs font-medium z-10">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="font-black text-blue-900 dark:text-blue-400 uppercase tracking-wider text-xs sm:text-sm">Phòng Hội Thoại Trực Tuyến Đa Tác Tử</span>
+          <span id="sessionProfileBadge" class="hidden text-xs text-blue-700 dark:text-blue-300 font-mono font-bold bg-blue-50 dark:bg-blue-950 px-2 py-0.5 rounded-lg border border-blue-200"></span>
+        </div>
 
-          <button onclick="askPreset('Thuê kế toán ngoài làm sổ sách thì Giám đốc có bị chịu trách nhiệm pháp lý không?')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-blue-50 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 font-medium transition cursor-pointer shadow-sm">
-            ⚖️ Trách nhiệm của Giám đốc vs Kế toán?
-          </button>
-
-          <button onclick="askPreset('Báo giá chữ ký số EFY-CA gói 3 năm bao nhiêu?')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-blue-50 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 font-medium transition cursor-pointer shadow-sm">
-            🔑 Báo giá Chữ ký số EFY-CA?
-          </button>
-
+        <div class="flex items-center gap-2">
+          <span id="agentActiveBadge" class="text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full border border-slate-300 dark:border-slate-700">
+            Sẵn sàng lắng nghe
+          </span>
         </div>
       </div>
 
-      <!-- Ô NHẬP CÂU HỎI (TO, CAO, NÚT BẤM XANH & ĐỎ) -->
-      <form onsubmit="sendChat(event)" class="flex gap-2 pt-2">
-        <input type="text" id="userInput" placeholder="Nhập câu hỏi của bạn tại đây để AI Swarm tra cứu RAG và trả lời..." class="flex-1 px-4 sm:px-5 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm sm:text-base font-medium focus:outline-none focus:border-blue-600 shadow-inner" />
+      <!-- VÙNG TIN NHẮN CHAT (TRÀN TOÀN BỘ MÀN HÌNH, TỰ ĐỘNG GIÃN CỠ CHỮ) -->
+      <div id="chatBox" class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-5 text-sm sm:text-base">
         
-        <button type="submit" id="btnSend" class="btn-blue px-6 sm:px-8 py-3.5 text-sm sm:text-base font-black whitespace-nowrap flex items-center gap-2 cursor-pointer shadow-md rounded-xl">
-          <i class="fa-solid fa-paper-plane text-yellow-300"></i>
-          <span>Gửi Hỏi</span>
-        </button>
-      </form>
+        <!-- Tin nhắn mở đầu của AI -->
+        <div class="flex items-start gap-3.5 max-w-4xl">
+          <div class="w-10 h-10 rounded-2xl bg-blue-700 text-white flex items-center justify-center font-black shrink-0 text-sm shadow-md">AI</div>
+          <div class="space-y-1.5 flex-1">
+            <span class="text-xs font-black text-blue-700 dark:text-blue-400 uppercase tracking-wider block">Front-line Support Agent (Tác Tử Tiếp Nhận)</span>
+            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 leading-relaxed shadow-sm font-sans">
+              Dạ Đất Phú xin kính chào Quý khách! 
+              <br><br>
+              Hệ thống Điều hành Đa tác tử AI Swarm đã được kết nối trực tiếp với <b>Kho Tri Thức Pháp Lý RAG Chuẩn 6K Kín Kẽ OS</b> của <b>Công Ty TNHH Thương Mại Đất Phú (Tuy Hòa, Phú Yên)</b>.
+              <br><br>
+              Hệ thống hỗ trợ giải đáp tức thì:
+              <ul class="list-disc pl-5 mt-2 space-y-1 text-slate-700 dark:text-slate-300">
+                <li>Quy định khấu trừ thuế GTGT đầu vào từ <b>05 triệu đồng</b> theo <b>Nghị định 144/2026/NĐ-CP</b>.</li>
+                <li>Hồ sơ kê khai thuế Hộ kinh doanh theo quý bằng <b>Mẫu 01/CNKD</b> và cập nhật app <b>eTax Mobile</b> theo <b>Nghị định 68 & 141/2026</b>.</li>
+                <li>Chính sách Hóa đơn điện tử máy tính tiền theo <b>Nghị định 254/2026/NĐ-CP</b> (miễn chữ ký số từng hóa đơn).</li>
+                <li>Trách nhiệm pháp lý của Người đại diện theo pháp luật (Giám đốc) theo Luật Kế toán 2015.</li>
+              </ul>
+              <br>
+              Quý khách vui lòng đặt câu hỏi ở khung bên dưới để được chuyên viên AI giải đáp ngay nhé!
+            </div>
+          </div>
+        </div>
 
-    </div>
+      </div>
 
-  </main>
+      <!-- KHUNG NHẬP CÂU HỎI TRÀN VIỀN (STICKY BOTTOM INPUT BAR) -->
+      <div class="shrink-0 p-4 sm:p-5 bg-white dark:bg-slate-900 border-t-2 border-slate-200 dark:border-slate-800 shadow-xl">
+        <form onsubmit="sendChat(event)" class="max-w-5xl mx-auto flex items-center gap-3">
+          
+          <div class="flex-1 relative">
+            <input type="text" id="userInput" placeholder="Nhập câu hỏi tại đây (VD: Quán cà phê bán bia tính thuế mấy %, hóa đơn trên 5 triệu có được khấu trừ...)" class="w-full px-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm sm:text-base font-medium focus:outline-none focus:border-blue-600 shadow-inner" />
+          </div>
 
-  <!-- ================= FOOTER DOANH NGHIỆP ================= -->
-  <footer class="max-w-6xl w-full mx-auto px-4 border-t-2 border-slate-200 dark:border-slate-800 pt-5 pb-5 text-center text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-6">
-    <p class="font-bold text-slate-800 dark:text-slate-200">© 2026 CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ</p>
-    <p class="mt-1">Hotline / Zalo: <a href="https://zalo.me/0979991898" target="_blank" class="text-red-600 font-mono font-bold hover:underline">0979.991.898</a> • Mã số thuế: <span class="text-blue-700 dark:text-blue-400 font-mono font-bold">4401020233</span></p>
-    <p class="mt-0.5">Địa chỉ: <span class="text-slate-700 dark:text-slate-300 font-medium">172 Ngô Gia Tự, Khu phố 3, Phường Phú Đông, Thành phố Tuy Hòa, Tỉnh Phú Yên</span> <a href="/quan-tri-tri-thuc.html" class="text-slate-300 hover:text-blue-600 transition ml-1 select-none" title="Cổng Quản Trị RAG Nội Bộ">•</a></p>
-  </footer>
+          <button type="submit" id="btnSend" class="btn-blue px-7 sm:px-9 py-4 rounded-2xl text-sm sm:text-base font-black whitespace-nowrap flex items-center gap-2 cursor-pointer shadow-md shrink-0">
+            <i class="fa-solid fa-paper-plane text-yellow-300"></i>
+            <span>Gửi Hỏi</span>
+          </button>
 
-  <!-- ================= SCRIPT LOGIC VẬN HÀNH AI SWARM & GIAO DIỆN ================= -->
+        </form>
+
+        <div class="max-w-5xl mx-auto mt-2 text-center text-xs text-slate-400">
+          Trụ sở: 172 Ngô Gia Tự, P. Phú Đông, TP. Tuy Hòa, Tỉnh Phú Yên • Hotline/Zalo: 0979.991.898 • Gõ <span class="font-mono text-blue-600 font-bold">/rag</span> để vào Cổng Quản Trị
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- ================= SCRIPT LOGIC VẬN HÀNH ================= -->
   <script>
     let currentFontScale = 1;
+    let isSidebarOpen = true;
+
+    // Thu gọn / Mở rộng Sidebar
+    function toggleSidebar() {
+      const sidebar = document.getElementById('mainSidebar');
+      isSidebarOpen = !isSidebarOpen;
+      if (isSidebarOpen) {
+        sidebar.classList.remove('-ml-80');
+      } else {
+        sidebar.classList.add('-ml-80');
+      }
+    }
 
     // Chỉnh cỡ chữ A- / A / A+
     function changeFontSize(delta) {
@@ -337,9 +413,14 @@
         currentFontScale = savedScale;
         document.documentElement.style.setProperty('--font-scale', currentFontScale);
       }
+
+      // Tự động thu gọn trên mobile
+      if (window.innerWidth < 768) {
+        toggleSidebar();
+      }
     }
 
-    // Cơ chế mở cổng RAG ẩn: Click 5 lần vào Logo AI hoặc gõ lệnh /rag
+    // Cơ chế mở cổng RAG ẩn: Click 5 lần vào Logo AI
     let logoClickCount = 0;
     let logoClickTimer = null;
     function handleSecretLogoClick() {
@@ -371,9 +452,9 @@
       }
       const chatBox = document.getElementById('chatBox');
       chatBox.innerHTML = `
-        <div class="flex items-start gap-3">
-          <div class="w-9 h-9 rounded-xl bg-blue-700 text-white flex items-center justify-center font-black shrink-0 text-xs shadow-md">AI</div>
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border-2 border-blue-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 max-w-2xl leading-relaxed shadow-sm font-sans">
+        <div class="flex items-start gap-3.5 max-w-4xl">
+          <div class="w-10 h-10 rounded-2xl bg-blue-700 text-white flex items-center justify-center font-black shrink-0 text-sm shadow-md">AI</div>
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 leading-relaxed shadow-sm font-sans flex-1">
             Đã làm mới phiên hội thoại! Hệ thống AI Swarm sẵn sàng tiếp nhận các câu hỏi mới của bạn.
           </div>
         </div>
@@ -383,6 +464,10 @@
     function askPreset(text) {
       document.getElementById('userInput').value = text;
       sendChat();
+      // Nếu đang ở màn hình điện thoại thì đóng sidebar
+      if (window.innerWidth < 768 && isSidebarOpen) {
+        toggleSidebar();
+      }
     }
 
     async function sendChat(e) {
@@ -403,19 +488,18 @@
       const badge = document.getElementById('agentActiveBadge');
       const profileBadge = document.getElementById('sessionProfileBadge');
 
-      // 1. Thêm tin nhắn của User vào khung (Bong bóng màu Đỏ Thương Hiệu nổi bật)
+      // 1. Thêm tin nhắn của User vào khung (Bong bóng màu Đỏ Nổi Bật)
       chatBox.innerHTML += `
-        <div class="flex items-start justify-end gap-3">
-          <div class="p-4 rounded-2xl bg-red-600 text-white font-medium max-w-2xl leading-relaxed shadow-md font-sans">
+        <div class="flex items-start justify-end gap-3.5 max-w-4xl ml-auto">
+          <div class="p-4 sm:p-5 rounded-2xl bg-red-600 text-white font-medium leading-relaxed shadow-md font-sans">
             ${text}
           </div>
-          <div class="w-9 h-9 rounded-xl bg-slate-800 text-white flex items-center justify-center font-black shrink-0 text-xs shadow-md">Bạn</div>
+          <div class="w-10 h-10 rounded-2xl bg-slate-800 text-white flex items-center justify-center font-black shrink-0 text-sm shadow-md">Bạn</div>
         </div>
       `;
       input.value = '';
       chatBox.scrollTop = chatBox.scrollHeight;
 
-      // Trạng thái đang xử lý
       btn.disabled = true;
       const oldBtnText = btn.innerHTML;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
@@ -446,12 +530,10 @@
         const replyText = res.reply || res.fallbackReply || 'Đã ghi nhận yêu cầu!';
         const latency = res.latencyMs ? `(${res.latencyMs}ms)` : '';
 
-        // Cập nhật lịch sử cục bộ
         chatTurnsHistory.push({ role: 'user', content: text });
         chatTurnsHistory.push({ role: 'model', content: replyText });
         if (chatTurnsHistory.length > 10) chatTurnsHistory = chatTurnsHistory.slice(-10);
 
-        // Hiển thị hồ sơ nhận diện nếu có
         if (res.customerProfile && (res.customerProfile.name || res.customerProfile.phone || res.customerProfile.businessType)) {
           const p = res.customerProfile;
           let label = '<i class="fa-solid fa-user-check mr-1"></i> Đã nhớ: ';
@@ -464,21 +546,20 @@
 
         badge.innerHTML = `<span class="text-emerald-700 dark:text-emerald-400 font-bold"><i class="fa-solid fa-check mr-1"></i> ${agentName} ${latency}</span>`;
 
-        // Huy hiệu trích dẫn căn cứ pháp lý RAG nếu có
         let ragPill = '';
         if (Array.isArray(res.ragEvidence) && res.ragEvidence.length > 0) {
           const docs = res.ragEvidence.map(e => e.doc + ' (' + e.article + ')').join(' • ');
           ragPill = `<div class="inline-block text-xs text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-950/60 border border-red-300 dark:border-red-800 px-3 py-1 rounded-lg mb-2 font-semibold"><i class="fa-solid fa-scale-balanced mr-1 text-red-600"></i><b>Căn cứ RAG:</b> ${docs}</div>`;
         }
 
-        // 2. Thêm tin nhắn của AI vào khung (Bong bóng trắng/xám sáng, viền xanh)
+        // 2. Thêm tin nhắn của AI vào khung
         chatBox.innerHTML += `
-          <div class="flex items-start gap-3">
-            <div class="w-9 h-9 rounded-xl bg-blue-700 text-white flex items-center justify-center font-black shrink-0 text-xs shadow-md">AI</div>
-            <div class="space-y-1.5 max-w-2xl">
+          <div class="flex items-start gap-3.5 max-w-4xl">
+            <div class="w-10 h-10 rounded-2xl bg-blue-700 text-white flex items-center justify-center font-black shrink-0 text-sm shadow-md">AI</div>
+            <div class="space-y-1.5 flex-1">
               <span class="text-xs font-black text-blue-700 dark:text-blue-400 block">${agentName}</span>
               ${ragPill}
-              <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 leading-relaxed whitespace-pre-line shadow-sm font-sans">
+              <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 leading-relaxed whitespace-pre-line shadow-sm font-sans">
                 ${replyText}
               </div>
             </div>
