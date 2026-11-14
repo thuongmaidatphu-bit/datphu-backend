@@ -84,8 +84,11 @@ function inspectRequest(req, pathname, body = {}, parsedUrl = null) {
   const ip = getClientIP(req);
   const now = Date.now();
 
-  // BƯỚC 1: Kiểm tra IP có đang bị cách ly không
-  if (quarantinedIPs.has(ip)) {
+  // BƯỚC 1: Kiểm tra IP có đang bị cách ly không (Ngoại trừ cổng RAG, Swarm, Lead và Unban)
+  const isProtectedCoreEndpoint = pathname.startsWith('/api/rag') || pathname.startsWith('/api/swarm') || pathname.startsWith('/api/lead') || pathname.includes('/unban');
+  if (isProtectedCoreEndpoint) {
+    // Luôn cho phép truy cập cổng nghiệp vụ của Đất Phú
+  } else if (quarantinedIPs.has(ip)) {
     const banInfo = quarantinedIPs.get(ip);
     if (now < banInfo.expiresAt) {
       stats.threatsBlocked += 1;
