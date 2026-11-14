@@ -173,14 +173,14 @@ Hoặc quý khách gọi trực tiếp Hotline điều phối **0979.991.898** �
   }
 
   return `Dạ Đất Phú Gen 4 xin chào quý khách! Hệ thống Đa tác tử AI Swarm đã tiếp nhận yêu cầu của bạn. 
-Để được hỗ trợ chi tiết về Hóa đơn điện tử máy tính tiền NĐ 254, Chữ ký số EFY-CA hoặc Hỗ trợ kỹ thuật UltraViewer, quý khách vui lòng nhắn trực tiếp qua Hotline / Zalo: **0979.991.898** (Địa chỉ: 21/146 Ngô Gia Tự, TP. Buôn Ma Thuột / Tuy Hòa) để chuyên viên hỗ trợ tức thì ạ!`;
+Để được hỗ trợ chi tiết về Hóa đơn điện tử máy tính tiền NĐ 254, Chữ ký số EFY-CA hoặc Hỗ trợ kỹ thuật UltraViewer, quý khách vui lòng nhắn trực tiếp qua Hotline / Zalo: **0979.991.898** (Địa chỉ: 172 Ngô Gia Tự, Khu phố 3, Phường Phú Đông, Thành phố Tuy Hòa, Tỉnh Phú Yên) để chuyên viên hỗ trợ tức thì ạ!`;
 }
 
 const DATPHU_KNOWLEDGE_BASE = `
 THÔNG TIN DOANH NGHIỆP:
 - Tên đơn vị: CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ (MST: 4401020233)
 - Hotline / Zalo chính thức: 0979.991.898
-- Địa chỉ: 21/146 Ngô Gia Tự, Phường Phú Yên, Tỉnh Đắk Lắk (và chi nhánh Phú Yên)
+- Địa chỉ: 172 Ngô Gia Tự, Khu phố 3, Phường Phú Đông, Thành phố Tuy Hòa, Tỉnh Phú Yên
 - Châm ngôn: "Dịu dàng với chính mình, nghiêm túc với con số • Quy chuẩn 6K Kín Kẽ OS"
 
 BIỂU PHÍ DỊCH VỤ SỐ ĐẤT PHÚ GEN 4:
@@ -330,7 +330,7 @@ ${ragContext}
 ${specificRolePrompt}
 
 # QUY CHUẨN PHẢN HỒI:
-- Trả lời bằng tiếng Việt gãy gọn, chuyên nghiệp, ấm áp, đậm chất phục vụ bà con và doanh nghiệp Phú Yên, Đắk Lắk.
+- Trả lời bằng tiếng Việt gãy gọn, chuyên nghiệp, ấm áp, đậm chất phục vụ bà con và doanh nghiệp Phú Yên.
 - Luôn bám sát số liệu giá cả trong kho tri thức, KHÔNG ĐƯỢC TỰ BỊA ĐẶT GIÁ.
 - Nếu có điều khoản RAG pháp lý, hãy trích dẫn ngắn gọn số điều và nghị định để khách hàng an tâm tuyệt đối về mặt tuân thủ.
 - Cuối câu luôn mời khách hàng liên hệ Hotline / Zalo: 0979.991.898 hoặc để lại số điện thoại để hỗ trợ trong 15 phút.
