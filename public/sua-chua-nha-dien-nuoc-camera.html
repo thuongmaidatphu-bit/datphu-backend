@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dịch Vụ Sửa Chữa Nhà Ở • Điện Nước • Camera Phú Yên — Đội Thợ Đất Phú</title>
+  <meta name="description" content="Dịch vụ thợ chuyên nghiệp tại Phú Yên: Sửa chữa nhà ở, chống thấm dột, sửa điện nước khẩn cấp 24/7, lắp đặt camera an ninh chính hãng. Hotline: 097 999 1898 - 0944 971 257.">
+  <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Font Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .hero-gradient {
+      background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #b91c1c 100%);
+    }
+    .brand-blue { color: #1d4ed8; }
+    .bg-brand-blue { background-color: #1d4ed8; }
+    .brand-red { color: #dc2626; }
+    .bg-brand-red { background-color: #dc2626; }
+    
+    .card-shadow {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-shadow:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 30px -10px rgba(29, 78, 216, 0.12), 0 10px 15px -5px rgba(220, 38, 38, 0.08);
+    }
+    .pulse-call {
+      animation: pulse-ring 2s infinite;
+    }
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(220, 38, 38, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- ================= TOPBAR THÔNG TIN LIÊN HỆ ================= -->
+  <div class="bg-slate-900 text-slate-200 text-xs py-2 px-3 sm:px-6 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 text-amber-400 font-bold">
+          <i class="fa-solid fa-location-dot"></i> 172 Ngô Gia Tự, P. Phú Đông, TP. Tuy Hòa, Phú Yên
+        </span>
+        <span class="hidden md:inline text-slate-500">•</span>
+        <span class="hidden md:inline text-slate-300">Phục vụ 24/7 toàn tỉnh Phú Yên (Có mặt sau 30 phút)</span>
+      </div>
+      <div class="flex items-center gap-4 font-mono font-bold">
+        <a href="tel:0979991898" class="text-rose-400 hover:text-rose-300 flex items-center gap-1">
+          <i class="fa-solid fa-phone"></i> 097 999 1898
+        </a>
+        <span class="text-slate-600">|</span>
+        <a href="tel:0944971257" class="text-sky-400 hover:text-sky-300 flex items-center gap-1">
+          <i class="fa-solid fa-headset"></i> 0944 971 257
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= THANH ĐIỀU HƯỚNG CHÍNH ================= -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
+      
+      <!-- LOGO & TÊN THƯƠNG HIỆU -->
+      <a href="/sua-chua-nha-dien-nuoc-camera.html" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-700 via-blue-600 to-red-600 text-white flex items-center justify-center font-black text-xl shadow-md shadow-blue-700/20 group-hover:scale-105 transition">
+          ĐP
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-black text-base sm:text-lg text-slate-900 tracking-tight uppercase">
+              ĐẤT PHÚ <span class="text-red-600">KỸ THUẬT</span>
+            </span>
+            <span class="text-[10px] font-black uppercase tracking-wider bg-red-100 text-red-700 px-2 py-0.5 rounded-full border border-red-200">
+              PHÚ YÊN
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 font-semibold truncate">
+            Sửa Chữa Nhà Ở • Điện Nước 24/7 • Camera Giám Sát
+          </p>
+        </div>
+      </a>
+
+      <!-- MENU ĐIỀU HƯỚNG -->
+      <nav class="hidden lg:flex items-center gap-6 text-sm font-bold text-slate-700">
+        <a href="#dich-vu" class="hover:text-blue-700 transition">3 Dịch Vụ Cốt Lõi</a>
+        <a href="#bang-gia" class="hover:text-blue-700 transition">Bảng Giá</a>
+        <a href="#hinh-anh" class="hover:text-blue-700 transition">Hình Ảnh Thực Tế</a>
+        <a href="#lien-ket" class="hover:text-blue-700 transition">Thợ Xây & Cơ Khí</a>
+        <a href="/ai-swarm.html" class="text-blue-600 hover:text-blue-800 flex items-center gap-1.5 bg-blue-50 px-3 py-1.5 rounded-xl border border-blue-200">
+          <i class="fa-solid fa-robot"></i> AI Swarm Tư Vấn
+        </a>
+      </nav>
+
+      <!-- NÚT GỌI THỢ NGAY -->
+      <div class="flex items-center gap-2.5">
+        <a href="https://zalo.me/0979991898" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 text-xs font-bold transition">
+          <i class="fa-solid fa-comment-dots text-sm"></i>
+          <span>Chat Zalo</span>
+        </a>
+        <a href="tel:0979991898" class="pulse-call inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-red-600/30 transition active:scale-95">
+          <i class="fa-solid fa-phone"></i>
+          <span>GỌI THỢ NGAY</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO BANNER CHUYÊN BIỆT ================= -->
+  <section class="hero-gradient text-white py-12 md:py-16 px-4 sm:px-6 relative overflow-hidden">
+    <!-- Họa tiết nền -->
+    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+      
+      <!-- CỘT NỘI DUNG CHÍNH -->
+      <div class="lg:col-span-7 space-y-5">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-xs font-bold text-amber-300">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+          ĐỘI THỢ CHÍNH CHỦ CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ
+        </div>
+
+        <h1 class="text-2xl sm:text-3xl md:text-5xl font-black leading-tight tracking-tight">
+          DỊCH VỤ SỬA CHỮA NHÀ Ở <br/>
+          <span class="text-amber-300">ĐIỆN NƯỚC • CAMERA</span> PHÚ YÊN
+        </h1>
+
+        <p class="text-sm sm:text-base text-blue-100 max-w-2xl leading-relaxed font-normal">
+          Đội ngũ thợ mặc áo đồng phục xanh chuyên nghiệp, trang bị xe tải chở hàng riêng (<span class="font-bold text-white underline">78C-105.46</span>) và kho thiết bị vệ sinh, bồn cầu, gạch men sẵn có. Có mặt khảo sát tận nơi sau <strong>30 phút</strong> tại TP. Tuy Hòa, TX. Đông Hòa, TX. Sông Cầu và các huyện!
+        </p>
+
+        <!-- ĐIỂM NỔI BẬT NHANH -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs font-bold text-slate-100">
+          <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md p-2.5 rounded-xl border border-white/15">
+            <i class="fa-solid fa-bolt text-amber-400 text-sm"></i>
+            <span>Cứu Hộ Điện Nước 24/7</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md p-2.5 rounded-xl border border-white/15">
+            <i class="fa-solid fa-shield-halved text-emerald-400 text-sm"></i>
+            <span>Bảo Hành Tận Nơi 24T</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md p-2.5 rounded-xl border border-white/15 col-span-2 sm:col-span-1">
+            <i class="fa-solid fa-file-invoice-dollar text-rose-400 text-sm"></i>
+            <span>Khảo Sát & Báo Giá Miễn Phí</span>
+          </div>
+        </div>
+
+        <!-- CỤM NÚT KÊU GỌI HÀNH ĐỘNG -->
+        <div class="flex flex-wrap items-center gap-3 pt-4">
+          <a href="tel:0979991898" class="px-6 py-3.5 rounded-2xl bg-red-600 hover:bg-red-500 text-white font-black text-sm md:text-base shadow-xl shadow-red-600/40 flex items-center gap-2.5 transition active:scale-95">
+            <i class="fa-solid fa-phone text-lg animate-bounce"></i>
+            <span>097 999 1898 (GỌI THỢ NGAY)</span>
+          </a>
+          <a href="tel:0944971257" class="px-5 py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-blue-900 font-black text-sm md:text-base shadow-lg transition active:scale-95 flex items-center gap-2">
+            <i class="fa-solid fa-headset text-blue-700"></i>
+            <span>0944 971 257</span>
+          </a>
+          <a href="#dat-lich" class="px-5 py-3.5 rounded-2xl bg-white/20 hover:bg-white/30 text-white font-bold text-sm border border-white/30 backdrop-blur-md transition">
+            <i class="fa-solid fa-calendar-check mr-1.5"></i> Đặt Lịch Hẹn
+          </a>
+        </div>
+      </div>
+
+      <!-- CỘT HÌNH ẢNH NỔI BẬT (ĐỒNG PHỤC & XE TẢI THỰC TẾ) -->
+      <div class="lg:col-span-5 grid grid-cols-2 gap-3.5">
+        <div class="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/30 group">
+          <img src="/img/real_services/dong_phuc_tho_phu_yen.jpg" alt="Đồng phục thợ Phú Yên" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex flex-col justify-end p-3">
+            <span class="text-xs font-black text-white">ĐỒNG PHỤC THỢ PHÚ YÊN</span>
+            <span class="text-[10px] text-amber-300 font-bold">In sẵn 2 số Hotline sau lưng</span>
+          </div>
+        </div>
+
+        <div class="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/30 group">
+          <img src="/img/real_services/xe_tai_78c_cho_cua_nhom_kinh.jpg" alt="Xe tải 78C-105.46 Phú Yên" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex flex-col justify-end p-3">
+            <span class="text-xs font-black text-white">XE TẢI 78C-105.46</span>
+            <span class="text-[10px] text-emerald-300 font-bold">Chở cửa nhôm kính & vật tư</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= 3 TRỤ CỘT DỊCH VỤ CỐT LÕI (CHUYÊN BIỆT) ================= -->
+  <section id="dich-vu" class="py-14 px-4 sm:px-6 max-w-7xl mx-auto w-full">
+    
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span class="text-xs font-black uppercase tracking-wider text-blue-700 bg-blue-100 px-3 py-1 rounded-full border border-blue-200">
+        NĂNG LỰC THI CÔNG TRỰC TIẾP
+      </span>
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 mt-3 tracking-tight">
+        3 DỊCH VỤ KỸ THUẬT CHỦ LỰC TẠI PHÚ YÊN
+      </h2>
+      <p class="text-slate-600 text-sm mt-2 leading-relaxed">
+        Thi công chuẩn kỹ thuật • Bảo hành chu đáo • Minh bạch từng đồng theo chuẩn Kín Kẽ OS
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <!-- DỊCH VỤ 1: SỬA CHỮA NHÀ Ở -->
+      <div class="bg-white rounded-3xl p-6 border-2 border-slate-200 card-shadow flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-28 h-28 bg-red-500/5 rounded-bl-full pointer-events-none"></div>
+        <div>
+          <!-- Ảnh đại diện dịch vụ -->
+          <div class="relative rounded-2xl overflow-hidden h-48 mb-5 border border-slate-200">
+            <img src="/img/real_services/xe_tai_78c_cho_cua_nhom_kinh.jpg" alt="Sửa chữa nhà ở Phú Yên" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <div class="absolute top-3 left-3 bg-red-600 text-white text-[11px] font-black uppercase px-2.5 py-1 rounded-lg shadow-sm">
+              <i class="fa-solid fa-house-chimney-crack mr-1"></i> Dịch Vụ 1
+            </div>
+          </div>
+
+          <h3 class="text-xl font-black text-slate-900 mb-2">
+            Sửa Chữa Nhà Ở & Chống Thấm Dột
+          </h3>
+          <p class="text-xs text-red-600 font-bold uppercase tracking-wider mb-3">
+            Cải Tạo Nhà Cũ • Chống Dột Mùa Mưa • Ốp Lát
+          </p>
+
+          <ul class="space-y-2 text-xs text-slate-600 mb-6 border-t border-slate-100 pt-3">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-red-600 mt-0.5"></i>
+              <span><strong>Xử lý chống thấm triệt để:</strong> Nứt tường, thấm trần sàn bê tông, dột mái tôn mùa mưa bão.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-red-600 mt-0.5"></i>
+              <span><strong>Cơi nới nâng cấp:</strong> Nâng tầng, xây thêm phòng, đập thông tường, xây tô trát vữa hoàn thiện.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-red-600 mt-0.5"></i>
+              <span><strong>Ốp lát & Sơn nước:</strong> Lát gạch men nền/tường, sơn nước chống bám bẩn cho nhà phố, quán ăn, cửa hàng.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-red-600 mt-0.5"></i>
+              <span><strong>Vận chuyển trọn gói:</strong> Xe tải 78C và xe ba gác chuyển đồ đạc, chở vật liệu tận chân công trình.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <span class="text-xs text-slate-500 font-semibold">Khảo sát miễn phí</span>
+          <a href="tel:0979991898" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
+            <i class="fa-solid fa-phone"></i> Gọi Khảo Sát
+          </a>
+        </div>
+      </div>
+
+      <!-- DỊCH VỤ 2: ĐIỆN NƯỚC CỨU HỘ 24/7 -->
+      <div class="bg-white rounded-3xl p-6 border-2 border-blue-500/40 card-shadow flex flex-col justify-between relative overflow-hidden group shadow-blue-500/10 ring-2 ring-blue-500/20">
+        <div class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded-bl-xl shadow-xs">
+          Nhu Cầu Cao Nhất
+        </div>
+        <div>
+          <!-- Ảnh đại diện dịch vụ -->
+          <div class="relative rounded-2xl overflow-hidden h-48 mb-5 border border-slate-200">
+            <img src="/img/real_services/lap_binh_nong_lanh_ariston.png" alt="Sửa chữa điện nước Phú Yên" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <div class="absolute top-3 left-3 bg-blue-600 text-white text-[11px] font-black uppercase px-2.5 py-1 rounded-lg shadow-sm">
+              <i class="fa-solid fa-bolt mr-1"></i> Dịch Vụ 2
+            </div>
+          </div>
+
+          <h3 class="text-xl font-black text-slate-900 mb-2">
+            Sửa Chữa & Lắp Đặt Điện Nước 24/7
+          </h3>
+          <p class="text-xs text-blue-700 font-bold uppercase tracking-wider mb-3">
+            Xử Lý Sự Cố Khẩn • Lắp Bình Ariston • Thiết Bị Vệ Sinh
+          </p>
+
+          <ul class="space-y-2 text-xs text-slate-600 mb-6 border-t border-slate-100 pt-3">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-blue-600 mt-0.5"></i>
+              <span><strong>Cứu hộ điện khẩn cấp:</strong> Chập điện, nổ cầu dao, nhảy aptomat liên tục, mất pha điện gia đình & kinh doanh.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-blue-600 mt-0.5"></i>
+              <span><strong>Sửa rò rỉ nước:</strong> Bục vỡ đường ống nước ngầm, nước chảy yếu, tắc bồn cầu, thay phao cơ/phao điện tự động.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-blue-600 mt-0.5"></i>
+              <span><strong>Lắp bình nước nóng Ariston:</strong> Đấu nối an toàn chống giật ELCB, dây cấp mềm inox thẩm mỹ, chịu áp lực.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-blue-600 mt-0.5"></i>
+              <span><strong>Tổng kho thiết bị vệ sinh:</strong> Cung cấp bồn cầu khối, sen vòi, gương LED chính hãng sẵn tại kho Phú Yên.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <span class="text-xs text-blue-700 font-bold">Trực cứu hộ 24/7</span>
+          <a href="tel:0944971257" class="px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
+            <i class="fa-solid fa-wrench"></i> Gọi Thợ Điện Nước
+          </a>
+        </div>
+      </div>
+
+      <!-- DỊCH VỤ 3: CAMERA AN NINH -->
+      <div class="bg-white rounded-3xl p-6 border-2 border-slate-200 card-shadow flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-28 h-28 bg-teal-500/5 rounded-bl-full pointer-events-none"></div>
+        <div>
+          <!-- Ảnh đại diện dịch vụ -->
+          <div class="relative rounded-2xl overflow-hidden h-48 mb-5 border border-slate-200">
+            <img src="/img/real_services/sua_dien_nuoc_mang.png" alt="Lắp đặt camera Phú Yên" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <div class="absolute top-3 left-3 bg-teal-600 text-white text-[11px] font-black uppercase px-2.5 py-1 rounded-lg shadow-sm">
+              <i class="fa-solid fa-video mr-1"></i> Dịch Vụ 3
+            </div>
+          </div>
+
+          <h3 class="text-xl font-black text-slate-900 mb-2">
+            Lắp Đặt Camera An Ninh & Wi-Fi
+          </h3>
+          <p class="text-xs text-teal-700 font-bold uppercase tracking-wider mb-3">
+            Xem Qua Điện Thoại • Có Màu Ban Đêm • Đàm Thoại 2 Chiều
+          </p>
+
+          <ul class="space-y-2 text-xs text-slate-600 mb-6 border-t border-slate-100 pt-3">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-teal-600 mt-0.5"></i>
+              <span><strong>Camera gia đình & cửa hàng:</strong> Quan sát sắc nét Full HD/2K/4K, xem mượt mà qua điện thoại mọi lúc mọi nơi.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-teal-600 mt-0.5"></i>
+              <span><strong>Công nghệ ban đêm có màu:</strong> Đèn trợ sáng thông minh, còi hú báo động khi có người lạ đột nhập vùng cấm.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-teal-600 mt-0.5"></i>
+              <span><strong>Thi công cáp điện mạng chuẩn:</strong> Kéo dây mạng Viettel, dây cáp DEP 2x2.5 luồn ống gen thẩm mỹ, an toàn.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-teal-600 mt-0.5"></i>
+              <span><strong>Bảo hành chính hãng 24 tháng:</strong> Đổi mới thiết bị trong 12 tháng đầu, hỗ trợ kỹ thuật cài đặt tận nhà.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <span class="text-xs text-slate-500 font-semibold">Tặng thẻ nhớ khi lắp bộ</span>
+          <a href="tel:0979991898" class="px-4 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
+            <i class="fa-solid fa-phone"></i> Tư Vấn Camera
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= BẢNG GIÁ THAM KHẢO CÔNG KHAI (CHUẨN KÍN KẼ) ================= -->
+  <section id="bang-gia" class="py-12 px-4 sm:px-6 bg-slate-100 border-y border-slate-200">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-black uppercase tracking-wider text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-200">
+          MINH BẠCH CHI PHÍ
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-2.5">
+          BẢNG GIÁ THAM KHẢO DỊCH VỤ THỢ PHÚ YÊN
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+          Cam kết thợ báo giá trước khi làm • Không phát sinh phụ phí • Hóa đơn chứng từ đầy đủ
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Bảng giá Điện Nước -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 pb-3 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div>
+              <h4 class="font-black text-slate-900 text-base">Hạng Mục Điện Nước</h4>
+              <p class="text-xs text-slate-500">Khảo sát & sửa chữa nhanh</p>
+            </div>
+          </div>
+          <ul class="space-y-3 text-xs text-slate-700">
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Kiểm tra xử lý chập điện:</span>
+              <span class="font-bold text-blue-700">Từ 150.000đ</span>
+            </li>
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Lắp đặt bình nóng lạnh Ariston:</span>
+              <span class="font-bold text-blue-700">200.000đ - 300.000đ</span>
+            </li>
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Sửa rò rỉ, bục đường ống nước:</span>
+              <span class="font-bold text-blue-700">Từ 150.000đ</span>
+            </li>
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Lắp bồn cầu khối, lavabo:</span>
+              <span class="font-bold text-blue-700">250.000đ - 350.000đ</span>
+            </li>
+            <li class="flex justify-between items-center py-1">
+              <span>Lắp máy bơm nước, bồn nước:</span>
+              <span class="font-bold text-blue-700">250.000đ - 400.000đ</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Bảng giá Sửa Nhà & Chống Thấm -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 pb-3 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-red-100 text-red-700 flex items-center justify-center font-bold text-lg">
+              <i class="fa-solid fa-house-chimney-crack"></i>
+            </div>
+            <div>
+              <h4 class="font-black text-slate-900 text-base">Sửa Nhà & Chống Thấm</h4>
+              <p class="text-xs text-slate-500">Báo giá theo khối lượng m²</p>
+            </div>
+          </div>
+          <ul class="space-y-3 text-xs text-slate-700">
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Chống thấm trần, ban công m²:</span>
+              <span class="font-bold text-red-700">Từ 120.000đ/m²</span>
+            </li>
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Xử lý nứt tường, dột mái tôn:</span>
+              <span class="font-bold text-red-700">Khảo sát báo giá</span>
+            </li>
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Lát gạch men nền / tường:</span>
+              <span class="font-bold text-red-700">Từ 90.000đ/m²</span>
+            </li>
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Sơn nước dặm vá hoặc trọn gói:</span>
+              <span class="font-bold text-red-700">Từ 35.000đ/m²</span>
+            </li>
+            <li class="flex justify-between items-center py-1">
+              <span>Chuyển nhà, chở đồ bằng xe tải:</span>
+              <span class="font-bold text-red-700">Từ 300.000đ/chuyến</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Bảng giá Camera & Thiết Bị -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 pb-3 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-lg">
+              <i class="fa-solid fa-video"></i>
+            </div>
+            <div>
+              <h4 class="font-black text-slate-900 text-base">Camera & Viễn Thông</h4>
+              <p class="text-xs text-slate-500">Trọn gói công lắp & bảo hành</p>
+            </div>
+          </div>
+          <ul class="space-y-3 text-xs text-slate-700">
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Camera Wi-Fi 360 trong nhà:</span>
+              <span class="font-bold text-teal-700">Từ 650.000đ/mắt</span>
+            </li>
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Camera ngoài trời có màu đêm:</span>
+              <span class="font-bold text-teal-700">Từ 850.000đ/mắt</span>
+            </li>
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Trọn bộ 4 Camera đầu ghi ổ cứng:</span>
+              <span class="font-bold text-teal-700">Từ 3.800.000đ/bộ</span>
+            </li>
+            <li class="flex justify-between items-center py-1 border-b border-slate-50">
+              <span>Cài đặt lại mạng Wi-Fi, dây LAN:</span>
+              <span class="font-bold text-teal-700">Từ 150.000đ</span>
+            </li>
+            <li class="flex justify-between items-center py-1">
+              <span>Bảo trì hệ thống an ninh:</span>
+              <span class="font-bold text-teal-700">Miễn phí cho khách ĐP</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="mt-8 text-center text-xs text-slate-500 italic">
+        * Lưu ý: Mức giá thực tế phụ thuộc vào vị trí thi công, độ khó và vật tư gia chủ lựa chọn. Kỹ thuật viên luôn khảo sát trực tiếp và báo giá rõ ràng trước khi làm.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= THƯ VIỆN HÌNH ẢNH HOẠT ĐỘNG THỰC TẾ ================= -->
+  <section id="hinh-anh" class="py-14 px-4 sm:px-6 max-w-7xl mx-auto w-full">
+    
+    <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3 mb-8">
+      <div>
+        <span class="text-xs font-black uppercase tracking-wider text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-200">
+          HÌNH ẢNH 100% THỰC TẾ TẠI PHÚ YÊN
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-2.5">
+          NGƯỜI THẬT • VIỆC THẬT • CÔNG TRÌNH THẬT
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+          Đội thợ mang áo đồng phục xanh in hotline, xe tải chuyên dụng 78C và kho thiết bị sẵn sàng phục vụ
+        </p>
+      </div>
+      <div class="font-mono text-xs font-bold text-slate-700 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-xs">
+        <i class="fa-solid fa-phone text-red-600 mr-1.5"></i> 097 999 1898 - 0944 971 257
+      </div>
+    </div>
+
+    <!-- LƯỚI HÌNH ẢNH 6 KHUNG HÌNH LỚN -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      
+      <!-- 1. Xe tải 78C giao cửa nhôm kính -->
+      <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+        <div class="h-60 overflow-hidden relative">
+          <img src="/img/real_services/xe_tai_78c_cho_cua_nhom_kinh.jpg" alt="Xe tải 78C-105.46 chở cửa nhôm kính" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+          <span class="absolute top-3 left-3 bg-blue-700 text-white text-[11px] font-black px-2.5 py-1 rounded-lg">
+            Xe Tải 78C-105.46
+          </span>
+        </div>
+        <div class="p-4">
+          <h4 class="font-black text-slate-900 text-sm">Giao Cửa Nhôm Kính Tận Công Trình</h4>
+          <p class="text-xs text-slate-500 mt-1">Vận chuyển cửa nhôm kính cường lực khổ lớn giao tận nhà phố Tuy Hòa an toàn, nhanh chóng.</p>
+        </div>
+      </div>
+
+      <!-- 2. Áo đồng phục thợ Phú Yên -->
+      <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+        <div class="h-60 overflow-hidden relative">
+          <img src="/img/real_services/dong_phuc_tho_phu_yen.jpg" alt="Đồng phục thợ Phú Yên" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+          <span class="absolute top-3 left-3 bg-red-600 text-white text-[11px] font-black px-2.5 py-1 rounded-lg">
+            Nhận Diện Chính Hãng
+          </span>
+        </div>
+        <div class="p-4">
+          <h4 class="font-black text-slate-900 text-sm">Đồng Phục Thợ Kỹ Thuật Phú Yên</h4>
+          <p class="text-xs text-slate-500 mt-1">Áo thun xanh công nhân in rõ 2 số điện thoại: <strong>097 999 1898 - 0944 971 257</strong> tạo niềm tin tuyệt đối.</p>
+        </div>
+      </div>
+
+      <!-- 3. Lắp bình Ariston -->
+      <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+        <div class="h-60 overflow-hidden relative">
+          <img src="/img/real_services/lap_binh_nong_lanh_ariston.png" alt="Lắp bình nóng lạnh Ariston" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+          <span class="absolute top-3 left-3 bg-sky-600 text-white text-[11px] font-black px-2.5 py-1 rounded-lg">
+            Điện Nước Phòng Tắm
+          </span>
+        </div>
+        <div class="p-4">
+          <h4 class="font-black text-slate-900 text-sm">Lắp Bình Nước Nóng Ariston Chuẩn Chỉ</h4>
+          <p class="text-xs text-slate-500 mt-1">Treo giá đỡ kiên cố, ống mềm bện inox cao cấp, đấu nối an toàn chống giật ELCB.</p>
+        </div>
+      </div>
+
+      <!-- 4. Thợ cơ khí Jasic vỉa hè -->
+      <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+        <div class="h-60 overflow-hidden relative">
+          <img src="/img/real_services/tho_han_co_khi_via_he.jpg" alt="Thợ hàn cơ khí vỉa hè" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+          <span class="absolute top-3 left-3 bg-amber-600 text-white text-[11px] font-black px-2.5 py-1 rounded-lg">
+            Cơ Khí Khung Sắt
+          </span>
+        </div>
+        <div class="p-4">
+          <h4 class="font-black text-slate-900 text-sm">Hàn Khung Sắt Hộp & Bảng Alu Vertu</h4>
+          <p class="text-xs text-slate-500 mt-1">Người thợ cần mẫn cắt hàn khung sắt mái che, biển hiệu quảng cáo bằng máy hàn Jasic tại hiện trường.</p>
+        </div>
+      </div>
+
+      <!-- 5. Xưởng gia công sắt thép -->
+      <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+        <div class="h-60 overflow-hidden relative">
+          <img src="/img/real_services/xuong_gia_cong_sat_thep.jpg" alt="Xưởng gia công cơ khí Đất Phú" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+          <span class="absolute top-3 left-3 bg-emerald-600 text-white text-[11px] font-black px-2.5 py-1 rounded-lg">
+            Quy Mô Xưởng
+          </span>
+        </div>
+        <div class="p-4">
+          <h4 class="font-black text-slate-900 text-sm">Xưởng Gia Công Cổng Cửa & Khung Thép</h4>
+          <p class="text-xs text-slate-500 mt-1">Mặt bằng rộng rãi, máy móc đồng bộ, chuyên trị cổng sắt mỹ nghệ, giàn giáo xây dựng, nhà tiền chế.</p>
+        </div>
+      </div>
+
+      <!-- 6. Kho thiết bị vệ sinh -->
+      <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+        <div class="h-60 overflow-hidden relative">
+          <img src="/img/real_services/kho_thiet_bi_ve_sinh.jpg" alt="Kho thiết bị vệ sinh Đất Phú" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+          <span class="absolute top-3 left-3 bg-indigo-600 text-white text-[11px] font-black px-2.5 py-1 rounded-lg">
+            Kho Hàng Sẵn Có
+          </span>
+        </div>
+        <div class="p-4">
+          <h4 class="font-black text-slate-900 text-sm">Showroom & Kho Thiết Bị Vệ Sinh</h4>
+          <p class="text-xs text-slate-500 mt-1">Bồn cầu một khối cao cấp (Kafina, Loting, Aqua), gương LED, sen cây, sơn chống thấm Aroki giá gốc.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= MẠNG LƯỚI THỢ XÂY & CƠ KHÍ LIÊN KẾT (0% PHÍ TRUNG GIAN) ================= -->
+  <section id="lien-ket" class="py-12 px-4 sm:px-6 bg-slate-900 text-white">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-8">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">
+            LIÊN KẾT CỘNG ĐỒNG XỨ NẪU
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black mt-2">
+            ĐỐI TÁC THỢ XÂY & CƠ KHÍ LÀNH NGHỀ (0% PHÍ TRUNG GIAN)
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">
+            Đất Phú bảo chứng uy tín • Bà con liên hệ làm việc trực tiếp với đội thợ không qua cò mồi
+          </p>
+        </div>
+        <span class="text-xs text-emerald-400 font-bold bg-emerald-500/15 px-3.5 py-1.5 rounded-full border border-emerald-500/30">
+          <i class="fa-solid fa-handshake mr-1"></i> Cam Kết 0% Phí Cò
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Đội Thợ Xây Cả Tám -->
+        <div class="bg-slate-800/90 rounded-2xl p-6 border border-slate-700 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="text-lg font-black text-amber-400 flex items-center gap-2">
+                <i class="fa-solid fa-trowel-bricks"></i> Đội Thợ Xây Cả Tám Đất Phú
+              </h4>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                18 Năm Kinh Nghiệm
+              </span>
+            </div>
+            <p class="text-xs text-slate-300 mb-3">
+              Khu vực hoạt động: <strong>TP. Tuy Hòa, Huyện Phú Hòa</strong> và các xã lân cận.
+            </p>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+              Chuyên: Đổ móng kiên cố, xây tường gạch, lát đá sân chùa, trùng tu di tích lịch sử, nhà thờ họ, thi công nhà cấp 4 bền đẹp với thời gian.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-700 flex items-center justify-between">
+            <span class="text-sm font-mono text-white font-bold">ĐT: 0914.821.567</span>
+            <a href="tel:0914821567" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition flex items-center gap-1.5">
+              <i class="fa-solid fa-phone"></i> Gọi Thợ Cả Tám
+            </a>
+          </div>
+        </div>
+
+        <!-- Xưởng Cơ Khí Ba Bình -->
+        <div class="bg-slate-800/90 rounded-2xl p-6 border border-slate-700 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="text-lg font-black text-sky-400 flex items-center gap-2">
+                <i class="fa-solid fa-shield-halved"></i> Xưởng Cơ Khí Hàn Sắt Ba Bình
+              </h4>
+              <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                12 Năm Tay Nghề
+              </span>
+            </div>
+            <p class="text-xs text-slate-300 mb-3">
+              Khu vực hoạt động: <strong>TX. Đông Hòa, Huyện Tây Hòa</strong> và khu vực lân cận.
+            </p>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+              Chuyên: Cổng sắt mỹ nghệ sơn tĩnh điện, mái che tôn chống bão, giàn giáo công trình, khung kèo thép tiền chế, chuồng cọp ban công an toàn.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-700 flex items-center justify-between">
+            <span class="text-sm font-mono text-white font-bold">ĐT: 0905.342.118</span>
+            <a href="tel:0905342118" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs transition flex items-center gap-1.5">
+              <i class="fa-solid fa-phone"></i> Gọi Xưởng Ba Bình
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FORM ĐẶT LỊCH HẸN KHẢO SÁT 1-CHẠM ================= -->
+  <section id="dat-lich" class="py-14 px-4 sm:px-6 max-w-4xl mx-auto w-full">
+    <div class="bg-white rounded-3xl p-6 sm:p-10 border-2 border-red-500/30 card-shadow">
+      
+      <div class="text-center max-w-xl mx-auto mb-8">
+        <span class="text-xs font-black uppercase tracking-wider text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-200">
+          ĐẶT LỊCH NHANH TRONG 30 GIÂY
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-2.5">
+          GỬI YÊU CẦU KHẢO SÁT TẬN NƠI TẠI PHÚ YÊN
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+          Chuyên viên kỹ thuật Đất Phú sẽ liên hệ lại xác nhận và cử thợ đến khảo sát trong 30 phút!
+        </p>
+      </div>
+
+      <form id="bookingForm" onsubmit="handleWorkerBooking(event)" class="space-y-4 text-xs sm:text-sm">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Số điện thoại liên hệ (*)</label>
+            <input type="tel" id="bkPhone" required placeholder="VD: 0914.xxx.xxx" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-red-600 focus:bg-white text-xs sm:text-sm" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Họ tên của bạn</label>
+            <input type="text" id="bkName" placeholder="VD: Anh Tuấn / Chị Mai" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-red-600 focus:bg-white text-xs sm:text-sm" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Dịch vụ cần làm</label>
+            <select id="bkService" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-red-600 focus:bg-white text-xs sm:text-sm cursor-pointer">
+              <option value="Sửa chữa nhà ở & Chống thấm dột">Sửa chữa nhà ở & Chống thấm dột</option>
+              <option value="Sửa điện chập cháy, nhảy CB khẩn cấp">Sửa điện chập cháy, nhảy CB khẩn cấp 24/7</option>
+              <option value="Sửa bục vỡ đường ống nước, rò rỉ nước">Sửa bục vỡ đường ống nước, rò rỉ nước</option>
+              <option value="Lắp bình nóng lạnh Ariston & Thiết bị vệ sinh">Lắp bình nóng lạnh Ariston & Thiết bị vệ sinh</option>
+              <option value="Lắp đặt Camera an ninh quan sát có màu đêm">Lắp đặt Camera an ninh quan sát có màu đêm</option>
+              <option value="Gia công cơ khí cửa sắt, mái tôn (Ba Bình)">Gia công cơ khí cửa sắt, mái tôn (Ba Bình)</option>
+              <option value="Xây tường, đổ móng, lát đá di tích (Cả Tám)">Xây tường, đổ móng, lát đá di tích (Cả Tám)</option>
+              <option value="Thuê xe tải 78C hoặc xe ba gác chở đồ">Thuê xe tải 78C hoặc xe ba gác chở đồ</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Khu vực tại Phú Yên</label>
+            <input type="text" id="bkAddress" placeholder="VD: Phường Phú Đông, TP Tuy Hòa..." class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-red-600 focus:bg-white text-xs sm:text-sm" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Mô tả hiện trạng hoặc yêu cầu thêm</label>
+          <textarea id="bkNote" rows="3" placeholder="VD: Nhà bị dột mái tôn góc sau, cần thợ qua khảo sát báo giá vào chiều nay..." class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-red-600 focus:bg-white text-xs sm:text-sm"></textarea>
+        </div>
+
+        <div id="bookingMsg" class="hidden p-3 rounded-xl text-xs font-bold"></div>
+
+        <div class="text-center pt-2">
+          <button type="submit" id="btnSubmitBk" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black text-sm md:text-base shadow-lg shadow-red-600/30 transition active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-paper-plane mr-2"></i> GỬI YÊU CẦU KHẢO SÁT NGAY
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- ================= FOOTER DOANH NGHIỆP ================= -->
+  <footer class="bg-slate-950 text-slate-400 text-xs py-10 px-4 sm:px-6 border-t border-slate-800 mt-auto">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      
+      <div class="md:col-span-2 space-y-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-red-600 text-white flex items-center justify-center font-black text-sm">ĐP</div>
+          <span class="font-black text-white text-sm uppercase">CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ</span>
+        </div>
+        <p class="text-slate-400 leading-relaxed text-xs">
+          Mã số thuế: <strong class="text-white font-mono">4401020233</strong> do Cục Thuế Tỉnh Phú Yên cấp.<br>
+          Trụ sở chính: 172 Ngô Gia Tự, Khu phố 3, Phường Phú Đông, Thành phố Tuy Hòa, Tỉnh Phú Yên.<br>
+          Châm ngôn vận hành: <em>"Dịu dàng với chính mình, nghiêm túc với con số • Quy chuẩn 6K Kín Kẽ OS"</em>.
+        </p>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold uppercase mb-3 tracking-wider text-xs">HOTLINE LIÊN HỆ 24/7</h5>
+        <ul class="space-y-2 text-xs font-mono font-bold">
+          <li>
+            <a href="tel:0979991898" class="text-rose-400 hover:text-white flex items-center gap-1.5">
+              <i class="fa-solid fa-phone"></i> 097 999 1898 (Hotline 1)
+            </a>
+          </li>
+          <li>
+            <a href="tel:0944971257" class="text-sky-400 hover:text-white flex items-center gap-1.5">
+              <i class="fa-solid fa-headset"></i> 0944 971 257 (Kỹ thuật)
+            </a>
+          </li>
+          <li>
+            <a href="https://zalo.me/0979991898" target="_blank" class="text-blue-400 hover:text-white flex items-center gap-1.5 font-sans">
+              <i class="fa-solid fa-comment-dots"></i> Zalo: 0979.991.898
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold uppercase mb-3 tracking-wider text-xs">HỆ SINH THÁI ĐẤT PHÚ</h5>
+        <ul class="space-y-2 text-xs">
+          <li><a href="/dich-vu-so.html" class="hover:text-white transition">Hóa Đơn Máy Tính Tiền NĐ 254</a></li>
+          <li><a href="/dich-vu-so.html" class="hover:text-white transition">Chữ Ký Số EFY-CA 1.150k/3 năm</a></li>
+          <li><a href="/ai-swarm.html" class="hover:text-white transition">Trợ Lý AI Swarm Tư Vấn Luật</a></li>
+          <li><a href="/quan-tri-tri-thuc.html" class="hover:text-white transition">Kho Tri Thức Pháp Lý RAG 6K</a></li>
+          <li><a href="/lao-dong.html" class="hover:text-white transition">Cổng Dân Sinh Đất Phú Gen 4</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="max-w-7xl mx-auto pt-8 mt-8 border-t border-slate-900 text-center text-slate-500 text-[11px]">
+      © 2026 CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ. BẢN QUYỀN ĐÃ ĐƯỢC BẢO HỘ. ĐỘI THỢ KỸ THUẬT PHÚ YÊN.
+    </div>
+  </footer>
+
+  <!-- ================= NÚT GỌI & ZALO NỔI (FLOATING WIDGET) ================= -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <!-- Nút Zalo -->
+    <a href="https://zalo.me/0979991898" target="_blank" class="w-13 h-13 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center text-xl shadow-xl border-2 border-white transition hover:scale-110" title="Nhắn Zalo Kỹ Thuật">
+      <i class="fa-solid fa-comment-dots"></i>
+    </a>
+    <!-- Nút Gọi Thợ 0979991898 -->
+    <a href="tel:0979991898" class="pulse-call w-14 h-14 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center text-2xl shadow-2xl border-2 border-white transition hover:scale-110" title="Gọi Thợ Khẩn Cấp">
+      <i class="fa-solid fa-phone"></i>
+    </a>
+  </div>
+
+  <!-- SCRIPT XỬ LÝ ĐẶT LỊCH HẸN -->
+  <script>
+    async function handleWorkerBooking(e) {
+      e.preventDefault();
+      const phone = document.getElementById('bkPhone').value.trim();
+      const name = document.getElementById('bkName').value.trim();
+      const service = document.getElementById('bkService').value;
+      const address = document.getElementById('bkAddress').value.trim();
+      const note = document.getElementById('bkNote').value.trim();
+      const msgBox = document.getElementById('bookingMsg');
+      const submitBtn = document.getElementById('btnSubmitBk');
+
+      if (!phone) {
+        alert('Vui lòng nhập số điện thoại hoặc Zalo để thợ liên hệ!');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Đang gửi yêu cầu...';
+
+      try {
+        const payload = {
+          name: name || 'Khách hàng Phú Yên',
+          phone: phone,
+          service: service,
+          source: 'Trang Chuyên Biệt Sửa Nhà - Điện Nước - Camera Phú Yên',
+          note: `Địa chỉ: ${address || 'Phú Yên'} | Ghi chú: ${note || 'Khảo sát tận nơi'}`
+        };
+
+        const res = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        msgBox.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-emerald-100', 'text-emerald-700');
+
+        if (data.success) {
+          msgBox.classList.add('bg-emerald-100', 'text-emerald-800');
+          msgBox.innerHTML = `
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-base text-emerald-600"></i>
+              <div>
+                <strong>Gửi yêu cầu thành công!</strong> Kỹ thuật viên Đất Phú sẽ gọi lại cho Anh/Chị qua số <strong>${phone}</strong> trong vòng 15-30 phút.
+              </div>
+            </div>
+          `;
+          document.getElementById('bookingForm').reset();
+        } else {
+          msgBox.classList.add('bg-red-100', 'text-red-800');
+          msgBox.textContent = data.message || 'Chưa gửi được yêu cầu. Vui lòng gọi trực tiếp Hotline: 097 999 1898!';
+        }
+      } catch (err) {
+        msgBox.classList.remove('hidden');
+        msgBox.classList.add('bg-emerald-100', 'text-emerald-800');
+        msgBox.innerHTML = `
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-base text-emerald-600"></i>
+            <div>
+              <strong>Đã ghi nhận yêu cầu!</strong> Vui lòng liên hệ nhanh qua Hotline: <a href="tel:0979991898" class="underline font-bold">097 999 1898</a> hoặc <a href="tel:0944971257" class="underline font-bold">0944 971 257</a>!
+            </div>
+          </div>
+        `;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i> GỬI YÊU CẦU KHẢO SÁT NGAY';
+      }
+    }
+  </script>
+</body>
+</html>
