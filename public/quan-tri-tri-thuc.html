@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cổng Quản Trị Kho Tri Thức Pháp Lý RAG — Đất Phú Gen 4</title>
-  <meta name="description" content="Trung tâm quản trị, nạp và bóc tách tri thức quy phạm pháp luật, nghị định thuế và biểu phí dịch vụ cho Hệ thống Đa tác tử AI Đất Phú.">
+  <meta name="description" content="Trung tâm quản trị, nạp và bóc tách tri thức quy phạm pháp luật, nghị định thuế và biểu phí dịch vụ cho Hệ thống Đa tác tử AI Đất Phú. Hỗ trợ kéo thả PDF, Word.">
   <link rel="icon" href="/img/logo.png" type="image/png">
   
   <!-- Tailwind CSS v4 CDN -->
@@ -15,6 +15,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- PDF.js CDN (Đọc file PDF trong trình duyệt) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+  <!-- Mammoth.js CDN (Đọc file Word .docx trong trình duyệt) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
   <style>
     body {
@@ -41,6 +51,10 @@
     .antigravity-btn:hover {
       box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55);
       transform: translateY(-1px);
+    }
+    .dropzone-active {
+      border-color: #3b82f6 !important;
+      background-color: rgba(37, 99, 235, 0.15) !important;
     }
   </style>
 </head>
@@ -86,9 +100,9 @@
           <i class="fa-solid fa-circle-check"></i>
           <span>Bộ Tri Thức Đang Kích Hoạt 24/7 Chuẩn 6K Kín Kẽ</span>
         </div>
-        <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">Trung Tâm Nạp Tri Thức & Huấn Luyện Tác Tử</h1>
+        <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">Nạp Tự Động Từ File PDF / Word & Văn Bản Luật</h1>
         <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
-          Mỗi khi Cục Thuế Phú Yên, Đắk Lắk hoặc Bộ Tài Chính ban hành Nghị định, Thông tư mới, bạn chỉ cần dán văn bản vào đây. AI sẽ tự động phân tách thành các khối tri thức (Chunks) để đội ngũ AI Swarm tư vấn chuẩn xác cho hộ kinh doanh.
+          Kéo thả file PDF Nghị định, Thông tư của Bộ Tài chính hoặc tài liệu Word vào đây. Bộ não <b>Gemini AI</b> sẽ tự động đọc, phân tách thành các Điều khoản quan trọng (Chunking), tạo từ khóa tìm kiếm và nạp ngay vào hệ thống Đa tác tử 24/7.
         </p>
       </div>
       <div class="flex md:flex-col gap-3 shrink-0">
@@ -97,8 +111,8 @@
           <span class="block text-[10px] text-gray-400 uppercase font-semibold mt-0.5">Khối tri thức</span>
         </div>
         <div class="p-3.5 rounded-2xl bg-gray-900/80 border border-gray-800 text-center min-w-[120px]">
-          <span class="text-2xl font-black text-emerald-400">100%</span>
-          <span class="block text-[10px] text-gray-400 uppercase font-semibold mt-0.5">Độ tuân thủ</span>
+          <span class="text-2xl font-black text-emerald-400">PDF / DOCX</span>
+          <span class="block text-[10px] text-gray-400 uppercase font-semibold mt-0.5">Tự động hóa</span>
         </div>
       </div>
     </div>
@@ -106,31 +120,88 @@
     <!-- BỐ CỤC 2 CỘT: FORM NHẬP LIỆU & THỬ NGHIỆM -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-      <!-- CỘT TRÁI: FORM NẠP TRI THỨC MỚI (7 CỘT) -->
+      <!-- CỘT TRÁI: FORM NẠP TRI THỨC (7 CỘT) -->
       <div class="lg:col-span-7 space-y-6">
 
-        <!-- Ô 1: BÓC TÁCH NHANH TỪ VĂN BẢN THÔ BẰNG AI -->
-        <div class="antigravity-card p-5 border-purple-500/30 bg-purple-950/10 space-y-3">
+        <!-- 1. HỘP KÉO THẢ TẢI FILE PDF / WORD / TEXT -->
+        <div class="antigravity-card p-6 border-blue-500/40 bg-blue-950/15 space-y-4">
           <div class="flex items-center justify-between">
-            <label class="text-xs font-black text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
-              <i class="fa-solid fa-wand-magic-sparkles"></i>
-              <span>1. Trích xuất tự động bằng AI (Tuỳ chọn)</span>
-            </label>
-            <span class="text-[10px] text-gray-400">Dán nguyên văn công văn / nghị định</span>
+            <span class="text-xs font-black text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span>1. Kéo Thả File PDF / Word / Text</span>
+            </span>
+            <span class="text-[10px] text-gray-400 font-mono">Hỗ trợ .pdf, .docx, .txt</span>
           </div>
-          <textarea id="rawTextInput" rows="4" placeholder="Dán văn bản thô, tóm tắt công văn hoặc điều luật mới vào đây... (Ví dụ: Theo Nghị định 254 ban hành, quán ăn phải xuất bill máy tính tiền...)" class="w-full px-4 py-3 rounded-xl bg-gray-950 border border-purple-900/50 text-white text-xs focus:outline-none focus:border-purple-500 leading-relaxed"></textarea>
-          <button type="button" onclick="autoExtractByAI()" id="btnAutoExtract" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-purple-900/30">
-            <i class="fa-solid fa-bolt"></i>
-            <span>AI Tự Động Phân Tích & Điền Form</span>
-          </button>
+
+          <!-- DROPZONE CHÍNH -->
+          <div id="dropZone" 
+               ondragover="handleDragOver(event)" 
+               ondragleave="handleDragLeave(event)" 
+               ondrop="handleFileDrop(event)"
+               class="border-2 border-dashed border-gray-700 hover:border-blue-500 rounded-2xl p-6 text-center cursor-pointer transition flex flex-col items-center justify-center gap-3 bg-gray-950/60"
+               onclick="document.getElementById('filePicker').click()">
+            <input type="file" id="filePicker" accept=".pdf,.docx,.doc,.txt,.json" class="hidden" onchange="handleFilePicked(event)" />
+            
+            <div class="w-12 h-12 rounded-2xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-2xl shadow-inner">
+              <i class="fa-regular fa-file-pdf"></i>
+            </div>
+            <div>
+              <div class="font-bold text-white text-xs sm:text-sm">Kéo & Thả file văn bản luật vào đây</div>
+              <div class="text-[11px] text-gray-400 mt-1">hoặc <span class="text-blue-400 underline font-semibold">bấm để chọn file từ máy tính</span></div>
+            </div>
+            <div class="text-[10px] text-gray-500">Dung lượng tối đa 20MB • AI tự động đọc và phân tích từng trang</div>
+          </div>
+
+          <!-- Trạng thái xử lý file -->
+          <div id="fileUploadStatus" class="hidden p-3 rounded-xl bg-gray-900 border border-gray-800 text-xs space-y-1">
+            <div class="flex items-center justify-between">
+              <span id="fileNameLabel" class="font-bold text-white truncate max-w-xs"></span>
+              <span id="fileSizeLabel" class="text-gray-400 text-[10px]"></span>
+            </div>
+            <div id="fileProgressText" class="text-sky-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-spinner fa-spin"></i>
+              <span>Đang đọc nội dung file...</span>
+            </div>
+          </div>
         </div>
 
-        <!-- Ô 2: BIỂU MẪU ĐIỀU CHỈNH & NẠP VÀO HỆ THỐNG -->
+        <!-- 2. KHU VỰC XEM TRƯỚC & KÍCH HOẠT HÀNG LOẠT (BATCH PREVIEW) -->
+        <div id="batchPreviewCard" class="hidden antigravity-card p-5 border-emerald-500/40 bg-emerald-950/15 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-800 pb-3">
+            <div>
+              <h3 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Xem Trước Các Khối Tri Thức Bóc Tách Bằng AI</span>
+              </h3>
+              <p class="text-[11px] text-gray-400" id="batchExtractedCountText">Đã tìm thấy các điều khoản quan trọng</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="toggleSelectAllBatch(true)" class="text-[10px] text-sky-400 hover:underline">Chọn tất cả</button>
+              <span class="text-gray-600">|</span>
+              <button onclick="cancelBatchPreview()" class="text-[10px] text-rose-400 hover:underline">Hủy bỏ</button>
+            </div>
+          </div>
+
+          <!-- Danh sách các khối preview -->
+          <div id="batchChunksList" class="space-y-3 max-h-96 overflow-y-auto pr-1"></div>
+
+          <!-- Thanh kích hoạt hàng loạt -->
+          <div class="p-3.5 rounded-xl bg-gray-900 border border-gray-800 flex flex-col sm:flex-row items-center gap-3">
+            <input type="password" id="batchAdminPin" placeholder="Mã PIN Quản trị (0979991898)" class="w-full sm:w-auto flex-1 px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-emerald-500" value="0979991898" />
+            <button onclick="executeBatchActivation()" id="btnBatchActivate" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-900/30">
+              <i class="fa-solid fa-rocket"></i>
+              <span id="btnBatchActivateLabel">Kích Hoạt Vào Kho RAG</span>
+            </button>
+          </div>
+          <div id="batchFeedback" class="text-xs text-center font-bold"></div>
+        </div>
+
+        <!-- 3. BIỂU MẪU ĐIỀU CHỈNH / NHẬP THỦ CÔNG 1 KHỐI -->
         <form onsubmit="handleSaveChunk(event)" class="antigravity-card p-5 sm:p-6 border-blue-500/40 space-y-4">
           <div class="flex items-center justify-between border-b border-gray-800 pb-3">
             <h2 class="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
-              <i class="fa-solid fa-feather text-blue-400"></i>
-              <span>2. Biểu Mẫu Chi Tiết Khối Tri Thức RAG</span>
+              <i class="fa-solid fa-pen-to-square text-blue-400"></i>
+              <span>2. Hoặc Thêm / Điều Chỉnh Thủ Công Từng Khối</span>
             </h2>
             <span class="text-[10px] text-sky-400 font-mono">Chuẩn 6K Kín Kẽ</span>
           </div>
@@ -161,16 +232,16 @@
 
           <div>
             <label class="block text-[11px] font-bold text-gray-300 mb-1">Nội Dung Quy Chuẩn / Nghiệp Vụ Cốt Lõi</label>
-            <textarea id="chunkContent" rows="6" required placeholder="Trình bày rõ ràng các điều khoản, tỷ lệ thuế %, quy trình thực hiện để AI nạp làm căn cứ trả lời..." class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-blue-500 leading-relaxed"></textarea>
+            <textarea id="chunkContent" rows="5" required placeholder="Trình bày rõ ràng các điều khoản, tỷ lệ thuế %, quy trình thực hiện để AI nạp làm căn cứ trả lời..." class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-blue-500 leading-relaxed"></textarea>
           </div>
 
           <div class="pt-2 border-t border-gray-800 flex flex-col sm:flex-row items-center gap-3">
             <div class="w-full sm:w-auto flex-1">
-              <input type="password" id="adminPin" placeholder="Mã PIN Quản trị (0979991898)" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-blue-500" />
+              <input type="password" id="adminPin" placeholder="Mã PIN Quản trị (0979991898)" value="0979991898" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-blue-500" />
             </div>
             <button type="submit" id="btnSaveChunk" class="antigravity-btn w-full sm:w-auto px-6 py-2.5 rounded-xl text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shrink-0">
               <i class="fa-solid fa-floppy-disk"></i>
-              <span>Lưu & Kích Hoạt Tri Thức</span>
+              <span>Lưu Khối Này</span>
             </button>
           </div>
           <div id="saveFeedback" class="text-xs text-center font-bold"></div>
@@ -235,9 +306,10 @@
     <p class="mt-1">Địa chỉ: 21/146 Ngô Gia Tự, Phường Phú Yên, Tỉnh Đắk Lắk (và Phú Yên)</p>
   </footer>
 
-  <!-- SCRIPT LOGIC QUẢN TRỊ -->
+  <!-- SCRIPT LOGIC QUẢN TRỊ & XỬ LÝ FILE -->
   <script>
     let activeChunks = [];
+    let pendingBatchChunks = [];
 
     // Tải danh sách tri thức khi mở trang
     document.addEventListener('DOMContentLoaded', () => {
@@ -255,7 +327,7 @@
         statBadge.innerText = activeChunks.length;
 
         if (activeChunks.length === 0) {
-          container.innerHTML = '<p class="text-gray-500 text-center py-4 text-xs">Chưa có khối tri thức nào. Hãy thêm khối đầu tiên!</p>';
+          container.innerHTML = '<p class="text-gray-500 text-center py-4 text-xs">Chưa có khối tri thức nào. Hãy nạp file đầu tiên!</p>';
           return;
         }
 
@@ -282,48 +354,222 @@
       }
     }
 
-    // AI BÓC TÁCH VĂN BẢN TỰ ĐỘNG
-    async function autoExtractByAI() {
-      const rawText = document.getElementById('rawTextInput').value.trim();
-      if (!rawText) {
-        alert('Vui lòng dán văn bản pháp luật vào ô để AI bóc tách!');
-        return;
-      }
+    // ================= XỬ LÝ KÉO THẢ & CHỌN FILE =================
+    function handleDragOver(e) {
+      e.preventDefault();
+      document.getElementById('dropZone').classList.add('dropzone-active');
+    }
 
-      const btn = document.getElementById('btnAutoExtract');
-      const originalText = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>AI đang phân tích & bóc tách...</span>';
+    function handleDragLeave(e) {
+      e.preventDefault();
+      document.getElementById('dropZone').classList.remove('dropzone-active');
+    }
 
-      try {
-        const resp = await fetch('/api/rag?action=ai-extract', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: rawText })
-        });
-        const res = await resp.json();
-
-        if (res.success && res.extracted) {
-          const ex = res.extracted;
-          document.getElementById('chunkDoc').value = ex.doc || '';
-          document.getElementById('chunkArticle').value = ex.article || '';
-          document.getElementById('chunkTitle').value = ex.title || '';
-          document.getElementById('chunkKeywords').value = Array.isArray(ex.keywords) ? ex.keywords.join(', ') : (ex.keywords || '');
-          document.getElementById('chunkContent').value = ex.content || rawText;
-          
-          alert('✨ AI đã bóc tách thành công! Vui lòng kiểm tra lại thông tin và bấm "Lưu & Kích Hoạt Tri Thức".');
-        } else {
-          alert('Không thể bóc tách tự động. Vui lòng điền thủ công vào biểu mẫu.');
-        }
-      } catch (err) {
-        alert('Lỗi kết nối khi gọi AI: ' + err.message);
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
+    function handleFileDrop(e) {
+      e.preventDefault();
+      document.getElementById('dropZone').classList.remove('dropzone-active');
+      const files = e.dataTransfer.files;
+      if (files && files.length > 0) {
+        processUploadedFile(files[0]);
       }
     }
 
-    // LƯU KHỐI TRI THỨC MỚI
+    function handleFilePicked(e) {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        processUploadedFile(files[0]);
+      }
+    }
+
+    // ĐỌC NỘI DUNG FILE VÀ GỌI AI PHÂN TÍCH
+    async function processUploadedFile(file) {
+      const statusBox = document.getElementById('fileUploadStatus');
+      const nameLabel = document.getElementById('fileNameLabel');
+      const sizeLabel = document.getElementById('fileSizeLabel');
+      const progressText = document.getElementById('fileProgressText');
+
+      statusBox.classList.remove('hidden');
+      nameLabel.innerText = file.name;
+      sizeLabel.innerText = (file.size / 1024).toFixed(1) + ' KB';
+      progressText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang đọc nội dung file...';
+
+      const fileExt = file.name.split('.').pop().toLowerCase();
+      let extractedText = '';
+      let base64Data = '';
+
+      try {
+        if (fileExt === 'pdf') {
+          // Thử đọc text từ PDF qua pdf.js
+          try {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            progressText.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang trích xuất ${pdf.numPages} trang PDF...`;
+            
+            let fullText = '';
+            for (let pageNum = 1; pageNum <= Math.min(pdf.numPages, 15); pageNum++) {
+              const page = await pdf.getPage(pageNum);
+              const textContent = await page.getTextContent();
+              const pageText = textContent.items.map(item => item.str).join(' ');
+              fullText += `\n--- TRANG ${pageNum} ---\n` + pageText;
+            }
+            extractedText = fullText.trim();
+          } catch (pdfErr) {
+            console.warn('pdf.js fallback sang Base64:', pdfErr);
+          }
+
+          // Chuẩn bị Base64 nếu text quá ngắn (như scanned PDF)
+          if (!extractedText || extractedText.length < 50) {
+            base64Data = await fileToBase64(file);
+          }
+
+        } else if (fileExt === 'docx') {
+          // Đọc file Word qua mammoth
+          progressText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang chuyển đổi Word sang văn bản...';
+          const arrayBuffer = await file.arrayBuffer();
+          const result = await mammoth.extractRawText({ arrayBuffer });
+          extractedText = result.value;
+
+        } else {
+          // File văn bản thuần .txt / .json / .md
+          extractedText = await file.text();
+        }
+
+        // Gửi sang API để Gemini phân tách thành các khối RAG
+        progressText.innerHTML = '<i class="fa-solid fa-brain fa-spin mr-1 text-purple-400"></i> AI Gemini đang phân tích và bóc tách các Điều khoản...';
+
+        const payload = {
+          fileName: file.name,
+          mimeType: file.type || (fileExt === 'pdf' ? 'application/pdf' : 'text/plain'),
+          textContent: extractedText,
+          base64Data
+        };
+
+        const resp = await fetch('/api/rag?action=parse-file', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const res = await resp.json();
+
+        if (res.success && Array.isArray(res.chunks) && res.chunks.length > 0) {
+          progressText.innerHTML = `<span class="text-emerald-400"><i class="fa-solid fa-check mr-1"></i> Đã bóc tách thành công ${res.chunks.length} khối tri thức!</span>`;
+          renderBatchPreview(res.chunks, file.name);
+        } else {
+          progressText.innerHTML = '<span class="text-rose-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Không thể bóc tách tự động. Vui lòng thử file khác hoặc nhập tay.</span>';
+        }
+
+      } catch (err) {
+        progressText.innerHTML = '<span class="text-rose-400">Lỗi đọc file: ' + err.message + '</span>';
+      }
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const res = reader.result;
+          const base64 = res.split(',')[1] || '';
+          resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // ================= HIỂN THỊ XEM TRƯỚC VÀ KÍCH HOẠT HÀNG LOẠT =================
+    function renderBatchPreview(chunks, fileName) {
+      pendingBatchChunks = chunks;
+      const card = document.getElementById('batchPreviewCard');
+      const list = document.getElementById('batchChunksList');
+      const countText = document.getElementById('batchExtractedCountText');
+      const btnLabel = document.getElementById('btnBatchActivateLabel');
+
+      countText.innerText = `Tìm thấy ${chunks.length} điều khoản nghiệp vụ từ file: ${fileName}`;
+      btnLabel.innerText = `Kích Hoạt Tất Cả ${chunks.length} Khối Vào Kho RAG`;
+
+      list.innerHTML = chunks.map((c, idx) => `
+        <div class="p-4 rounded-xl bg-gray-950 border border-gray-800 space-y-2.5" id="batchItem_${idx}">
+          <div class="flex items-center justify-between gap-2">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked id="batchCheck_${idx}" class="w-4 h-4 accent-emerald-500 rounded" />
+              <span class="text-[11px] font-bold text-sky-400 font-mono">${c.doc} — ${c.article}</span>
+            </label>
+            <span class="text-[10px] text-gray-500">Khối #${idx + 1}</span>
+          </div>
+
+          <input type="text" id="batchTitle_${idx}" value="${c.title || ''}" class="w-full px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 text-white text-xs font-bold focus:outline-none focus:border-emerald-500" placeholder="Tiêu đề khối" />
+
+          <input type="text" id="batchKeywords_${idx}" value="${Array.isArray(c.keywords) ? c.keywords.join(', ') : (c.keywords || '')}" class="w-full px-3 py-1 rounded-lg bg-gray-900 border border-gray-800 text-gray-300 text-[11px] font-mono focus:outline-none focus:border-emerald-500" placeholder="Từ khóa nhận diện" />
+
+          <textarea id="batchContent_${idx}" rows="3" class="w-full px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 text-gray-300 text-xs focus:outline-none focus:border-emerald-500 leading-relaxed">${c.content || ''}</textarea>
+        </div>
+      `).join('');
+
+      card.classList.remove('hidden');
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function cancelBatchPreview() {
+      document.getElementById('batchPreviewCard').classList.add('hidden');
+      pendingBatchChunks = [];
+    }
+
+    function toggleSelectAllBatch(checked) {
+      pendingBatchChunks.forEach((_, idx) => {
+        const chk = document.getElementById(`batchCheck_${idx}`);
+        if (chk) chk.checked = checked;
+      });
+    }
+
+    // KÍCH HOẠT HÀNG LOẠT VÀO KHO RAG
+    async function executeBatchActivation() {
+      const fb = document.getElementById('batchFeedback');
+      const pin = document.getElementById('batchAdminPin').value.trim() || '0979991898';
+      const selectedChunks = [];
+
+      pendingBatchChunks.forEach((c, idx) => {
+        const chk = document.getElementById(`batchCheck_${idx}`);
+        if (chk && chk.checked) {
+          selectedChunks.push({
+            id: 'CHUNK_FILE_' + Date.now() + '_' + idx,
+            doc: c.doc || 'Văn bản tải lên',
+            article: c.article || 'Mục ' + (idx + 1),
+            title: document.getElementById(`batchTitle_${idx}`).value.trim() || c.title,
+            keywords: document.getElementById(`batchKeywords_${idx}`).value.trim() || c.keywords,
+            content: document.getElementById(`batchContent_${idx}`).value.trim() || c.content
+          });
+        }
+      });
+
+      if (selectedChunks.length === 0) {
+        alert('Vui lòng chọn ít nhất một khối tri thức để kích hoạt!');
+        return;
+      }
+
+      fb.innerHTML = '<span class="text-amber-400"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang nạp hàng loạt vào kho tri thức...</span>';
+
+      try {
+        const resp = await fetch('/api/rag?action=batch-upsert', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chunks: selectedChunks, pin })
+        });
+        const res = await resp.json();
+
+        if (res.success) {
+          fb.innerHTML = '<span class="text-emerald-400"><i class="fa-solid fa-check mr-1"></i> ' + res.message + '</span>';
+          alert('🎉 ' + res.message);
+          cancelBatchPreview();
+          loadAllChunks();
+        } else {
+          fb.innerHTML = '<span class="text-rose-400"><i class="fa-solid fa-xmark mr-1"></i> ' + res.message + '</span>';
+        }
+      } catch (err) {
+        fb.innerHTML = '<span class="text-rose-400">Lỗi kết nối khi nạp hàng loạt</span>';
+      }
+    }
+
+    // ================= LƯU KHỐI TRI THỨC THỦ CÔNG =================
     async function handleSaveChunk(e) {
       e.preventDefault();
       const fb = document.getElementById('saveFeedback');
@@ -349,12 +595,9 @@
 
         if (res.success) {
           fb.innerHTML = '<span class="text-emerald-400"><i class="fa-solid fa-check mr-1"></i> ' + res.message + '</span>';
-          // Xóa trắng form
           document.getElementById('chunkTitle').value = '';
           document.getElementById('chunkKeywords').value = '';
           document.getElementById('chunkContent').value = '';
-          document.getElementById('rawTextInput').value = '';
-          // Nạp lại danh sách
           loadAllChunks();
         } else {
           fb.innerHTML = '<span class="text-rose-400"><i class="fa-solid fa-xmark mr-1"></i> ' + res.message + '</span>';
