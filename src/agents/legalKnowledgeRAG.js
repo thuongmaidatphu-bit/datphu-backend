@@ -1,8 +1,9 @@
 /**
  * ============================================================================
- * KHO TRI THỨC PHÁP LÝ CHUYÊN SÂU & BỘ MÁY RAG (LEGAL KNOWLEDGE RAG ENGINE)
+ * KHO TRI THỨC PHÁP LÝ CHUYÊN SÂU & BỘ MÁY RAG (LEGAL KNOWLEDGE RAG ENGINE V2.0)
  * Hệ thống Đa tác tử Đất Phú Gen 4
- * Nạp động từ data/legal_knowledge_base.json & hỗ trợ Quản trị viên cập nhật
+ * Nâng cấp: Query Expansion, Chuẩn hóa Tiếng Việt Không Dấu, Từ điển Đồng Nghĩa,
+ * Trích xuất Số Hiệu Văn Bản Regex, và Tái Xếp Hạng (Re-ranking) Chống Ảo Giác
  * ============================================================================
  */
 
@@ -10,6 +11,57 @@ const fs = require('fs');
 const path = require('path');
 
 const KNOWLEDGE_FILE = path.join(__dirname, '..', '..', 'data', 'legal_knowledge_base.json');
+
+// HÀM CHUẨN HÓA BỎ DẤU TIẾNG VIỆT ĐỂ BẮT CHÍNH XÁC MỌI KIỂU GÕ CỦA NGƯỜI DÙNG
+function removeVietnameseAccents(str) {
+  if (!str) return '';
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+    .toLowerCase();
+}
+
+// BỘ TỪ ĐIỂN ĐỒNG NGHĨA & MỞ RỘNG TRUY VẤN CHUYÊN NGÀNH (SYNONYM & DOMAIN EXPANSION)
+const DOMAIN_SYNONYMS = [
+  {
+    triggers: ['quan an', 'quan com', 'an uong', 'f&b', 'nha hang', 'bun', 'pho', 'ca phe', 'giai khat', 'an vat', 'com binh dan'],
+    boostKeywords: ['dich vu an uong', 'f&b', 'gtgt 3%', 'tncn 1.5%', 'nguong 1 ty', 'may tinh tien', '254', 'mien mon bai']
+  },
+  {
+    triggers: ['tap hoa', 'bach hoa', 'sieu thi mini', 'ban le', 'cua hang nho'],
+    boostKeywords: ['ban le hang hoa', 'gtgt 1%', 'tncn 0.5%', 'nguong 1 ty', 'may tinh tien', 'mien mon bai']
+  },
+  {
+    triggers: ['chuyen khoan', 'ngan hang', 'sinh trac hoc', 'faceid', 'khuon mat', 'vneid', 'dinh danh', 'rua tien', '500 trieu', '10 trieu', '20 trieu'],
+    boostKeywords: ['sinh trac hoc', 'vneid', 'quy dinh chuyen khoan', 'khau tru thue', '500 trieu', 'nguong 5 trieu', 'nguong 20 trieu']
+  },
+  {
+    triggers: ['giam thue', 'giam 30%', 'nghi quyet 43', 'nq 43', '10 ty', 'phu luc giam thue', 'ho kinh doanh duoi 10 ty'],
+    boostKeywords: ['nghi quyet 43', 'giam 30% thue tncn', 'nam 2026', 'nam 2027', '6 buoc ke khai', 'dich vu cong']
+  },
+  {
+    triggers: ['bao cao lao dong', 'su dung lao dong', 'thay doi lao dong', 'so noi vu', '01/pli', 'thong tu 08', 'hop dong lao dong dien tu', 'truoc 05/12'],
+    boostKeywords: ['bao cao su dung lao dong', '6 thang cuoi nam', '34 tinh thanh', 'nghi dinh 145', 'thong tu 08/2026/tt-bnv', 'so noi vu', '10-20 trieu']
+  },
+  {
+    triggers: ['chi viec rieng', 'tien rieng', 'tien ca nhan', 'tien cong ty', 'tach bach', '138', '421', 'muon tien', 'rut tien'],
+    boostKeywords: ['chi viec rieng', 'tach bach dong tien', 'tai khoan 138', 'tai khoan 421', 'phap nhan doc lap', 'vcb digibiz']
+  },
+  {
+    triggers: ['khau tru', '5 trieu', 'nam trieu', '144', '01/gtgt', '01/cnkd', 'hoa don dau vao', 'khong dung tien mat'],
+    boostKeywords: ['dieu kien khau tru', 'nghi dinh 144', '5 trieu', 'khong dung tien mat', '01/gtgt', '01/cnkd']
+  },
+  {
+    triggers: ['chu ky so', 'usb token', 'token', 'efy', 'pki', 'chu ky dien tu'],
+    boostKeywords: ['chu ky so efy-ca', 'usb token', 'pki', '1.150.000', 'thuedientu']
+  },
+  {
+    triggers: ['masahiro hara', 'ma qr', 'qr code', 'quick response', 'vietqr', 'denso', 'toyota'],
+    boostKeywords: ['masahiro hara', 'ma qr', 'quick response', 'vietqr', 'denso']
+  }
+];
 
 // MẢNG DỰ PHÒNG CỐ ĐỊNH NẾU FILE KHÔNG TỒN TẠI
 const FALLBACK_CHUNKS = [
@@ -31,7 +83,6 @@ let lastLoadTime = 0;
  */
 function getAllChunks() {
   const now = Date.now();
-  // Cache trong 5 giây để tránh đọc đĩa liên tục
   if (cachedChunks && (now - lastLoadTime < 5000)) {
     return cachedChunks;
   }
@@ -112,65 +163,135 @@ function deleteChunk(id) {
 }
 
 /**
- * THUẬT TOÁN TÌM KIẾM TRI THỨC NGỮ NGHĨA KẾT HỢP (HYBRID SEMANTIC SEARCH RAG)
+ * THUẬT TOÁN TÌM KIẾM TRI THỨC NGỮ NGHĨA KẾT HỢP NÂNG CẤP V2.0 (HYBRID SEMANTIC SEARCH + RERANK)
  */
-function searchLegalKnowledge(query, topK = 2) {
+function searchLegalKnowledge(query, topK = 3) {
   if (!query || typeof query !== 'string') return [];
-  const lowerQuery = query.toLowerCase();
+  const lowerQuery = query.toLowerCase().trim();
+  const normalizedQuery = removeVietnameseAccents(lowerQuery);
   
-  const words = lowerQuery
-    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ' ')
+  // Tách các từ đơn có nghĩa (bỏ qua từ quá ngắn 1 ký tự)
+  const queryWords = lowerQuery
+    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"']/g, ' ')
     .split(/\s+/)
     .filter(w => w.length >= 2);
+
+  const normalizedWords = normalizedQuery
+    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"']/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length >= 2);
+
+  // Mở rộng truy vấn dựa trên từ điển chuyên ngành
+  const activeBoostKeywords = [];
+  for (const group of DOMAIN_SYNONYMS) {
+    const hasTrigger = group.triggers.some(t => {
+      const normTrigger = removeVietnameseAccents(t);
+      return lowerQuery.includes(t) || normalizedQuery.includes(normTrigger);
+    });
+    if (hasTrigger) {
+      activeBoostKeywords.push(...group.boostKeywords);
+    }
+  }
+
+  // Trích xuất số hiệu văn bản cụ thể bằng regex (Nghị định 254, Thông tư 08, NQ 43...)
+  const docNumbers = (lowerQuery.match(/\b\d{1,4}\b/g) || []);
+  const legalFormCodes = (lowerQuery.match(/\b0[1-5]\/[a-z]{2,5}\b/g) || []);
 
   const chunks = getAllChunks();
 
   const scoredChunks = chunks.map(chunk => {
     let score = 0;
+    const chunkDocLower = (chunk.doc || '').toLowerCase();
+    const chunkArticleLower = (chunk.article || '').toLowerCase();
+    const chunkTitleLower = (chunk.title || '').toLowerCase();
+    const chunkContentLower = (chunk.content || '').toLowerCase();
 
-    // 1. Khớp từ khóa cốt lõi (Trọng số 4)
+    const chunkDocNorm = removeVietnameseAccents(chunkDocLower);
+    const chunkTitleNorm = removeVietnameseAccents(chunkTitleLower);
+    const chunkContentNorm = removeVietnameseAccents(chunkContentLower);
+
+    // 1. Khớp từ khóa cốt lõi định nghĩa sẵn trong Chunk (Trọng số cao: 5 điểm/khớp)
     (chunk.keywords || []).forEach(kw => {
-      if (lowerQuery.includes(kw)) {
-        score += 4;
+      const lowerKw = String(kw).toLowerCase();
+      const normKw = removeVietnameseAccents(lowerKw);
+      if (lowerQuery.includes(lowerKw) || normalizedQuery.includes(normKw)) {
+        score += 5;
       }
     });
 
-    // 2. Khớp từng từ đơn trong truy vấn với content và title (Trọng số 1 và 2)
-    words.forEach(word => {
-      if ((chunk.title || '').toLowerCase().includes(word)) score += 2;
-      if ((chunk.content || '').toLowerCase().includes(word)) score += 1;
+    // 2. Khớp từ khóa mở rộng chuyên ngành (Query Expansion Boost: 3 điểm/khớp)
+    activeBoostKeywords.forEach(bkw => {
+      const lowerBkw = bkw.toLowerCase();
+      const normBkw = removeVietnameseAccents(lowerBkw);
+      if (chunkTitleLower.includes(lowerBkw) || chunkTitleNorm.includes(normBkw)) {
+        score += 3;
+      } else if (chunkContentLower.includes(lowerBkw) || chunkContentNorm.includes(normBkw)) {
+        score += 2;
+      }
     });
 
-    // 3. Khớp cụ thể số hiệu văn bản (Nghị định 254, Thông tư 94, NĐ 123)
-    if (lowerQuery.includes('254') && (chunk.doc || '').includes('254')) score += 10;
-    if (lowerQuery.includes('94') && (chunk.doc || '').includes('94')) score += 10;
-    if (lowerQuery.includes('123') && (chunk.doc || '').includes('123')) score += 10;
-    if (lowerQuery.includes('efy') && ((chunk.id || '').includes('EFY') || (chunk.title || '').includes('EFY'))) score += 10;
+    // 3. Khớp từ vựng chính xác trong Tiêu đề (Title) và Nội dung (Content)
+    queryWords.forEach(word => {
+      if (chunkTitleLower.includes(word)) score += 2;
+      if (chunkContentLower.includes(word)) score += 1;
+    });
+
+    // Khớp không dấu (phục vụ người gõ không dấu trên điện thoại)
+    normalizedWords.forEach(nword => {
+      if (chunkTitleNorm.includes(nword)) score += 1.5;
+      if (chunkContentNorm.includes(nword)) score += 0.8;
+    });
+
+    // 4. Khớp số hiệu văn bản (Nghị định, Thông tư, Nghị quyết) — Trọng số quyết định: +12 điểm
+    docNumbers.forEach(num => {
+      if (num.length >= 2) {
+        if (chunkDocLower.includes(num)) score += 12;
+        if (chunkTitleLower.includes(num)) score += 8;
+        if (chunkContentLower.includes(num)) score += 4;
+      }
+    });
+
+    // 5. Khớp mã biểu mẫu (Mẫu 01/CNKD, 01/PLI, 04/SS...) — Trọng số tuyệt đối: +15 điểm
+    legalFormCodes.forEach(code => {
+      if (chunkTitleLower.includes(code) || chunkContentLower.includes(code)) {
+        score += 15;
+      }
+    });
 
     return { chunk, score };
   });
 
+  // Tái xếp hạng (Re-ranking): Lọc ngưỡng tối thiểu score >= 5 để loại trừ kết quả rác
   return scoredChunks
-    .filter(item => item.score > 2)
+    .filter(item => item.score >= 5)
     .sort((a, b) => b.score - a.score)
     .slice(0, topK)
     .map(item => item.chunk);
 }
 
 /**
- * ĐÓNG GÓI BỐI CẢNH TRI THỨC PHÁP LÝ RAG ĐỂ BƠM VÀO SYSTEM PROMPT
+ * ĐÓNG GÓI BỐI CẢNH TRI THỨC PHÁP LÝ RAG V2.0 ĐỂ BƠM VÀO SYSTEM PROMPT
+ * Bổ sung hướng dẫn trích dẫn và chống ảo giác nghiêm ngặt
  */
 function buildRagContext(query) {
-  const chunks = searchLegalKnowledge(query, 2);
+  const chunks = searchLegalKnowledge(query, 3);
   if (chunks.length === 0) return '';
 
-  let contextText = '\n\n=== [KHO TRI THỨC PHÁP LÝ CHUYÊN SÂU TRÍCH XUẤT TỰ ĐỘNG - RAG ENGINE] ===\n';
+  let contextText = '\n\n=== [KHO TRI THỨC PHÁP LÝ RAG CHUYÊN SÂU CHUẨN 6K KÍN KẼ — ĐẤT PHÚ GEN 4 (V2.0)] ===\n';
+  contextText += 'NGUYÊN TẮC BẮT BUỘC CHO TRỢ LÝ AI:\n';
+  contextText += '1. Chỉ trả lời và tính toán dựa trên các điều khoản, văn bản và số liệu trong danh sách tài liệu bên dưới.\n';
+  contextText += '2. Bắt buộc trích dẫn rõ tên văn bản (Ví dụ: "Căn cứ theo Nghị định... Điều...").\n';
+  contextText += '3. Không tự ý bịa đặt hoặc suy diễn các mốc phạt hành chính hoặc tỷ lệ phần trăm nếu không có trong dữ liệu.\n\n';
+
   chunks.forEach((c, idx) => {
-    contextText += `\n[TÀI LIỆU ${idx + 1}]: ${c.doc} - ${c.article}\n`;
-    contextText += `CHỦ ĐỀ: ${c.title}\n`;
-    contextText += `NỘI DUNG VĂN BẢN QUY PHẠM:\n${c.content}\n`;
+    contextText += `--- TÀI LIỆU ${idx + 1} ---\n`;
+    contextText += `VĂN BẢN: ${c.doc}\n`;
+    contextText += `ĐIỀU KHOẢN: ${c.article}\n`;
+    contextText += `TIÊU ĐỀ NGHIỆP VỤ: ${c.title}\n`;
+    contextText += `NỘI DUNG VĂN BẢN QUY PHẠM:\n${c.content}\n\n`;
   });
-  contextText += '=== [HẾT TRÍCH XUẤT RAG - HÃY VẬN DỤNG CÁC ĐIỀU KHOẢN TRÊN ĐỂ TRẢ LỜI CHÍNH XÁC] ===\n';
+
+  contextText += '=== [KẾT THÚC DỮ LIỆU RAG V2.0 — HÃY TRẢ LỜI ĐẦY ĐỦ, CHÍNH XÁC VÀ DỊU DÀNG VỚI KHÁCH HÀNG] ===\n';
   return contextText;
 }
 
@@ -179,5 +300,6 @@ module.exports = {
   upsertChunk,
   deleteChunk,
   searchLegalKnowledge,
-  buildRagContext
+  buildRagContext,
+  removeVietnameseAccents
 };

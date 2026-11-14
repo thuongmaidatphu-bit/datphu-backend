@@ -404,8 +404,8 @@ async function processAgentSwarm(userMessage, options = {}) {
   const clientHistory = Array.isArray(options.history) ? options.history : null;
   const session = getOrCreateSession(sessionId, clientHistory);
 
-  // 2. RAG RETRIEVAL: TRÍCH XUẤT ĐIỀU KHOẢN PHÁP LUẬT TỰ ĐỘNG
-  const retrievedChunks = searchLegalKnowledge(userMessage, 2);
+  // 2. RAG RETRIEVAL: TRÍCH XUẤT ĐIỀU KHOẢN PHÁP LUẬT TỰ ĐỘNG (V2.0: RE-RANKED TOP 3)
+  const retrievedChunks = searchLegalKnowledge(userMessage, 3);
   const ragContext = buildRagContext(userMessage);
 
   // 3. TÁC TỬ PHÂN LOẠI & LỰA CHỌN VAI TRÒ CHUYÊN TRÁCH
