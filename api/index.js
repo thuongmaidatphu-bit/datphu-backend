@@ -6,6 +6,7 @@
 const https = require('https');
 const server = require('../src/server');
 const wisdomHandler = require('./wisdom');
+const leadHandler = require('./lead');
 
 module.exports = (req, res) => {
   const rawUrl = req.url || '';
@@ -23,6 +24,11 @@ module.exports = (req, res) => {
 
   const reqUrl = req.url || '';
   const parsed = new URL(reqUrl, 'http://localhost');
+
+  // 0. CỔNG TIẾP NHẬN TƯ VẤN DỊCH VỤ SỐ & LEAD GEN 4
+  if (parsed.searchParams.get('action') === 'lead' || reqUrl.includes('/api/lead') || reqUrl.includes('action=lead')) {
+    return leadHandler(req, res);
+  }
 
   // 1. CỔNG AI MINH TRIẾT NHÂN LOẠI GEMINI (CÓ CACHE)
   if (parsed.searchParams.get('action') === 'wisdom' || reqUrl.includes('wisdom')) {

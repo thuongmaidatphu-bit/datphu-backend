@@ -57,6 +57,7 @@
       transition: all 0.3s ease;
       border-radius: 14px;
       font-weight: 700;
+      cursor: pointer;
     }
 
     .antigravity-btn:hover {
@@ -66,6 +67,15 @@
 
     .glow-border {
       box-shadow: 0 0 40px -10px rgba(249, 115, 22, 0.3);
+    }
+
+    /* Hiệu ứng rung nhẹ cho nút Zalo nổi */
+    @keyframes gentle-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-gentle-bounce {
+      animation: gentle-bounce 3s infinite ease-in-out;
     }
   </style>
 </head>
@@ -94,6 +104,11 @@
 
     <!-- KHU VỰC NÚT ĐIỀU HƯỚNG & APP LAUNCHER -->
     <div class="flex items-center gap-2 shrink-0">
+      <button onclick="openConsultationModal('Tư vấn chung Gen 4')" class="px-3 py-1.5 rounded-xl bg-orange-500/15 hover:bg-orange-500/25 text-orange-400 border border-orange-500/30 text-xs font-bold transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+        <i class="fa-solid fa-paper-plane"></i>
+        <span class="hidden sm:inline">Nhận Báo Giá</span>
+      </button>
+
       <button onclick="toggleDatPhuAppLauncher()" class="px-3 py-1.5 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-200 border border-gray-700 text-xs font-bold shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer" title="Mở khay ứng dụng Hệ Sinh Thái Đất Phú">
         <i class="fa-solid fa-grip text-amber-500 text-sm"></i>
         <span class="hidden sm:inline">Hệ Sinh Thái</span>
@@ -121,7 +136,7 @@
         <div>
           <span class="text-[11px] font-bold uppercase tracking-wider text-orange-400 bg-orange-500/10 px-3 py-1 rounded-full border border-orange-500/30 inline-flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-            Hệ Điều Hành Số Độc Lập • Asset-Light
+            Nền Tảng Độc Lập • Asset-Light
           </span>
           <h2 class="text-xl md:text-2xl font-black text-white mt-2.5">
             ĐẤT PHÚ GEN 4: HỆ ĐIỀU HÀNH KÍN KẼ
@@ -131,10 +146,10 @@
           </p>
         </div>
         <div class="flex items-center gap-2.5 w-full md:w-auto shrink-0">
-          <a href="#dich-vu-so" class="antigravity-btn px-5 py-2.5 text-white text-xs md:text-sm text-center flex-1 md:flex-initial">
-            Khám Phá Dịch Vụ
-          </a>
-          <button onclick="toggleWorkerSection()" class="px-4 py-2.5 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-700 font-bold text-xs transition active:scale-95 flex items-center gap-1.5">
+          <button onclick="openConsultationModal('Gói Giải Pháp Số & Hóa Đơn')" class="antigravity-btn px-5 py-2.5 text-white text-xs md:text-sm text-center flex-1 md:flex-initial">
+            Kích Hoạt Dịch Vụ Số
+          </button>
+          <button onclick="toggleWorkerSection()" class="px-4 py-2.5 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-700 font-bold text-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
             <i class="fa-solid fa-person-digging text-orange-400"></i>
             <span>Đội Thợ Dân Sinh</span>
           </button>
@@ -171,9 +186,9 @@
           </div>
         </div>
       </div>
-      <a href="https://zalo.me/0914821567" target="_blank" class="antigravity-btn w-full py-2.5 text-center text-white text-xs">
+      <button onclick="openConsultationModal('Gói 1: Hóa đơn & Chữ ký số')" class="antigravity-btn w-full py-2.5 text-center text-white text-xs">
         Đăng Ký Gói Dịch Vụ Số
-      </a>
+      </button>
     </div>
 
     <!-- CỘT 2: AI SUPPORT SWARM -->
@@ -204,9 +219,9 @@
           </div>
         </div>
       </div>
-      <a href="https://zalo.me/0914821567" target="_blank" class="antigravity-btn w-full py-2.5 text-center text-white text-xs bg-gradient-to-r from-blue-600 to-indigo-600 shadow-blue-500/30">
+      <button onclick="openConsultationModal('Gói 2: AI Support & Tự động hóa')" class="antigravity-btn w-full py-2.5 text-center text-white text-xs bg-gradient-to-r from-blue-600 to-indigo-600 shadow-blue-500/30">
         Trải Nghiệm AI Trợ Lý
-      </a>
+      </button>
     </div>
 
     <!-- CỘT 3: CÔNG NGHỆ GIÁO DỤC STEM -->
@@ -234,14 +249,14 @@
           </div>
         </div>
       </div>
-      <a href="https://zalo.me/0914821567" target="_blank" class="antigravity-btn w-full py-2.5 text-center text-white text-xs bg-gradient-to-r from-emerald-600 to-teal-600 shadow-emerald-500/30">
+      <button onclick="openConsultationModal('Gói 3: STEMBot Lab & Khóa học')" class="antigravity-btn w-full py-2.5 text-center text-white text-xs bg-gradient-to-r from-emerald-600 to-teal-600 shadow-emerald-500/30">
         Khám Phá STEMBot Lab
-      </a>
+      </button>
     </div>
 
   </main>
 
-  <!-- ================= PHẦN DÂN SINH: ĐỘI THỢ ĐẤT PHÚ (THU GỌN / MỞ RỘNG) ================= -->
+  <!-- ================= PHẦN DÂN SINH: ĐỘI THỢ ĐẤT PHÚ ================= -->
   <section id="workerSection" class="max-w-6xl w-full mx-auto px-3 sm:px-6 py-6 border-t border-gray-800/60 mt-6">
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center gap-2">
@@ -292,6 +307,73 @@
       </div>
     </div>
   </section>
+
+  <!-- ================= NÚT ZALO NỔI (FLOATING WIDGET) ================= -->
+  <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+    <div class="hidden sm:flex items-center px-3.5 py-1.5 rounded-2xl bg-gray-900/90 border border-orange-500/40 text-orange-400 text-xs font-bold shadow-2xl backdrop-blur-md">
+      <span>Cần tư vấn hóa đơn & chữ ký số?</span>
+    </div>
+    <a href="https://zalo.me/0914821567" target="_blank" class="w-14 h-14 rounded-full bg-gradient-to-tr from-blue-600 via-sky-500 to-blue-400 text-white flex items-center justify-center text-2xl shadow-xl shadow-sky-500/40 border-2 border-white/80 animate-gentle-bounce transition hover:scale-110 active:scale-95" title="Nhắn Zalo Tư Vấn Nhanh 24/7">
+      <i class="fa-solid fa-comment-dots"></i>
+    </a>
+  </div>
+
+  <!-- ================= MODAL NHẬN BÁO GIÁ & TƯ VẤN 1-CHẠM ================= -->
+  <div id="modalConsultation" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5" onclick="if(event.target === this) closeConsultationModal()">
+    <div class="antigravity-card bg-gray-900/95 border-2 border-orange-500/50 shadow-2xl p-6 w-full max-w-md space-y-4 animate-in fade-in zoom-in-95 duration-200 text-white">
+      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-orange-500 text-white flex items-center justify-center font-black text-xs">ĐP</div>
+          <h3 class="text-sm font-black uppercase text-orange-400">ĐĂNG KÝ TƯ VẤN DỊCH VỤ SỐ</h3>
+        </div>
+        <button onclick="closeConsultationModal()" class="w-7 h-7 rounded-full bg-gray-800 hover:bg-rose-950 text-gray-400 hover:text-rose-400 flex items-center justify-center text-xs font-bold cursor-pointer">✕</button>
+      </div>
+
+      <p class="text-xs text-gray-400">
+        Để lại thông tin, chuyên viên kỹ thuật Đất Phú sẽ liên hệ tư vấn và gửi bảng giá chiết khấu ưu đãi trong <span class="text-orange-400 font-bold">15 phút</span>.
+      </p>
+
+      <form id="consultationForm" onsubmit="submitConsultation(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-gray-300 mb-1">Số điện thoại hoặc Zalo (*)</label>
+          <input type="tel" id="leadPhone" required placeholder="VD: 0914.xxx.xxx" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-800/80 border border-gray-700 text-white focus:outline-none focus:border-orange-500 text-xs" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 mb-1">Tên của bạn / Tên cửa hàng</label>
+          <input type="text" id="leadName" placeholder="VD: Anh Nam (Tiệm Điện Nước Nam Phát)" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-800/80 border border-gray-700 text-white focus:outline-none focus:border-orange-500 text-xs" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 mb-1">Dịch vụ quan tâm</label>
+          <select id="leadService" class="w-full px-3 py-2.5 rounded-xl bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-orange-500 text-xs cursor-pointer">
+            <option value="Hóa đơn điện tử máy tính tiền NĐ 254">Hóa đơn điện tử máy tính tiền (NĐ 254)</option>
+            <option value="Chữ ký số Token & HSM (EFY-CA)">Chữ ký số Token & Ký số HSM (EFY-CA)</option>
+            <option value="Phần mềm bán hàng EasyPOS & Kế toán">Phần mềm bán hàng EasyPOS & Kế toán</option>
+            <option value="Trợ lý ảo AI Support & Tự động hóa n8n">Trợ lý ảo AI Support & Tự động hóa n8n</option>
+            <option value="STEMBot Lab & Khóa học Robotics">STEMBot Lab & Khóa học Robotics</option>
+            <option value="Cần thuê đội thợ dân sinh thi công">Cần thuê đội thợ dân sinh thi công</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-300 mb-1">Ghi chú yêu cầu thêm (Nếu có)</label>
+          <textarea id="leadNote" rows="2" placeholder="VD: Cần xuất thử mẫu hóa đơn, cài đặt gấp tại Tuy Hòa..." class="w-full px-3.5 py-2 rounded-xl bg-gray-800/80 border border-gray-700 text-white focus:outline-none focus:border-orange-500 text-xs"></textarea>
+        </div>
+
+        <div id="leadStatusMsg" class="hidden text-xs py-2 px-3 rounded-xl"></div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeConsultationModal()" class="px-4 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold cursor-pointer">
+            Đóng
+          </button>
+          <button type="submit" id="btnSubmitLead" class="antigravity-btn px-5 py-2.5 text-white font-bold">
+            <i class="fa-solid fa-paper-plane mr-1.5"></i> Gửi Yêu Cầu
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- ================= UNIVERSAL APP LAUNCHER MODAL ================= -->
   <div id="datPhuAppLauncherModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-start justify-end p-3 sm:p-5" onclick="if(event.target === this) toggleDatPhuAppLauncher()">
@@ -367,6 +449,67 @@
       const sec = document.getElementById('workerSection');
       if (sec) {
         sec.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function openConsultationModal(serviceName) {
+      const modal = document.getElementById('modalConsultation');
+      const select = document.getElementById('leadService');
+      const msg = document.getElementById('leadStatusMsg');
+      if (msg) msg.className = 'hidden';
+      if (select && serviceName) {
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].text.includes(serviceName) || select.options[i].value.includes(serviceName)) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeConsultationModal() {
+      const modal = document.getElementById('modalConsultation');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    async function submitConsultation(e) {
+      e.preventDefault();
+      const phone = (document.getElementById('leadPhone')?.value || '').trim();
+      const name = (document.getElementById('leadName')?.value || '').trim();
+      const service = document.getElementById('leadService')?.value || '';
+      const note = (document.getElementById('leadNote')?.value || '').trim();
+      const btn = document.getElementById('btnSubmitLead');
+      const msg = document.getElementById('leadStatusMsg');
+
+      if (!phone) return;
+
+      btn.disabled = true;
+      const oldBtnText = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang gửi...';
+
+      try {
+        const resp = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, name, service, note })
+        });
+        const res = await resp.json();
+        
+        msg.className = 'text-xs py-2.5 px-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-bold block';
+        msg.innerHTML = '<i class="fa-solid fa-circle-check mr-1.5"></i> ' + (res.message || 'Đăng ký thành công!');
+
+        setTimeout(() => {
+          closeConsultationModal();
+          document.getElementById('consultationForm')?.reset();
+        }, 2200);
+
+      } catch (err) {
+        msg.className = 'text-xs py-2.5 px-3.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-400 font-bold block';
+        msg.innerHTML = '<i class="fa-solid fa-circle-exclamation mr-1.5"></i> Đã gửi yêu cầu! Hoặc bạn có thể bấm nút Zalo để gặp trực tiếp.';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = oldBtnText;
       }
     }
   </script>
