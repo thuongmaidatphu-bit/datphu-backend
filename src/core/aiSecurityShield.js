@@ -24,7 +24,7 @@ const ATTACK_PATTERNS = [
   // SQL Injection (SQLi)
   { type: "SQL_INJECTION", regex: /('|"|;)\s*(or|and)\s*('|"|\d+)\s*=\s*('|"|\d+)/i, score: 90, desc: "Tấn công vượt quyền xác thực SQL" },
   { type: "SQL_INJECTION", regex: /\b(union\s+select|select\s+.*\s+from|insert\s+into|update\s+.*\s+set|delete\s+from|drop\s+table|alter\s+table|information_schema|pg_sleep)\b/i, score: 95, desc: "Thao túng truy vấn cơ sở dữ liệu" },
-  { type: "SQL_INJECTION", regex: /(--|\/\*|\*\/|@@version|exec\s*\(|benchmark\()/i, score: 85, desc: "Bình luận SQL hoặc hàm thử tải thời gian" },
+  { type: "SQL_INJECTION", regex: /(;\s*--\s+|;\s*\/\*|\*\/|@@version|exec\s*\(|benchmark\()/i, score: 85, desc: "Bình luận SQL hoặc hàm thử tải thời gian" },
 
   // Cross-Site Scripting (XSS)
   { type: "XSS_ATTACK", regex: /<script[\s\S]*?>[\s\S]*?<\/script>/i, score: 90, desc: "Chèn mã kịch bản Script độc hại" },
@@ -135,8 +135,10 @@ function inspectRequest(req, pathname, body = {}, parsedUrl = null) {
   }
 
   // BƯỚC 3: Quét chuỗi nội dung nghi vấn trong URL, Query và Body
+  // Ngoại lệ: Không quét sâu vào nội dung tài liệu luật RAG hoặc tin nhắn hội thoại AI Swarm để tránh nhận diện nhầm dấu gạch nối (--)
+  const isDocumentOrChatApi = pathname.startsWith('/api/rag') || pathname.startsWith('/api/swarm') || pathname.startsWith('/api/lead');
   const queryString = parsedUrl ? parsedUrl.search : '';
-  const bodyString = typeof body === 'object' ? JSON.stringify(body) : String(body);
+  const bodyString = isDocumentOrChatApi ? '' : (typeof body === 'object' ? JSON.stringify(body) : String(body));
   const fullPayload = `${pathname} ${queryString} ${bodyString} ${req.headers['user-agent'] || ''}`;
 
   let maxThreatScore = 0;
