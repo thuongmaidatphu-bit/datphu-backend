@@ -43,6 +43,29 @@ if (!process.env.GEMINI_API_KEY) {
 function getRuleBasedAnswer(userMessage, agent) {
   const lower = userMessage.toLowerCase();
 
+  if (lower.includes('khấu trừ') || lower.includes('kê khai thuế gtgt') || lower.includes('5 triệu') || lower.includes('năm triệu') || lower.includes('01/gtgt') || lower.includes('01/cnkd') || lower.includes('nghị định 144') || lower.includes('hướng dẫn kê khai') || lower.includes('mẫu biểu gtgt')) {
+    return `Dạ theo Tài liệu hướng dẫn kê khai thuế GTGT của Cơ quan Thuế và Nghị định 144/2026/NĐ-CP (sửa đổi Điều 26 Nghị định 181/2026/NĐ-CP):
+
+1. **Điều kiện khấu trừ thuế GTGT đầu vào & Ngưỡng 05 triệu đồng:**
+   - Giao dịch từng lần từ **05 triệu đồng trở lên** (đã bao gồm VAT) bắt buộc phải có chứng từ thanh toán không dùng tiền mặt (chuyển khoản qua ngân hàng).
+   - **Khi chưa đến hạn thanh toán theo hợp đồng:** Doanh nghiệp vẫn được kê khai khấu trừ đầu vào căn cứ theo hợp đồng và hóa đơn GTGT hợp lệ.
+   - **Đến hạn thanh toán:** Nếu không có chứng từ thanh toán không dùng tiền mặt, bắt buộc phải kê khai điều chỉnh giảm số thuế GTGT đã khấu trừ; khi nào có chứng từ chuyển khoản mới được kê khai khấu trừ lại.
+
+2. **Kê khai thuế đối với Hộ, Cá nhân kinh doanh (Nghị định 68/2026 & 141/2026/NĐ-CP):**
+   - Chi phí muốn được trừ phải có hóa đơn hợp lệ và giao dịch từ **05 triệu đồng trở lên bắt buộc chuyển khoản**.
+   - Bắt buộc cập nhật số tài khoản / ví điện tử kinh doanh với Cơ quan Thuế qua ứng dụng **eTax Mobile**.
+   - Hộ kinh doanh có doanh thu năm từ trên 1 tỷ đến 50 tỷ đồng kê khai theo quý bằng **Mẫu 01/CNKD**.
+
+3. **Hệ thống mẫu biểu khai thuế GTGT:**
+   - **Mẫu 01/GTGT:** Cho doanh nghiệp SXKD theo phương pháp khấu trừ thông thường.
+   - **Mẫu 02/GTGT:** Cho dự án đầu tư được hoàn thuế.
+   - **Mẫu 04/GTGT:** Cho người nộp thuế tính trực tiếp trên tỷ lệ % doanh thu.
+   - **Mẫu 05/GTGT:** Phân bổ thuế GTGT cho hoạt động xây dựng, BĐS ngoại tỉnh (Điều 19 TT 89/2026/TT-BTC).
+   - **Mẫu 01/KHBS:** Tờ khai bổ sung khi hồ sơ khai thuế đã nộp có sai sót.
+
+"Dịu dàng với chính mình, nghiêm túc với con số" — Đội ngũ Kế toán Đất Phú luôn sẵn sàng hỗ trợ rà soát và lập tờ khai chuẩn mực qua Hotline/Zalo: **0979.991.898**!`;
+  }
+
   if (lower.includes('bia') || lower.includes('rượu') || lower.includes('thuế suất') || lower.includes('mấy %') || lower.includes('tỷ lệ thuế')) {
     return `Dạ theo Thông tư 94/2024/TT-BTC và Thông tư 40/2021/TT-BTC, thuế suất cho mô hình quán ăn/cà phê có bán kèm bia rượu như sau:
 1. **Dịch vụ ăn uống, pha chế:** Thuế GTGT 3% + Thuế TNCN 1.5% = **Tổng 4.5%**.
@@ -168,7 +191,12 @@ BIỂU PHÍ DỊCH VỤ SỐ ĐẤT PHÚ GEN 4:
    - Dùng để kê khai thuế điện tử (thuedientu.gdt.gov.vn), nộp tờ khai và ký hóa đơn GTGT.
 3. Combo EasyPOS & Thuế trọn gói:
    - Giá: 1.850.000đ / năm đầu (Bao gồm phần mềm quản lý bán hàng EasyPOS + 1.000 số hóa đơn máy tính tiền + 1 năm chữ ký số).
-4. Mạng lưới Đội Thợ Dân Sinh (0% phí trung gian):
+4. Hướng dẫn Kê khai Thuế GTGT & Khấu trừ theo Nghị định 144/2026/NĐ-CP & NĐ 68/2026:
+   - Ngưỡng thanh toán không dùng tiền mặt từ 05 triệu đồng trở lên (bắt buộc chuyển khoản để được khấu trừ GTGT đầu vào).
+   - Nếu chưa đến hạn thanh toán: vẫn được kê khai khấu trừ đầu vào. Đến hạn thanh toán nếu không chuyển khoản thì phải kê khai điều chỉnh giảm.
+   - Hộ kinh doanh: Chi phí muốn trừ phải từ 5 triệu chuyển khoản; cập nhật số tài khoản trên eTax Mobile; kê khai Mẫu 01/CNKD (doanh thu 1-50 tỷ khai theo quý).
+   - Mẫu biểu thuế GTGT: 01/GTGT (khấu trừ SXKD), 02/GTGT (dự án đầu tư), 04/GTGT (trực tiếp doanh thu), 05/GTGT (phân bổ ngoại tỉnh), 01/KHBS (khai bổ sung).
+5. Mạng lưới Đội Thợ Dân Sinh (0% phí trung gian):
    - Đội Thợ Xây Cả Tám Đất Phú: Đổ móng, xây tô, lát đá (ĐT: 0914.821.567).
    - Xưởng Cơ Khí Hàn Sắt Ba Bình: Cổng sắt, mái che tôn, giàn giáo (ĐT: 0905.342.118).
    - Hỗ trợ khẩn cấp: Hotline 0979.991.898.
