@@ -31,26 +31,59 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Thẻ Antigravity Glassmorphism */
+    /* Thẻ Antigravity Siêu Thực 3D */
     .antigravity-card {
-      background: rgba(17, 24, 39, 0.75);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.7),
-                  0 0 25px -5px rgba(249, 115, 22, 0.12);
+      background: radial-gradient(130% 100% at 50% 0%, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 28px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85),
+                  0 0 30px -5px rgba(59, 130, 246, 0.15),
+                  inset 0 1px 1px rgba(255, 255, 255, 0.25);
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .antigravity-card:hover {
-      transform: translateY(-6px) scale(1.005);
-      border-color: rgba(249, 115, 22, 0.45);
-      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.85),
-                  0 0 35px -5px rgba(249, 115, 22, 0.28);
+      transform: translateY(-8px) scale(1.01);
+      border-color: rgba(59, 130, 246, 0.5);
+      box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.95),
+                  0 0 45px -5px rgba(59, 130, 246, 0.35),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.4);
     }
 
-    /* Nút Antigravity */
+    /* Icon Neon Pods */
+    .icon-pod {
+      width: 68px;
+      height: 68px;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .icon-pod-1 {
+      background: linear-gradient(145deg, rgba(56, 189, 248, 0.2) 0%, rgba(15, 23, 42, 0.6) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 30px -5px rgba(56, 189, 248, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      color: #38bdf8;
+    }
+    .icon-pod-2 {
+      background: linear-gradient(145deg, rgba(99, 102, 241, 0.2) 0%, rgba(15, 23, 42, 0.6) 100%);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      box-shadow: 0 0 30px -5px rgba(99, 102, 241, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      color: #818cf8;
+    }
+    .icon-pod-3 {
+      background: linear-gradient(145deg, rgba(45, 212, 191, 0.2) 0%, rgba(15, 23, 42, 0.6) 100%);
+      border: 1px solid rgba(45, 212, 191, 0.4);
+      box-shadow: 0 0 30px -5px rgba(45, 212, 191, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      color: #2dd4bf;
+    }
+
+    /* Nút Antigravity chuẩn Concept */
     .antigravity-btn {
       background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
       box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.5);
@@ -65,25 +98,39 @@
       box-shadow: 0 15px 30px -5px rgba(249, 115, 22, 0.75);
     }
 
-    .glow-border {
-      box-shadow: 0 0 40px -10px rgba(249, 115, 22, 0.3);
+    /* Nút Thẻ 1: Khung trong suốt huyền ảo */
+    .btn-card-1 {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #f1f5f9;
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5);
+    }
+    .btn-card-1:hover {
+      background: rgba(51, 65, 85, 0.8);
+      border-color: rgba(249, 115, 22, 0.5);
+      color: #fff;
     }
 
-    /* Cải tiến Icon Glow Antigravity 3D */
-    .icon-container-orange {
-      background: linear-gradient(135deg, rgba(249, 115, 22, 0.25) 0%, rgba(234, 88, 12, 0.05) 100%);
-      border: 1px solid rgba(249, 115, 22, 0.4);
-      box-shadow: 0 0 25px -5px rgba(249, 115, 22, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    /* Nút Thẻ 2: Xanh dạ quang Neon */
+    .btn-card-2 {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      border: 1px solid rgba(96, 165, 250, 0.4);
+      color: #fff;
+      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5);
     }
-    .icon-container-blue {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(37, 99, 235, 0.05) 100%);
-      border: 1px solid rgba(59, 130, 246, 0.4);
-      box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    .btn-card-2:hover {
+      box-shadow: 0 15px 35px -5px rgba(37, 99, 235, 0.8);
     }
-    .icon-container-emerald {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.05) 100%);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+
+    /* Nút Thẻ 3: Xanh biển sâu Gradient */
+    .btn-card-3 {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #fff;
+      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.5);
+    }
+    .btn-card-3:hover {
+      box-shadow: 0 15px 35px -5px rgba(2, 132, 199, 0.8);
     }
 
     /* Hiệu ứng rung nhẹ cho nút Zalo nổi */
@@ -179,94 +226,97 @@
   <main id="dich-vu-so" class="max-w-6xl w-full mx-auto px-3 sm:px-6 py-4 grid grid-cols-1 md:grid-cols-3 gap-6">
 
     <!-- CỘT 1: GIẢI PHÁP DỊCH VỤ SỐ -->
-    <div class="antigravity-card p-6 flex flex-col justify-between">
+    <div class="antigravity-card p-7 flex flex-col justify-between">
       <div>
-        <div class="w-14 h-14 rounded-2xl icon-container-orange flex items-center justify-center text-2xl mb-5 text-orange-400">
-          <i class="fa-solid fa-file-invoice-dollar drop-shadow-[0_0_10px_rgba(249,115,22,0.6)]"></i>
+        <div class="icon-pod icon-pod-1">
+          <i class="fa-solid fa-file-invoice-dollar text-3xl"></i>
         </div>
-        <h3 class="text-lg font-black text-white mb-2">1. Giải Pháp Dịch Vụ Số</h3>
+        <h3 class="text-xl font-black text-white mb-2 tracking-tight">1. Giải Pháp Dịch Vụ Số</h3>
         <p class="text-xs text-gray-400 mb-6 leading-relaxed">
           Đảm bảo tuân thủ thuế & pháp lý vững chắc: Hóa đơn điện tử máy tính tiền Nghị định 254/2026, Chữ ký số EFY-CA/Token và phần mềm EasyPOS quản lý bán hàng.
         </p>
-        <div class="space-y-2.5 text-xs text-gray-300 border-t border-gray-800/80 pt-4 mb-6">
-          <div class="flex justify-between items-center py-1 border-b border-gray-800/40">
-            <span class="text-gray-400">Hóa đơn điện tử (Máy tính tiền):</span>
-            <span class="text-orange-400 font-bold">Chuẩn NĐ 254</span>
+        <div class="space-y-3 text-xs text-gray-300 border-t border-gray-800/80 pt-4 mb-8">
+          <div class="flex justify-between items-center py-0.5">
+            <span class="text-gray-400 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>Hóa đơn điện tử:</span>
+            <span class="text-orange-400 font-bold bg-orange-500/10 px-2.5 py-0.5 rounded-full border border-orange-500/20">Chuẩn NĐ 254</span>
           </div>
-          <div class="flex justify-between items-center py-1 border-b border-gray-800/40">
-            <span class="text-gray-400">Chữ ký số (Token & HSM):</span>
-            <span class="text-emerald-400 font-bold">Chiết khấu 30-50%</span>
+          <div class="flex justify-between items-center py-0.5">
+            <span class="text-gray-400 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>Chữ ký số:</span>
+            <span class="text-orange-400 font-bold bg-orange-500/10 px-2.5 py-0.5 rounded-full border border-orange-500/20">Chiết khấu 30-50%</span>
           </div>
-          <div class="flex justify-between items-center py-1">
-            <span class="text-gray-400">Phần mềm EasyPOS & Kế toán:</span>
-            <span class="text-sky-400 font-bold">Đơn giản, minh bạch</span>
+          <div class="flex justify-between items-center py-0.5">
+            <span class="text-gray-400 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>Phần mềm:</span>
+            <span class="text-orange-300 font-bold">Đơn giản, minh bạch</span>
           </div>
         </div>
       </div>
-      <a href="https://zalo.me/0979991898" target="_blank" class="antigravity-btn w-full py-2.5 text-center text-white text-xs block">
+      <button onclick="openConsultationModal('Gói 1: Hóa đơn & Chữ ký số')" class="btn-card-1 w-full py-3 text-center text-xs font-bold rounded-2xl transition active:scale-95 cursor-pointer">
         Đăng Ký Gói Dịch Vụ Số
-      </a>
+      </button>
     </div>
 
     <!-- CỘT 2: AI SUPPORT SWARM -->
-    <div class="antigravity-card p-6 flex flex-col justify-between relative border-blue-500/30">
-      <div class="absolute -top-2.5 right-6 px-3 py-0.5 bg-blue-600 text-[10px] font-bold rounded-full text-white tracking-wider shadow-md">
+    <div class="antigravity-card p-7 flex flex-col justify-between relative border-blue-500/40">
+      <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-[11px] font-black rounded-full text-white tracking-wider shadow-lg shadow-blue-500/40 border border-blue-400/40 uppercase">
         AI TỰ HÀNH 24/7
       </div>
       <div>
-        <div class="w-14 h-14 rounded-2xl icon-container-blue flex items-center justify-center text-2xl mb-5 text-blue-400">
-          <i class="fa-solid fa-robot drop-shadow-[0_0_10px_rgba(59,130,246,0.6)]"></i>
+        <div class="icon-pod icon-pod-2">
+          <i class="fa-solid fa-network-wired text-3xl"></i>
         </div>
-        <h3 class="text-lg font-black text-white mb-2">2. AI Support Swarm</h3>
+        <h3 class="text-xl font-black text-white mb-2 tracking-tight">2. AI Support Swarm</h3>
         <p class="text-xs text-gray-400 mb-6 leading-relaxed">
           Hệ thống đa tác tử AI chạy ngầm 24/7: Tự động tiếp nhận giải đáp nghiệp vụ thuế/hóa đơn, hướng dẫn kỹ thuật tức thì và điều phối luồng n8n chuẩn 6K Kín Kẽ.
         </p>
-        <div class="space-y-2.5 text-xs text-gray-300 border-t border-gray-800/80 pt-4 mb-6">
-          <div class="flex justify-between items-center py-1 border-b border-gray-800/40">
+        <div class="space-y-3 text-xs text-gray-300 border-t border-gray-800/80 pt-4 mb-8">
+          <div class="flex justify-between items-center py-0.5">
             <span class="text-gray-400">Tốc độ phản hồi:</span>
-            <span class="text-blue-400 font-bold">Dưới 3 giây</span>
+            <span class="text-sky-400 font-bold">&lt; 3 giây</span>
           </div>
-          <div class="flex justify-between items-center py-1 border-b border-gray-800/40">
+          <div class="flex justify-between items-center py-0.5">
             <span class="text-gray-400">Hạ tầng điều phối:</span>
-            <span class="text-orange-400 font-bold">n8n + Backend MCP</span>
+            <span class="text-orange-400 font-bold font-mono">n8n + MCP</span>
           </div>
-          <div class="flex justify-between items-center py-1">
+          <div class="flex justify-between items-center py-0.5">
             <span class="text-gray-400">Hỗ trợ UltraViewer:</span>
-            <span class="text-emerald-400 font-bold">Tự động bắt mã ID</span>
+            <span class="text-emerald-400 font-bold">Tự động</span>
           </div>
         </div>
       </div>
-      <button onclick="openConsultationModal('Gói 2: AI Support & Tự động hóa')" class="antigravity-btn w-full py-2.5 text-center text-white text-xs bg-gradient-to-r from-blue-600 to-indigo-600 shadow-blue-500/30">
+      <button onclick="openConsultationModal('Gói 2: AI Support & Tự động hóa')" class="btn-card-2 w-full py-3 text-center text-xs font-bold rounded-2xl transition active:scale-95 cursor-pointer">
         Trải Nghiệm AI Trợ Lý
       </button>
     </div>
 
     <!-- CỘT 3: CÔNG NGHỆ GIÁO DỤC STEM -->
-    <div class="antigravity-card p-6 flex flex-col justify-between">
+    <div class="antigravity-card p-7 flex flex-col justify-between relative">
+      <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-gray-800 text-[11px] font-bold rounded-full text-gray-200 tracking-wider border border-gray-600 shadow-md whitespace-nowrap">
+        Khám Phá STEMBot Lab
+      </div>
       <div>
-        <div class="w-14 h-14 rounded-2xl icon-container-emerald flex items-center justify-center text-2xl mb-5 text-emerald-400">
-          <i class="fa-solid fa-microchip drop-shadow-[0_0_10px_rgba(16,185,129,0.6)]"></i>
+        <div class="icon-pod icon-pod-3">
+          <i class="fa-solid fa-microchip text-3xl"></i>
         </div>
-        <h3 class="text-lg font-black text-white mb-2">3. Công Nghệ Giáo Dục STEM</h3>
+        <h3 class="text-xl font-black text-white mb-2 tracking-tight">3. Công Nghệ Giáo Dục STEM</h3>
         <p class="text-xs text-gray-400 mb-6 leading-relaxed">
           STEMBot Lab: Khóa học số hóa 20 bài học Robotics & vi điều khiển Arduino/ESP32, cung cấp bộ kit phần cứng thực hành và giải pháp tự động hóa trong nhà.
         </p>
-        <div class="space-y-2.5 text-xs text-gray-300 border-t border-gray-800/80 pt-4 mb-6">
-          <div class="flex justify-between items-center py-1 border-b border-gray-800/40">
-            <span class="text-gray-400">Giáo trình số hóa:</span>
+        <div class="space-y-3 text-xs text-gray-300 border-t border-gray-800/80 pt-4 mb-8">
+          <div class="flex justify-between items-center py-0.5">
+            <span class="text-gray-400">Giáo trình:</span>
             <span class="text-emerald-400 font-bold">20 Bài thực chiến</span>
           </div>
-          <div class="flex justify-between items-center py-1 border-b border-gray-800/40">
-            <span class="text-gray-400">Bộ kit phần cứng:</span>
+          <div class="flex justify-between items-center py-0.5">
+            <span class="text-gray-400">Kit phần cứng:</span>
             <span class="text-orange-400 font-bold">Arduino / ESP32 IoT</span>
           </div>
-          <div class="flex justify-between items-center py-1">
-            <span class="text-gray-400">Tính năng kháng chu kỳ:</span>
+          <div class="flex justify-between items-center py-0.5">
+            <span class="text-gray-400">Tính năng:</span>
             <span class="text-sky-400 font-bold">Học & thực hành tại nhà</span>
           </div>
         </div>
       </div>
-      <button onclick="openConsultationModal('Gói 3: STEMBot Lab & Khóa học')" class="antigravity-btn w-full py-2.5 text-center text-white text-xs bg-gradient-to-r from-emerald-600 to-teal-600 shadow-emerald-500/30">
+      <button onclick="openConsultationModal('Gói 3: STEMBot Lab & Khóa học')" class="btn-card-3 w-full py-3 text-center text-xs font-bold rounded-2xl transition active:scale-95 cursor-pointer">
         Khám Phá STEMBot Lab
       </button>
     </div>
