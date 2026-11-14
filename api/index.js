@@ -8,6 +8,7 @@ const server = require('../src/server');
 const wisdomHandler = require('./wisdom');
 const leadHandler = require('./lead');
 const swarmHandler = require('./swarm');
+const ragHandler = require('./rag');
 
 module.exports = (req, res) => {
   const rawUrl = req.url || '';
@@ -34,6 +35,11 @@ module.exports = (req, res) => {
   // 0.1 CỔNG TIẾP NHẬN TƯ VẤN DỊCH VỤ SỐ & LEAD GEN 4
   if (parsed.searchParams.get('action') === 'lead' || reqUrl.includes('/api/lead') || reqUrl.includes('action=lead')) {
     return leadHandler(req, res);
+  }
+
+  // 0.2 CỔNG QUẢN LÝ KHO TRI THỨC PHÁP LÝ RAG
+  if (parsed.searchParams.get('action') === 'rag' || reqUrl.includes('/api/rag') || reqUrl.includes('action=rag')) {
+    return ragHandler(req, res);
   }
 
   // 1. CỔNG AI MINH TRIẾT NHÂN LOẠI GEMINI (CÓ CACHE)

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Quản Trị Kho Tri Thức Pháp Lý RAG — Đất Phú Gen 4</title>
+  <meta name="description" content="Trung tâm quản trị, nạp và bóc tách tri thức quy phạm pháp luật, nghị định thuế và biểu phí dịch vụ cho Hệ thống Đa tác tử AI Đất Phú.">
+  <link rel="icon" href="/img/logo.png" type="image/png">
+  
+  <!-- Tailwind CSS v4 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- Font Awesome Pro Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #0b0f19;
+      color: #f3f4f6;
+    }
+    .antigravity-card {
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1.25rem;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .antigravity-card:hover {
+      border-color: rgba(59, 130, 246, 0.4);
+    }
+    .antigravity-btn {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+      transition: all 0.2s ease-in-out;
+    }
+    .antigravity-btn:hover {
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 sm:p-6 lg:p-8">
+
+  <!-- ================= HEADER ================= -->
+  <header class="max-w-6xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-gray-800">
+    <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-400 p-0.5 shadow-lg shadow-blue-500/20">
+        <div class="w-full h-full bg-gray-900 rounded-[14px] flex items-center justify-center text-blue-400 text-xl font-black">
+          <i class="fa-solid fa-book-bookmark"></i>
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-base font-black text-white tracking-tight">CỔNG QUẢN TRỊ TRI THỨC RAG</span>
+          <span class="text-[10px] font-bold bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/30">GEN 4 OS</span>
+        </div>
+        <p class="text-xs text-gray-400">Nạp văn bản pháp luật, thuế và nghiệp vụ cho Đội ngũ Đa tác tử AI</p>
+      </div>
+    </div>
+
+    <!-- Nút điều hướng -->
+    <div class="flex items-center gap-2">
+      <a href="/ai-swarm.html" class="px-3.5 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold border border-gray-700 flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-robot text-sky-400"></i>
+        <span>Phòng AI Swarm</span>
+      </a>
+      <a href="/lao-dong.html" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Về Hệ Sinh Thái</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= NỘI DUNG CHÍNH ================= -->
+  <main class="max-w-6xl w-full mx-auto py-8 space-y-8 flex-1">
+
+    <!-- BANNER GIỚI THIỆU -->
+    <div class="antigravity-card p-6 border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-gray-900/60 to-purple-950/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div class="space-y-2 max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>Bộ Tri Thức Đang Kích Hoạt 24/7 Chuẩn 6K Kín Kẽ</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">Trung Tâm Nạp Tri Thức & Huấn Luyện Tác Tử</h1>
+        <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+          Mỗi khi Cục Thuế Phú Yên, Đắk Lắk hoặc Bộ Tài Chính ban hành Nghị định, Thông tư mới, bạn chỉ cần dán văn bản vào đây. AI sẽ tự động phân tách thành các khối tri thức (Chunks) để đội ngũ AI Swarm tư vấn chuẩn xác cho hộ kinh doanh.
+        </p>
+      </div>
+      <div class="flex md:flex-col gap-3 shrink-0">
+        <div class="p-3.5 rounded-2xl bg-gray-900/80 border border-gray-800 text-center min-w-[120px]">
+          <span class="text-2xl font-black text-sky-400" id="totalChunksStat">--</span>
+          <span class="block text-[10px] text-gray-400 uppercase font-semibold mt-0.5">Khối tri thức</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-gray-900/80 border border-gray-800 text-center min-w-[120px]">
+          <span class="text-2xl font-black text-emerald-400">100%</span>
+          <span class="block text-[10px] text-gray-400 uppercase font-semibold mt-0.5">Độ tuân thủ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BỐ CỤC 2 CỘT: FORM NHẬP LIỆU & THỬ NGHIỆM -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+      <!-- CỘT TRÁI: FORM NẠP TRI THỨC MỚI (7 CỘT) -->
+      <div class="lg:col-span-7 space-y-6">
+
+        <!-- Ô 1: BÓC TÁCH NHANH TỪ VĂN BẢN THÔ BẰNG AI -->
+        <div class="antigravity-card p-5 border-purple-500/30 bg-purple-950/10 space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-black text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>1. Trích xuất tự động bằng AI (Tuỳ chọn)</span>
+            </label>
+            <span class="text-[10px] text-gray-400">Dán nguyên văn công văn / nghị định</span>
+          </div>
+          <textarea id="rawTextInput" rows="4" placeholder="Dán văn bản thô, tóm tắt công văn hoặc điều luật mới vào đây... (Ví dụ: Theo Nghị định 254 ban hành, quán ăn phải xuất bill máy tính tiền...)" class="w-full px-4 py-3 rounded-xl bg-gray-950 border border-purple-900/50 text-white text-xs focus:outline-none focus:border-purple-500 leading-relaxed"></textarea>
+          <button type="button" onclick="autoExtractByAI()" id="btnAutoExtract" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-purple-900/30">
+            <i class="fa-solid fa-bolt"></i>
+            <span>AI Tự Động Phân Tích & Điền Form</span>
+          </button>
+        </div>
+
+        <!-- Ô 2: BIỂU MẪU ĐIỀU CHỈNH & NẠP VÀO HỆ THỐNG -->
+        <form onsubmit="handleSaveChunk(event)" class="antigravity-card p-5 sm:p-6 border-blue-500/40 space-y-4">
+          <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+            <h2 class="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-feather text-blue-400"></i>
+              <span>2. Biểu Mẫu Chi Tiết Khối Tri Thức RAG</span>
+            </h2>
+            <span class="text-[10px] text-sky-400 font-mono">Chuẩn 6K Kín Kẽ</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-bold text-gray-300 mb-1">Tên Văn Bản / Nguồn</label>
+              <input type="text" id="chunkDoc" required placeholder="VD: Nghị định 254/2026/NĐ-CP" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-blue-500" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-gray-300 mb-1">Điều Khoản / Mục Cụ Thể</label>
+              <input type="text" id="chunkArticle" required placeholder="VD: Điều 8 Khoản 2" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-blue-500" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-gray-300 mb-1">Tiêu Đề Tóm Tắt Khối Tri Thức</label>
+            <input type="text" id="chunkTitle" required placeholder="VD: Cơ chế miễn chữ ký số từng hóa đơn máy tính tiền" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-gray-300 mb-1">
+              Từ Khóa Nhận Diện (Keywords) 
+              <span class="text-[10px] text-gray-400 font-normal">(Cách nhau bằng dấu phẩy)</span>
+            </label>
+            <input type="text" id="chunkKeywords" required placeholder="cà phê, máy tính tiền, miễn token, in bill, 254, khách lẻ" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-blue-500 font-mono" />
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-gray-300 mb-1">Nội Dung Quy Chuẩn / Nghiệp Vụ Cốt Lõi</label>
+            <textarea id="chunkContent" rows="6" required placeholder="Trình bày rõ ràng các điều khoản, tỷ lệ thuế %, quy trình thực hiện để AI nạp làm căn cứ trả lời..." class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-blue-500 leading-relaxed"></textarea>
+          </div>
+
+          <div class="pt-2 border-t border-gray-800 flex flex-col sm:flex-row items-center gap-3">
+            <div class="w-full sm:w-auto flex-1">
+              <input type="password" id="adminPin" placeholder="Mã PIN Quản trị (0979991898)" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-blue-500" />
+            </div>
+            <button type="submit" id="btnSaveChunk" class="antigravity-btn w-full sm:w-auto px-6 py-2.5 rounded-xl text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shrink-0">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Lưu & Kích Hoạt Tri Thức</span>
+            </button>
+          </div>
+          <div id="saveFeedback" class="text-xs text-center font-bold"></div>
+        </form>
+
+      </div>
+
+      <!-- CỘT PHẢI: BỘ THỬ NGHIỆM TRUY VẤN & XEM TRƯỚC (5 CỘT) -->
+      <div class="lg:col-span-5 space-y-6">
+
+        <!-- HỘP TEST TRUY VẤN RAG TRỰC TIẾP -->
+        <div class="antigravity-card p-5 border-emerald-500/30 bg-emerald-950/10 space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-black text-emerald-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <span>Thử Nghiệm Truy Vấn RAG</span>
+            </label>
+            <span class="text-[10px] text-gray-400">Kiểm tra độ khớp</span>
+          </div>
+          <div class="flex gap-2">
+            <input type="text" id="testQueryInput" placeholder="VD: quán cà phê bán bia tính thuế mấy %..." class="flex-1 px-3 py-2 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-emerald-500" />
+            <button type="button" onclick="testRagRetrieval()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+              <span>Tìm</span>
+            </button>
+          </div>
+          <div id="testResultsBox" class="space-y-2 pt-2 text-xs text-gray-300 max-h-60 overflow-y-auto">
+            <p class="text-gray-500 italic text-center py-4">Nhập câu hỏi để xem AI sẽ trích xuất điều khoản nào...</p>
+          </div>
+        </div>
+
+        <!-- DANH SÁCH KHỐI TRI THỨC HIỆN CÓ -->
+        <div class="antigravity-card p-5 border-gray-800 space-y-4">
+          <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+            <h3 class="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-database text-sky-400"></i>
+              <span>Kho Tri Thức Hiện Có</span>
+            </h3>
+            <button onclick="loadAllChunks()" class="text-[10px] text-gray-400 hover:text-white flex items-center gap-1 cursor-pointer">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span>Làm mới</span>
+            </button>
+          </div>
+
+          <div id="chunksListContainer" class="space-y-3 max-h-[500px] overflow-y-auto pr-1">
+            <div class="text-center py-8 text-gray-500 text-xs">
+              <i class="fa-solid fa-spinner fa-spin text-lg mb-2"></i>
+              <p>Đang tải dữ liệu tri thức...</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="max-w-6xl w-full mx-auto px-4 border-t border-gray-800/80 pt-6 pb-6 text-center text-xs text-gray-500 mt-6">
+    <p class="font-bold text-gray-300">© 2026 CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ — BỘ PHẬN PHÁP CHẾ & THUẾ ĐIỆN TỬ</p>
+    <p class="mt-1">Hotline Kỹ Thuật / Zalo: <a href="https://zalo.me/0979991898" target="_blank" class="text-orange-400 font-mono font-bold hover:underline">0979.991.898</a> • MST: <span class="text-orange-400 font-mono font-bold">4401020233</span></p>
+    <p class="mt-1">Địa chỉ: 21/146 Ngô Gia Tự, Phường Phú Yên, Tỉnh Đắk Lắk (và Phú Yên)</p>
+  </footer>
+
+  <!-- SCRIPT LOGIC QUẢN TRỊ -->
+  <script>
+    let activeChunks = [];
+
+    // Tải danh sách tri thức khi mở trang
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAllChunks();
+    });
+
+    async function loadAllChunks() {
+      const container = document.getElementById('chunksListContainer');
+      const statBadge = document.getElementById('totalChunksStat');
+
+      try {
+        const resp = await fetch('/api/rag');
+        const data = await resp.json();
+        activeChunks = data.chunks || [];
+        statBadge.innerText = activeChunks.length;
+
+        if (activeChunks.length === 0) {
+          container.innerHTML = '<p class="text-gray-500 text-center py-4 text-xs">Chưa có khối tri thức nào. Hãy thêm khối đầu tiên!</p>';
+          return;
+        }
+
+        container.innerHTML = activeChunks.map((c, i) => `
+          <div class="p-3.5 rounded-xl bg-gray-950 border border-gray-800 hover:border-gray-700 transition space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <span class="text-[10px] font-bold text-sky-400 font-mono bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
+                ${c.doc} - ${c.article}
+              </span>
+              <button onclick="handleDeleteChunk('${c.id}')" title="Xóa khối tri thức" class="text-gray-500 hover:text-rose-400 transition text-xs p-1 cursor-pointer">
+                <i class="fa-regular fa-trash-can"></i>
+              </button>
+            </div>
+            <h4 class="text-xs font-bold text-white">${c.title}</h4>
+            <p class="text-[11px] text-gray-400 line-clamp-2 leading-relaxed">${c.content}</p>
+            <div class="flex flex-wrap gap-1 pt-1">
+              ${(c.keywords || []).map(k => `<span class="text-[9px] bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded">${k}</span>`).join('')}
+            </div>
+          </div>
+        `).join('');
+
+      } catch (e) {
+        container.innerHTML = '<p class="text-rose-400 text-center py-4 text-xs">Lỗi kết nối khi tải danh sách tri thức</p>';
+      }
+    }
+
+    // AI BÓC TÁCH VĂN BẢN TỰ ĐỘNG
+    async function autoExtractByAI() {
+      const rawText = document.getElementById('rawTextInput').value.trim();
+      if (!rawText) {
+        alert('Vui lòng dán văn bản pháp luật vào ô để AI bóc tách!');
+        return;
+      }
+
+      const btn = document.getElementById('btnAutoExtract');
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>AI đang phân tích & bóc tách...</span>';
+
+      try {
+        const resp = await fetch('/api/rag?action=ai-extract', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: rawText })
+        });
+        const res = await resp.json();
+
+        if (res.success && res.extracted) {
+          const ex = res.extracted;
+          document.getElementById('chunkDoc').value = ex.doc || '';
+          document.getElementById('chunkArticle').value = ex.article || '';
+          document.getElementById('chunkTitle').value = ex.title || '';
+          document.getElementById('chunkKeywords').value = Array.isArray(ex.keywords) ? ex.keywords.join(', ') : (ex.keywords || '');
+          document.getElementById('chunkContent').value = ex.content || rawText;
+          
+          alert('✨ AI đã bóc tách thành công! Vui lòng kiểm tra lại thông tin và bấm "Lưu & Kích Hoạt Tri Thức".');
+        } else {
+          alert('Không thể bóc tách tự động. Vui lòng điền thủ công vào biểu mẫu.');
+        }
+      } catch (err) {
+        alert('Lỗi kết nối khi gọi AI: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }
+    }
+
+    // LƯU KHỐI TRI THỨC MỚI
+    async function handleSaveChunk(e) {
+      e.preventDefault();
+      const fb = document.getElementById('saveFeedback');
+      fb.innerHTML = '<span class="text-amber-400"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang lưu và cập nhật hệ thống...</span>';
+
+      const pin = document.getElementById('adminPin').value.trim() || '0979991898';
+      const payload = {
+        doc: document.getElementById('chunkDoc').value.trim(),
+        article: document.getElementById('chunkArticle').value.trim(),
+        title: document.getElementById('chunkTitle').value.trim(),
+        keywords: document.getElementById('chunkKeywords').value.trim(),
+        content: document.getElementById('chunkContent').value.trim(),
+        pin
+      };
+
+      try {
+        const resp = await fetch('/api/rag', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const res = await resp.json();
+
+        if (res.success) {
+          fb.innerHTML = '<span class="text-emerald-400"><i class="fa-solid fa-check mr-1"></i> ' + res.message + '</span>';
+          // Xóa trắng form
+          document.getElementById('chunkTitle').value = '';
+          document.getElementById('chunkKeywords').value = '';
+          document.getElementById('chunkContent').value = '';
+          document.getElementById('rawTextInput').value = '';
+          // Nạp lại danh sách
+          loadAllChunks();
+        } else {
+          fb.innerHTML = '<span class="text-rose-400"><i class="fa-solid fa-xmark mr-1"></i> ' + res.message + '</span>';
+        }
+      } catch (err) {
+        fb.innerHTML = '<span class="text-rose-400">Lỗi kết nối khi lưu tri thức</span>';
+      }
+    }
+
+    // XÓA KHỐI TRI THỨC
+    async function handleDeleteChunk(id) {
+      const pin = prompt('Nhập mã PIN Quản trị để xóa (Mặc định: 0979991898):', '0979991898');
+      if (!pin) return;
+
+      try {
+        const resp = await fetch(`/api/rag?id=${encodeURIComponent(id)}&pin=${encodeURIComponent(pin)}`, {
+          method: 'DELETE'
+        });
+        const res = await resp.json();
+        if (res.success) {
+          alert('Đã xóa thành công!');
+          loadAllChunks();
+        } else {
+          alert(res.message);
+        }
+      } catch (e) {
+        alert('Lỗi kết nối khi xóa: ' + e.message);
+      }
+    }
+
+    // THỬ NGHIỆM TRUY VẤN RAG
+    async function testRagRetrieval() {
+      const query = document.getElementById('testQueryInput').value.trim();
+      const box = document.getElementById('testResultsBox');
+      if (!query) return;
+
+      box.innerHTML = '<p class="text-amber-400 text-center py-2"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tính toán điểm độ khớp...</p>';
+
+      try {
+        const resp = await fetch('/api/rag?action=search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query })
+        });
+        const res = await resp.json();
+
+        if (res.results && res.results.length > 0) {
+          box.innerHTML = res.results.map((c, i) => `
+            <div class="p-2.5 rounded-lg bg-gray-900 border border-emerald-500/30 text-gray-200 space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] text-emerald-400 font-bold">Top ${i + 1}: ${c.doc} (${c.article})</span>
+                <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded font-mono">Khớp</span>
+              </div>
+              <div class="font-bold text-white text-xs">${c.title}</div>
+              <div class="text-[11px] text-gray-400 line-clamp-2">${c.content}</div>
+            </div>
+          `).join('');
+        } else {
+          box.innerHTML = '<p class="text-rose-400 text-center py-2 text-xs">Không tìm thấy điều khoản nào khớp với câu hỏi này.</p>';
+        }
+      } catch (e) {
+        box.innerHTML = '<p class="text-rose-400 text-center py-2 text-xs">Lỗi kiểm tra truy vấn</p>';
+      }
+    }
+  </script>
+</body>
+</html>

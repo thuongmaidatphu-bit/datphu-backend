@@ -275,6 +275,12 @@ const server = http.createServer(async (req, res) => {
     return leadHandler(req, res, body);
   }
 
+  // CỔNG QUẢN TRỊ KHO TRI THỨC PHÁP LÝ RAG
+  if (pathname === '/api/rag') {
+    const ragHandler = require('../api/rag');
+    return ragHandler(req, res, body);
+  }
+
   // Cổng Webhook Ngân Hàng (Napas247 / Casso / SePay)
   if ((pathname === '/api/pos/webhook/bank' || pathname === '/api/webhook/bank') && req.method === 'POST') {
     return webhookController.handleBankWebhook(req, res, body, sseClients);
