@@ -43,6 +43,20 @@ if (!process.env.GEMINI_API_KEY) {
 function getRuleBasedAnswer(userMessage, agent) {
   const lower = userMessage.toLowerCase();
 
+  if (lower.includes('bia') || lower.includes('rượu') || lower.includes('thuế suất') || lower.includes('mấy %') || lower.includes('tỷ lệ thuế')) {
+    return `Dạ theo Thông tư 94/2024/TT-BTC và Thông tư 40/2021/TT-BTC, thuế suất cho mô hình quán ăn/cà phê có bán kèm bia rượu như sau:
+1. **Dịch vụ ăn uống, pha chế:** Thuế GTGT 3% + Thuế TNCN 1.5% = **Tổng 4.5%**.
+2. **Bán lẻ hàng hóa nguyên kiện (bia lon, nước ngọt đóng chai):** Thuế GTGT 1% + Thuế TNCN 0.5% = **Tổng 1.5%**.
+3. **Nguyên tắc vàng:** Quý khách nên dùng phần mềm EasyPOS để tách riêng doanh thu pha chế và bia lon. Nếu không tách được, cơ quan thuế sẽ ấn định mức cao nhất là 4.5% cho toàn bộ doanh thu. Hotline hỗ trợ: **0979.991.898**!`;
+  }
+
+  if (lower.includes('sai sót') || lower.includes('mẫu 04') || lower.includes('thay thế') || lower.includes('điều chỉnh')) {
+    return `Dạ theo Điều 19 Nghị định 123/2020/NĐ-CP và Thông tư 78/2021/TT-BTC:
+- **Sai sót tên, địa chỉ (đúng MST, đúng tiền):** Không cần lập lại hóa đơn, chỉ cần thông báo cho người mua và nộp Mẫu 04/SS-HĐĐT.
+- **Sai tiền, sai MST, sai thuế suất:** Xuất Hóa đơn Điều chỉnh hoặc Hóa đơn Thay thế mới, ghi rõ căn cứ thay thế cho số hóa đơn cũ.
+Kỹ thuật viên Đất Phú luôn túc trực qua UltraViewer để xử lý sai sót hóa đơn cho bà con trong 15 phút: **0979.991.898**!`;
+  }
+
   if (lower.includes('quán cà phê') || lower.includes('hóa đơn nào') || lower.includes('nđ 254') || lower.includes('254') || lower.includes('máy tính tiền')) {
     return `Dạ Đất Phú xin chào! Đối với **quán cà phê nhỏ tại Tuy Hòa** (hoặc các hộ kinh doanh ăn uống, bán lẻ), giải pháp tối ưu và đúng luật nhất là:
 
@@ -56,20 +70,6 @@ function getRuleBasedAnswer(userMessage, agent) {
 
 "Dịu dàng với chính mình, nghiêm túc với con số" - Đất Phú hỗ trợ đăng ký mẫu với Cơ quan Thuế và cài đặt tận nơi trong 24h!
 Quý khách vui lòng liên hệ **Hotline / Zalo: 0979.991.898** để được kích hoạt ngay ạ!`;
-  }
-
-  if (lower.includes('bia') || lower.includes('rượu') || lower.includes('thuế suất') || lower.includes('mấy %') || lower.includes('tỷ lệ thuế')) {
-    return `Dạ theo Thông tư 94/2024/TT-BTC và Thông tư 40/2021/TT-BTC, thuế suất cho mô hình quán ăn/cà phê có bán kèm bia rượu như sau:
-1. **Dịch vụ ăn uống, pha chế:** Thuế GTGT 3% + Thuế TNCN 1.5% = **Tổng 4.5%**.
-2. **Bán lẻ hàng hóa nguyên kiện (bia lon, nước ngọt đóng chai):** Thuế GTGT 1% + Thuế TNCN 0.5% = **Tổng 1.5%**.
-3. **Nguyên tắc vàng:** Quý khách nên dùng phần mềm EasyPOS để tách riêng doanh thu pha chế và bia lon. Nếu không tách được, cơ quan thuế sẽ ấn định mức cao nhất là 4.5% cho toàn bộ doanh thu. Hotline hỗ trợ: **0979.991.898**!`;
-  }
-
-  if (lower.includes('sai sót') || lower.includes('mẫu 04') || lower.includes('thay thế') || lower.includes('điều chỉnh')) {
-    return `Dạ theo Điều 19 Nghị định 123/2020/NĐ-CP và Thông tư 78/2021/TT-BTC:
-- **Sai sót tên, địa chỉ (đúng MST, đúng tiền):** Không cần lập lại hóa đơn, chỉ cần thông báo cho người mua và nộp Mẫu 04/SS-HĐĐT.
-- **Sai tiền, sai MST, sai thuế suất:** Xuất Hóa đơn Điều chỉnh hoặc Hóa đơn Thay thế mới, ghi rõ căn cứ thay thế cho số hóa đơn cũ.
-Kỹ thuật viên Đất Phú luôn túc trực qua UltraViewer để xử lý sai sót hóa đơn cho bà con trong 15 phút: **0979.991.898**!`;
   }
 
   if (lower.includes('giá') || lower.includes('chữ ký số') || lower.includes('efy') || lower.includes('bao nhiêu')) {
