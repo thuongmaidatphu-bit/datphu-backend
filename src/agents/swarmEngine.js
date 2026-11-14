@@ -300,18 +300,19 @@ Hotline / Zalo tư vấn: **0979.991.898**!`;
 - **Xưởng Cơ Khí Ba Bình:** Cổng sắt mỹ nghệ, mái tôn, giàn giáo, khung kèo thép (ĐT: **0905.342.118**).
 
 ---
-"Dịu dàng với chính mình, nghiêm túc với con số" — Quý khách cần khảo sát sửa nhà, sửa điện nước hoặc lắp camera tại Phú Yên, xin vui lòng gọi ngay **Hotline / Zalo: 0979.991.898** để kỹ thuật viên Đất Phú đến tận nơi hỗ trợ trong 30 phút!`;
+"Dịu dàng với chính mình, nghiêm túc với con số" — Quý khách cần khảo sát sửa nhà, sửa điện nước hoặc lắp camera tại Phú Yên, xin vui lòng gọi ngay **Hotline / Zalo: 0979.991.898 - 0944.971.257** để kỹ thuật viên Đất Phú đến tận nơi hỗ trợ trong 30 phút!`;
   }
 
   return `Dạ Đất Phú Gen 4 xin chào quý khách! Hệ thống Đa tác tử AI Swarm đã tiếp nhận yêu cầu của bạn. 
-Để được hỗ trợ chi tiết về Hóa đơn điện tử máy tính tiền NĐ 254, Chữ ký số EFY-CA hoặc Hỗ trợ kỹ thuật UltraViewer, quý khách vui lòng nhắn trực tiếp qua Hotline / Zalo: **0979.991.898** (Địa chỉ: 172 Ngô Gia Tự, Khu phố 3, Phường Phú Đông, Thành phố Tuy Hòa, Tỉnh Phú Yên) để chuyên viên hỗ trợ tức thì ạ!`;
+Để được hỗ trợ chi tiết về Hóa đơn điện tử máy tính tiền NĐ 254, Chữ ký số EFY-CA, Dịch vụ Sửa nhà - Điện nước - Camera Phú Yên hoặc Hỗ trợ kỹ thuật UltraViewer, quý khách vui lòng nhắn trực tiếp qua Hotline / Zalo: **0979.991.898 - 0944.971.257** (Địa chỉ: 172 Ngô Gia Tự, Khu phố 3, Phường Phú Đông, Thành phố Tuy Hòa, Tỉnh Phú Yên) để chuyên viên hỗ trợ tức thì ạ!`;
 }
 
 const DATPHU_KNOWLEDGE_BASE = `
 THÔNG TIN DOANH NGHIỆP:
 - Tên đơn vị: CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ (MST: 4401020233)
-- Hotline / Zalo chính thức: 0979.991.898
-- Địa chỉ: 172 Ngô Gia Tự, Khu phố 3, Phường Phú Đông, Thành phố Tuy Hòa, Tỉnh Phú Yên
+- Hotline / Zalo chính thức: 0979.991.898 - 0944.971.257
+- Đồng phục nhận diện kỹ thuật: Áo xanh in lưng "DỊCH VỤ SỬA CHỮA NHÀ Ở - ĐIỆN NƯỚC - CAMERA PHÚ YÊN (097 999 1898 - 0944 971 257)"
+- Trụ sở chính: 172 Ngô Gia Tự, Khu phố 3, Phường Phú Đông, Thành phố Tuy Hòa, Tỉnh Phú Yên
 - Châm ngôn: "Dịu dàng với chính mình, nghiêm túc với con số • Quy chuẩn 6K Kín Kẽ OS"
 
 BIỂU PHÍ DỊCH VỤ SỐ ĐẤT PHÚ GEN 4:
