@@ -280,13 +280,27 @@ Mọi dịch vụ đều xuất hóa đơn tài chính hợp pháp từ Công ty
 Hotline / Zalo tư vấn: **0979.991.898**!`;
   }
 
-  if (lower.includes('thợ') || lower.includes('sửa nhà') || lower.includes('xây') || lower.includes('hàn')) {
-    return `Dạ mạng lưới Đội Thợ Dân Sinh Đất Phú (cam kết 0% phí trung gian) sẵn sàng phục vụ bà con:
+  if (lower.includes('thợ') || lower.includes('sửa nhà') || lower.includes('điện nước') || lower.includes('camera') || lower.includes('xây') || lower.includes('hàn') || lower.includes('chống thấm') || lower.includes('chập điện') || lower.includes('ống nước')) {
+    return `Dạ tại Phú Yên, **Dịch vụ Sửa Chữa Nhà Ở, Điện Nước và Lắp Đặt Camera là Dịch Vụ Thợ Trực Tiếp của Công Ty Đất Phú** với đội ngũ kỹ thuật lành nghề, tận tâm, có mặt nhanh chóng tại TP Tuy Hòa, TX Đông Hòa, TX Sông Cầu và các huyện:
 
-1. **Đội Thợ Xây Cả Tám Đất Phú:** 18 năm kinh nghiệm đổ móng, xây tô, lát đá sân chùa di tích. ĐT: **0914.821.567** (Tuy Hòa & Phú Hòa).
-2. **Xưởng Cơ Khí Hàn Sắt Ba Bình:** 12 năm tay nghề cổng sắt mỹ nghệ, mái che tôn, giàn giáo. ĐT: **0905.342.118** (Đông Hòa & Tây Hòa).
+### 1. Dịch Vụ Sửa Chữa Nhà Ở & Chống Thấm (Đất Phú):
+- Khảo sát và xử lý triệt để nứt tường, dột mái tôn, thấm sàn trần bê tông mùa mưa bão.
+- Cải tạo nhà cũ, nâng cấp cơi nới, xây tô, ốp lát gạch men, sơn nước hoàn thiện cho nhà ở, quán ăn, cửa hàng.
 
-Hoặc quý khách gọi trực tiếp Hotline điều phối **0979.991.898** để thợ đến khảo sát tận nơi nhé!`;
+### 2. Dịch Vụ Điện Nước Dân Dụng & Doanh Nghiệp (Cứu hộ 24/7):
+- Sửa chữa sự cố chập cháy điện, nhảy aptomat, mất pha khẩn cấp.
+- Xử lý rò rỉ, bục vỡ đường ống nước; lắp đặt máy bơm, bồn nước, máy nước nóng, thiết bị vệ sinh cao cấp.
+
+### 3. Dịch Vụ Lắp Đặt Camera An Ninh & Thiết Bị Số:
+- Thi công trọn gói hệ thống camera giám sát có màu ban đêm, đàm thoại 2 chiều, xem trực tiếp qua điện thoại cho gia đình, quán ăn, tiệm tạp hóa, kho bãi, cơ sở kinh doanh.
+- Thiết bị chính hãng, bảo hành tận nơi 24 tháng.
+
+### 4. Mạng Lưới Thợ Liên Kết (Cam kết 0% phí trung gian):
+- **Đội Thợ Xây Cả Tám Đất Phú:** Đổ móng, xây tường, lát đá sân di tích (ĐT: **0914.821.567**).
+- **Xưởng Cơ Khí Ba Bình:** Cổng sắt mỹ nghệ, mái tôn, giàn giáo, khung kèo thép (ĐT: **0905.342.118**).
+
+---
+"Dịu dàng với chính mình, nghiêm túc với con số" — Quý khách cần khảo sát sửa nhà, sửa điện nước hoặc lắp camera tại Phú Yên, xin vui lòng gọi ngay **Hotline / Zalo: 0979.991.898** để kỹ thuật viên Đất Phú đến tận nơi hỗ trợ trong 30 phút!`;
   }
 
   return `Dạ Đất Phú Gen 4 xin chào quý khách! Hệ thống Đa tác tử AI Swarm đã tiếp nhận yêu cầu của bạn. 
@@ -313,9 +327,11 @@ BIỂU PHÍ DỊCH VỤ SỐ ĐẤT PHÚ GEN 4:
    - Nếu chưa đến hạn thanh toán: vẫn được kê khai khấu trừ đầu vào. Đến hạn thanh toán nếu không chuyển khoản thì phải kê khai điều chỉnh giảm.
    - Hộ kinh doanh: Chi phí muốn trừ phải từ 5 triệu chuyển khoản; cập nhật số tài khoản trên eTax Mobile; kê khai Mẫu 01/CNKD (doanh thu 1-50 tỷ khai theo quý).
    - Mẫu biểu thuế GTGT: 01/GTGT (khấu trừ SXKD), 02/GTGT (dự án đầu tư), 04/GTGT (trực tiếp doanh thu), 05/GTGT (phân bổ ngoại tỉnh), 01/KHBS (khai bổ sung).
-5. Mạng lưới Đội Thợ Dân Sinh (0% phí trung gian):
-   - Đội Thợ Xây Cả Tám Đất Phú: Đổ móng, xây tô, lát đá (ĐT: 0914.821.567).
-   - Xưởng Cơ Khí Hàn Sắt Ba Bình: Cổng sắt, mái che tôn, giàn giáo (ĐT: 0905.342.118).
+5. DỊCH VỤ KỸ THUẬT & ĐỘI THỢ DÂN SINH ĐẤT PHÚ TẠI PHÚ YÊN (DỊCH VỤ CHÍNH CHỦ CỦA ĐẤT PHÚ - Hotline: 0979.991.898):
+   - Dịch vụ Sửa chữa nhà ở & Chống thấm dột: Cải tạo nhà cũ, xử lý nứt tường, dột mái tôn, ốp lát gạch men, sơn nước hoàn thiện nhà phố, quán ăn, cửa hàng tại Tuy Hòa và các huyện.
+   - Dịch vụ Điện Nước: Xử lý chập cháy điện, nhảy aptomat, mất pha, sửa rò rỉ đường ống nước, lắp máy bơm, bồn nước, thiết bị vệ sinh.
+   - Dịch vụ Lắp đặt Camera An Ninh & Giám sát Wi-Fi: Trọn gói camera gia đình, quán ăn, quán cà phê, kho bãi, tàu thuyền; xem qua điện thoại, có màu ban đêm, bảo hành tận nơi.
+   - Mạng lưới thợ xây & cơ khí liên kết (0% phí trung gian): Đội thợ xây Cả Tám (0914.821.567), Xưởng cơ khí Ba Bình (0905.342.118).
    - Hỗ trợ khẩn cấp: Hotline 0979.991.898.
 `;
 
@@ -433,11 +449,14 @@ NHIỆM VỤ: Hướng dẫn xử lý lỗi kỹ thuật (chữ ký số, phần
 BẠN LÀ: Tác tử Kiểm soát & Kế toán Đất Phú. Châm ngôn: "Dịu dàng với chính mình, nghiêm túc với con số".
 NHIỆM VỤ: Cung cấp biểu phí chính xác, hướng dẫn chuyển khoản qua số tài khoản chính thức hoặc quét mã VietQR, cam kết hóa đơn chứng từ đầy đủ.
     `;
-  } else if (lowerMsg.includes('thợ') || lowerMsg.includes('xây') || lowerMsg.includes('hàn') || lowerMsg.includes('điện lạnh') || lowerMsg.includes('sửa nhà')) {
-    assignedAgent = 'Field Dispatcher (Tác Tử Điều Phối Thợ Dân Sinh)';
+  } else if (lowerMsg.includes('thợ') || lowerMsg.includes('xây') || lowerMsg.includes('hàn') || lowerMsg.includes('điện nước') || lowerMsg.includes('camera') || lowerMsg.includes('sửa nhà') || lowerMsg.includes('chống thấm')) {
+    assignedAgent = 'Field Dispatcher (Tác Tử Điều Phối Thợ Kỹ Thuật Đất Phú)';
     specificRolePrompt = `
-BẠN LÀ: Tác tử Điều phối Thợ Dân Sinh Đất Phú (0% phí trung gian).
-NHIỆM VỤ: Cung cấp số điện thoại Đội Thợ Xây Cả Tám (0914.821.567) hoặc Xưởng Cơ Khí Ba Bình (0905.342.118), hoặc gọi trực tiếp Hotline 0979.991.898 để thợ khảo sát tận nơi.
+BẠN LÀ: Tác tử Điều phối Dịch vụ Kỹ thuật & Thợ Dân Sinh của Đất Phú tại Phú Yên.
+NHIỆM VỤ: 
+1. Khẳng định: DỊCH VỤ SỬA CHỮA NHÀ Ở, ĐIỆN NƯỚC VÀ LẮP ĐẶT CAMERA LÀ DỊCH VỤ THỢ CHÍNH CHỦ CỦA ĐẤT PHÚ tại Phú Yên. Đội ngũ có mặt nhanh chóng tại TP Tuy Hòa, TX Đông Hòa, TX Sông Cầu và các huyện lân cận.
+2. Cung cấp Hotline/Zalo chính thức khảo sát & cứu hộ khẩn cấp: 0979.991.898.
+3. Đồng thời giới thiệu mạng lưới đối tác xây dựng cơ khí liên kết 0% phí trung gian: Đội Thợ Xây Cả Tám (0914.821.567) và Xưởng Cơ Khí Ba Bình (0905.342.118).
     `;
   } else {
     assignedAgent = 'Front-line Support Agent (Tác Tử Tiếp Nhận)';
