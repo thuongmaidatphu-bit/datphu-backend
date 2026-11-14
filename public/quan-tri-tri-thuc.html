@@ -463,19 +463,22 @@
             progressText.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang trích xuất ${pdf.numPages} trang PDF...`;
             
             let fullText = '';
-            for (let pageNum = 1; pageNum <= Math.min(pdf.numPages, 15); pageNum++) {
+            const maxPages = Math.min(pdf.numPages, 50);
+            for (let pageNum = 1; pageNum <= maxPages; pageNum++) {
               const page = await pdf.getPage(pageNum);
               const textContent = await page.getTextContent();
               const pageText = textContent.items.map(item => item.str).join(' ');
-              fullText += `\n--- TRANG ${pageNum} ---\n` + pageText;
+              if (pageText.trim()) {
+                fullText += `\n--- TRANG ${pageNum} ---\n` + pageText;
+              }
             }
             extractedText = fullText.trim();
           } catch (pdfErr) {
             console.warn('pdf.js fallback sang Base64:', pdfErr);
           }
 
-          // Chuẩn bị Base64 nếu text quá ngắn (như scanned PDF)
-          if (!extractedText || extractedText.length < 50) {
+          // Chuẩn bị Base64 nếu text quá ngắn và dung lượng file < 4MB (tránh lỗi 413 Vercel)
+          if ((!extractedText || extractedText.length < 50) && file.size < 4 * 1024 * 1024) {
             base64Data = await fileToBase64(file);
           }
 
