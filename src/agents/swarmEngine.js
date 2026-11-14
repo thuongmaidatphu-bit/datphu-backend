@@ -57,23 +57,36 @@ function getRuleBasedAnswer(userMessage, agent) {
 Kỹ thuật viên Đất Phú luôn túc trực qua UltraViewer để xử lý sai sót hóa đơn cho bà con trong 15 phút: **0979.991.898**!`;
   }
 
-  if (lower.includes('báo cáo') || lower.includes('hạn chót') || lower.includes('lao động') || lower.includes('bảo hiểm') || lower.includes('quyết toán') || lower.includes('283') || lower.includes('bctc')) {
-    return `Dạ theo Quy chuẩn Kín Kẽ OS và quy định pháp luật doanh nghiệp hiện hành:
+  if (lower.includes('7 báo cáo') || lower.includes('checklist') || lower.includes('báo cáo') || lower.includes('hạn chót') || lower.includes('lao động') || lower.includes('bảo hiểm') || lower.includes('quyết toán') || lower.includes('283') || lower.includes('bctc')) {
+    return `Dạ theo Quy chuẩn Kín Kẽ OS và Nghị định 283/2026/NĐ-CP, dưới đây là Checklist 7 loại báo cáo doanh nghiệp cuối năm & đầu năm bắt buộc:
 
-1. **Báo cáo Thuế & Tài chính (Tháng/Quý/Năm):**
-   - Tờ khai GTGT & TNCN: Ngày 20 tháng sau (kê khai tháng) hoặc ngày cuối cùng tháng đầu quý sau (kê khai quý).
-   - Báo cáo tình hình sử dụng hóa đơn điện tử định kỳ.
-   - Quyết toán thuế năm (TNDN + TNCN) & Bộ Báo cáo tài chính năm: Hạn chót trước ngày **31/03** năm sau.
+1. **Báo cáo sử dụng lao động 6 tháng cuối năm:**
+   - Hạn chót: **Trước ngày 05/12/2026**.
+   - Mức phạt (NĐ 283/2026/NĐ-CP): Cá nhân phạt 5 – 10 triệu | Doanh nghiệp phạt **10 – 20 triệu đồng**.
 
-2. **Báo cáo Lao động & Bảo hiểm (Mốc gấp cuối năm & đầu năm):**
-   - **Trước 05/12:** Báo cáo sử dụng lao động 6 tháng cuối năm (Phạt 10 - 20 triệu theo Nghị định 283/2026/NĐ-CP nếu chậm nộp).
-   - **Trước 20/12:** Báo cáo hoạt động cho thuê lại lao động (nếu có giấy phép).
-   - **Trước 10/01 năm sau:** 03 Báo cáo tổng hợp gồm ATVSLĐ, Tai nạn lao động và Y tế lao động.
-   - **Trước 15/01 năm sau:** Báo cáo tình hình tham gia Bảo hiểm thất nghiệp (BHTN).
-   - **Đột xuất:** Báo cáo khi có biến động tăng/giảm từ 50 lao động trở lên.
+2. **Thông báo biến động lao động (tăng/giảm từ 50 người trở lên):**
+   - Hạn chót: Ngay khi phát sinh trường hợp.
+   - Mức phạt (NĐ 283/2026/NĐ-CP): Cá nhân phạt 2 – 4 triệu | Doanh nghiệp phạt 4 – 8 triệu đồng.
 
-3. **Vận hành nội bộ Đất Phú:** Đối soát VCB DigiBiz, dịch vụ số B2B, quản lý kho vật tư và giám sát n8n/AI Swarm 24/7.
-"Dịu dàng với chính mình, nghiêm túc với con số" — Hotline / Zalo hỗ trợ: **0979.991.898**!`;
+3. **Báo cáo công tác an toàn, vệ sinh lao động (ATVSLĐ):**
+   - Hạn chót: **Trước ngày 10/01/2027**.
+   - Mức phạt: Cá nhân phạt 1 – 3 triệu | Doanh nghiệp phạt 2 – 6 triệu đồng.
+
+4. **Báo cáo tổng hợp tai nạn lao động:**
+   - Hạn chót: **Trước ngày 10/01/2027**.
+   - Mức phạt: Cá nhân phạt 5 – 10 triệu | Doanh nghiệp phạt **10 – 20 triệu đồng**.
+
+5. **Báo cáo y tế lao động (Thông tư 19/2016/TT-BYT):**
+   - Hạn chót: **Trước ngày 10/01/2027**.
+
+6. **Báo cáo hoạt động cho thuê lại lao động:**
+   - Hạn chót: **Trước ngày 20/12/2026**. Mức phạt doanh nghiệp: 1 – 3 triệu đồng.
+
+7. **Báo cáo tình hình tham gia BHTN:**
+   - Hạn chót: **Trước ngày 15/01/2027**.
+
+*Bên cạnh đó, Bộ Báo cáo tài chính năm và Quyết toán thuế TNDN + TNCN có hạn chót trước ngày **31/03** năm sau.*
+"Dịu dàng với chính mình, nghiêm túc với con số" — Đội ngũ Kế toán Đất Phú luôn túc trực rà soát hồ sơ qua Hotline/Zalo: **0979.991.898**!`;
   }
 
   if (lower.includes('quán cà phê') || lower.includes('hóa đơn nào') || lower.includes('nđ 254') || lower.includes('254') || lower.includes('máy tính tiền')) {
