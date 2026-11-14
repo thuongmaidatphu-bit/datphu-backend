@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cổng Quản Trị Kho Tri Thức Pháp Lý RAG — Đất Phú Gen 4</title>
-  <meta name="description" content="Trung tâm quản trị, giám sát và nạp tri thức quy phạm pháp luật, thuế và nghiệp vụ chuẩn 6K Kín Kẽ cho Hệ thống Đa tác tử AI Đất Phú.">
+  <meta name="description" content="Trung tâm quản trị, giám sát và nạp tri thức quy phạm pháp luật, thuế và nghiệp vụ cho Hệ thống Đa tác tử AI Đất Phú. Phối màu Xanh & Đỏ chuẩn doanh nghiệp.">
   <link rel="icon" href="/img/logo.png" type="image/png">
   
   <!-- Tailwind CSS v4 CDN -->
@@ -27,461 +27,582 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
   <style>
+    /* ================= PHỐI MÀU CHỦ ĐẠO XANH & ĐỎ DOANH NGHIỆP ================= */
+    :root {
+      --primary-blue: #1d4ed8;       /* Xanh dương hoàng gia */
+      --primary-blue-dark: #1e3a8a;  /* Xanh navy đậm */
+      --primary-red: #dc2626;        /* Đỏ cờ / đỏ thương hiệu */
+      --primary-red-dark: #991b1b;   /* Đỏ thẫm */
+      --bg-page: #f8fafc;            /* Nền sáng dịu mắt */
+      --card-bg: #ffffff;            /* Thẻ trắng tinh */
+      --card-border: #e2e8f0;        /* Viền sáng thanh lịch */
+      --text-main: #0f172a;          /* Chữ đen than đậm rõ */
+      --text-muted: #334155;         /* Chữ phụ xám đậm dễ đọc */
+      --font-scale: 1;               /* Hệ số cỡ chữ */
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #cbd5e1;
+    }
+
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background-color: #080c14;
-      color: #f3f4f6;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      transition: background-color 0.2s ease, color 0.2s ease;
+      font-size: calc(15px * var(--font-scale));
     }
-    .antigravity-card {
-      background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 1.25rem;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+    .dp-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 1rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .antigravity-card:hover {
-      border-color: rgba(56, 189, 248, 0.35);
+    .dp-card:hover {
+      box-shadow: 0 8px 24px rgba(29, 78, 216, 0.08);
+      border-color: rgba(29, 78, 216, 0.35);
     }
+
+    /* Nút bấm chủ đạo Xanh & Đỏ */
+    .btn-blue {
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+    }
+    .btn-blue:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      box-shadow: 0 6px 16px rgba(29, 78, 216, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-red {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+    }
+    .btn-red:hover {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 6px 16px rgba(220, 38, 38, 0.35);
+      transform: translateY(-1px);
+    }
+
     .tab-btn.active {
-      background: linear-gradient(135deg, #0284c7, #0369a1);
-      color: #ffffff;
-      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4);
-      border-color: transparent;
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(29, 78, 216, 0.3);
+      border-color: transparent !important;
     }
+
     .filter-pill.active {
-      background-color: #0284c7;
-      color: #ffffff;
-      border-color: #38bdf8;
+      background-color: #1d4ed8 !important;
+      color: #ffffff !important;
+      border-color: #1d4ed8 !important;
     }
+
     .dropzone-active {
-      border-color: #38bdf8 !important;
-      background-color: rgba(2, 132, 199, 0.15) !important;
+      border-color: #dc2626 !important;
+      background-color: rgba(220, 38, 38, 0.05) !important;
     }
-    /* Thanh cuộn mượt mà */
+
+    /* Thanh cuộn đẹp mắt */
     ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
     }
     ::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.6);
+      background: #f1f5f9;
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(56, 189, 248, 0.3);
+      background: #cbd5e1;
       border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(56, 189, 248, 0.6);
+      background: #94a3b8;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-3 sm:p-5 lg:p-7">
+<body class="min-h-screen flex flex-col justify-between p-3 sm:p-5 lg:p-6">
 
-  <!-- ================= MÀN HÌNH BẢO MẬT XÁC THỰC CỔNG ẨN (ZERO-TRUST GATEKEEPER) ================= -->
-  <div id="authGatekeeperModal" class="fixed inset-0 z-50 bg-gray-950/95 backdrop-blur-2xl flex items-center justify-center p-4">
-    <div class="max-w-md w-full antigravity-card p-6 sm:p-8 border-sky-500/40 text-center space-y-5 shadow-2xl">
-      <div class="w-16 h-16 rounded-3xl bg-blue-600/20 text-blue-400 flex items-center justify-center mx-auto text-3xl border border-blue-500/30 shadow-lg shadow-blue-500/20">
+  <!-- ================= MÀN HÌNH BẢO MẬT ZERO-TRUST GATEKEEPER ================= -->
+  <div id="authGatekeeperModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 text-center space-y-5 shadow-2xl border-2 border-blue-600">
+      <div class="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto text-3xl border border-blue-200">
         <i class="fa-solid fa-shield-halved"></i>
       </div>
       <div>
-        <span class="text-[10px] font-bold text-sky-400 font-mono tracking-widest uppercase bg-sky-500/10 px-2.5 py-0.5 rounded-full border border-sky-500/20">KHU VỰC NỘI BỘ • ZERO-TRUST</span>
-        <h2 class="text-xl font-black text-white tracking-tight mt-2">Cổng Tri Thức RAG Ẩn</h2>
-        <p class="text-xs text-gray-400 mt-1 leading-relaxed">
-          Khu vực quản trị tri thức vận hành chuẩn 6K Kín Kẽ. Vui lòng nhập mã PIN xác thực để tiếp tục.
+        <span class="text-xs font-bold text-red-600 bg-red-50 dark:bg-red-950/50 px-3 py-1 rounded-full border border-red-200 font-mono tracking-wider uppercase">KHU VỰC QUẢN TRỊ NỘI BỘ</span>
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight mt-2">Cổng Tri Thức RAG Đất Phú</h2>
+        <p class="text-sm text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+          Vui lòng nhập Mã PIN Quản trị để mở khóa hệ thống.
         </p>
       </div>
-      <form onsubmit="handleVerifyAuthPin(event)" class="space-y-3">
-        <input type="password" id="gatekeeperPinInput" autofocus placeholder="Nhập mã PIN quản trị..." class="w-full text-center tracking-[0.3em] font-mono text-base px-4 py-3 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-sky-500" />
-        <button type="submit" class="w-full py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-sky-900/30">
+      <form onsubmit="handleVerifyAuthPin(event)" class="space-y-4">
+        <input type="password" id="gatekeeperPinInput" autofocus placeholder="Nhập mã PIN quản trị..." class="w-full text-center tracking-[0.3em] font-mono text-lg px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:border-blue-600 font-bold" />
+        <button type="submit" class="btn-blue w-full py-3.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer transition">
           <i class="fa-solid fa-key"></i>
           <span>Mở Khóa Cổng Tri Thức</span>
         </button>
       </form>
-      <div id="authErrorMsg" class="text-xs text-rose-400 font-semibold min-h-[20px]"></div>
-      <div class="text-[11px] text-gray-500 pt-2 border-t border-gray-800">
-        <a href="/ai-swarm.html" class="hover:text-gray-300 transition"><i class="fa-solid fa-arrow-left mr-1"></i>Quay lại phòng Chat AI</a>
+      <div id="authErrorMsg" class="text-sm text-red-600 font-bold min-h-[20px]"></div>
+      <div class="text-xs text-slate-500 pt-2 border-t border-slate-200 dark:border-slate-700">
+        <a href="/ai-swarm.html" class="text-blue-600 font-semibold hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i>Quay lại phòng Chat AI</a>
       </div>
     </div>
   </div>
 
-  <!-- ================= POPUP MODAL XEM CHI TIẾT TOÀN VĂN ================= -->
-  <div id="detailModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="max-w-3xl w-full antigravity-card p-6 border-sky-500/50 bg-gray-950/95 space-y-4 max-h-[90vh] flex flex-col">
-      <div class="flex items-start justify-between border-b border-gray-800 pb-3">
-        <div class="space-y-1">
-          <div class="flex items-center gap-2">
-            <span id="detailBadge" class="text-xs font-mono font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded-lg border border-sky-500/30"></span>
-            <span id="detailArticle" class="text-xs font-semibold text-emerald-400"></span>
+  <!-- ================= POPUP MODAL XEM CHI TIẾT TOÀN VĂN (CHỮ TO RÕ NÉT) ================= -->
+  <div id="detailModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="max-w-3xl w-full bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 space-y-4 max-h-[92vh] flex flex-col shadow-2xl border-2 border-blue-600">
+      <div class="flex items-start justify-between border-b border-slate-200 dark:border-slate-700 pb-4">
+        <div class="space-y-1.5">
+          <div class="flex flex-wrap items-center gap-2">
+            <span id="detailBadge" class="text-xs font-mono font-bold text-white bg-blue-700 px-3 py-1 rounded-lg"></span>
+            <span id="detailArticle" class="text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/50 px-2.5 py-1 rounded-lg border border-red-200 dark:border-red-900"></span>
           </div>
-          <h3 id="detailTitle" class="text-base sm:text-lg font-black text-white"></h3>
+          <h3 id="detailTitle" class="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-snug"></h3>
         </div>
-        <button onclick="closeDetailModal()" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white flex items-center justify-center cursor-pointer transition">
-          <i class="fa-solid fa-xmark"></i>
+        <button onclick="closeDetailModal()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-200 flex items-center justify-center cursor-pointer transition shrink-0 ml-2">
+          <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
 
-      <div class="flex-1 overflow-y-auto pr-1 space-y-4 text-xs sm:text-sm text-gray-300 leading-relaxed">
-        <div class="p-4 rounded-xl bg-gray-900/80 border border-gray-800 whitespace-pre-wrap font-sans" id="detailContent"></div>
+      <div class="flex-1 overflow-y-auto pr-2 space-y-4">
+        <div class="p-5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 whitespace-pre-wrap font-sans text-sm sm:text-base text-slate-800 dark:text-slate-200 leading-relaxed" id="detailContent"></div>
 
         <div>
-          <span class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Từ khóa nhận diện truy vấn:</span>
-          <div id="detailKeywords" class="flex flex-wrap gap-1.5"></div>
+          <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Từ khóa nhận diện truy vấn:</span>
+          <div id="detailKeywords" class="flex flex-wrap gap-2"></div>
         </div>
       </div>
 
-      <div class="border-t border-gray-800 pt-3 flex items-center justify-between">
-        <span class="text-[11px] text-gray-500 font-mono">Đã đồng bộ vào Bộ não Gemini 3.5 Flash Lite</span>
-        <button onclick="closeDetailModal()" class="px-5 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold transition">Đóng lại</button>
+      <div class="border-t border-slate-200 dark:border-slate-700 pt-4 flex items-center justify-between">
+        <span class="text-xs text-slate-500 font-mono"><i class="fa-solid fa-check text-green-600 mr-1"></i>Đã đồng bộ AI Gemini 3.5 Flash Lite</span>
+        <button onclick="closeDetailModal()" class="px-6 py-2.5 rounded-xl btn-blue text-xs sm:text-sm font-bold transition cursor-pointer">Đóng Cửa Sổ</button>
       </div>
     </div>
   </div>
 
-  <!-- ================= HEADER CHÍNH ================= -->
-  <header class="max-w-7xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-gray-800">
+  <!-- ================= THANH HEADER CHỦ ĐẠO XANH & ĐỎ ================= -->
+  <header class="max-w-7xl w-full mx-auto flex flex-col md:flex-row items-center justify-between gap-4 pb-4 border-b-2 border-slate-200 dark:border-slate-800">
+    
+    <!-- Logo & Tiêu đề thương hiệu -->
     <div class="flex items-center gap-3">
-      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-500 via-blue-600 to-indigo-600 p-0.5 shadow-lg shadow-sky-500/20">
-        <div class="w-full h-full bg-gray-950 rounded-[14px] flex items-center justify-center text-sky-400 text-xl font-black">
-          <i class="fa-solid fa-brain"></i>
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-700 via-blue-600 to-red-600 p-0.5 shadow-md shadow-blue-500/20 shrink-0">
+        <div class="w-full h-full bg-white dark:bg-slate-900 rounded-[14px] flex items-center justify-center text-blue-700 dark:text-blue-400 text-2xl font-black">
+          <i class="fa-solid fa-scale-balanced"></i>
         </div>
       </div>
       <div>
         <div class="flex items-center gap-2">
-          <span class="text-base font-black text-white tracking-tight">KHO TRI THỨC PHÁP LÝ RAG</span>
-          <span class="text-[10px] font-bold bg-sky-500/20 text-sky-400 px-2 py-0.5 rounded-full border border-sky-500/30">GEN 4 OS</span>
+          <span class="text-lg sm:text-xl font-black text-blue-900 dark:text-blue-400 tracking-tight">KHO TRI THỨC PHÁP LÝ RAG</span>
+          <span class="text-xs font-bold bg-red-600 text-white px-2.5 py-0.5 rounded-full shadow-sm">CHUẨN 6K</span>
         </div>
-        <p class="text-xs text-gray-400">Giám sát, phân loại và cập nhật văn bản quy phạm pháp luật cho Đội ngũ AI Đất Phú</p>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium">Hệ Thống Quản Trị & Tra Cứu Luật Thuế — Công Ty TNHH Thương Mại Đất Phú</p>
       </div>
     </div>
 
-    <!-- Nút điều hướng -->
-    <div class="flex items-center gap-2">
-      <button onclick="loadAllChunks()" class="px-3 py-2 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-300 text-xs font-semibold border border-gray-800 flex items-center gap-1.5 transition cursor-pointer">
-        <i class="fa-solid fa-rotate text-sky-400" id="refreshIcon"></i>
+    <!-- Thanh công cụ: Đổi Sáng/Tối + Chỉnh cỡ chữ A-/A+ + Nút điều hướng -->
+    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+      
+      <!-- Bộ chỉnh cỡ chữ (A- / Reset / A+) -->
+      <div class="flex items-center rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 p-1 shadow-sm">
+        <button onclick="changeFontSize(-0.1)" title="Thu nhỏ chữ" class="px-2.5 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-blue-700 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg cursor-pointer">A-</button>
+        <button onclick="resetFontSize()" title="Cỡ chữ mặc định" class="px-2.5 py-1 text-xs font-black text-blue-700 dark:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg cursor-pointer">A</button>
+        <button onclick="changeFontSize(0.1)" title="Phóng to chữ" class="px-2.5 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg cursor-pointer">A+</button>
+      </div>
+
+      <!-- Nút đổi nền Sáng / Tối -->
+      <button onclick="toggleTheme()" id="themeToggleBtn" title="Chuyển đổi giao diện Sáng / Tối" class="px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-blue-600 flex items-center gap-1.5 text-xs font-bold cursor-pointer shadow-sm transition">
+        <i class="fa-solid fa-moon text-blue-600 dark:hidden"></i>
+        <i class="fa-solid fa-sun text-amber-400 hidden dark:inline"></i>
+        <span class="dark:hidden">Nền Tối</span>
+        <span class="hidden dark:inline">Nền Sáng</span>
+      </button>
+
+      <!-- Làm mới -->
+      <button onclick="loadAllChunks()" class="px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-blue-600 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer shadow-sm">
+        <i class="fa-solid fa-rotate text-blue-700" id="refreshIcon"></i>
         <span>Làm mới</span>
       </button>
-      <a href="/ai-swarm.html" class="px-3.5 py-2 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-300 text-xs font-semibold border border-gray-800 flex items-center gap-1.5 transition">
-        <i class="fa-solid fa-comments text-emerald-400"></i>
-        <span>Thử AI Swarm</span>
+
+      <!-- Về AI Swarm -->
+      <a href="/ai-swarm.html" class="px-4 py-2 rounded-xl btn-blue text-xs font-bold flex items-center gap-1.5 transition shadow-sm">
+        <i class="fa-solid fa-comments"></i>
+        <span>Phòng AI Swarm</span>
       </a>
-      <a href="/lao-dong.html" class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold flex items-center gap-1.5 transition">
-        <i class="fa-solid fa-arrow-left"></i>
+
+      <!-- Về Trang chủ -->
+      <a href="/lao-dong.html" class="px-4 py-2 rounded-xl btn-red text-xs font-bold flex items-center gap-1.5 transition shadow-sm">
+        <i class="fa-solid fa-house"></i>
         <span>Về Trang Chủ</span>
       </a>
     </div>
   </header>
 
-  <!-- ================= BẢNG CHỈ SỐ GIÁM SÁT THỜI GIAN THỰC (DASHBOARD METRICS) ================= -->
-  <section class="max-w-7xl w-full mx-auto my-4 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-    <div class="antigravity-card p-4 border-sky-500/30 flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center text-xl shrink-0">
+  <!-- ================= BẢNG CHỈ SỐ GIÁM SÁT SÁNG RÕ (DASHBOARD METRICS) ================= -->
+  <section class="max-w-7xl w-full mx-auto my-4 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+    
+    <!-- 1. Tổng khối tri thức (Màu Xanh Dương) -->
+    <div class="dp-card p-4 border-l-4 border-l-blue-600 flex items-center gap-3.5">
+      <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 flex items-center justify-center text-2xl shrink-0">
         <i class="fa-solid fa-cubes-stacked"></i>
       </div>
       <div>
-        <div class="text-xl sm:text-2xl font-black text-white" id="statTotalChunks">--</div>
-        <div class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Khối Tri Thức</div>
+        <div class="text-2xl sm:text-3xl font-black text-blue-900 dark:text-white" id="statTotalChunks">--</div>
+        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Khối Tri Thức</div>
       </div>
     </div>
 
-    <div class="antigravity-card p-4 border-emerald-500/30 flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl shrink-0">
-        <i class="fa-solid fa-scale-balanced"></i>
+    <!-- 2. Tổng văn bản quy phạm (Màu Đỏ) -->
+    <div class="dp-card p-4 border-l-4 border-l-red-600 flex items-center gap-3.5">
+      <div class="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center text-2xl shrink-0">
+        <i class="fa-solid fa-file-contract"></i>
       </div>
       <div>
-        <div class="text-xl sm:text-2xl font-black text-emerald-400" id="statTotalDocs">8</div>
-        <div class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Văn Bản Pháp Luật</div>
+        <div class="text-2xl sm:text-3xl font-black text-red-600 dark:text-red-400" id="statTotalDocs">8</div>
+        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Văn Bản Pháp Luật</div>
       </div>
     </div>
 
-    <div class="antigravity-card p-4 border-purple-500/30 flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl shrink-0">
+    <!-- 3. Bộ não AI Gemini -->
+    <div class="dp-card p-4 border-l-4 border-l-indigo-600 flex items-center gap-3.5">
+      <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 flex items-center justify-center text-2xl shrink-0">
         <i class="fa-solid fa-bolt"></i>
       </div>
       <div>
-        <div class="text-xs sm:text-sm font-black text-purple-300">Gemini 3.5</div>
-        <div class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Flash Lite AI</div>
+        <div class="text-base sm:text-lg font-black text-indigo-950 dark:text-white">Gemini 3.5</div>
+        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Flash Lite AI (v1beta)</div>
       </div>
     </div>
 
-    <div class="antigravity-card p-4 border-amber-500/30 flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl shrink-0">
+    <!-- 4. Tiêu chuẩn Kín Kẽ OS -->
+    <div class="dp-card p-4 border-l-4 border-l-emerald-600 flex items-center gap-3.5">
+      <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center text-2xl shrink-0">
         <i class="fa-solid fa-shield-check"></i>
       </div>
       <div>
-        <div class="text-xs sm:text-sm font-black text-amber-300">6K Kín Kẽ</div>
-        <div class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Zero-Trust Active</div>
+        <div class="text-base sm:text-lg font-black text-emerald-950 dark:text-white">6K Kín Kẽ</div>
+        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">An Toàn Tuyệt Đối</div>
       </div>
     </div>
+
   </section>
 
-  <!-- ================= BỘ ĐIỀU HƯỚNG TAB CHỨC NĂNG (VIEW SELECTOR) ================= -->
+  <!-- ================= BỘ ĐIỀU HƯỚNG 4 TAB CHỨC NĂNG (TO & RÕ RÀNG) ================= -->
   <section class="max-w-7xl w-full mx-auto mb-4">
-    <div class="p-1 rounded-2xl bg-gray-950 border border-gray-800 flex flex-wrap sm:flex-nowrap gap-1">
-      <button onclick="switchTab('library')" id="tabBtn_library" class="tab-btn active flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer border border-transparent">
-        <i class="fa-solid fa-book-open-reader"></i>
+    <div class="p-1.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 shadow-sm flex flex-wrap sm:flex-nowrap gap-1.5">
+      <button onclick="switchTab('library')" id="tabBtn_library" class="tab-btn active flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 cursor-pointer border border-transparent text-slate-700 dark:text-slate-300">
+        <i class="fa-solid fa-book-bookmark text-base"></i>
         <span>1. Thư Viện Tri Thức (<span id="tabCountBadge">--</span>)</span>
       </button>
-      <button onclick="switchTab('upload')" id="tabBtn_upload" class="tab-btn flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer border border-transparent text-gray-400 hover:text-white">
-        <i class="fa-solid fa-cloud-arrow-up"></i>
-        <span>2. Nạp File PDF / Word & Phân Tách</span>
+      <button onclick="switchTab('upload')" id="tabBtn_upload" class="tab-btn flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 cursor-pointer border border-transparent text-slate-700 dark:text-slate-300 hover:text-blue-700">
+        <i class="fa-solid fa-cloud-arrow-up text-base"></i>
+        <span>2. Nạp File PDF / Word</span>
       </button>
-      <button onclick="switchTab('manual')" id="tabBtn_manual" class="tab-btn flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer border border-transparent text-gray-400 hover:text-white">
-        <i class="fa-solid fa-pen-to-square"></i>
-        <span>3. Thêm Thủ Công 1 Khối</span>
+      <button onclick="switchTab('manual')" id="tabBtn_manual" class="tab-btn flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 cursor-pointer border border-transparent text-slate-700 dark:text-slate-300 hover:text-blue-700">
+        <i class="fa-solid fa-pen-to-square text-base"></i>
+        <span>3. Thêm Mới 1 Khối</span>
       </button>
-      <button onclick="switchTab('test')" id="tabBtn_test" class="tab-btn flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer border border-transparent text-gray-400 hover:text-white">
-        <i class="fa-solid fa-vial-circle-check"></i>
-        <span>4. Phòng Test Truy Vấn AI</span>
+      <button onclick="switchTab('test')" id="tabBtn_test" class="tab-btn flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 cursor-pointer border border-transparent text-slate-700 dark:text-slate-300 hover:text-red-600">
+        <i class="fa-solid fa-vial-circle-check text-base"></i>
+        <span>4. Kiểm Thử Truy Vấn AI</span>
       </button>
     </div>
   </section>
 
-  <!-- ================= VÙNG NỘI DUNG TỪNG TAB ================= -->
-  <main class="max-w-7xl w-full mx-auto flex-1 space-y-6 mb-8">
+  <!-- ================= VÙNG NỘI DUNG TỪNG PHÂN HỆ ================= -->
+  <main class="max-w-7xl w-full mx-auto flex-1 space-y-5 mb-8">
 
-    <!-- ================= TAB 1: THƯ VIỆN TRI THỨC (TRỰC QUAN & DỄ THEO DÕI NHẤT) ================= -->
+    <!-- ================= TAB 1: THƯ VIỆN TRI THỨC (NỀN SÁNG, 2 CỘT RỘNG, CHỮ TO) ================= -->
     <div id="tabContent_library" class="space-y-4">
       
       <!-- THANH TÌM KIẾM NHANH & BỘ LỌC CHỦ ĐỀ -->
-      <div class="antigravity-card p-4 space-y-3 border-gray-800">
+      <div class="dp-card p-4 sm:p-5 space-y-4">
+        
         <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
           <!-- Ô tìm kiếm realtime -->
-          <div class="relative w-full sm:w-80">
-            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gray-500 text-xs"></i>
-            <input type="text" id="librarySearchInput" oninput="handleSearchFilter()" placeholder="Tìm kiếm theo từ khóa, điều luật, tiêu đề..." class="w-full pl-9 pr-8 py-2 rounded-xl bg-gray-900 border border-gray-800 text-white text-xs focus:outline-none focus:border-sky-500" />
-            <button onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-3 top-2.5 text-gray-500 hover:text-white text-xs cursor-pointer">
+          <div class="relative w-full sm:w-96">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+            <input type="text" id="librarySearchInput" oninput="handleSearchFilter()" placeholder="Tìm kiếm nhanh từ khóa, điều luật, số tiền..." class="w-full pl-11 pr-9 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600" />
+            <button onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-3.5 top-3 text-slate-400 hover:text-red-600 text-sm cursor-pointer">
               <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
 
-          <!-- Số lượng hiển thị -->
-          <div class="text-[11px] text-gray-400 flex items-center gap-2">
-            <span>Hiển thị: <b id="filteredCountText" class="text-sky-400">0</b> / <span id="totalCountText">0</span> khối</span>
-            <span class="text-gray-700">|</span>
-            <span class="text-emerald-400"><i class="fa-solid fa-circle-dot mr-1"></i>Sẵn sàng truy vấn</span>
+          <!-- Thông tin số lượng -->
+          <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 flex items-center gap-2 font-medium">
+            <span>Đang hiển thị: <b id="filteredCountText" class="text-blue-700 dark:text-blue-400 font-black">0</b> / <span id="totalCountText">0</span> khối</span>
+            <span class="text-slate-300">|</span>
+            <span class="text-emerald-600 font-bold"><i class="fa-solid fa-circle-check mr-1"></i>Sẵn sàng tư vấn</span>
           </div>
         </div>
 
-        <!-- Các thẻ lọc chủ đề (Category Pills) -->
-        <div class="flex flex-wrap items-center gap-1.5 pt-1 border-t border-gray-800/80">
-          <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mr-1">Chủ đề:</span>
-          <button onclick="setCategoryFilter('all')" class="filter-pill active px-3 py-1 rounded-lg text-xs font-semibold bg-gray-900 border border-gray-800 text-gray-300 hover:border-gray-700 cursor-pointer transition" data-cat="all">
+        <!-- Các thẻ lọc chủ đề (Chủ đạo Xanh & Đỏ) -->
+        <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+          <span class="text-xs font-black text-slate-500 uppercase tracking-wider mr-1">Lọc theo chủ đề:</span>
+          
+          <button onclick="setCategoryFilter('all')" class="filter-pill active px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-blue-600 cursor-pointer transition shadow-sm" data-cat="all">
             Tất cả (<span id="catCount_all">0</span>)
           </button>
-          <button onclick="setCategoryFilter('vat')" class="filter-pill px-3 py-1 rounded-lg text-xs font-semibold bg-gray-900 border border-gray-800 text-gray-300 hover:border-gray-700 cursor-pointer transition" data-cat="vat">
+          
+          <button onclick="setCategoryFilter('vat')" class="filter-pill px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-blue-600 cursor-pointer transition shadow-sm" data-cat="vat">
             🧾 Thuế GTGT & Hóa Đơn (<span id="catCount_vat">0</span>)
           </button>
-          <button onclick="setCategoryFilter('labor')" class="filter-pill px-3 py-1 rounded-lg text-xs font-semibold bg-gray-900 border border-gray-800 text-gray-300 hover:border-gray-700 cursor-pointer transition" data-cat="labor">
+          
+          <button onclick="setCategoryFilter('labor')" class="filter-pill px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-red-600 cursor-pointer transition shadow-sm" data-cat="labor">
             👥 Lao Động & Báo Cáo (<span id="catCount_labor">0</span>)
           </button>
-          <button onclick="setCategoryFilter('liability')" class="filter-pill px-3 py-1 rounded-lg text-xs font-semibold bg-gray-900 border border-gray-800 text-gray-300 hover:border-gray-700 cursor-pointer transition" data-cat="liability">
+          
+          <button onclick="setCategoryFilter('liability')" class="filter-pill px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-red-600 cursor-pointer transition shadow-sm" data-cat="liability">
             ⚖️ Pháp Lý & Giám Đốc (<span id="catCount_liability">0</span>)
           </button>
-          <button onclick="setCategoryFilter('ubo')" class="filter-pill px-3 py-1 rounded-lg text-xs font-semibold bg-gray-900 border border-gray-800 text-gray-300 hover:border-gray-700 cursor-pointer transition" data-cat="ubo">
+          
+          <button onclick="setCategoryFilter('ubo')" class="filter-pill px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-blue-600 cursor-pointer transition shadow-sm" data-cat="ubo">
             🏢 Chủ Sở Hữu UBO (<span id="catCount_ubo">0</span>)
           </button>
-          <button onclick="setCategoryFilter('pos_6k')" class="filter-pill px-3 py-1 rounded-lg text-xs font-semibold bg-gray-900 border border-gray-800 text-gray-300 hover:border-gray-700 cursor-pointer transition" data-cat="pos_6k">
+          
+          <button onclick="setCategoryFilter('pos_6k')" class="filter-pill px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-blue-600 cursor-pointer transition shadow-sm" data-cat="pos_6k">
             ⚙️ Quy Chuẩn 6K & POS (<span id="catCount_pos_6k">0</span>)
           </button>
         </div>
       </div>
 
-      <!-- LƯỚI DANH SÁCH KHỐI TRI THỨC (CARD GRID) -->
-      <div id="chunksGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Render động bằng Javascript -->
-        <div class="col-span-full text-center py-12 text-gray-500 text-xs">
-          <i class="fa-solid fa-spinner fa-spin text-2xl text-sky-400 mb-2"></i>
-          <p>Đang đồng bộ dữ liệu từ Kho Tri Thức...</p>
+      <!-- LƯỚI DANH SÁCH THẺ (2 CỘT RỘNG RÃI, CHỮ TO RÕ NÉT) -->
+      <div id="chunksGridContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+        <div class="col-span-full text-center py-16 text-slate-500 text-sm">
+          <i class="fa-solid fa-spinner fa-spin text-3xl text-blue-600 mb-3"></i>
+          <p class="font-bold">Đang tải và sắp xếp kho tri thức...</p>
         </div>
       </div>
 
     </div>
 
     <!-- ================= TAB 2: NẠP FILE TỰ ĐỘNG & BÓC TÁCH GEMINI ================= -->
-    <div id="tabContent_upload" class="hidden space-y-6">
+    <div id="tabContent_upload" class="hidden space-y-5">
       
-      <div class="antigravity-card p-6 border-sky-500/40 bg-sky-950/15 space-y-4">
-        <div class="flex items-center justify-between">
+      <div class="dp-card p-6 sm:p-8 space-y-4 border-2 border-dashed border-blue-400">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-700 pb-4">
           <div>
-            <h2 class="text-sm font-black text-sky-400 uppercase tracking-wider flex items-center gap-2">
-              <i class="fa-solid fa-cloud-arrow-up"></i>
-              <span>Kéo Thả File PDF / Word (Tự Động Bóc Tách Bằng AI)</span>
+            <h2 class="text-base sm:text-lg font-black text-blue-900 dark:text-blue-400 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-cloud-arrow-up text-red-600"></i>
+              <span>Kéo Thả File PDF / Word Văn Bản Pháp Luật</span>
             </h2>
-            <p class="text-xs text-gray-400 mt-0.5">Hệ thống tự động đọc tới 50 trang tài liệu và chuyển hóa thành các khối tri thức chuẩn.</p>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">Trình duyệt tự động trích xuất chữ và dùng Gemini AI phân chia thành các Điều khoản.</p>
           </div>
-          <span class="text-[10px] text-gray-400 font-mono bg-gray-900 px-2 py-1 rounded-lg border border-gray-800">.pdf, .docx, .txt</span>
+          <span class="text-xs font-mono font-bold bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-lg border border-blue-300 w-fit">Hỗ trợ .pdf, .docx, .txt</span>
         </div>
 
-        <!-- VÙNG DROPZONE CHÍNH -->
+        <!-- KHUNG KÉO THẢ DROPZONE -->
         <div id="dropZone" 
              ondragover="handleDragOver(event)" 
              ondragleave="handleDragLeave(event)" 
              ondrop="handleFileDrop(event)"
-             class="border-2 border-dashed border-gray-700 hover:border-sky-500 rounded-2xl p-8 text-center cursor-pointer transition flex flex-col items-center justify-center gap-3 bg-gray-950/70"
+             class="border-3 border-dashed border-slate-300 dark:border-slate-700 hover:border-red-600 rounded-2xl p-10 text-center cursor-pointer transition flex flex-col items-center justify-center gap-4 bg-slate-50 dark:bg-slate-900"
              onclick="document.getElementById('filePicker').click()">
           <input type="file" id="filePicker" accept=".pdf,.docx,.doc,.txt,.json" class="hidden" onchange="handleFilePicked(event)" />
           
-          <div class="w-14 h-14 rounded-2xl bg-sky-600/20 text-sky-400 flex items-center justify-center text-3xl shadow-inner border border-sky-500/30">
+          <div class="w-16 h-16 rounded-2xl bg-red-100 dark:bg-red-950/60 text-red-600 flex items-center justify-center text-3xl shadow-sm border border-red-200">
             <i class="fa-regular fa-file-pdf"></i>
           </div>
           <div>
-            <div class="font-bold text-white text-sm sm:text-base">Kéo & Thả file tài liệu luật vào đây</div>
-            <div class="text-xs text-gray-400 mt-1">hoặc <span class="text-sky-400 underline font-semibold">bấm để chọn file từ máy tính</span></div>
+            <div class="font-black text-slate-900 dark:text-white text-base sm:text-lg">Kéo & Thả file tài liệu vào đây</div>
+            <div class="text-sm text-slate-600 dark:text-slate-300 mt-1">hoặc <span class="text-blue-700 dark:text-blue-400 underline font-bold">bấm vào đây để chọn file từ máy</span></div>
           </div>
-          <div class="text-[11px] text-gray-500 bg-gray-900/60 px-3 py-1 rounded-full border border-gray-800">
-            Tự động trích xuất text trực tiếp trên trình duyệt • Không lo lỗi giới hạn dung lượng
+          <div class="text-xs text-slate-500 bg-white dark:bg-slate-800 px-4 py-1.5 rounded-full border border-slate-300 dark:border-slate-700 font-medium">
+            Trích xuất trực tiếp trên trình duyệt • Không bị giới hạn dung lượng 10MB
           </div>
         </div>
 
         <!-- Trạng thái xử lý file -->
-        <div id="fileUploadStatus" class="hidden p-4 rounded-xl bg-gray-900 border border-gray-800 text-xs space-y-2">
+        <div id="fileUploadStatus" class="hidden p-4 rounded-xl bg-slate-100 dark:bg-slate-900 border-2 border-blue-400 space-y-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <i class="fa-solid fa-file-lines text-sky-400"></i>
-              <span id="fileNameLabel" class="font-bold text-white truncate max-w-sm"></span>
+              <i class="fa-solid fa-file-lines text-blue-700 text-lg"></i>
+              <span id="fileNameLabel" class="font-bold text-slate-900 dark:text-white truncate max-w-sm sm:max-w-md text-sm"></span>
             </div>
-            <span id="fileSizeLabel" class="text-gray-400 text-[11px] font-mono"></span>
+            <span id="fileSizeLabel" class="text-slate-500 font-mono text-xs font-bold"></span>
           </div>
-          <div id="fileProgressText" class="text-sky-400 font-semibold flex items-center gap-2">
+          <div id="fileProgressText" class="text-blue-700 dark:text-blue-400 font-bold text-sm flex items-center gap-2">
             <i class="fa-solid fa-spinner fa-spin"></i>
-            <span>Đang đọc và phân tích cấu trúc văn bản...</span>
+            <span>Đang đọc nội dung văn bản...</span>
           </div>
         </div>
       </div>
 
-      <!-- VÙNG XEM TRƯỚC HÀNG LOẠT (BATCH PREVIEW) -->
-      <div id="batchPreviewCard" class="hidden antigravity-card p-5 border-emerald-500/40 bg-emerald-950/15 space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-800 pb-3">
+      <!-- XEM TRƯỚC VÀ KÍCH HOẠT HÀNG LOẠT -->
+      <div id="batchPreviewCard" class="hidden dp-card p-6 border-2 border-emerald-600 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
           <div>
-            <h3 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+            <h3 class="text-sm sm:text-base font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-2">
               <i class="fa-solid fa-layer-group"></i>
               <span>Xem Trước Các Khối Tri Thức Được Gemini Phân Tách</span>
             </h3>
-            <p class="text-[11px] text-gray-400" id="batchExtractedCountText">Đã tìm thấy các điều khoản quan trọng</p>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-0.5" id="batchExtractedCountText">Đã bóc tách thành công</p>
           </div>
           <div class="flex items-center gap-3">
-            <button onclick="toggleSelectAllBatch(true)" class="text-xs text-sky-400 hover:underline cursor-pointer">Chọn tất cả</button>
-            <span class="text-gray-600">|</span>
-            <button onclick="cancelBatchPreview()" class="text-xs text-rose-400 hover:underline cursor-pointer">Hủy bỏ</button>
+            <button onclick="toggleSelectAllBatch(true)" class="text-xs sm:text-sm font-bold text-blue-700 hover:underline cursor-pointer">Chọn tất cả</button>
+            <span class="text-slate-400">|</span>
+            <button onclick="cancelBatchPreview()" class="text-xs sm:text-sm font-bold text-red-600 hover:underline cursor-pointer">Hủy bỏ</button>
           </div>
         </div>
 
         <div id="batchChunksList" class="space-y-3 max-h-96 overflow-y-auto pr-1"></div>
 
-        <div class="p-4 rounded-xl bg-gray-900 border border-gray-800 flex flex-col sm:flex-row items-center gap-3">
-          <input type="password" id="batchAdminPin" placeholder="Mã PIN Quản trị (0979991898)" class="w-full sm:w-auto flex-1 px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-emerald-500" value="0979991898" />
-          <button onclick="executeBatchActivation()" id="btnBatchActivate" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-900/30">
-            <i class="fa-solid fa-rocket"></i>
+        <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 flex flex-col sm:flex-row items-center gap-3">
+          <input type="password" id="batchAdminPin" placeholder="Mã PIN Quản trị (0979991898)" class="w-full sm:w-auto flex-1 px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-bold focus:outline-none focus:border-blue-600" value="0979991898" />
+          <button onclick="executeBatchActivation()" id="btnBatchActivate" class="btn-blue w-full sm:w-auto px-6 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-md">
+            <i class="fa-solid fa-rocket text-yellow-300"></i>
             <span id="btnBatchActivateLabel">Kích Hoạt Vào Kho RAG</span>
           </button>
         </div>
-        <div id="batchFeedback" class="text-xs text-center font-bold"></div>
+        <div id="batchFeedback" class="text-sm text-center font-bold"></div>
       </div>
 
     </div>
 
-    <!-- ================= TAB 3: THÊM THỦ CÔNG 1 KHỐI ================= -->
+    <!-- ================= TAB 3: THÊM THỦ CÔNG 1 KHỐI (CHỮ TO RÕ) ================= -->
     <div id="tabContent_manual" class="hidden">
-      <form onsubmit="handleSaveChunk(event)" class="antigravity-card p-6 border-blue-500/40 space-y-4 max-w-3xl mx-auto">
-        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-          <h2 class="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <i class="fa-solid fa-pen-to-square text-sky-400"></i>
-            <span>Thêm Mới / Bổ Sung Thủ Công 1 Khối Tri Thức</span>
+      <form onsubmit="handleSaveChunk(event)" class="dp-card p-6 sm:p-8 space-y-4 max-w-3xl mx-auto border-2 border-blue-500">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+          <h2 class="text-base sm:text-lg font-black text-blue-900 dark:text-blue-400 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-red-600"></i>
+            <span>Thêm Mới / Cập Nhật Thủ Công 1 Khối Tri Thức</span>
           </h2>
-          <span class="text-[10px] text-sky-400 font-mono">Chuẩn 6K Kín Kẽ</span>
+          <span class="text-xs font-bold text-red-600 bg-red-50 dark:bg-red-950/50 px-2.5 py-1 rounded-lg border border-red-200">Chuẩn 6K Kín Kẽ</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-[11px] font-bold text-gray-300 mb-1">Tên Văn Bản / Nghị Định</label>
-            <input type="text" id="chunkDoc" required placeholder="VD: Nghị định 144/2026/NĐ-CP" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-sky-500" />
+            <label class="block text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 mb-1">Tên Văn Bản / Nghị Định</label>
+            <input type="text" id="chunkDoc" required placeholder="VD: Nghị định 144/2026/NĐ-CP" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-blue-600" />
           </div>
           <div>
-            <label class="block text-[11px] font-bold text-gray-300 mb-1">Điều Khoản Cụ Thể</label>
-            <input type="text" id="chunkArticle" required placeholder="VD: Điều 4 (sửa đổi Điều 26 NĐ 181)" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-sky-500" />
+            <label class="block text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 mb-1">Điều Khoản Cụ Thể</label>
+            <input type="text" id="chunkArticle" required placeholder="VD: Điều 4 (sửa Điều 26 NĐ 181)" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-blue-600" />
           </div>
         </div>
 
         <div>
-          <label class="block text-[11px] font-bold text-gray-300 mb-1">Tiêu Đề Tóm Tắt Khối Tri Thức</label>
-          <input type="text" id="chunkTitle" required placeholder="VD: Điều kiện khấu trừ thuế GTGT đầu vào & Ngưỡng chuyển khoản từ 05 triệu đồng" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-sky-500" />
+          <label class="block text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 mb-1">Tiêu Đề Tóm Tắt Khối Tri Thức</label>
+          <input type="text" id="chunkTitle" required placeholder="VD: Điều kiện khấu trừ thuế GTGT đầu vào & Ngưỡng chuyển khoản từ 05 triệu đồng" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-bold focus:outline-none focus:border-blue-600" />
         </div>
 
         <div>
-          <label class="block text-[11px] font-bold text-gray-300 mb-1">
+          <label class="block text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 mb-1">
             Từ Khóa Nhận Diện (Keywords) 
-            <span class="text-[10px] text-gray-500 font-normal">(Cách nhau bằng dấu phẩy)</span>
+            <span class="text-xs text-slate-500 font-normal">(Cách nhau bằng dấu phẩy)</span>
           </label>
-          <input type="text" id="chunkKeywords" required placeholder="khấu trừ, 5 triệu, chuyển khoản, đầu vào, nghị định 144" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-sky-500 font-mono" />
+          <input type="text" id="chunkKeywords" required placeholder="khấu trừ, 5 triệu, chuyển khoản, đầu vào, nghị định 144" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-mono focus:outline-none focus:border-blue-600" />
         </div>
 
         <div>
-          <label class="block text-[11px] font-bold text-gray-300 mb-1">Nội Dung Quy Chuẩn / Nghiệp Vụ Cốt Lõi</label>
-          <textarea id="chunkContent" rows="6" required placeholder="Trình bày chi tiết các điều khoản, số liệu, tỷ lệ % hoặc quy trình nghiệp vụ để AI làm căn cứ tư vấn..." class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-sky-500 leading-relaxed font-sans"></textarea>
+          <label class="block text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 mb-1">Nội Dung Quy Chuẩn / Nghiệp Vụ Cốt Lõi</label>
+          <textarea id="chunkContent" rows="6" required placeholder="Trình bày chi tiết các điều khoản, số liệu, tỷ lệ % hoặc quy trình nghiệp vụ để AI làm căn cứ tư vấn..." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm leading-relaxed font-sans focus:outline-none focus:border-blue-600"></textarea>
         </div>
 
-        <div class="pt-2 border-t border-gray-800 flex flex-col sm:flex-row items-center gap-3">
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center gap-3">
           <div class="w-full sm:w-auto flex-1">
-            <input type="password" id="adminPin" placeholder="Mã PIN Quản trị (0979991898)" value="0979991898" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-sky-500" />
+            <input type="password" id="adminPin" placeholder="Mã PIN Quản trị (0979991898)" value="0979991898" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-bold focus:outline-none focus:border-blue-600" />
           </div>
-          <button type="submit" id="btnSaveChunk" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-sky-900/30 shrink-0">
+          <button type="submit" id="btnSaveChunk" class="btn-blue w-full sm:w-auto px-8 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-md shrink-0">
             <i class="fa-solid fa-floppy-disk"></i>
             <span>Lưu Khối Tri Thức</span>
           </button>
         </div>
-        <div id="saveFeedback" class="text-xs text-center font-bold"></div>
+        <div id="saveFeedback" class="text-sm text-center font-bold"></div>
       </form>
     </div>
 
-    <!-- ================= TAB 4: PHÒNG TEST TRUY VẤN AI ================= -->
+    <!-- ================= TAB 4: PHÒNG TEST TRUY VẤN AI (CHỮ TO RÕ) ================= -->
     <div id="tabContent_test" class="hidden">
-      <div class="antigravity-card p-6 border-emerald-500/30 bg-emerald-950/10 space-y-4 max-w-3xl mx-auto">
+      <div class="dp-card p-6 sm:p-8 space-y-4 max-w-3xl mx-auto border-2 border-red-500">
         <div>
-          <h2 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-2">
-            <i class="fa-solid fa-vial-circle-check"></i>
-            <span>Kiểm Thử Thuật Toán Tìm Kiếm Ngữ Nghĩa (RAG Retrieval Tester)</span>
+          <h2 class="text-base sm:text-lg font-black text-red-600 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-vial-circle-check text-blue-700"></i>
+            <span>Kiểm Thử Thuật Toán Tìm Kiếm Ngữ Nghĩa RAG</span>
           </h2>
-          <p class="text-xs text-gray-400 mt-0.5">Mô phỏng câu hỏi của người dùng để kiểm tra xem hệ thống sẽ trích xuất đúng điều khoản luật nào.</p>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">Mô phỏng câu hỏi thực tế của khách hàng hoặc kế toán để kiểm tra xem AI sẽ trích xuất đúng điều khoản nào.</p>
         </div>
 
         <div class="flex gap-2">
-          <input type="text" id="testQueryInput" onkeydown="if(event.key==='Enter') testRagRetrieval()" placeholder="VD: Hóa đơn trên 5 triệu trả tiền mặt có được khấu trừ không?..." class="flex-1 px-4 py-2.5 rounded-xl bg-gray-950 border border-gray-800 text-white text-xs focus:outline-none focus:border-emerald-500" />
-          <button type="button" onclick="testRagRetrieval()" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-lg shadow-emerald-900/30 shrink-0">
+          <input type="text" id="testQueryInput" onkeydown="if(event.key==='Enter') testRagRetrieval()" placeholder="VD: Hóa đơn trên 5 triệu trả tiền mặt có được khấu trừ không?..." class="flex-1 px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-medium focus:outline-none focus:border-blue-600" />
+          <button type="button" onclick="testRagRetrieval()" class="btn-red px-6 py-3 rounded-xl text-sm font-bold transition flex items-center gap-2 cursor-pointer shadow-md shrink-0">
             <i class="fa-solid fa-magnifying-glass"></i>
             <span>Kiểm Thử</span>
           </button>
         </div>
 
-        <!-- Các câu hỏi mẫu để test nhanh -->
-        <div class="flex flex-wrap items-center gap-1.5 text-[11px] text-gray-400">
-          <span>Câu hỏi gợi ý:</span>
-          <button type="button" onclick="setTestQuery('hóa đơn trên 5 triệu có được khấu trừ không')" class="px-2 py-0.5 rounded-md bg-gray-900 hover:bg-gray-800 text-sky-400 border border-gray-800 cursor-pointer">Khấu trừ 5 triệu</button>
-          <button type="button" onclick="setTestQuery('hộ kinh doanh doanh thu 2 tỷ kê khai theo mẫu nào')" class="px-2 py-0.5 rounded-md bg-gray-900 hover:bg-gray-800 text-sky-400 border border-gray-800 cursor-pointer">Hộ KD Mẫu 01/CNKD</button>
-          <button type="button" onclick="setTestQuery('quy trình 3 tầng xác định chủ sở hữu hưởng lợi')" class="px-2 py-0.5 rounded-md bg-gray-900 hover:bg-gray-800 text-sky-400 border border-gray-800 cursor-pointer">3 Tầng UBO</button>
-          <button type="button" onclick="setTestQuery('thuê kế toán ngoài thì giám đốc có chịu trách nhiệm không')" class="px-2 py-0.5 rounded-md bg-gray-900 hover:bg-gray-800 text-sky-400 border border-gray-800 cursor-pointer">Trách nhiệm Giám đốc</button>
+        <!-- Các câu hỏi mẫu 1 chạm -->
+        <div class="flex flex-wrap items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+          <span class="font-bold">Gợi ý câu hỏi:</span>
+          <button type="button" onclick="setTestQuery('hóa đơn trên 5 triệu có được khấu trừ không')" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-100 text-blue-700 dark:text-blue-400 border border-slate-300 dark:border-slate-700 font-medium cursor-pointer">Khấu trừ 5 triệu</button>
+          <button type="button" onclick="setTestQuery('hộ kinh doanh doanh thu 2 tỷ kê khai theo mẫu nào')" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-100 text-blue-700 dark:text-blue-400 border border-slate-300 dark:border-slate-700 font-medium cursor-pointer">Hộ KD Mẫu 01/CNKD</button>
+          <button type="button" onclick="setTestQuery('quy trình 3 tầng xác định chủ sở hữu hưởng lợi')" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-100 text-blue-700 dark:text-blue-400 border border-slate-300 dark:border-slate-700 font-medium cursor-pointer">3 Tầng UBO</button>
+          <button type="button" onclick="setTestQuery('thuê kế toán ngoài thì giám đốc có chịu trách nhiệm không')" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-100 text-blue-700 dark:text-blue-400 border border-slate-300 dark:border-slate-700 font-medium cursor-pointer">Trách nhiệm Giám đốc</button>
         </div>
 
-        <div id="testResultsBox" class="space-y-3 pt-2 text-xs text-gray-300 max-h-96 overflow-y-auto">
-          <p class="text-gray-500 italic text-center py-6">Nhập câu hỏi hoặc bấm vào câu hỏi gợi ý ở trên để kiểm tra kết quả trích xuất...</p>
+        <div id="testResultsBox" class="space-y-3 pt-3 text-sm text-slate-800 dark:text-slate-200 max-h-96 overflow-y-auto">
+          <p class="text-slate-500 italic text-center py-6 text-sm">Nhập câu hỏi hoặc bấm vào câu hỏi gợi ý ở trên để kiểm tra kết quả trích xuất...</p>
         </div>
       </div>
     </div>
 
   </main>
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="max-w-7xl w-full mx-auto px-4 border-t border-gray-800/80 pt-5 pb-5 text-center text-xs text-gray-500">
-    <p class="font-bold text-gray-300">© 2026 CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ — BỘ PHẬN PHÁP CHẾ & THUẾ ĐIỆN TỬ</p>
-    <p class="mt-1">Hotline Kỹ Thuật / Zalo: <a href="https://zalo.me/0979991898" target="_blank" class="text-sky-400 font-mono font-bold hover:underline">0979.991.898</a> • MST: <span class="text-sky-400 font-mono font-bold">4401020233</span></p>
+  <!-- ================= FOOTER DOANH NGHIỆP ================= -->
+  <footer class="max-w-7xl w-full mx-auto px-4 border-t-2 border-slate-200 dark:border-slate-800 pt-5 pb-5 text-center text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+    <p class="font-bold text-slate-800 dark:text-slate-200">© 2026 CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ — BỘ PHẬN PHÁP CHẾ & THUẾ ĐIỆN TỬ</p>
+    <p class="mt-1">Hotline Kỹ Thuật / Zalo: <a href="https://zalo.me/0979991898" target="_blank" class="text-red-600 font-mono font-bold hover:underline">0979.991.898</a> • MST: <span class="text-blue-700 dark:text-blue-400 font-mono font-bold">4401020233</span></p>
     <p class="mt-0.5">Địa chỉ: 21/146 Ngô Gia Tự, Phường Phú Yên, Tỉnh Đắk Lắk (và Tuy Hòa, Phú Yên)</p>
   </footer>
 
-  <!-- ================= SCRIPT LOGIC QUẢN TRỊ & GIAO DIỆN ================= -->
+  <!-- ================= SCRIPT LOGIC QUẢN TRỊ & PHÂN LOẠI ================= -->
   <script>
     const VALID_PINS = ['0979991898', '4401020233', 'datphu2026'];
     let allChunks = [];
     let currentCategory = 'all';
     let searchQuery = '';
     let pendingBatchChunks = [];
+    let currentFontScale = 1;
+
+    // ================= CHỈNH CỠ CHỮ A- / A / A+ =================
+    function changeFontSize(delta) {
+      currentFontScale = Math.max(0.85, Math.min(1.35, currentFontScale + delta));
+      document.documentElement.style.setProperty('--font-scale', currentFontScale);
+      localStorage.setItem('dp_font_scale', currentFontScale);
+    }
+
+    function resetFontSize() {
+      currentFontScale = 1;
+      document.documentElement.style.setProperty('--font-scale', 1);
+      localStorage.setItem('dp_font_scale', 1);
+    }
+
+    // ================= CHUYỂN ĐỔI SÁNG / TỐI =================
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('dp_theme', next);
+    }
+
+    // Khởi tạo cài đặt lưu trữ
+    function initUserPreferences() {
+      const savedTheme = localStorage.getItem('dp_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+
+      const savedScale = parseFloat(localStorage.getItem('dp_font_scale') || '1');
+      if (!isNaN(savedScale)) {
+        currentFontScale = savedScale;
+        document.documentElement.style.setProperty('--font-scale', currentFontScale);
+      }
+    }
 
     // ================= XÁC THỰC GATEKEEPER =================
     function checkGatekeeperAuth() {
@@ -519,17 +640,17 @@
         const content = document.getElementById(`tabContent_${t}`);
         if (t === tabId) {
           btn.classList.add('active');
-          btn.classList.remove('text-gray-400');
+          btn.classList.remove('text-slate-700', 'dark:text-slate-300');
           content.classList.remove('hidden');
         } else {
           btn.classList.remove('active');
-          btn.classList.add('text-gray-400');
+          btn.classList.add('text-slate-700', 'dark:text-slate-300');
           content.classList.add('hidden');
         }
       });
     }
 
-    // ================= TẢI TOÀN BỘ KHỐI TRI THỨC TỪ SERVER =================
+    // ================= TẢI DỮ LIỆU TỪ SERVER =================
     async function loadAllChunks() {
       const refreshIcon = document.getElementById('refreshIcon');
       refreshIcon.classList.add('fa-spin');
@@ -539,27 +660,23 @@
         const data = await resp.json();
         allChunks = data.chunks || [];
         
-        // Cập nhật các chỉ số thống kê
+        // Thống kê
         document.getElementById('statTotalChunks').innerText = allChunks.length;
         document.getElementById('tabCountBadge').innerText = allChunks.length;
         document.getElementById('totalCountText').innerText = allChunks.length;
 
-        // Đếm tài liệu duy nhất
         const uniqueDocs = new Set(allChunks.map(c => c.doc)).size;
         document.getElementById('statTotalDocs').innerText = uniqueDocs || 8;
 
-        // Cập nhật số lượng từng danh mục
         updateCategoryCounts();
-
-        // Render danh sách
         renderLibraryGrid();
 
       } catch (e) {
         console.error('Lỗi tải tri thức:', e);
         document.getElementById('chunksGridContainer').innerHTML = `
-          <div class="col-span-full text-center py-12 text-rose-400 text-xs">
-            <i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i>
-            <p>Không thể kết nối đến máy chủ tri thức. Vui lòng thử lại!</p>
+          <div class="col-span-full text-center py-12 text-red-600 text-sm font-bold">
+            <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
+            <p>Không thể kết nối đến máy chủ tri thức. Vui lòng kiểm tra lại!</p>
           </div>
         `;
       } finally {
@@ -567,7 +684,7 @@
       }
     }
 
-    // ================= PHÂN LOẠI DANH MỤC KHỐI TRI THỨC =================
+    // ================= PHÂN LOẠI DANH MỤC =================
     function classifyChunk(chunk) {
       const doc = (chunk.doc || '').toLowerCase();
       const title = (chunk.title || '').toLowerCase();
@@ -603,7 +720,6 @@
       document.getElementById('catCount_pos_6k').innerText = counts.pos_6k;
     }
 
-    // ================= BỘ LỌC VÀ TÌM KIẾM =================
     function setCategoryFilter(cat) {
       currentCategory = cat;
       document.querySelectorAll('.filter-pill').forEach(btn => {
@@ -630,16 +746,14 @@
       renderLibraryGrid();
     }
 
-    // ================= RENDER DANH SÁCH THẺ DỄ QUAN SÁT (GRID CARDS) =================
+    // ================= RENDER DANH SÁCH THẺ (2 CỘT RỘNG RÃI, CHỮ TO RÕ) =================
     function renderLibraryGrid() {
       const container = document.getElementById('chunksGridContainer');
       
       let filtered = allChunks.filter(c => {
-        // Lọc danh mục
         if (currentCategory !== 'all') {
           if (classifyChunk(c) !== currentCategory) return false;
         }
-        // Lọc tìm kiếm
         if (searchQuery) {
           const combined = `${c.doc} ${c.article} ${c.title} ${c.content} ${(c.keywords || []).join(' ')}`.toLowerCase();
           if (!combined.includes(searchQuery)) return false;
@@ -651,9 +765,9 @@
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="col-span-full text-center py-12 text-gray-500 text-xs">
-            <i class="fa-solid fa-folder-open text-3xl mb-2 text-gray-600"></i>
-            <p>Không tìm thấy khối tri thức nào khớp với tiêu chí tìm kiếm.</p>
+          <div class="col-span-full text-center py-16 text-slate-500 text-sm">
+            <i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-400"></i>
+            <p class="font-bold">Không tìm thấy khối tri thức nào khớp với tiêu chí tìm kiếm.</p>
           </div>
         `;
         return;
@@ -661,45 +775,58 @@
 
       container.innerHTML = filtered.map((c, i) => {
         const cat = classifyChunk(c);
-        let badgeColor = 'text-sky-400 bg-sky-950/60 border-sky-500/30';
-        let catIcon = '<i class="fa-solid fa-receipt mr-1"></i>';
-        if (cat === 'labor') { badgeColor = 'text-amber-400 bg-amber-950/60 border-amber-500/30'; catIcon = '<i class="fa-solid fa-users mr-1"></i>'; }
-        else if (cat === 'liability') { badgeColor = 'text-rose-400 bg-rose-950/60 border-rose-500/30'; catIcon = '<i class="fa-solid fa-scale-balanced mr-1"></i>'; }
-        else if (cat === 'ubo') { badgeColor = 'text-purple-400 bg-purple-950/60 border-purple-500/30'; catIcon = '<i class="fa-solid fa-building mr-1"></i>'; }
-        else if (cat === 'pos_6k') { badgeColor = 'text-emerald-400 bg-emerald-950/60 border-emerald-500/30'; catIcon = '<i class="fa-solid fa-gear mr-1"></i>'; }
+        
+        // Phối màu Xanh & Đỏ chủ đạo
+        let badgeBg = 'bg-blue-700 text-white';
+        let articleColor = 'text-red-600 dark:text-red-400';
+        let cardBorderAccent = 'hover:border-blue-600';
+
+        if (cat === 'labor' || cat === 'liability') {
+          badgeBg = 'bg-red-600 text-white';
+          articleColor = 'text-blue-700 dark:text-blue-400';
+          cardBorderAccent = 'hover:border-red-600';
+        }
 
         return `
-          <div class="antigravity-card p-4 flex flex-col justify-between space-y-3 hover:border-sky-500/50 hover:bg-gray-900/90 transition group cursor-pointer" onclick="openDetailModal('${c.id}')">
-            <div class="space-y-2">
-              <div class="flex items-start justify-between gap-2">
-                <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded-lg border ${badgeColor} truncate max-w-[200px]" title="${c.doc}">
-                  ${catIcon} ${c.doc}
+          <div class="dp-card p-5 sm:p-6 flex flex-col justify-between space-y-4 ${cardBorderAccent} transition group cursor-pointer" onclick="openDetailModal('${c.id}')">
+            <div class="space-y-2.5">
+              
+              <!-- Dòng 1: Badge Văn bản & Nút Xóa -->
+              <div class="flex items-start justify-between gap-3">
+                <span class="text-xs font-mono font-bold px-3 py-1 rounded-lg ${badgeBg} shadow-sm truncate max-w-[280px]" title="${c.doc}">
+                  ${c.doc}
                 </span>
-                <button onclick="event.stopPropagation(); handleDeleteChunk('${c.id}')" title="Xóa khối tri thức" class="text-gray-600 hover:text-rose-400 transition text-xs p-1">
+                <button onclick="event.stopPropagation(); handleDeleteChunk('${c.id}')" title="Xóa khối này" class="text-slate-400 hover:text-red-600 transition text-sm p-1">
                   <i class="fa-regular fa-trash-can"></i>
                 </button>
               </div>
 
-              <div class="text-[11px] font-semibold text-emerald-400 font-mono">${c.article || 'Điều khoản'}</div>
+              <!-- Dòng 2: Điều khoản cụ thể -->
+              <div class="text-xs sm:text-sm font-black ${articleColor} font-mono tracking-wide">
+                <i class="fa-solid fa-bookmark mr-1.5"></i>${c.article || 'Điều khoản'}
+              </div>
 
-              <h4 class="text-xs sm:text-sm font-bold text-white group-hover:text-sky-300 transition line-clamp-2 leading-snug">
+              <!-- Dòng 3: Tiêu đề in đậm to rõ -->
+              <h4 class="text-base sm:text-lg font-black text-slate-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 transition leading-snug">
                 ${c.title}
               </h4>
 
-              <p class="text-[11px] text-gray-400 line-clamp-3 leading-relaxed font-sans">
+              <!-- Dòng 4: Tóm tắt nội dung 3 dòng thoáng đãng -->
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed font-sans">
                 ${c.content}
               </p>
             </div>
 
-            <div class="pt-2 border-t border-gray-800/80 space-y-2">
-              <div class="flex flex-wrap gap-1">
-                ${(c.keywords || []).slice(0, 3).map(k => `<span class="text-[9px] bg-gray-950 text-gray-400 px-1.5 py-0.5 rounded border border-gray-800">${k}</span>`).join('')}
-                ${(c.keywords || []).length > 3 ? `<span class="text-[9px] text-gray-500">+${(c.keywords || []).length - 3}</span>` : ''}
+            <!-- Dòng 5: Từ khóa & Nút xem chi tiết -->
+            <div class="pt-3 border-t border-slate-200 dark:border-slate-700 space-y-2.5">
+              <div class="flex flex-wrap gap-1.5">
+                ${(c.keywords || []).slice(0, 4).map(k => `<span class="text-xs bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md border border-slate-300 dark:border-slate-700 font-medium font-mono">#${k}</span>`).join('')}
+                ${(c.keywords || []).length > 4 ? `<span class="text-xs text-slate-400 font-bold">+${(c.keywords || []).length - 4}</span>` : ''}
               </div>
 
-              <div class="flex items-center justify-between text-[10px] text-gray-500 font-medium">
+              <div class="flex items-center justify-between text-xs sm:text-sm text-blue-700 dark:text-blue-400 font-bold">
                 <span>Nhấn để xem toàn văn</span>
-                <span class="text-sky-400 group-hover:translate-x-1 transition"><i class="fa-solid fa-arrow-right"></i></span>
+                <span class="group-hover:translate-x-1.5 transition text-base"><i class="fa-solid fa-arrow-right"></i></span>
               </div>
             </div>
           </div>
@@ -707,7 +834,7 @@
       }).join('');
     }
 
-    // ================= MODAL XEM CHI TIẾT TOÀN VĂN =================
+    // ================= MODAL XEM CHI TIẾT =================
     function openDetailModal(id) {
       const c = allChunks.find(item => item.id === id);
       if (!c) return;
@@ -719,7 +846,7 @@
 
       const kwContainer = document.getElementById('detailKeywords');
       kwContainer.innerHTML = (c.keywords || []).map(k => `
-        <span class="text-[10px] bg-sky-950 text-sky-300 px-2.5 py-1 rounded-md border border-sky-800/40 font-mono">
+        <span class="text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-md border border-blue-200 dark:border-blue-800 font-mono font-bold">
           #${k}
         </span>
       `).join('');
@@ -731,7 +858,7 @@
       document.getElementById('detailModal').classList.add('hidden');
     }
 
-    // ================= KÉO THẢ VÀ BÓC TÁCH FILE PDF / WORD =================
+    // ================= KÉO THẢ VÀ ĐỌC FILE PDF / WORD =================
     function handleDragOver(e) {
       e.preventDefault();
       document.getElementById('dropZone').classList.add('dropzone-active');
@@ -805,7 +932,7 @@
           extractedText = await file.text();
         }
 
-        progressText.innerHTML = '<i class="fa-solid fa-brain fa-spin mr-1 text-purple-400"></i> Gemini AI đang phân tích và bóc tách các Điều khoản...';
+        progressText.innerHTML = '<i class="fa-solid fa-brain fa-spin mr-1 text-blue-600"></i> Gemini AI đang phân tích và bóc tách các Điều khoản...';
 
         const payload = {
           fileName: file.name,
@@ -822,14 +949,14 @@
         const res = await resp.json();
 
         if (res.success && Array.isArray(res.chunks) && res.chunks.length > 0) {
-          progressText.innerHTML = `<span class="text-emerald-400"><i class="fa-solid fa-check mr-1"></i> Đã bóc tách thành công ${res.chunks.length} khối tri thức!</span>`;
+          progressText.innerHTML = `<span class="text-green-600"><i class="fa-solid fa-check mr-1"></i> Đã bóc tách thành công ${res.chunks.length} khối tri thức!</span>`;
           renderBatchPreview(res.chunks, file.name);
         } else {
-          progressText.innerHTML = '<span class="text-rose-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Không thể phân tích tự động. Vui lòng chuyển sang Tab 3 để nhập tay.</span>';
+          progressText.innerHTML = '<span class="text-red-600"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Không thể phân tích tự động. Vui lòng chuyển sang Tab 3 để nhập tay.</span>';
         }
 
       } catch (err) {
-        progressText.innerHTML = '<span class="text-rose-400">Lỗi: ' + err.message + '</span>';
+        progressText.innerHTML = '<span class="text-red-600 font-bold">Lỗi: ' + err.message + '</span>';
       }
     }
 
@@ -854,17 +981,17 @@
       btnLabel.innerText = `Kích Hoạt Tất Cả ${chunks.length} Khối Vào Kho RAG`;
 
       list.innerHTML = chunks.map((c, idx) => `
-        <div class="p-4 rounded-xl bg-gray-950 border border-gray-800 space-y-2.5">
+        <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 space-y-2">
           <div class="flex items-center justify-between gap-2">
             <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked id="batchCheck_${idx}" class="w-4 h-4 accent-emerald-500 rounded" />
-              <span class="text-[11px] font-bold text-sky-400 font-mono">${c.doc} — ${c.article}</span>
+              <input type="checkbox" checked id="batchCheck_${idx}" class="w-4 h-4 accent-blue-600 rounded" />
+              <span class="text-xs font-bold text-blue-700 dark:text-blue-400 font-mono">${c.doc} — ${c.article}</span>
             </label>
-            <span class="text-[10px] text-gray-500">Khối #${idx + 1}</span>
+            <span class="text-xs text-slate-400 font-bold">Khối #${idx + 1}</span>
           </div>
-          <input type="text" id="batchTitle_${idx}" value="${c.title || ''}" class="w-full px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 text-white text-xs font-bold focus:outline-none focus:border-emerald-500" />
-          <input type="text" id="batchKeywords_${idx}" value="${Array.isArray(c.keywords) ? c.keywords.join(', ') : (c.keywords || '')}" class="w-full px-3 py-1 rounded-lg bg-gray-900 border border-gray-800 text-gray-300 text-[11px] font-mono focus:outline-none focus:border-emerald-500" />
-          <textarea id="batchContent_${idx}" rows="3" class="w-full px-3 py-1.5 rounded-lg bg-gray-900 border border-gray-800 text-gray-300 text-xs focus:outline-none focus:border-emerald-500 leading-relaxed">${c.content || ''}</textarea>
+          <input type="text" id="batchTitle_${idx}" value="${c.title || ''}" class="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs sm:text-sm font-bold focus:outline-none focus:border-blue-600" />
+          <input type="text" id="batchKeywords_${idx}" value="${Array.isArray(c.keywords) ? c.keywords.join(', ') : (c.keywords || '')}" class="w-full px-3 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-mono focus:outline-none focus:border-blue-600" />
+          <textarea id="batchContent_${idx}" rows="3" class="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs sm:text-sm focus:outline-none focus:border-blue-600 leading-relaxed font-sans">${c.content || ''}</textarea>
         </div>
       `).join('');
 
@@ -908,7 +1035,7 @@
         return;
       }
 
-      fb.innerHTML = '<span class="text-amber-400"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang nạp hàng loạt vào kho tri thức...</span>';
+      fb.innerHTML = '<span class="text-blue-600"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang nạp hàng loạt vào kho tri thức...</span>';
 
       try {
         const resp = await fetch('/api/rag?action=batch-upsert', {
@@ -919,24 +1046,24 @@
         const res = await resp.json();
 
         if (res.success) {
-          fb.innerHTML = '<span class="text-emerald-400"><i class="fa-solid fa-check mr-1"></i> ' + res.message + '</span>';
+          fb.innerHTML = '<span class="text-green-600 font-bold"><i class="fa-solid fa-check mr-1"></i> ' + res.message + '</span>';
           alert('🎉 ' + res.message);
           cancelBatchPreview();
           loadAllChunks();
           switchTab('library');
         } else {
-          fb.innerHTML = '<span class="text-rose-400"><i class="fa-solid fa-xmark mr-1"></i> ' + res.message + '</span>';
+          fb.innerHTML = '<span class="text-red-600 font-bold"><i class="fa-solid fa-xmark mr-1"></i> ' + res.message + '</span>';
         }
       } catch (err) {
-        fb.innerHTML = '<span class="text-rose-400">Lỗi kết nối khi nạp hàng loạt</span>';
+        fb.innerHTML = '<span class="text-red-600 font-bold">Lỗi kết nối khi nạp hàng loạt</span>';
       }
     }
 
-    // ================= LƯU KHỐI TRI THỨC THỦ CÔNG =================
+    // ================= LƯU KHỐI THỦ CÔNG =================
     async function handleSaveChunk(e) {
       e.preventDefault();
       const fb = document.getElementById('saveFeedback');
-      fb.innerHTML = '<span class="text-amber-400"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang lưu và cập nhật hệ thống...</span>';
+      fb.innerHTML = '<span class="text-blue-600 font-bold"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang lưu và cập nhật hệ thống...</span>';
 
       const pin = document.getElementById('adminPin').value.trim() || '0979991898';
       const payload = {
@@ -957,17 +1084,17 @@
         const res = await resp.json();
 
         if (res.success) {
-          fb.innerHTML = '<span class="text-emerald-400"><i class="fa-solid fa-check mr-1"></i> ' + res.message + '</span>';
+          fb.innerHTML = '<span class="text-green-600 font-bold"><i class="fa-solid fa-check mr-1"></i> ' + res.message + '</span>';
           document.getElementById('chunkTitle').value = '';
           document.getElementById('chunkKeywords').value = '';
           document.getElementById('chunkContent').value = '';
           loadAllChunks();
           setTimeout(() => switchTab('library'), 1000);
         } else {
-          fb.innerHTML = '<span class="text-rose-400"><i class="fa-solid fa-xmark mr-1"></i> ' + res.message + '</span>';
+          fb.innerHTML = '<span class="text-red-600 font-bold"><i class="fa-solid fa-xmark mr-1"></i> ' + res.message + '</span>';
         }
       } catch (err) {
-        fb.innerHTML = '<span class="text-rose-400">Lỗi kết nối khi lưu tri thức</span>';
+        fb.innerHTML = '<span class="text-red-600 font-bold">Lỗi kết nối khi lưu tri thức</span>';
       }
     }
 
@@ -992,7 +1119,7 @@
       }
     }
 
-    // ================= PHÒNG TEST TRUY VẤN RAG =================
+    // ================= TEST TRUY VẤN =================
     function setTestQuery(q) {
       document.getElementById('testQueryInput').value = q;
       testRagRetrieval();
@@ -1003,7 +1130,7 @@
       const box = document.getElementById('testResultsBox');
       if (!query) return;
 
-      box.innerHTML = '<p class="text-amber-400 text-center py-4"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tính toán độ tương đồng ngữ nghĩa...</p>';
+      box.innerHTML = '<p class="text-blue-600 text-center py-4 font-bold"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tính toán độ tương đồng ngữ nghĩa...</p>';
 
       try {
         const resp = await fetch('/api/rag?action=search', {
@@ -1015,25 +1142,26 @@
 
         if (res.results && res.results.length > 0) {
           box.innerHTML = res.results.map((c, i) => `
-            <div class="p-3.5 rounded-xl bg-gray-900 border border-emerald-500/40 text-gray-200 space-y-1.5 shadow-md">
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border-2 border-red-500 text-slate-800 dark:text-slate-200 space-y-2 shadow-sm">
               <div class="flex items-center justify-between">
-                <span class="text-[11px] text-emerald-400 font-bold font-mono">Top ${i + 1}: ${c.doc} (${c.article})</span>
-                <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-mono font-bold">Khớp Ngữ Nghĩa</span>
+                <span class="text-xs text-red-600 dark:text-red-400 font-bold font-mono">Top ${i + 1}: ${c.doc} (${c.article})</span>
+                <span class="text-xs bg-red-100 dark:bg-red-950/60 text-red-700 dark:text-red-300 px-2.5 py-0.5 rounded-full font-bold">Khớp Ngữ Nghĩa</span>
               </div>
-              <div class="font-bold text-white text-xs">${c.title}</div>
-              <div class="text-[11px] text-gray-300 leading-relaxed font-sans">${c.content}</div>
+              <div class="font-black text-slate-900 dark:text-white text-sm sm:text-base">${c.title}</div>
+              <div class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">${c.content}</div>
             </div>
           `).join('');
         } else {
-          box.innerHTML = '<p class="text-rose-400 text-center py-4 text-xs">Không tìm thấy điều khoản nào khớp với câu hỏi này.</p>';
+          box.innerHTML = '<p class="text-red-600 text-center py-4 text-sm font-bold">Không tìm thấy điều khoản nào khớp với câu hỏi này.</p>';
         }
       } catch (e) {
-        box.innerHTML = '<p class="text-rose-400 text-center py-4 text-xs">Lỗi kiểm tra truy vấn</p>';
+        box.innerHTML = '<p class="text-red-600 text-center py-4 text-sm font-bold">Lỗi kiểm tra truy vấn</p>';
       }
     }
 
-    // Khởi chạy khi tải xong trang
+    // Khởi tạo
     document.addEventListener('DOMContentLoaded', () => {
+      initUserPreferences();
       checkGatekeeperAuth();
     });
   </script>
