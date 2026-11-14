@@ -43,6 +43,39 @@ if (!process.env.GEMINI_API_KEY) {
 function getRuleBasedAnswer(userMessage, agent) {
   const lower = userMessage.toLowerCase();
 
+  if (lower.includes('kinh doanh thuế') || lower.includes('quán ăn') || lower.includes('quán cơm') || lower.includes('nhỏ lẻ') || lower.includes('tạp hóa') || lower.includes('miễn thuế') || lower.includes('1 tỷ') || lower.includes('môn bài') || lower.includes('hộ kinh doanh nhỏ')) {
+    return `Dạ theo quy định quản lý thuế hiện hành áp dụng cho các mô hình kinh doanh nhỏ lẻ (như quán ăn, quán cơm bình dân, tiệm tạp hóa, dịch vụ F&B...), các chính sách thuế trọng điểm được thực hiện cụ thể như sau:
+
+### 1. Các loại thuế phải nộp:
+Hộ kinh doanh và cá nhân kinh doanh nhỏ lẻ chỉ cần quản lý **2 loại thuế chính**:
+- **Thuế Giá trị gia tăng (GTGT):** Tính trên tổng doanh thu phát sinh từ hoạt động bán hàng hoặc cung ứng dịch vụ.
+- **Thuế Thu nhập cá nhân (TNCN):** Tính trên phần thu nhập hoặc doanh thu chịu thuế theo quy định.
+- **LƯU Ý QUAN TRỌNG:** **Lệ phí môn bài ĐÃ ĐƯỢC CHÍNH THỨC BÃI BỎ HOÀN TOÀN** đối với tất cả các hộ kinh doanh và cá nhân kinh doanh.
+
+### 2. Ngưỡng doanh thu miễn thuế & Phân nhóm quản lý:
+- **Nhóm doanh thu từ 1 tỷ đồng/năm trở xuống (Nhóm 1):**
+  + **Được MIỄN 100% thuế GTGT và thuế TNCN** (không phát sinh nghĩa vụ nộp thuế).
+  + Quy trình quản lý: Quán ăn/cửa hàng nhỏ vẫn thực hiện việc thông báo doanh thu định kỳ theo hướng dẫn của cơ quan thuế địa phương.
+- **Nhóm doanh thu trên 1 tỷ đồng đến 3 tỷ đồng/năm (Nhóm 2):**
+  + Phát sinh nghĩa vụ nộp thuế GTGT và TNCN.
+  + Có thể lựa chọn tính thuế theo tỷ lệ % trên doanh thu vượt ngưỡng, hoặc tính theo phương pháp thu nhập (doanh thu trừ chi phí hợp lý có hóa đơn, chứng từ hợp pháp).
+
+### 3. Tỷ lệ thuế áp dụng cho Dịch vụ ăn uống (nếu vượt ngưỡng miễn thuế):
+Đối với hoạt động dịch vụ ăn uống (quán cơm, quán ăn nhỏ, đồ ăn thức uống chế biến):
+- **Thuế GTGT:** **3%**
+- **Thuế TNCN:** **1.5%**
+=> **Tổng tỷ lệ nghĩa vụ thuế là 4.5%** trên doanh thu chịu thuế.
+*(Đối với hàng hóa bán lẻ nguyên kiện không chế biến như bia lon, nước ngọt đóng chai, tỷ lệ là GTGT 1% + TNCN 0.5% = 1.5%).*
+
+### 4. Phương thức quản lý và Kê khai hiện đại:
+- **Xóa bỏ cơ chế thuế khoán cũ:** Hệ thống chuyển hẳn sang quản lý dựa trên doanh thu kê khai thực tế và dữ liệu hóa đơn điện tử.
+- **Hóa đơn điện tử máy tính tiền (Nghị định 254/2026/NĐ-CP):** Bắt buộc đối với các cơ sở kinh doanh F&B, bán lẻ trực tiếp tới người tiêu dùng nhằm minh bạch doanh thu và in bill tức thì không cần cắm USB Token cho từng khách.
+- **Kê khai online qua eTax Mobile:** Chủ quán có thể chủ động tra cứu mã số thuế, đăng ký tài khoản kinh doanh và nộp hồ sơ/tiền thuế mọi lúc mọi nơi trên điện thoại thông minh.
+
+---
+"Dịu dàng với chính mình, nghiêm túc với con số" — Đất Phú Gen 4 hỗ trợ trọn gói cài đặt Hóa đơn máy tính tiền EasyPOS và hướng dẫn kê khai eTax Mobile tại Phú Yên qua **Hotline / Zalo: 0979.991.898**!`;
+  }
+
   if (lower.includes('thành lập') || lower.includes('mới mở') || lower.includes('khởi nghiệp') || lower.includes('mới ra làm') || lower.includes('mới kinh doanh')) {
     return `Dạ Đất Phú xin chúc mừng Quý khách vừa thành lập doanh nghiệp! Để công ty vận hành an toàn pháp lý và không bị xử phạt vi phạm hành chính, dưới đây là các bước thủ tục thuế và pháp lý ban đầu bắt buộc cần làm ngay:
 
