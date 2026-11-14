@@ -57,6 +57,25 @@ function getRuleBasedAnswer(userMessage, agent) {
 Kỹ thuật viên Đất Phú luôn túc trực qua UltraViewer để xử lý sai sót hóa đơn cho bà con trong 15 phút: **0979.991.898**!`;
   }
 
+  if (lower.includes('báo cáo') || lower.includes('hạn chót') || lower.includes('lao động') || lower.includes('bảo hiểm') || lower.includes('quyết toán') || lower.includes('283') || lower.includes('bctc')) {
+    return `Dạ theo Quy chuẩn Kín Kẽ OS và quy định pháp luật doanh nghiệp hiện hành:
+
+1. **Báo cáo Thuế & Tài chính (Tháng/Quý/Năm):**
+   - Tờ khai GTGT & TNCN: Ngày 20 tháng sau (kê khai tháng) hoặc ngày cuối cùng tháng đầu quý sau (kê khai quý).
+   - Báo cáo tình hình sử dụng hóa đơn điện tử định kỳ.
+   - Quyết toán thuế năm (TNDN + TNCN) & Bộ Báo cáo tài chính năm: Hạn chót trước ngày **31/03** năm sau.
+
+2. **Báo cáo Lao động & Bảo hiểm (Mốc gấp cuối năm & đầu năm):**
+   - **Trước 05/12:** Báo cáo sử dụng lao động 6 tháng cuối năm (Phạt 10 - 20 triệu theo Nghị định 283/2026/NĐ-CP nếu chậm nộp).
+   - **Trước 20/12:** Báo cáo hoạt động cho thuê lại lao động (nếu có giấy phép).
+   - **Trước 10/01 năm sau:** 03 Báo cáo tổng hợp gồm ATVSLĐ, Tai nạn lao động và Y tế lao động.
+   - **Trước 15/01 năm sau:** Báo cáo tình hình tham gia Bảo hiểm thất nghiệp (BHTN).
+   - **Đột xuất:** Báo cáo khi có biến động tăng/giảm từ 50 lao động trở lên.
+
+3. **Vận hành nội bộ Đất Phú:** Đối soát VCB DigiBiz, dịch vụ số B2B, quản lý kho vật tư và giám sát n8n/AI Swarm 24/7.
+"Dịu dàng với chính mình, nghiêm túc với con số" — Hotline / Zalo hỗ trợ: **0979.991.898**!`;
+  }
+
   if (lower.includes('quán cà phê') || lower.includes('hóa đơn nào') || lower.includes('nđ 254') || lower.includes('254') || lower.includes('máy tính tiền')) {
     return `Dạ Đất Phú xin chào! Đối với **quán cà phê nhỏ tại Tuy Hòa** (hoặc các hộ kinh doanh ăn uống, bán lẻ), giải pháp tối ưu và đúng luật nhất là:
 
