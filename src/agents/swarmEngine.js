@@ -57,6 +57,17 @@ function getRuleBasedAnswer(userMessage, agent) {
 Kỹ thuật viên Đất Phú luôn túc trực qua UltraViewer để xử lý sai sót hóa đơn cho bà con trong 15 phút: **0979.991.898**!`;
   }
 
+  if (lower.includes('thuê kế toán') || lower.includes('khoán trắng') || lower.includes('trách nhiệm kế toán') || lower.includes('ai chịu trách nhiệm') || lower.includes('hóa đơn khống')) {
+    return `Dạ theo Điều 50 Luật Kế toán 2015 và Điều 17 Luật Quản lý Thuế số 38/2019/QH14:
+
+1. **Người đại diện theo pháp luật (Giám đốc / Chủ doanh nghiệp) là người DUY NHẤT chịu trách nhiệm pháp lý cao nhất và chịu trách nhiệm hình sự** trước Nhà nước về tính có thật, tính hợp pháp của toàn bộ hóa đơn, chứng từ và số liệu sổ sách kế toán.
+2. **Kế toán dịch vụ chỉ là đơn vị gia công nghiệp vụ:** Nhập liệu và nộp tờ khai dựa trên chứng từ do chủ doanh nghiệp cung cấp. Kế toán không thể "gánh tội thay" nếu doanh nghiệp đưa vào hóa đơn khống, mua bán hóa đơn trôi nổi hoặc không có dòng tiền thanh toán thật.
+3. **Khi bị thanh tra hoặc điều tra, NGƯỜI KÝ TÊN ĐÓNG DẤU (KÝ BẰNG CHỮ KÝ SỐ USB TOKEN) LÀ NGƯỜI CHỊU TRÁCH NHIỆM HÌNH SỰ ĐẦU TIÊN.**
+
+Chính vì vậy, Đất Phú Gen 4 luôn kiên định với phương châm: **"Dịu dàng với chính mình, nghiêm túc với con số"** — Vận hành minh bạch 100%, dòng tiền VCB DigiBiz chuẩn mực, bảo vệ an toàn tuyệt đối cho người làm chủ!
+Hotline / Zalo tư vấn pháp lý dịch vụ số: **0979.991.898**!`;
+  }
+
   if (lower.includes('7 báo cáo') || lower.includes('checklist') || lower.includes('báo cáo') || lower.includes('hạn chót') || lower.includes('lao động') || lower.includes('bảo hiểm') || lower.includes('quyết toán') || lower.includes('283') || lower.includes('bctc')) {
     return `Dạ theo Quy chuẩn Kín Kẽ OS và Nghị định 283/2026/NĐ-CP, dưới đây là Checklist 7 loại báo cáo doanh nghiệp cuối năm & đầu năm bắt buộc:
 
