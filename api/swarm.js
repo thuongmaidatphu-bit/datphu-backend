@@ -43,7 +43,10 @@ module.exports = async (req, res, optionalBody) => {
         }));
       }
 
-      const result = await processAgentSwarm(message);
+      const sessionId = payload.sessionId || null;
+      const history = Array.isArray(payload.history) ? payload.history : null;
+
+      const result = await processAgentSwarm(message, { sessionId, history });
       res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
       return res.end(JSON.stringify(result));
 

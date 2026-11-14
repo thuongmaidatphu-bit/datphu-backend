@@ -1,6 +1,7 @@
 /**
  * ============================================================================
  * ĐẤT PHÚ GEN 4 — HỆ THỐNG ĐA TÁC TỬ AI (MULTI-AGENT SWARM CORE ENGINE)
+ * Tích hợp Cấp Độ 2: Trí Nhớ Đa Phiên (Persistent Memory) & Legal RAG Engine
  * Vận hành chuẩn 6K Kín Kẽ • 24/7 Tự Hành • Phân vai 4 Tác tử chuyên trách
  * ============================================================================
  */
@@ -8,6 +9,8 @@
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const { searchLegalKnowledge, buildRagContext } = require('./legalKnowledgeRAG');
+const { getOrCreateSession, recordTurn, buildGeminiContents } = require('./swarmMemory');
 
 // Tự động nạp GEMINI_API_KEY từ file .env nếu chưa có trong process.env
 if (!process.env.GEMINI_API_KEY) {
@@ -53,6 +56,20 @@ function getRuleBasedAnswer(userMessage, agent) {
 
 "Dịu dàng với chính mình, nghiêm túc với con số" - Đất Phú hỗ trợ đăng ký mẫu với Cơ quan Thuế và cài đặt tận nơi trong 24h!
 Quý khách vui lòng liên hệ **Hotline / Zalo: 0979.991.898** để được kích hoạt ngay ạ!`;
+  }
+
+  if (lower.includes('bia') || lower.includes('rượu') || lower.includes('thuế suất') || lower.includes('mấy %') || lower.includes('tỷ lệ thuế')) {
+    return `Dạ theo Thông tư 94/2024/TT-BTC và Thông tư 40/2021/TT-BTC, thuế suất cho mô hình quán ăn/cà phê có bán kèm bia rượu như sau:
+1. **Dịch vụ ăn uống, pha chế:** Thuế GTGT 3% + Thuế TNCN 1.5% = **Tổng 4.5%**.
+2. **Bán lẻ hàng hóa nguyên kiện (bia lon, nước ngọt đóng chai):** Thuế GTGT 1% + Thuế TNCN 0.5% = **Tổng 1.5%**.
+3. **Nguyên tắc vàng:** Quý khách nên dùng phần mềm EasyPOS để tách riêng doanh thu pha chế và bia lon. Nếu không tách được, cơ quan thuế sẽ ấn định mức cao nhất là 4.5% cho toàn bộ doanh thu. Hotline hỗ trợ: **0979.991.898**!`;
+  }
+
+  if (lower.includes('sai sót') || lower.includes('mẫu 04') || lower.includes('thay thế') || lower.includes('điều chỉnh')) {
+    return `Dạ theo Điều 19 Nghị định 123/2020/NĐ-CP và Thông tư 78/2021/TT-BTC:
+- **Sai sót tên, địa chỉ (đúng MST, đúng tiền):** Không cần lập lại hóa đơn, chỉ cần thông báo cho người mua và nộp Mẫu 04/SS-HĐĐT.
+- **Sai tiền, sai MST, sai thuế suất:** Xuất Hóa đơn Điều chỉnh hoặc Hóa đơn Thay thế mới, ghi rõ căn cứ thay thế cho số hóa đơn cũ.
+Kỹ thuật viên Đất Phú luôn túc trực qua UltraViewer để xử lý sai sót hóa đơn cho bà con trong 15 phút: **0979.991.898**!`;
   }
 
   if (lower.includes('giá') || lower.includes('chữ ký số') || lower.includes('efy') || lower.includes('bao nhiêu')) {
@@ -101,24 +118,19 @@ BIỂU PHÍ DỊCH VỤ SỐ ĐẤT PHÚ GEN 4:
 `;
 
 /**
- * GỌI GOOGLE GEMINI API (GEMINI 3.5 FLASH LITE)
+ * GỌI GOOGLE GEMINI API (GEMINI 3.5 FLASH LITE VỚI MULTI-TURN CONTENTS)
  */
-async function callGemini(systemPrompt, userMessage, assignedAgent) {
+async function callGeminiWithContents(contents, fallbackText) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return getRuleBasedAnswer(userMessage, assignedAgent);
+    return fallbackText;
   }
 
   const payload = JSON.stringify({
-    contents: [
-      {
-        role: 'user',
-        parts: [{ text: `${systemPrompt}\n\n[CÂU HỎI CỦA KHÁCH HÀNG]: ${userMessage}` }]
-      }
-    ],
+    contents,
     generationConfig: {
-      temperature: 0.2,
-      maxOutputTokens: 800
+      temperature: 0.25,
+      maxOutputTokens: 1000
     }
   });
 
@@ -142,22 +154,22 @@ async function callGemini(systemPrompt, userMessage, assignedAgent) {
             if (parsed.candidates && parsed.candidates[0]?.content?.parts[0]?.text) {
               resolve(parsed.candidates[0].content.parts[0].text.trim());
             } else {
-              resolve(getRuleBasedAnswer(userMessage, assignedAgent));
+              resolve(fallbackText);
             }
           } catch (e) {
-            resolve(getRuleBasedAnswer(userMessage, assignedAgent));
+            resolve(fallbackText);
           }
         });
       }
     );
 
     req.on('error', () => {
-      resolve(getRuleBasedAnswer(userMessage, assignedAgent));
+      resolve(fallbackText);
     });
 
-    req.setTimeout(8000, () => {
+    req.setTimeout(9000, () => {
       req.destroy();
-      resolve(getRuleBasedAnswer(userMessage, assignedAgent));
+      resolve(fallbackText);
     });
 
     req.write(payload);
@@ -168,20 +180,29 @@ async function callGemini(systemPrompt, userMessage, assignedAgent) {
 /**
  * BỘ NÃO ĐIỀU PHỐI ĐA TÁC TỬ (MULTI-AGENT ORCHESTRATOR)
  */
-async function processAgentSwarm(userMessage) {
+async function processAgentSwarm(userMessage, options = {}) {
   const startTime = Date.now();
-  let assignedAgent = 'Front-line Support';
   const lowerMsg = userMessage.toLowerCase();
 
-  // 1. TÁC TỬ PHÂN LOẠI & LỰA CHỌN VAI TRÒ CHUYÊN TRÁCH
+  // 1. QUẢN LÝ PHIÊN HỘI THOẠI & TRÍ NHỚ ĐA PHIÊN (PERSISTENT MEMORY)
+  const sessionId = options.sessionId || null;
+  const clientHistory = Array.isArray(options.history) ? options.history : null;
+  const session = getOrCreateSession(sessionId, clientHistory);
+
+  // 2. RAG RETRIEVAL: TRÍCH XUẤT ĐIỀU KHOẢN PHÁP LUẬT TỰ ĐỘNG
+  const retrievedChunks = searchLegalKnowledge(userMessage, 2);
+  const ragContext = buildRagContext(userMessage);
+
+  // 3. TÁC TỬ PHÂN LOẠI & LỰA CHỌN VAI TRÒ CHUYÊN TRÁCH
+  let assignedAgent = 'Front-line Support';
   let specificRolePrompt = '';
   
-  if (lowerMsg.includes('thuế') || lowerMsg.includes('nghị định') || lowerMsg.includes('hóa đơn') || lowerMsg.includes('chữ ký số') || lowerMsg.includes('thông tư') || lowerMsg.includes('254') || lowerMsg.includes('máy tính tiền')) {
+  if (lowerMsg.includes('thuế') || lowerMsg.includes('nghị định') || lowerMsg.includes('hóa đơn') || lowerMsg.includes('chữ ký số') || lowerMsg.includes('thông tư') || lowerMsg.includes('254') || lowerMsg.includes('máy tính tiền') || lowerMsg.includes('mẫu 04') || lowerMsg.includes('sai sót') || lowerMsg.includes('bia') || lowerMsg.includes('rượu') || lowerMsg.includes('f&b')) {
     assignedAgent = 'Tax & Invoicing Expert (Chuyên Gia Thuế & Hóa Đơn)';
     specificRolePrompt = `
 BẠN LÀ: Tác tử Nghiệp vụ Thuế & Hóa đơn của Đất Phú Gen 4.
-NHIỆM VỤ: Giải đáp chính xác các câu hỏi về hóa đơn điện tử theo Nghị định 254/2026/NĐ-CP, chữ ký số EFY-CA và quản trị rủi ro thuế theo Thông tư 94.
-NGUYÊN TẮC: Khẳng định rõ hóa đơn máy tính tiền không bắt buộc chữ ký số từng bill, rất tiện cho quán ăn, tiệm tạp hóa, bán lẻ. Báo giá đúng bảng giá niêm yết (450k/500 số, 1.150.000đ/3 năm CKS).
+NHIỆM VỤ: Giải đáp chính xác các câu hỏi về hóa đơn điện tử theo Nghị định 254/2026/NĐ-CP, chữ ký số EFY-CA, xử lý sai sót hóa đơn theo Nghị định 123/TT 78 và quản trị rủi ro thuế theo Thông tư 94.
+NGUYÊN TẮC: Khẳng định rõ hóa đơn máy tính tiền không bắt buộc chữ ký số từng bill, rất tiện cho quán ăn, tiệm tạp hóa, bán lẻ. Báo giá đúng bảng giá niêm yết (450k/500 số, 1.150.000đ/3 năm CKS). Trích dẫn điều khoản pháp luật trong phần RAG đã cung cấp.
     `;
   } else if (lowerMsg.includes('lỗi') || lowerMsg.includes('cài đặt') || lowerMsg.includes('ultraviewer') || lowerMsg.includes('kỹ thuật') || lowerMsg.includes('n8n') || lowerMsg.includes('pos')) {
     assignedAgent = 'Technical & Automation Coordinator (Tác Tử Kỹ Thuật & n8n)';
@@ -189,7 +210,7 @@ NGUYÊN TẮC: Khẳng định rõ hóa đơn máy tính tiền không bắt bu�
 BẠN LÀ: Tác tử Điều phối Kỹ thuật & Tự động hóa n8n của Đất Phú Gen 4.
 NHIỆM VỤ: Hướng dẫn xử lý lỗi kỹ thuật (chữ ký số, phần mềm EasyPOS). Hướng dẫn khách hàng cung cấp ID và Mật khẩu UltraViewer để kỹ thuật viên Đất Phú kết nối hỗ trợ từ xa.
     `;
-  } else if (lowerMsg.includes('giá') || lowerMsg.includes('tiền') || lowerMsg.includes('thanh toán') || lowerMsg.includes('chuyển khoản') || lowerMsg.includes('vietqr') || lowerMsg.includes('mua')) {
+  } else if (lowerMsg.includes('giá') || lowerMsg.includes('tiền') || lowerMsg.includes('thanh toán') || lowerMsg.includes('chuyển khoản') || lowerMsg.includes('vietqr') || lowerMsg.includes('mua') || lowerMsg.includes('bao nhiêu')) {
     assignedAgent = 'Audit & Accounting Agent (Tác Tử Kiểm Soát & Đối Soát)';
     specificRolePrompt = `
 BẠN LÀ: Tác tử Kiểm soát & Kế toán Đất Phú. Châm ngôn: "Dịu dàng với chính mình, nghiêm túc với con số".
@@ -209,14 +230,16 @@ NHIỆM VỤ: Chào hỏi lịch thiệp, thân thiện, giải thích ngắn g�
     `;
   }
 
-  // SYSTEM PROMPT CHUẨN MỰC
+  // 4. GHÉP SYSTEM PROMPT KÈM KHO TRI THỨC VÀ BỐI CẢNH RAG
   const systemPrompt = `
 # VAI TRÒ CHUNG
 Bạn là trợ lý AI thông minh trong Hệ thống Đa tác tử Đất Phú Gen 4 (Công ty TNHH Thương mại Đất Phú).
 Đang kích hoạt vai trò chuyên trách: [${assignedAgent}]
 
-# KHO TRI THỨC CHUẨN XÁC:
+# KHO TRI THỨC CỐT LÕI ĐẤT PHÚ:
 ${DATPHU_KNOWLEDGE_BASE}
+
+${ragContext}
 
 # HƯỚNG DẪN RIÊNG CHO TÁC TỬ:
 ${specificRolePrompt}
@@ -224,21 +247,29 @@ ${specificRolePrompt}
 # QUY CHUẨN PHẢN HỒI:
 - Trả lời bằng tiếng Việt gãy gọn, chuyên nghiệp, ấm áp, đậm chất phục vụ bà con và doanh nghiệp Phú Yên, Đắk Lắk.
 - Luôn bám sát số liệu giá cả trong kho tri thức, KHÔNG ĐƯỢC TỰ BỊA ĐẶT GIÁ.
+- Nếu có điều khoản RAG pháp lý, hãy trích dẫn ngắn gọn số điều và nghị định để khách hàng an tâm tuyệt đối về mặt tuân thủ.
 - Cuối câu luôn mời khách hàng liên hệ Hotline / Zalo: 0979.991.898 hoặc để lại số điện thoại để hỗ trợ trong 15 phút.
   `;
 
-  // 2. GỌI BỘ NÃO GEMINI FLASH (CÓ SẴN GROUNDING ENGINE TỰ ĐỘNG)
+  // 5. XÂY DỰNG NỘI DUNG MULTI-TURN CHAT TỪ TRÍ NHỚ PHIÊN
+  const { contents, profile } = buildGeminiContents(systemPrompt, session, userMessage);
+  const fallbackAnswer = getRuleBasedAnswer(userMessage, assignedAgent);
+
+  // 6. GỌI GEMINI FLASH LITE VỚI NỘI DUNG ĐA PHIÊN
   let reply = '';
   try {
-    reply = await callGemini(systemPrompt, userMessage, assignedAgent);
+    reply = await callGeminiWithContents(contents, fallbackAnswer);
   } catch (err) {
-    console.error('CallGemini error:', err);
-    reply = getRuleBasedAnswer(userMessage, assignedAgent);
+    console.error('CallGeminiWithContents error:', err);
+    reply = fallbackAnswer;
   }
 
   if (!reply || reply.trim().length === 0) {
-    reply = getRuleBasedAnswer(userMessage, assignedAgent);
+    reply = fallbackAnswer;
   }
+
+  // 7. GHI NHỚ LƯỢT HỘI THOẠI VÀO BỘ NHỚ ĐA PHIÊN
+  recordTurn(session.sessionId, userMessage, reply, assignedAgent);
 
   const latencyMs = Date.now() - startTime;
 
@@ -247,6 +278,9 @@ ${specificRolePrompt}
     agent: assignedAgent,
     latencyMs,
     reply,
+    sessionId: session.sessionId,
+    customerProfile: profile,
+    ragEvidence: retrievedChunks.map(c => ({ doc: c.doc, article: c.article, title: c.title })),
     complianceStatus: '6K_KIN_KE_VERIFIED'
   };
 }
