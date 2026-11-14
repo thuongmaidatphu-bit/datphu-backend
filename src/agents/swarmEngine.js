@@ -43,6 +43,27 @@ if (!process.env.GEMINI_API_KEY) {
 function getRuleBasedAnswer(userMessage, agent) {
   const lower = userMessage.toLowerCase();
 
+  if (lower.includes('nghị quyết 43') || lower.includes('giảm 30%') || lower.includes('giảm thuế tncn') || lower.includes('dưới 10 tỷ') || lower.includes('6 bước kê khai') || lower.includes('phụ lục giảm thuế')) {
+    return `Dạ theo Nghị quyết số 43/2026/QH16 của Quốc hội khóa XVI, chính sách giảm 30% thuế Thu nhập cá nhân (TNCN) cho Hộ kinh doanh được quy định và thực thi cụ thể như sau:
+
+### 1. Đối tượng và Mức giảm thuế:
+- **Đối tượng:** Toàn bộ Hộ kinh doanh, cá nhân kinh doanh có mức doanh thu trong năm **không quá 10 tỷ đồng**.
+- **Mức ưu đãi:** **GIẢM 30% SỐ THUẾ THU NHẬP CÁ NHÂN (TNCN)** phải nộp phát sinh trong kỳ.
+- **Thời gian áp dụng:** Trong **02 năm liên tiếp (Năm 2026 và Năm 2027)**.
+- *Lưu ý:* Thuế GTGT vẫn thực hiện theo tỷ lệ quy định, chính sách giảm 30% áp dụng riêng cho sắc thuế TNCN.
+
+### 2. Quy trình 6 Bước kê khai giảm 30% thuế TNCN trên Dịch vụ công / Cổng Thuế điện tử:
+- **Bước 1: Đăng nhập và mở mục khai thuế:** Đăng nhập vào Cổng Dịch vụ công Quốc gia hoặc Cổng Thuế điện tử (\`thuedientu.gdt.gov.vn\`) bằng tài khoản thuế điện tử hoặc tài khoản định danh điện tử VNeID.
+- **Bước 2: Chọn kỳ kê khai:** Chọn tờ khai Mẫu 01/CNKD theo quý hoặc theo tháng tương ứng của năm 2026/2027.
+- **Bước 3: Thêm Phụ lục giảm thuế TNCN:** Tích chọn bổ sung Phụ lục giảm thuế thu nhập cá nhân theo quy định hỗ trợ.
+- **Bước 4: Chọn áp dụng phụ lục giảm thuế:** Chọn căn cứ pháp lý áp dụng là **Nghị quyết số 43/2026/QH16** của Quốc hội.
+- **Bước 5: Đối chiếu số tiền thuế được giảm:** Hệ thống tự động tính toán số tiền thuế TNCN được giảm trừ 30%, người nộp thuế kiểm tra lại doanh thu và số tiền giảm trừ thực tế.
+- **Bước 6: Hoàn tất:** Sử dụng **Chữ ký số công cộng EFY-CA** (hoặc mã OTP gửi về eTax Mobile) để ký số và nộp tờ khai hoàn tất đến cơ quan thuế.
+
+---
+"Dịu dàng với chính mình, nghiêm túc với con số" — Đội ngũ Kế toán Đất Phú hỗ trợ rà soát doanh thu, thêm phụ lục giảm thuế và nộp tờ khai Mẫu 01/CNKD trọn gói qua **Hotline / Zalo: 0979.991.898**!`;
+  }
+
   if (lower.includes('chuyển khoản') || lower.includes('sinh trắc học') || lower.includes('vneid') || lower.includes('500 triệu') || lower.includes('tài khoản ảo')) {
     return `Dạ theo quy định quản lý ngân hàng của NHNN (Quyết định 2345/QĐ-NHNN, Thông tư 17, 18/2024/TT-NHNN) và Luật Thuế hiện hành, các quy định cốt lõi về giao dịch chuyển khoản ngân hàng gồm có:
 
