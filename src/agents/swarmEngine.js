@@ -202,7 +202,27 @@ Chính vì vậy, Đất Phú Gen 4 luôn kiên định với phương châm: **
 Hotline / Zalo tư vấn pháp lý dịch vụ số: **0979.991.898**!`;
   }
 
-  if (lower.includes('7 báo cáo') || lower.includes('checklist') || lower.includes('báo cáo') || lower.includes('hạn chót') || lower.includes('lao động') || lower.includes('bảo hiểm') || lower.includes('quyết toán') || lower.includes('283') || lower.includes('bctc')) {
+  if (lower.includes('7 báo cáo') || lower.includes('checklist') || lower.includes('sử dụng lao động') || lower.includes('báo cáo lao động') || lower.includes('hạn chót') || lower.includes('thông tư 08/2026') || lower.includes('hợp đồng lao động điện tử') || lower.includes('sở nội vụ') || lower.includes('mẫu 01/pli')) {
+    return `Dạ theo Nghị định 145/2020/NĐ-CP, Nghị định 283/2026/NĐ-CP và Thông tư 08/2026/TT-BNV, dưới đây là hướng dẫn nộp **Báo cáo tình hình sử dụng lao động 6 tháng cuối năm 2026** (áp dụng tại 34 tỉnh/thành):
+
+### 1. Hạn chót & Mức phạt chậm nộp:
+- **Hạn chót bắt buộc nộp:** **Trước ngày 05/12/2026**.
+- **Chế tài xử phạt theo Nghị định 283/2026/NĐ-CP:** Doanh nghiệp bị phạt tiền từ **10.000.000đ đến 20.000.000đ** nếu không nộp hoặc nộp quá hạn (Cá nhân phạt từ 5 – 10 triệu đồng).
+
+### 2. Hai cách nộp báo cáo cho Doanh nghiệp:
+* **CÁCH 1: NỘP TRỰC TIẾP (BẢN GIẤY):**
+  - Áp dụng khi doanh nghiệp không báo cáo được qua Cổng Dịch vụ công Quốc gia.
+  - Sử dụng **Mẫu số 01/PLI** Phụ lục I kèm Nghị định 145/2020/NĐ-CP.
+  - *Nơi tiếp nhận:* Gửi bản giấy đến **Sở Nội vụ** tỉnh/thành phố và thông báo đến cơ quan **Bảo hiểm xã hội (BHXH)** khu vực nơi đặt trụ sở, chi nhánh.
+  - *Lao động trong KCN, KKT:* Phải báo cáo thêm đến **Ban quản lý Khu công nghiệp, Khu kinh tế** để phối hợp theo dõi.
+
+* **CÁCH 2: NỘP ONLINE (TRỰC TUYẾN):**
+  - Căn cứ theo Khoản 2 Điều 19 **Thông tư 08/2026/TT-BNV**.
+  - Thực hiện báo cáo tình hình thay đổi lao động thông qua **Nền tảng Hợp đồng lao động điện tử** (áp dụng với các doanh nghiệp đã triển khai sử dụng hợp đồng lao động điện tử). Dữ liệu được liên thông tự động lên Sở Nội vụ và Bộ Nội vụ.
+
+---
+"Dịu dàng với chính mình, nghiêm túc với con số" — Đội ngũ Pháp lý Lao động Đất Phú hỗ trợ lập mẫu 01/PLI và rà soát hồ sơ lao động chuẩn mực qua **Hotline / Zalo: 0979.991.898**!`;
+  }
     return `Dạ theo Quy chuẩn Kín Kẽ OS và Nghị định 283/2026/NĐ-CP, dưới đây là Checklist 7 loại báo cáo doanh nghiệp cuối năm & đầu năm bắt buộc:
 
 1. **Báo cáo sử dụng lao động 6 tháng cuối năm:**
