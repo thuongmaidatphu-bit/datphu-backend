@@ -57,6 +57,20 @@ function getRuleBasedAnswer(userMessage, agent) {
 Kỹ thuật viên Đất Phú luôn túc trực qua UltraViewer để xử lý sai sót hóa đơn cho bà con trong 15 phút: **0979.991.898**!`;
   }
 
+  if (lower.includes('hưởng lợi') || lower.includes('cshhl') || lower.includes('ubo') || lower.includes('chủ sở hữu')) {
+    return `Dạ theo Luật Phòng, chống rửa tiền 2022 và Nghị định 19/2023/NĐ-CP, quy trình 3 tầng xác định Chủ sở hữu hưởng lợi (CSHHL) của doanh nghiệp như sau:
+
+1. **TẦNG 1 (Tỷ lệ sở hữu từ 25%):**
+   - Cá nhân hoặc nhóm cá nhân có quan hệ gia đình/hợp đồng cùng sở hữu (trực tiếp hoặc gián tiếp) từ **25% vốn điều lệ** hoặc từ 25% tổng số cổ phần có quyền biểu quyết trở lên.
+2. **TẦNG 2 (Quyền kiểm soát thực tế - Nếu không có Tầng 1):**
+   - Cá nhân có quyền chi phối: Bổ nhiệm, miễn nhiệm HĐQT, Giám đốc; sửa đổi Điều lệ; quyết định chính sách tài chính, đầu tư hoặc giải thể doanh nghiệp.
+3. **TẦNG 3 (Người quản lý cao nhất - Nếu không có Tầng 1 & 2):**
+   - Một người quản lý doanh nghiệp có quyền hạn lớn nhất để hành động thay mặt doanh nghiệp (Người đại diện pháp luật / Giám đốc điều hành).
+
+*Quy định này bắt buộc khi kê khai hồ sơ mở và duy trì tài khoản ngân hàng doanh nghiệp VCB DigiBiz.*
+"Dịu dàng với chính mình, nghiêm túc với con số" — Hotline / Zalo tư vấn: **0979.991.898**!`;
+  }
+
   if (lower.includes('thuê kế toán') || lower.includes('khoán trắng') || lower.includes('trách nhiệm kế toán') || lower.includes('ai chịu trách nhiệm') || lower.includes('hóa đơn khống')) {
     return `Dạ theo Điều 50 Luật Kế toán 2015 và Điều 17 Luật Quản lý Thuế số 38/2019/QH14:
 
