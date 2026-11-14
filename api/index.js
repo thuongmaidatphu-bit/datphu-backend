@@ -7,6 +7,7 @@ const https = require('https');
 const server = require('../src/server');
 const wisdomHandler = require('./wisdom');
 const leadHandler = require('./lead');
+const swarmHandler = require('./swarm');
 
 module.exports = (req, res) => {
   const rawUrl = req.url || '';
@@ -25,7 +26,12 @@ module.exports = (req, res) => {
   const reqUrl = req.url || '';
   const parsed = new URL(reqUrl, 'http://localhost');
 
-  // 0. CỔNG TIẾP NHẬN TƯ VẤN DỊCH VỤ SỐ & LEAD GEN 4
+  // 0. CỔNG AI SWARM ĐA TÁC TỬ
+  if (parsed.searchParams.get('action') === 'swarm' || reqUrl.includes('/api/swarm') || reqUrl.includes('action=swarm')) {
+    return swarmHandler(req, res);
+  }
+
+  // 0.1 CỔNG TIẾP NHẬN TƯ VẤN DỊCH VỤ SỐ & LEAD GEN 4
   if (parsed.searchParams.get('action') === 'lead' || reqUrl.includes('/api/lead') || reqUrl.includes('action=lead')) {
     return leadHandler(req, res);
   }
