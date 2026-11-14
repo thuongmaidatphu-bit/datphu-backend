@@ -60,6 +60,10 @@ const DOMAIN_SYNONYMS = [
   {
     triggers: ['masahiro hara', 'ma qr', 'qr code', 'quick response', 'vietqr', 'denso', 'toyota'],
     boostKeywords: ['masahiro hara', 'ma qr', 'quick response', 'vietqr', 'denso']
+  },
+  {
+    triggers: ['nang luc so', 'vung tai chinh', 'luong 20 trieu', 'luong 30 trieu', 'rong tui', 'set and forget', 'tu dong hoa tai chinh', 'bnpl', 'mua truoc tra sau', 'tin dung den', 'tra cho minh truoc'],
+    boostKeywords: ['nang luc so', '4 tru cot tai chinh', 'tu dong hoa tai chinh', 'set and forget', 'vietqr', 'mua truoc tra sau', 'bnpl', 'sinh trac hoc', 'vneid']
   }
 ];
 

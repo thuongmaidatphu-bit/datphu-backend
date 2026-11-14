@@ -202,7 +202,7 @@ Chính vì vậy, Đất Phú Gen 4 luôn kiên định với phương châm: **
 Hotline / Zalo tư vấn pháp lý dịch vụ số: **0979.991.898**!`;
   }
 
-  if (lower.includes('7 báo cáo') || lower.includes('checklist') || lower.includes('sử dụng lao động') || lower.includes('báo cáo lao động') || lower.includes('hạn chót') || lower.includes('thông tư 08/2026') || lower.includes('hợp đồng lao động điện tử') || lower.includes('sở nội vụ') || lower.includes('mẫu 01/pli')) {
+  if (lower.includes('sử dụng lao động') || lower.includes('báo cáo lao động') || lower.includes('hạn chót 05/12') || lower.includes('thông tư 08/2026') || lower.includes('hợp đồng lao động điện tử') || lower.includes('sở nội vụ') || lower.includes('mẫu 01/pli')) {
     return `Dạ theo Nghị định 145/2020/NĐ-CP, Nghị định 283/2026/NĐ-CP và Thông tư 08/2026/TT-BNV, dưới đây là hướng dẫn nộp **Báo cáo tình hình sử dụng lao động 6 tháng cuối năm 2026** (áp dụng tại 34 tỉnh/thành):
 
 ### 1. Hạn chót & Mức phạt chậm nộp:
@@ -223,6 +223,8 @@ Hotline / Zalo tư vấn pháp lý dịch vụ số: **0979.991.898**!`;
 ---
 "Dịu dàng với chính mình, nghiêm túc với con số" — Đội ngũ Pháp lý Lao động Đất Phú hỗ trợ lập mẫu 01/PLI và rà soát hồ sơ lao động chuẩn mực qua **Hotline / Zalo: 0979.991.898**!`;
   }
+
+  if (lower.includes('7 báo cáo') || lower.includes('checklist báo cáo')) {
     return `Dạ theo Quy chuẩn Kín Kẽ OS và Nghị định 283/2026/NĐ-CP, dưới đây là Checklist 7 loại báo cáo doanh nghiệp cuối năm & đầu năm bắt buộc:
 
 1. **Báo cáo sử dụng lao động 6 tháng cuối năm:**
@@ -267,6 +269,32 @@ Hotline / Zalo tư vấn pháp lý dịch vụ số: **0979.991.898**!`;
 
 "Dịu dàng với chính mình, nghiêm túc với con số" - Đất Phú hỗ trợ đăng ký mẫu với Cơ quan Thuế và cài đặt tận nơi trong 24h!
 Quý khách vui lòng liên hệ **Hotline / Zalo: 0979.991.898** để được kích hoạt ngay ạ!`;
+  }
+
+  if (lower.includes('năng lực số') || lower.includes('nang luc so') || lower.includes('vững tài chính') || lower.includes('rỗng túi') || lower.includes('set-and-forget') || lower.includes('set and forget') || lower.includes('mua trước trả sau') || lower.includes('bnpl') || lower.includes('lương 20') || lower.includes('lương 30') || lower.includes('tự động hóa tài chính')) {
+    return `Dạ Đất Phú xin kính chào anh/chị! Liên quan đến vấn đề quản trị tài chính cá nhân và nghiên cứu: *"Vững tài chính không chỉ nhờ thu nhập (Lương tháng 20 - 30 triệu mà cuối tháng vẫn rỗng túi)"*, Đất Phú xin chia sẻ quy chuẩn 4 Trụ Cột Quản Trị Kín Kẽ OS:
+
+### 1. KIẾN THỨC — "Biết luật chơi của đồng tiền"
+- **Dòng tiền vào/ra (Cashflow):** Vững tài chính không đo bằng số tiền kiếm được mỗi tháng, mà đo bằng **số tiền ở lại trong tài khoản**.
+- **Tài sản vs Tiêu sản:** Nhận diện rõ tiêu sản (đồ công nghệ mua góp, thời trang theo trend, tiệc tùng xa xỉ) và tài sản sinh lời (quỹ tích lũy an sinh, bảo hiểm bảo vệ, nâng cao tay nghề).
+- **Quỹ khẩn cấp:** Luôn duy trì số dư dự phòng tương đương **3 – 6 tháng sinh hoạt phí tối thiểu** để vững vàng trước mọi biến cố.
+
+### 2. THÁI ĐỘ — "Dịu dàng với chính mình, nghiêm túc với con số"
+- **Thoát khỏi lạm phát lối sống (Lifestyle Inflation):** Không tăng chi tiêu theo tốc độ tăng lương; tránh tâm lý FOMO và tiêu dùng phô trương để chứng tỏ bản thân.
+- **Tôn trọng sức lao động:** Mỗi đồng tiền chi tiêu phung phí là đánh đổi bằng mồ hôi nước mắt lao động chân chính.
+
+### 3. NĂNG LỰC SỐ — "Làm chủ công nghệ để tiền phục vụ mình"
+- **Tự động hóa tài chính (Set-and-Forget):** Không chờ "cuối tháng thừa bao nhiêu thì tiết kiệm". Cài đặt lệnh tự động trích từ **20% – 30% lương ngay ngày nhận tiền** sang tài khoản tích lũy/đầu tư độc lập (tuyệt đối **không gắn thẻ ATM** và **không liên kết ví mua sắm online**).
+- **Quản trị dòng tiền minh bạch:** Quét mã VietQR có ghi chú nội dung rõ ràng cho từng giao dịch; theo dõi báo cáo phân loại chi tiêu tự động cuối tháng trên app ngân hàng số để bịt kín các "lỗ rò rỉ" ngân sách.
+- **Miễn nhiễm với cạm bẫy tài chính số:** Cảnh giác cao độ với bẫy tín dụng đen online, tính năng "Mua trước trả sau" (BNPL - Buy Now Pay Later), app vay nặng lãi; tuân thủ bảo mật sinh trắc học và định danh VNeID mức 2, không click link lạ.
+
+### 4. THÓI QUEN — "Kỷ luật bền bỉ mỗi ngày"
+- **Quy tắc vàng: Trả cho mình trước (Pay Yourself First):** Thu nhập - Tích lũy = Chi tiêu.
+- **Quy tắc chờ 48 giờ:** Trì hoãn 2 ngày trước khi quyết định mua các món đồ xa xỉ không thiết yếu để loại bỏ ham muốn nhất thời.
+- **Kiểm toán dòng tiền định kỳ:** Dành 15 phút cuối tuần đối soát lại số dư và lịch sử giao dịch.
+
+---
+"Dịu dàng với chính mình, nghiêm túc với con số" — Đất Phú luôn đồng hành cùng các bạn trẻ và người lao động xây dựng nền tảng tài chính số vững bền! Hotline/Zalo tư vấn: **0979.991.898 - 0944.971.257**.`;
   }
 
   if (lower.includes('giá') || lower.includes('chữ ký số') || lower.includes('efy') || lower.includes('bao nhiêu')) {
