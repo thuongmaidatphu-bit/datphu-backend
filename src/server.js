@@ -263,6 +263,18 @@ const server = http.createServer(async (req, res) => {
   // CÁC DỊCH VỤ BỔ TRỢ HỆ SINH THÁI
   // ========================================================================
 
+  // CỔNG ĐA TÁC TỬ AI SWARM ĐẤT PHÚ GEN 4
+  if (pathname === '/api/swarm') {
+    const swarmHandler = require('../api/swarm');
+    return swarmHandler(req, res, body);
+  }
+
+  // CỔNG TIẾP NHẬN TƯ VẤN DỊCH VỤ SỐ & LEAD
+  if (pathname === '/api/lead') {
+    const leadHandler = require('../api/lead');
+    return leadHandler(req, res, body);
+  }
+
   // Cổng Webhook Ngân Hàng (Napas247 / Casso / SePay)
   if ((pathname === '/api/pos/webhook/bank' || pathname === '/api/webhook/bank') && req.method === 'POST') {
     return webhookController.handleBankWebhook(req, res, body, sseClients);

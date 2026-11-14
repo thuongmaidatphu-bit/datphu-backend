@@ -221,11 +221,18 @@
       badge.innerHTML = '<span class="text-amber-400"><i class="fa-solid fa-brain fa-spin mr-1"></i> AI Swarm đang điều phối...</span>';
 
       try {
-        const resp = await fetch('/api/swarm', {
+        let resp = await fetch('/api/swarm', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: text })
         });
+        if (!resp.ok) {
+          resp = await fetch('/api/index?action=swarm', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+          });
+        }
         const res = await resp.json();
 
         const agentName = res.agent || 'AI Support Swarm';
