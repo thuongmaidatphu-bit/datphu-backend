@@ -60,6 +60,33 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between p-4 sm:p-6 lg:p-8">
 
+  <!-- ================= MÀN HÌNH BẢO MẬT XÁC THỰC CỔNG ẨN (ZERO-TRUST GATEKEEPER) ================= -->
+  <div id="authGatekeeperModal" class="fixed inset-0 z-50 bg-gray-950/95 backdrop-blur-2xl flex items-center justify-center p-4">
+    <div class="max-w-md w-full antigravity-card p-6 sm:p-8 border-sky-500/40 text-center space-y-5 shadow-2xl">
+      <div class="w-16 h-16 rounded-3xl bg-blue-600/20 text-blue-400 flex items-center justify-center mx-auto text-3xl border border-blue-500/30 shadow-lg shadow-blue-500/20">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div>
+        <span class="text-[10px] font-bold text-sky-400 font-mono tracking-widest uppercase bg-sky-500/10 px-2.5 py-0.5 rounded-full border border-sky-500/20">KHU VỰC NỘI BỘ • ZERO-TRUST</span>
+        <h2 class="text-xl font-black text-white tracking-tight mt-2">Cổng Tri Thức RAG Ẩn</h2>
+        <p class="text-xs text-gray-400 mt-1 leading-relaxed">
+          Khu vực quản trị tri thức vận hành chuẩn 6K Kín Kẽ. Vui lòng nhập mã PIN xác thực để tiếp tục.
+        </p>
+      </div>
+      <form onsubmit="handleVerifyAuthPin(event)" class="space-y-3">
+        <input type="password" id="gatekeeperPinInput" autofocus placeholder="Nhập mã PIN quản trị..." class="w-full text-center tracking-[0.3em] font-mono text-base px-4 py-3 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500" />
+        <button type="submit" class="antigravity-btn w-full py-3 rounded-xl text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-key"></i>
+          <span>Mở Khóa Cổng Tri Thức</span>
+        </button>
+      </form>
+      <div id="authErrorMsg" class="text-xs text-rose-400 font-semibold min-h-[20px]"></div>
+      <div class="text-[11px] text-gray-500 pt-2 border-t border-gray-800">
+        <a href="/ai-swarm.html" class="hover:text-gray-300 transition"><i class="fa-solid fa-arrow-left mr-1"></i>Quay lại phòng Chat AI</a>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= HEADER ================= -->
   <header class="max-w-6xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-gray-800">
     <div class="flex items-center gap-3">
@@ -308,12 +335,42 @@
 
   <!-- SCRIPT LOGIC QUẢN TRỊ & XỬ LÝ FILE -->
   <script>
+    const VALID_PINS = ['0979991898', '4401020233', 'datphu2026'];
     let activeChunks = [];
     let pendingBatchChunks = [];
 
+    // Kiểm tra quyền truy cập Cổng ẩn (Gatekeeper)
+    function checkGatekeeperAuth() {
+      const isAuth = sessionStorage.getItem('dp_rag_unlocked') === 'true';
+      const modal = document.getElementById('authGatekeeperModal');
+      if (isAuth) {
+        if (modal) modal.classList.add('hidden');
+        loadAllChunks();
+      } else {
+        if (modal) modal.classList.remove('hidden');
+        document.getElementById('gatekeeperPinInput')?.focus();
+      }
+    }
+
+    function handleVerifyAuthPin(e) {
+      e.preventDefault();
+      const input = document.getElementById('gatekeeperPinInput');
+      const err = document.getElementById('authErrorMsg');
+      const pin = (input?.value || '').trim();
+      if (VALID_PINS.includes(pin)) {
+        sessionStorage.setItem('dp_rag_unlocked', 'true');
+        document.getElementById('authGatekeeperModal').classList.add('hidden');
+        loadAllChunks();
+      } else {
+        err.innerText = 'Mã PIN bảo mật không chính xác! Vui lòng thử lại.';
+        input.value = '';
+        input.focus();
+      }
+    }
+
     // Tải danh sách tri thức khi mở trang
     document.addEventListener('DOMContentLoaded', () => {
-      loadAllChunks();
+      checkGatekeeperAuth();
     });
 
     async function loadAllChunks() {
