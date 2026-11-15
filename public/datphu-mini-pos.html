@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Đất Phú Mini POS • Máy Tính Tiền Bỏ Túi Chuyên Nghiệp</title>
   
+  <!-- PWA Manifest & App Config -->
+  <link rel="manifest" href="/pos-manifest.json">
+  <meta name="theme-color" content="#f97316">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Đất Phú POS">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon-pos.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <meta name="description" content="Máy tính tiền và quản lý bán hàng bỏ túi trên điện thoại cho quán ăn, cafe, tạp hóa Phú Yên">
+  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <!-- FontAwesome 6 -->
@@ -79,6 +91,25 @@
       </button>
     </div>
   </header>
+
+  <!-- ================= PWA INSTALL BANNER (1-CHẠM CÀI ĐẶT APP) ================= -->
+  <div id="pwaInstallBanner" class="hidden bg-gradient-to-r from-orange-600 via-amber-600 to-orange-700 px-3 py-2 flex items-center justify-between text-xs font-bold text-white shadow-md z-30 shrink-0">
+    <div class="flex items-center space-x-2 truncate">
+      <div class="w-6 h-6 rounded-lg bg-black/30 flex items-center justify-center shrink-0">
+        <i class="fa-solid fa-mobile-screen-button text-amber-300"></i>
+      </div>
+      <div class="truncate">
+        <span class="block text-[11px] font-black leading-tight">Cài Đặt Đất Phú POS (1-Chạm)</span>
+        <span class="block text-[9px] text-orange-100 font-normal leading-tight truncate">Mở full màn hình • Chạy mượt khi mất mạng</span>
+      </div>
+    </div>
+    <div class="flex items-center space-x-1.5 shrink-0">
+      <button onclick="triggerPwaInstall()" class="px-2.5 py-1 rounded-lg bg-white text-orange-600 text-[10px] font-black shadow-sm active:scale-95 transition cursor-pointer">
+        Cài Ngay
+      </button>
+      <button onclick="dismissPwaBanner()" class="w-5 h-5 rounded-md bg-black/20 text-white/80 hover:text-white flex items-center justify-center text-[10px] cursor-pointer">✕</button>
+    </div>
+  </div>
 
   <!-- ================= TABS CHỌN CHẾ ĐỘ BÁN ================= -->
   <nav class="bg-slate-950/90 border-b border-slate-800 px-2 py-1.5 flex items-center justify-around text-xs font-bold flex-shrink-0">
@@ -1204,6 +1235,116 @@
     function closeModal(id) {
       document.getElementById(id).classList.add('hidden');
     }
+
+    // 17. SERVICE WORKER & PWA INSTALL PROMPT (1-CHẠM CÀI VÀO MÀN HÌNH CHÍNH)
+    let deferredPrompt = null;
+    const isIos = () => /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+    const isInStandaloneMode = () => ('standalone' in window.navigator && window.navigator.standalone) || window.matchMedia('(display-mode: standalone)').matches;
+
+    // Lắng nghe sự kiện trước khi cài đặt của Android/Chrome/Edge
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (!isInStandaloneMode() && localStorage.getItem('dp_pwa_dismissed') !== 'true') {
+        const banner = document.getElementById('pwaInstallBanner');
+        if (banner) banner.classList.remove('hidden');
+      }
+    });
+
+    window.addEventListener('appinstalled', () => {
+      console.log('[POS PWA] Ứng dụng đã được cài đặt lên màn hình chính thành công!');
+      const banner = document.getElementById('pwaInstallBanner');
+      if (banner) banner.classList.add('hidden');
+      deferredPrompt = null;
+      showToast('Đã cài đặt Đất Phú POS lên màn hình chính!');
+    });
+
+    function triggerPwaInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('[POS PWA] Người dùng đã chấp nhận cài đặt app');
+          }
+          deferredPrompt = null;
+          dismissPwaBanner();
+        });
+      } else if (isIos() && !isInStandaloneMode()) {
+        document.getElementById('iosInstallModal').classList.remove('hidden');
+      } else {
+        showToast('App đã được cài đặt hoặc đang chạy ở chế độ toàn màn hình!');
+      }
+    }
+
+    function dismissPwaBanner() {
+      const banner = document.getElementById('pwaInstallBanner');
+      if (banner) banner.classList.add('hidden');
+      localStorage.setItem('dp_pwa_dismissed', 'true');
+    }
+
+    // Đăng ký Service Worker cho PWA Offline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/pos-sw.js').then((reg) => {
+          console.log('[POS PWA] ServiceWorker đã kích hoạt với phạm vi:', reg.scope);
+        }).catch((err) => {
+          console.warn('[POS PWA] Đăng ký ServiceWorker thất bại:', err);
+        });
+      });
+    }
+
+    // Tự động kiểm tra hiển thị gợi ý cho iOS nếu chưa ở chế độ Standalone
+    window.addEventListener('DOMContentLoaded', () => {
+      if (isIos() && !isInStandaloneMode() && localStorage.getItem('dp_pwa_dismissed') !== 'true') {
+        const banner = document.getElementById('pwaInstallBanner');
+        if (banner) banner.classList.remove('hidden');
+      }
+    });
   </script>
+
+  <!-- ================= MODAL: HƯỚNG DẪN CÀI ĐẶT TRÊN IPHONE (IOS) ================= -->
+  <div id="iosInstallModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center p-3">
+    <div class="bg-slate-900 border border-orange-500/50 rounded-3xl w-full max-w-sm p-5 space-y-4 shadow-2xl text-white animate-in slide-in-from-bottom duration-200">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+        <div class="flex items-center space-x-2">
+          <img src="/icons/icon-192.png" alt="Logo" class="w-7 h-7 rounded-lg">
+          <span class="font-black text-xs text-orange-400 uppercase">Cài Đặt Trên iPhone (iOS)</span>
+        </div>
+        <button onclick="closeModal('iosInstallModal')" class="text-slate-400 hover:text-white cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-300">
+        <p class="leading-relaxed">Để dùng Mini POS toàn màn hình mượt mà như ứng dụng tải từ App Store:</p>
+        
+        <div class="flex items-start gap-3 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+          <div class="w-7 h-7 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold shrink-0">1</div>
+          <div>
+            <div class="font-bold text-white">Bấm nút Chia sẻ (Share)</div>
+            <div class="text-[10px] text-slate-400">Biểu tượng <i class="fa-solid fa-arrow-up-from-bracket text-blue-400"></i> ở thanh dưới cùng Safari.</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+          <div class="w-7 h-7 rounded-lg bg-orange-600/20 text-orange-400 flex items-center justify-center font-bold shrink-0">2</div>
+          <div>
+            <div class="font-bold text-white">Chọn "Thêm vào MH chính"</div>
+            <div class="text-[10px] text-slate-400">Cuộn xuống và bấm <strong>"Thêm vào MH chính" (Add to Home Screen)</strong>.</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+          <div class="w-7 h-7 rounded-lg bg-emerald-600/20 text-emerald-400 flex items-center justify-center font-bold shrink-0">3</div>
+          <div>
+            <div class="font-bold text-white">Bấm "Thêm" ở góc trên</div>
+            <div class="text-[10px] text-slate-400">Biểu tượng Đất Phú POS sẽ xuất hiện ngay trên màn hình chính!</div>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="closeModal('iosInstallModal')" class="w-full py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs shadow active:scale-95 transition cursor-pointer">
+        Đã Hiểu
+      </button>
+    </div>
+  </div>
 </body>
 </html>
