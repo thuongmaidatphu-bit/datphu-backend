@@ -136,6 +136,9 @@
     <button onclick="switchMode('menu')" id="tabBtn-menu" class="mode-tab active flex-1 py-1.5 text-center rounded-xl bg-blue-600 text-white shadow transition cursor-pointer text-[11px]">
       <i class="fa-solid fa-mug-saucer mr-0.5"></i> Món
     </button>
+    <button onclick="switchMode('kds')" id="tabBtn-kds" class="mode-tab flex-1 py-1.5 text-center rounded-xl text-slate-600 hover:text-blue-700 transition cursor-pointer text-[11px] relative">
+      <i class="fa-solid fa-fire-burner mr-0.5"></i> Bếp (<span id="kdsTabBadge" class="text-orange-600 font-black">0</span>)
+    </button>
     <button onclick="switchMode('numpad')" id="tabBtn-numpad" class="mode-tab flex-1 py-1.5 text-center rounded-xl text-slate-600 hover:text-blue-700 transition cursor-pointer text-[11px]">
       <i class="fa-solid fa-calculator mr-0.5"></i> Bấm
     </button>
@@ -315,6 +318,61 @@
       <!-- Danh Sách Thẻ Nguyên Liệu Trực Quan -->
       <div id="rawMaterialsList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
         <!-- Render Javascript -->
+      </div>
+    </div>
+
+    <!-- 5. CHẾ ĐỘ 5: MÀN HÌNH BẾP & QUẦY BAR (KITCHEN DISPLAY SYSTEM - KDS) -->
+    <div id="viewMode-kds" class="hidden h-full flex flex-col p-3 overflow-y-auto no-scrollbar space-y-3 bg-slate-50">
+      <!-- Thanh Tác Vụ & Phân Luồng KDS -->
+      <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 text-white flex items-center justify-center font-bold text-sm shadow-sm shrink-0">
+            <i class="fa-solid fa-fire-burner"></i>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-400 uppercase font-black tracking-wider flex items-center gap-1">
+              <span>Màn Hình Bếp & Quầy Bar (KDS)</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+            </div>
+            <div class="text-xs font-black text-slate-800 flex items-center gap-1.5 mt-0.5">
+              <span id="kdsActiveCountBadge" class="text-orange-600 font-mono">0 đơn đang chờ</span>
+              <span>•</span>
+              <span id="kdsStationBadge" class="text-[10px] px-1.5 py-0.2 rounded font-bold bg-blue-50 text-blue-700 border border-blue-200">Toàn Bộ Món</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bộ Lọc Phân Luồng Trạm (Quầy Bar vs Bếp Nấu) -->
+        <div class="flex items-center space-x-1 bg-slate-100 p-1 rounded-xl text-xs font-bold">
+          <button onclick="filterKdsStation('all')" id="kdsStationBtn-all" class="kds-station-btn active px-3 py-1.5 rounded-lg bg-blue-600 text-white shadow-xs cursor-pointer text-[11px] transition">
+            Tất Cả
+          </button>
+          <button onclick="filterKdsStation('bar')" id="kdsStationBtn-bar" class="kds-station-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-blue-700 cursor-pointer text-[11px] flex items-center gap-1 transition">
+            <i class="fa-solid fa-mug-saucer text-amber-600 text-[10px]"></i>
+            <span>Quầy Bar</span>
+          </button>
+          <button onclick="filterKdsStation('kitchen')" id="kdsStationBtn-kitchen" class="kds-station-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-blue-700 cursor-pointer text-[11px] flex items-center gap-1 transition">
+            <i class="fa-solid fa-bowl-food text-red-600 text-[10px]"></i>
+            <span>Bếp Nấu</span>
+          </button>
+        </div>
+
+        <!-- Nút tiện ích KDS: Thử chuông & Dọn đơn đã giao -->
+        <div class="flex items-center space-x-1.5">
+          <button onclick="testKitchenBell()" class="px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold border border-amber-200 flex items-center gap-1 shadow-2xs cursor-pointer transition active:scale-95" title="Thử chuông gọi bếp">
+            <i class="fa-solid fa-bell text-amber-600"></i>
+            <span class="hidden sm:inline">Chuông Báo</span>
+          </button>
+          <button onclick="clearCompletedKdsOrders()" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-red-600 text-xs font-bold border border-slate-300 flex items-center gap-1 shadow-2xs cursor-pointer transition active:scale-95" title="Xóa các đơn đã hoàn thành">
+            <i class="fa-solid fa-broom"></i>
+            <span class="hidden sm:inline">Dọn Đơn Xong</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Lưới Thẻ Đơn Chế Biến KDS (Responsive 1 đến 4 cột) -->
+      <div id="kdsOrdersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+        <!-- Render bằng Javascript -->
       </div>
     </div>
 
@@ -1486,6 +1544,7 @@
       updateCartUI();
       renderHistory();
       renderInventoryUI();
+      renderKdsUI();
       applyShopConfig();
       updateClock();
       setInterval(updateClock, 10000);
@@ -1850,11 +1909,15 @@
       document.getElementById('viewMode-numpad').classList.add('hidden');
       document.getElementById('viewMode-inventory').classList.add('hidden');
       document.getElementById('viewMode-history').classList.add('hidden');
+      const kdsView = document.getElementById('viewMode-kds');
+      if (kdsView) kdsView.classList.add('hidden');
       document.getElementById(`viewMode-${mode}`).classList.remove('hidden');
       playBeep(550, 0.04);
 
       if (mode === 'inventory') {
         renderInventoryUI();
+      } else if (mode === 'kds') {
+        renderKdsUI();
       }
     }
 
@@ -2355,10 +2418,14 @@
     }
 
     function confirmKitchenNotify() {
-      playTingTing();
-      closeModal('kitchenTicketModal');
       const curTbl = getCurrentTable();
-      showToast(`Đã gửi lệnh báo bếp cho ${curTbl.name}!`);
+      if (!cart || cart.length === 0) {
+        return alert("Chưa có món nào để báo bếp!");
+      }
+      sendCartToKds(curTbl, cart);
+      playBeep(900, 0.2);
+      closeModal('kitchenTicketModal');
+      showToast(`Đã truyền đơn ${curTbl.name} xuống Bếp & Quầy Bar (KDS) thành công!`);
     }
 
     // 12. RENDER LỊCH SỬ ĐƠN
@@ -2392,6 +2459,255 @@
         localStorage.setItem('dp_pos_orders', JSON.stringify([]));
         renderHistory();
       }
+    }
+
+
+    // ========================================================================
+    // 12b. MODULE MÀN HÌNH BẾP & QUẦY BAR (KITCHEN DISPLAY SYSTEM - KDS)
+    // ========================================================================
+    const DEFAULT_KDS_ORDERS = [
+      {
+        id: "KDS-001",
+        tableId: "tbl_2",
+        tableName: "Bàn 2",
+        createdAt: "10:15",
+        createdTimestamp: Date.now() - 11 * 60 * 1000, // 11 phút trước (Báo động vàng/đỏ)
+        status: "cooking", // 'pending', 'cooking', 'done'
+        items: [
+          { name: "Cà Phê Sữa Đá", qty: 2, cat: "coffee", note: "Nhiều sữa, ít đá" },
+          { name: "Bánh Mì Thịt Nguội", qty: 1, cat: "food", note: "Giòn, nhiều ớt" }
+        ]
+      },
+      {
+        id: "KDS-002",
+        tableId: "takeaway",
+        tableName: "Mang Về",
+        createdAt: "10:24",
+        createdTimestamp: Date.now() - 3 * 60 * 1000, // 3 phút trước (Mới nhận)
+        status: "pending",
+        items: [
+          { name: "Bún Cá Dằm", qty: 2, cat: "food", note: "Không hành lá" },
+          { name: "Trà Đào Cam Sả", qty: 1, cat: "tea", note: "Ngọt vừa" }
+        ]
+      }
+    ];
+
+    let kdsOrders = JSON.parse(localStorage.getItem('dp_pos_kds_orders')) || DEFAULT_KDS_ORDERS;
+    let kdsStationFilter = 'all'; // 'all', 'bar', 'kitchen'
+
+    function filterKdsStation(station) {
+      kdsStationFilter = station;
+      document.querySelectorAll('.kds-station-btn').forEach(b => {
+        b.classList.remove('active', 'bg-blue-600', 'text-white', 'shadow-xs');
+        b.classList.add('text-slate-600');
+      });
+      const targetBtn = document.getElementById(`kdsStationBtn-${station}`);
+      if (targetBtn) {
+        targetBtn.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-xs');
+        targetBtn.classList.remove('text-slate-600');
+      }
+
+      const badge = document.getElementById('kdsStationBadge');
+      if (badge) {
+        if (station === 'bar') badge.textContent = "Quầy Bar (Món Nước)";
+        else if (station === 'kitchen') badge.textContent = "Bếp Nấu (Món Ăn)";
+        else badge.textContent = "Toàn Bộ Món";
+      }
+
+      playBeep(600, 0.03);
+      renderKdsUI();
+    }
+
+    function testKitchenBell() {
+      playBeep(900, 0.2);
+      setTimeout(() => playBeep(1100, 0.25), 180);
+      showToast("Đã kích hoạt chuông báo Bếp & Quầy Bar!");
+    }
+
+    function renderKdsUI() {
+      const container = document.getElementById('kdsOrdersGrid');
+      if (!container) return;
+
+      // Lọc theo trạm (Bar vs Kitchen)
+      let displayedOrders = kdsOrders.filter(order => {
+        if (kdsStationFilter === 'all') return true;
+        if (kdsStationFilter === 'bar') {
+          return order.items.some(i => i.cat === 'coffee' || i.cat === 'tea' || i.cat === 'drink');
+        }
+        if (kdsStationFilter === 'kitchen') {
+          return order.items.some(i => i.cat === 'food');
+        }
+        return true;
+      });
+
+      // Cập nhật số đơn đang chờ
+      const pendingCount = kdsOrders.filter(o => o.status !== 'done').length;
+      const tabBadge = document.getElementById('kdsTabBadge');
+      if (tabBadge) tabBadge.textContent = pendingCount;
+      const activeBadge = document.getElementById('kdsActiveCountBadge');
+      if (activeBadge) activeBadge.textContent = `${pendingCount} đơn đang chờ`;
+
+      if (displayedOrders.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center text-slate-400 bg-white rounded-3xl border border-slate-200">
+            <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-300 text-3xl">
+              <i class="fa-solid fa-mug-saucer"></i>
+            </div>
+            <div class="font-bold text-slate-700 text-sm">Hiện Không Có Đơn Chờ Chế Biến</div>
+            <div class="text-xs text-slate-400 mt-1">Khi phục vụ bấm "Báo Bếp" từ giỏ hàng, thẻ đơn sẽ tự động xuất hiện tại đây</div>
+          </div>
+        `;
+        return;
+      }
+
+      const now = Date.now();
+      container.innerHTML = displayedOrders.map(order => {
+        const elapsedMins = Math.max(0, Math.floor((now - order.createdTimestamp) / 60000));
+        let timeBadgeClass = "bg-blue-50 text-blue-700 border-blue-200";
+        let timeText = `${elapsedMins} phút trước`;
+        if (elapsedMins >= 10) {
+          timeBadgeClass = "bg-red-50 text-red-700 border-red-300 font-black animate-pulse";
+          timeText = `⚠️ ${elapsedMins} ph (Lâu!)`;
+        } else if (elapsedMins >= 5) {
+          timeBadgeClass = "bg-amber-50 text-amber-800 border-amber-300 font-bold";
+        }
+
+        // Card styling theo trạng thái
+        let cardBg = "bg-white border-slate-200";
+        let statusBadge = `<span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200 font-black text-[10px]">Chờ Làm</span>`;
+        if (order.status === 'cooking') {
+          cardBg = "bg-amber-50/40 border-amber-300 shadow-sm";
+          statusBadge = `<span class="px-2 py-0.5 rounded-md bg-orange-600 text-white font-black text-[10px] animate-pulse">🔥 Đang Làm</span>`;
+        } else if (order.status === 'done') {
+          cardBg = "bg-emerald-50/30 border-emerald-300 opacity-90";
+          statusBadge = `<span class="px-2 py-0.5 rounded-md bg-emerald-600 text-white font-black text-[10px]">✅ Đã Xong</span>`;
+        }
+
+        // Lọc các món theo trạm đang chọn
+        const filteredItems = order.items.filter(item => {
+          if (kdsStationFilter === 'all') return true;
+          if (kdsStationFilter === 'bar') return item.cat === 'coffee' || item.cat === 'tea' || item.cat === 'drink';
+          if (kdsStationFilter === 'kitchen') return item.cat === 'food';
+          return true;
+        });
+
+        return `
+          <div class="${cardBg} rounded-2xl border p-3.5 flex flex-col justify-between shadow-xs transition hover:shadow-md">
+            <div>
+              <!-- Header thẻ KDS: Tên Bàn & Thời Gian -->
+              <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
+                <div class="flex items-center space-x-1.5">
+                  <span class="font-black text-sm text-slate-900">${order.tableName}</span>
+                  <span class="text-[10px] text-slate-400 font-mono">#${order.id.slice(-4)}</span>
+                </div>
+                <div class="flex items-center space-x-1">
+                  <span class="text-[10px] px-2 py-0.5 rounded-md border ${timeBadgeClass}">${timeText}</span>
+                  ${statusBadge}
+                </div>
+              </div>
+
+              <!-- Danh Sách Món Cần Chế Biến -->
+              <div class="space-y-2 py-1">
+                ${filteredItems.map(item => {
+                  const isFood = item.cat === 'food';
+                  return `
+                    <div class="flex items-start justify-between text-xs bg-slate-50/80 p-2 rounded-xl border border-slate-100">
+                      <div class="min-w-0 pr-2">
+                        <div class="font-black text-slate-800 leading-tight">${item.name}</div>
+                        ${item.note ? `<div class="text-[10px] text-red-600 font-bold mt-0.5"><i class="fa-solid fa-pen-nib text-[9px] mr-1"></i>${item.note}</div>` : ''}
+                      </div>
+                      <div class="flex items-center space-x-1 shrink-0">
+                        <span class="text-[9px] px-1.5 py-0.2 rounded font-bold ${isFood ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-700'}">
+                          ${isFood ? 'Bếp' : 'Bar'}
+                        </span>
+                        <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-mono font-black text-xs flex items-center justify-center">
+                          ${item.qty}
+                        </span>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+
+            <!-- Nút Hành Động Trực Quan Cho Đầu Bếp / Barista -->
+            <div class="pt-3 mt-2 border-t border-slate-100">
+              ${order.status === 'pending' ? `
+                <button onclick="setKdsOrderStatus('${order.id}', 'cooking')" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition cursor-pointer">
+                  <i class="fa-solid fa-fire text-sm"></i>
+                  <span>Bắt Đầu Làm</span>
+                </button>
+              ` : (order.status === 'cooking' ? `
+                <button onclick="setKdsOrderStatus('${order.id}', 'done')" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition cursor-pointer">
+                  <i class="fa-solid fa-check-double text-sm"></i>
+                  <span>Hoàn Thành (Ra Món)</span>
+                </button>
+              ` : `
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-bold text-emerald-700 flex items-center gap-1">
+                    <i class="fa-solid fa-circle-check"></i> Đã ra món
+                  </span>
+                  <button onclick="removeKdsOrder('${order.id}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-600 text-[10px] font-bold cursor-pointer transition">
+                    <i class="fa-solid fa-xmark mr-0.5"></i> Xóa Thẻ
+                  </button>
+                </div>
+              `)}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setKdsOrderStatus(orderId, newStatus) {
+      const ord = kdsOrders.find(o => o.id === orderId);
+      if (!ord) return;
+      ord.status = newStatus;
+      localStorage.setItem('dp_pos_kds_orders', JSON.stringify(kdsOrders));
+
+      if (newStatus === 'cooking') {
+        playBeep(750, 0.08);
+        showToast(`${ord.tableName}: Bắt đầu chế biến!`);
+      } else if (newStatus === 'done') {
+        playTingTing();
+        showToast(`Đã hoàn thành món cho ${ord.tableName}! Mời phục vụ ra món.`);
+      }
+      renderKdsUI();
+    }
+
+    function removeKdsOrder(orderId) {
+      kdsOrders = kdsOrders.filter(o => o.id !== orderId);
+      localStorage.setItem('dp_pos_kds_orders', JSON.stringify(kdsOrders));
+      renderKdsUI();
+    }
+
+    function clearCompletedKdsOrders() {
+      const completedCount = kdsOrders.filter(o => o.status === 'done').length;
+      if (completedCount === 0) return showToast("Không có đơn hoàn thành nào để xóa!");
+      kdsOrders = kdsOrders.filter(o => o.status !== 'done');
+      localStorage.setItem('dp_pos_kds_orders', JSON.stringify(kdsOrders));
+      showToast(`Đã dọn sạch ${completedCount} đơn đã giao!`);
+      renderKdsUI();
+    }
+
+    function sendCartToKds(tbl, items) {
+      const newKdsTicket = {
+        id: "KDS-" + Date.now().toString().slice(-4),
+        tableId: tbl.id,
+        tableName: tbl.name,
+        createdAt: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
+        createdTimestamp: Date.now(),
+        status: "pending",
+        items: items.map(i => ({
+          name: i.name,
+          qty: i.qty,
+          cat: i.cat || 'coffee',
+          note: i.note || ''
+        }))
+      };
+      kdsOrders.unshift(newKdsTicket);
+      localStorage.setItem('dp_pos_kds_orders', JSON.stringify(kdsOrders));
+      renderKdsUI();
+      return newKdsTicket;
     }
 
     // 13. GHI CHI ĐẦU VÀO NHANH
