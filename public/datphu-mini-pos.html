@@ -76,6 +76,50 @@
       animation: activeTablePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, activeTablePulse 2.2s infinite ease-in-out !important;
       z-index: 20 !important;
     }
+  
+    /* Hiệu ứng đèn LED phát sáng 5 nấc cho từng bàn */
+    @keyframes ledGlowAmber {
+      0%, 100% { box-shadow: 0 0 6px 1px rgba(245, 158, 11, 0.8), inset 0 0 3px rgba(255, 255, 255, 0.6); }
+      50% { box-shadow: 0 0 12px 2px rgba(245, 158, 11, 1), inset 0 0 6px rgba(255, 255, 255, 0.9); }
+    }
+    @keyframes ledGlowRed {
+      0%, 100% { box-shadow: 0 0 6px 1px rgba(220, 38, 38, 0.8), inset 0 0 3px rgba(255, 255, 255, 0.6); }
+      50% { box-shadow: 0 0 12px 2px rgba(220, 38, 38, 1), inset 0 0 6px rgba(255, 255, 255, 0.9); }
+    }
+    @keyframes ledGlowGreen {
+      0%, 100% { box-shadow: 0 0 6px 1px rgba(16, 185, 129, 0.8), inset 0 0 3px rgba(255, 255, 255, 0.6); }
+      50% { box-shadow: 0 0 12px 2px rgba(16, 185, 129, 1), inset 0 0 6px rgba(255, 255, 255, 0.9); }
+    }
+    @keyframes ledGlowBlue {
+      0%, 100% { box-shadow: 0 0 6px 1px rgba(37, 99, 235, 0.8), inset 0 0 3px rgba(255, 255, 255, 0.6); }
+      50% { box-shadow: 0 0 12px 2px rgba(37, 99, 235, 1), inset 0 0 6px rgba(255, 255, 255, 0.9); }
+    }
+
+    .led-amber-lit {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+      color: white !important;
+      animation: ledGlowAmber 1.8s infinite ease-in-out !important;
+      font-weight: 900 !important;
+    }
+    .led-red-lit {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+      color: white !important;
+      animation: ledGlowRed 1.6s infinite ease-in-out !important;
+      font-weight: 900 !important;
+    }
+    .led-green-lit {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+      color: white !important;
+      animation: ledGlowGreen 2s infinite ease-in-out !important;
+      font-weight: 900 !important;
+    }
+    .led-blue-lit {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+      color: white !important;
+      animation: ledGlowBlue 2s infinite ease-in-out !important;
+      font-weight: 900 !important;
+    }
+
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased select-none h-screen flex flex-col w-full overflow-hidden">
@@ -1880,6 +1924,17 @@
 
     
     // HỆ THỐNG MÀU SẮC ĐỒNG BỘ 5 GIAI ĐOẠN BÀN
+    
+    // Hàm xác định bước 5 đèn (1: Bàn, 2: Menu, 3: Báo bếp, 4: VietQR, 5: In bill)
+    function getTableLedStep(t) {
+      const hasItems = t.cart && t.cart.length > 0;
+      if (!hasItems || t.status === 'empty') return 1;
+      if (t.statusLabel === 'checkout') return 4;
+      if (t.statusLabel === 'cooking' || t.kitchenStatus === 'cooking') return 3;
+      if (t.statusLabel === 'served') return 5;
+      return 2; // Đang chọn món trong menu
+    }
+
     function getTableStageTheme(t, isActive, isOcc) {
       let stage = 'empty';
       const sl = t.statusLabel || (isOcc ? 'served' : 'empty');
@@ -2073,14 +2128,39 @@
                 </div>
               </div>
 
-              <!-- Dòng 2: NHÃN GIAI ĐOẠN ĐỒNG BỘ MÀU + LƯỢT KHÁCH & SỐ KHÁCH -->
-              <div class="flex items-center justify-between px-2 py-1 ${th.infoBarBg} rounded-lg text-[10px] font-bold mb-1.5 border">
-                <div>${getTableStatusSticker(t, isActive, isOcc)}</div>
-                <div class="flex items-center gap-1.5 text-[9px] font-semibold text-slate-600">
-                  <span title="Tổng lượt phục vụ bàn này trong ngày"><i class="fa-solid fa-arrows-rotate text-[8px]"></i> ${turns} lượt</span>
-                  <span>•</span>
-                  <span title="Số khách hiện tại"><i class="fa-solid fa-users text-[8px]"></i> ${isOcc ? guests + 'K' : 'Trống'}</span>
-                </div>
+              <!-- DÃY 5 NÚT TIẾN ĐỘ ĐÈN SÁNG TRÊN TỪNG BÀN (BÀN → MENU → BÁO BẾP → VIETQR → IN BILL) -->
+              <div class="grid grid-cols-5 gap-1 my-1 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
+                
+                <!-- 1. SƠ ĐỒ BÀN -->
+                <button onclick="event.stopPropagation(); switchTable('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${getTableLedStep(t) === 1 ? 'led-blue-lit' : (getTableLedStep(t) > 1 ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-white text-slate-600 border border-slate-200')}" title="Bước 1: Sơ đồ bàn (Bàn sẵn sàng)">
+                  <i class="fa-solid fa-chair text-[9px]"></i>
+                  <span class="scale-90 font-black">1.Bàn</span>
+                </button>
+
+                <!-- 2. MENU GỌI MÓN -->
+                <button onclick="event.stopPropagation(); switchTable('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${getTableLedStep(t) === 2 ? 'led-blue-lit' : (getTableLedStep(t) > 2 ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 2: Menu gọi món (Đang chọn món)">
+                  <i class="fa-solid fa-utensils text-[9px]"></i>
+                  <span class="scale-90 font-black">2.Menu</span>
+                </button>
+
+                <!-- 3. BÁO BẾP 🔔 (SÁNG ĐÈN VÀNG HỔ PHÁCH) -->
+                <button onclick="event.stopPropagation(); switchTable('${t.id}'); sendKitchenOrder()" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${getTableLedStep(t) === 3 ? 'led-amber-lit' : (getTableLedStep(t) > 3 ? 'bg-amber-100 text-amber-800 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 3: Báo bếp (Bấm để gửi bếp)">
+                  <i class="fa-solid fa-bell text-[9px]"></i>
+                  <span class="scale-90 font-black">3.Bếp🔔</span>
+                </button>
+
+                <!-- 4. VIETQR 💳 (SÁNG ĐÈN ĐỎ RUBY) -->
+                <button onclick="event.stopPropagation(); openQuickTableCheckout('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${getTableLedStep(t) === 4 ? 'led-red-lit' : (getTableLedStep(t) > 4 ? 'bg-red-100 text-red-800 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 4: VietQR (Bấm để mở mã QR thanh toán)">
+                  <i class="fa-solid fa-qrcode text-[9px]"></i>
+                  <span class="scale-90 font-black">4.QR💳</span>
+                </button>
+
+                <!-- 5. IN BILL 🖨️ (SÁNG ĐÈN XANH LÁ) -->
+                <button onclick="event.stopPropagation(); switchTable('${t.id}'); printPreBill()" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${getTableLedStep(t) === 5 ? 'led-green-lit' : (isOcc ? 'bg-emerald-100 text-emerald-800 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 5: In bill (Bấm để in phiếu)">
+                  <i class="fa-solid fa-print text-[9px]"></i>
+                  <span class="scale-90 font-black">5.Bill🖨️</span>
+                </button>
+
               </div>
 
               <!-- Chi tiết các mục món trong bàn (Nền Sáng Sắc Nét) -->
