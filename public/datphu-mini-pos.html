@@ -133,6 +133,25 @@
     <!-- 1. CHẾ ĐỘ 1: BÁN THEO THỰC ĐƠN (MENU MÓN) -->
     <div id="viewMode-menu" class="h-full flex flex-col">
       
+      <!-- THANH CHỌN BÀN & MANG VỀ TINH GỌN (LEAN TABLE BAR) -->
+      <div class="px-2.5 py-1.5 bg-slate-100/90 border-b border-slate-200 flex items-center justify-between text-xs shrink-0">
+        <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar flex-1 pr-2" id="quickTableChipsContainer">
+          <!-- Render danh sách bàn và mang đi bằng JavaScript -->
+        </div>
+        <div class="flex items-center space-x-1 shrink-0">
+          <!-- Nút Đổi / Gộp Bàn (hiển thị khi bàn đang có khách) -->
+          <button onclick="openTransferTableModal()" id="btnTransferTable" class="hidden px-2 py-1 rounded-lg bg-white border border-slate-300 text-slate-700 hover:text-blue-700 text-[11px] font-bold shadow-2xs items-center gap-1 cursor-pointer transition" title="Chuyển hoặc gộp bàn">
+            <i class="fa-solid fa-arrow-right-arrow-left text-blue-600"></i>
+            <span class="hidden sm:inline">Đổi Bàn</span>
+          </button>
+          <!-- Nút mở Sơ đồ bàn toàn cảnh -->
+          <button onclick="openTableMapModal()" class="px-2 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold shadow-2xs flex items-center gap-1 cursor-pointer transition" title="Xem sơ đồ bàn toàn cảnh">
+            <i class="fa-solid fa-chair text-[10px]"></i>
+            <span id="occupiedTableCountBadge">0/8 bàn</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Thanh tìm kiếm & Nút thêm món -->
       <div class="px-2.5 pt-2 pb-1.5 flex items-center space-x-2 bg-white border-b border-slate-200">
         <div class="relative flex-1">
@@ -324,6 +343,7 @@
         <div class="flex items-center space-x-2">
           <span class="text-base font-black text-slate-900">Chi Tiết Đơn Hàng</span>
           <span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold" id="drawerItemCount">0 món</span>
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 font-black border border-amber-300" id="drawerTableBadge">Mang Về</span>
         </div>
         <div class="flex items-center space-x-2">
           <button onclick="clearCart()" class="text-xs text-red-600 hover:underline font-bold cursor-pointer">Xóa hết</button>
@@ -338,6 +358,18 @@
       <div class="p-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
         <span class="text-xs font-bold text-slate-500">Tổng thanh toán:</span>
         <span class="text-xl font-black text-red-600 font-mono" id="drawerTotalText">0 đ</span>
+      </div>
+
+      <!-- Nghiệp vụ F&B: Lưu bàn phục vụ tiếp, Báo bếp / In tạm tính -->
+      <div class="p-2.5 bg-white border-t border-slate-200 grid grid-cols-2 gap-2 shrink-0">
+        <button onclick="saveCurrentTableAndSwitchNext()" class="py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer border border-slate-300">
+          <i class="fa-solid fa-bookmark text-blue-600"></i>
+          <span>Lưu Bàn & Phục Vụ Tiếp</span>
+        </button>
+        <button onclick="printKitchenOrderTicket()" class="py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer border border-blue-200">
+          <i class="fa-solid fa-bell-concierge text-blue-600"></i>
+          <span>Báo Bếp / In Tạm</span>
+        </button>
       </div>
     </div>
   </div>
@@ -801,6 +833,143 @@
     </div>
   </div>
 
+  <!-- ================= MODAL: SƠ ĐỒ BÀN TOÀN CẢNH (LEAN TABLE MAP) ================= -->
+  <div id="tableMapModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-lg p-4 sm:p-5 space-y-3.5 shadow-2xl animate-in zoom-in-95 text-xs text-slate-800 max-h-[90vh] flex flex-col">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5 shrink-0">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-chair"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-slate-900">Sơ Đồ Bàn & Khu Vực</h3>
+            <p class="text-[10px] text-slate-400">Chạm vào bàn để phục vụ ngay • Theo dõi bàn có khách</p>
+          </div>
+        </div>
+        <button onclick="closeModal('tableMapModal')" class="text-slate-400 hover:text-slate-700 cursor-pointer">✕</button>
+      </div>
+
+      <!-- Bộ lọc khu vực -->
+      <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar shrink-0" id="tableZoneChips">
+        <button onclick="filterTableZone('all')" id="zoneChip-all" class="table-zone-chip active px-3 py-1 rounded-full text-xs font-bold bg-blue-600 text-white cursor-pointer shadow-xs">Tất Cả</button>
+        <button onclick="filterTableZone('tret')" id="zoneChip-tret" class="table-zone-chip px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">Tầng Trệt</button>
+        <button onclick="filterTableZone('ngoaitroi')" id="zoneChip-ngoaitroi" class="table-zone-chip px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">Ngoài Trời / Vỉa Hè</button>
+        <button onclick="filterTableZone('lau1')" id="zoneChip-lau1" class="table-zone-chip px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">Lầu 1</button>
+      </div>
+
+      <!-- Lưới các thẻ bàn -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 overflow-y-auto no-scrollbar flex-1 pr-0.5" id="tableMapGridContainer">
+        <!-- Render Javascript -->
+      </div>
+
+      <!-- Thêm bàn mới nhanh & Chú thích -->
+      <div class="pt-2 border-t border-slate-100 flex items-center justify-between shrink-0">
+        <div class="text-[10px] text-slate-500 font-bold flex items-center gap-3">
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-slate-200 border border-slate-300 inline-block"></span> Trống</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block animate-pulse"></span> Có khách</span>
+        </div>
+        <button onclick="addNewTablePrompt()" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs flex items-center gap-1 cursor-pointer transition">
+          <i class="fa-solid fa-plus text-[10px]"></i>
+          <span>Thêm Bàn</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: ĐỔI BÀN / GỘP BÀN ================= -->
+  <div id="transferTableModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-sm p-4 sm:p-5 space-y-3.5 shadow-2xl animate-in zoom-in-95 text-xs text-slate-800">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-slate-900" id="transferModalTitle">Chuyển / Gộp Bàn</h3>
+            <p class="text-[10px] text-slate-400" id="transferModalSubtitle">Chuyển đơn từ bàn hiện tại sang bàn khác</p>
+          </div>
+        </div>
+        <button onclick="closeModal('transferTableModal')" class="text-slate-400 hover:text-slate-700 cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Chọn Bàn Đích Cần Chuyển Đến:</label>
+          <select id="transferTargetTableSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 font-bold focus:outline-none focus:border-blue-500 cursor-pointer">
+            <!-- Render danh sách bàn đích -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Kiểu Thao Tác:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="flex items-center p-2 rounded-xl border border-blue-200 bg-blue-50/50 cursor-pointer gap-2">
+              <input type="radio" name="transferActionType" value="move" checked class="text-blue-600">
+              <div>
+                <div class="font-bold text-slate-800 text-[11px]">Đổi Bàn</div>
+                <div class="text-[9px] text-slate-400">Khách dời bàn</div>
+              </div>
+            </label>
+            <label class="flex items-center p-2 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer gap-2">
+              <input type="radio" name="transferActionType" value="merge" class="text-blue-600">
+              <div>
+                <div class="font-bold text-slate-800 text-[11px]">Gộp Bàn</div>
+                <div class="text-[9px] text-slate-400">Gộp 2 hóa đơn</div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="confirmTransferTable()" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow active:scale-95 transition cursor-pointer">
+        <i class="fa-solid fa-check mr-1"></i> Xác Nhận Chuyển / Gộp Bàn
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: BÁO BẾP / IN TẠM TÍNH BÀN ================= -->
+  <div id="kitchenTicketModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-sm p-5 space-y-3.5 shadow-2xl animate-in zoom-in-95 text-xs text-slate-800">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-bell-concierge"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-slate-900" id="kitchenModalTitle">Phiếu Báo Bếp / Pha Chế</h3>
+            <p class="text-[10px] text-slate-400">Lệnh làm món cho bếp & quầy pha chế</p>
+          </div>
+        </div>
+        <button onclick="closeModal('kitchenTicketModal')" class="text-slate-400 hover:text-slate-700 cursor-pointer">✕</button>
+      </div>
+
+      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2 font-mono">
+        <div class="flex justify-between text-slate-500 text-[11px] pb-1 border-b border-dashed border-slate-300">
+          <span class="font-bold text-blue-700" id="kitchenModalTable">Bàn: Bàn 1</span>
+          <span id="kitchenModalTime">10:30</span>
+        </div>
+        <div class="space-y-1.5 text-xs text-slate-800" id="kitchenModalItems">
+          <!-- Render danh sách món -->
+        </div>
+        <div class="flex justify-between font-bold pt-1 border-t border-dashed border-slate-300 text-sm">
+          <span>TẠM TÍNH:</span>
+          <span class="text-red-600" id="kitchenModalTotal">0 đ</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="confirmKitchenNotify()" class="py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow active:scale-95 transition cursor-pointer">
+          <i class="fa-solid fa-check"></i>
+          <span>Đã Báo Bếp Xong</span>
+        </button>
+        <button onclick="window.print()" class="py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs border border-slate-300 flex items-center justify-center gap-1.5 active:scale-95 transition cursor-pointer">
+          <i class="fa-solid fa-print"></i>
+          <span>In Phiếu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= MODAL: QUẢN LÝ QUÁN THUÊ & PHÂN QUYỀN (MULTI-TENANT NỀN TRẮNG) ================= -->
   <div id="tenantModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4">
     <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-sm p-4 sm:p-5 space-y-3.5 shadow-2xl animate-in zoom-in-95 text-xs text-slate-800 max-h-[90vh] flex flex-col">
@@ -1005,6 +1174,7 @@
       <p class="text-[10px]">TP. Tuy Hòa • Phú Yên</p>
       <p class="text-[10px] font-bold mt-1">PHIẾU THANH TOÁN</p>
       <p class="text-[9px]" id="prBillTime">15/11/2026 09:15</p>
+      <p class="text-[10px] font-black text-blue-700 mt-0.5" id="prBillTable">Bàn: Mang Về</p>
     </div>
 
     <div class="py-2 border-b border-dashed border-gray-400 space-y-1" id="prBillItems">
@@ -1064,7 +1234,33 @@
     if (hasUpdatedImages) {
       localStorage.setItem('dp_pos_products', JSON.stringify(products));
     }
-    let cart = [];
+    // 1b. DỮ LIỆU BÀN & PHÒNG TINH GỌN (LEAN TABLE MANAGEMENT)
+    const DEFAULT_TABLES = [
+      { id: "takeaway", name: "Mang Về", zone: "takeaway", status: "empty", cart: [], openTime: null },
+      { id: "tbl_1", name: "Bàn 1", zone: "tret", status: "empty", cart: [], openTime: null },
+      { id: "tbl_2", name: "Bàn 2", zone: "tret", status: "empty", cart: [], openTime: null },
+      { id: "tbl_3", name: "Bàn 3", zone: "tret", status: "empty", cart: [], openTime: null },
+      { id: "tbl_4", name: "Bàn 4", zone: "tret", status: "empty", cart: [], openTime: null },
+      { id: "tbl_5", name: "Bàn 5", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
+      { id: "tbl_6", name: "Bàn 6", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
+      { id: "tbl_7", name: "Bàn 7", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
+      { id: "tbl_8", name: "Bàn 8", zone: "lau1", status: "empty", cart: [], openTime: null }
+    ];
+
+    let tables = JSON.parse(localStorage.getItem('dp_pos_tables')) || DEFAULT_TABLES;
+    let currentTableId = localStorage.getItem('dp_current_table_id') || 'takeaway';
+    let currentTableZoneFilter = 'all';
+
+    function getCurrentTable() {
+      let t = tables.find(x => x.id === currentTableId);
+      if (!t) {
+        t = tables[0];
+        currentTableId = t.id;
+      }
+      return t;
+    }
+
+    let cart = [...(getCurrentTable().cart || [])];
     let currentCat = 'all';
     let searchQuery = '';
     let numpadVal = "0";
@@ -1181,6 +1377,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       applyTenantInfo();
       updateDisplayModeButton();
+      renderQuickTableBar();
       renderProducts();
       updateCartUI();
       renderHistory();
@@ -1412,17 +1609,33 @@
     function updateCartUI() {
       const total = getCartTotal();
       const count = getCartCount();
+      const curTbl = getCurrentTable();
+
+      // Đồng bộ giỏ hàng vào bàn hiện tại
+      curTbl.cart = [...cart];
+      if (cart.length > 0) {
+        curTbl.status = 'occupied';
+        if (!curTbl.openTime) {
+          curTbl.openTime = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+        }
+      } else {
+        curTbl.status = 'empty';
+        curTbl.openTime = null;
+      }
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
 
       document.getElementById('cartBadge').textContent = count;
       document.getElementById('cartTotalText').textContent = total.toLocaleString('vi-VN') + ' đ';
-      document.getElementById('cartSummaryText').textContent = count > 0 ? `${count} món đã chọn` : "Chưa có món";
+      document.getElementById('cartSummaryText').textContent = `${curTbl.name} • ${count > 0 ? count + ' món' : 'Chưa có món'}`;
       document.getElementById('drawerItemCount').textContent = `${count} món`;
+      const tblBadge = document.getElementById('drawerTableBadge');
+      if (tblBadge) tblBadge.textContent = curTbl.name;
       document.getElementById('drawerTotalText').textContent = total.toLocaleString('vi-VN') + ' đ';
 
       // Render Drawer List
       const list = document.getElementById('drawerCartList');
       if (cart.length === 0) {
-        list.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs">Chưa có món nào trong đơn</div>`;
+        list.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs">Chưa có món nào cho ${curTbl.name}</div>`;
       } else {
         list.innerHTML = cart.map(item => `
           <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex items-center justify-between shadow-xs">
@@ -1438,6 +1651,8 @@
           </div>
         `).join('');
       }
+
+      renderQuickTableBar();
     }
 
     function toggleCartDrawer() {
@@ -1583,13 +1798,15 @@
     // 11. HOÀN TẤT ĐƠN HÀNG (LƯU LỊCH SỬ & IN BILL)
     function finishOrder(shouldPrint, method = 'Tiền mặt') {
       const total = getCartTotal();
+      const curTbl = getCurrentTable();
       const order = {
         code: "HD-" + Date.now().toString().slice(-6),
         time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
         date: new Date().toLocaleDateString('vi-VN'),
         items: [...cart],
         total: total,
-        method: method
+        method: method,
+        table: curTbl.name
       };
 
       ordersHistory.unshift(order);
@@ -1634,18 +1851,24 @@
         playTingTing();
       }
 
-      // Reset
+      // Reset bàn hiện tại
+      curTbl.cart = [];
+      curTbl.status = 'empty';
+      curTbl.openTime = null;
       cart = [];
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+
       updateCartUI();
       renderProducts();
       renderHistory();
+      renderQuickTableBar();
       closeModal('cashModal');
       closeModal('qrModal');
       if (!document.getElementById('cartDrawer').classList.contains('hidden')) {
         toggleCartDrawer();
       }
 
-      let toastMsg = `Đã thanh toán ${total.toLocaleString('vi-VN')}đ!`;
+      let toastMsg = `Đã thanh toán ${curTbl.name}: ${total.toLocaleString('vi-VN')}đ!`;
       if (depletedLogs.length > 0) {
         toastMsg += ` • Đã trừ kho: ${depletedLogs.slice(0, 2).join(', ')}`;
       }
@@ -1661,6 +1884,8 @@
     function printReceipt(order) {
       document.getElementById('prShopName').textContent = shopConfig.name;
       document.getElementById('prBillTime').textContent = `${order.date} ${order.time} • ${order.code}`;
+      const prTable = document.getElementById('prBillTable');
+      if (prTable) prTable.textContent = `Bàn: ${order.table || 'Mang Về'}`;
       document.getElementById('prBillTotal').textContent = order.total.toLocaleString('vi-VN') + ' đ';
       document.getElementById('prBillMethod').textContent = order.method;
 
@@ -1683,6 +1908,282 @@
       setTimeout(() => div.remove(), 2500);
     }
 
+    // ========================================================================
+    // 11b. QUẢN LÝ BÀN & PHÒNG TINH GỌN (LEAN TABLE MANAGEMENT)
+    // ========================================================================
+    function renderQuickTableBar() {
+      const container = document.getElementById('quickTableChipsContainer');
+      if (!container) return;
+
+      const occupiedCount = tables.filter(t => t.id !== 'takeaway' && t.status === 'occupied').length;
+      const totalCount = tables.filter(t => t.id !== 'takeaway').length;
+      const badge = document.getElementById('occupiedTableCountBadge');
+      if (badge) badge.textContent = `${occupiedCount}/${totalCount} bàn`;
+
+      const curTbl = getCurrentTable();
+      const btnTransfer = document.getElementById('btnTransferTable');
+      if (btnTransfer) {
+        if (curTbl.id !== 'takeaway' && curTbl.cart && curTbl.cart.length > 0) {
+          btnTransfer.classList.remove('hidden');
+          btnTransfer.classList.add('flex');
+        } else {
+          btnTransfer.classList.add('hidden');
+          btnTransfer.classList.remove('flex');
+        }
+      }
+
+      container.innerHTML = tables.map(t => {
+        const isActive = t.id === currentTableId;
+        const isOcc = t.status === 'occupied' && t.cart && t.cart.length > 0;
+        const tTotal = (t.cart || []).reduce((s, x) => s + x.price * x.qty, 0);
+
+        if (t.id === 'takeaway') {
+          return `
+            <button onclick="switchTable('${t.id}')" class="px-2.5 py-1 rounded-xl whitespace-nowrap text-xs font-bold transition cursor-pointer flex items-center gap-1 shrink-0 ${isActive ? 'bg-blue-600 text-white shadow-xs' : (isOcc ? 'bg-red-50 text-red-700 border border-red-300' : 'bg-white text-slate-700 hover:bg-slate-200 border border-slate-200')}">
+              <i class="fa-solid fa-bag-shopping ${isActive ? 'text-white' : 'text-blue-600'}"></i>
+              <span>Mang Về</span>
+              ${isOcc ? `<span class="text-[9px] px-1 py-0.2 rounded-full ${isActive ? 'bg-white text-blue-700 font-black' : 'bg-red-600 text-white font-black'}">${Math.round(tTotal/1000)}k</span>` : ''}
+            </button>
+          `;
+        }
+
+        return `
+          <button onclick="switchTable('${t.id}')" class="px-2.5 py-1 rounded-xl whitespace-nowrap text-xs font-bold transition cursor-pointer flex items-center gap-1 shrink-0 ${isActive ? 'bg-blue-600 text-white shadow-xs' : (isOcc ? 'bg-red-50 text-red-700 border border-red-300' : 'bg-white text-slate-700 hover:bg-slate-200 border border-slate-200')}">
+            ${isOcc ? '<span class="w-2 h-2 rounded-full bg-red-600 inline-block animate-pulse"></span>' : ''}
+            <span>${t.name}</span>
+            ${isOcc ? `<span class="text-[9px] px-1 py-0.2 rounded-full ${isActive ? 'bg-white text-blue-700 font-black' : 'bg-red-600 text-white font-black'}">${Math.round(tTotal/1000)}k</span>` : ''}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function switchTable(targetTableId) {
+      if (targetTableId === currentTableId) return;
+
+      // Lưu giỏ hàng của bàn cũ
+      const cur = getCurrentTable();
+      cur.cart = [...cart];
+      if (cart.length > 0) {
+        cur.status = 'occupied';
+        if (!cur.openTime) {
+          cur.openTime = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+        }
+      } else {
+        cur.status = 'empty';
+        cur.openTime = null;
+      }
+
+      currentTableId = targetTableId;
+      localStorage.setItem('dp_current_table_id', currentTableId);
+
+      // Nạp giỏ hàng của bàn mới
+      const next = getCurrentTable();
+      cart = [...(next.cart || [])];
+
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+      playBeep(650, 0.04);
+      updateCartUI();
+      renderProducts();
+      renderQuickTableBar();
+      showToast('Đang phục vụ: ' + next.name);
+    }
+
+    function saveCurrentTableAndSwitchNext() {
+      const cur = getCurrentTable();
+      cur.cart = [...cart];
+      if (cart.length > 0) {
+        cur.status = 'occupied';
+        if (!cur.openTime) {
+          cur.openTime = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+        }
+      }
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+
+      // Đóng drawer giỏ hàng
+      const drawer = document.getElementById('cartDrawer');
+      if (drawer && !drawer.classList.contains('hidden')) {
+        drawer.classList.add('hidden');
+      }
+
+      // Tự động chuyển sang mang về hoặc bàn trống kế tiếp
+      const nextTbl = tables.find(t => t.id !== cur.id && t.status === 'empty') || tables[0];
+      switchTable(nextTbl.id);
+      showToast(`Đã lưu ${cur.name}. Sẵn sàng nhận khách tiếp theo!`);
+    }
+
+    function openTableMapModal() {
+      const container = document.getElementById('tableMapGridContainer');
+      if (!container) return;
+
+      // Lọc danh sách theo khu vực
+      let filtered = tables;
+      if (currentTableZoneFilter !== 'all') {
+        filtered = tables.filter(t => t.zone === currentTableZoneFilter);
+      }
+
+      container.innerHTML = filtered.map(t => {
+        const isActive = t.id === currentTableId;
+        const isOcc = t.status === 'occupied' && t.cart && t.cart.length > 0;
+        const tTotal = (t.cart || []).reduce((s, x) => s + x.price * x.qty, 0);
+        const zoneLabel = t.zone === 'tret' ? 'Tầng trệt' : (t.zone === 'ngoaitroi' ? 'Ngoài trời' : (t.zone === 'lau1' ? 'Lầu 1' : 'Mang đi'));
+
+        let itemsPreview = 'Chưa có món';
+        if (isOcc) {
+          itemsPreview = t.cart.map(i => `${i.qty}x ${i.name}`).slice(0, 2).join(', ');
+          if (t.cart.length > 2) itemsPreview += '...';
+        }
+
+        return `
+          <div onclick="switchTable('${t.id}'); closeModal('tableMapModal');" class="bg-slate-50 p-3 rounded-2xl border ${isActive ? 'border-blue-500 ring-2 ring-blue-400 bg-blue-50/40' : (isOcc ? 'border-red-300 bg-red-50/30' : 'border-slate-200')} hover:shadow-md transition cursor-pointer relative flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="font-black text-xs text-slate-900">${t.name}</span>
+                <span class="text-[9px] px-1.5 py-0.2 rounded font-bold ${isOcc ? 'bg-red-100 text-red-700' : 'bg-slate-200 text-slate-600'}">
+                  ${isOcc ? 'Có khách' : 'Trống'}
+                </span>
+              </div>
+              <div class="text-[10px] text-slate-400 line-clamp-1 mb-1">${zoneLabel} ${t.openTime ? '• Vào: ' + t.openTime : ''}</div>
+              <div class="text-[10px] text-slate-600 line-clamp-1 italic">${itemsPreview}</div>
+            </div>
+
+            <div class="mt-2 pt-1.5 border-t border-slate-200/60 flex items-center justify-between">
+              <span class="font-black font-mono text-xs ${isOcc ? 'text-red-600' : 'text-slate-400'}">${tTotal > 0 ? tTotal.toLocaleString('vi-VN') + ' đ' : '0 đ'}</span>
+              <span class="text-[10px] text-blue-600 font-bold hover:underline">Vào bàn →</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('tableMapModal').classList.remove('hidden');
+    }
+
+    function filterTableZone(zone) {
+      currentTableZoneFilter = zone;
+      document.querySelectorAll('.table-zone-chip').forEach(el => {
+        el.className = "table-zone-chip px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer";
+      });
+      const activeBtn = document.getElementById(`zoneChip-${zone}`);
+      if (activeBtn) activeBtn.className = "table-zone-chip active px-3 py-1 rounded-full text-xs font-bold bg-blue-600 text-white cursor-pointer shadow-xs";
+      openTableMapModal();
+    }
+
+    function addNewTablePrompt() {
+      const name = prompt("Nhập tên bàn mới (VD: Bàn 9, Sân thượng 1):");
+      if (!name || !name.trim()) return;
+
+      const newId = "tbl_" + Date.now();
+      tables.push({
+        id: newId,
+        name: name.trim(),
+        zone: currentTableZoneFilter === 'all' ? 'tret' : currentTableZoneFilter,
+        status: "empty",
+        cart: [],
+        openTime: null
+      });
+
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+      openTableMapModal();
+      renderQuickTableBar();
+      showToast(`Đã thêm ${name.trim()} vào sơ đồ bàn!`);
+    }
+
+    function openTransferTableModal() {
+      const curTbl = getCurrentTable();
+      const select = document.getElementById('transferTargetTableSelect');
+      if (!select) return;
+
+      document.getElementById('transferModalTitle').textContent = `Chuyển / Gộp: ${curTbl.name}`;
+      document.getElementById('transferModalSubtitle').textContent = `Đang có ${(curTbl.cart || []).length} món (${getCartTotal().toLocaleString('vi-VN')} đ)`;
+
+      // Chỉ hiển thị các bàn khác bàn hiện tại
+      const otherTables = tables.filter(t => t.id !== curTbl.id);
+      select.innerHTML = otherTables.map(t => {
+        const isOcc = t.status === 'occupied' && t.cart && t.cart.length > 0;
+        return `
+          <option value="${t.id}">${t.name} (${isOcc ? 'Đang có khách' : 'Bàn trống'})</option>
+        `;
+      }).join('');
+
+      document.getElementById('transferTableModal').classList.remove('hidden');
+    }
+
+    function confirmTransferTable() {
+      const curTbl = getCurrentTable();
+      const targetId = document.getElementById('transferTargetTableSelect').value;
+      const actionType = document.querySelector('input[name="transferActionType"]:checked').value;
+      const tgtTbl = tables.find(t => t.id === targetId);
+
+      if (!tgtTbl) return;
+
+      if (actionType === 'move') {
+        // ĐỔI BÀN: Chuyển toàn bộ món sang bàn mới
+        tgtTbl.cart = [...(curTbl.cart || [])];
+        tgtTbl.status = 'occupied';
+        tgtTbl.openTime = curTbl.openTime || new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+
+        curTbl.cart = [];
+        curTbl.status = 'empty';
+        curTbl.openTime = null;
+
+        closeModal('transferTableModal');
+        switchTable(tgtTbl.id);
+        playBeep(750, 0.05);
+        showToast(`Đã chuyển khách từ ${curTbl.name} sang ${tgtTbl.name}!`);
+      } else {
+        // GỘP BÀN: Kết hợp giỏ hàng 2 bàn lại
+        if (!tgtTbl.cart) tgtTbl.cart = [];
+        curTbl.cart.forEach(item => {
+          const exist = tgtTbl.cart.find(x => x.id === item.id);
+          if (exist) {
+            exist.qty += item.qty;
+          } else {
+            tgtTbl.cart.push({ ...item });
+          }
+        });
+
+        tgtTbl.status = 'occupied';
+        if (!tgtTbl.openTime) tgtTbl.openTime = curTbl.openTime;
+
+        curTbl.cart = [];
+        curTbl.status = 'empty';
+        curTbl.openTime = null;
+
+        closeModal('transferTableModal');
+        switchTable(tgtTbl.id);
+        playBeep(750, 0.05);
+        showToast(`Đã gộp đơn ${curTbl.name} vào ${tgtTbl.name}!`);
+      }
+
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+      renderQuickTableBar();
+    }
+
+    function printKitchenOrderTicket() {
+      const curTbl = getCurrentTable();
+      if (!cart || cart.length === 0) {
+        return alert("Chưa có món nào để báo bếp / pha chế!");
+      }
+
+      document.getElementById('kitchenModalTable').textContent = `Bàn: ${curTbl.name}`;
+      document.getElementById('kitchenModalTime').textContent = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('kitchenModalItems').innerHTML = cart.map(i => `
+        <div class="flex justify-between">
+          <span class="font-bold">${i.qty}x ${i.name}</span>
+          <span class="text-slate-500 font-mono">${(i.price * i.qty).toLocaleString('vi-VN')} đ</span>
+        </div>
+      `).join('');
+      document.getElementById('kitchenModalTotal').textContent = getCartTotal().toLocaleString('vi-VN') + ' đ';
+
+      document.getElementById('kitchenTicketModal').classList.remove('hidden');
+    }
+
+    function confirmKitchenNotify() {
+      playTingTing();
+      closeModal('kitchenTicketModal');
+      const curTbl = getCurrentTable();
+      showToast(`Đã gửi lệnh báo bếp cho ${curTbl.name}!`);
+    }
+
     // 12. RENDER LỊCH SỬ ĐƠN
     function renderHistory() {
       document.getElementById('historyCount').textContent = ordersHistory.length;
@@ -1698,6 +2199,7 @@
           <div>
             <div class="font-bold text-slate-900 flex items-center gap-1.5">
               <span>${o.code}</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded font-bold bg-amber-50 text-amber-800 border border-amber-200">${o.table || 'Mang Về'}</span>
               <span class="text-[9px] px-1.5 py-0.2 rounded font-bold ${o.method === 'VietQR' ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-blue-50 text-blue-700 border border-blue-200'}">${o.method}</span>
             </div>
             <div class="text-[10px] text-slate-400 mt-0.5">${o.time} • ${o.items.length} món</div>
