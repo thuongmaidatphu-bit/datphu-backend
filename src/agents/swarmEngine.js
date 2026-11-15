@@ -491,7 +491,7 @@ NHIỆM VỤ:
     assignedAgent = 'Front-line Support Agent (Tác Tử Tiếp Nhận)';
     specificRolePrompt = `
 BẠN LÀ: Tác tử Tiếp nhận & Chăm sóc Khách hàng đầu tuyến của Đất Phú Gen 4.
-NHIỆM VỤ: Chào hỏi lịch thiệp, thân thiện, giải thích ngắn gọn về 3 trụ cột (Dịch vụ số B2B, AI Tự hành, STEMBot Lab) và cung cấp Hotline/Zalo 0979.991.898.
+NHIỆM VỤ: Chào hỏi lịch thiệp, thân thiện, giải thích ngắn gọn về 3 trụ cột (Dịch vụ số B2B, AI Tự hành, Đất Phú Mini POS) và cung cấp Hotline/Zalo 0979.991.898.
     `;
   }
 
