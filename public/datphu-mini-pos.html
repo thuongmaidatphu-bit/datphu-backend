@@ -125,88 +125,115 @@
     </div>
   </div>
 
-  <!-- ================= VÙNG LÀM VIỆC CHÍNH (DESKTOP TRÀN MÀN HÌNH & MOBILE TIỆN LỢI) ================= -->
+  <!-- ================= VÙNG LÀM VIỆC CHÍNH (3 CỘT: DOCK DỌC TRÁI + WORKSPACE GIỮA + HÓA ĐƠN PHẢI) ================= -->
   <div class="flex-1 flex overflow-hidden w-full relative">
 
-    <!-- CỘT TRÁI: MENU MÓN, BÀN PHÍM, KHO, LỊCH SỬ (CHIẾM TOÀN BỘ MOBILE HOẶC 65-70% DESKTOP) -->
-    <div class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 min-w-0">
+    <!-- ================= 1. MENU KÉO THẢ DỌC TỪ TRÊN XUỐNG DƯỚI NẰM BÊN TAY TRÁI ================= -->
+    <aside id="leftSidebarDock" class="w-16 sm:w-20 md:w-48 lg:w-52 bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 h-full shadow-xs z-30 select-none transition-all duration-200">
+      
+      <!-- Đỉnh Menu Dọc: Tiêu Đề & Chỉ Dẫn Kéo Thả Dọc -->
+      <div class="p-2 sm:p-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between shrink-0">
+        <div class="flex items-center space-x-1.5 min-w-0">
+          <div class="w-6 h-6 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+            <i class="fa-solid fa-arrows-up-down"></i>
+          </div>
+          <span class="hidden md:inline font-black text-[11px] text-slate-800 uppercase tracking-wider truncate">Kéo Thả Vị Trí</span>
+        </div>
+        <button onclick="toggleSidebarWidth()" id="btnToggleSidebar" class="hidden md:flex w-6 h-6 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 items-center justify-center text-[10px] cursor-pointer transition" title="Thu gọn / Mở rộng menu">
+          <i class="fa-solid fa-angles-left" id="sidebarToggleIcon"></i>
+        </button>
+      </div>
 
-      <!-- ================= TABS CHỌN CHẾ ĐỘ BÁN (NỀN TRẮNG - XANH DƯƠNG) ================= -->
-      <!-- ================= THANH ĐIỀU HƯỚNG 5 MÀN HÌNH CHUYÊN NGHIỆP (5-SCREEN POS DOCK) ================= -->
-      <nav id="posDockNav" class="bg-white border-b border-slate-200 px-2 py-2 flex items-center justify-between text-xs font-bold flex-shrink-0 shadow-xs gap-1 sm:gap-2">
+      <!-- Thân Menu Dọc: 5 Nút Kéo Thả Xếp Dọc Từ Trên Xuống Dưới -->
+      <nav id="posDockNav" class="flex-1 p-1.5 sm:p-2 space-y-2 overflow-y-auto no-scrollbar">
         
         <!-- 1. MÀN HÌNH PHỤC VỤ (Waiter View) -->
-        <button draggable="true" data-mode="menu" onclick="switchMode('menu')" id="tabBtn-menu" class="dock-btn mode-tab active flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-blue-600 text-white shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 border border-transparent select-none relative group" title="Kéo thả để đổi thứ tự nút">
-          <i class="fa-solid fa-grip-vertical text-[9px] text-blue-300 group-hover:text-white mr-0.5 hidden lg:inline-block cursor-grab"></i>
-          <div class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-mug-saucer text-xs"></i>
+        <button draggable="true" data-mode="menu" onclick="switchMode('menu')" id="tabBtn-menu" class="dock-btn mode-tab active w-full p-2 rounded-2xl bg-blue-600 text-white shadow-sm flex items-center gap-2 cursor-pointer transition-all duration-150 active:scale-95 border border-transparent select-none relative group" title="Kéo thả lên/xuống để đổi thứ tự nút">
+          <i class="fa-solid fa-grip-vertical text-blue-300 group-hover:text-white text-xs cursor-grab hidden md:inline shrink-0"></i>
+          <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-mug-saucer text-sm"></i>
           </div>
-          <div class="text-center sm:text-left min-w-0">
-            <span class="block text-[10px] sm:text-xs font-black leading-tight truncate">1. Phục Vụ</span>
-            <span class="hidden md:block text-[9px] text-blue-100 font-normal leading-none truncate">Menu & Bàn</span>
+          <div class="text-left min-w-0 flex-1 hidden md:block">
+            <div class="font-black text-xs leading-tight truncate">1. Phục Vụ</div>
+            <div class="text-[10px] text-blue-100 font-normal leading-none mt-0.5 truncate">Menu & Bàn</div>
           </div>
         </button>
 
         <!-- 2. MÀN HÌNH THU NGÂN (Cashier View) -->
-        <button draggable="true" data-mode="cashier" onclick="switchMode('cashier')" id="tabBtn-cashier" class="dock-btn mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả để đổi thứ tự nút">
-          <i class="fa-solid fa-grip-vertical text-[9px] text-slate-300 group-hover:text-blue-600 mr-0.5 hidden lg:inline-block cursor-grab"></i>
-          <div class="w-6 h-6 rounded-lg bg-blue-100/60 text-blue-600 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-cash-register text-xs"></i>
+        <button draggable="true" data-mode="cashier" onclick="switchMode('cashier')" id="tabBtn-cashier" class="dock-btn mode-tab w-full p-2 rounded-2xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex items-center gap-2 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả lên/xuống để đổi thứ tự nút">
+          <i class="fa-solid fa-grip-vertical text-slate-300 group-hover:text-blue-600 text-xs cursor-grab hidden md:inline shrink-0"></i>
+          <div class="w-8 h-8 rounded-xl bg-blue-100/60 text-blue-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-cash-register text-sm"></i>
           </div>
-          <div class="text-center sm:text-left min-w-0">
-            <span class="block text-[10px] sm:text-xs font-black leading-tight truncate">2. Thu Ngân</span>
-            <span class="hidden md:block text-[9px] text-slate-400 font-normal leading-none truncate">Bấm tiền & Bill</span>
+          <div class="text-left min-w-0 flex-1 hidden md:block">
+            <div class="font-black text-xs leading-tight truncate">2. Thu Ngân</div>
+            <div class="text-[10px] text-slate-400 font-normal leading-none mt-0.5 truncate">Bấm tiền & Bill</div>
           </div>
         </button>
 
         <!-- 3. MÀN HÌNH BẾP & BAR (Kitchen KDS View) -->
-        <button draggable="true" data-mode="kds" onclick="switchMode('kds')" id="tabBtn-kds" class="dock-btn mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả để đổi thứ tự nút">
-          <i class="fa-solid fa-grip-vertical text-[9px] text-slate-300 group-hover:text-orange-600 mr-0.5 hidden lg:inline-block cursor-grab"></i>
-          <div class="w-6 h-6 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-fire-burner text-xs"></i>
+        <button draggable="true" data-mode="kds" onclick="switchMode('kds')" id="tabBtn-kds" class="dock-btn mode-tab w-full p-2 rounded-2xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex items-center gap-2 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả lên/xuống để đổi thứ tự nút">
+          <i class="fa-solid fa-grip-vertical text-slate-300 group-hover:text-orange-600 text-xs cursor-grab hidden md:inline shrink-0"></i>
+          <div class="w-8 h-8 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center shrink-0 relative">
+            <i class="fa-solid fa-fire-burner text-sm"></i>
+            <span id="kdsTabBadge" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-600 text-white text-[9px] font-black flex items-center justify-center shadow-xs md:hidden">0</span>
           </div>
-          <div class="text-center sm:text-left min-w-0">
-            <div class="flex items-center justify-center sm:justify-start gap-1">
-              <span class="text-[10px] sm:text-xs font-black leading-tight truncate">3. Bếp / Bar</span>
-              <span id="kdsTabBadge" class="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[9px] font-black shadow-xs shrink-0">0</span>
+          <div class="text-left min-w-0 flex-1 hidden md:block">
+            <div class="flex items-center justify-between">
+              <span class="font-black text-xs leading-tight truncate">3. Bếp / Bar</span>
+              <span id="kdsTabBadgeDesktop" class="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[9px] font-black shadow-xs">0</span>
             </div>
-            <span class="hidden md:block text-[9px] text-slate-400 font-normal leading-none truncate">Thẻ món KDS</span>
+            <div class="text-[10px] text-slate-400 font-normal leading-none mt-0.5 truncate">Thẻ món KDS</div>
           </div>
         </button>
 
         <!-- 4. MÀN HÌNH KHO & ĐỊNH MỨC (Inventory BOM View) -->
-        <button draggable="true" data-mode="inventory" onclick="switchMode('inventory')" id="tabBtn-inventory" class="dock-btn mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả để đổi thứ tự nút">
-          <i class="fa-solid fa-grip-vertical text-[9px] text-slate-300 group-hover:text-emerald-600 mr-0.5 hidden lg:inline-block cursor-grab"></i>
-          <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-boxes-stacked text-xs"></i>
+        <button draggable="true" data-mode="inventory" onclick="switchMode('inventory')" id="tabBtn-inventory" class="dock-btn mode-tab w-full p-2 rounded-2xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex items-center gap-2 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả lên/xuống để đổi thứ tự nút">
+          <i class="fa-solid fa-grip-vertical text-slate-300 group-hover:text-emerald-600 text-xs cursor-grab hidden md:inline shrink-0"></i>
+          <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-boxes-stacked text-sm"></i>
           </div>
-          <div class="text-center sm:text-left min-w-0">
-            <div class="flex items-center justify-center sm:justify-start gap-1">
-              <span class="text-[10px] sm:text-xs font-black leading-tight truncate">4. Kho BOM</span>
-              <span id="inventoryAlertCount" class="px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-black border border-emerald-200 shrink-0">Đủ</span>
+          <div class="text-left min-w-0 flex-1 hidden md:block">
+            <div class="flex items-center justify-between">
+              <span class="font-black text-xs leading-tight truncate">4. Kho BOM</span>
+              <span id="inventoryAlertCount" class="px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-black border border-emerald-200">Đủ</span>
             </div>
-            <span class="hidden md:block text-[9px] text-slate-400 font-normal leading-none truncate">Định mức & Tồn</span>
+            <div class="text-[10px] text-slate-400 font-normal leading-none mt-0.5 truncate">Định mức & Tồn</div>
           </div>
         </button>
 
         <!-- 5. MÀN HÌNH CHỐT CA & TÀI CHÍNH (Finance EOD View) -->
-        <button draggable="true" data-mode="finance" onclick="switchMode('finance')" id="tabBtn-finance" class="dock-btn mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả để đổi thứ tự nút">
-          <i class="fa-solid fa-grip-vertical text-[9px] text-slate-300 group-hover:text-purple-600 mr-0.5 hidden lg:inline-block cursor-grab"></i>
-          <div class="w-6 h-6 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-chart-pie text-xs"></i>
+        <button draggable="true" data-mode="finance" onclick="switchMode('finance')" id="tabBtn-finance" class="dock-btn mode-tab w-full p-2 rounded-2xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex items-center gap-2 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả lên/xuống để đổi thứ tự nút">
+          <i class="fa-solid fa-grip-vertical text-slate-300 group-hover:text-purple-600 text-xs cursor-grab hidden md:inline shrink-0"></i>
+          <div class="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-chart-pie text-sm"></i>
           </div>
-          <div class="text-center sm:text-left min-w-0">
-            <div class="flex items-center justify-center sm:justify-start gap-1">
-              <span class="text-[10px] sm:text-xs font-black leading-tight truncate">5. Chốt Ca</span>
-              <span id="financeOrderBadge" class="px-1.5 py-0.2 rounded-full bg-blue-100 text-blue-700 text-[9px] font-black shrink-0">0</span>
+          <div class="text-left min-w-0 flex-1 hidden md:block">
+            <div class="flex items-center justify-between">
+              <span class="font-black text-xs leading-tight truncate">5. Chốt Ca</span>
+              <span id="financeOrderBadge" class="px-1.5 py-0.2 rounded-full bg-blue-100 text-blue-700 text-[9px] font-black">0</span>
             </div>
-            <span class="hidden md:block text-[9px] text-slate-400 font-normal leading-none truncate">Thu - Chi & Lời lỗ</span>
+            <div class="text-[10px] text-slate-400 font-normal leading-none mt-0.5 truncate">Thu - Chi & Lời</div>
           </div>
         </button>
 
       </nav>
 
-      <!-- ================= KHAY TÁC VỤ NHANH CHUYÊN BIỆT ĐỘNG (CONTEXTUAL QUICK-ACTION SUB-DOCK) ================= -->
+      <!-- Đáy Menu Dọc: Nút Khôi Phục Vị Trí Mặc Định -->
+      <div class="p-2 bg-slate-50 border-t border-slate-200 text-center shrink-0">
+        <button onclick="resetDockOrder()" class="w-full py-1.5 rounded-xl bg-white hover:bg-slate-200 text-slate-500 hover:text-slate-800 border border-slate-200 text-[10px] font-bold flex items-center justify-center gap-1 cursor-pointer transition active:scale-95" title="Khôi phục thứ tự 5 nút dọc về mặc định">
+          <i class="fa-solid fa-rotate-left"></i>
+          <span class="hidden md:inline">Reset Vị Trí</span>
+        </button>
+      </div>
+
+    </aside>
+    <!-- ================= HẾT MENU KÉO THẢ DỌC BÊN TAY TRÁI ================= -->
+
+    <!-- ================= 2. CỘT KHÔNG GIAN LÀM VIỆC CHÍNH ================= -->
+    <div class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 min-w-0">
+      
+      <!-- KHAY TÁC VỤ NHANH CHUYÊN BIỆT ĐỘNG (CONTEXTUAL QUICK-ACTION SUB-DOCK) -->
       <div id="dockSubActionsContainer" class="bg-slate-100/90 border-b border-slate-200 px-2 py-1.5 flex items-center justify-between text-xs shrink-0 overflow-x-auto no-scrollbar gap-1.5 transition-all">
         <!-- Javascript render tự động theo từng màn hình đang chọn -->
       </div>
@@ -2053,6 +2080,28 @@
     // ========================================================================
     let currentActiveMode = 'menu';
 
+    
+    let isSidebarCollapsed = false;
+
+    function toggleSidebarWidth() {
+      const sidebar = document.getElementById('leftSidebarDock');
+      const icon = document.getElementById('sidebarToggleIcon');
+      if (!sidebar) return;
+
+      isSidebarCollapsed = !isSidebarCollapsed;
+      if (isSidebarCollapsed) {
+        sidebar.classList.remove('md:w-48', 'lg:w-52');
+        sidebar.classList.add('w-16');
+        sidebar.querySelectorAll('.md\\:block, .md\\:inline, .md\\:flex').forEach(el => el.classList.add('hidden'));
+        if (icon) icon.className = "fa-solid fa-angles-right";
+      } else {
+        sidebar.classList.remove('w-16');
+        sidebar.classList.add('md:w-48', 'lg:w-52');
+        sidebar.querySelectorAll('.md\\:block, .md\\:inline, .md\\:flex').forEach(el => el.classList.remove('hidden'));
+        if (icon) icon.className = "fa-solid fa-angles-left";
+      }
+    }
+
     function initDraggableDock() {
       const nav = document.getElementById('posDockNav');
       if (!nav) return;
@@ -2088,8 +2137,8 @@
           e.dataTransfer.dropEffect = 'move';
           if (draggedBtn && draggedBtn !== btn) {
             const rect = btn.getBoundingClientRect();
-            const midpoint = rect.left + rect.width / 2;
-            if (e.clientX < midpoint) {
+            const midpoint = rect.top + rect.height / 2;
+            if (e.clientY < midpoint) {
               nav.insertBefore(draggedBtn, btn);
             } else {
               nav.insertBefore(draggedBtn, btn.nextSibling);
@@ -2099,14 +2148,14 @@
       });
 
       // 3. Hỗ trợ Touch Drag trên Mobile (Chạm giữ 350ms)
-      let touchStartX = 0;
+      let touchStartY = 0;
       let touchedBtn = null;
       let longPressTimer = null;
 
       nav.querySelectorAll('.dock-btn').forEach(btn => {
         btn.addEventListener('touchstart', (e) => {
           touchedBtn = btn;
-          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
           longPressTimer = setTimeout(() => {
             btn.classList.add('ring-2', 'ring-blue-500', 'scale-105');
             playBeep(600, 0.05);
@@ -2115,20 +2164,20 @@
 
         btn.addEventListener('touchmove', (e) => {
           if (!longPressTimer) return;
-          const currentX = e.touches[0].clientX;
-          const deltaX = currentX - touchStartX;
-          if (Math.abs(deltaX) > 40) {
+          const currentY = e.touches[0].clientY;
+          const deltaY = currentY - (touchStartY || currentY);
+          if (Math.abs(deltaY) > 35) {
             clearTimeout(longPressTimer);
-            if (deltaX > 0 && btn.nextElementSibling) {
+            if (deltaY > 0 && btn.nextElementSibling) {
               nav.insertBefore(btn.nextElementSibling, btn);
               saveDockOrder();
               playBeep(700, 0.03);
-            } else if (deltaX < 0 && btn.previousElementSibling) {
+            } else if (deltaY < 0 && btn.previousElementSibling) {
               nav.insertBefore(btn, btn.previousElementSibling);
               saveDockOrder();
               playBeep(700, 0.03);
             }
-            touchStartX = currentX;
+            touchStartY = currentY;
           }
         }, { passive: true });
 
@@ -3013,6 +3062,8 @@
       const pendingCount = kdsOrders.filter(o => o.status !== 'done').length;
       const tabBadge = document.getElementById('kdsTabBadge');
       if (tabBadge) tabBadge.textContent = pendingCount;
+      const tabBadgeDesktop = document.getElementById('kdsTabBadgeDesktop');
+      if (tabBadgeDesktop) tabBadgeDesktop.textContent = pendingCount;
       const activeBadge = document.getElementById('kdsActiveCountBadge');
       if (activeBadge) activeBadge.textContent = `${pendingCount} đơn đang chờ`;
 
