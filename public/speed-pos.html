@@ -93,6 +93,11 @@
         <i class="fa-solid fa-clock text-amber-400"></i>
         <span id="topClock">--:--:--</span>
       </div>
+      <button onclick="openN8nModal()" class="px-2.5 py-1.5 rounded-xl bg-indigo-700 hover:bg-indigo-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition cursor-pointer" title="Cài đặt tự động hóa n8n (Zalo, Telegram, Google Sheets)">
+        <i class="fa-solid fa-network-wired text-amber-300"></i>
+        <span>n8n Tự Động</span>
+        <span id="n8nStatusDot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+      </button>
       <div class="bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-xl shadow-xs flex items-center gap-1.5 transition">
         <i class="fa-solid fa-sack-dollar text-amber-300"></i>
         <span>Doanh thu:</span>
@@ -258,10 +263,171 @@
   </div>
 
   <!-- ================= VÙNG IN HÓA ĐƠN NHIỆT (CHUẨN 80MM) ================= -->
+  
+  <!-- ================= MODAL CẤU HÌNH n8n WEBHOOK TỰ ĐỘNG HÓA ================= -->
+  <div id="n8nModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md p-5 shadow-2xl flex flex-col">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-black shadow-xs">
+            <i class="fa-solid fa-network-wired"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-slate-800">CẤU HÌNH TỰ ĐỘNG HÓA n8n</h3>
+            <span class="text-[10px] text-slate-500">Tự động bắn đơn sang Zalo, Telegram, Google Sheets</span>
+          </div>
+        </div>
+        <button onclick="closeN8nModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs cursor-pointer">✕</button>
+      </div>
+
+      <div class="py-3 space-y-3 text-xs">
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Đường dẫn n8n Webhook URL:</label>
+          <input type="url" id="n8nWebhookInput" placeholder="https://n8n.your-domain.com/webhook/datphu-pos" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono font-bold focus:bg-white focus:outline-indigo-500">
+          <span class="text-[10px] text-slate-400 block mt-1">Dán link Webhook từ n8n (hoặc webhook.site để test).</span>
+        </div>
+
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+          <span class="font-bold text-slate-700 block text-[11px]">Các sự kiện tự động kích hoạt:</span>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="n8nEvtOrder" checked class="rounded text-indigo-600 focus:ring-0">
+            <span><strong>Thanh toán xong</strong> (Bắn hóa đơn lưu Google Sheets & báo doanh thu)</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="n8nEvtKitchen" checked class="rounded text-indigo-600 focus:ring-0">
+            <span><strong>Báo Bếp</strong> (Bắn đơn món xuống bếp từ xa)</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="n8nEvtShift" checked class="rounded text-indigo-600 focus:ring-0">
+            <span><strong>Chốt Ca cuối ngày</strong> (Bắn báo cáo doanh thu về Zalo / Telegram)</span>
+          </label>
+        </div>
+
+        <!-- Trạng thái kết nối -->
+        <div id="n8nTestStatus" class="hidden p-2 rounded-xl text-[11px] font-bold"></div>
+      </div>
+
+      <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+        <button onclick="testN8nWebhook()" class="px-3 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold text-xs flex items-center gap-1 cursor-pointer transition">
+          <i class="fa-solid fa-flask"></i> 🧪 Bắn Thử Nghiệm
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="closeN8nModal()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer">Đóng</button>
+          <button onclick="saveN8nConfig()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs shadow-md cursor-pointer transition">Lưu Cấu Hình</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <div id="printableReceipt" class="hidden"></div>
 
   <!-- ================= JAVASCRIPT: LOGIC 5 NÚT ĐÈN SÁNG ================= -->
   <script>
+    
+    // ================= n8n AUTOMATION WEBHOOK ENGINE =================
+    let n8nConfig = JSON.parse(localStorage.getItem('dp_n8n_config')) || {
+      url: "",
+      enabled: false,
+      evtOrder: true,
+      evtKitchen: true,
+      evtShift: true
+    };
+
+    function updateN8nStatusIndicator() {
+      const dot = document.getElementById('n8nStatusDot');
+      if (dot) {
+        dot.className = n8nConfig.url && n8nConfig.enabled ? "w-2 h-2 rounded-full bg-emerald-400 animate-ping" : "w-2 h-2 rounded-full bg-slate-400";
+      }
+    }
+
+    function openN8nModal() {
+      document.getElementById('n8nWebhookInput').value = n8nConfig.url || "";
+      document.getElementById('n8nEvtOrder').checked = n8nConfig.evtOrder !== false;
+      document.getElementById('n8nEvtKitchen').checked = n8nConfig.evtKitchen !== false;
+      document.getElementById('n8nEvtShift').checked = n8nConfig.evtShift !== false;
+      document.getElementById('n8nModal').classList.remove('hidden');
+    }
+
+    function closeN8nModal() {
+      document.getElementById('n8nModal').classList.add('hidden');
+      document.getElementById('n8nTestStatus').classList.add('hidden');
+    }
+
+    function saveN8nConfig() {
+      const url = (document.getElementById('n8nWebhookInput').value || "").trim();
+      n8nConfig.url = url;
+      n8nConfig.enabled = !!url;
+      n8nConfig.evtOrder = document.getElementById('n8nEvtOrder').checked;
+      n8nConfig.evtKitchen = document.getElementById('n8nEvtKitchen').checked;
+      n8nConfig.evtShift = document.getElementById('n8nEvtShift').checked;
+
+      localStorage.setItem('dp_n8n_config', JSON.stringify(n8nConfig));
+      updateN8nStatusIndicator();
+      closeN8nModal();
+      alert(url ? "✓ Đã lưu cấu hình n8n Webhook thành công!" : "Đã tắt tích hợp n8n!");
+    }
+
+    // Bắn Webhook ngầm không làm đơ giao diện POS
+    async function triggerN8nWebhook(eventType, data) {
+      if (!n8nConfig.enabled || !n8nConfig.url) return;
+      if (eventType === 'order_completed' && !n8nConfig.evtOrder) return;
+      if (eventType === 'kitchen_order' && !n8nConfig.evtKitchen) return;
+      if (eventType === 'shift_closed' && !n8nConfig.evtShift) return;
+
+      const payload = {
+        store: "QUAN AN DAT PHU",
+        event: eventType,
+        timestamp: new Date().toISOString(),
+        data: data
+      };
+
+      try {
+        fetch(n8nConfig.url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          mode: "no-cors",
+          body: JSON.stringify(payload)
+        }).catch(() => {});
+        console.log("n8n Webhook sent:", eventType);
+      } catch (err) {
+        console.warn("n8n Webhook error (silent):", err);
+      }
+    }
+
+    async function testN8nWebhook() {
+      const url = (document.getElementById('n8nWebhookInput').value || "").trim();
+      const statusEl = document.getElementById('n8nTestStatus');
+      if (!url) {
+        alert("Vui lòng nhập đường dẫn n8n Webhook URL trước khi bấm thử nghiệm!");
+        return;
+      }
+
+      statusEl.className = "p-2 rounded-xl text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200 block";
+      statusEl.textContent = "⏳ Đang bắn gói tin thử nghiệm sang n8n...";
+
+      try {
+        await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          mode: "no-cors",
+          body: JSON.stringify({
+            store: "QUAN AN DAT PHU",
+            event: "test_ping",
+            timestamp: new Date().toISOString(),
+            message: "Xin chào từ Đất Phú Speed POS! Kết nối n8n hoạt động hoàn hảo."
+          })
+        });
+
+        statusEl.className = "p-2 rounded-xl text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 block";
+        statusEl.textContent = "✓ Đã bắn gói tin thử nghiệm thành công! Hãy kiểm tra màn hình n8n của bạn.";
+      } catch (err) {
+        statusEl.className = "p-2 rounded-xl text-[11px] font-bold bg-red-50 text-red-700 border border-red-300 block";
+        statusEl.textContent = "✕ Không gửi được: " + err.message;
+      }
+    }
+
     // 1. DỮ LIỆU BÀN (16 BÀN + 1 MANG VỀ) KÈM BIẾN TIẾN ĐỘ 5 BƯỚC
     const DEFAULT_TABLES = [
       { id: "takeaway", name: "Mang Về", status: "empty", cart: [], openTime: null, kitchenSent: false, isCheckingOut: false },
@@ -557,6 +723,12 @@
       t.kitchenSent = true;
       t.isCheckingOut = false;
       saveState();
+      triggerN8nWebhook('kitchen_order', {
+        tableName: t.name,
+        tableId: t.id,
+        itemsCount: t.cart.reduce((s, x) => s + x.qty, 0),
+        items: t.cart
+      });
       renderTables();
       renderCart();
       playKitchenChime();
@@ -683,6 +855,17 @@
 
       // In hóa đơn chính thức
       actionPrintBill(true);
+
+      // Bắn Webhook sang n8n để lưu Google Sheets / Gửi Zalo Telegram
+      triggerN8nWebhook('order_completed', {
+        tableName: t.name,
+        tableId: t.id,
+        totalAmount: total,
+        paymentMethod: "VietQR",
+        items: t.cart,
+        openTime: t.openTime,
+        closeTime: new Date().toLocaleTimeString('vi-VN')
+      });
 
       // Đóng bàn và chuyển về trạng thái Trống (Bước 1 sáng đèn)
       t.cart = [];
