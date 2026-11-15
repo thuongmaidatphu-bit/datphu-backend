@@ -1856,30 +1856,30 @@
 
       if (!isOcc || s === 'empty') {
         if (isActive) {
-          return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-blue-600 text-white shadow-2xs flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span> 👉 Đang chọn
+          return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-blue-600 text-white shadow-2xs flex items-center gap-1 shrink-0">
+            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span> Đang Chọn
           </span>`;
         }
-        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-500 border border-slate-200 flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span> ⚪ Trống
+        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-500 border border-slate-200 flex items-center gap-1 shrink-0">
+          <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Trống
         </span>`;
       }
 
       if (s === 'cooking' || t.kitchenStatus === 'cooking') {
-        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-500 text-white shadow-2xs flex items-center gap-1 animate-pulse">
-          <i class="fa-solid fa-fire-burner text-[9px]"></i> 🟡 Bếp Đang Nấu
+        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-500 text-white shadow-2xs flex items-center gap-1 shrink-0 animate-pulse">
+          <i class="fa-solid fa-fire-burner text-[9px]"></i> Bếp Đang Nấu
         </span>`;
       }
 
       if (s === 'checkout') {
-        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white shadow-2xs flex items-center gap-1 animate-bounce">
-          <i class="fa-solid fa-receipt text-[9px]"></i> 🔴 Chờ Tính Tiền
+        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white shadow-2xs flex items-center gap-1 shrink-0 animate-bounce">
+          <i class="fa-solid fa-receipt text-[9px]"></i> Chờ Tính Tiền
         </span>`;
       }
 
       // Mặc định: Đã lên đủ món
-      return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-600 text-white shadow-2xs flex items-center gap-1">
-        <i class="fa-solid fa-circle-check text-[9px]"></i> 🟢 Đã Đủ Món
+      return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-600 text-white shadow-2xs flex items-center gap-1 shrink-0">
+        <i class="fa-solid fa-check text-[9px]"></i> Đã Đủ Món
       </span>`;
     }
 
@@ -1941,26 +1941,25 @@
         return `
           <div onclick="switchTable('${t.id}')" class="bg-white p-2.5 rounded-2xl border transition cursor-pointer relative flex flex-col justify-between shadow-2xs select-none ${isActive ? 'border-blue-600 ring-2 ring-blue-500/60 bg-blue-50/40 shadow-sm' : (isOcc ? 'border-red-300 bg-red-50/20 hover:border-red-400' : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50')}">
             
-            <!-- Đỉnh ô bàn: Tên bàn & Nhãn Bàn & Lượt Khách -->
+            <!-- Đỉnh ô bàn: Tên bàn & Nhãn Bàn & Lượt Khách (Rõ Ràng Tuyệt Đối) -->
             <div>
-              <div class="flex items-center justify-between mb-1">
-                <div class="flex items-center gap-1.5 min-w-0">
-                  <div class="w-6 h-6 rounded-lg ${isActive ? 'bg-blue-600 text-white' : (isOcc ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-700')} flex items-center justify-center text-[11px] font-black shadow-2xs shrink-0">
+              <!-- Dòng 1: Icon + Tên Bàn To Rõ + Nhãn Dán Trạng Thái -->
+              <div class="flex items-center justify-between mb-1 gap-1">
+                <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                  <div class="w-6 h-6 rounded-lg ${isActive ? 'bg-blue-600 text-white ring-2 ring-blue-300' : (isOcc ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-700')} flex items-center justify-center text-[11px] font-black shadow-2xs shrink-0">
                     <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'}"></i>
                   </div>
-                  <div class="min-w-0 truncate">
-                    <div class="flex items-center gap-1">
-                      <h4 class="font-black text-xs ${isActive ? 'text-blue-900 font-extrabold' : 'text-slate-900'} truncate">${t.name}</h4>
-                      ${tag ? `<span class="text-[8px] px-1 py-0.2 rounded font-black uppercase ${tag === 'VIP' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-purple-100 text-purple-700 border border-purple-200'}">${tag}</span>` : ''}
-                    </div>
-                    <span class="text-[9px] text-slate-400 font-medium block leading-none truncate">${zoneName} ${t.openTime ? '• ' + t.openTime : ''}</span>
+                  <div class="min-w-0">
+                    <h4 class="font-black text-xs sm:text-[13px] ${isActive ? 'text-blue-900 font-extrabold' : 'text-slate-900'} truncate leading-tight">${t.name}</h4>
+                    <span class="text-[9px] text-slate-400 font-medium block leading-tight truncate">${zoneName} ${t.openTime ? '• ' + t.openTime : ''}</span>
                   </div>
                 </div>
 
-                <!-- Nhãn Dán Trạng Thái Bàn Tiện Lợi (Status Sticker) -->
+                <!-- Cụm Nhãn Dán Trạng Thái (Bên Phải) -->
                 <div class="shrink-0 flex items-center gap-1">
+                  ${tag ? `<span class="text-[8px] px-1 py-0.2 rounded font-black uppercase ${tag === 'VIP' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-purple-100 text-purple-700 border border-purple-200'}">${tag}</span>` : ''}
                   ${getTableStatusSticker(t, isActive, isOcc)}
-                  ${isOcc ? `<span class="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-slate-100 text-slate-700 border border-slate-300 font-mono">${totalItemsCount} món</span>` : ''}
+                  ${isOcc ? `<span class="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-red-100 text-red-700 border border-red-200 font-mono shrink-0">${totalItemsCount} món</span>` : ''}
                 </div>
               </div>
 
