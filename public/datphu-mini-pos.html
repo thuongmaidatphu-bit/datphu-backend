@@ -1506,7 +1506,7 @@
       { id: 2, name: "Cà Phê Sữa Đá", price: 18000, cat: "coffee", icon: "fa-glass-water", color: "text-blue-600", image: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=400&auto=format&fit=crop&q=80" },
       { id: 3, name: "Bạc Xỉu Phú Yên", price: 20000, cat: "coffee", icon: "fa-whiskey-glass", color: "text-blue-600", image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&auto=format&fit=crop&q=80" },
       { id: 4, name: "Trà Đào Cam Sả", price: 25000, cat: "tea", icon: "fa-leaf", color: "text-emerald-600", image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&auto=format&fit=crop&q=80" },
-      { id: 5, name: "Trà Sữa Trân Châu", price: 25000, cat: "tea", icon: "fa-mug-saucer", color: "text-purple-600", image: "https://images.unsplash.com/photo-1558857563-b37df2d2b56e?w=400&auto=format&fit=crop&q=80" },
+      { id: 5, name: "Trà Sữa Trân Châu", price: 25000, cat: "tea", icon: "fa-mug-saucer", color: "text-purple-600", image: "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400&auto=format&fit=crop&q=80" },
       { id: 6, name: "Nước Cam Vắt", price: 22000, cat: "tea", icon: "fa-lemon", color: "text-amber-600", image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&auto=format&fit=crop&q=80" },
       { id: 7, name: "Bánh Mì Thịt Nguội", price: 20000, cat: "food", icon: "fa-bread-slice", color: "text-red-600", image: "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=400&auto=format&fit=crop&q=80" },
       { id: 8, name: "Bún Cá Dằm", price: 30000, cat: "food", icon: "fa-bowl-food", color: "text-red-600", image: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400&auto=format&fit=crop&q=80" },
@@ -1517,6 +1517,22 @@
     ];
 
     // 2. KHỞI TẠO STATE
+    
+    // Tự động kiểm tra và sửa link ảnh món trà sữa nếu bị cache cũ
+    try {
+      let cachedProds = JSON.parse(localStorage.getItem('dp_pos_products'));
+      if (cachedProds && Array.isArray(cachedProds)) {
+        let changed = false;
+        cachedProds.forEach(p => {
+          if (p.id === 5 && (!p.image || p.image.includes('1558857563'))) {
+            p.image = 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400&auto=format&fit=crop&q=80';
+            changed = true;
+          }
+        });
+        if (changed) localStorage.setItem('dp_pos_products', JSON.stringify(cachedProds));
+      }
+    } catch(e) {}
+
     let products = JSON.parse(localStorage.getItem('dp_pos_products')) || DEFAULT_PRODUCTS;
     let productDisplayMode = localStorage.getItem('dp_pos_display_mode') || 'excel';
 
@@ -2121,7 +2137,7 @@
             <div onclick="addToCart(${p.id})" class="cursor-pointer">
               <div class="relative w-full h-16 rounded-lg overflow-hidden mb-1 bg-slate-100 group shadow-inner">
                 ${p.image ? `
-                  <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy">
+                  <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&auto=format&fit=crop&q=80';">
                 ` : `
                   <div class="w-full h-full flex items-center justify-center bg-blue-50 text-blue-600 text-xl">
                     <i class="fa-solid ${p.icon || 'fa-mug-hot'}"></i>
@@ -2952,6 +2968,12 @@
       cart = [...(next.cart || [])];
 
       localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+      // Cập nhật ngay tên bàn đang chọn ở footer
+      const cartSummary = document.getElementById('cartSummaryText');
+      if (cartSummary) {
+        const curCount = (next.cart || []).reduce((s, x) => s + x.qty, 0);
+        cartSummary.textContent = `${next.name.toUpperCase()} • ${curCount > 0 ? curCount + ' MÓN' : 'CHƯA CÓ MÓN'}`;
+      }
       playBeep(650, 0.04);
       updateCartUI();
       renderProducts();
@@ -3943,7 +3965,7 @@
       { name: "Cà phê sữa", url: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=400&auto=format&fit=crop&q=80" },
       { name: "Bạc xỉu", url: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&auto=format&fit=crop&q=80" },
       { name: "Trà đào", url: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&auto=format&fit=crop&q=80" },
-      { name: "Trà sữa", url: "https://images.unsplash.com/photo-1558857563-b37df2d2b56e?w=400&auto=format&fit=crop&q=80" },
+      { name: "Trà sữa", url: "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400&auto=format&fit=crop&q=80" },
       { name: "Nước cam", url: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&auto=format&fit=crop&q=80" },
       { name: "Bánh mì", url: "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=400&auto=format&fit=crop&q=80" },
       { name: "Bún cá dằm", url: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400&auto=format&fit=crop&q=80" },
