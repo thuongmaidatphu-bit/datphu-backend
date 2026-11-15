@@ -49,6 +49,32 @@
       #printableBill, #printableBill * { visibility: visible; }
       #printableBill { position: absolute; left: 0; top: 0; width: 100%; }
     }
+  
+    /* Active Table Card Motion & Glowing Blue Ring */
+    @keyframes activeTablePulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7), 0 8px 20px -4px rgba(37, 99, 235, 0.25);
+      }
+      50% {
+        box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.2), 0 14px 28px -4px rgba(37, 99, 235, 0.4);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7), 0 8px 20px -4px rgba(37, 99, 235, 0.25);
+      }
+    }
+
+    @keyframes activeTablePop {
+      0% { transform: scale(0.97); }
+      60% { transform: scale(1.03); }
+      100% { transform: scale(1.02); }
+    }
+
+    .active-table-card {
+      border: 2.5px solid #2563eb !important;
+      background: linear-gradient(135deg, #f0f7ff 0%, #e0effe 100%) !important;
+      animation: activeTablePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, activeTablePulse 2.5s infinite ease-in-out !important;
+      z-index: 10 !important;
+    }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased select-none h-screen flex flex-col w-full overflow-hidden">
@@ -1939,7 +1965,7 @@
         }
 
         return `
-          <div onclick="switchTable('${t.id}')" class="bg-white p-2.5 rounded-2xl border transition cursor-pointer relative flex flex-col justify-between shadow-2xs select-none ${isActive ? 'border-blue-600 ring-2 ring-blue-500/60 bg-blue-50/40 shadow-sm' : (isOcc ? 'border-red-300 bg-red-50/20 hover:border-red-400' : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50')}">
+          <div onclick="switchTable('${t.id}')" class="p-2.5 rounded-2xl border transition-all duration-300 cursor-pointer relative flex flex-col justify-between shadow-2xs select-none ${isActive ? 'active-table-card' : (isOcc ? 'bg-white border-red-300 hover:border-red-400 hover:shadow-xs' : 'bg-white border-slate-200 hover:border-blue-300 hover:bg-slate-50 hover:shadow-2xs')}">
             
             <!-- Đỉnh ô bàn: Tên bàn & Nhãn Bàn & Lượt Khách (Rõ Ràng Tuyệt Đối) -->
             <div>
@@ -3167,7 +3193,7 @@
         const curCount = (next.cart || []).reduce((s, x) => s + x.qty, 0);
         cartSummary.textContent = `${next.name.toUpperCase()} • ${curCount > 0 ? curCount + ' MÓN' : 'CHƯA CÓ MÓN'}`;
       }
-      playBeep(650, 0.04);
+      playBeep(750, 0.05);
       updateCartUI();
       renderProducts();
       renderQuickTableBar();
