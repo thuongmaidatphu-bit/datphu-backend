@@ -1861,10 +1861,19 @@
         const totalItemsCount = (t.cart || []).reduce((s, x) => s + x.qty, 0);
         const zoneName = t.zone === 'tret' ? 'Tầng trệt' : (t.zone === 'ngoaitroi' ? 'Sân vườn' : (t.zone === 'takeaway' ? 'Mang đi' : 'Lầu 1'));
 
-        let itemsSummary = '';
+        // Chi tiết danh sách các mục món của bàn
+        let itemsHtml = '';
         if (isOcc) {
-          itemsSummary = t.cart.map(i => `${i.qty}x ${i.name}`).slice(0, 2).join(', ');
-          if (t.cart.length > 2) itemsSummary += `, ...`;
+          itemsHtml = t.cart.map(i => `
+            <div class="flex items-center justify-between py-0.5 text-[10px] text-slate-700 border-b border-slate-100 last:border-none">
+              <span class="font-bold truncate pr-1">• ${i.qty}x ${i.name}</span>
+              <span class="font-mono text-slate-500 whitespace-nowrap">${(i.price * i.qty).toLocaleString('vi-VN')}đ</span>
+            </div>
+          `).slice(0, 3).join('');
+          
+          if (t.cart.length > 3) {
+            itemsHtml += `<div class="text-[9px] text-blue-600 font-bold pt-0.5">+ ${t.cart.length - 3} món khác...</div>`;
+          }
         }
 
         return `
@@ -1872,14 +1881,14 @@
             
             <!-- Đỉnh ô bàn: Tên bàn & Trạng thái -->
             <div>
-              <div class="flex items-center justify-between mb-1.5">
+              <div class="flex items-center justify-between mb-1">
                 <div class="flex items-center gap-1.5">
                   <div class="w-6 h-6 rounded-lg ${isActive ? 'bg-blue-600 text-white' : (isOcc ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-700')} flex items-center justify-center text-[11px] font-black shadow-2xs">
                     <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'}"></i>
                   </div>
                   <div>
                     <h4 class="font-black text-xs ${isActive ? 'text-blue-900 font-extrabold' : 'text-slate-900'}">${t.name}</h4>
-                    <span class="text-[9px] text-slate-400 font-medium block leading-none">${zoneName}</span>
+                    <span class="text-[9px] text-slate-400 font-medium block leading-none">${zoneName} ${t.openTime ? '• ' + t.openTime : ''}</span>
                   </div>
                 </div>
 
@@ -1895,31 +1904,108 @@
                 `}
               </div>
 
-              <!-- Tóm tắt món của bàn -->
-              <div class="my-1 text-[10px] leading-tight ${isOcc ? 'text-slate-700 font-medium' : 'text-slate-400 italic'} bg-white/80 p-1.5 rounded-lg border border-slate-100 line-clamp-1">
-                ${isOcc ? itemsSummary : 'Bàn trống'}
+              <!-- Chi tiết các mục món trong bàn -->
+              <div class="my-1.5 bg-slate-50/90 p-1.5 rounded-xl border border-slate-100 min-h-[48px]">
+                ${isOcc ? itemsHtml : '<div class="text-center text-[10px] text-slate-400 italic py-2">Bàn trống • Sẵn sàng đón khách</div>'}
               </div>
             </div>
 
-            <!-- Chân ô bàn: Tổng tiền & Chỉ báo -->
+            <!-- Chân ô bàn: Tổng tiền & Nút tác vụ nhanh -->
             <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between">
-              <span class="font-black font-mono text-xs ${isOcc ? 'text-red-600 font-bold' : (isActive ? 'text-blue-700' : 'text-slate-400')}">
-                ${tTotal > 0 ? tTotal.toLocaleString('vi-VN') + ' đ' : '0 đ'}
-              </span>
-              ${isActive ? `
-                <span class="text-[9px] font-black text-blue-700 flex items-center gap-0.5">
-                  <i class="fa-solid fa-check"></i> Đang chọn
+              <div>
+                <span class="text-[9px] text-slate-400 block font-medium leading-none mb-0.5">${isOcc ? 'Tạm tính' : 'Sẵn sàng'}</span>
+                <span class="font-black font-mono text-xs ${isOcc ? 'text-red-600 font-bold' : (isActive ? 'text-blue-700' : 'text-slate-400')}">
+                  ${tTotal > 0 ? tTotal.toLocaleString('vi-VN') + ' đ' : '0 đ'}
                 </span>
-              ` : `
-                <span class="text-[9px] text-slate-400 hover:text-blue-600 font-bold">
-                  Chọn bàn →
-                </span>
-              `}
+              </div>
+
+              <!-- Nút Chi Tiết Bàn -->
+              <div class="flex items-center space-x-1" onclick="event.stopPropagation()">
+                ${isOcc ? `
+                  <button onclick="openTableDetailModal('${t.id}')" class="px-2 py-0.5 rounded-md bg-blue-100 hover:bg-blue-600 hover:text-white text-blue-700 text-[10px] font-bold border border-blue-200 transition cursor-pointer" title="Xem chi tiết các mục bàn và in tạm tính">
+                    <i class="fa-solid fa-list-check text-[9px]"></i> Chi Tiết
+                  </button>
+                ` : `
+                  <span class="text-[9px] text-slate-400 font-bold">${isActive ? 'Đang chọn' : 'Vào bàn →'}</span>
+                `}
+              </div>
             </div>
+
           </div>
         `;
       }).join('');
     }
+
+    // ========================================================================
+    // HÀM MỞ BẢNG CHI TIẾT CÁC MỤC BÀN
+    // ========================================================================
+    function openTableDetailModal(tableId) {
+      const t = tables.find(x => x.id === tableId) || getCurrentTable();
+      switchTable(t.id);
+
+      const titleEl = document.getElementById('tblDetailTitle');
+      const badgeEl = document.getElementById('tblDetailStatusBadge');
+      const metaEl = document.getElementById('tblDetailMeta');
+      const listEl = document.getElementById('tblDetailItemsList');
+      const totalQtyEl = document.getElementById('tblDetailTotalQty');
+      const totalAmountEl = document.getElementById('tblDetailTotalAmount');
+
+      const isOcc = t.status === 'occupied' && t.cart && t.cart.length > 0;
+      const tTotal = (t.cart || []).reduce((s, x) => s + x.price * x.qty, 0);
+      const totalQty = (t.cart || []).reduce((s, x) => s + x.qty, 0);
+      const zoneName = t.zone === 'tret' ? 'Tầng trệt' : (t.zone === 'ngoaitroi' ? 'Sân vườn' : (t.zone === 'takeaway' ? 'Mang đi' : 'Lầu 1'));
+
+      if (titleEl) titleEl.textContent = t.name.toUpperCase();
+      if (badgeEl) {
+        badgeEl.textContent = isOcc ? 'Có khách' : 'Trống';
+        badgeEl.className = isOcc ? 'px-2 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white animate-pulse' : 'px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-200 text-slate-600';
+      }
+      if (metaEl) {
+        metaEl.textContent = `Khu vực: ${zoneName} ${t.openTime ? '• Giờ vào: ' + t.openTime : ''}`;
+      }
+      if (totalQtyEl) totalQtyEl.textContent = `${totalQty} món`;
+      if (totalAmountEl) totalAmountEl.textContent = `${tTotal.toLocaleString('vi-VN')} đ`;
+
+      if (listEl) {
+        if (!isOcc || t.cart.length === 0) {
+          listEl.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs">Bàn hiện đang trống, chưa có món nào</div>`;
+        } else {
+          listEl.innerHTML = t.cart.map(item => `
+            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-lg bg-blue-100 text-blue-700 font-black text-xs flex items-center justify-center">${item.qty}</span>
+                <div>
+                  <h5 class="font-bold text-xs text-slate-800">${item.name}</h5>
+                  <span class="text-[10px] text-slate-400 font-mono">${item.price.toLocaleString('vi-VN')} đ / phần</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="font-black font-mono text-xs text-red-600">${(item.price * item.qty).toLocaleString('vi-VN')} đ</span>
+                <div class="flex items-center space-x-1">
+                  <button onclick="updateCartQty(${item.id}, -1); openTableDetailModal('${t.id}');" class="w-5 h-5 rounded bg-white hover:bg-red-50 hover:text-red-600 text-slate-600 font-bold border border-slate-200 flex items-center justify-center text-xs cursor-pointer">-</button>
+                  <button onclick="updateCartQty(${item.id}, 1); openTableDetailModal('${t.id}');" class="w-5 h-5 rounded bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center justify-center text-xs cursor-pointer">+</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+
+      document.getElementById('tableDetailModal').classList.remove('hidden');
+      playBeep(650, 0.03);
+    }
+
+    // In Phiếu Tạm Tính Cho Bàn
+    function printPreBill() {
+      const curTbl = getCurrentTable();
+      if (!curTbl.cart || curTbl.cart.length === 0) {
+        return alert("Bàn chưa có món nào để in tạm tính!");
+      }
+      playBeep(900, 0.08);
+      showToast(`Đã in phiếu TẠM TÍNH cho ${curTbl.name}!`);
+      closeModal('tableDetailModal');
+    }
+
 
     function renderProducts() {
       const container = document.getElementById('productsGrid');
@@ -4361,5 +4447,69 @@
       </button>
     </div>
   </div>
+
+  <!-- ================= MODAL: CHI TIẾT CÁC MỤC BÀN & THAO TÁC (TABLE DETAIL MODAL) ================= -->
+  <div id="tableDetailModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-md p-4 sm:p-5 space-y-3.5 shadow-2xl animate-in zoom-in-95 text-xs text-slate-800 flex flex-col max-h-[90vh]">
+      
+      <!-- Header Chi Tiết Bàn -->
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5 shrink-0">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm font-bold shadow-2xs">
+            <i class="fa-solid fa-chair" id="tblDetailIcon"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-black text-sm text-slate-900" id="tblDetailTitle">BÀN 4</h3>
+              <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white" id="tblDetailStatusBadge">Có khách</span>
+            </div>
+            <p class="text-[10px] text-slate-400" id="tblDetailMeta">Khu vực: Tầng trệt • Vào lúc: 08:30 • Đã ngồi: 25 phút</p>
+          </div>
+        </div>
+        <button onclick="closeModal('tableDetailModal')" class="text-slate-400 hover:text-slate-700 cursor-pointer p-1">✕</button>
+      </div>
+
+      <!-- Bảng Danh Sách Các Mục Món Đã Gọi Của Bàn -->
+      <div class="flex-1 overflow-y-auto no-scrollbar space-y-1.5" id="tblDetailItemsList">
+        <!-- Render Javascript chi tiết từng món -->
+      </div>
+
+      <!-- Tổng Kết Tiền Bạc & Chi Phí -->
+      <div class="pt-2 border-t border-slate-200 shrink-0 space-y-1">
+        <div class="flex justify-between text-slate-500 text-[11px]">
+          <span>Tổng số lượng món:</span>
+          <span class="font-bold text-slate-700" id="tblDetailTotalQty">0 món</span>
+        </div>
+        <div class="flex justify-between items-center text-xs">
+          <span class="font-black text-slate-800">TỔNG TẠM TÍNH CẦN THU:</span>
+          <span class="font-black font-mono text-base text-red-600" id="tblDetailTotalAmount">0 đ</span>
+        </div>
+      </div>
+
+      <!-- Cụm Nút Nghiệp Vụ Vận Hành Bàn 1 Chạm -->
+      <div class="pt-2 border-t border-slate-100 grid grid-cols-3 gap-1.5 shrink-0">
+        <button onclick="dispatchKitchenOrder(); closeModal('tableDetailModal');" class="py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-[11px] shadow-2xs flex items-center justify-center gap-1 cursor-pointer transition">
+          <i class="fa-solid fa-bell-concierge text-[10px]"></i> Báo Bếp
+        </button>
+        <button onclick="printPreBill();" class="py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] border border-slate-200 shadow-2xs flex items-center justify-center gap-1 cursor-pointer transition">
+          <i class="fa-solid fa-print text-[10px]"></i> Tạm Tính
+        </button>
+        <button onclick="openTransferTableModal(); closeModal('tableDetailModal');" class="py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-[11px] border border-blue-200 shadow-2xs flex items-center justify-center gap-1 cursor-pointer transition">
+          <i class="fa-solid fa-arrow-right-arrow-left text-[10px]"></i> Đổi Bàn
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-1.5 shrink-0">
+        <button onclick="openCashPayment(); closeModal('tableDetailModal');" class="py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-xs flex items-center justify-center gap-1.5 cursor-pointer transition">
+          <i class="fa-solid fa-money-bill-wave"></i> Tiền Mặt
+        </button>
+        <button onclick="openVietQRPayment(); closeModal('tableDetailModal');" class="py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs shadow-xs flex items-center justify-center gap-1.5 cursor-pointer transition">
+          <i class="fa-solid fa-qrcode"></i> VietQR
+        </button>
+      </div>
+
+    </div>
+  </div>
+
 </body>
 </html>
