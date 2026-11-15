@@ -9,46 +9,46 @@
   <style>
     body { user-select: none; -webkit-user-select: none; }
     
-    /* Hiệu ứng đèn LED phát sáng rực rỡ */
+    /* Hiệu ứng đèn LED phát sáng tinh tế & sắc nét */
     @keyframes ledGlowAmber {
-      0%, 100% { box-shadow: 0 0 8px 1px rgba(245, 158, 11, 0.8), inset 0 0 4px rgba(255, 255, 255, 0.6); }
-      50% { box-shadow: 0 0 14px 3px rgba(245, 158, 11, 1), inset 0 0 8px rgba(255, 255, 255, 0.9); }
+      0%, 100% { box-shadow: 0 0 5px 1px rgba(245, 158, 11, 0.9); }
+      50% { box-shadow: 0 0 8px 2px rgba(245, 158, 11, 1); }
     }
     @keyframes ledGlowRed {
-      0%, 100% { box-shadow: 0 0 8px 1px rgba(220, 38, 38, 0.8), inset 0 0 4px rgba(255, 255, 255, 0.6); }
-      50% { box-shadow: 0 0 14px 3px rgba(220, 38, 38, 1), inset 0 0 8px rgba(255, 255, 255, 0.9); }
+      0%, 100% { box-shadow: 0 0 5px 1px rgba(220, 38, 38, 0.9); }
+      50% { box-shadow: 0 0 8px 2px rgba(220, 38, 38, 1); }
     }
     @keyframes ledGlowGreen {
-      0%, 100% { box-shadow: 0 0 8px 1px rgba(16, 185, 129, 0.8), inset 0 0 4px rgba(255, 255, 255, 0.6); }
-      50% { box-shadow: 0 0 14px 3px rgba(16, 185, 129, 1), inset 0 0 8px rgba(255, 255, 255, 0.9); }
+      0%, 100% { box-shadow: 0 0 5px 1px rgba(16, 185, 129, 0.9); }
+      50% { box-shadow: 0 0 8px 2px rgba(16, 185, 129, 1); }
     }
     @keyframes ledGlowBlue {
-      0%, 100% { box-shadow: 0 0 8px 1px rgba(37, 99, 235, 0.8), inset 0 0 4px rgba(255, 255, 255, 0.6); }
-      50% { box-shadow: 0 0 14px 3px rgba(37, 99, 235, 1), inset 0 0 8px rgba(255, 255, 255, 0.9); }
+      0%, 100% { box-shadow: 0 0 5px 1px rgba(37, 99, 235, 0.9); }
+      50% { box-shadow: 0 0 8px 2px rgba(37, 99, 235, 1); }
     }
 
     .led-amber-lit {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+      background: #f59e0b !important;
       color: white !important;
-      animation: ledGlowAmber 1.8s infinite ease-in-out !important;
+      animation: ledGlowAmber 1.6s infinite ease-in-out !important;
       font-weight: 900 !important;
     }
     .led-red-lit {
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+      background: #dc2626 !important;
       color: white !important;
-      animation: ledGlowRed 1.6s infinite ease-in-out !important;
+      animation: ledGlowRed 1.4s infinite ease-in-out !important;
       font-weight: 900 !important;
     }
     .led-green-lit {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+      background: #059669 !important;
       color: white !important;
-      animation: ledGlowGreen 2s infinite ease-in-out !important;
+      animation: ledGlowGreen 1.8s infinite ease-in-out !important;
       font-weight: 900 !important;
     }
     .led-blue-lit {
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+      background: #2563eb !important;
       color: white !important;
-      animation: ledGlowBlue 2s infinite ease-in-out !important;
+      animation: ledGlowBlue 1.8s infinite ease-in-out !important;
       font-weight: 900 !important;
     }
 
@@ -202,22 +202,25 @@
           <span id="orderTotalText" class="text-xl sm:text-2xl font-black font-mono text-red-600">0 đ</span>
         </div>
 
-        <!-- 3 Nút Hành Động Chính (Báo Bếp - In Bill - VietQR) -->
+        <!-- 3 Nút Hành Động Chuẩn Thứ Tự: 3. Báo Bếp -> 4. VietQR -> 5. In Bill -->
         <div class="grid grid-cols-3 gap-1.5">
           
-          <button onclick="actionSendKitchen()" class="py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-black text-xs shadow flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="Gửi đơn xuống bếp và phát chuông">
+          <!-- 3. BÁO BẾP (VÀNG) -->
+          <button onclick="actionSendKitchen()" class="py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-black text-xs shadow flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="Bước 3: Gửi đơn xuống bếp và phát chuông">
             <i class="fa-solid fa-bell text-sm"></i>
             <span>3. BÁO BẾP</span>
           </button>
 
-          <button onclick="actionPrintBill(false)" class="py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl font-black text-xs shadow flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="In phiếu tạm tính cho khách xem trước">
-            <i class="fa-solid fa-print text-sm"></i>
-            <span>5. IN BILL</span>
-          </button>
-
-          <button onclick="actionOpenCheckout()" class="py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-black text-xs shadow flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="Thanh toán VietQR động 1 chạm">
+          <!-- 4. VIETQR (ĐỎ) -->
+          <button onclick="actionOpenCheckout()" class="py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-black text-xs shadow flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="Bước 4: Mở mã VietQR động thanh toán">
             <i class="fa-solid fa-qrcode text-sm"></i>
             <span>4. VIETQR</span>
+          </button>
+
+          <!-- 5. IN BILL (XANH DƯƠNG) -->
+          <button onclick="actionPrintBill(false)" class="py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl font-black text-xs shadow flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="Bước 5: In phiếu tạm tính / Hóa đơn">
+            <i class="fa-solid fa-print text-sm"></i>
+            <span>5. IN BILL</span>
           </button>
 
         </div>
@@ -526,37 +529,36 @@
               </span>
             </div>
 
-            <!-- DÃY 5 NÚT TIẾN ĐỘ ĐÈN SÁNG TRÊN TỪNG BÀN (THEO ĐÚNG HÌNH BẠN GỬI) -->
-            <div class="grid grid-cols-5 gap-1 my-1.5 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
+            <!-- DÃY 5 ĐÈN LED TIẾN ĐỘ (1.BÀN → 2.MENU → 3.BẾP → 4.QR → 5.BILL) -->
+            <div class="flex items-center justify-between my-1.5 px-1 py-1 bg-slate-100 rounded-xl border border-slate-200">
               
-              <!-- NÚT 1: SƠ ĐỒ BÀN -->
-              <button onclick="event.stopPropagation(); selectTable('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${step === 1 ? 'led-blue-lit' : (step > 1 ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-white text-slate-600 border border-slate-200')}" title="Bước 1: Sơ đồ bàn (Bàn sẵn sàng)">
+              <!-- 1. BÀN -->
+              <button onclick="event.stopPropagation(); selectTable('${t.id}')" class="w-6 h-6 rounded-lg text-[10px] flex items-center justify-center transition cursor-pointer ${step === 1 ? 'led-blue-lit' : (step > 1 ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-white text-slate-500 shadow-2xs')}" title="1. Sơ đồ bàn">
                 <i class="fa-solid fa-chair text-[10px]"></i>
-                <span class="scale-90 font-black">1.Bàn</span>
               </button>
+              <span class="text-[8px] text-slate-300 font-black">›</span>
 
-              <!-- NÚT 2: MENU GỌI MÓN -->
-              <button onclick="event.stopPropagation(); selectTable('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${step === 2 ? 'led-blue-lit' : (step > 2 ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 2: Menu gọi món (Đang chọn món)">
+              <!-- 2. MENU GỌI MÓN -->
+              <button onclick="event.stopPropagation(); selectTable('${t.id}')" class="w-6 h-6 rounded-lg text-[10px] flex items-center justify-center transition cursor-pointer ${step === 2 ? 'led-blue-lit' : (step > 2 ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-white text-slate-400 shadow-2xs opacity-60')}" title="2. Menu gọi món">
                 <i class="fa-solid fa-utensils text-[10px]"></i>
-                <span class="scale-90 font-black">2.Menu</span>
               </button>
+              <span class="text-[8px] text-slate-300 font-black">›</span>
 
-              <!-- NÚT 3: BÁO BẾP 🔔 (SÁNG ĐÈN VÀNG RỰC RỠ) -->
-              <button onclick="event.stopPropagation(); quickTableKitchen('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${step === 3 ? 'led-amber-lit' : (step > 3 ? 'bg-amber-100 text-amber-800 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 3: Báo bếp (Bấm để gửi bếp)">
+              <!-- 3. BÁO BẾP 🔔 -->
+              <button onclick="event.stopPropagation(); quickTableKitchen('${t.id}')" class="w-6 h-6 rounded-lg text-[10px] flex items-center justify-center transition cursor-pointer ${step === 3 ? 'led-amber-lit' : (step > 3 ? 'bg-amber-100 text-amber-800 font-bold' : 'bg-white text-slate-400 shadow-2xs opacity-60')}" title="3. Báo bếp (Bấm để gửi bếp)">
                 <i class="fa-solid fa-bell text-[10px]"></i>
-                <span class="scale-90 font-black">3.Bếp🔔</span>
               </button>
+              <span class="text-[8px] text-slate-300 font-black">›</span>
 
-              <!-- NÚT 4: VIETQR 💳 (SÁNG ĐÈN ĐỎ RỰC RỠ) -->
-              <button onclick="event.stopPropagation(); quickTableCheckout('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${step === 4 ? 'led-red-lit' : (step > 4 ? 'bg-red-100 text-red-800 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 4: VietQR (Bấm để mở mã QR thanh toán)">
+              <!-- 4. VIETQR 💳 -->
+              <button onclick="event.stopPropagation(); quickTableCheckout('${t.id}')" class="w-6 h-6 rounded-lg text-[10px] flex items-center justify-center transition cursor-pointer ${step === 4 ? 'led-red-lit' : (step > 4 ? 'bg-red-100 text-red-800 font-bold' : 'bg-white text-slate-400 shadow-2xs opacity-60')}" title="4. VietQR thanh toán">
                 <i class="fa-solid fa-qrcode text-[10px]"></i>
-                <span class="scale-90 font-black">4.QR💳</span>
               </button>
+              <span class="text-[8px] text-slate-300 font-black">›</span>
 
-              <!-- NÚT 5: IN BILL 🖨️ (SÁNG ĐÈN XANH LÁ) -->
-              <button onclick="event.stopPropagation(); quickTablePrint('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${step === 5 ? 'led-green-lit' : (isOcc ? 'bg-emerald-100 text-emerald-800 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 5: In bill (Bấm để in phiếu)">
+              <!-- 5. IN BILL 🖨️ -->
+              <button onclick="event.stopPropagation(); quickTablePrint('${t.id}')" class="w-6 h-6 rounded-lg text-[10px] flex items-center justify-center transition cursor-pointer ${step === 5 ? 'led-green-lit' : (isOcc ? 'bg-emerald-100 text-emerald-800 font-bold' : 'bg-white text-slate-400 shadow-2xs opacity-60')}" title="5. In bill hóa đơn">
                 <i class="fa-solid fa-print text-[10px]"></i>
-                <span class="scale-90 font-black">5.Bill🖨️</span>
               </button>
 
             </div>
@@ -585,14 +587,15 @@
       }
 
       container.innerHTML = filtered.map(p => `
-        <button onclick="addToCart(${p.id})" class="p-3 bg-white rounded-2xl border-2 border-slate-200 hover:border-blue-500 hover:bg-blue-50/40 shadow-2xs flex flex-col justify-between text-left active:scale-95 transition cursor-pointer">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-sm font-black shrink-0">
-              <i class="fa-solid ${p.icon}"></i>
-            </span>
-            <span class="font-black text-xs text-slate-800 leading-tight">${p.name}</span>
+        <button onclick="addToCart(${p.id})" class="p-2.5 sm:p-3 bg-white rounded-2xl border-2 border-slate-200 hover:border-blue-500 hover:bg-blue-50/40 shadow-2xs flex flex-col justify-between text-left active:scale-95 transition cursor-pointer min-h-[78px]">
+          <div class="font-black text-xs sm:text-[13px] text-slate-800 leading-snug line-clamp-2">
+            ${p.name}
           </div>
-          <div class="text-right">
+          <div class="flex items-center justify-between mt-1.5 pt-1 border-t border-slate-100">
+            <span class="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
+              <i class="fa-solid ${p.icon} text-blue-600"></i>
+              <span>${p.cat === 'bun' ? 'Món ăn' : (p.cat === 'coffee' ? 'Cà phê' : 'Nước')}</span>
+            </span>
             <span class="font-mono text-xs sm:text-sm font-black text-blue-700">${p.price.toLocaleString('vi-VN')} đ</span>
           </div>
         </button>
