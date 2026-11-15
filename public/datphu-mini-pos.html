@@ -188,94 +188,104 @@
   <main class="flex-1 overflow-hidden relative bg-slate-50">
 
     <!-- 1. CHẾ ĐỘ 1: BÁN THEO THỰC ĐƠN (MENU MÓN) -->
-    <div id="viewMode-menu" class="h-full flex flex-col">
+    <div id="viewMode-menu" class="h-full flex flex-col overflow-hidden">
       
-      <!-- THANH CHỌN BÀN & MANG VỀ TINH GỌN (LEAN TABLE BAR) -->
-      <div class="px-2.5 py-1.5 bg-slate-100/90 border-b border-slate-200 flex items-center justify-between text-xs shrink-0">
-        <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar flex-1 pr-2" id="quickTableChipsContainer">
-          <!-- Render danh sách bàn và mang đi bằng JavaScript -->
-        </div>
-        <div class="flex items-center space-x-1.5 shrink-0">
-          <!-- Bộ Lọc Nhanh Bàn: Tất Cả / Có Khách -->
-          <div class="hidden md:flex items-center bg-white p-0.5 rounded-lg border border-slate-300 text-[10px]">
-            <button onclick="filterTableZone('all')" id="tblZone-all" class="px-2 py-0.5 rounded font-bold bg-blue-600 text-white">Tất Cả</button>
-            <button onclick="filterTableZone('occupied')" id="tblZone-occupied" class="px-2 py-0.5 rounded text-slate-600 hover:text-red-600 font-bold">Có Khách</button>
+      <!-- ================= BỐ CỤC CHIA SONG SONG: 2/3 SƠ ĐỒ BÀN + 1/3 SƠ ĐỒ MÓN ================= -->
+      <div class="flex-1 flex flex-col lg:flex-row overflow-hidden bg-slate-100">
+
+        <!-- ================= CỘT 1 (2/3 MÀN HÌNH): SƠ ĐỒ BÀN TOÀN CẢNH ================= -->
+        <div class="w-full lg:w-[62%] xl:w-[65%] 2xl:w-[67%] flex flex-col border-r border-slate-200 bg-slate-50 overflow-hidden">
+          
+          <!-- Thanh điều khiển & Lọc khu vực bàn -->
+          <div class="px-3 py-2 bg-white border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0 shadow-2xs">
+            <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar" id="fullMapZoneChips">
+              <button onclick="filterFullMapZone('all')" id="fullMapChip-all" class="px-2.5 py-1 rounded-lg text-xs font-black bg-blue-600 text-white shadow-2xs cursor-pointer">Tất Cả (17)</button>
+              <button onclick="filterFullMapZone('tret')" id="fullMapChip-tret" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 cursor-pointer">Tầng Trệt (8)</button>
+              <button onclick="filterFullMapZone('ngoaitroi')" id="fullMapChip-ngoaitroi" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 cursor-pointer">Sân Vườn (8)</button>
+              <button onclick="filterFullMapZone('takeaway')" id="fullMapChip-takeaway" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 cursor-pointer">Mang Về</button>
+            </div>
+
+            <!-- Chú thích & Nút đổi bàn -->
+            <div class="flex items-center space-x-2 shrink-0">
+              <button onclick="openTransferTableModal()" id="btnTransferTable" class="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 hover:text-blue-700 text-[11px] font-bold shadow-2xs flex items-center gap-1 cursor-pointer transition" title="Chuyển hoặc gộp bàn">
+                <i class="fa-solid fa-arrow-right-arrow-left text-blue-600"></i>
+                <span>Đổi Bàn</span>
+              </button>
+              <div class="hidden sm:flex items-center gap-2 text-[10px] font-bold text-slate-500">
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-300"></span> Trống</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-600"></span> Đang chọn</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span> Có khách</span>
+              </div>
+            </div>
           </div>
-          <!-- Nút Đổi / Gộp Bàn -->
-          <button onclick="openTransferTableModal()" id="btnTransferTable" class="hidden px-2 py-1 rounded-lg bg-white border border-slate-300 text-slate-700 hover:text-blue-700 text-[11px] font-bold shadow-2xs items-center gap-1 cursor-pointer transition" title="Chuyển hoặc gộp bàn">
-            <i class="fa-solid fa-arrow-right-arrow-left text-blue-600"></i>
-            <span class="hidden sm:inline">Đổi Bàn</span>
-          </button>
-          <!-- Nút mở Sơ đồ bàn toàn cảnh -->
-          <div class="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-300">
-            <button onclick="setServiceSubView('menu')" id="btnSubViewMenu" class="px-2 py-0.5 rounded font-black text-[11px] bg-blue-600 text-white shadow-2xs flex items-center gap-1 cursor-pointer transition" title="Chế độ chọn món">
-              <i class="fa-solid fa-utensils text-[10px]"></i>
-              <span class="hidden lg:inline">Thực Đơn</span>
-            </button>
-            <button onclick="setServiceSubView('tablemap')" id="btnSubViewTableMap" class="px-2 py-0.5 rounded font-bold text-[11px] text-slate-700 hover:text-blue-700 flex items-center gap-1 cursor-pointer transition" title="Chế độ sơ đồ bàn toàn cảnh">
-              <i class="fa-solid fa-chair text-[10px]"></i>
-              <span class="hidden lg:inline">Sơ Đồ Bàn</span>
-              <span id="occupiedTableCountBadge" class="ml-0.5 text-[9px] px-1 py-0.2 rounded-full bg-blue-100 text-blue-700 font-black">0/16</span>
-            </button>
+
+          <!-- Lưới Ma Trận 16 Bàn + Mang Về (VÙNG 2/3) -->
+          <div class="flex-1 p-2.5 sm:p-3 overflow-y-auto no-scrollbar grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-2 sm:gap-2.5" id="fullFloorMapGrid">
+            <!-- Render JavaScript Sơ Đồ Bàn -->
           </div>
+
+          <!-- Thanh Chân Trang Tóm Tắt Tình Trạng Quán -->
+          <div class="px-3 py-1.5 bg-white border-t border-slate-200 flex items-center justify-between text-[11px] font-bold text-slate-600 shrink-0">
+            <div class="flex items-center space-x-3">
+              <span id="mapTotalTablesCount">Tổng: 16 bàn</span>
+              <span class="text-red-600" id="mapOccupiedCount">Có khách: 0 bàn</span>
+              <span class="text-slate-400" id="mapEmptyCount">Trống: 16 bàn</span>
+            </div>
+            <div class="flex items-center space-x-1 text-blue-700">
+              <i class="fa-solid fa-circle-info text-[10px]"></i>
+              <span class="text-[10px]">Chạm vào bàn để chọn món bên phải</span>
+            </div>
+          </div>
+
         </div>
+
+        <!-- ================= CỘT 2 (1/3 MÀN HÌNH): SƠ ĐỒ MÓN & GỌI MÓN ================= -->
+        <div class="w-full lg:w-[38%] xl:w-[35%] 2xl:w-[33%] flex flex-col bg-white overflow-hidden shadow-xs">
+          
+          <!-- Tiêu Đề Bàn Đang Chọn & Tìm Kiếm Món -->
+          <div class="p-2.5 bg-slate-50 border-b border-slate-200 shrink-0 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-1.5">
+                <span class="w-2 h-2 rounded-full bg-blue-600 inline-block animate-ping"></span>
+                <span class="text-xs font-black text-slate-800 uppercase" id="currentServingTableName">ĐANG PHỤC VỤ: MANG VỀ</span>
+              </div>
+              <div class="flex items-center space-x-1">
+                <button onclick="toggleProductDisplayMode()" id="btnToggleDisplayMode" class="w-7 h-7 rounded-lg bg-white border border-slate-300 text-blue-700 text-xs flex items-center justify-center cursor-pointer transition shadow-2xs" title="Chuyển chế độ xem Ảnh Thật / Icon Gọn">
+                  <i class="fa-solid fa-image text-blue-600 text-[11px]"></i>
+                </button>
+                <button onclick="openAddProductModal()" class="w-7 h-7 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs flex items-center justify-center cursor-pointer transition shadow-xs" title="Thêm món mới vào menu">
+                  <i class="fa-solid fa-plus text-[11px]"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Ô Tìm Kiếm Món & Danh Mục Món -->
+            <div class="flex items-center space-x-1.5">
+              <div class="relative flex-1">
+                <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[10px]"></i>
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Tìm món nhanh..." class="w-full pl-7 pr-2 py-1 rounded-lg bg-white border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition">
+              </div>
+            </div>
+
+            <!-- Chips Phân Loại Món -->
+            <div class="flex items-center space-x-1 overflow-x-auto no-scrollbar pt-0.5" id="categoryChipsContainer">
+              <button onclick="filterCategory('all')" class="cat-chip active px-2 py-0.5 rounded-md text-[11px] font-black bg-blue-600 text-white whitespace-nowrap shadow-2xs cursor-pointer">Tất Cả</button>
+              <button onclick="filterCategory('coffee')" class="cat-chip px-2 py-0.5 rounded-md text-[11px] font-bold bg-white text-slate-700 hover:bg-slate-200 whitespace-nowrap border border-slate-200 cursor-pointer">Cà Phê</button>
+              <button onclick="filterCategory('tea')" class="cat-chip px-2 py-0.5 rounded-md text-[11px] font-bold bg-white text-slate-700 hover:bg-slate-200 whitespace-nowrap border border-slate-200 cursor-pointer">Trà / Nước</button>
+              <button onclick="filterCategory('food')" class="cat-chip px-2 py-0.5 rounded-md text-[11px] font-bold bg-white text-slate-700 hover:bg-slate-200 whitespace-nowrap border border-slate-200 cursor-pointer">Điểm Tâm</button>
+              <button onclick="filterCategory('drink')" class="cat-chip px-2 py-0.5 rounded-md text-[11px] font-bold bg-white text-slate-700 hover:bg-slate-200 whitespace-nowrap border border-slate-200 cursor-pointer">Đóng Chai</button>
+            </div>
+          </div>
+
+          <!-- Lưới Thực Đơn Món Ăn (VÙNG 1/3) -->
+          <div class="flex-1 p-2 overflow-y-auto no-scrollbar grid grid-cols-2 gap-2" id="productsGrid">
+            <!-- Render JavaScript Danh Sách Món -->
+          </div>
+
+        </div>
+
       </div>
 
-      <!-- DÒNG KẾT HỢP TINH GỌN: TÌM KIẾM NHANH + BỘ LỌC DANH MỤC + THAO TÁC (CHỈ 1 DÒNG DUY NHẤT) -->
-      <div class="px-2.5 py-1.5 flex items-center space-x-1.5 bg-white border-b border-slate-200 shrink-0">
-        <!-- Ô Tìm Kiếm Gọn -->
-        <div class="relative w-32 sm:w-44 shrink-0">
-          <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[10px]"></i>
-          <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Tìm món..." class="w-full pl-7 pr-2 py-1 rounded-lg bg-slate-100 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition">
-        </div>
-
-        <!-- Các Chip Danh Mục Trượt Mượt -->
-        <div class="flex items-center space-x-1 overflow-x-auto no-scrollbar flex-1" id="categoryChipsContainer">
-          <button onclick="filterCategory('all')" class="cat-chip active px-2.5 py-1 rounded-lg text-xs font-black bg-blue-600 text-white whitespace-nowrap shadow-2xs cursor-pointer">Tất Cả</button>
-          <button onclick="filterCategory('coffee')" class="cat-chip px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap border border-slate-200 cursor-pointer">Cà Phê</button>
-          <button onclick="filterCategory('tea')" class="cat-chip px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap border border-slate-200 cursor-pointer">Trà / Nước</button>
-          <button onclick="filterCategory('food')" class="cat-chip px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap border border-slate-200 cursor-pointer">Điểm Tâm</button>
-          <button onclick="filterCategory('drink')" class="cat-chip px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap border border-slate-200 cursor-pointer">Đóng Chai</button>
-        </div>
-
-        <!-- 2 Nút Thao Tác Nhanh: Đổi Ảnh/Gọn & Thêm Món -->
-        <div class="flex items-center space-x-1 shrink-0">
-          <button onclick="toggleProductDisplayMode()" id="btnToggleDisplayMode" class="w-7 h-7 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 text-xs flex items-center justify-center cursor-pointer transition shadow-2xs" title="Chuyển chế độ xem Ảnh Thật / Icon Gọn">
-            <i class="fa-solid fa-image text-blue-600 text-[11px]"></i>
-          </button>
-          <button onclick="openAddProductModal()" class="w-7 h-7 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs flex items-center justify-center cursor-pointer transition shadow-xs" title="Thêm món mới vào menu">
-            <i class="fa-solid fa-plus text-[11px]"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- 1. VÙNG THỰC ĐƠN MÓN ĂN / ĐỒ UỐNG -->
-      <div class="flex-1 p-2.5 sm:p-3 overflow-y-auto no-scrollbar grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 sm:gap-3" id="productsGrid">
-        <!-- Render Javascript -->
-      </div>
-
-      <!-- 2. VÙNG SƠ ĐỒ BÀN TOÀN CẢNH TRỰC QUAN (FULL FLOOR MAP) -->
-      <div id="tableMapFullContainer" class="hidden flex-1 p-3 sm:p-4 overflow-y-auto no-scrollbar flex-col bg-slate-50 space-y-3">
-        <!-- Thanh bộ lọc khu vực & chú thích sơ đồ bàn -->
-        <div class="bg-white p-2.5 rounded-2xl border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-2 shrink-0">
-          <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar" id="fullMapZoneChips">
-            <button onclick="filterFullMapZone('all')" id="fullMapChip-all" class="px-2.5 py-1 rounded-lg text-xs font-black bg-blue-600 text-white shadow-2xs cursor-pointer">Tất Cả (17)</button>
-            <button onclick="filterFullMapZone('tret')" id="fullMapChip-tret" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 cursor-pointer">Tầng Trệt (8 bàn)</button>
-            <button onclick="filterFullMapZone('ngoaitroi')" id="fullMapChip-ngoaitroi" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 cursor-pointer">Sân Vườn / Vỉa Hè (8 bàn)</button>
-            <button onclick="filterFullMapZone('takeaway')" id="fullMapChip-takeaway" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 cursor-pointer">Mang Về</button>
-          </div>
-          <div class="flex items-center gap-3 text-[11px] font-bold text-slate-500">
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-200 border border-slate-300"></span> Trống</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> Đang phục vụ</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span> Có khách</span>
-          </div>
-        </div>
-
-        <!-- Lưới Ma Trận Sơ Đồ Bàn Rộng Rãi -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-3" id="fullFloorMapGrid">
-          <!-- Render Javascript -->
-        </div>
-      </div>
     </div>
 
     <!-- 2. CHẾ ĐỘ 2: BÀN PHÍM CASIO NHẬP TIỀN NHANH (NỀN TRẮNG SÁNG) -->
@@ -1685,6 +1695,7 @@
       renderQuickTableBar();
       if (typeof updateCashierQuickStatus === "function") updateCashierQuickStatus();
       renderProducts();
+      renderFullFloorMap();
       updateCartUI();
       renderHistory();
       renderInventoryUI();
@@ -1818,6 +1829,26 @@
       const container = document.getElementById('fullFloorMapGrid');
       if (!container) return;
 
+      // Cập nhật số liệu thống kê
+      const occupiedCount = tables.filter(t => t.id !== 'takeaway' && t.status === 'occupied').length;
+      const totalCount = tables.filter(t => t.id !== 'takeaway').length;
+      const emptyCount = totalCount - occupiedCount;
+      
+      const elTotal = document.getElementById('mapTotalTablesCount');
+      const elOcc = document.getElementById('mapOccupiedCount');
+      const elEmp = document.getElementById('mapEmptyCount');
+      if (elTotal) elTotal.textContent = `Tổng: ${totalCount} bàn`;
+      if (elOcc) elOcc.textContent = `Có khách: ${occupiedCount} bàn`;
+      if (elEmp) elEmp.textContent = `Trống: ${emptyCount} bàn`;
+
+      // Cập nhật tiêu đề bàn đang phục vụ ở cột 1/3
+      const curTbl = getCurrentTable();
+      const elServing = document.getElementById('currentServingTableName');
+      if (elServing) {
+        const curTotal = (curTbl.cart || []).reduce((s, x) => s + x.price * x.qty, 0);
+        elServing.textContent = `BÀN: ${curTbl.name.toUpperCase()} ${curTotal > 0 ? '• ' + curTotal.toLocaleString('vi-VN') + ' đ' : ''}`;
+      }
+
       let filtered = tables;
       if (fullMapZoneFilter !== 'all') {
         filtered = tables.filter(t => t.zone === fullMapZoneFilter);
@@ -1828,61 +1859,62 @@
         const isOcc = t.status === 'occupied' && t.cart && t.cart.length > 0;
         const tTotal = (t.cart || []).reduce((s, x) => s + x.price * x.qty, 0);
         const totalItemsCount = (t.cart || []).reduce((s, x) => s + x.qty, 0);
-        const zoneName = t.zone === 'tret' ? 'Trong nhà' : (t.zone === 'ngoaitroi' ? 'Sân vườn/Hẻm' : (t.zone === 'takeaway' ? 'Mang đi' : 'Lầu 1'));
+        const zoneName = t.zone === 'tret' ? 'Tầng trệt' : (t.zone === 'ngoaitroi' ? 'Sân vườn' : (t.zone === 'takeaway' ? 'Mang đi' : 'Lầu 1'));
 
         let itemsSummary = '';
         if (isOcc) {
-          itemsSummary = t.cart.map(i => `${i.qty}x ${i.name}`).slice(0, 3).join('<br>');
-          if (t.cart.length > 3) itemsSummary += `<br><span class="text-blue-600 font-bold">+ ${t.cart.length - 3} món khác...</span>`;
+          itemsSummary = t.cart.map(i => `${i.qty}x ${i.name}`).slice(0, 2).join(', ');
+          if (t.cart.length > 2) itemsSummary += `, ...`;
         }
 
         return `
-          <div onclick="switchTable('${t.id}'); setServiceSubView('menu');" class="bg-white p-3.5 rounded-2xl border ${isActive ? 'border-blue-500 ring-2 ring-blue-500/50 bg-blue-50/20' : (isOcc ? 'border-red-300 bg-red-50/20 shadow-xs' : 'border-slate-200 hover:border-blue-400')} hover:shadow-md transition cursor-pointer relative flex flex-col justify-between group">
+          <div onclick="switchTable('${t.id}')" class="bg-white p-2.5 rounded-2xl border transition cursor-pointer relative flex flex-col justify-between shadow-2xs select-none ${isActive ? 'border-blue-600 ring-2 ring-blue-500/60 bg-blue-50/40 shadow-sm' : (isOcc ? 'border-red-300 bg-red-50/20 hover:border-red-400' : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50')}">
             
             <!-- Đỉnh ô bàn: Tên bàn & Trạng thái -->
             <div>
-              <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center justify-between mb-1.5">
                 <div class="flex items-center gap-1.5">
-                  <div class="w-7 h-7 rounded-lg ${isOcc ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-700'} flex items-center justify-center text-xs font-black shadow-2xs">
+                  <div class="w-6 h-6 rounded-lg ${isActive ? 'bg-blue-600 text-white' : (isOcc ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-700')} flex items-center justify-center text-[11px] font-black shadow-2xs">
                     <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'}"></i>
                   </div>
                   <div>
-                    <h4 class="font-black text-xs text-slate-900">${t.name}</h4>
-                    <span class="text-[9px] text-slate-400 font-medium">${zoneName}</span>
+                    <h4 class="font-black text-xs ${isActive ? 'text-blue-900 font-extrabold' : 'text-slate-900'}">${t.name}</h4>
+                    <span class="text-[9px] text-slate-400 font-medium block leading-none">${zoneName}</span>
                   </div>
                 </div>
 
                 <!-- Badge trạng thái -->
                 ${isOcc ? `
-                  <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white animate-pulse shadow-2xs flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span> Có khách
+                  <span class="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white animate-pulse shadow-2xs">
+                    ${totalItemsCount} món
                   </span>
                 ` : `
-                  <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+                  <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
                     Trống
                   </span>
                 `}
               </div>
 
-              <!-- Nội dung đơn hàng của bàn -->
-              <div class="my-2 min-h-[44px] text-[11px] leading-tight ${isOcc ? 'text-slate-700' : 'text-slate-400 italic flex items-center justify-center'} bg-slate-50 p-2 rounded-xl border border-slate-100">
-                ${isOcc ? itemsSummary : 'Bàn trống • Sẵn sàng đón khách'}
+              <!-- Tóm tắt món của bàn -->
+              <div class="my-1 text-[10px] leading-tight ${isOcc ? 'text-slate-700 font-medium' : 'text-slate-400 italic'} bg-white/80 p-1.5 rounded-lg border border-slate-100 line-clamp-1">
+                ${isOcc ? itemsSummary : 'Bàn trống'}
               </div>
             </div>
 
-            <!-- Chân ô bàn: Tổng tiền & Nút bấm vào bàn -->
-            <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
-              <div>
-                <span class="text-[9px] text-slate-400 block font-medium">${isOcc ? totalItemsCount + ' món' : 'Tạm tính'}</span>
-                <span class="font-black font-mono text-xs ${isOcc ? 'text-red-600 font-bold' : 'text-slate-400'}">
-                  ${tTotal > 0 ? tTotal.toLocaleString('vi-VN') + ' đ' : '0 đ'}
+            <!-- Chân ô bàn: Tổng tiền & Chỉ báo -->
+            <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between">
+              <span class="font-black font-mono text-xs ${isOcc ? 'text-red-600 font-bold' : (isActive ? 'text-blue-700' : 'text-slate-400')}">
+                ${tTotal > 0 ? tTotal.toLocaleString('vi-VN') + ' đ' : '0 đ'}
+              </span>
+              ${isActive ? `
+                <span class="text-[9px] font-black text-blue-700 flex items-center gap-0.5">
+                  <i class="fa-solid fa-check"></i> Đang chọn
                 </span>
-              </div>
-              
-              <button class="px-2.5 py-1 rounded-lg ${isOcc ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700 group-hover:bg-blue-600 group-hover:text-white'} text-[10px] font-black transition flex items-center gap-1 shadow-2xs">
-                <span>${isOcc ? 'Xem Đơn' : '+ Vào Bàn'}</span>
-                <i class="fa-solid fa-arrow-right text-[8px]"></i>
-              </button>
+              ` : `
+                <span class="text-[9px] text-slate-400 hover:text-blue-600 font-bold">
+                  Chọn bàn →
+                </span>
+              `}
             </div>
           </div>
         `;
@@ -2022,6 +2054,7 @@
       playBeep(700, 0.05);
       updateCartUI();
       renderProducts();
+      renderFullFloorMap();
     }
 
     function updateCartQty(id, delta) {
