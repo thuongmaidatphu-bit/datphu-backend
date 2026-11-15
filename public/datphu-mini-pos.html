@@ -139,8 +139,13 @@
           <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
           <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Tìm món nhanh..." class="w-full pl-8 pr-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition">
         </div>
-        <button onclick="openAddProductModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold flex items-center gap-1 shrink-0 cursor-pointer transition" title="Thêm món mới vào menu">
-          <i class="fa-solid fa-plus text-blue-600"></i>
+        <!-- Nút chuyển chế độ xem: Ảnh Thực Tế / Icon Gọn -->
+        <button onclick="toggleProductDisplayMode()" id="btnToggleDisplayMode" class="px-2 py-1.5 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold flex items-center gap-1 shrink-0 cursor-pointer transition shadow-2xs" title="Chuyển chế độ xem Ảnh Thực Tế / Icon Gọn">
+          <i class="fa-solid fa-image text-blue-600"></i>
+          <span class="text-[10px] hidden sm:inline">Ảnh Thật</span>
+        </button>
+        <button onclick="openAddProductModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1 shrink-0 cursor-pointer transition shadow-xs" title="Thêm món mới vào menu">
+          <i class="fa-solid fa-plus"></i>
           <span class="text-[11px]">Thêm</span>
         </button>
       </div>
@@ -548,10 +553,10 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: THÊM MÓN MỚI (NỀN TRẮNG) ================= -->
+  <!-- ================= MODAL: THÊM MÓN MỚI (KÈM ẢNH THỰC TẾ) ================= -->
   <div id="addProductModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-    <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-sm p-5 space-y-3 shadow-2xl animate-in zoom-in-95 text-xs text-slate-800">
-      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+    <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-sm p-5 space-y-3 shadow-2xl animate-in zoom-in-95 text-xs text-slate-800 max-h-[92vh] flex flex-col">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5 shrink-0">
         <h3 class="font-black text-sm text-slate-900 flex items-center gap-1.5">
           <i class="fa-solid fa-circle-plus text-blue-600"></i>
           <span>Thêm Món Mới Vào Menu</span>
@@ -559,7 +564,7 @@
         <button onclick="closeModal('addProductModal')" class="text-slate-400 hover:text-slate-700 cursor-pointer">✕</button>
       </div>
 
-      <div class="space-y-2.5">
+      <div class="space-y-2.5 overflow-y-auto no-scrollbar flex-1 pr-0.5">
         <div>
           <label class="block font-bold text-slate-700 mb-1">Tên Món (*):</label>
           <input type="text" id="newProdName" placeholder="VD: Sinh tố bơ, Bánh canh..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-500 focus:bg-white">
@@ -568,33 +573,147 @@
           <label class="block font-bold text-slate-700 mb-1">Giá Bán (VNĐ) (*):</label>
           <input type="number" id="newProdPrice" placeholder="VD: 25000" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-red-600 font-mono font-bold focus:outline-none focus:border-red-500 focus:bg-white">
         </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Thuộc Danh Mục:</label>
-          <select id="newProdCat" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-500">
-            <option value="coffee">Cà Phê</option>
-            <option value="tea">Trà / Sinh Tố</option>
-            <option value="food">Điểm Tâm / Đồ Ăn</option>
-            <option value="drink">Đóng Chai</option>
-          </select>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Danh Mục:</label>
+            <select id="newProdCat" class="w-full px-2.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-500">
+              <option value="coffee">Cà Phê</option>
+              <option value="tea">Trà / Sinh Tố</option>
+              <option value="food">Điểm Tâm / Đồ Ăn</option>
+              <option value="drink">Đóng Chai</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Icon Đại Diện:</label>
+            <select id="newProdIcon" class="w-full px-2.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-500 font-sans">
+              <option value="fa-mug-hot">☕ Cà phê</option>
+              <option value="fa-glass-water">🥤 Ly nước</option>
+              <option value="fa-leaf">🍃 Trà thảo mộc</option>
+              <option value="fa-bowl-food">🍜 Bát bún / Phở</option>
+              <option value="fa-bread-slice">🥖 Bánh mì kẹp</option>
+              <option value="fa-bottle-water">💧 Chai nước</option>
+              <option value="fa-wine-bottle">🍺 Bia / Nước ngọt</option>
+              <option value="fa-cube">📦 Món khác</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">Icon Đại Diện:</label>
-          <select id="newProdIcon" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-500 font-sans">
-            <option value="fa-mug-hot">☕ Cà phê nóng / ly</option>
-            <option value="fa-glass-water">🥤 Ly nước / Sinh tố</option>
-            <option value="fa-leaf">🍃 Trà thảo mộc</option>
-            <option value="fa-bowl-food">🍜 Bát bún / Phở</option>
-            <option value="fa-bread-slice">🥖 Bánh mì kẹp</option>
-            <option value="fa-bottle-water">💧 Chai nước khoáng</option>
-            <option value="fa-wine-bottle">🍺 Chai bia / Nước ngọt</option>
-            <option value="fa-cube">📦 Món khác</option>
-          </select>
+
+        <!-- HÌNH ẢNH THỰC TẾ CỦA MÓN -->
+        <div class="pt-1">
+          <label class="block font-bold text-slate-700 mb-1 flex items-center justify-between">
+            <span class="flex items-center gap-1">
+              <i class="fa-solid fa-camera text-blue-600"></i>
+              <span>Hình Ảnh Thực Tế Món:</span>
+            </span>
+            <span class="text-[10px] text-blue-600 font-bold">Chụp điện thoại</span>
+          </label>
+
+          <!-- Khung xem trước ảnh tải lên -->
+          <div class="relative w-full h-28 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 flex items-center justify-center mb-2">
+            <img id="newProdPhotoPreview" src="" alt="Ảnh món mới" class="w-full h-full object-cover hidden">
+            <div id="newProdPhotoPlaceholder" class="flex flex-col items-center justify-center text-slate-400">
+              <i class="fa-solid fa-image text-2xl text-slate-300 mb-1"></i>
+              <span class="text-[10px]">Chưa chọn ảnh (sẽ dùng icon)</span>
+            </div>
+            <button type="button" id="btnRemoveNewProdPhoto" onclick="clearNewProdPhoto()" class="hidden absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-red-600 text-white flex items-center justify-center text-[10px] shadow cursor-pointer" title="Xóa ảnh">✕</button>
+          </div>
+
+          <!-- Nút Chụp ảnh hoặc Chọn từ máy -->
+          <div class="grid grid-cols-2 gap-1.5">
+            <input type="file" id="newProdCameraInput" accept="image/*" capture="environment" class="hidden" onchange="handleNewProductPhotoFile(event)">
+            <button type="button" onclick="document.getElementById('newProdCameraInput').click()" class="py-2 px-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold border border-blue-200 flex items-center justify-center gap-1 cursor-pointer transition">
+              <i class="fa-solid fa-camera text-blue-600"></i>
+              <span>Chụp Ngay</span>
+            </button>
+
+            <input type="file" id="newProdGalleryInput" accept="image/*" class="hidden" onchange="handleNewProductPhotoFile(event)">
+            <button type="button" onclick="document.getElementById('newProdGalleryInput').click()" class="py-2 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold border border-slate-300 flex items-center justify-center gap-1 cursor-pointer transition">
+              <i class="fa-solid fa-image text-slate-600"></i>
+              <span>Chọn Từ Máy</span>
+            </button>
+          </div>
+          <input type="hidden" id="newProdPhotoData" value="">
         </div>
       </div>
 
-      <button onclick="saveNewProduct()" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black shadow mt-2 active:scale-95 transition cursor-pointer">
+      <button onclick="saveNewProduct()" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black shadow mt-2 active:scale-95 transition cursor-pointer shrink-0">
         Lưu Món Vào Thực Đơn
       </button>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: CẬP NHẬT ẢNH THỰC TẾ CHO MÓN (QUÁN CHỤP ĐIỆN THOẠI) ================= -->
+  <div id="editProductPhotoModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-sm p-4 sm:p-5 space-y-3.5 shadow-2xl animate-in zoom-in-95 text-xs text-slate-800 max-h-[90vh] flex flex-col">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5 shrink-0">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-camera"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-slate-900" id="editPhotoModalTitle">Đổi Ảnh Thực Tế Món</h3>
+            <p class="text-[10px] text-slate-400">Chụp ảnh thật của quán để khách nhìn là muốn gọi</p>
+          </div>
+        </div>
+        <button onclick="closeModal('editProductPhotoModal')" class="text-slate-400 hover:text-slate-700 cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-3 overflow-y-auto no-scrollbar flex-1 pr-0.5">
+        <input type="hidden" id="editPhotoProductId">
+
+        <!-- Khung xem trước ảnh lớn hiện tại -->
+        <div class="relative w-full h-36 rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 flex items-center justify-center group shadow-inner">
+          <img id="editPhotoPreviewImg" src="" alt="Ảnh món" class="w-full h-full object-cover">
+          <div id="editPhotoPreviewPlaceholder" class="hidden flex flex-col items-center justify-center text-slate-400 space-y-1">
+            <i class="fa-solid fa-image text-3xl text-slate-300"></i>
+            <span class="text-[10px]">Chưa có ảnh thực tế (đang dùng icon)</span>
+          </div>
+          <span class="absolute bottom-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-md bg-black/60 text-white backdrop-blur-xs">Ảnh hiển thị trên menu</span>
+        </div>
+
+        <!-- 2 Nút chụp ảnh hoặc chọn ảnh từ máy -->
+        <div class="grid grid-cols-2 gap-2">
+          <input type="file" id="editPhotoCameraInput" accept="image/*" capture="environment" class="hidden" onchange="handleProductPhotoFile(event)">
+          <button type="button" onclick="document.getElementById('editPhotoCameraInput').click()" class="py-2.5 px-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition cursor-pointer">
+            <i class="fa-solid fa-camera"></i>
+            <span>Chụp Bằng ĐT</span>
+          </button>
+
+          <input type="file" id="editPhotoGalleryInput" accept="image/*" class="hidden" onchange="handleProductPhotoFile(event)">
+          <button type="button" onclick="document.getElementById('editPhotoGalleryInput').click()" class="py-2.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs border border-slate-300 flex items-center justify-center gap-1.5 active:scale-95 transition cursor-pointer">
+            <i class="fa-solid fa-images text-blue-600"></i>
+            <span>Chọn Từ Album</span>
+          </button>
+        </div>
+
+        <!-- Dán link ảnh web -->
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Hoặc Dán Link Ảnh Trực Tiếp:</label>
+          <div class="flex gap-1.5">
+            <input type="url" id="editPhotoUrlInput" placeholder="https://... link ảnh món" class="flex-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs focus:outline-none focus:border-blue-500">
+            <button type="button" onclick="applyEditPhotoUrl()" class="px-3 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold border border-blue-200 text-xs cursor-pointer">Áp Dụng</button>
+          </div>
+        </div>
+
+        <!-- Thư viện ảnh mẫu sắc nét có sẵn -->
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Hoặc Chọn Mẫu Đẹp Sẵn Có Của Đất Phú:</label>
+          <div class="grid grid-cols-4 gap-1.5" id="presetPhotosContainer">
+            <!-- Render Javascript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Nút hành động footer -->
+      <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between shrink-0 gap-2">
+        <button type="button" onclick="removeProductPhoto()" class="text-xs text-red-600 hover:text-red-700 font-bold flex items-center gap-1 cursor-pointer">
+          <i class="fa-solid fa-trash-can"></i>
+          <span>Gỡ ảnh (dùng icon)</span>
+        </button>
+        <button type="button" onclick="saveProductPhoto()" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black shadow active:scale-95 transition cursor-pointer">
+          <i class="fa-solid fa-floppy-disk mr-1"></i> Lưu Ảnh Món
+        </button>
+      </div>
     </div>
   </div>
 
@@ -911,24 +1030,40 @@
 
   <!-- ================= LOGIC JAVASCRIPT ĐẤT PHÚ MINI POS NÂNG CẤP ================= -->
   <script>
-    // 1. DỮ LIỆU MẪU MÓN ĂN
+    // 1. DỮ LIỆU MẪU MÓN ĂN KÈM HÌNH ẢNH THỰC TẾ CỦA QUÁN
     const DEFAULT_PRODUCTS = [
-      { id: 1, name: "Cà Phê Đen Đá", price: 15000, cat: "coffee", icon: "fa-mug-hot", color: "text-blue-600" },
-      { id: 2, name: "Cà Phê Sữa Đá", price: 18000, cat: "coffee", icon: "fa-glass-water", color: "text-blue-600" },
-      { id: 3, name: "Bạc Xỉu Phú Yên", price: 20000, cat: "coffee", icon: "fa-whiskey-glass", color: "text-blue-600" },
-      { id: 4, name: "Trà Đào Cam Sả", price: 25000, cat: "tea", icon: "fa-leaf", color: "text-emerald-600" },
-      { id: 5, name: "Trà Sữa Trân Châu", price: 25000, cat: "tea", icon: "fa-mug-saucer", color: "text-purple-600" },
-      { id: 6, name: "Nước Cam Vắt", price: 22000, cat: "tea", icon: "fa-lemon", color: "text-amber-600" },
-      { id: 7, name: "Bánh Mì Thịt Nguội", price: 20000, cat: "food", icon: "fa-bread-slice", color: "text-red-600" },
-      { id: 8, name: "Bún Cá Dằm", price: 30000, cat: "food", icon: "fa-bowl-food", color: "text-red-600" },
-      { id: 9, name: "Bò Kho Bánh Mì", price: 35000, cat: "food", icon: "fa-utensils", color: "text-red-600" },
-      { id: 10, name: "Nước Suối Đóng Chai", price: 10000, cat: "drink", icon: "fa-bottle-water", color: "text-cyan-600" },
-      { id: 11, name: "Sting Dâu / Bò Húc", price: 15000, cat: "drink", icon: "fa-wine-bottle", color: "text-red-600" },
-      { id: 12, name: "Khăn Lạnh Cao Cấp", price: 3000, cat: "drink", icon: "fa-snowflake", color: "text-blue-400" }
+      { id: 1, name: "Cà Phê Đen Đá", price: 15000, cat: "coffee", icon: "fa-mug-hot", color: "text-blue-600", image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&auto=format&fit=crop&q=80" },
+      { id: 2, name: "Cà Phê Sữa Đá", price: 18000, cat: "coffee", icon: "fa-glass-water", color: "text-blue-600", image: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=400&auto=format&fit=crop&q=80" },
+      { id: 3, name: "Bạc Xỉu Phú Yên", price: 20000, cat: "coffee", icon: "fa-whiskey-glass", color: "text-blue-600", image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&auto=format&fit=crop&q=80" },
+      { id: 4, name: "Trà Đào Cam Sả", price: 25000, cat: "tea", icon: "fa-leaf", color: "text-emerald-600", image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&auto=format&fit=crop&q=80" },
+      { id: 5, name: "Trà Sữa Trân Châu", price: 25000, cat: "tea", icon: "fa-mug-saucer", color: "text-purple-600", image: "https://images.unsplash.com/photo-1558857563-b37df2d2b56e?w=400&auto=format&fit=crop&q=80" },
+      { id: 6, name: "Nước Cam Vắt", price: 22000, cat: "tea", icon: "fa-lemon", color: "text-amber-600", image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&auto=format&fit=crop&q=80" },
+      { id: 7, name: "Bánh Mì Thịt Nguội", price: 20000, cat: "food", icon: "fa-bread-slice", color: "text-red-600", image: "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=400&auto=format&fit=crop&q=80" },
+      { id: 8, name: "Bún Cá Dằm", price: 30000, cat: "food", icon: "fa-bowl-food", color: "text-red-600", image: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400&auto=format&fit=crop&q=80" },
+      { id: 9, name: "Bò Kho Bánh Mì", price: 35000, cat: "food", icon: "fa-utensils", color: "text-red-600", image: "https://images.unsplash.com/photo-1547928576-a4a33237cbc3?w=400&auto=format&fit=crop&q=80" },
+      { id: 10, name: "Nước Suối Đóng Chai", price: 10000, cat: "drink", icon: "fa-bottle-water", color: "text-cyan-600", image: "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=400&auto=format&fit=crop&q=80" },
+      { id: 11, name: "Sting Dâu / Bò Húc", price: 15000, cat: "drink", icon: "fa-wine-bottle", color: "text-red-600", image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?w=400&auto=format&fit=crop&q=80" },
+      { id: 12, name: "Khăn Lạnh Cao Cấp", price: 3000, cat: "drink", icon: "fa-snowflake", color: "text-blue-400", image: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=400&auto=format&fit=crop&q=80" }
     ];
 
     // 2. KHỞI TẠO STATE
     let products = JSON.parse(localStorage.getItem('dp_pos_products')) || DEFAULT_PRODUCTS;
+    let productDisplayMode = localStorage.getItem('dp_pos_display_mode') || 'photo';
+
+    // Tự động đồng bộ ảnh thực tế vào localStorage nếu trước đó chưa có ảnh
+    let hasUpdatedImages = false;
+    products.forEach(p => {
+      if (!p.image) {
+        const def = DEFAULT_PRODUCTS.find(d => d.id === p.id);
+        if (def && def.image) {
+          p.image = def.image;
+          hasUpdatedImages = true;
+        }
+      }
+    });
+    if (hasUpdatedImages) {
+      localStorage.setItem('dp_pos_products', JSON.stringify(products));
+    }
     let cart = [];
     let currentCat = 'all';
     let searchQuery = '';
@@ -1045,6 +1180,7 @@
     // 4. KHỞI CHẠY LẦN ĐẦU
     window.addEventListener('DOMContentLoaded', () => {
       applyTenantInfo();
+      updateDisplayModeButton();
       renderProducts();
       updateCartUI();
       renderHistory();
@@ -1090,6 +1226,27 @@
       renderProducts();
     }
 
+    function toggleProductDisplayMode() {
+      productDisplayMode = productDisplayMode === 'photo' ? 'compact' : 'photo';
+      localStorage.setItem('dp_pos_display_mode', productDisplayMode);
+      updateDisplayModeButton();
+      renderProducts();
+      playBeep(550, 0.04);
+      showToast(productDisplayMode === 'photo' ? 'Đã bật chế độ: Ảnh thực tế của quán' : 'Đã bật chế độ: Icon gọn');
+    }
+
+    function updateDisplayModeButton() {
+      const btn = document.getElementById('btnToggleDisplayMode');
+      if (!btn) return;
+      if (productDisplayMode === 'photo') {
+        btn.className = "px-2 py-1.5 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold flex items-center gap-1 shrink-0 cursor-pointer transition shadow-2xs";
+        btn.innerHTML = `<i class="fa-solid fa-image text-blue-600"></i><span class="text-[10px] hidden sm:inline">Ảnh Thật</span>`;
+      } else {
+        btn.className = "px-2 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold flex items-center gap-1 shrink-0 cursor-pointer transition";
+        btn.innerHTML = `<i class="fa-solid fa-list text-slate-500"></i><span class="text-[10px] hidden sm:inline">Gọn</span>`;
+      }
+    }
+
     function renderProducts() {
       const container = document.getElementById('productsGrid');
       let filtered = currentCat === 'all' ? products : products.filter(p => p.cat === currentCat);
@@ -1113,6 +1270,66 @@
         const qty = inCart ? inCart.qty : 0;
         const activeClass = qty > 0 ? 'product-active' : '';
 
+        // CHẾ ĐỘ 1: HIỂN THỊ TÊN MÓN KẾT HỢP HÌNH ẢNH THỰC TẾ CỦA QUÁN
+        if (productDisplayMode === 'photo') {
+          return `
+            <div class="bg-white p-2.5 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition relative flex flex-col justify-between shadow-xs ${activeClass}">
+              
+              <!-- Badge số lượng đã chọn (MÀU ĐỎ NỔI BẬT GÓC TRÊN) -->
+              ${qty > 0 ? `
+                <span class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-red-600 text-white font-black text-xs flex items-center justify-center shadow-md border-2 border-white animate-in zoom-in-75 z-10">
+                  ${qty}
+                </span>
+              ` : ''}
+
+              <div onclick="addToCart(${p.id})" class="cursor-pointer">
+                <!-- KHUNG HÌNH ẢNH THỰC TẾ MÓN ĂN -->
+                <div class="relative w-full h-24 sm:h-28 rounded-xl overflow-hidden mb-2 bg-slate-100 group shadow-inner">
+                  ${p.image ? `
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('flex');">
+                    <div class="hidden absolute inset-0 items-center justify-center bg-blue-50 text-blue-600 text-2xl">
+                      <i class="fa-solid ${p.icon || 'fa-mug-hot'}"></i>
+                    </div>
+                  ` : `
+                    <div class="w-full h-full flex items-center justify-center bg-blue-50 text-blue-600 text-2xl">
+                      <i class="fa-solid ${p.icon || 'fa-mug-hot'}"></i>
+                    </div>
+                  `}
+
+                  <!-- Gradient mờ dưới ảnh -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10 pointer-events-none"></div>
+
+                  <!-- Mã món #ID góc trên bên phải -->
+                  <span class="absolute top-1.5 right-1.5 text-[9px] font-black px-1.5 py-0.5 rounded-md bg-black/60 text-white backdrop-blur-xs border border-white/20">#${p.id}</span>
+
+                  <!-- Nút Camera đổi ảnh thực tế nhanh -->
+                  <button type="button" onclick="event.stopPropagation(); openEditProductPhotoModal(${p.id})" class="absolute top-1.5 left-1.5 w-6 h-6 rounded-lg bg-white/90 hover:bg-white text-slate-700 hover:text-blue-600 shadow-sm flex items-center justify-center text-[10px] backdrop-blur-xs transition cursor-pointer" title="Đổi ảnh thực tế của quán">
+                    <i class="fa-solid fa-camera"></i>
+                  </button>
+                </div>
+
+                <!-- Tên món & Giá tiền -->
+                <h4 class="font-black text-xs text-slate-800 line-clamp-1 leading-snug" title="${p.name}">${p.name}</h4>
+                <div class="text-red-600 font-black font-mono text-xs sm:text-sm mt-0.5">${p.price.toLocaleString('vi-VN')} đ</div>
+              </div>
+
+              <!-- Nút tăng giảm nhanh trên card (XANH DƯƠNG) -->
+              ${qty > 0 ? `
+                <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-100">
+                  <button onclick="event.stopPropagation(); updateCartQty(${p.id}, -1)" class="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 hover:bg-red-50 hover:text-red-600 font-bold flex items-center justify-center text-xs transition cursor-pointer">-</button>
+                  <span class="font-bold text-xs text-blue-900">${qty}</span>
+                  <button onclick="event.stopPropagation(); updateCartQty(${p.id}, 1)" class="w-7 h-7 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-bold flex items-center justify-center text-xs transition cursor-pointer">+</button>
+                </div>
+              ` : `
+                <button onclick="addToCart(${p.id})" class="mt-2 w-full py-1.5 rounded-xl bg-slate-50 hover:bg-blue-600 hover:text-white text-[11px] font-bold text-slate-600 border border-slate-200 transition flex items-center justify-center gap-1 cursor-pointer">
+                  <i class="fa-solid fa-plus text-[9px] text-blue-600"></i> Thêm
+                </button>
+              `}
+            </div>
+          `;
+        }
+
+        // CHẾ ĐỘ 2: THU GỌN VỚI ICON ĐẠI DIỆN
         return `
           <div class="bg-white p-3 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition relative flex flex-col justify-between shadow-xs ${activeClass}">
             
@@ -1863,11 +2080,77 @@
       }
     }
 
-    // 15. THÊM MÓN MỚI
+    // ========================================================================
+    // 15. THÊM MÓN MỚI & QUẢN LÝ ẢNH THỰC TẾ CỦA QUÁN
+    // ========================================================================
+    function compressImageFile(file, maxWidth = 480, quality = 0.75) {
+      return new Promise((resolve, reject) => {
+        if (!file || !file.type.startsWith('image/')) {
+          return reject(new Error('Tệp không phải là hình ảnh'));
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width;
+            let h = img.height;
+            if (w > maxWidth) {
+              h = Math.round((h * maxWidth) / w);
+              w = maxWidth;
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+            resolve(dataUrl);
+          };
+          img.onerror = () => reject(new Error('Lỗi tải hình ảnh'));
+          img.src = e.target.result;
+        };
+        reader.onerror = () => reject(new Error('Lỗi đọc tệp'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Xử lý ảnh cho modal Thêm Món Mới
     function openAddProductModal() {
       document.getElementById('newProdName').value = "";
       document.getElementById('newProdPrice').value = "";
+      clearNewProdPhoto();
       document.getElementById('addProductModal').classList.remove('hidden');
+    }
+
+    async function handleNewProductPhotoFile(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      try {
+        const compressedData = await compressImageFile(file, 480, 0.75);
+        document.getElementById('newProdPhotoData').value = compressedData;
+        const preview = document.getElementById('newProdPhotoPreview');
+        preview.src = compressedData;
+        preview.classList.remove('hidden');
+        document.getElementById('newProdPhotoPlaceholder').classList.add('hidden');
+        document.getElementById('btnRemoveNewProdPhoto').classList.remove('hidden');
+        playBeep(700, 0.04);
+        showToast('Đã tải ảnh thực tế thành công!');
+      } catch (err) {
+        alert('Không thể xử lý ảnh: ' + err.message);
+      }
+    }
+
+    function clearNewProdPhoto() {
+      document.getElementById('newProdPhotoData').value = "";
+      const preview = document.getElementById('newProdPhotoPreview');
+      preview.src = "";
+      preview.classList.add('hidden');
+      document.getElementById('newProdPhotoPlaceholder').classList.remove('hidden');
+      document.getElementById('btnRemoveNewProdPhoto').classList.add('hidden');
+      const cam = document.getElementById('newProdCameraInput');
+      if (cam) cam.value = "";
+      const gal = document.getElementById('newProdGalleryInput');
+      if (gal) gal.value = "";
     }
 
     function saveNewProduct() {
@@ -1875,6 +2158,7 @@
       const price = parseInt(document.getElementById('newProdPrice').value) || 0;
       const cat = document.getElementById('newProdCat').value;
       const icon = document.getElementById('newProdIcon').value;
+      const image = document.getElementById('newProdPhotoData').value.trim() || null;
 
       if (!name || price <= 0) {
         return alert("Vui lòng nhập tên món và giá bán hợp lệ!");
@@ -1887,13 +2171,132 @@
         price: price,
         cat: cat,
         icon: icon,
-        color: "text-blue-600"
+        color: "text-blue-600",
+        image: image
       });
 
       localStorage.setItem('dp_pos_products', JSON.stringify(products));
       renderProducts();
       closeModal('addProductModal');
-      showToast(`Đã thêm món "${name}" vào thực đơn!`);
+      showToast(`Đã thêm món "${name}" kèm ảnh thực tế vào menu!`);
+    }
+
+    // Thư viện ảnh mẫu sắc nét chuẩn Studio của Đất Phú
+    const PRESET_FOOD_PHOTOS = [
+      { name: "Cà phê đen", url: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&auto=format&fit=crop&q=80" },
+      { name: "Cà phê sữa", url: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=400&auto=format&fit=crop&q=80" },
+      { name: "Bạc xỉu", url: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&auto=format&fit=crop&q=80" },
+      { name: "Trà đào", url: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&auto=format&fit=crop&q=80" },
+      { name: "Trà sữa", url: "https://images.unsplash.com/photo-1558857563-b37df2d2b56e?w=400&auto=format&fit=crop&q=80" },
+      { name: "Nước cam", url: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&auto=format&fit=crop&q=80" },
+      { name: "Bánh mì", url: "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=400&auto=format&fit=crop&q=80" },
+      { name: "Bún cá dằm", url: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400&auto=format&fit=crop&q=80" },
+      { name: "Bò kho", url: "https://images.unsplash.com/photo-1547928576-a4a33237cbc3?w=400&auto=format&fit=crop&q=80" },
+      { name: "Nước suối", url: "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=400&auto=format&fit=crop&q=80" },
+      { name: "Nước ngọt", url: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?w=400&auto=format&fit=crop&q=80" },
+      { name: "Khăn lạnh", url: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=400&auto=format&fit=crop&q=80" }
+    ];
+
+    let currentEditingProductId = null;
+    let tempEditingPhotoUrl = null;
+
+    function openEditProductPhotoModal(productId) {
+      const p = products.find(x => x.id === productId);
+      if (!p) return;
+
+      currentEditingProductId = productId;
+      tempEditingPhotoUrl = p.image || null;
+
+      document.getElementById('editPhotoProductId').value = p.id;
+      document.getElementById('editPhotoModalTitle').textContent = `Ảnh Thực Tế: ${p.name}`;
+      document.getElementById('editPhotoUrlInput').value = p.image && p.image.startsWith('http') ? p.image : '';
+
+      updateEditPhotoPreview();
+
+      // Render các mẫu ảnh có sẵn
+      const presetsContainer = document.getElementById('presetPhotosContainer');
+      if (presetsContainer) {
+        presetsContainer.innerHTML = PRESET_FOOD_PHOTOS.map(item => `
+          <div onclick="selectPresetPhoto('${item.url}')" class="group relative rounded-xl overflow-hidden border border-slate-200 hover:border-blue-500 cursor-pointer aspect-square bg-slate-100 transition shadow-2xs hover:scale-105">
+            <img src="${item.url}" alt="${item.name}" class="w-full h-full object-cover">
+            <span class="absolute inset-x-0 bottom-0 text-[8px] font-bold text-center bg-black/60 text-white py-0.5 truncate px-0.5">${item.name}</span>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('editProductPhotoModal').classList.remove('hidden');
+    }
+
+    function updateEditPhotoPreview() {
+      const previewImg = document.getElementById('editPhotoPreviewImg');
+      const placeholder = document.getElementById('editPhotoPreviewPlaceholder');
+
+      if (tempEditingPhotoUrl) {
+        previewImg.src = tempEditingPhotoUrl;
+        previewImg.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      } else {
+        previewImg.src = '';
+        previewImg.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+      }
+    }
+
+    async function handleProductPhotoFile(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      try {
+        const compressedData = await compressImageFile(file, 480, 0.75);
+        tempEditingPhotoUrl = compressedData;
+        updateEditPhotoPreview();
+        playBeep(750, 0.05);
+        showToast('Đã chụp/tải ảnh xong! Bấm "Lưu Ảnh Món" để hoàn tất.');
+      } catch (err) {
+        alert('Lỗi nén ảnh: ' + err.message);
+      }
+    }
+
+    function applyEditPhotoUrl() {
+      const url = document.getElementById('editPhotoUrlInput').value.trim();
+      if (!url) return alert('Vui lòng nhập đường dẫn link ảnh hợp lệ!');
+      tempEditingPhotoUrl = url;
+      updateEditPhotoPreview();
+      playBeep(650, 0.03);
+    }
+
+    function selectPresetPhoto(url) {
+      tempEditingPhotoUrl = url;
+      document.getElementById('editPhotoUrlInput').value = url;
+      updateEditPhotoPreview();
+      playBeep(700, 0.03);
+      showToast('Đã chọn ảnh mẫu! Bấm "Lưu Ảnh Món" để áp dụng.');
+    }
+
+    function saveProductPhoto() {
+      if (!currentEditingProductId) return;
+      const p = products.find(x => x.id === currentEditingProductId);
+      if (!p) return;
+
+      p.image = tempEditingPhotoUrl || null;
+      localStorage.setItem('dp_pos_products', JSON.stringify(products));
+      renderProducts();
+      closeModal('editProductPhotoModal');
+      playBeep(850, 0.06);
+      showToast(`Đã lưu ảnh thực tế cho món "${p.name}"!`);
+    }
+
+    function removeProductPhoto() {
+      if (!currentEditingProductId) return;
+      const p = products.find(x => x.id === currentEditingProductId);
+      if (!p) return;
+
+      if (confirm(`Bạn có chắc muốn gỡ ảnh của món "${p.name}" và quay về dùng icon?`)) {
+        p.image = null;
+        localStorage.setItem('dp_pos_products', JSON.stringify(products));
+        renderProducts();
+        closeModal('editProductPhotoModal');
+        showToast(`Đã gỡ ảnh món "${p.name}".`);
+      }
     }
 
     // 16. CÀI ĐẶT THÔNG TIN QUÁN
