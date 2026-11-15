@@ -1552,23 +1552,23 @@
     }
     // 1b. DỮ LIỆU BÀN & PHÒNG TINH GỌN (LEAN TABLE MANAGEMENT)
     const DEFAULT_TABLES = [
-      { id: "takeaway", name: "Mang Về", zone: "takeaway", status: "empty", cart: [], openTime: null },
-      { id: "tbl_1", name: "Bàn 1", zone: "tret", status: "empty", cart: [], openTime: null },
-      { id: "tbl_2", name: "Bàn 2", zone: "tret", status: "empty", cart: [], openTime: null },
-      { id: "tbl_3", name: "Bàn 3", zone: "tret", status: "empty", cart: [], openTime: null },
-      { id: "tbl_4", name: "Bàn 4", zone: "tret", status: "empty", cart: [], openTime: null },
-      { id: "tbl_5", name: "Bàn 5", zone: "tret", status: "empty", cart: [], openTime: null },
-      { id: "tbl_6", name: "Bàn 6", zone: "tret", status: "empty", cart: [], openTime: null },
-      { id: "tbl_7", name: "Bàn 7", zone: "tret", status: "empty", cart: [], openTime: null },
-      { id: "tbl_8", name: "Bàn 8", zone: "tret", status: "empty", cart: [], openTime: null },
-      { id: "tbl_9", name: "Bàn 9", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
-      { id: "tbl_10", name: "Bàn 10", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
-      { id: "tbl_11", name: "Bàn 11", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
-      { id: "tbl_12", name: "Bàn 12", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
-      { id: "tbl_13", name: "Bàn 13", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
-      { id: "tbl_14", name: "Bàn 14", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
-      { id: "tbl_15", name: "Bàn 15", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
-      { id: "tbl_16", name: "Bàn 16", zone: "ngoaitroi", status: "empty", cart: [], openTime: null }
+      { id: "takeaway", name: "Mang Về", zone: "takeaway", status: "empty", cart: [], openTime: null, guestCount: 1, turnsToday: 3, tag: "Mang đi" },
+      { id: "tbl_1", name: "Bàn 1", zone: "tret", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 2, tag: "" },
+      { id: "tbl_2", name: "Bàn 2", zone: "tret", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 1, tag: "" },
+      { id: "tbl_3", name: "Bàn 3", zone: "tret", status: "empty", cart: [], openTime: null, guestCount: 4, turnsToday: 0, tag: "" },
+      { id: "tbl_4", name: "Bàn 4", zone: "tret", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 3, tag: "Khách quen" },
+      { id: "tbl_5", name: "Bàn 5", zone: "tret", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 1, tag: "" },
+      { id: "tbl_6", name: "Bàn 6", zone: "tret", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 2, tag: "" },
+      { id: "tbl_7", name: "Bàn 7", zone: "tret", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 0, tag: "" },
+      { id: "tbl_8", name: "Bàn 8", zone: "tret", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 1, tag: "" },
+      { id: "tbl_9", name: "Bàn 9", zone: "ngoaitroi", status: "empty", cart: [], openTime: null, guestCount: 3, turnsToday: 2, tag: "VIP" },
+      { id: "tbl_10", name: "Bàn 10", zone: "ngoaitroi", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 1, tag: "" },
+      { id: "tbl_11", name: "Bàn 11", zone: "ngoaitroi", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 0, tag: "" },
+      { id: "tbl_12", name: "Bàn 12", zone: "ngoaitroi", status: "empty", cart: [], openTime: null, guestCount: 4, turnsToday: 2, tag: "" },
+      { id: "tbl_13", name: "Bàn 13", zone: "ngoaitroi", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 1, tag: "" },
+      { id: "tbl_14", name: "Bàn 14", zone: "ngoaitroi", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 0, tag: "" },
+      { id: "tbl_15", name: "Bàn 15", zone: "ngoaitroi", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 1, tag: "" },
+      { id: "tbl_16", name: "Bàn 16", zone: "ngoaitroi", status: "empty", cart: [], openTime: null, guestCount: 2, turnsToday: 0, tag: "" }
     ];
 
     let tables = JSON.parse(localStorage.getItem('dp_pos_tables')) || DEFAULT_TABLES;
@@ -1578,6 +1578,13 @@
       });
       localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
     }
+    // Tự động bổ sung trường turnsToday và guestCount cho dữ liệu bàn cũ
+    tables.forEach(t => {
+      if (typeof t.turnsToday === 'undefined') t.turnsToday = 0;
+      if (typeof t.guestCount === 'undefined') t.guestCount = 2;
+      if (typeof t.tag === 'undefined') t.tag = '';
+    });
+
 
     let currentTableId = localStorage.getItem('dp_current_table_id') || 'takeaway';
     let currentTableZoneFilter = 'all';
@@ -1845,15 +1852,16 @@
       const container = document.getElementById('fullFloorMapGrid');
       if (!container) return;
 
-      // Cập nhật số liệu thống kê
+      // Cập nhật số liệu thống kê tổng lượt khách toàn quán hôm nay
       const occupiedCount = tables.filter(t => t.id !== 'takeaway' && t.status === 'occupied').length;
       const totalCount = tables.filter(t => t.id !== 'takeaway').length;
       const emptyCount = totalCount - occupiedCount;
+      const totalTurnsToday = tables.reduce((s, t) => s + (t.turnsToday || 0), 0);
       
       const elTotal = document.getElementById('mapTotalTablesCount');
       const elOcc = document.getElementById('mapOccupiedCount');
       const elEmp = document.getElementById('mapEmptyCount');
-      if (elTotal) elTotal.textContent = `Tổng: ${totalCount} bàn`;
+      if (elTotal) elTotal.textContent = `Tổng: ${totalCount} bàn • ${totalTurnsToday} lượt khách hôm nay`;
       if (elOcc) elOcc.textContent = `Có khách: ${occupiedCount} bàn`;
       if (elEmp) elEmp.textContent = `Trống: ${emptyCount} bàn`;
 
@@ -1876,6 +1884,9 @@
         const tTotal = (t.cart || []).reduce((s, x) => s + x.price * x.qty, 0);
         const totalItemsCount = (t.cart || []).reduce((s, x) => s + x.qty, 0);
         const zoneName = t.zone === 'tret' ? 'Tầng trệt' : (t.zone === 'ngoaitroi' ? 'Sân vườn' : (t.zone === 'takeaway' ? 'Mang đi' : 'Lầu 1'));
+        const turns = t.turnsToday || 0;
+        const guests = t.guestCount || 2;
+        const tag = t.tag || '';
 
         // Chi tiết danh sách các mục món của bàn
         let itemsHtml = '';
@@ -1895,33 +1906,46 @@
         return `
           <div onclick="switchTable('${t.id}')" class="bg-white p-2.5 rounded-2xl border transition cursor-pointer relative flex flex-col justify-between shadow-2xs select-none ${isActive ? 'border-blue-600 ring-2 ring-blue-500/60 bg-blue-50/40 shadow-sm' : (isOcc ? 'border-red-300 bg-red-50/20 hover:border-red-400' : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50')}">
             
-            <!-- Đỉnh ô bàn: Tên bàn & Trạng thái -->
+            <!-- Đỉnh ô bàn: Tên bàn & Nhãn Bàn & Lượt Khách -->
             <div>
               <div class="flex items-center justify-between mb-1">
-                <div class="flex items-center gap-1.5">
-                  <div class="w-6 h-6 rounded-lg ${isActive ? 'bg-blue-600 text-white' : (isOcc ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-700')} flex items-center justify-center text-[11px] font-black shadow-2xs">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <div class="w-6 h-6 rounded-lg ${isActive ? 'bg-blue-600 text-white' : (isOcc ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-700')} flex items-center justify-center text-[11px] font-black shadow-2xs shrink-0">
                     <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'}"></i>
                   </div>
-                  <div>
-                    <h4 class="font-black text-xs ${isActive ? 'text-blue-900 font-extrabold' : 'text-slate-900'}">${t.name}</h4>
-                    <span class="text-[9px] text-slate-400 font-medium block leading-none">${zoneName} ${t.openTime ? '• ' + t.openTime : ''}</span>
+                  <div class="min-w-0 truncate">
+                    <div class="flex items-center gap-1">
+                      <h4 class="font-black text-xs ${isActive ? 'text-blue-900 font-extrabold' : 'text-slate-900'} truncate">${t.name}</h4>
+                      ${tag ? `<span class="text-[8px] px-1 py-0.2 rounded font-black uppercase ${tag === 'VIP' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-purple-100 text-purple-700 border border-purple-200'}">${tag}</span>` : ''}
+                    </div>
+                    <span class="text-[9px] text-slate-400 font-medium block leading-none truncate">${zoneName} ${t.openTime ? '• ' + t.openTime : ''}</span>
                   </div>
                 </div>
 
-                <!-- Badge trạng thái -->
+                <!-- Badge trạng thái & Số món -->
                 ${isOcc ? `
-                  <span class="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white animate-pulse shadow-2xs">
+                  <span class="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white animate-pulse shadow-2xs shrink-0">
                     ${totalItemsCount} món
                   </span>
                 ` : `
-                  <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+                  <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-500 border border-slate-200 shrink-0">
                     Trống
                   </span>
                 `}
               </div>
 
+              <!-- Thanh Nhãn Bàn: Theo Dõi Lượt Khách & Số Khách Hiện Tại -->
+              <div class="flex items-center justify-between px-1.5 py-0.5 bg-slate-100/80 rounded-md text-[9px] font-bold text-slate-600 mb-1 border border-slate-200/60">
+                <span class="flex items-center gap-1 text-blue-700" title="Tổng lượt phục vụ bàn này trong ngày">
+                  <i class="fa-solid fa-arrows-rotate text-[8px]"></i> ${turns} lượt/ngày
+                </span>
+                <span class="flex items-center gap-1 text-slate-500" title="Số khách đợt này">
+                  <i class="fa-solid fa-users text-[8px]"></i> ${isOcc ? guests + ' khách' : 'Chưa có khách'}
+                </span>
+              </div>
+
               <!-- Chi tiết các mục món trong bàn -->
-              <div class="my-1.5 bg-slate-50/90 p-1.5 rounded-xl border border-slate-100 min-h-[48px]">
+              <div class="my-1 bg-slate-50/90 p-1.5 rounded-xl border border-slate-100 min-h-[44px]">
                 ${isOcc ? itemsHtml : '<div class="text-center text-[10px] text-slate-400 italic py-2">Bàn trống • Sẵn sàng đón khách</div>'}
               </div>
             </div>
@@ -1935,15 +1959,11 @@
                 </span>
               </div>
 
-              <!-- Nút Chi Tiết Bàn -->
+              <!-- Nút Chi Tiết Bàn & Nhãn -->
               <div class="flex items-center space-x-1" onclick="event.stopPropagation()">
-                ${isOcc ? `
-                  <button onclick="openTableDetailModal('${t.id}')" class="px-2 py-0.5 rounded-md bg-blue-100 hover:bg-blue-600 hover:text-white text-blue-700 text-[10px] font-bold border border-blue-200 transition cursor-pointer" title="Xem chi tiết các mục bàn và in tạm tính">
-                    <i class="fa-solid fa-list-check text-[9px]"></i> Chi Tiết
-                  </button>
-                ` : `
-                  <span class="text-[9px] text-slate-400 font-bold">${isActive ? 'Đang chọn' : 'Vào bàn →'}</span>
-                `}
+                <button onclick="openTableDetailModal('${t.id}')" class="px-2 py-0.5 rounded-md ${isOcc ? 'bg-blue-100 hover:bg-blue-600 hover:text-white text-blue-700 border-blue-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-600 border-slate-200'} text-[10px] font-bold border transition cursor-pointer flex items-center gap-1" title="Xem chi tiết bàn, gắn nhãn & đổi số khách">
+                  <i class="fa-solid fa-tag text-[8px]"></i> Chi Tiết
+                </button>
               </div>
             </div>
 
@@ -1952,9 +1972,23 @@
       }).join('');
     }
 
-    // ========================================================================
-    // HÀM MỞ BẢNG CHI TIẾT CÁC MỤC BÀN
-    // ========================================================================
+    
+    function updateTableGuestCount(val) {
+      const curTbl = getCurrentTable();
+      curTbl.guestCount = parseInt(val) || 1;
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+      renderFullFloorMap();
+      showToast(`Đã cập nhật: ${curTbl.name} có ${curTbl.guestCount} khách!`);
+    }
+
+    function updateTableTag(val) {
+      const curTbl = getCurrentTable();
+      curTbl.tag = val;
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+      renderFullFloorMap();
+      showToast(val ? `Đã gắn nhãn [${val}] cho ${curTbl.name}!` : `Đã gỡ nhãn bàn cho ${curTbl.name}!`);
+    }
+
     function openTableDetailModal(tableId) {
       const t = tables.find(x => x.id === tableId) || getCurrentTable();
       switchTable(t.id);
@@ -1987,6 +2021,14 @@
       if (discountEl) discountEl.textContent = `- ${discount.toLocaleString('vi-VN')} đ`;
       if (totalQtyEl) totalQtyEl.textContent = `${totalQty} món`;
       if (totalAmountEl) totalAmountEl.textContent = `${finalAmount.toLocaleString('vi-VN')} đ`;
+      // Đồng bộ số khách và nhãn bàn vào modal
+      const gSel = document.getElementById('tblDetailGuestSelect');
+      const tSel = document.getElementById('tblDetailTagSelect');
+      const tBadge = document.getElementById('tblDetailTurnsBadge');
+      if (gSel) gSel.value = t.guestCount || 2;
+      if (tSel) tSel.value = t.tag || '';
+      if (tBadge) tBadge.textContent = `🔄 Đã đón: ${t.turnsToday || 0} lượt hôm nay`;
+
 
       if (listEl) {
         if (!isOcc || t.cart.length === 0) {
@@ -2091,6 +2133,7 @@
       curTbl.status = 'empty';
       curTbl.openTime = null;
       curTbl.discount = 0;
+      curTbl.turnsToday = (curTbl.turnsToday || 0) + 1;
       cart = [];
       localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
       updateCartUI();
@@ -4665,6 +4708,41 @@
               <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-red-600 text-white animate-pulse" id="tblDetailStatusBadge">Có khách</span>
             </div>
             <p class="text-[11px] text-slate-400 mt-0.5" id="tblDetailMeta">Khu vực: Tầng trệt • Vào lúc: 08:30 • Đã ngồi: 25 phút</p>
+            
+            <!-- BỘ CHỌN NHANH: SỐ KHÁCH & NHÃN BÀN (TAG) -->
+            <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+              <!-- Số lượng khách -->
+              <div class="flex items-center space-x-1 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200 text-[10px] font-bold text-slate-700">
+                <i class="fa-solid fa-users text-blue-600 text-[9px]"></i>
+                <span>Số khách:</span>
+                <select id="tblDetailGuestSelect" onchange="updateTableGuestCount(this.value)" class="bg-white border border-slate-300 rounded px-1 py-0.2 text-[10px] font-bold text-blue-800">
+                  <option value="1">1 khách</option>
+                  <option value="2" selected>2 khách</option>
+                  <option value="3">3 khách</option>
+                  <option value="4">4 khách</option>
+                  <option value="5">5 khách</option>
+                  <option value="6">6+ khách</option>
+                </select>
+              </div>
+
+              <!-- Nhãn bàn (VIP, Đặt trước, Khách quen) -->
+              <div class="flex items-center space-x-1 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200 text-[10px] font-bold text-slate-700">
+                <i class="fa-solid fa-tag text-purple-600 text-[9px]"></i>
+                <span>Nhãn:</span>
+                <select id="tblDetailTagSelect" onchange="updateTableTag(this.value)" class="bg-white border border-slate-300 rounded px-1 py-0.2 text-[10px] font-bold text-purple-800">
+                  <option value="">-- Không --</option>
+                  <option value="VIP">⭐ VIP</option>
+                  <option value="Khách quen">❤️ Khách quen</option>
+                  <option value="Đặt trước">📅 Đặt trước</option>
+                  <option value="Giục món">⚡ Giục món</option>
+                </select>
+              </div>
+
+              <!-- Lượt khách hôm nay -->
+              <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-200" id="tblDetailTurnsBadge">
+                🔄 Đã đón: 2 lượt hôm nay
+              </span>
+            </div>
           </div>
         </div>
         <button onclick="closeModal('tableDetailModal')" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center cursor-pointer transition">✕</button>
