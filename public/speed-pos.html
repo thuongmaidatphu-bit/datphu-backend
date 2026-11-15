@@ -3,19 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đất Phú Speed POS - Chuẩn Tinh Gọn iPOS</title>
+  <title>Đất Phú Speed POS - Chuẩn iPOS (Sơ Đồ Bàn & Gọi Món Chuyên Biệt)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body { user-select: none; -webkit-user-select: none; }
     
-    /* Thanh cuộn tinh tế */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-    /* Định dạng máy in nhiệt chuẩn 80mm / 58mm */
+    /* In hóa đơn nhiệt chuẩn 80mm / 58mm */
     @media print {
       body * { visibility: hidden !important; }
       #printableReceipt, #printableReceipt * { visibility: visible !important; }
@@ -35,37 +34,50 @@
 </head>
 <body class="bg-slate-100 text-slate-800 h-screen flex flex-col overflow-hidden font-sans">
 
-  <!-- ================= TOP APP BAR TINH GỌN ================= -->
-  <header class="h-14 bg-slate-900 text-white px-4 flex items-center justify-between shrink-0 shadow-md border-b border-slate-800 z-10">
+  <!-- ================= TOP APP BAR CHUYÊN NGHIỆP ================= -->
+  <header class="h-14 bg-slate-900 text-white px-3 sm:px-5 flex items-center justify-between shrink-0 shadow-md border-b border-slate-800 z-20">
+    
+    <!-- Logo & Tên quán -->
     <div class="flex items-center space-x-3">
       <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-base shadow-sm">
         <i class="fa-solid fa-bowl-food"></i>
       </div>
       <div>
-        <div class="flex items-center gap-2">
-          <h1 class="font-black text-sm sm:text-base uppercase tracking-wider text-white">ĐẤT PHÚ SPEED POS</h1>
-          <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full font-bold border border-blue-400/30">Vận hành siêu tốc</span>
-        </div>
-        <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Quy trình 5 bước: Sơ đồ bàn → Menu → Báo bếp → VietQR → In bill</p>
+        <h1 class="font-black text-sm sm:text-base uppercase tracking-wider text-white leading-tight">ĐẤT PHÚ SPEED POS</h1>
+        <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Quy trình 5 bước tinh gọn chuẩn công nghiệp</p>
       </div>
     </div>
 
-    <!-- Thông tin ca & Công cụ -->
-    <div class="flex items-center space-x-2.5 sm:space-x-4 text-xs font-bold">
-      <div class="hidden md:flex items-center gap-1.5 bg-slate-800 px-3 py-1.5 rounded-xl text-slate-300 border border-slate-700">
+    <!-- 2 TAB CHUYỂN MÀN HÌNH CHÍNH (LOẠI BỎ CHIA 3 MÀN HÌNH CHẬT CHỘI) -->
+    <div class="flex items-center bg-slate-800 p-1 rounded-2xl border border-slate-700 shadow-inner">
+      <button onclick="switchView('tables')" id="navTabTables" class="px-4 py-1.5 rounded-xl text-xs font-black flex items-center gap-2 transition cursor-pointer bg-blue-600 text-white shadow-xs">
+        <i class="fa-solid fa-table-cells-large"></i>
+        <span>1. SƠ ĐỒ BÀN</span>
+        <span id="navTablesBadge" class="bg-blue-800 text-white text-[10px] px-1.5 py-0.2 rounded-full font-mono">0</span>
+      </button>
+
+      <button onclick="switchView('order')" id="navTabOrder" class="px-4 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition cursor-pointer text-slate-400 hover:text-white">
+        <i class="fa-solid fa-utensils"></i>
+        <span id="navOrderTabTitle">2. GỌI MÓN (BÀN 1)</span>
+      </button>
+    </div>
+
+    <!-- Công cụ & Doanh thu -->
+    <div class="flex items-center space-x-2.5 sm:space-x-3 text-xs font-bold">
+      <div class="hidden lg:flex items-center gap-1.5 bg-slate-800 px-3 py-1.5 rounded-xl text-slate-300 border border-slate-700">
         <i class="fa-solid fa-clock text-amber-400"></i>
         <span id="topClock">--:--:--</span>
       </div>
 
-      <!-- Nút Tự động hóa n8n -->
-      <button onclick="openN8nModal()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2 transition cursor-pointer" title="Cài đặt n8n Webhook">
+      <!-- n8n tự động hóa -->
+      <button onclick="openN8nModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition cursor-pointer" title="Cài đặt n8n Webhook">
         <i class="fa-solid fa-network-wired text-indigo-400"></i>
-        <span class="hidden sm:inline">Tự Động n8n</span>
+        <span class="hidden sm:inline">n8n</span>
         <span id="n8nStatusDot" class="w-2 h-2 rounded-full bg-slate-500"></span>
       </button>
 
-      <!-- Khối Doanh thu nổi bật -->
-      <div class="bg-emerald-600/90 hover:bg-emerald-600 text-white px-3.5 py-1.5 rounded-xl shadow-xs flex items-center gap-2 border border-emerald-500/50">
+      <!-- Doanh thu -->
+      <div class="bg-emerald-600 text-white px-3 sm:px-3.5 py-1.5 rounded-xl shadow-xs flex items-center gap-1.5 border border-emerald-500">
         <i class="fa-solid fa-wallet text-emerald-200"></i>
         <span class="hidden sm:inline text-xs font-medium">Doanh thu:</span>
         <span id="topRevenue" class="font-mono font-black text-sm">0 đ</span>
@@ -73,112 +85,114 @@
     </div>
   </header>
 
-  <!-- ================= VÙNG LÀM VIỆC CHÍNH (3 CỘT RÕ RÀNG, THOÁNG ĐÃNG) ================= -->
-  <main class="flex-1 flex overflow-hidden">
+  <!-- ================= MÀN HÌNH 1: SƠ ĐỒ BÀN TOÀN CẢNH (RỘNG RÃI 100%) ================= -->
+  <main id="viewTables" class="flex-1 flex flex-col overflow-hidden bg-slate-50">
     
-    <!-- ================= CỘT 1: SƠ ĐỒ BÀN (THẺ TO, SẠCH SẼ, CHUẨN iPOS) ================= -->
-    <section class="w-[30%] sm:w-[28%] xl:w-[26%] border-r border-slate-200 bg-slate-50/60 flex flex-col shrink-0">
-      
-      <!-- Bộ lọc và thống kê bàn -->
-      <div class="p-3 bg-white border-b border-slate-200 shrink-0">
-        <div class="flex items-center justify-between mb-2">
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-table-cells-large text-blue-600 text-sm"></i>
-            <span class="font-black text-xs text-slate-900 tracking-wide uppercase">SƠ ĐỒ BÀN</span>
-          </div>
-          <span class="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-200" id="tableStatsText">
-            17 bàn • 0 có khách
-          </span>
-        </div>
-
-        <!-- Chú thích trạng thái bàn êm mắt -->
-        <div class="grid grid-cols-4 gap-1 text-[10px] font-semibold text-slate-500 pt-1">
-          <div class="flex items-center gap-1.5 bg-slate-100 px-1.5 py-1 rounded">
-            <span class="w-2 h-2 rounded-full bg-slate-400"></span>
-            <span>Trống</span>
-          </div>
-          <div class="flex items-center gap-1.5 bg-blue-50 text-blue-700 px-1.5 py-1 rounded">
-            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-            <span>Có khách</span>
-          </div>
-          <div class="flex items-center gap-1.5 bg-amber-50 text-amber-700 px-1.5 py-1 rounded">
-            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-            <span>Đã bếp</span>
-          </div>
-          <div class="flex items-center gap-1.5 bg-rose-50 text-rose-700 px-1.5 py-1 rounded">
-            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-            <span>Chờ trả</span>
-          </div>
-        </div>
+    <!-- Thanh điều khiển & Lọc bàn -->
+    <div class="p-3.5 bg-white border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 shrink-0 shadow-2xs">
+      <div class="flex items-center gap-3">
+        <span class="font-black text-sm text-slate-800 uppercase tracking-wide">QUẢN LÝ 17 BÀN PHỤC VỤ</span>
+        <span class="text-xs font-bold px-2.5 py-1 rounded-xl bg-blue-50 text-blue-700 border border-blue-200" id="tableStatsBanner">
+          17 bàn • 0 đang có khách
+        </span>
       </div>
 
-      <!-- Danh sách Thẻ Bàn (Chạm 1 cái là chọn bàn, không có nút rác li ti) -->
-      <div class="flex-1 p-3 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="tablesContainer">
-        <!-- Render bằng JS: Thẻ bàn to, viền đổi màu, số tiền to rõ -->
+      <!-- Chú thích màu sắc chuẩn iPOS -->
+      <div class="flex items-center gap-2 sm:gap-4 text-xs font-semibold text-slate-600">
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-md bg-white border-2 border-slate-300"></span>
+          <span>Bàn trống</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-md bg-blue-500 border-2 border-blue-600"></span>
+          <span>Đang chọn món</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-md bg-amber-500 border-2 border-amber-600"></span>
+          <span>Bếp đang nấu 🔔</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-md bg-rose-500 border-2 border-rose-600"></span>
+          <span>Chờ VietQR 💳</span>
+        </div>
       </div>
-    </section>
+    </div>
 
-    <!-- ================= CỘT 2: MENU THỰC ĐƠN (KHÔNG GIAN LỚN NHẤT, NÚT BẤM TO) ================= -->
-    <section class="flex-1 flex flex-col bg-slate-100 overflow-hidden">
+    <!-- Lưới Thẻ Bàn Siêu Rộng Rãi (Không bao giờ bị cắt chữ 'Bà...') -->
+    <div class="flex-1 p-4 sm:p-6 overflow-y-auto">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4" id="fullTablesGrid">
+        <!-- Render bằng JS: Mỗi ô bàn to bằng bàn tay, chạm là vào gọi món -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= MÀN HÌNH 2: GỌI MÓN & THANH TOÁN (CHỈ 2 CỘT SIÊU THOÁNG) ================= -->
+  <main id="viewOrder" class="hidden flex-1 flex overflow-hidden">
+    
+    <!-- CỘT TRÁI (66%): THỰC ĐƠN MENU RỘNG RÃI -->
+    <section class="flex-1 flex flex-col bg-slate-100 border-r border-slate-200 overflow-hidden">
       
-      <!-- Thanh Phân Loại Danh Mục & Tìm Kiếm -->
-      <div class="p-3 bg-white border-b border-slate-200 flex flex-wrap items-center justify-between gap-2.5 shrink-0">
-        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar" id="categoryChips">
-          <button onclick="setCategory('all')" id="catBtn-all" class="px-3.5 py-2 rounded-xl text-xs font-black bg-blue-600 text-white shadow-xs cursor-pointer transition">
-            <i class="fa-solid fa-list mr-1"></i> Tất Cả
+      <!-- Header Menu: Nút quay lại sơ đồ bàn + Phân loại món -->
+      <div class="p-3 bg-white border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 shrink-0">
+        
+        <div class="flex items-center gap-2.5">
+          <!-- Nút Quay lại Sơ đồ bàn to rõ -->
+          <button onclick="switchView('tables')" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center gap-2 border border-slate-300 transition cursor-pointer">
+            <i class="fa-solid fa-arrow-left text-blue-600"></i>
+            <span>SƠ ĐỒ BÀN</span>
           </button>
-          <button onclick="setCategory('bun')" id="catBtn-bun" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer transition">
-            <i class="fa-solid fa-bowl-food text-blue-600 mr-1"></i> Bún Cá
-          </button>
-          <button onclick="setCategory('coffee')" id="catBtn-coffee" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer transition">
-            <i class="fa-solid fa-mug-hot text-amber-600 mr-1"></i> Cà Phê
-          </button>
-          <button onclick="setCategory('drink')" id="catBtn-drink" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer transition">
-            <i class="fa-solid fa-glass-water text-emerald-600 mr-1"></i> Trà & Nước
-          </button>
+
+          <!-- Danh mục món -->
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar" id="categoryChips">
+            <button onclick="setCategory('all')" id="catBtn-all" class="px-3.5 py-2 rounded-xl text-xs font-black bg-blue-600 text-white shadow-xs cursor-pointer">Tất Cả</button>
+            <button onclick="setCategory('bun')" id="catBtn-bun" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">Bún Cá</button>
+            <button onclick="setCategory('coffee')" id="catBtn-coffee" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">Cà Phê</button>
+            <button onclick="setCategory('drink')" id="catBtn-drink" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">Trà & Nước</button>
+          </div>
         </div>
 
         <!-- Ô Tìm kiếm nhanh -->
-        <div class="relative w-44 sm:w-60">
+        <div class="relative w-48 sm:w-64">
           <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-          <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Tìm món nhanh..." class="w-full pl-8 pr-3 py-1.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold focus:bg-white focus:outline-blue-500 transition">
+          <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Tìm món nhanh..." class="w-full pl-8 pr-3 py-1.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold focus:bg-white focus:outline-blue-500">
         </div>
       </div>
 
-      <!-- Lưới Thẻ Món Ăn (Thiết kế thoáng, tên món không rớt dòng cụt) -->
-      <div class="flex-1 p-3.5 overflow-y-auto grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 content-start" id="productsContainer">
+      <!-- Lưới Thẻ Món Ăn (Không gian cực rộng, chữ to rõ ràng) -->
+      <div class="flex-1 p-4 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3.5 content-start" id="productsContainer">
         <!-- Render danh sách món ăn bằng JS -->
       </div>
     </section>
 
-    <!-- ================= CỘT 3: HÓA ĐƠN & BỘ ĐIỀU KHIỂN DUY NHẤT ================= -->
-    <section class="w-[34%] xl:w-[31%] bg-white border-l border-slate-200 flex flex-col shadow-xl shrink-0">
+    <!-- CỘT PHẢI (34%): HÓA ĐƠN & TIẾN ĐỘ 5 BƯỚC CỦA BÀN -->
+    <section class="w-[36%] sm:w-[34%] xl:w-[32%] bg-white flex flex-col shadow-xl shrink-0">
       
       <!-- Header Bàn Đang Chọn -->
       <div class="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-xs">
+          <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm font-black shadow-xs">
             <i class="fa-solid fa-receipt"></i>
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <h2 id="orderTableName" class="font-black text-sm text-slate-900 uppercase tracking-wide">BÀN 1</h2>
+              <h2 id="orderTableName" class="font-black text-base text-slate-900 uppercase">BÀN 1</h2>
               <span id="orderTableBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">Trống</span>
             </div>
-            <span id="orderTableTime" class="text-[11px] text-slate-500 font-medium">Bàn đang trống</span>
+            <span id="orderTableTime" class="text-xs text-slate-500 font-medium">Bàn đang trống</span>
           </div>
         </div>
 
-        <button onclick="clearCurrentCart()" class="text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-50 px-2 py-1 rounded-lg transition cursor-pointer" title="Hủy tất cả món của bàn này">
+        <button onclick="clearCurrentCart()" class="text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-50 px-2.5 py-1.5 rounded-lg transition cursor-pointer" title="Hủy tất cả món của bàn này">
           <i class="fa-solid fa-trash-can mr-1"></i> Xóa hết
         </button>
       </div>
 
-      <!-- THANH TIẾN ĐỘ 5 BƯỚC DUY NHẤT (TO, ĐẲNG CẤP, DỄ HIỂU) -->
+      <!-- THANH TIẾN ĐỘ 5 BƯỚC (RÕ RÀNG, ĐẲNG CẤP) -->
       <div class="px-3.5 py-2.5 bg-slate-100/70 border-b border-slate-200 shrink-0">
         <div class="flex items-center justify-between mb-1.5">
-          <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider">TIẾN ĐỘ PHỤC VỤ BÀN:</span>
-          <span id="progressStepDesc" class="text-[10px] font-bold text-blue-700">Bước 1: Chọn bàn</span>
+          <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider">TIẾN ĐỘ ĐƠN HÀNG:</span>
+          <span id="progressStepDesc" class="text-[11px] font-bold text-blue-700">Bước 1: Chọn bàn</span>
         </div>
         <div class="grid grid-cols-5 gap-1.5" id="billProgressLedBar">
           <!-- 5 đèn trạng thái tiến độ -->
@@ -186,7 +200,7 @@
       </div>
 
       <!-- Danh Sách Các Món Trong Hóa Đơn -->
-      <div class="flex-1 p-3 overflow-y-auto divide-y divide-slate-100" id="orderItemsList">
+      <div class="flex-1 p-3.5 overflow-y-auto divide-y divide-slate-100" id="orderItemsList">
         <!-- Render danh sách món trong giỏ bằng JS -->
       </div>
 
@@ -198,7 +212,7 @@
           <span id="orderTotalText" class="text-2xl font-black font-mono text-red-600">0 đ</span>
         </div>
 
-        <!-- 3 Nút Hành Động Lớn: 3. Báo Bếp -> 4. VietQR -> 5. In Bill -->
+        <!-- 3 Nút Hành Động Chuẩn iPOS: 3. Báo Bếp -> 4. VietQR -> 5. In Bill -->
         <div class="grid grid-cols-3 gap-2">
           
           <!-- 3. BÁO BẾP (VÀNG ẤM) -->
@@ -207,7 +221,7 @@
             <span>3. BÁO BẾP</span>
           </button>
 
-          <!-- 4. VIETQR (ĐỎ CHUẨN) -->
+          <!-- 4. VIETQR (ĐỎ CHUẨN NAPAS) -->
           <button onclick="actionOpenCheckout()" class="py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-black text-xs shadow-sm flex flex-col items-center justify-center gap-1 active:scale-95 transition cursor-pointer" title="Hiện mã VietQR động thanh toán">
             <i class="fa-solid fa-qrcode text-base"></i>
             <span>4. VIETQR</span>
@@ -261,7 +275,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL CẤU HÌNH n8n WEBHOOK TỰ ĐỘNG HÓA ================= -->
+  <!-- ================= MODAL CẤU HÌNH n8n WEBHOOK ================= -->
   <div id="n8nModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl w-full max-w-md p-5 shadow-2xl flex flex-col">
       
@@ -319,7 +333,7 @@
 
   <div id="printableReceipt" class="hidden"></div>
 
-  <!-- ================= JAVASCRIPT LOGIC VẬN HÀNH TINH GỌN ================= -->
+  <!-- ================= JAVASCRIPT LOGIC MODE SWITCHING ================= -->
   <script>
     
     // ================= 1. n8n AUTOMATION ENGINE =================
@@ -457,8 +471,9 @@
     let currentCategory = "all";
     let searchQuery = "";
     let todayRevenue = parseInt(localStorage.getItem('dp_speed_revenue')) || 0;
+    let currentView = "tables"; // "tables" hoặc "order"
 
-    // Âm thanh Audio Web Beep chuẩn POS
+    // Âm thanh Beep Web Audio
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playBeep(freq = 800, duration = 0.05) {
       try {
@@ -486,68 +501,114 @@
       localStorage.setItem('dp_speed_revenue', todayRevenue.toString());
     }
 
-    // Xác định bàn đang ở bước nào trong 5 bước
     function getTableCurrentStep(t) {
-      if (!t || t.cart.length === 0) return 1; // Bước 1: Bàn trống
-      if (t.isCheckingOut) return 4;           // Bước 4: Chờ quét mã VietQR
-      if (t.kitchenSent) return 3;             // Bước 3: Đã gửi bếp
-      return 2;                                // Bước 2: Đã có món trong Menu
+      if (!t || t.cart.length === 0) return 1;
+      if (t.isCheckingOut) return 4;
+      if (t.kitchenSent) return 3;
+      return 2;
     }
 
-    // ================= 3. RENDER SƠ ĐỒ BÀN (THẺ TO, SẠCH SẼ, CHUẨN iPOS) =================
+    // ================= 3. CHUYỂN ĐỔI GIỮA 2 MÀN HÌNH CHUYÊN BIỆT =================
+    function switchView(viewName) {
+      currentView = viewName;
+      const vTables = document.getElementById('viewTables');
+      const vOrder = document.getElementById('viewOrder');
+      const tabTables = document.getElementById('navTabTables');
+      const tabOrder = document.getElementById('navTabOrder');
+
+      if (viewName === 'tables') {
+        vTables.classList.remove('hidden');
+        vOrder.classList.add('hidden');
+
+        tabTables.className = "px-4 py-1.5 rounded-xl text-xs font-black flex items-center gap-2 transition cursor-pointer bg-blue-600 text-white shadow-xs";
+        tabOrder.className = "px-4 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition cursor-pointer text-slate-400 hover:text-white";
+        renderTables();
+      } else {
+        vTables.classList.add('hidden');
+        vOrder.classList.remove('hidden');
+
+        tabTables.className = "px-4 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition cursor-pointer text-slate-400 hover:text-white";
+        tabOrder.className = "px-4 py-1.5 rounded-xl text-xs font-black flex items-center gap-2 transition cursor-pointer bg-blue-600 text-white shadow-xs";
+        renderCart();
+        renderProducts();
+      }
+    }
+
+    // Chọn bàn từ Sơ đồ bàn -> Tự động chuyển thẳng sang màn hình Gọi món
+    function openTableOrder(id) {
+      currentTableId = id;
+      const t = tables.find(x => x.id === currentTableId);
+      if (t) t.isCheckingOut = false;
+      document.getElementById('navOrderTabTitle').textContent = `2. GỌI MÓN (${t.name.toUpperCase()})`;
+      playBeep(650, 0.04);
+      switchView('order');
+    }
+
+    // ================= 4. RENDER MÀN HÌNH SƠ ĐỒ BÀN TOÀN CẢNH =================
     function renderTables() {
-      const container = document.getElementById('tablesContainer');
-      const occupiedCount = tables.filter(t => t.cart.length > 0).length;
-      document.getElementById('tableStatsText').textContent = `${tables.length} bàn • ${occupiedCount} có khách`;
+      const container = document.getElementById('fullTablesGrid');
+      const occupiedTables = tables.filter(t => t.cart.length > 0);
+      const occupiedCount = occupiedTables.length;
+
+      document.getElementById('tableStatsBanner').textContent = `${tables.length} bàn • ${occupiedCount} đang có khách`;
+      document.getElementById('navTablesBadge').textContent = occupiedCount.toString();
 
       container.innerHTML = tables.map(t => {
         const total = t.cart.reduce((s, x) => s + x.price * x.qty, 0);
         const count = t.cart.reduce((s, x) => s + x.qty, 0);
-        const isSelected = t.id === currentTableId;
         const step = getTableCurrentStep(t);
 
-        // Phân loại style thẻ bàn theo trạng thái (êm mắt, rõ ràng)
-        let cardBg = "bg-white border-slate-200 text-slate-800 hover:border-slate-300";
-        let badgeBg = "bg-slate-100 text-slate-500";
+        let borderCard = "border-slate-300 bg-white hover:border-blue-500 hover:shadow-lg";
+        let headerColor = "text-slate-800";
+        let statusBadge = "bg-slate-100 text-slate-500 font-semibold";
         let statusText = "Trống";
+        let iconClass = "text-slate-400";
 
-        if (step === 2) { // Có khách đang chọn món
-          cardBg = "bg-blue-50/60 border-blue-300 text-blue-950";
-          badgeBg = "bg-blue-100 text-blue-800 font-bold";
+        if (step === 2) {
+          borderCard = "border-blue-400 bg-blue-50/70 hover:border-blue-600 shadow-sm";
+          headerColor = "text-blue-900";
+          statusBadge = "bg-blue-600 text-white font-black";
           statusText = `${count} món`;
-        } else if (step === 3) { // Đã báo bếp
-          cardBg = "bg-amber-50/70 border-amber-300 text-amber-950";
-          badgeBg = "bg-amber-100 text-amber-800 font-bold";
-          statusText = "🔔 Đã báo bếp";
-        } else if (step === 4) { // Chờ VietQR
-          cardBg = "bg-rose-50/80 border-rose-300 text-rose-950";
-          badgeBg = "bg-rose-100 text-rose-800 font-bold";
-          statusText = "💳 Chờ QR";
+          iconClass = "text-blue-600";
+        } else if (step === 3) {
+          borderCard = "border-amber-400 bg-amber-50/80 hover:border-amber-600 shadow-sm";
+          headerColor = "text-amber-950";
+          statusBadge = "bg-amber-500 text-white font-black";
+          statusText = "🔔 Đã Báo Bếp";
+          iconClass = "text-amber-600";
+        } else if (step === 4) {
+          borderCard = "border-rose-400 bg-rose-50/80 hover:border-rose-600 shadow-sm";
+          headerColor = "text-rose-950";
+          statusBadge = "bg-rose-600 text-white font-black";
+          statusText = "💳 Chờ VietQR";
+          iconClass = "text-rose-600";
         }
 
-        const selectedRing = isSelected ? "ring-2 ring-blue-600 shadow-md scale-[1.02] border-transparent" : "shadow-xs";
-
         return `
-          <div onclick="selectTable('${t.id}')" 
-               class="p-3 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between h-[88px] ${cardBg} ${selectedRing}">
+          <div onclick="openTableOrder('${t.id}')" 
+               class="p-4 rounded-3xl border-2 transition-all duration-150 cursor-pointer flex flex-col justify-between h-[130px] sm:h-[140px] shadow-xs active:scale-[0.98] ${borderCard}">
             
-            <!-- Hàng trên: Tên bàn & Huy hiệu trạng thái -->
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1.5 min-w-0">
-                <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'} text-xs ${t.cart.length > 0 ? 'text-blue-600' : 'text-slate-400'}"></i>
-                <span class="font-black text-xs sm:text-sm tracking-wide truncate ${isSelected ? 'text-blue-900 font-extrabold' : ''}">${t.name}</span>
+            <!-- Hàng trên: Icon + Tên Bàn To Đùng + Huy hiệu -->
+            <div class="flex items-start justify-between">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'} text-sm ${iconClass}"></i>
+                  <span class="font-black text-base sm:text-lg tracking-wide ${headerColor}">${t.name}</span>
+                </div>
+                <span class="text-[11px] text-slate-400 font-medium block mt-0.5">
+                  ${t.openTime ? 'Giờ vào: ' + t.openTime : 'Bàn trống'}
+                </span>
               </div>
-              <span class="text-[10px] px-2 py-0.5 rounded-full ${badgeBg} truncate max-w-[85px]">
+
+              <span class="text-[11px] px-2.5 py-1 rounded-xl ${statusBadge}">
                 ${statusText}
               </span>
             </div>
 
-            <!-- Hàng dưới: Giờ vào & Số tiền to rõ -->
-            <div class="flex items-baseline justify-between pt-1 border-t border-slate-200/60 mt-1">
-              <span class="text-[10px] text-slate-400 font-medium">
-                ${t.openTime ? t.openTime : 'Sẵn sàng'}
-              </span>
-              <span class="font-mono text-xs sm:text-sm font-black ${total > 0 ? 'text-red-600' : 'text-slate-400'}">
+            <!-- Hàng dưới: Số tiền to nổi bật & Nút chạm -->
+            <div class="pt-2 border-t border-slate-200/70 flex items-center justify-between">
+              <span class="text-xs text-slate-400 font-bold">Tạm tính:</span>
+              <span class="font-mono text-base sm:text-lg font-black ${total > 0 ? 'text-red-600' : 'text-slate-400'}">
                 ${total > 0 ? total.toLocaleString('vi-VN') + ' đ' : '0 đ'}
               </span>
             </div>
@@ -557,7 +618,7 @@
       }).join('');
     }
 
-    // ================= 4. RENDER MENU MÓN ĂN =================
+    // ================= 5. RENDER MENU THỰC ĐƠN =================
     function renderProducts() {
       const container = document.getElementById('productsContainer');
       const currentTable = tables.find(x => x.id === currentTableId);
@@ -570,33 +631,32 @@
       }
 
       container.innerHTML = filtered.map(p => {
-        // Kiểm tra xem món này đã có trong giỏ của bàn hiện tại chưa
         const inCartItem = currentTable ? currentTable.cart.find(x => x.id === p.id) : null;
         const inCartQty = inCartItem ? inCartItem.qty : 0;
 
         return `
           <button onclick="addToCart(${p.id})" 
-                  class="relative p-3 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md shadow-xs flex flex-col justify-between text-left active:scale-[0.98] transition cursor-pointer min-h-[90px] group">
+                  class="relative p-4 bg-white rounded-2xl border-2 border-slate-200 hover:border-blue-500 hover:shadow-md shadow-xs flex flex-col justify-between text-left active:scale-[0.98] transition cursor-pointer min-h-[105px] group">
             
-            <!-- Tên món ăn đầy đủ, không rớt dòng cụt -->
-            <div class="font-bold text-xs sm:text-[13px] text-slate-800 leading-snug group-hover:text-blue-600 transition">
+            <!-- Tên món đầy đủ, rõ ràng -->
+            <div class="font-black text-sm sm:text-base text-slate-800 leading-snug group-hover:text-blue-600 transition">
               ${p.name}
             </div>
 
-            <!-- Phân loại & Giá tiền to rõ -->
-            <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-100">
-              <span class="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
+            <!-- Phân loại & Giá tiền to bự -->
+            <div class="flex items-center justify-between mt-3 pt-2 border-t border-slate-100">
+              <span class="text-xs text-slate-400 font-bold flex items-center gap-1.5">
                 <i class="fa-solid ${p.icon} text-slate-400 group-hover:text-blue-500"></i>
                 <span>${p.cat === 'bun' ? 'Món ăn' : (p.cat === 'coffee' ? 'Cà phê' : 'Nước')}</span>
               </span>
-              <span class="font-mono text-xs sm:text-sm font-black text-blue-700">
+              <span class="font-mono text-sm sm:text-base font-black text-blue-700">
                 ${p.price.toLocaleString('vi-VN')} đ
               </span>
             </div>
 
-            <!-- Badge số lượng đang chọn trong giỏ -->
+            <!-- Badge số lượng đang gọi -->
             ${inCartQty > 0 ? `
-              <div class="absolute -top-1.5 -right-1.5 bg-blue-600 text-white font-mono font-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
+              <div class="absolute -top-2 -right-2 bg-blue-600 text-white font-mono font-black text-xs w-6 h-6 rounded-full flex items-center justify-center shadow-md">
                 ${inCartQty}
               </div>
             ` : ''}
@@ -606,17 +666,7 @@
       }).join('');
     }
 
-    // ================= 5. THAO TÁC BÀN & GIỎ HÀNG =================
-    function selectTable(id) {
-      currentTableId = id;
-      const t = tables.find(x => x.id === currentTableId);
-      if (t) t.isCheckingOut = false;
-      renderTables();
-      renderCart();
-      renderProducts();
-      playBeep(650, 0.03);
-    }
-
+    // ================= 6. THAO TÁC GỌI MÓN VÀ HÓA ĐƠN =================
     function addToCart(productId) {
       const t = tables.find(x => x.id === currentTableId);
       const p = products.find(x => x.id === productId);
@@ -636,7 +686,6 @@
 
       playBeep(850, 0.04);
       saveState();
-      renderTables();
       renderCart();
       renderProducts();
     }
@@ -658,7 +707,6 @@
       }
 
       saveState();
-      renderTables();
       renderCart();
       renderProducts();
     }
@@ -673,16 +721,15 @@
         t.kitchenSent = false;
         t.isCheckingOut = false;
         saveState();
-        renderTables();
         renderCart();
         renderProducts();
       }
     }
 
-    // ================= 6. RENDER HÓA ĐƠN & DÃY 5 BƯỚC DUY NHẤT =================
     function renderCart() {
       const t = tables.find(x => x.id === currentTableId);
       document.getElementById('orderTableName').textContent = t.name.toUpperCase();
+      document.getElementById('navOrderTabTitle').textContent = `2. GỌI MÓN (${t.name.toUpperCase()})`;
       document.getElementById('orderTableTime').textContent = t.openTime ? "Giờ vào: " + t.openTime : "Bàn đang trống";
 
       const step = getTableCurrentStep(t);
@@ -690,24 +737,24 @@
       const stepDesc = document.getElementById('progressStepDesc');
 
       if (t.cart.length === 0) {
-        badgeEl.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600";
+        badgeEl.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-600";
         badgeEl.textContent = "Trống";
         stepDesc.textContent = "Bước 1: Chọn bàn";
       } else if (t.isCheckingOut) {
-        badgeEl.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700";
+        badgeEl.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700";
         badgeEl.textContent = "Chờ QR";
         stepDesc.textContent = "Bước 4: Quét VietQR";
       } else if (t.kitchenSent) {
-        badgeEl.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700";
+        badgeEl.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700";
         badgeEl.textContent = "Đã Báo Bếp";
         stepDesc.textContent = "Bước 3: Bếp đang làm";
       } else {
-        badgeEl.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700";
+        badgeEl.className = "text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700";
         badgeEl.textContent = "Đang chọn món";
         stepDesc.textContent = "Bước 2: Chọn món";
       }
 
-      // Thanh 5 bước to, rõ, sang trọng trên đầu cột Hóa đơn
+      // Thanh 5 bước to, đẹp, sang trọng
       const ledBar = document.getElementById('billProgressLedBar');
       const stepsDef = [
         { num: 1, label: "1.Bàn", icon: "fa-chair" },
@@ -740,26 +787,26 @@
       const list = document.getElementById('orderItemsList');
       if (t.cart.length === 0) {
         list.innerHTML = `
-          <div class="text-center py-16 text-slate-400 text-xs">
-            <i class="fa-solid fa-mug-saucer text-3xl mb-2 text-slate-300 block"></i>
+          <div class="text-center py-20 text-slate-400 text-xs">
+            <i class="fa-solid fa-mug-saucer text-4xl mb-2 text-slate-300 block"></i>
             Chưa có món nào<br>
-            <span class="text-[11px] text-slate-400">Chạm vào món ở thực đơn để thêm</span>
+            <span class="text-[11px] text-slate-400">Chạm vào món ở thực đơn để thêm vào đơn</span>
           </div>
         `;
       } else {
         list.innerHTML = t.cart.map(item => `
-          <div class="flex items-center justify-between py-2 text-xs">
-            <div class="flex-1 min-w-0 pr-2">
-              <span class="font-bold text-slate-900 block truncate text-[13px]">${item.name}</span>
-              <span class="font-mono text-[11px] text-slate-400">${item.price.toLocaleString('vi-VN')} đ</span>
+          <div class="flex items-center justify-between py-2.5 text-xs">
+            <div class="flex-1 min-w-0 pr-3">
+              <span class="font-bold text-slate-900 block truncate text-sm">${item.name}</span>
+              <span class="font-mono text-xs text-slate-400">${item.price.toLocaleString('vi-VN')} đ</span>
             </div>
             <div class="flex items-center space-x-2 shrink-0">
-              <div class="flex items-center bg-slate-100 rounded-lg p-0.5 border border-slate-200">
-                <button onclick="updateCartQty(${item.id}, -1)" class="w-6 h-6 rounded-md bg-white text-slate-700 font-bold flex items-center justify-center cursor-pointer hover:bg-slate-200 shadow-2xs">-</button>
-                <span class="w-6 text-center font-black font-mono text-blue-700 text-xs">${item.qty}</span>
-                <button onclick="updateCartQty(${item.id}, 1)" class="w-6 h-6 rounded-md bg-blue-600 text-white font-bold flex items-center justify-center cursor-pointer hover:bg-blue-700 shadow-2xs">+</button>
+              <div class="flex items-center bg-slate-100 rounded-xl p-0.5 border border-slate-200">
+                <button onclick="updateCartQty(${item.id}, -1)" class="w-7 h-7 rounded-lg bg-white text-slate-700 font-bold flex items-center justify-center cursor-pointer hover:bg-slate-200 shadow-2xs">-</button>
+                <span class="w-7 text-center font-black font-mono text-blue-700 text-xs">${item.qty}</span>
+                <button onclick="updateCartQty(${item.id}, 1)" class="w-7 h-7 rounded-lg bg-blue-600 text-white font-bold flex items-center justify-center cursor-pointer hover:bg-blue-700 shadow-2xs">+</button>
               </div>
-              <span class="font-mono font-black text-slate-800 w-18 text-right text-xs sm:text-sm">${(item.price * item.qty).toLocaleString('vi-VN')}đ</span>
+              <span class="font-mono font-black text-slate-800 w-20 text-right text-sm">${(item.price * item.qty).toLocaleString('vi-VN')}đ</span>
             </div>
           </div>
         `).join('');
@@ -785,7 +832,6 @@
         items: t.cart
       });
 
-      renderTables();
       renderCart();
       playKitchenChime();
       alert("🔔 ĐÃ BÁO BẾP THÀNH CÔNG!\nBàn: " + t.name + "\nBếp đang chuẩn bị món ăn...");
@@ -799,13 +845,11 @@
 
       t.isCheckingOut = true;
       saveState();
-      renderTables();
       renderCart();
 
       document.getElementById('qrModalTableName').textContent = "THANH TOÁN " + t.name.toUpperCase();
       document.getElementById('qrModalAmount').textContent = total.toLocaleString('vi-VN') + " đ";
 
-      // Sinh mã VietQR động chuẩn Napas 247 MBBank
       const qrUrl = `https://img.vietqr.io/image/970422-0905123456-compact2.png?amount=${total}&addInfo=Ban%20${t.name.replace(/\s+/g, '')}&accountName=QUAN%20AN%20DAT%20PHU`;
       document.getElementById('qrModalImage').src = qrUrl;
 
@@ -817,7 +861,6 @@
       const t = tables.find(x => x.id === currentTableId);
       if (t) t.isCheckingOut = false;
       saveState();
-      renderTables();
       renderCart();
       document.getElementById('checkoutModal').classList.add('hidden');
     }
@@ -883,7 +926,7 @@
       window.print();
     }
 
-    // ================= 10. XÁC NHẬN THANH TOÁN VÀ LÀM TRỐNG BÀN =================
+    // ================= 10. XÁC NHẬN THANH TOÁN & QUAY VỀ SƠ ĐỒ BÀN =================
     function confirmPaymentAndPrint() {
       const t = tables.find(x => x.id === currentTableId);
       const total = t.cart.reduce((s, x) => s + x.price * x.qty, 0);
@@ -891,10 +934,8 @@
       todayRevenue += total;
       document.getElementById('topRevenue').textContent = todayRevenue.toLocaleString('vi-VN') + " đ";
 
-      // In hóa đơn thanh toán
       actionPrintBill(true);
 
-      // Bắn n8n Webhook
       triggerN8nWebhook('order_completed', {
         tableName: t.name,
         tableId: t.id,
@@ -914,10 +955,10 @@
 
       saveState();
       closeCheckoutModal();
-      renderTables();
-      renderCart();
-      renderProducts();
       playBeep(1000, 0.15);
+      
+      // Tự động chuyển về Màn hình Sơ đồ bàn để đón khách tiếp theo!
+      switchView('tables');
     }
 
     function setCategory(cat) {
@@ -926,9 +967,9 @@
         const btn = document.getElementById('catBtn-' + c);
         if (btn) {
           if (c === cat) {
-            btn.className = "px-3.5 py-2 rounded-xl text-xs font-black bg-blue-600 text-white shadow-xs cursor-pointer transition";
+            btn.className = "px-3.5 py-2 rounded-xl text-xs font-black bg-blue-600 text-white shadow-xs cursor-pointer";
           } else {
-            btn.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer transition";
+            btn.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer";
           }
         }
       });
@@ -943,9 +984,7 @@
     // Khởi tạo chạy ứng dụng
     document.getElementById('topRevenue').textContent = todayRevenue.toLocaleString('vi-VN') + " đ";
     updateN8nStatusIndicator();
-    renderTables();
-    renderProducts();
-    renderCart();
+    switchView('tables'); // Mặc định mở Sơ đồ bàn toàn cảnh
 
     setInterval(() => {
       document.getElementById('topClock').textContent = new Date().toLocaleTimeString('vi-VN');
