@@ -3571,6 +3571,86 @@
       renderKdsUI();
     }
 
+    
+    // ========================================================================
+    // BÁO BẾP: PHÁT THÔNG BÁO VÀ TRUYỀN LỆNH XUỐNG BẾP / BAR (KDS)
+    // ========================================================================
+    function dispatchKitchenOrder(targetTableId) {
+      const curTbl = targetTableId ? (tables.find(x => x.id === targetTableId) || getCurrentTable()) : getCurrentTable();
+      const items = curTbl.cart || cart || [];
+
+      if (!items || items.length === 0) {
+        alert("Bàn " + curTbl.name + " hiện chưa có món nào để báo bếp!");
+        return;
+      }
+
+      // 1. Tạo ticket KDS và gửi xuống hàng đợi Bếp/Bar
+      const newTicket = sendCartToKds(curTbl, items);
+
+      // 2. Cập nhật trạng thái bàn sang 'cooking' (Đang nấu / Bếp đã nhận)
+      curTbl.kitchenStatus = 'cooking';
+      curTbl.lastKitchenNotify = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+
+      // 3. Âm thanh chuông báo Bếp âm vang 2 hồi (Ding... Dong!)
+      playBeep(900, 0.15);
+      setTimeout(() => playBeep(1200, 0.25), 180);
+
+      // 4. Nhảy số badge đỏ trên nút Bếp/Bar bên trái
+      updateKitchenBadge();
+
+      // 5. Cập nhật giao diện Sơ đồ bàn & KDS
+      renderFullFloorMap();
+      renderKdsUI();
+
+      // 6. Hiển thị Modal Thông Báo Báo Bếp To Rõ
+      showKitchenAlertPopup(curTbl, items, newTicket);
+    }
+
+    function updateKitchenBadge() {
+      const pendingCount = kdsOrders.filter(o => o.status !== 'done').length;
+      const badge = document.getElementById('kdsTabBadge');
+      if (badge) {
+        badge.textContent = pendingCount;
+        if (pendingCount > 0) {
+          badge.classList.remove('hidden');
+          badge.classList.add('flex', 'animate-pulse');
+        } else {
+          badge.classList.remove('animate-pulse');
+        }
+      }
+    }
+
+    function showKitchenAlertPopup(tbl, items, ticket) {
+      const tblNameEl = document.getElementById('kAlertTableName');
+      const itemsListEl = document.getElementById('kAlertItemsList');
+      const ticketIdEl = document.getElementById('kAlertTicketId');
+      const timeEl = document.getElementById('kAlertTimestamp');
+
+      if (tblNameEl) tblNameEl.textContent = `ĐÃ BÁO BẾP: ${tbl.name.toUpperCase()}`;
+      if (ticketIdEl) ticketIdEl.textContent = `Mã phiếu: #${ticket.id}`;
+      if (timeEl) timeEl.textContent = ticket.createdAt;
+
+      if (itemsListEl) {
+        itemsListEl.innerHTML = items.map(item => `
+          <div class="flex items-center justify-between text-xs py-1 border-b border-slate-100 last:border-none">
+            <div class="flex items-center space-x-1.5">
+              <span class="w-5 h-5 rounded-md bg-amber-100 text-amber-800 font-black text-[10px] flex items-center justify-center">${item.qty}</span>
+              <span class="font-bold text-slate-800">${item.name}</span>
+            </div>
+            ${item.note ? `<span class="text-[9px] px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 font-bold">${item.note}</span>` : '<span class="text-[9px] text-slate-400">Chờ làm</span>'}
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('kitchenAlertModal').classList.remove('hidden');
+    }
+
+    // Gán nút Báo Bếp F7 và các nút Báo Bếp trên footer
+    function printKitchenOrderTicket() {
+      dispatchKitchenOrder();
+    }
+
     function sendCartToKds(tbl, items) {
       const newKdsTicket = {
         id: "KDS-" + Date.now().toString().slice(-4),
@@ -4759,6 +4839,47 @@
         </button>
         <button onclick="openVietQRPayment(); closeModal('tableDetailModal');" class="py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs shadow-xs flex items-center justify-center gap-1.5 cursor-pointer transition">
           <i class="fa-solid fa-qrcode"></i> VietQR
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL: THÔNG BÁO BÁO BẾP THÀNH CÔNG & BẾP NHẬN ĐƠN ================= -->
+  <div id="kitchenAlertModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-sm p-5 space-y-4 shadow-2xl animate-in zoom-in-95 text-center text-slate-800">
+      
+      <!-- Icon Chuông Vàng Rung Rung -->
+      <div class="w-16 h-16 mx-auto rounded-3xl bg-amber-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-amber-500/30 animate-bounce">
+        <i class="fa-solid fa-bell-concierge"></i>
+      </div>
+
+      <!-- Tiêu đề thông báo -->
+      <div>
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-800 uppercase tracking-wider">Tin Báo Bếp / Pha Chế</span>
+        <h3 class="font-black text-lg text-slate-900 mt-1" id="kAlertTableName">ĐÃ BÁO BẾP: BÀN 4</h3>
+        <p class="text-xs text-slate-500 mt-0.5">Bếp & Quầy Bar đã nhận đơn và bắt đầu chế biến!</p>
+      </div>
+
+      <!-- Danh sách món đã gửi xuống bếp -->
+      <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200 text-left space-y-1.5 max-h-48 overflow-y-auto no-scrollbar" id="kAlertItemsList">
+        <!-- Render Javascript danh sách món đã gửi bếp -->
+      </div>
+
+      <!-- Mã phiếu & Thời gian -->
+      <div class="flex justify-between items-center text-[11px] text-slate-400 border-t border-slate-100 pt-2 font-mono">
+        <span id="kAlertTicketId">Mã: #KDS-0001</span>
+        <span id="kAlertTimestamp">17:05</span>
+      </div>
+
+      <!-- 2 Nút Hành Động -->
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button onclick="closeModal('kitchenAlertModal')" class="py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition cursor-pointer">
+          Đóng (Tiếp Tục)
+        </button>
+        <button onclick="closeModal('kitchenAlertModal'); switchMode('kds');" class="py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-black text-xs shadow-md shadow-amber-500/20 transition cursor-pointer flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-fire-burner"></i> Xem Bếp (KDS)
         </button>
       </div>
 
