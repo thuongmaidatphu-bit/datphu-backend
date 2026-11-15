@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đất Phú Gen 4 — Hệ Điều Hành Số & AI Kín Kẽ • Lịch Đất Phú</title>
-  <meta name="description" content="Hệ sinh thái dịch vụ số B2B, Hóa đơn điện tử NĐ 254, Chữ ký số EFY, AI Support Swarm và Đất Phú Mini POS Phú Yên.">
+  <title>Đất Phú Mini POS — Phần Mềm Bán Hàng & Tính Tiền Cho Thuê Từ 80k/tháng</title>
+  <meta name="description" content="Phần mềm quản lý bán hàng & máy tính tiền bỏ túi cho thuê linh hoạt chỉ từ 80.000đ/tháng. Biến điện thoại thành quầy thu ngân, quét VietQR tự động, in bill Bluetooth, chốt ca lời lỗ và chuẩn hóa đơn thuế NĐ 254 tại Phú Yên.">
   <link rel="icon" type="image/jpeg" href="/logo_datphu.jpg">
 
   <!-- Tailwind CSS CDN -->
@@ -21,7 +21,7 @@
       background-color: #030712;
       background-image: 
         radial-gradient(circle at 15% 15%, rgba(249, 115, 22, 0.18) 0%, transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.12) 0%, transparent 45%);
+        radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.12) 0%, transparent 45%);
       color: #f3f4f6;
       font-family: 'Inter', sans-serif;
       overflow-x: hidden;
@@ -33,53 +33,44 @@
 
     /* Thẻ Antigravity Siêu Thực 3D */
     .antigravity-card {
-      background: radial-gradient(130% 100% at 50% 0%, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%);
+      background: radial-gradient(130% 100% at 50% 0%, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 28px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85),
-                  0 0 30px -5px rgba(59, 130, 246, 0.15),
-                  inset 0 1px 1px rgba(255, 255, 255, 0.25);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                  0 0 30px -5px rgba(249, 115, 22, 0.12),
+                  inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .antigravity-card:hover {
-      transform: translateY(-8px) scale(1.01);
-      border-color: rgba(59, 130, 246, 0.5);
+      transform: translateY(-6px);
+      border-color: rgba(249, 115, 22, 0.45);
       box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.95),
-                  0 0 45px -5px rgba(59, 130, 246, 0.35),
+                  0 0 40px -5px rgba(249, 115, 22, 0.3);
+    }
+
+    /* Thẻ Gói Nổi Bật (Best Seller) */
+    .featured-plan-card {
+      background: radial-gradient(130% 100% at 50% 0%, rgba(39, 39, 42, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+      border: 2px solid #f97316;
+      box-shadow: 0 30px 60px -10px rgba(249, 115, 22, 0.35),
+                  0 0 35px 0 rgba(249, 115, 22, 0.25),
                   inset 0 1px 2px rgba(255, 255, 255, 0.4);
     }
 
-    /* Icon Neon Pods Chuẩn Concept 3D */
+    /* Icon Neon Pods */
     .icon-pod {
-      width: 76px;
-      height: 76px;
-      border-radius: 24px;
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 24px;
-      position: relative;
-    }
-    .icon-pod-1 {
-      background: radial-gradient(circle at 35% 35%, rgba(56, 189, 248, 0.25) 0%, rgba(15, 23, 42, 0.8) 100%);
-      border: 1.5px solid rgba(56, 189, 248, 0.5);
-      box-shadow: 0 0 35px -5px rgba(56, 189, 248, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4);
-    }
-    .icon-pod-2 {
-      background: radial-gradient(circle at 35% 35%, rgba(99, 102, 241, 0.25) 0%, rgba(15, 23, 42, 0.8) 100%);
-      border: 1.5px solid rgba(99, 102, 241, 0.5);
-      box-shadow: 0 0 35px -5px rgba(99, 102, 241, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4);
-    }
-    .icon-pod-3 {
-      background: radial-gradient(circle at 35% 35%, rgba(45, 212, 191, 0.25) 0%, rgba(15, 23, 42, 0.8) 100%);
-      border: 1.5px solid rgba(45, 212, 191, 0.5);
-      box-shadow: 0 0 35px -5px rgba(45, 212, 191, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+      margin-bottom: 20px;
     }
 
-    /* Nút Antigravity chuẩn Concept */
     .antigravity-btn {
       background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
       box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.5);
@@ -94,42 +85,6 @@
       box-shadow: 0 15px 30px -5px rgba(249, 115, 22, 0.75);
     }
 
-    /* Nút Thẻ 1: Khung trong suốt huyền ảo */
-    .btn-card-1 {
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #f1f5f9;
-      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5);
-    }
-    .btn-card-1:hover {
-      background: rgba(51, 65, 85, 0.8);
-      border-color: rgba(249, 115, 22, 0.5);
-      color: #fff;
-    }
-
-    /* Nút Thẻ 2: Xanh dạ quang Neon */
-    .btn-card-2 {
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-      border: 1px solid rgba(96, 165, 250, 0.4);
-      color: #fff;
-      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5);
-    }
-    .btn-card-2:hover {
-      box-shadow: 0 15px 35px -5px rgba(37, 99, 235, 0.8);
-    }
-
-    /* Nút Thẻ 3: Xanh biển sâu Gradient */
-    .btn-card-3 {
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      color: #fff;
-      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.5);
-    }
-    .btn-card-3:hover {
-      box-shadow: 0 15px 35px -5px rgba(2, 132, 199, 0.8);
-    }
-
-    /* Hiệu ứng rung nhẹ cho nút Zalo nổi */
     @keyframes gentle-bounce {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-6px); }
@@ -142,36 +97,36 @@
 <body class="flex flex-col justify-between antialiased selection:bg-orange-500 selection:text-white">
 
   <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header class="sticky top-0 z-40 bg-gray-950/80 backdrop-blur-md border-b border-gray-800/80 px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
+  <header class="sticky top-0 z-40 bg-gray-950/85 backdrop-blur-md border-b border-gray-800/80 px-3 sm:px-6 py-3 flex items-center justify-between gap-3">
     <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
       <a href="/" class="px-3 py-1.5 rounded-xl bg-gray-900 hover:bg-gray-800 text-orange-400 border border-orange-500/30 text-xs font-bold shadow-xs transition active:scale-95 flex items-center gap-1.5 shrink-0" title="Trở về Trang Chủ Lịch Đất Phú">
         <i class="fa-solid fa-arrow-left"></i>
-        <span>Về Lịch Đất Phú</span>
+        <span class="hidden sm:inline">Về Lịch Đất Phú</span>
       </a>
 
       <div class="flex items-center gap-2.5 min-w-0">
         <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 text-white flex items-center justify-center shadow-md shadow-orange-500/30 shrink-0 border border-orange-400/40 font-black">
-          ĐP
+          <i class="fa-solid fa-cash-register text-base"></i>
         </div>
         <div class="min-w-0">
           <h1 class="text-xs sm:text-sm md:text-base font-black text-white uppercase tracking-wide truncate">
-            ĐẤT PHÚ GEN 4
+            ĐẤT PHÚ MINI POS
           </h1>
-          <p class="text-[10px] sm:text-[11px] text-gray-400 font-medium truncate hidden sm:block">Hệ Điều Hành Số & AI Kín Kẽ • Nền Tảng Asset-Light</p>
+          <p class="text-[10px] sm:text-[11px] text-gray-400 font-medium truncate hidden sm:block">Phần Mềm Quản Lý Bán Hàng & Máy Tính Tiền Cho Thuê</p>
         </div>
       </div>
     </div>
 
-    <!-- KHU VỰC NÚT ĐIỀU HƯỚNG & APP LAUNCHER -->
+    <!-- KHU VỰC NÚT ĐIỀU HƯỚNG & CTA NHANH -->
     <div class="flex items-center gap-2 shrink-0">
-      <button onclick="openConsultationModal('Tư vấn chung Gen 4')" class="px-3 py-1.5 rounded-xl bg-orange-500/15 hover:bg-orange-500/25 text-orange-400 border border-orange-500/30 text-xs font-bold transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
-        <i class="fa-solid fa-paper-plane"></i>
-        <span class="hidden sm:inline">Nhận Báo Giá</span>
-      </button>
+      <a href="/datphu-mini-pos.html" class="px-3 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+        <i class="fa-solid fa-play text-[10px]"></i>
+        <span>Dùng Thử Miễn Phí</span>
+      </a>
 
       <button onclick="toggleDatPhuAppLauncher()" class="px-3 py-1.5 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-200 border border-gray-700 text-xs font-bold shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer" title="Mở khay ứng dụng Hệ Sinh Thái Đất Phú">
         <i class="fa-solid fa-grip text-amber-500 text-sm"></i>
-        <span class="hidden sm:inline">Hệ Sinh Thái</span>
+        <span class="hidden md:inline">Hệ Sinh Thái</span>
       </button>
 
       <a href="https://zalo.me/0979991898" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold transition active:scale-95 flex items-center gap-1.5 shadow-md shadow-orange-600/30">
@@ -181,247 +136,390 @@
     </div>
   </header>
 
-  <!-- ================= BANNER HERO ANTIGRAVITY GEN 4 ================= -->
+  <!-- ================= BANNER HERO SẢN PHẨM CHO THUÊ MINI POS ================= -->
   <section class="max-w-6xl w-full mx-auto px-3 sm:px-6 pt-5 pb-4">
-    <div class="antigravity-card overflow-hidden p-2 md:p-3 relative border-orange-500/30 glow-border">
-      <!-- Bức ảnh kiến trúc Antigravity Đất Phú Gen 4 -->
-      <img 
-        src="img/datphu-gen4.jpg" 
-        alt="Kiến trúc Đất Phú Gen 4" 
-        class="w-full h-auto rounded-2xl object-cover shadow-2xl"
-        onerror="this.src='/img/datphu-gen4.jpg'"
-      />
-      <!-- Chú thích chân ảnh -->
-      <div class="p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div>
-          <span class="text-[11px] font-bold uppercase tracking-wider text-orange-400 bg-orange-500/10 px-3 py-1 rounded-full border border-orange-500/30 inline-flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-            Nền Tảng Độc Lập • Asset-Light
-          </span>
-          <h2 class="text-xl md:text-2xl font-black text-white mt-2.5">
-            ĐẤT PHÚ GEN 4: HỆ ĐIỀU HÀNH KÍN KẼ
+    <div class="antigravity-card overflow-hidden p-5 sm:p-8 md:p-10 relative border-orange-500/35">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
+        
+        <!-- Cột trái: Giới thiệu giải pháp thuê phần mềm -->
+        <div class="w-full lg:w-3/5 space-y-4">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-orange-400 bg-orange-500/10 px-3 py-1 rounded-full border border-orange-500/30 inline-flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+              Mô Hình Cho Thuê Phần Mềm (SaaS)
+            </span>
+            <span class="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 inline-flex items-center gap-1.5">
+              <i class="fa-solid fa-check text-[10px]"></i> 0đ Đầu Tư Máy Móc
+            </span>
+          </div>
+
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight">
+            ĐẤT PHÚ MINI POS: MÁY TÍNH TIỀN BỎ TÚI CHO THUÊ
           </h2>
-          <p class="text-xs md:text-sm text-gray-400 mt-1 max-w-2xl leading-relaxed">
-            Hệ sinh thái Giải Pháp Dịch Vụ Số B2B, AI Support Swarm và Đất Phú Mini POS. Giúp doanh nghiệp & hộ kinh doanh địa phương tự chủ tệp khách hàng, kháng chu kỳ thời tiết và tối ưu lợi nhuận.
+
+          <p class="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-xl">
+            Không cần bỏ ra <strong class="text-rose-400">10 – 20 triệu đồng</strong> mua máy tính tiền cồng kềnh dễ hư hỏng. Thuê ngay phần mềm <strong>Đất Phú Mini POS</strong> chạy mượt trên chính điện thoại của bạn, chỉ từ <strong class="text-orange-400 font-bold text-base">80.000đ/tháng</strong>.
+          </p>
+
+          <!-- 4 Lợi thế vượt trội -->
+          <div class="grid grid-cols-2 gap-3 pt-2 text-xs">
+            <div class="flex items-center gap-2 text-gray-300">
+              <i class="fa-solid fa-qrcode text-emerald-400 text-sm"></i>
+              <span>VietQR tự khớp đúng số tiền</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-300">
+              <i class="fa-solid fa-bell text-amber-400 text-sm"></i>
+              <span>Chuông Ting Ting tiền về</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-300">
+              <i class="fa-solid fa-print text-sky-400 text-sm"></i>
+              <span>In bill nhiệt Bluetooth 58/80mm</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-300">
+              <i class="fa-solid fa-chart-pie text-orange-400 text-sm"></i>
+              <span>Chốt ca Lời - Lỗ trong ngày</span>
+            </div>
+          </div>
+
+          <!-- Nhóm nút hành động -->
+          <div class="flex flex-col sm:flex-row items-center gap-3 pt-4">
+            <a href="/datphu-mini-pos.html" class="antigravity-btn w-full sm:w-auto px-6 py-3.5 text-white text-xs sm:text-sm text-center font-black flex items-center justify-center gap-2 shadow-xl shadow-orange-500/30">
+              <i class="fa-solid fa-mobile-screen-button text-base"></i>
+              <span>Dùng Thử Mini POS Miễn Phí</span>
+            </a>
+            <button onclick="openConsultationModal('Gói thuê Mini POS')" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-gray-900 hover:bg-gray-800 text-orange-400 border border-orange-500/40 font-bold text-xs sm:text-sm transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-file-contract"></i>
+              <span>Đăng Ký Thuê Gói Dịch Vụ</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cột phải: Khung mô phỏng ứng dụng Mini POS trên Mobile -->
+        <div class="w-full lg:w-2/5 flex justify-center">
+          <div class="w-full max-w-xs bg-gray-950 p-4 rounded-3xl border-2 border-emerald-500/40 shadow-2xl relative">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-2 mb-3 text-[11px]">
+              <span class="font-bold text-emerald-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> ĐANG BÁN HÀNG
+              </span>
+              <span class="text-gray-400 font-mono">Đất Phú POS</span>
+            </div>
+
+            <!-- Demo Items -->
+            <div class="space-y-2 mb-3 text-xs">
+              <div class="flex justify-between items-center bg-gray-900/80 p-2 rounded-xl border border-gray-800">
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold">☕</div>
+                  <div>
+                    <div class="font-bold text-white text-[11px]">Cà phê sữa đá</div>
+                    <div class="text-[10px] text-gray-400">2 ly x 18.000đ</div>
+                  </div>
+                </div>
+                <span class="font-mono font-bold text-orange-400 text-xs">36.000đ</span>
+              </div>
+
+              <div class="flex justify-between items-center bg-gray-900/80 p-2 rounded-xl border border-gray-800">
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">🥐</div>
+                  <div>
+                    <div class="font-bold text-white text-[11px]">Bánh mì chả Tuy Hòa</div>
+                    <div class="text-[10px] text-gray-400">1 ổ x 20.000đ</div>
+                  </div>
+                </div>
+                <span class="font-mono font-bold text-orange-400 text-xs">20.000đ</span>
+              </div>
+            </div>
+
+            <!-- Tổng đơn & Nút VietQR -->
+            <div class="bg-gray-900 p-3 rounded-2xl border border-emerald-500/30 text-center mb-3">
+              <div class="text-[10px] text-gray-400 uppercase font-semibold">Tổng thanh toán</div>
+              <div class="text-xl font-black text-emerald-400 font-mono tracking-tight">56.000đ</div>
+              <div class="text-[10px] text-gray-400 mt-1 flex items-center justify-center gap-1">
+                <i class="fa-solid fa-qrcode text-emerald-400"></i> Mã VietQR sinh tự động
+              </div>
+            </div>
+
+            <a href="/datphu-mini-pos.html" class="block w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-center text-xs hover:from-emerald-500 hover:to-teal-500 shadow-md transition">
+              <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Trải Nghiệm Thật Trên Trình Duyệt
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BẢNG GIÁ 3 GÓI DỊCH VỤ CHO THUÊ PHẦN MỀM ================= -->
+  <section id="bang-gia" class="max-w-6xl w-full mx-auto px-3 sm:px-6 py-8">
+    <div class="text-center max-w-2xl mx-auto mb-8">
+      <span class="text-xs font-bold text-orange-400 bg-orange-500/10 px-3.5 py-1 rounded-full border border-orange-500/30 uppercase tracking-wider">
+        Bảng Giá Dịch Vụ Cho Thuê Minh Bạch
+      </span>
+      <h3 class="text-2xl sm:text-3xl font-black text-white mt-3">
+        LỰA CHỌN GÓI THUÊ PHÙ HỢP VỚI QUÁN BẠN
+      </h3>
+      <p class="text-xs sm:text-sm text-gray-400 mt-2">
+        Không ràng buộc hợp đồng dài hạn • Hủy thuê bất kỳ lúc nào • Hỗ trợ kỹ thuật tại chỗ Tuy Hòa trong 30 phút.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+
+      <!-- GÓI 1: KHỞI ĐỘNG (80.000đ/tháng) -->
+      <div class="antigravity-card p-6 sm:p-7 flex flex-col justify-between relative border-gray-700/60">
+        <div>
+          <div class="icon-pod bg-gray-800/80 border border-gray-700 text-sky-400 text-2xl shadow-inner">
+            <i class="fa-solid fa-mobile-screen"></i>
+          </div>
+          <div class="text-xs font-bold text-sky-400 uppercase tracking-wider">Gói 1 • Di Động Tinh Gọn</div>
+          <h4 class="text-xl font-black text-white mt-1">Gói Khởi Động</h4>
+          <p class="text-xs text-gray-400 mt-2 leading-relaxed">
+            Dành cho quán cafe cóc, xe đẩy ăn vặt, sạp chợ, quán nước nhỏ, thợ dịch vụ lưu động cần tính tiền nhanh và chốt lời lỗ.
+          </p>
+
+          <div class="my-5 pb-5 border-b border-gray-800">
+            <div class="flex items-baseline gap-1">
+              <span class="text-3xl font-black text-white">80.000đ</span>
+              <span class="text-xs text-gray-400">/ tháng</span>
+            </div>
+            <div class="text-[11px] text-emerald-400 mt-1">Thuê theo năm: 800.000đ (Tiết kiệm 2 tháng)</div>
+          </div>
+
+          <ul class="space-y-3 text-xs text-gray-300">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-sky-400 mt-0.5"></i>
+              <span>Phần mềm Mini POS mượt mà trên mọi điện thoại (iOS, Android, PC)</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-sky-400 mt-0.5"></i>
+              <span>Sinh mã <strong>VietQR động</strong> khớp số tiền tự động</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-sky-400 mt-0.5"></i>
+              <span>Âm thanh <strong>Ting Ting</strong> báo tiền vào tài khoản</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-sky-400 mt-0.5"></i>
+              <span>Quản lý danh mục món & giá bán không giới hạn</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-sky-400 mt-0.5"></i>
+              <span>Ghi chép chi phí & <strong>Báo cáo Lời - Lỗ</strong> chốt ca ngày</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-sky-400 mt-0.5"></i>
+              <span>Gửi báo cáo doanh thu về Zalo chủ quán 1 chạm</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pt-6">
+          <button onclick="openConsultationModal('Gói Khởi Động (80k/tháng)') class w-full py-3 rounded-2xl bg-gray-800 hover:bg-gray-700 text-sky-400 border border-sky-500/30 font-bold text-xs transition active:scale-95 cursor-pointer" onclick="openConsultationModal('Gói Khởi Động (80.000đ/tháng)')">
+            Đăng Ký Thuê Gói 80k
+          </button>
+        </div>
+      </div>
+
+      <!-- GÓI 2: TIÊU CHUẨN IN BILL (120.000đ/tháng) - BEST SELLER -->
+      <div class="antigravity-card featured-plan-card p-6 sm:p-7 flex flex-col justify-between relative">
+        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-orange-500 to-amber-500 text-[11px] font-black rounded-full text-white tracking-wider shadow-lg shadow-orange-500/40 uppercase whitespace-nowrap">
+          ⭐ ĐƯỢC THUÊ NHIỀU NHẤT
+        </div>
+
+        <div>
+          <div class="icon-pod bg-orange-500/20 border border-orange-500/40 text-orange-400 text-2xl shadow-inner">
+            <i class="fa-solid fa-receipt"></i>
+          </div>
+          <div class="text-xs font-bold text-orange-400 uppercase tracking-wider">Gói 2 • Tiêu Chuẩn In Bill</div>
+          <h4 class="text-xl font-black text-white mt-1">Gói Tiêu Chuẩn</h4>
+          <p class="text-xs text-gray-300 mt-2 leading-relaxed">
+            Dành cho quán ăn, quán nhậu, nhà hàng bình dân, tiệm tạp hóa, salon tóc, tiệm phụ tùng cần in bill thanh toán rõ ràng cho khách.
+          </p>
+
+          <div class="my-5 pb-5 border-b border-gray-800">
+            <div class="flex items-baseline gap-1">
+              <span class="text-3xl font-black text-orange-400">120.000đ</span>
+              <span class="text-xs text-gray-400">/ tháng</span>
+            </div>
+            <div class="text-[11px] text-amber-300 mt-1">Thuê theo năm: 1.200.000đ (Tiết kiệm 2 tháng)</div>
+          </div>
+
+          <ul class="space-y-3 text-xs text-gray-200">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-orange-400 mt-0.5"></i>
+              <span><strong>Toàn bộ tính năng của Gói Khởi Động</strong></span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-orange-400 mt-0.5"></i>
+              <span>Kết nối <strong>Máy in nhiệt Bluetooth / Wifi</strong> (Khổ 58mm & 80mm)</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-orange-400 mt-0.5"></i>
+              <span>In bill tính tiền chuyên nghiệp, kèm mã QR thanh toán trên hóa đơn</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-orange-400 mt-0.5"></i>
+              <span>Quản lý bàn, tách bill, gộp đơn linh hoạt</span>
+            </li>
+            <li class="flex items-start gap-2 text-amber-300 font-bold">
+              <i class="fa-solid fa-gift text-orange-400 mt-0.5"></i>
+              <span>TẶNG Bảng Mica VietQR để bàn sang trọng</span>
+            </li>
+            <li class="flex items-start gap-2 text-emerald-400 font-bold">
+              <i class="fa-solid fa-motorcycle text-emerald-400 mt-0.5"></i>
+              <span>Hỗ trợ kỹ thuật tại chỗ Tuy Hòa trong 30 phút</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pt-6">
+          <button onclick="openConsultationModal('Gói Tiêu Chuẩn In Bill (120.000đ/tháng)')" class="antigravity-btn w-full py-3.5 text-center text-xs font-black rounded-2xl transition active:scale-95 text-white block shadow-xl shadow-orange-500/30">
+            Đăng Ký Gói Bán Chạy (120k)
+          </button>
+        </div>
+      </div>
+
+      <!-- GÓI 3: TOÀN DIỆN PHÁP LÝ & THUẾ (180.000đ/tháng) -->
+      <div class="antigravity-card p-6 sm:p-7 flex flex-col justify-between relative border-emerald-500/40">
+        <div>
+          <div class="icon-pod bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-2xl shadow-inner">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+          </div>
+          <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Gói 3 • Pháp Lý & Hóa Đơn Thuế</div>
+          <h4 class="text-xl font-black text-white mt-1">Gói Toàn Diện Thuế</h4>
+          <p class="text-xs text-gray-400 mt-2 leading-relaxed">
+            Dành cho hộ kinh doanh kê khai thuế, doanh nghiệp bán lẻ, nhà thuốc, siêu thị mini cần xuất hóa đơn điện tử chuẩn cơ quan thuế.
+          </p>
+
+          <div class="my-5 pb-5 border-b border-gray-800">
+            <div class="flex items-baseline gap-1">
+              <span class="text-3xl font-black text-emerald-400">180.000đ</span>
+              <span class="text-xs text-gray-400">/ tháng</span>
+            </div>
+            <div class="text-[11px] text-emerald-400 mt-1">Thuê theo năm: 1.800.000đ (Tiết kiệm 2 tháng)</div>
+          </div>
+
+          <ul class="space-y-3 text-xs text-gray-300">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+              <span><strong>Toàn bộ quyền lợi của Gói Tiêu Chuẩn</strong></span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+              <span>Tích hợp <strong>Hóa đơn điện tử máy tính tiền</strong> (NĐ 254/2026 & TT 78)</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+              <span>Tích hợp <strong>Chữ ký số EFY-CA / Token</strong> kê khai thuế</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+              <span>Đồng bộ doanh thu trực tiếp lên hệ thống Tổng cục Thuế</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+              <span>Đồng hành tư vấn sổ sách kế toán & định mức thuế</span>
+            </li>
+            <li class="flex items-start gap-2 text-emerald-300 font-semibold">
+              <i class="fa-solid fa-shield-halved text-emerald-400 mt-0.5"></i>
+              <span>Bảo vệ pháp lý vững vàng, triệt tiêu rủi ro phạt thuế</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pt-6">
+          <button onclick="openConsultationModal('Gói Toàn Diện Pháp Lý & Thuế (180.000đ/tháng)')" class="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition active:scale-95 cursor-pointer shadow-lg shadow-emerald-600/30">
+            Đăng Ký Gói Pháp Lý (180k)
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SO SÁNH: THUÊ MINI POS VS MUA MÁY TRUYỀN THỐNG ================= -->
+  <section class="max-w-6xl w-full mx-auto px-3 sm:px-6 py-6">
+    <div class="antigravity-card p-6 sm:p-8 border-gray-800">
+      <h3 class="text-xl sm:text-2xl font-black text-white text-center mb-2">
+        TẠI SAO NÊN THUÊ ĐẤT PHÚ MINI POS THAY VÌ MUA ĐỨT MÁY POS?
+      </h3>
+      <p class="text-xs text-gray-400 text-center max-w-xl mx-auto mb-6">
+        Bài toán kinh tế thông minh giúp chủ quán bảo toàn vốn kinh doanh, tránh lãng phí vào thiết bị nhanh mất giá.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+        <!-- Cột Mua đứt -->
+        <div class="p-5 rounded-2xl bg-rose-950/20 border border-rose-500/30 space-y-3">
+          <div class="flex items-center gap-2 font-bold text-rose-400 text-sm">
+            <i class="fa-solid fa-circle-xmark text-base"></i>
+            <span>Mua máy POS truyền thống (Kiểu cũ)</span>
+          </div>
+          <p class="text-gray-300 leading-relaxed">
+            • Tốn ngay <strong>10.000.000đ – 25.000.000đ</strong> tiền mua máy cồng kềnh.<br>
+            • Máy hư hỏng phải gửi vào TP.HCM/Hà Nội sửa mất cả tuần, gián đoạn bán hàng.<br>
+            • Phần mềm mua đứt nhanh lỗi thời, mỗi lần cập nhật thuế lại bị đòi thêm phí.<br>
+            • Nếu đổi mô hình hoặc chuyển nhượng quán coi như máy thanh lý lỗ 80%.
           </p>
         </div>
-        <div class="flex items-center gap-2.5 w-full md:w-auto shrink-0">
-          <a href="/dich-vu-so.html" class="antigravity-btn px-5 py-2.5 text-white text-xs md:text-sm text-center flex-1 md:flex-initial block">
-            Kích Hoạt Dịch Vụ Số
-          </a>
-          <a href="/sua-chua-nha-dien-nuoc-camera.html" class="px-4 py-2.5 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-700 font-bold text-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-person-digging text-orange-400"></i>
-            <span>Đội Thợ Dân Sinh</span>
-          </a>
+
+        <!-- Cột Thuê Đất Phú Mini POS -->
+        <div class="p-5 rounded-2xl bg-emerald-950/20 border border-emerald-500/40 space-y-3">
+          <div class="flex items-center gap-2 font-bold text-emerald-400 text-sm">
+            <i class="fa-solid fa-circle-check text-base"></i>
+            <span>Thuê Đất Phú Mini POS (Giải pháp tối ưu)</span>
+          </div>
+          <p class="text-gray-300 leading-relaxed">
+            • <strong>0đ chi phí đầu tư ban đầu:</strong> Dùng ngay trên chính điện thoại hoặc máy tính có sẵn.<br>
+            • <strong>Chỉ từ 80k/tháng:</strong> Chi phí chưa bằng 2 ly cà phê, quản lý chặt chẽ không thất thoát.<br>
+            • <strong>Đổi máy 10 giây:</strong> Điện thoại hết pin hay đổi máy mới, đăng nhập lại là bán tiếp ngay.<br>
+            • <strong>Hỗ trợ tận quán tại Phú Yên:</strong> Kỹ thuật viên Đất Phú có mặt trong 30 phút.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ================= 3 TRỤ CỘT SẢN PHẨM CỐT LÕI ================= -->
-  <main id="dich-vu-so" class="max-w-6xl w-full mx-auto px-3 sm:px-6 py-4 grid grid-cols-1 md:grid-cols-3 gap-6">
-
-    <!-- CỘT 1: GIẢI PHÁP DỊCH VỤ SỐ -->
-    <div class="antigravity-card p-7 flex flex-col justify-between">
-      <div>
-        <!-- Icon 1: Tờ hóa đơn phát sáng Cyan kèm dấu Check & Đồng tiền Cam -->
-        <div class="icon-pod icon-pod-1">
-          <svg class="w-10 h-10" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="8" y="6" width="26" height="34" rx="4" stroke="#38bdf8" stroke-width="2.5" fill="rgba(56,189,248,0.1)"/>
-            <path d="M14 14H24" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M14 20H28" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M14 26H22" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
-            <!-- Vòng tròn tiền tệ cam đè lên góc phải dưới -->
-            <circle cx="34" cy="34" r="9" fill="#ea580c" stroke="#fed7aa" stroke-width="2" filter="drop-shadow(0 0 6px rgba(249,115,22,0.8))"/>
-            <text x="34" y="38" text-anchor="middle" font-size="12" font-weight="900" fill="#ffffff" font-family="'Inter', sans-serif">$</text>
-          </svg>
-        </div>
-        <h3 class="text-xl font-black text-white mb-2 tracking-tight">1. Giải Pháp Dịch Vụ Số</h3>
-        <p class="text-xs text-gray-400 mb-6 leading-relaxed">
-          Đảm bảo tuân thủ thuế & pháp lý vững chắc: Hóa đơn điện tử máy tính tiền Nghị định 254/2026, Chữ ký số EFY-CA/Token và phần mềm EasyPOS quản lý bán hàng.
-        </p>
-        <div class="space-y-3 text-xs text-gray-300 border-t border-gray-800/80 pt-4 mb-8">
-          <div class="flex justify-between items-center py-0.5">
-            <span class="text-gray-400 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>Hóa đơn điện tử:</span>
-            <span class="text-orange-400 font-bold bg-orange-500/10 px-2.5 py-0.5 rounded-full border border-orange-500/20">Chuẩn NĐ 254</span>
-          </div>
-          <div class="flex justify-between items-center py-0.5">
-            <span class="text-gray-400 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>Chữ ký số:</span>
-            <span class="text-orange-400 font-bold bg-orange-500/10 px-2.5 py-0.5 rounded-full border border-orange-500/20">Chiết khấu 30-50%</span>
-          </div>
-          <div class="flex justify-between items-center py-0.5">
-            <span class="text-gray-400 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>Phần mềm:</span>
-            <span class="text-orange-300 font-bold">Đơn giản, minh bạch</span>
-          </div>
-        </div>
-      </div>
-      <a href="/dich-vu-so.html" class="antigravity-btn w-full py-3 text-center text-xs font-bold rounded-2xl transition active:scale-95 text-white block shadow-lg shadow-orange-500/20">
-        Kích Hoạt Dịch Vụ Số
-      </a>
-    </div>
-
-    <!-- CỘT 2: AI SUPPORT SWARM -->
-    <div class="antigravity-card p-7 flex flex-col justify-between relative border-blue-500/40">
-      <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-[11px] font-black rounded-full text-white tracking-wider shadow-lg shadow-blue-500/40 border border-blue-400/40 uppercase">
-        AI TỰ HÀNH 24/7
-      </div>
-      <div>
-        <!-- Icon 2: Mạng lưới nơ-ron đa tác tử AI Swarm chuẩn ảnh concept -->
-        <div class="icon-pod icon-pod-2">
-          <svg class="w-10 h-10" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Nút trung tâm -->
-            <circle cx="24" cy="24" r="5" fill="#818cf8" stroke="#c7d2fe" stroke-width="2" filter="drop-shadow(0 0 8px rgba(99,102,241,0.9))"/>
-            <!-- Các nút vệ tinh xung quanh -->
-            <circle cx="24" cy="10" r="3" fill="#6366f1"/>
-            <circle cx="36" cy="17" r="3.5" fill="#38bdf8"/>
-            <circle cx="35" cy="33" r="3" fill="#6366f1"/>
-            <circle cx="24" cy="38" r="3.5" fill="#a855f7"/>
-            <circle cx="13" cy="33" r="3" fill="#38bdf8"/>
-            <circle cx="12" cy="17" r="3.5" fill="#6366f1"/>
-            <!-- Các đường kết nối nơ-ron -->
-            <path d="M24 13L24 19M33 19L27.5 22M32 31L27 26M24 35L24 29M16 31L21 26M15 19L20.5 22" stroke="#818cf8" stroke-width="1.8" stroke-linecap="round" opacity="0.85"/>
-          </svg>
-        </div>
-        <h3 class="text-xl font-black text-white mb-2 tracking-tight">2. AI Support Swarm</h3>
-        <p class="text-xs text-gray-400 mb-6 leading-relaxed">
-          Hệ thống đa tác tử AI chạy ngầm 24/7: Tự động tiếp nhận giải đáp nghiệp vụ thuế/hóa đơn, hướng dẫn kỹ thuật tức thì và điều phối luồng n8n chuẩn 6K Kín Kẽ.
-        </p>
-        <div class="space-y-3 text-xs text-gray-300 border-t border-gray-800/80 pt-4 mb-8">
-          <div class="flex justify-between items-center py-0.5">
-            <span class="text-gray-400">Tốc độ phản hồi:</span>
-            <span class="text-sky-400 font-bold">&lt; 3 giây</span>
-          </div>
-          <div class="flex justify-between items-center py-0.5">
-            <span class="text-gray-400">Hạ tầng điều phối:</span>
-            <span class="text-orange-400 font-bold font-mono">n8n + MCP</span>
-          </div>
-          <div class="flex justify-between items-center py-0.5">
-            <span class="text-gray-400">Hỗ trợ UltraViewer:</span>
-            <span class="text-emerald-400 font-bold">Tự động</span>
-          </div>
-        </div>
-      </div>
-      <a href="/ai-swarm.html" class="btn-card-2 w-full py-3 text-center text-xs font-bold rounded-2xl transition active:scale-95 text-white block shadow-lg shadow-blue-500/20">
-        Trải Nghiệm AI Trợ Lý
-      </a>
-    </div>
-
-    <!-- CỘT 3: ĐẤT PHÚ MINI POS (THAY THẾ STEM) -->
-    <div class="antigravity-card p-7 flex flex-col justify-between relative border-emerald-500/40">
-      <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-emerald-600 to-teal-600 text-[11px] font-black rounded-full text-white tracking-wider shadow-lg shadow-emerald-500/30 border border-emerald-400/40 uppercase whitespace-nowrap">
-        BÁN HÀNG CẦM TAY 0 ĐỒNG
-      </div>
-      <div>
-        <!-- Icon 3: Máy POS Mini & Thẻ thanh toán QR -->
-        <div class="icon-pod icon-pod-3">
-          <svg class="w-10 h-10" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Thân máy POS cầm tay -->
-            <rect x="12" y="6" width="24" height="36" rx="5" fill="#064e3b" stroke="#10b981" stroke-width="2.5"/>
-            <!-- Màn hình cảm ứng POS -->
-            <rect x="16" y="11" width="16" height="18" rx="2" fill="rgba(16,185,129,0.15)" stroke="#34d399" stroke-width="1.5"/>
-            <!-- Khe in bill và giấy in -->
-            <rect x="18" y="7" width="12" height="2" rx="1" fill="#a7f3d0"/>
-            <path d="M19 16H29M19 20H26" stroke="#34d399" stroke-width="1.8" stroke-linecap="round"/>
-            <!-- Biểu tượng QR / Thanh toán -->
-            <rect x="19" y="23" width="4" height="4" fill="#10b981"/>
-            <rect x="25" y="23" width="4" height="4" fill="#10b981"/>
-            <!-- Các phím bấm POS -->
-            <circle cx="17" cy="33" r="1.5" fill="#34d399"/>
-            <circle cx="24" cy="33" r="1.5" fill="#34d399"/>
-            <circle cx="31" cy="33" r="1.5" fill="#34d399"/>
-            <circle cx="17" cy="37" r="1.5" fill="#34d399"/>
-            <circle cx="24" cy="37" r="1.5" fill="#34d399"/>
-            <circle cx="31" cy="37" r="1.5" fill="#f59e0b"/>
-          </svg>
-        </div>
-        <h3 class="text-xl font-black text-white mb-2 tracking-tight">3. Đất Phú Mini POS</h3>
-        <p class="text-xs text-gray-400 mb-6 leading-relaxed">
-          Máy tính tiền bỏ túi trên điện thoại: Tính tiền 1 chạm, tự động sinh mã VietQR chống gian lận, in bill Bluetooth 80mm và chốt ca lời lỗ tức thì cho quán ăn, cà phê, tiệm tạp hóa.
-        </p>
-        <div class="space-y-3 text-xs text-gray-300 border-t border-gray-800/80 pt-4 mb-8">
-          <div class="flex justify-between items-center py-0.5">
-            <span class="text-gray-400">Chi phí phần cứng:</span>
-            <span class="text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">0đ (Dùng điện thoại)</span>
-          </div>
-          <div class="flex justify-between items-center py-0.5">
-            <span class="text-gray-400">Thanh toán VietQR:</span>
-            <span class="text-orange-400 font-bold">Khớp tiền tự động</span>
-          </div>
-          <div class="flex justify-between items-center py-0.5">
-            <span class="text-gray-400">Chốt ca Lời - Lỗ:</span>
-            <span class="text-sky-400 font-bold">Báo cáo P&L trong ngày</span>
-          </div>
-        </div>
-      </div>
-      <a href="/datphu-mini-pos.html" class="btn-card-3 w-full py-3 text-center text-xs font-bold rounded-2xl transition active:scale-95 text-white block shadow-lg shadow-teal-500/20">
-        Khám Phá Đất Phú Mini POS
-      </a>
-    </div>
-
-  </main>
-
-  <!-- ================= ĐIỀU HƯỚNG SANG TRANG CHUYÊN BIỆT SỬA CHỮA ĐẤT PHÚ ================= -->
-  <section class="max-w-6xl w-full mx-auto px-3 sm:px-6 py-8 border-t border-gray-800/60 mt-8">
-    <div class="antigravity-card p-6 md:p-8 border-orange-500/30 bg-gradient-to-r from-gray-950 via-slate-900 to-gray-950 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
-      <div class="flex items-start gap-4">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-red-600 text-white flex items-center justify-center font-black text-2xl shadow-lg shadow-blue-500/30 shrink-0">
-          <i class="fa-solid fa-wrench"></i>
+  <!-- ================= ĐIỀU HƯỚNG SANG TRANG DỊCH VỤ SỬA CHỮA (PHỤ TRỢ) ================= -->
+  <section class="max-w-6xl w-full mx-auto px-3 sm:px-6 py-6 border-t border-gray-800/60 mt-4">
+    <div class="p-5 sm:p-6 rounded-2xl bg-gray-900/60 border border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gray-800 text-orange-400 flex items-center justify-center text-lg shrink-0">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
         </div>
         <div>
-          <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-            <span class="text-[10px] font-bold text-red-400 bg-red-500/10 px-2.5 py-0.5 rounded-full border border-red-500/20 uppercase tracking-wider">
-              Dịch Vụ Trực Tiếp Đất Phú
-            </span>
-            <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
-              0% Phí Trung Gian • Có Mặt Sau 30 Phút
-            </span>
-          </div>
-          <h3 class="text-lg md:text-xl font-black text-white">
-            Dịch Vụ Sửa Chữa Nhà Ở • Điện Nước • Lắp Đặt Camera Phú Yên
-          </h3>
-          <p class="text-xs text-gray-400 mt-1 max-w-2xl leading-relaxed">
-            Đội thợ chính chủ mặc áo đồng phục xanh, xe tải chuyên dụng 78C giao vật tư tận ngõ. Xem bảng giá công khai, thư viện hình ảnh công trình thực tế và đặt lịch khảo sát miễn phí.
-          </p>
+          <div class="text-xs font-bold text-gray-200">Bạn cần sửa chữa điện nước, chống thấm hoặc lắp camera cho quán?</div>
+          <div class="text-[11px] text-gray-400">Đội thợ Đất Phú chính chủ, giá công khai, có mặt sau 30 phút tại Phú Yên.</div>
         </div>
       </div>
-
-      <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto shrink-0">
-        <a href="/sua-chua-nha-dien-nuoc-camera.html" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-red-600 hover:from-blue-500 hover:to-red-500 text-white font-black text-xs md:text-sm shadow-xl transition flex items-center justify-center gap-2 active:scale-95 text-center">
-          <i class="fa-solid fa-house-chimney-crack"></i>
-          <span>Xem Trang Chuyên Biệt Sửa Chữa</span>
-          <i class="fa-solid fa-arrow-right text-[10px]"></i>
-        </a>
-        <a href="tel:0979991898" class="w-full sm:w-auto px-4 py-3 rounded-2xl bg-gray-900 hover:bg-gray-800 text-orange-400 font-bold text-xs border border-orange-500/30 transition flex items-center justify-center gap-1.5 text-center">
-          <i class="fa-solid fa-phone"></i>
-          <span>0979.991.898</span>
-        </a>
-      </div>
+      <a href="/sua-chua-nha-dien-nuoc-camera.html" class="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-orange-400 border border-orange-500/30 font-bold text-xs transition active:scale-95 shrink-0 flex items-center gap-1.5">
+        <span>Xem Trang Sửa Chữa & Camera</span>
+        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+      </a>
     </div>
   </section>
 
   <!-- ================= NÚT ZALO NỔI (FLOATING WIDGET) ================= -->
   <div class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5">
     <div class="hidden sm:flex items-center px-3.5 py-2 rounded-2xl bg-gray-900/95 border border-orange-500/50 text-orange-400 text-xs font-bold shadow-2xl backdrop-blur-md">
-      <span>Cần tư vấn hóa đơn & chữ ký số?</span>
+      <span>Tư vấn thuê Mini POS 80k/tháng?</span>
     </div>
-    <a href="https://zalo.me/0979991898" target="_blank" class="w-14 h-14 rounded-full bg-gradient-to-tr from-blue-600 via-sky-500 to-blue-400 text-white flex items-center justify-center text-2xl shadow-2xl shadow-sky-500/50 border-2 border-white animate-gentle-bounce transition hover:scale-110 active:scale-95 shrink-0" title="Nhắn Zalo Tư Vấn Nhanh 24/7">
+    <a href="https://zalo.me/0979991898" target="_blank" class="w-14 h-14 rounded-full bg-gradient-to-tr from-orange-600 via-amber-500 to-orange-400 text-white flex items-center justify-center text-2xl shadow-2xl shadow-orange-500/50 border-2 border-white animate-gentle-bounce transition hover:scale-110 active:scale-95 shrink-0" title="Nhắn Zalo Tư Vấn Nhanh 24/7">
       <i class="fa-solid fa-comment-dots"></i>
     </a>
   </div>
 
   <!-- ================= MODAL NHẬN BÁO GIÁ & TƯ VẤN 1-CHẠM ================= -->
-  <div id="modalConsultation" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5" onclick="if(event.target === this) closeConsultationModal()">
+  <div id="modalConsultation" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5" onclick="if(event.target === this) closeConsultationModal()">
     <div class="antigravity-card bg-gray-900/95 border-2 border-orange-500/50 shadow-2xl p-6 w-full max-w-md space-y-4 animate-in fade-in zoom-in-95 duration-200 text-white">
       <div class="flex items-center justify-between border-b border-gray-800 pb-3">
         <div class="flex items-center gap-2.5">
-          <div class="w-7 h-7 rounded-lg bg-orange-500 text-white flex items-center justify-center font-black text-xs">ĐP</div>
-          <h3 class="text-sm font-black uppercase text-orange-400">ĐĂNG KÝ TƯ VẤN DỊCH VỤ SỐ</h3>
+          <div class="w-7 h-7 rounded-lg bg-orange-500 text-white flex items-center justify-center font-black text-xs">POS</div>
+          <h3 class="text-sm font-black uppercase text-orange-400">ĐĂNG KÝ THUÊ ĐẤT PHÚ MINI POS</h3>
         </div>
         <button onclick="closeConsultationModal()" class="w-7 h-7 rounded-full bg-gray-800 hover:bg-rose-950 text-gray-400 hover:text-rose-400 flex items-center justify-center text-xs font-bold cursor-pointer">✕</button>
       </div>
 
       <p class="text-xs text-gray-400">
-        Để lại thông tin, chuyên viên kỹ thuật Đất Phú sẽ liên hệ tư vấn và gửi bảng giá chiết khấu ưu đãi trong <span class="text-orange-400 font-bold">15 phút</span>.
+        Để lại thông tin, chuyên viên Đất Phú sẽ cấp tài khoản dùng thử và hỗ trợ cài đặt menu món cho quán bạn trong <span class="text-orange-400 font-bold">15 phút</span>.
       </p>
 
       <form id="consultationForm" onsubmit="submitConsultation(event)" class="space-y-3 text-xs">
@@ -431,28 +529,24 @@
         </div>
 
         <div>
-          <label class="block font-bold text-gray-300 mb-1">Tên của bạn / Tên cửa hàng</label>
-          <input type="text" id="leadName" placeholder="VD: Anh Nam (Tiệm Điện Nước Nam Phát)" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-800/80 border border-gray-700 text-white focus:outline-none focus:border-orange-500 text-xs" />
+          <label class="block font-bold text-gray-300 mb-1">Tên của bạn / Tên quán, cửa hàng</label>
+          <input type="text" id="leadName" placeholder="VD: Chị Mai (Cà phê Gió Chiều Tuy Hòa)" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-800/80 border border-gray-700 text-white focus:outline-none focus:border-orange-500 text-xs" />
         </div>
 
         <div>
-          <label class="block font-bold text-gray-300 mb-1">Dịch vụ quan tâm</label>
+          <label class="block font-bold text-gray-300 mb-1">Gói dịch vụ muốn thuê</label>
           <select id="leadService" class="w-full px-3 py-2.5 rounded-xl bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-orange-500 text-xs cursor-pointer">
-            <option value="Hóa đơn điện tử máy tính tiền NĐ 254">Hóa đơn điện tử máy tính tiền (NĐ 254)</option>
-            <option value="Chữ ký số Token & HSM (EFY-CA)">Chữ ký số Token & Ký số HSM (EFY-CA)</option>
-            <option value="Phần mềm bán hàng EasyPOS & Kế toán">Phần mềm bán hàng EasyPOS & Kế toán</option>
-            <option value="Sửa chữa nhà ở & Chống thấm (Phú Yên)">Sửa chữa nhà ở & Chống thấm dột (Phú Yên)</option>
-            <option value="Sửa chữa & Lắp đặt Điện Nước (Phú Yên)">Sửa chữa & Lắp đặt Điện Nước (Phú Yên)</option>
-            <option value="Lắp đặt Camera An Ninh Giám Sát (Phú Yên)">Lắp đặt Camera An Ninh Giám Sát (Phú Yên)</option>
-            <option value="Đội thợ xây Cả Tám / Cơ khí Ba Bình">Đội thợ xây Cả Tám / Cơ khí Ba Bình</option>
-            <option value="Trợ lý ảo AI Support & Tự động hóa n8n">Trợ lý ảo AI Support & Tự động hóa n8n</option>
-            <option value="Đất Phú Mini POS (Máy tính tiền bỏ túi)">Đất Phú Mini POS (Máy tính tiền bỏ túi)</option>
+            <option value="Gói Khởi Động (80.000đ/tháng)">Gói 1: Khởi Động (80.000đ/tháng - Dùng trên điện thoại)</option>
+            <option value="Gói Tiêu Chuẩn In Bill (120.000đ/tháng)" selected>Gói 2: Tiêu Chuẩn In Bill (120.000đ/tháng - ⭐ Bán chạy nhất)</option>
+            <option value="Gói Toàn Diện Pháp Lý & Thuế (180.000đ/tháng)">Gói 3: Toàn Diện Pháp Lý & Thuế (180.000đ/tháng - Chuẩn NĐ 254)</option>
+            <option value="Cần mua kèm Máy in nhiệt Bluetooth 58mm/80mm">Cần mua/thuê kèm Máy in nhiệt Bluetooth 58mm/80mm</option>
+            <option value="Đăng ký làm Bảng Mica VietQR để bàn">Đăng ký làm Bảng Mica VietQR để bàn</option>
           </select>
         </div>
 
         <div>
           <label class="block font-bold text-gray-300 mb-1">Ghi chú yêu cầu thêm (Nếu có)</label>
-          <textarea id="leadNote" rows="2" placeholder="VD: Cần xuất thử mẫu hóa đơn, cài đặt gấp tại Tuy Hòa..." class="w-full px-3.5 py-2 rounded-xl bg-gray-800/80 border border-gray-700 text-white focus:outline-none focus:border-orange-500 text-xs"></textarea>
+          <textarea id="leadNote" rows="2" placeholder="VD: Quán mình bán bún cá, cần hướng dẫn nhân viên dùng trên điện thoại..." class="w-full px-3.5 py-2 rounded-xl bg-gray-800/80 border border-gray-700 text-white focus:outline-none focus:border-orange-500 text-xs"></textarea>
         </div>
 
         <div id="leadStatusMsg" class="hidden text-xs py-2 px-3 rounded-xl"></div>
@@ -462,7 +556,7 @@
             Đóng
           </button>
           <button type="submit" id="btnSubmitLead" class="antigravity-btn px-5 py-2.5 text-white font-bold">
-            <i class="fa-solid fa-paper-plane mr-1.5"></i> Gửi Yêu Cầu
+            <i class="fa-solid fa-paper-plane mr-1.5"></i> Gửi Đăng Ký
           </button>
         </div>
       </form>
@@ -497,20 +591,20 @@
           <span class="text-[10px] text-gray-400">Radar bão & Cứu hộ</span>
         </a>
 
-        <a href="/giai-tri" class="p-3 rounded-2xl border border-gray-800 bg-gray-800/60 hover:bg-rose-500/10 hover:border-rose-500/40 transition flex flex-col items-center group">
-          <div class="w-10 h-10 rounded-xl bg-rose-500/15 text-rose-400 flex items-center justify-center text-lg mb-1.5">
-            <i class="fa-solid fa-radio"></i>
+        <a href="/datphu-mini-pos.html" class="p-3 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 transition flex flex-col items-center group">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg mb-1.5 shadow-md shadow-emerald-500/30">
+            <i class="fa-solid fa-cash-register"></i>
           </div>
-          <span class="text-xs font-bold text-gray-200">Văn Hóa & Giải Trí</span>
-          <span class="text-[10px] text-gray-400">Bài Chòi & Niệm Phật</span>
+          <span class="text-xs font-bold text-emerald-400">Mini POS</span>
+          <span class="text-[10px] text-emerald-300">Tính tiền bỏ túi</span>
         </a>
 
-        <a href="/lao-dong" class="p-3 rounded-2xl border border-orange-500/40 bg-orange-500/10 transition flex flex-col items-center group">
-          <div class="w-10 h-10 rounded-xl bg-orange-500 text-white flex items-center justify-center text-lg mb-1.5 shadow-md shadow-orange-500/30">
-            <i class="fa-solid fa-microchip"></i>
+        <a href="/sua-chua-nha-dien-nuoc-camera.html" class="p-3 rounded-2xl border border-gray-800 bg-gray-800/60 hover:bg-blue-500/10 hover:border-blue-500/40 transition flex flex-col items-center group">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center text-lg mb-1.5">
+            <i class="fa-solid fa-wrench"></i>
           </div>
-          <span class="text-xs font-bold text-orange-400">Đất Phú Gen 4</span>
-          <span class="text-[10px] text-orange-300">Đang truy cập</span>
+          <span class="text-xs font-bold text-gray-200">Sửa Chữa Nhà</span>
+          <span class="text-[10px] text-gray-400">Điện nước & Camera</span>
         </a>
 
         <a href="/do-dat" class="col-span-2 flex items-center gap-3 p-2.5 rounded-2xl border border-gray-800 hover:border-emerald-500/40 hover:bg-emerald-500/10 transition group">
@@ -529,19 +623,15 @@
   <!-- ================= CHÂN TRANG PHÁP LÝ CHUẨN MỰC ================= -->
   <footer class="max-w-6xl w-full mx-auto px-3 sm:px-6 border-t border-gray-800/80 pt-6 pb-6 text-center text-xs text-gray-500 mt-10">
     <p class="font-bold text-gray-300 tracking-wide">© 2026 CÔNG TY TNHH THƯƠNG MẠI ĐẤT PHÚ</p>
-    <p class="mt-1">Hotline / Zalo: <a href="https://zalo.me/0979991898" target="_blank" class="text-orange-400 font-mono font-bold hover:underline">0979.991.898</a> • Mã số thuế: <span class="text-orange-400 font-mono font-bold">4401020233</span></p>
-    <p class="mt-1">Địa chỉ: <span class="text-gray-300">172 Ngô Gia Tự, Khu phố 3, Phường Phú Đông, Thành phố Tuy Hòa, Tỉnh Phú Yên</span></p>
-    <p class="mt-1 text-[11px] text-gray-600">Vận hành trên Kiến trúc Tinh gọn Asset-Light & Quy chuẩn Kín Kẽ OS.</p>
+    <p class="mt-1">Hotline / Zalo Phần Mềm: <a href="https://zalo.me/0979991898" target="_blank" class="text-orange-400 font-mono font-bold hover:underline">0979.991.898</a> • Mã số thuế: <span class="text-orange-400 font-mono font-bold">4401020233</span></p>
+    <p class="mt-1">Địa chỉ: <span class="text-gray-300">172 Ngô Gia Tự, Phường Phú Đông, TP. Tuy Hòa, Tỉnh Phú Yên</span></p>
+    <p class="mt-1 text-[11px] text-gray-600">Phần mềm quản lý bán hàng Đất Phú Mini POS • Nền tảng SaaS tinh gọn cho hộ kinh doanh & doanh nghiệp địa phương.</p>
   </footer>
 
   <script>
     function toggleDatPhuAppLauncher() {
       const modal = document.getElementById('datPhuAppLauncherModal');
       if (modal) modal.classList.toggle('hidden');
-    }
-
-    function toggleWorkerSection() {
-      window.location.href = '/sua-chua-nha-dien-nuoc-camera.html';
     }
 
     function openConsultationModal(serviceName) {
@@ -589,7 +679,7 @@
         const res = await resp.json();
         
         msg.className = 'text-xs py-2.5 px-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-bold block';
-        msg.innerHTML = '<i class="fa-solid fa-circle-check mr-1.5"></i> ' + (res.message || 'Đăng ký thành công!');
+        msg.innerHTML = '<i class="fa-solid fa-circle-check mr-1.5"></i> ' + (res.message || 'Đăng ký thành công! Đất Phú sẽ liên hệ tư vấn trong 15 phút.');
 
         setTimeout(() => {
           closeConsultationModal();
