@@ -70,8 +70,8 @@
     }
 
     .active-table-card {
-      border: 2.5px solid #2563eb !important;
-      background: linear-gradient(135deg, #f0f7ff 0%, #e0effe 100%) !important;
+      outline: 3px solid #2563eb !important;
+      outline-offset: 2px !important;
       animation: activeTablePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, activeTablePulse 2.5s infinite ease-in-out !important;
       z-index: 10 !important;
     }
@@ -238,9 +238,11 @@
                 <span>Đổi Bàn</span>
               </button>
               <div class="hidden sm:flex items-center gap-2 text-[10px] font-bold text-slate-500">
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-300"></span> Trống</span>
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-600"></span> Đang chọn</span>
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span> Có khách</span>
+                <span class="flex items-center gap-1" title="Bàn trống sẵn sàng đón khách"><span class="w-2 h-2 rounded-full bg-slate-300 border border-slate-400"></span> Trống</span>
+                <span class="flex items-center gap-1" title="Khách đang xem thực đơn & chọn món"><span class="w-2 h-2 rounded-full bg-blue-600"></span> Đang chọn</span>
+                <span class="flex items-center gap-1" title="Đã báo bếp, bếp đang chế biến"><span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Bếp nấu</span>
+                <span class="flex items-center gap-1" title="Đã lên đủ món, khách đang dùng bữa"><span class="w-2 h-2 rounded-full bg-emerald-600"></span> Đủ món</span>
+                <span class="flex items-center gap-1" title="Khách chờ tính tiền hoặc đang thanh toán"><span class="w-2 h-2 rounded-full bg-red-600 animate-bounce"></span> Tính tiền</span>
               </div>
             </div>
           </div>
@@ -1876,36 +1878,113 @@
     }
 
     
-    // Hàm tạo "Nhãn Dán Trạng Thái" (Status Stickers) sắc nét
+    // HỆ THỐNG MÀU SẮC ĐỒNG BỘ 5 GIAI ĐOẠN BÀN
+    function getTableStageTheme(t, isActive, isOcc) {
+      let stage = 'empty';
+      const sl = t.statusLabel || (isOcc ? 'served' : 'empty');
+
+      if (!isOcc || sl === 'empty') {
+        stage = isActive ? 'ordering' : 'empty';
+      } else if (sl === 'cooking' || t.kitchenStatus === 'cooking') {
+        stage = 'cooking';
+      } else if (sl === 'checkout') {
+        stage = 'checkout';
+      } else if (sl === 'ordering') {
+        stage = 'ordering';
+      } else {
+        stage = 'served';
+      }
+
+      switch (stage) {
+        case 'cooking': // 🟡 GIAI ĐOẠN 3: BẾP ĐANG NẤU (VÀNG CAM HỔ PHÁCH)
+          return {
+            stage: 'cooking',
+            name: 'Bếp Đang Nấu',
+            badgeBg: 'bg-amber-500 text-white shadow-2xs animate-pulse',
+            badgeIcon: 'fa-fire-burner',
+            cardBg: 'bg-gradient-to-b from-amber-50/95 via-amber-50/70 to-white hover:bg-amber-100/50',
+            border: 'border-amber-400 hover:border-amber-500 shadow-xs',
+            stripe: 'bg-amber-500',
+            iconBg: 'bg-amber-500 text-white shadow-xs',
+            titleColor: 'text-amber-950 font-black',
+            infoBarBg: 'bg-amber-100/80 border-amber-300/80 text-amber-950',
+            previewBg: 'bg-white/95 border-amber-200/90 text-slate-800',
+            totalColor: 'text-amber-700 font-black',
+            statusDot: 'bg-amber-500'
+          };
+        case 'served': // 🟢 GIAI ĐOẠN 4: ĐÃ ĐỦ MÓN (XANH LÁ NGỌC)
+          return {
+            stage: 'served',
+            name: 'Đã Đủ Món',
+            badgeBg: 'bg-emerald-600 text-white shadow-2xs',
+            badgeIcon: 'fa-check',
+            cardBg: 'bg-gradient-to-b from-emerald-50/95 via-emerald-50/70 to-white hover:bg-emerald-100/50',
+            border: 'border-emerald-400 hover:border-emerald-500 shadow-xs',
+            stripe: 'bg-emerald-500',
+            iconBg: 'bg-emerald-600 text-white shadow-xs',
+            titleColor: 'text-emerald-950 font-black',
+            infoBarBg: 'bg-emerald-100/80 border-emerald-300/80 text-emerald-950',
+            previewBg: 'bg-white/95 border-emerald-200/90 text-slate-800',
+            totalColor: 'text-emerald-700 font-black',
+            statusDot: 'bg-emerald-500'
+          };
+        case 'checkout': // 🔴 GIAI ĐOẠN 5: CHỜ TÍNH TIỀN (ĐỎ RUBY)
+          return {
+            stage: 'checkout',
+            name: 'Chờ Tính Tiền',
+            badgeBg: 'bg-red-600 text-white shadow-2xs animate-bounce',
+            badgeIcon: 'fa-receipt',
+            cardBg: 'bg-gradient-to-b from-rose-50/95 via-red-50/70 to-white hover:bg-rose-100/60',
+            border: 'border-red-500 hover:border-red-600 ring-1 ring-red-400/50 shadow-xs',
+            stripe: 'bg-red-600',
+            iconBg: 'bg-red-600 text-white shadow-xs animate-pulse',
+            titleColor: 'text-red-950 font-black',
+            infoBarBg: 'bg-red-100/90 border-red-300 text-red-950',
+            previewBg: 'bg-white/95 border-red-200/90 text-slate-800',
+            totalColor: 'text-red-600 font-black',
+            statusDot: 'bg-red-600 animate-ping'
+          };
+        case 'ordering': // 🔵 GIAI ĐOẠN 2: ĐANG CHỌN MÓN (XANH DƯƠNG)
+          return {
+            stage: 'ordering',
+            name: 'Đang Chọn',
+            badgeBg: 'bg-blue-600 text-white shadow-2xs',
+            badgeIcon: 'fa-hand-pointer',
+            cardBg: 'bg-gradient-to-b from-blue-50/95 via-blue-50/60 to-white hover:bg-blue-100/50',
+            border: 'border-blue-400 hover:border-blue-500 shadow-xs',
+            stripe: 'bg-blue-600',
+            iconBg: 'bg-blue-600 text-white shadow-xs',
+            titleColor: 'text-blue-950 font-black',
+            infoBarBg: 'bg-blue-100/80 border-blue-300 text-blue-950',
+            previewBg: 'bg-white/95 border-blue-200/90 text-slate-800',
+            totalColor: 'text-blue-700 font-black',
+            statusDot: 'bg-blue-600 animate-ping'
+          };
+        case 'empty': // ⚪ GIAI ĐOẠN 1: BÀN TRỐNG (TRẮNG / XÁM NHẠT)
+        default:
+          return {
+            stage: 'empty',
+            name: 'Trống',
+            badgeBg: 'bg-slate-100 text-slate-500 border border-slate-200',
+            badgeIcon: 'fa-circle-dot',
+            cardBg: 'bg-white hover:bg-slate-50/80',
+            border: 'border-slate-200 hover:border-slate-300 shadow-2xs',
+            stripe: 'bg-slate-300',
+            iconBg: 'bg-slate-100 text-slate-500',
+            titleColor: 'text-slate-800 font-black',
+            infoBarBg: 'bg-slate-100/70 border-slate-200/60 text-slate-500',
+            previewBg: 'bg-slate-50/70 border-dashed border-slate-200 text-slate-400',
+            totalColor: 'text-slate-400',
+            statusDot: 'bg-slate-300'
+          };
+      }
+    }
+
+    // Hàm tạo "Nhãn Dán Trạng Thái" (Status Stickers) đồng bộ màu sắc
     function getTableStatusSticker(t, isActive, isOcc) {
-      const s = t.statusLabel || (isOcc ? 'served' : 'empty');
-
-      if (!isOcc || s === 'empty') {
-        if (isActive) {
-          return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-blue-600 text-white shadow-2xs flex items-center gap-1 shrink-0">
-            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span> Đang Chọn
-          </span>`;
-        }
-        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-500 border border-slate-200 flex items-center gap-1 shrink-0">
-          <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Trống
-        </span>`;
-      }
-
-      if (s === 'cooking' || t.kitchenStatus === 'cooking') {
-        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-500 text-white shadow-2xs flex items-center gap-1 shrink-0 animate-pulse">
-          <i class="fa-solid fa-fire-burner text-[9px]"></i> Bếp Đang Nấu
-        </span>`;
-      }
-
-      if (s === 'checkout') {
-        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white shadow-2xs flex items-center gap-1 shrink-0 animate-bounce">
-          <i class="fa-solid fa-receipt text-[9px]"></i> Chờ Tính Tiền
-        </span>`;
-      }
-
-      // Mặc định: Đã lên đủ món
-      return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-600 text-white shadow-2xs flex items-center gap-1 shrink-0">
-        <i class="fa-solid fa-check text-[9px]"></i> Đã Đủ Món
+      const th = getTableStageTheme(t, isActive, isOcc);
+      return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black ${th.badgeBg} flex items-center gap-1 shrink-0">
+        <i class="fa-solid ${th.badgeIcon} text-[9px]"></i> ${th.name}
       </span>`;
     }
 
@@ -1964,19 +2043,24 @@
           }
         }
 
+        const th = getTableStageTheme(t, isActive, isOcc);
+
         return `
-          <div onclick="switchTable('${t.id}')" class="p-2.5 rounded-2xl border transition-all duration-300 cursor-pointer relative flex flex-col justify-between shadow-2xs select-none ${isActive ? 'active-table-card' : (isOcc ? 'bg-white border-red-300 hover:border-red-400 hover:shadow-xs' : 'bg-white border-slate-200 hover:border-blue-300 hover:bg-slate-50 hover:shadow-2xs')}">
+          <div onclick="switchTable('${t.id}')" class="p-2.5 rounded-2xl border transition-all duration-300 cursor-pointer relative flex flex-col justify-between select-none ${th.cardBg} ${th.border} ${isActive ? 'active-table-card' : ''}">
             
-            <!-- Đỉnh ô bàn: Tên bàn & Nhãn Bàn & Lượt Khách (Rõ Ràng Tuyệt Đối) -->
+            <!-- Đỉnh ô bàn: Dải Màu Nhấn Giai Đoạn + Tên Bàn + Nhãn Dán Trạng Thái -->
             <div>
-              <!-- Dòng 1: Icon + Tên Bàn To Rõ + Nhãn Dán Trạng Thái -->
+              <!-- Dải màu nhấn giai đoạn (Accent Top Stripe) -->
+              <div class="h-1 w-full rounded-full ${th.stripe} mb-1.5 opacity-90"></div>
+
+              <!-- Dòng 1: Icon + Tên Bàn To Rõ + Nhãn Dán Trạng Thái Đồng Bộ Màu -->
               <div class="flex items-center justify-between mb-1 gap-1">
                 <div class="flex items-center gap-1.5 min-w-0 flex-1">
-                  <div class="w-6 h-6 rounded-lg ${isActive ? 'bg-blue-600 text-white ring-2 ring-blue-300' : (isOcc ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-700')} flex items-center justify-center text-[11px] font-black shadow-2xs shrink-0">
+                  <div class="w-6 h-6 rounded-lg ${th.iconBg} flex items-center justify-center text-[11px] font-black shadow-2xs shrink-0">
                     <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'}"></i>
                   </div>
                   <div class="min-w-0">
-                    <h4 class="font-black text-xs sm:text-[13px] ${isActive ? 'text-blue-900 font-extrabold' : 'text-slate-900'} truncate leading-tight">${t.name}</h4>
+                    <h4 class="font-black text-xs sm:text-[13px] ${th.titleColor} truncate leading-tight">${t.name}</h4>
                     <span class="text-[9px] text-slate-400 font-medium block leading-tight truncate">${zoneName} ${t.openTime ? '• ' + t.openTime : ''}</span>
                   </div>
                 </div>
@@ -1985,31 +2069,31 @@
                 <div class="shrink-0 flex items-center gap-1">
                   ${tag ? `<span class="text-[8px] px-1 py-0.2 rounded font-black uppercase ${tag === 'VIP' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-purple-100 text-purple-700 border border-purple-200'}">${tag}</span>` : ''}
                   ${getTableStatusSticker(t, isActive, isOcc)}
-                  ${isOcc ? `<span class="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-red-100 text-red-700 border border-red-200 font-mono shrink-0">${totalItemsCount} món</span>` : ''}
+                  ${isOcc ? `<span class="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-white/90 text-slate-700 border border-slate-200/80 font-mono shrink-0 shadow-2xs">${totalItemsCount} món</span>` : ''}
                 </div>
               </div>
 
-              <!-- Thanh Nhãn Bàn: Theo Dõi Lượt Khách & Số Khách Hiện Tại -->
-              <div class="flex items-center justify-between px-1.5 py-0.5 bg-slate-100/80 rounded-md text-[9px] font-bold text-slate-600 mb-1 border border-slate-200/60">
-                <span class="flex items-center gap-1 text-blue-700" title="Tổng lượt phục vụ bàn này trong ngày">
+              <!-- Thanh Nhãn Bàn: Theo Dõi Lượt Khách & Số Khách Hiện Tại (Màu Đồng Bộ Giai Đoạn) -->
+              <div class="flex items-center justify-between px-1.5 py-0.5 ${th.infoBarBg} rounded-md text-[9px] font-bold mb-1 border">
+                <span class="flex items-center gap-1" title="Tổng lượt phục vụ bàn này trong ngày">
                   <i class="fa-solid fa-arrows-rotate text-[8px]"></i> ${turns} lượt/ngày
                 </span>
-                <span class="flex items-center gap-1 text-slate-500" title="Số khách đợt này">
+                <span class="flex items-center gap-1" title="Số khách đợt này">
                   <i class="fa-solid fa-users text-[8px]"></i> ${isOcc ? guests + ' khách' : 'Chưa có khách'}
                 </span>
               </div>
 
-              <!-- Chi tiết các mục món trong bàn -->
-              <div class="my-1 bg-slate-50/90 p-1.5 rounded-xl border border-slate-100 min-h-[44px]">
+              <!-- Chi tiết các mục món trong bàn (Nền Sáng Sắc Nét) -->
+              <div class="my-1 ${th.previewBg} p-1.5 rounded-xl border min-h-[44px]">
                 ${isOcc ? itemsHtml : '<div class="text-center text-[10px] text-slate-400 italic py-2">Bàn trống • Sẵn sàng đón khách</div>'}
               </div>
             </div>
 
             <!-- Chân ô bàn: Tổng tiền & NÚT ĐỎ THANH TOÁN TO RÕ -->
-            <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between gap-1">
+            <div class="pt-1.5 border-t border-slate-200/60 flex items-center justify-between gap-1">
               <div>
                 <span class="text-[9px] text-slate-400 block font-medium leading-none mb-0.5">${isOcc ? 'Tạm tính' : 'Sẵn sàng'}</span>
-                <span class="font-black font-mono text-xs sm:text-sm ${isOcc ? 'text-red-600 font-bold' : (isActive ? 'text-blue-700' : 'text-slate-400')}">
+                <span class="font-black font-mono text-xs sm:text-sm ${th.totalColor}">
                   ${tTotal > 0 ? tTotal.toLocaleString('vi-VN') + ' đ' : '0 đ'}
                 </span>
               </div>
@@ -2023,7 +2107,7 @@
                     <span>Thanh Toán</span>
                   </button>
                   <!-- Nút Chi Tiết Nhỏ Gọn Bên Cạnh -->
-                  <button onclick="openTableDetailModal('${t.id}')" class="w-6 h-6 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition cursor-pointer text-[10px]" title="Xem chi tiết đơn & in tạm tính">
+                  <button onclick="openTableDetailModal('${t.id}')" class="w-6 h-6 rounded-lg bg-white/90 hover:bg-slate-200 text-slate-700 border border-slate-200 flex items-center justify-center transition cursor-pointer text-[10px] shadow-2xs" title="Xem chi tiết đơn & in tạm tính">
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                   </button>
                 ` : `
@@ -2163,6 +2247,19 @@
           `).join('');
         }
       }
+
+      // Làm nổi bật nút trạng thái hiện tại của bàn
+      const curStage = t.statusLabel || (isOcc ? 'served' : 'empty');
+      ['empty', 'ordering', 'cooking', 'served', 'checkout'].forEach(st => {
+        const btn = document.getElementById('stkBtn-' + st);
+        if (btn) {
+          if (curStage === st) {
+            btn.classList.add('ring-2', 'ring-blue-600', 'font-black', 'scale-105');
+          } else {
+            btn.classList.remove('ring-2', 'ring-blue-600', 'font-black', 'scale-105');
+          }
+        }
+      });
 
       document.getElementById('tableDetailModal').classList.remove('hidden');
       playBeep(650, 0.03);
@@ -2405,6 +2502,10 @@
         exist.qty += 1;
       } else {
         cart.push({ id: p.id, name: p.name, price: p.price, qty: 1 });
+      }
+      const curTbl = getCurrentTable();
+      if (!curTbl.statusLabel || curTbl.statusLabel === 'empty') {
+        curTbl.statusLabel = 'ordering';
       }
       playBeep(700, 0.05);
       updateCartUI();
@@ -4843,6 +4944,7 @@
                 <span class="text-[10px] font-bold text-slate-600 whitespace-nowrap">Dán nhãn trạng thái:</span>
                 <div class="flex items-center gap-1 overflow-x-auto no-scrollbar flex-1">
                   <button type="button" onclick="setTableStatusSticker('empty')" id="stkBtn-empty" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200 cursor-pointer transition">⚪ Trống</button>
+                  <button type="button" onclick="setTableStatusSticker('ordering')" id="stkBtn-ordering" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300 cursor-pointer transition">🔵 Đang Chọn</button>
                   <button type="button" onclick="setTableStatusSticker('cooking')" id="stkBtn-cooking" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-800 hover:bg-amber-200 border border-amber-300 cursor-pointer transition">🟡 Bếp Nấu</button>
                   <button type="button" onclick="setTableStatusSticker('served')" id="stkBtn-served" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border border-emerald-300 cursor-pointer transition">🟢 Đã Đủ Món</button>
                   <button type="button" onclick="setTableStatusSticker('checkout')" id="stkBtn-checkout" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-red-100 text-red-700 hover:bg-red-200 border border-red-300 cursor-pointer transition">🔴 Chờ Tính Tiền</button>
