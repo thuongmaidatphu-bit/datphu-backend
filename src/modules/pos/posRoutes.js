@@ -6,8 +6,41 @@
  */
 
 const posController = require('./posController');
+const tenantController = require('./tenantController');
 
 async function handle(pathname, req, res, body, sseClients, parsedUrl) {
+  // ========================================================================
+  // PHÂN HỆ ĐĂNG NHẬP, PHÂN QUYỀN & QUẢN LÝ QUÁN THUÊ (MULTI-TENANT SAAS)
+  // ========================================================================
+  if (pathname === '/api/pos/tenant/login' && req.method === 'POST') {
+    tenantController.handleTenantLogin(req, res, body);
+    return true;
+  }
+
+  if (pathname === '/api/pos/tenant/register' && req.method === 'POST') {
+    tenantController.handleTenantRegister(req, res, body);
+    return true;
+  }
+
+  if (pathname === '/api/pos/tenant/me' && req.method === 'GET') {
+    tenantController.handleGetTenantProfile(req, res);
+    return true;
+  }
+
+  if (pathname === '/api/pos/tenant/sync' && req.method === 'POST') {
+    tenantController.handleSyncTenantData(req, res, body);
+    return true;
+  }
+
+  if (pathname === '/api/pos/tenant/plans' && req.method === 'GET') {
+    tenantController.handleGetPlans(req, res);
+    return true;
+  }
+
+  if (pathname === '/api/pos/admin/tenants' && req.method === 'GET') {
+    tenantController.handleAdminListTenants(req, res);
+    return true;
+  }
   // 1. Danh mục sản phẩm & tồn kho
   if (pathname === '/api/pos/products') {
     if (req.method === 'GET') {

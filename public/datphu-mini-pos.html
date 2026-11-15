@@ -54,40 +54,40 @@
 <body class="bg-slate-900 text-slate-100 antialiased select-none h-screen flex flex-col justify-between max-w-md mx-auto shadow-2xl overflow-hidden border-x border-slate-800">
 
   <!-- ================= TOP APP BAR ================= -->
-  <header class="h-14 px-3.5 bg-slate-950 border-b border-slate-800/80 flex items-center justify-between flex-shrink-0 z-30">
-    <div class="flex items-center space-x-2.5">
-      <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 text-white flex items-center justify-center font-black text-xs shadow-md shadow-orange-500/20">
-        ĐP
-      </div>
-      <div>
-        <div class="flex items-center space-x-1.5">
-          <span class="font-black text-xs tracking-wide text-white uppercase" id="shopNameDisplay">Cà Phê & Điểm Tâm Đất Phú</span>
-          <button onclick="openShopSettings()" class="text-[10px] text-slate-400 hover:text-orange-400 p-0.5">
+  <header class="h-14 px-3 bg-slate-950 border-b border-slate-800/80 flex items-center justify-between flex-shrink-0 z-30">
+    <div class="flex items-center space-x-2 min-w-0">
+      <button onclick="openTenantModal()" class="w-8 h-8 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 text-white flex items-center justify-center font-black text-xs shadow-md shadow-orange-500/20 shrink-0 cursor-pointer" title="Quản lý quán & Phân quyền gói thuê">
+        <i class="fa-solid fa-store text-xs"></i>
+      </button>
+      <div class="min-w-0">
+        <div class="flex items-center space-x-1.5 min-w-0">
+          <span class="font-black text-xs tracking-wide text-white uppercase truncate cursor-pointer hover:text-orange-400" onclick="openTenantModal()" id="shopNameDisplay">Cà Phê & Điểm Tâm Đất Phú</span>
+          <button onclick="openShopSettings()" class="text-[10px] text-slate-400 hover:text-orange-400 p-0.5 shrink-0" title="Cài đặt VietQR">
             <i class="fa-solid fa-pen-to-square"></i>
           </button>
         </div>
-        <div class="flex items-center space-x-2 text-[10px] text-slate-400">
-          <span class="inline-flex items-center gap-1 text-emerald-400 font-bold">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            Trực Tuyến
-          </span>
+        <div class="flex items-center space-x-1.5 text-[9px] text-slate-400 truncate">
+          <button onclick="openTenantModal()" id="tenantPlanBadge" class="px-1.5 py-0.2 rounded-md bg-orange-500/20 text-orange-400 border border-orange-500/30 font-bold shrink-0">
+            Gói 120k • In Bill
+          </button>
           <span>•</span>
-          <span id="posTimeDisplay">09:00</span>
-          <span>•</span>
-          <span class="text-orange-400 font-bold" id="headerOrderCount">0 đơn</span>
+          <span class="text-orange-400 font-bold shrink-0" id="headerOrderCount">0 đơn</span>
         </div>
       </div>
     </div>
 
-    <!-- Nút Thao Tác Nhanh: Chi & Chốt Ca -->
-    <div class="flex items-center space-x-1.5">
-      <button onclick="openExpenseModal()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs font-bold border border-slate-700 flex items-center gap-1 shadow-sm transition" title="Ghi chi đầu vào đi chợ">
+    <!-- Nút Thao Tác Nhanh: Đổi Quán, Chi & Chốt Ca -->
+    <div class="flex items-center space-x-1 shrink-0">
+      <button onclick="openTenantModal()" class="p-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-orange-400 border border-slate-700 text-xs font-bold transition" title="Đăng nhập / Đổi tài khoản quán">
+        <i class="fa-solid fa-users-gear text-[11px]"></i>
+      </button>
+      <button onclick="openExpenseModal()" class="px-2 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs font-bold border border-slate-700 flex items-center gap-1 shadow-sm transition" title="Ghi chi đầu vào đi chợ">
         <i class="fa-solid fa-cart-arrow-down text-[10px]"></i>
         <span>Chi</span>
       </button>
-      <button onclick="openEodModal()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 transition">
+      <button onclick="openEodModal()" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white text-xs font-black shadow-md flex items-center gap-1 transition">
         <i class="fa-solid fa-chart-pie text-[10px]"></i>
-        <span>Chốt Ca</span>
+        <span>Chốt</span>
       </button>
     </div>
   </header>
@@ -565,6 +565,162 @@
     </div>
   </div>
 
+  <!-- ================= MODAL: QUẢN LÝ QUÁN THUÊ & PHÂN QUYỀN (MULTI-TENANT) ================= -->
+  <div id="tenantModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-slate-900 border border-slate-700/80 rounded-3xl w-full max-w-sm p-4 sm:p-5 space-y-3.5 shadow-2xl animate-in zoom-in-95 text-xs text-white max-h-[90vh] flex flex-col">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-2.5 shrink-0">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-store"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-white">Quản Lý Quán & Gói Dịch Vụ</h3>
+            <p class="text-[10px] text-slate-400">Đăng nhập tài khoản quán hoặc đổi gói thuê</p>
+          </div>
+        </div>
+        <button onclick="closeModal('tenantModal')" class="text-slate-400 hover:text-white cursor-pointer">✕</button>
+      </div>
+
+      <!-- 3 Tabs Điều Hướng -->
+      <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 shrink-0 text-[11px] font-bold">
+        <button onclick="switchTenantTab('info')" id="tabTenant-info" class="flex-1 py-1.5 text-center rounded-lg bg-orange-600 text-white shadow transition">
+          Quán Của Bạn
+        </button>
+        <button onclick="switchTenantTab('login')" id="tabTenant-login" class="flex-1 py-1.5 text-center rounded-lg text-slate-400 hover:text-white transition">
+          Đăng Nhập
+        </button>
+        <button onclick="switchTenantTab('register')" id="tabTenant-register" class="flex-1 py-1.5 text-center rounded-lg text-slate-400 hover:text-white transition">
+          Tạo Quán Mới
+        </button>
+      </div>
+
+      <!-- TAB 1: THÔNG TIN QUÁN HIỆN TẠI -->
+      <div id="viewTenant-info" class="space-y-3 overflow-y-auto no-scrollbar flex-1">
+        <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 space-y-2">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-bold">Quán Đang Hoạt Động</div>
+              <div class="text-sm font-black text-white" id="tenantModalShopName">Quán Ăn & Bún Cá Dằm Tuy Hòa</div>
+              <div class="text-[11px] text-slate-400" id="tenantModalOwnerPhone">Chị Hoa • 0979.120.120</div>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-black" id="tenantModalPlanTag">
+              Gói Tiêu Chuẩn 120k
+            </span>
+          </div>
+
+          <div class="border-t border-slate-800/80 pt-2 flex justify-between items-center text-[10px]">
+            <span class="text-slate-400">Hạn sử dụng gói thuê:</span>
+            <span class="text-emerald-400 font-bold" id="tenantModalExpiry">Đến 31/12/2027</span>
+          </div>
+        </div>
+
+        <!-- Bảng Quyền Hạn Tính Năng Theo Gói -->
+        <div class="bg-slate-950/60 p-3 rounded-2xl border border-slate-800 space-y-1.5 text-[11px]">
+          <div class="font-bold text-slate-300 text-[11px] mb-1">Quyền Hạn Gói Thuê Của Quán:</div>
+          <div class="flex items-center justify-between py-0.5">
+            <span class="text-slate-400">Quét VietQR & Chuông Ting-Ting:</span>
+            <span class="text-emerald-400 font-bold"><i class="fa-solid fa-check"></i> Đã mở</span>
+          </div>
+          <div class="flex items-center justify-between py-0.5">
+            <span class="text-slate-400">Chốt ca P&L gửi Zalo:</span>
+            <span class="text-emerald-400 font-bold"><i class="fa-solid fa-check"></i> Đã mở</span>
+          </div>
+          <div class="flex items-center justify-between py-0.5">
+            <span class="text-slate-400">In bill Bluetooth 58/80mm:</span>
+            <span id="featPerm-print" class="text-emerald-400 font-bold"><i class="fa-solid fa-check"></i> Đã mở</span>
+          </div>
+          <div class="flex items-center justify-between py-0.5">
+            <span class="text-slate-400">Hóa đơn điện tử máy tính tiền NĐ 254:</span>
+            <span id="featPerm-tax" class="text-slate-500 font-bold"><i class="fa-solid fa-lock"></i> Gói 180k</span>
+          </div>
+        </div>
+
+        <!-- Nút Đồng Bộ Đám Mây & Đăng Xuất -->
+        <div class="space-y-2 pt-1">
+          <button onclick="syncTenantDataToCloud()" id="btnSyncCloud" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow flex items-center justify-center gap-1.5 active:scale-95 transition">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span>Sao Lưu Menu & Doanh Thu Lên Cloud</span>
+          </button>
+          <button onclick="logoutTenant()" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-red-400 font-bold text-xs border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95 transition">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Đổi Quán / Đăng Xuất</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 2: ĐĂNG NHẬP QUÁN -->
+      <div id="viewTenant-login" class="hidden space-y-3 overflow-y-auto no-scrollbar flex-1">
+        <div>
+          <label class="block font-bold text-slate-300 mb-1">Số Điện Thoại Quán:</label>
+          <input type="tel" id="loginPhoneInput" placeholder="VD: 0979120120" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono focus:outline-none focus:border-orange-500">
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-300 mb-1">Mã PIN Bảo Mật (4 số):</label>
+          <input type="password" id="loginPinInput" maxlength="6" placeholder="Mặc định: 1234" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-orange-400 font-mono font-bold tracking-widest text-center focus:outline-none focus:border-orange-500">
+        </div>
+
+        <button onclick="submitTenantLogin()" class="w-full py-3 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-black text-xs shadow active:scale-95 transition">
+          <i class="fa-solid fa-right-to-bracket mr-1"></i> Đăng Nhập Quán
+        </button>
+
+        <!-- Thử nhanh 3 tài khoản Demo mẫu -->
+        <div class="border-t border-slate-800 pt-2.5 space-y-1.5">
+          <div class="text-[10px] text-slate-400 font-bold uppercase">Bấm 1-Chạm Thử Nhanh 3 Gói Thuê:</div>
+          <button onclick="quickLoginDemo('0979080080')" class="w-full py-1.5 px-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-sky-500/30 flex justify-between items-center text-[10px]">
+            <span class="text-sky-400 font-bold">1. Thử Quán Cà Phê Cóc</span>
+            <span class="text-slate-400 font-mono">Gói 80k/tháng</span>
+          </button>
+          <button onclick="quickLoginDemo('0979120120')" class="w-full py-1.5 px-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-orange-500/40 flex justify-between items-center text-[10px]">
+            <span class="text-orange-400 font-bold">2. Thử Quán Bún Cá Dằm</span>
+            <span class="text-slate-400 font-mono">Gói 120k In Bill</span>
+          </button>
+          <button onclick="quickLoginDemo('0979991898')" class="w-full py-1.5 px-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-emerald-500/40 flex justify-between items-center text-[10px]">
+            <span class="text-emerald-400 font-bold">3. Thử Bách Hóa Sạch</span>
+            <span class="text-slate-400 font-mono">Gói 180k Thuế NĐ 254</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 3: TẠO QUÁN MỚI -->
+      <div id="viewTenant-register" class="hidden space-y-2.5 overflow-y-auto no-scrollbar flex-1">
+        <div>
+          <label class="block font-bold text-slate-300 mb-0.5">Tên Quán / Cửa Hàng (*):</label>
+          <input type="text" id="regShopName" placeholder="VD: Cà phê Gió Chiều, Tiệm Tạp Hóa Cô Ba..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-orange-500">
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-300 mb-0.5">Số Điện Thoại Đăng Nhập (*):</label>
+          <input type="tel" id="regPhone" placeholder="VD: 0914.xxx.xxx" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono focus:outline-none focus:border-orange-500">
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-300 mb-0.5">Gói Dịch Vụ Muốn Thuê:</label>
+          <select id="regPlan" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-orange-400 font-bold focus:outline-none focus:border-orange-500 cursor-pointer">
+            <option value="starter">Gói 1: Khởi Động (80.000đ/tháng - Dùng điện thoại)</option>
+            <option value="standard" selected>Gói 2: Tiêu Chuẩn In Bill (120.000đ/tháng - ⭐ Bán chạy)</option>
+            <option value="pro_tax">Gói 3: Toàn Diện Pháp Lý & Thuế (180.000đ/tháng - NĐ 254)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-300 mb-0.5">Tên Chủ Quán:</label>
+            <input type="text" id="regOwnerName" placeholder="VD: Chị Mai" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-orange-500">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-300 mb-0.5">Mã PIN (4 số):</label>
+            <input type="password" id="regPin" maxlength="4" value="1234" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-orange-400 font-mono font-bold text-center focus:outline-none focus:border-orange-500">
+          </div>
+        </div>
+
+        <button onclick="submitTenantRegister()" class="w-full py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-black text-xs shadow mt-1 active:scale-95 transition">
+          <i class="fa-solid fa-plus-circle mr-1"></i> Tạo Quán & Kích Hoạt Dùng Ngay
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= MODAL: CÀI ĐẶT THÔNG TIN QUÁN & NGÂN HÀNG VIETQR ================= -->
   <div id="settingsModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-xs z-50 flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm p-5 space-y-3 shadow-2xl animate-in zoom-in-95 text-xs">
@@ -662,12 +818,40 @@
     let numpadVal = "0";
     let numpadLabel = "Món mua nhanh";
 
-    // Cài đặt quán
+    // Multi-tenant: Quán đang đăng nhập & Quyền hạn gói thuê (80k / 120k / 180k)
+    let currentTenant = JSON.parse(localStorage.getItem('dp_current_tenant')) || {
+      id: "shop_120k_demo",
+      shopName: "Quán Ăn & Bún Cá Dằm Tuy Hòa",
+      ownerName: "Chị Hoa Quán Ăn",
+      phone: "0979120120",
+      plan: "standard",
+      planName: "Gói Tiêu Chuẩn In Bill",
+      planBadge: "Tiêu Chuẩn • In Bill 120k",
+      planExpiresAt: "2027-12-31T23:59:59.000Z",
+      features: {
+        vietqr: true,
+        tingtingAudio: true,
+        pnlEod: true,
+        zaloShare: true,
+        bluetoothPrint: true,
+        tablesManagement: true,
+        micaQrGift: true,
+        taxInvoiceNd254: false,
+        digitalSignatureEfy: false
+      },
+      bankConfig: {
+        bankId: "mbbank",
+        bankAcc: "097912012099",
+        bankName: "TRAN THI HOA"
+      }
+    };
+
+    // Cài đặt ngân hàng nhận tiền
     let shopConfig = JSON.parse(localStorage.getItem('dp_shop_config')) || {
-      name: "Cà Phê & Điểm Tâm Đất Phú",
-      bankId: "vietcombank",
-      bankAcc: "0751000025035",
-      bankName: "PHAM THANH HON"
+      name: currentTenant.shopName,
+      bankId: currentTenant.bankConfig?.bankId || "vietcombank",
+      bankAcc: currentTenant.bankConfig?.bankAcc || "0751000025035",
+      bankName: currentTenant.bankConfig?.bankName || "PHAM THANH HON"
     };
 
     // Dữ liệu đơn hàng hôm nay
@@ -721,6 +905,7 @@
 
     // 4. KHỞI CHẠY LẦN ĐẦU
     window.addEventListener('DOMContentLoaded', () => {
+      applyTenantInfo();
       renderProducts();
       updateCartUI();
       renderHistory();
@@ -1041,7 +1226,15 @@
       localStorage.setItem('dp_pos_orders', JSON.stringify(ordersHistory));
 
       if (shouldPrint) {
-        printReceipt(order);
+        if (!checkPermission('bluetoothPrint')) {
+          if (confirm(`Tính năng In Bill qua Máy in nhiệt Bluetooth 58mm/80mm thuộc quyền lợi của Gói Tiêu Chuẩn (120k/tháng) hoặc Gói Thuế (180k/tháng).\n\nQuán của bạn hiện đang dùng ${currentTenant.planName}.\n\nBấm [OK] để xem thông tin nâng cấp gói thuê, hoặc [Hủy] để hoàn tất đơn mà không in.`)) {
+            openTenantModal();
+            return;
+          }
+          playTingTing();
+        } else {
+          printReceipt(order);
+        }
       } else {
         playTingTing();
       }
@@ -1234,6 +1427,220 @@
 
     function closeModal(id) {
       document.getElementById(id).classList.add('hidden');
+    }
+
+    // ========================================================================
+    // 16b. HỆ THỐNG QUẢN LÝ QUÁN THUÊ & PHÂN QUYỀN 3 GÓI (80k - 120k - 180k)
+    // ========================================================================
+    function applyTenantInfo() {
+      if (!currentTenant) return;
+      document.getElementById('shopNameDisplay').textContent = currentTenant.shopName || "Quán Đất Phú";
+      document.getElementById('prShopName').textContent = (currentTenant.shopName || "ĐẤT PHÚ MINI POS").toUpperCase();
+      
+      const badge = document.getElementById('tenantPlanBadge');
+      if (badge) {
+        if (currentTenant.plan === 'starter') {
+          badge.className = "px-1.5 py-0.2 rounded-md bg-sky-500/20 text-sky-400 border border-sky-500/30 font-bold shrink-0";
+          badge.textContent = "Gói 80k • Khởi Động";
+        } else if (currentTenant.plan === 'standard') {
+          badge.className = "px-1.5 py-0.2 rounded-md bg-orange-500/20 text-orange-400 border border-orange-500/30 font-bold shrink-0";
+          badge.textContent = "Gói 120k • In Bill ⭐";
+        } else if (currentTenant.plan === 'pro_tax') {
+          badge.className = "px-1.5 py-0.2 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold shrink-0";
+          badge.textContent = "Gói 180k • Chuẩn Thuế 🛡️";
+        }
+      }
+
+      // Cập nhật thông tin trong Modal
+      const modalShop = document.getElementById('tenantModalShopName');
+      if (modalShop) modalShop.textContent = currentTenant.shopName;
+      const modalOwner = document.getElementById('tenantModalOwnerPhone');
+      if (modalOwner) modalOwner.textContent = `${currentTenant.ownerName || 'Chủ quán'} • ${currentTenant.phone || ''}`;
+      const modalTag = document.getElementById('tenantModalPlanTag');
+      if (modalTag) {
+        modalTag.textContent = currentTenant.planName || "Gói Dịch Vụ";
+        modalTag.className = currentTenant.plan === 'pro_tax' ? "px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40" : (currentTenant.plan === 'standard' ? "px-2 py-0.5 rounded-full text-[10px] font-black bg-orange-500/20 text-orange-400 border border-orange-500/40" : "px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500/20 text-sky-400 border border-sky-500/40");
+      }
+
+      // Feature permissions in modal
+      const featPrint = document.getElementById('featPerm-print');
+      if (featPrint) {
+        if (currentTenant.features?.bluetoothPrint) {
+          featPrint.className = "text-emerald-400 font-bold";
+          featPrint.innerHTML = `<i class="fa-solid fa-check"></i> Đã mở`;
+        } else {
+          featPrint.className = "text-slate-500 font-bold";
+          featPrint.innerHTML = `<i class="fa-solid fa-lock"></i> Gói 120k`;
+        }
+      }
+
+      const featTax = document.getElementById('featPerm-tax');
+      if (featTax) {
+        if (currentTenant.features?.taxInvoiceNd254) {
+          featTax.className = "text-emerald-400 font-bold";
+          featTax.innerHTML = `<i class="fa-solid fa-check"></i> Đã mở (NĐ 254)`;
+        } else {
+          featTax.className = "text-slate-500 font-bold";
+          featTax.innerHTML = `<i class="fa-solid fa-lock"></i> Gói 180k`;
+        }
+      }
+
+      // Đồng bộ thông tin ngân hàng của quán
+      if (currentTenant.bankConfig) {
+        shopConfig = {
+          name: currentTenant.shopName,
+          bankId: currentTenant.bankConfig.bankId || "vietcombank",
+          bankAcc: currentTenant.bankConfig.bankAcc || "0751000025035",
+          bankName: currentTenant.bankConfig.bankName || "PHAM THANH HON"
+        };
+        localStorage.setItem('dp_shop_config', JSON.stringify(shopConfig));
+      }
+    }
+
+    function openTenantModal() {
+      applyTenantInfo();
+      switchTenantTab('info');
+      document.getElementById('tenantModal').classList.remove('hidden');
+    }
+
+    function switchTenantTab(tab) {
+      ['info', 'login', 'register'].forEach(t => {
+        const btn = document.getElementById(`tabTenant-${t}`);
+        const view = document.getElementById(`viewTenant-${t}`);
+        if (t === tab) {
+          btn.className = "flex-1 py-1.5 text-center rounded-lg bg-orange-600 text-white shadow transition";
+          view.classList.remove('hidden');
+        } else {
+          btn.className = "flex-1 py-1.5 text-center rounded-lg text-slate-400 hover:text-white transition";
+          view.classList.add('hidden');
+        }
+      });
+    }
+
+    async function quickLoginDemo(phone) {
+      document.getElementById('loginPhoneInput').value = phone;
+      document.getElementById('loginPinInput').value = "1234";
+      await submitTenantLogin();
+    }
+
+    async function submitTenantLogin() {
+      const phone = document.getElementById('loginPhoneInput').value.trim();
+      const pin = document.getElementById('loginPinInput').value.trim() || "1234";
+      if (!phone) return alert("Vui lòng nhập số điện thoại quán!");
+
+      try {
+        const resp = await fetch('/api/pos/tenant/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, pin })
+        });
+        const res = await resp.json();
+        if (!res.success) {
+          return alert(res.error || "Đăng nhập thất bại!");
+        }
+
+        currentTenant = res.shop;
+        localStorage.setItem('dp_current_tenant', JSON.stringify(currentTenant));
+        localStorage.setItem('dp_tenant_token', res.token);
+
+        if (Array.isArray(res.products) && res.products.length > 0) {
+          products = res.products;
+          localStorage.setItem('dp_pos_products', JSON.stringify(products));
+          renderProducts();
+        }
+
+        applyTenantInfo();
+        closeModal('tenantModal');
+        showToast(res.message || "Đăng nhập quán thành công!");
+      } catch (e) {
+        alert("Lỗi kết nối máy chủ. Vui lòng kiểm tra lại mạng!");
+      }
+    }
+
+    async function submitTenantRegister() {
+      const shopName = document.getElementById('regShopName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const plan = document.getElementById('regPlan').value;
+      const ownerName = document.getElementById('regOwnerName').value.trim();
+      const pin = document.getElementById('regPin').value.trim() || "1234";
+
+      if (!shopName || !phone) {
+        return alert("Vui lòng điền đầy đủ Tên quán và Số điện thoại!");
+      }
+
+      try {
+        const resp = await fetch('/api/pos/tenant/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ shopName, phone, plan, ownerName, pin })
+        });
+        const res = await resp.json();
+        if (!res.success) {
+          return alert(res.error || "Đăng ký quán thất bại!");
+        }
+
+        currentTenant = res.shop;
+        localStorage.setItem('dp_current_tenant', JSON.stringify(currentTenant));
+        localStorage.setItem('dp_tenant_token', res.token);
+
+        if (Array.isArray(res.products)) {
+          products = res.products;
+          localStorage.setItem('dp_pos_products', JSON.stringify(products));
+          renderProducts();
+        }
+
+        applyTenantInfo();
+        closeModal('tenantModal');
+        showToast(res.message || "Tạo quán mới thành công!");
+      } catch (e) {
+        alert("Lỗi kết nối máy chủ khi tạo quán mới!");
+      }
+    }
+
+    async function syncTenantDataToCloud() {
+      const token = localStorage.getItem('dp_tenant_token');
+      const btn = document.getElementById('btnSyncCloud');
+      const oldHtml = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang sao lưu lên Cloud...`;
+      btn.disabled = true;
+
+      try {
+        const resp = await fetch('/api/pos/tenant/sync', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            products,
+            bankConfig: shopConfig,
+            shopName: currentTenant.shopName
+          })
+        });
+        const res = await resp.json();
+        if (res.success) {
+          showToast("Đã sao lưu thực đơn và cấu hình lên Cloud an toàn!");
+        } else {
+          alert(res.error || "Sao lưu thất bại");
+        }
+      } catch (e) {
+        showToast("Đã lưu dữ liệu cục bộ trên máy!");
+      } finally {
+        btn.innerHTML = oldHtml;
+        btn.disabled = false;
+      }
+    }
+
+    function logoutTenant() {
+      if (confirm("Bạn có chắc chắn muốn đổi tài khoản quán khác không?")) {
+        localStorage.removeItem('dp_tenant_token');
+        switchTenantTab('login');
+      }
+    }
+
+    function checkPermission(feature) {
+      if (!currentTenant || !currentTenant.features) return true;
+      return !!currentTenant.features[feature];
     }
 
     // 17. SERVICE WORKER & PWA INSTALL PROMPT (1-CHẠM CÀI VÀO MÀN HÌNH CHÍNH)
