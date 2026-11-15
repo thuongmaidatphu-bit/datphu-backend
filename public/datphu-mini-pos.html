@@ -1580,6 +1580,7 @@
     }
     // Tự động bổ sung trường turnsToday và guestCount cho dữ liệu bàn cũ
     tables.forEach(t => {
+      if (!t.statusLabel) t.statusLabel = (t.status === 'occupied' && t.cart && t.cart.length > 0) ? 'served' : 'empty';
       if (typeof t.turnsToday === 'undefined') t.turnsToday = 0;
       if (typeof t.guestCount === 'undefined') t.guestCount = 2;
       if (typeof t.tag === 'undefined') t.tag = '';
@@ -1848,6 +1849,40 @@
       renderFullFloorMap();
     }
 
+    
+    // Hàm tạo "Nhãn Dán Trạng Thái" (Status Stickers) sắc nét
+    function getTableStatusSticker(t, isActive, isOcc) {
+      const s = t.statusLabel || (isOcc ? 'served' : 'empty');
+
+      if (!isOcc || s === 'empty') {
+        if (isActive) {
+          return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-blue-600 text-white shadow-2xs flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span> 👉 Đang chọn
+          </span>`;
+        }
+        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-500 border border-slate-200 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span> ⚪ Trống
+        </span>`;
+      }
+
+      if (s === 'cooking' || t.kitchenStatus === 'cooking') {
+        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-500 text-white shadow-2xs flex items-center gap-1 animate-pulse">
+          <i class="fa-solid fa-fire-burner text-[9px]"></i> 🟡 Bếp Đang Nấu
+        </span>`;
+      }
+
+      if (s === 'checkout') {
+        return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white shadow-2xs flex items-center gap-1 animate-bounce">
+          <i class="fa-solid fa-receipt text-[9px]"></i> 🔴 Chờ Tính Tiền
+        </span>`;
+      }
+
+      // Mặc định: Đã lên đủ món
+      return `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-600 text-white shadow-2xs flex items-center gap-1">
+        <i class="fa-solid fa-circle-check text-[9px]"></i> 🟢 Đã Đủ Món
+      </span>`;
+    }
+
     function renderFullFloorMap() {
       const container = document.getElementById('fullFloorMapGrid');
       if (!container) return;
@@ -1922,16 +1957,11 @@
                   </div>
                 </div>
 
-                <!-- Badge trạng thái & Số món -->
-                ${isOcc ? `
-                  <span class="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white animate-pulse shadow-2xs shrink-0">
-                    ${totalItemsCount} món
-                  </span>
-                ` : `
-                  <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-500 border border-slate-200 shrink-0">
-                    Trống
-                  </span>
-                `}
+                <!-- Nhãn Dán Trạng Thái Bàn Tiện Lợi (Status Sticker) -->
+                <div class="shrink-0 flex items-center gap-1">
+                  ${getTableStatusSticker(t, isActive, isOcc)}
+                  ${isOcc ? `<span class="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-slate-100 text-slate-700 border border-slate-300 font-mono">${totalItemsCount} món</span>` : ''}
+                </div>
               </div>
 
               <!-- Thanh Nhãn Bàn: Theo Dõi Lượt Khách & Số Khách Hiện Tại -->
@@ -1973,6 +2003,25 @@
     }
 
     
+    
+    function setTableStatusSticker(statusLabel) {
+      const curTbl = getCurrentTable();
+      curTbl.statusLabel = statusLabel;
+      if (statusLabel === 'empty') {
+        curTbl.status = 'empty';
+        curTbl.cart = [];
+        curTbl.openTime = null;
+        cart = [];
+      } else {
+        curTbl.status = 'occupied';
+      }
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+      renderFullFloorMap();
+      openTableDetailModal(curTbl.id);
+      playBeep(700, 0.03);
+      showToast(`Đã dán nhãn trạng thái cho ${curTbl.name}!`);
+    }
+
     function updateTableGuestCount(val) {
       const curTbl = getCurrentTable();
       curTbl.guestCount = parseInt(val) || 1;
@@ -2160,7 +2209,10 @@
         return alert("Bàn chưa có món nào để in tạm tính!");
       }
       playBeep(900, 0.08);
-      showToast(`Đã in phiếu TẠM TÍNH cho ${curTbl.name}!`);
+      curTbl.statusLabel = 'checkout';
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+      renderFullFloorMap();
+      showToast(`Đã in phiếu TẠM TÍNH và dán nhãn [Chờ Tính Tiền] cho ${curTbl.name}!`);
       closeModal('tableDetailModal');
     }
 
@@ -3632,6 +3684,7 @@
 
       // 2. Cập nhật trạng thái bàn sang 'cooking' (Đang nấu / Bếp đã nhận)
       curTbl.kitchenStatus = 'cooking';
+      curTbl.statusLabel = 'cooking';
       curTbl.lastKitchenNotify = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
       localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
 
@@ -4723,6 +4776,17 @@
                   <option value="5">5 khách</option>
                   <option value="6">6+ khách</option>
                 </select>
+              </div>
+
+              <!-- Nhãn Dán Trạng Thái Bàn (Chọn 1 chạm) -->
+              <div class="w-full flex items-center gap-1 pt-1 border-t border-slate-200/80">
+                <span class="text-[10px] font-bold text-slate-600 whitespace-nowrap">Dán nhãn trạng thái:</span>
+                <div class="flex items-center gap-1 overflow-x-auto no-scrollbar flex-1">
+                  <button type="button" onclick="setTableStatusSticker('empty')" id="stkBtn-empty" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200 cursor-pointer transition">⚪ Trống</button>
+                  <button type="button" onclick="setTableStatusSticker('cooking')" id="stkBtn-cooking" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-800 hover:bg-amber-200 border border-amber-300 cursor-pointer transition">🟡 Bếp Nấu</button>
+                  <button type="button" onclick="setTableStatusSticker('served')" id="stkBtn-served" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border border-emerald-300 cursor-pointer transition">🟢 Đã Đủ Món</button>
+                  <button type="button" onclick="setTableStatusSticker('checkout')" id="stkBtn-checkout" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-red-100 text-red-700 hover:bg-red-200 border border-red-300 cursor-pointer transition">🔴 Chờ Tính Tiền</button>
+                </div>
               </div>
 
               <!-- Nhãn bàn (VIP, Đặt trước, Khách quen) -->
