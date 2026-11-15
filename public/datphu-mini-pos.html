@@ -2005,20 +2005,32 @@
               </div>
             </div>
 
-            <!-- Chân ô bàn: Tổng tiền & Nút tác vụ nhanh -->
-            <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between">
+            <!-- Chân ô bàn: Tổng tiền & NÚT ĐỎ THANH TOÁN TO RÕ -->
+            <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between gap-1">
               <div>
                 <span class="text-[9px] text-slate-400 block font-medium leading-none mb-0.5">${isOcc ? 'Tạm tính' : 'Sẵn sàng'}</span>
-                <span class="font-black font-mono text-xs ${isOcc ? 'text-red-600 font-bold' : (isActive ? 'text-blue-700' : 'text-slate-400')}">
+                <span class="font-black font-mono text-xs sm:text-sm ${isOcc ? 'text-red-600 font-bold' : (isActive ? 'text-blue-700' : 'text-slate-400')}">
                   ${tTotal > 0 ? tTotal.toLocaleString('vi-VN') + ' đ' : '0 đ'}
                 </span>
               </div>
 
-              <!-- Nút Chi Tiết Bàn & Nhãn -->
+              <!-- Cụm Nút Tác Vụ: NÚT ĐỎ THANH TOÁN + NÚT CHI TIẾT -->
               <div class="flex items-center space-x-1" onclick="event.stopPropagation()">
-                <button onclick="openTableDetailModal('${t.id}')" class="px-2 py-0.5 rounded-md ${isOcc ? 'bg-blue-100 hover:bg-blue-600 hover:text-white text-blue-700 border-blue-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-600 border-slate-200'} text-[10px] font-bold border transition cursor-pointer flex items-center gap-1" title="Xem chi tiết bàn, gắn nhãn & đổi số khách">
-                  <i class="fa-solid fa-tag text-[8px]"></i> Chi Tiết
-                </button>
+                ${isOcc ? `
+                  <!-- NÚT ĐỎ THANH TOÁN 1 CHẠM -->
+                  <button onclick="openQuickTableCheckout('${t.id}')" class="px-2.5 py-1 rounded-lg bg-red-600 hover:bg-red-700 text-white font-black text-[10px] sm:text-[11px] shadow-xs flex items-center gap-1 active:scale-95 transition cursor-pointer" title="Bấm thanh toán ngay cho bàn này">
+                    <i class="fa-solid fa-credit-card text-[9px]"></i>
+                    <span>Thanh Toán</span>
+                  </button>
+                  <!-- Nút Chi Tiết Nhỏ Gọn Bên Cạnh -->
+                  <button onclick="openTableDetailModal('${t.id}')" class="w-6 h-6 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition cursor-pointer text-[10px]" title="Xem chi tiết đơn & in tạm tính">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                ` : `
+                  <button onclick="switchTable('${t.id}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-600 text-[10px] font-bold border border-slate-200 transition cursor-pointer flex items-center gap-1">
+                    <span>${isActive ? 'Đang chọn' : '+ Vào Bàn'}</span>
+                  </button>
+                `}
               </div>
             </div>
 
@@ -2954,6 +2966,29 @@
     }
 
     // 10. MODAL THANH TOÁN VIETQR
+    
+    // Thanh Toán Nhanh Cho Từng Bàn Qua Nút Đỏ
+    function openQuickTableCheckout(tableId) {
+      const t = tables.find(x => x.id === tableId) || getCurrentTable();
+      switchTable(t.id);
+
+      const total = getCartTotal();
+      if (total <= 0) {
+        alert("Bàn " + t.name + " hiện chưa có món nào để thanh toán!");
+        return;
+      }
+
+      // Đánh dấu bàn sang trạng thái Chờ Tính Tiền
+      t.statusLabel = 'checkout';
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+      renderFullFloorMap();
+
+      // Mở ngay Modal VietQR (kèm nút đổi sang Tiền Mặt ngay trong modal)
+      openQrModal();
+      playBeep(850, 0.05);
+      showToast(`Đang mở thanh toán cho ${t.name} • ${total.toLocaleString('vi-VN')} đ`);
+    }
+
     function openQrModal() {
       const total = getCartTotal();
       if (total <= 0) return alert("Đơn hàng chưa có món nào!");
