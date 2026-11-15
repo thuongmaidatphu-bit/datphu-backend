@@ -3,13 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đất Phú Speed POS - 5 Chức Năng Cốt Lõi</title>
+  <title>Đất Phú Speed POS - 5 Nút Tiến Độ Đèn Sáng</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body { user-select: none; -webkit-user-select: none; }
     
-    /* Cấu hình trang in nhiệt chuẩn 80mm / 58mm */
+    /* Hiệu ứng đèn LED phát sáng rực rỡ */
+    @keyframes ledGlowAmber {
+      0%, 100% { box-shadow: 0 0 8px 1px rgba(245, 158, 11, 0.8), inset 0 0 4px rgba(255, 255, 255, 0.6); }
+      50% { box-shadow: 0 0 14px 3px rgba(245, 158, 11, 1), inset 0 0 8px rgba(255, 255, 255, 0.9); }
+    }
+    @keyframes ledGlowRed {
+      0%, 100% { box-shadow: 0 0 8px 1px rgba(220, 38, 38, 0.8), inset 0 0 4px rgba(255, 255, 255, 0.6); }
+      50% { box-shadow: 0 0 14px 3px rgba(220, 38, 38, 1), inset 0 0 8px rgba(255, 255, 255, 0.9); }
+    }
+    @keyframes ledGlowGreen {
+      0%, 100% { box-shadow: 0 0 8px 1px rgba(16, 185, 129, 0.8), inset 0 0 4px rgba(255, 255, 255, 0.6); }
+      50% { box-shadow: 0 0 14px 3px rgba(16, 185, 129, 1), inset 0 0 8px rgba(255, 255, 255, 0.9); }
+    }
+    @keyframes ledGlowBlue {
+      0%, 100% { box-shadow: 0 0 8px 1px rgba(37, 99, 235, 0.8), inset 0 0 4px rgba(255, 255, 255, 0.6); }
+      50% { box-shadow: 0 0 14px 3px rgba(37, 99, 235, 1), inset 0 0 8px rgba(255, 255, 255, 0.9); }
+    }
+
+    .led-amber-lit {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+      color: white !important;
+      animation: ledGlowAmber 1.8s infinite ease-in-out !important;
+      font-weight: 900 !important;
+    }
+    .led-red-lit {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+      color: white !important;
+      animation: ledGlowRed 1.6s infinite ease-in-out !important;
+      font-weight: 900 !important;
+    }
+    .led-green-lit {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+      color: white !important;
+      animation: ledGlowGreen 2s infinite ease-in-out !important;
+      font-weight: 900 !important;
+    }
+    .led-blue-lit {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+      color: white !important;
+      animation: ledGlowBlue 2s infinite ease-in-out !important;
+      font-weight: 900 !important;
+    }
+
+    /* Định dạng máy in nhiệt chuẩn 80mm / 58mm */
     @media print {
       body * { visibility: hidden !important; }
       #printableReceipt, #printableReceipt * { visibility: visible !important; }
@@ -19,7 +62,7 @@
         top: 0;
         width: 80mm;
         margin: 0;
-        padding: 8px;
+        padding: 6px;
         background: white;
         color: black;
         font-family: 'Courier New', monospace;
@@ -37,11 +80,14 @@
       </div>
       <div>
         <h1 class="font-black text-xs sm:text-sm uppercase tracking-wider leading-tight">QUÁN ĂN & BÚN CÁ DẰM TUY HÒA</h1>
-        <span class="text-[10px] text-blue-200 font-medium">Hệ Thống Bán Hàng 5 Bước Chuẩn: Bàn • Menu • Bếp • VietQR • In Bill</span>
+        <div class="flex items-center gap-1 text-[10px] text-blue-200 font-semibold">
+          <span>Quy trình 5 đèn:</span>
+          <span class="text-white font-bold">1.Bàn → 2.Menu → 3.Báo bếp → 4.VietQR → 5.In bill</span>
+        </div>
       </div>
     </div>
 
-    <!-- Doanh thu hôm nay & Đồng hồ -->
+    <!-- Doanh thu & Đồng hồ -->
     <div class="flex items-center space-x-3 text-xs font-bold">
       <div class="hidden sm:flex items-center gap-1.5 bg-blue-900/80 border border-blue-600/60 px-3 py-1 rounded-xl">
         <i class="fa-solid fa-clock text-amber-400"></i>
@@ -55,26 +101,33 @@
     </div>
   </header>
 
-  <!-- ================= VÙNG LÀM VIỆC CHÍNH (3 CỘT CÔNG THÁI HỌC) ================= -->
+  <!-- ================= VÙNG LÀM VIỆC CHÍNH ================= -->
   <main class="flex-1 flex overflow-hidden">
     
-    <!-- ================= CỘT 1: SƠ ĐỒ BÀN (16 BÀN + MANG VỀ) ================= -->
-    <section class="w-[28%] xl:w-[26%] border-r border-slate-200 bg-slate-50 flex flex-col shrink-0">
+    <!-- ================= CỘT 1: SƠ ĐỒ BÀN (CÓ DÃY 5 NÚT ĐÈN SÁNG TRÊN TỪNG BÀN) ================= -->
+    <section class="w-[38%] sm:w-[35%] xl:w-[32%] border-r border-slate-200 bg-slate-50 flex flex-col shrink-0">
       
-      <!-- Tiêu đề & Bộ đếm bàn -->
-      <div class="p-2.5 bg-white border-b border-slate-200 flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-1.5">
-          <i class="fa-solid fa-table-cells-large text-blue-600"></i>
-          <span class="font-black text-xs text-slate-800">1. SƠ ĐỒ BÀN</span>
+      <!-- Tiêu đề Sơ đồ bàn & Chú thích 5 đèn -->
+      <div class="p-2.5 bg-white border-b border-slate-200 shrink-0">
+        <div class="flex items-center justify-between mb-1">
+          <div class="flex items-center gap-1.5">
+            <i class="fa-solid fa-table-cells-large text-blue-600"></i>
+            <span class="font-black text-xs text-slate-800">1. SƠ ĐỒ BÀN (16 BÀN + MANG VỀ)</span>
+          </div>
+          <span class="text-[10px] font-bold text-blue-700" id="tableStatsText">16 bàn • 0 có khách</span>
         </div>
-        <div class="text-[10px] font-bold text-slate-500 flex items-center gap-2">
-          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-300"></span> Trống</span>
-          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Có khách</span>
+        <!-- Thanh chỉ dẫn 5 đèn -->
+        <div class="flex items-center justify-between text-[9px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200/80">
+          <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> 1.Bàn</span>
+          <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-cyan-500"></span> 2.Menu</span>
+          <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> 3.Bếp 🔔</span>
+          <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> 4.QR 💳</span>
+          <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 5.Bill 🖨️</span>
         </div>
       </div>
 
-      <!-- Lưới 16 Bàn + Mang Về -->
-      <div class="flex-1 p-2 overflow-y-auto grid grid-cols-2 gap-2" id="tablesContainer">
+      <!-- Lưới Thẻ Bàn (Mỗi Bàn Có Dãy 5 Nút Đèn) -->
+      <div class="flex-1 p-2 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-2" id="tablesContainer">
         <!-- Render bàn bằng JS -->
       </div>
     </section>
@@ -82,7 +135,7 @@
     <!-- ================= CỘT 2: MENU THỰC ĐƠN GỌI MÓN ================= -->
     <section class="flex-1 flex flex-col bg-slate-100 border-r border-slate-200 overflow-hidden">
       
-      <!-- Thanh công cụ tìm kiếm & lọc danh mục -->
+      <!-- Bộ lọc danh mục & Tìm kiếm -->
       <div class="p-2 bg-white border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar" id="categoryChips">
           <button onclick="setCategory('all')" id="catBtn-all" class="px-3 py-1.5 rounded-lg text-xs font-black bg-blue-600 text-white shadow-xs cursor-pointer">Tất Cả</button>
@@ -91,23 +144,22 @@
           <button onclick="setCategory('drink')" id="catBtn-drink" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">Trà & Nước</button>
         </div>
 
-        <!-- Ô tìm kiếm món nhanh -->
-        <div class="relative w-44 sm:w-56">
+        <div class="relative w-40 sm:w-52">
           <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
           <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Tìm món nhanh..." class="w-full pl-8 pr-3 py-1 bg-slate-100 border border-slate-200 rounded-lg text-xs font-bold focus:bg-white focus:outline-blue-500">
         </div>
       </div>
 
-      <!-- Lưới Món Ăn (Phím Bấm To, Bấm Cực Nhạy) -->
+      <!-- Lưới Món Ăn (Phím To Rõ, Chạm Là Vào Giỏ) -->
       <div class="flex-1 p-2.5 sm:p-3 overflow-y-auto grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5" id="productsContainer">
-        <!-- Render danh sách món bằng JS -->
+        <!-- Render danh sách món -->
       </div>
     </section>
 
-    <!-- ================= CỘT 3: HÓA ĐƠN & 3 NÚT HÀNH ĐỘNG (BÁO BẾP - VIETQR - IN BILL) ================= -->
+    <!-- ================= CỘT 3: HÓA ĐƠN & BỘ ĐIỀU KHIỂN 5 NÚT ================= -->
     <section class="w-[34%] xl:w-[32%] bg-white flex flex-col shadow-xl shrink-0">
       
-      <!-- Tiêu đề Bàn Đang Chọn -->
+      <!-- Header Bàn Đang Chọn -->
       <div class="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-2">
           <div class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-xs">
@@ -115,49 +167,52 @@
           </div>
           <div>
             <h2 id="orderTableName" class="font-black text-sm text-blue-900 uppercase leading-none">BÀN 1</h2>
-            <span id="orderTableTime" class="text-[10px] text-slate-500 font-medium">Chưa có món</span>
+            <span id="orderTableTime" class="text-[10px] text-slate-500 font-medium">Bàn đang trống</span>
           </div>
         </div>
 
-        <!-- Nút xóa giỏ hàng -->
         <button onclick="clearCurrentCart()" class="text-[11px] font-bold text-red-600 hover:underline cursor-pointer" title="Hủy tất cả món">
           <i class="fa-solid fa-trash-can"></i> Xóa hết
         </button>
       </div>
 
-      <!-- Danh sách món đã gọi của bàn -->
+      <!-- Dãy 5 Nút Tiến Độ Đèn Sáng Trên Đầu Hóa Đơn -->
+      <div class="px-3 py-2 bg-slate-50 border-b border-slate-200 shrink-0">
+        <span class="text-[9px] font-bold text-slate-400 block mb-1">TIẾN ĐỘ ĐƠN HÀNG:</span>
+        <div class="grid grid-cols-5 gap-1 text-center" id="billProgressLedBar">
+          <!-- Render 5 đèn tiến độ của bàn hiện tại -->
+        </div>
+      </div>
+
+      <!-- Danh sách món đã gọi -->
       <div class="flex-1 p-2.5 overflow-y-auto divide-y divide-slate-100" id="orderItemsList">
         <!-- Render giỏ hàng bàn -->
       </div>
 
-      <!-- Chân Hóa Đơn: Tổng Tiền & Cụm 3 Nút Hành Động (Báo Bếp - In Bill - VietQR) -->
+      <!-- Chân Hóa Đơn: Tổng Tiền & Cụm Nút Hành Động -->
       <div class="p-3 bg-slate-50 border-t border-slate-200 shrink-0 space-y-2.5 shadow-2xs">
         
-        <!-- Tổng tiền to rõ -->
         <div class="flex items-baseline justify-between">
           <span class="text-xs font-bold text-slate-500">TỔNG CỘNG:</span>
           <span id="orderTotalText" class="text-xl sm:text-2xl font-black font-mono text-red-600">0 đ</span>
         </div>
 
-        <!-- Cụm 3 NÚT CỐT LÕI (BÁO BẾP - IN BILL - VIETQR) -->
+        <!-- 3 Nút Hành Động Chính (Báo Bếp - In Bill - VietQR) -->
         <div class="grid grid-cols-3 gap-1.5">
           
-          <!-- 1. NÚT BÁO BẾP -->
           <button onclick="actionSendKitchen()" class="py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-black text-xs shadow flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="Gửi đơn xuống bếp và phát chuông">
             <i class="fa-solid fa-bell text-sm"></i>
-            <span>BÁO BẾP</span>
+            <span>3. BÁO BẾP</span>
           </button>
 
-          <!-- 2. NÚT IN BILL (IN TẠM TÍNH) -->
           <button onclick="actionPrintBill(false)" class="py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl font-black text-xs shadow flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="In phiếu tạm tính cho khách xem trước">
             <i class="fa-solid fa-print text-sm"></i>
-            <span>IN BILL</span>
+            <span>5. IN BILL</span>
           </button>
 
-          <!-- 3. NÚT VIETQR THANH TOÁN -->
           <button onclick="actionOpenCheckout()" class="py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-black text-xs shadow flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="Thanh toán VietQR động 1 chạm">
             <i class="fa-solid fa-qrcode text-sm"></i>
-            <span>VIETQR</span>
+            <span>4. VIETQR</span>
           </button>
 
         </div>
@@ -179,13 +234,11 @@
         <button onclick="closeCheckoutModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs cursor-pointer">✕</button>
       </div>
 
-      <!-- Số tiền to khổng lồ -->
       <div class="my-3 text-center">
         <span class="text-xs text-slate-400 block font-medium">Số tiền cần thanh toán:</span>
         <span id="qrModalAmount" class="text-3xl font-black font-mono text-red-600">0 đ</span>
       </div>
 
-      <!-- Khung Mã VietQR Động có sẵn số tiền -->
       <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 text-center w-full mb-3 shadow-inner">
         <img id="qrModalImage" src="" alt="Mã VietQR" class="w-48 h-48 object-contain mx-auto rounded-xl shadow-xs">
         <div class="mt-1.5 text-[10px] text-slate-600 font-bold">
@@ -194,7 +247,6 @@
         </div>
       </div>
 
-      <!-- 2 Nút Xử Lý Cuối: Đã Nhận Tiền & In Hóa Đơn -->
       <div class="w-full grid grid-cols-2 gap-2">
         <button onclick="closeCheckoutModal()" class="py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer">Để Sau</button>
         <button onclick="confirmPaymentAndPrint()" class="py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-md flex items-center justify-center gap-1 active:scale-95 transition cursor-pointer">
@@ -205,26 +257,26 @@
     </div>
   </div>
 
-  <!-- ================= VÙNG IN HÓA ĐƠN NHIỆT (CHUẨN 80MM/58MM) ================= -->
-  <div id="printableReceipt" class="hidden">
-    <!-- Nội dung hóa đơn in nhiệt sẽ được JS đưa vào đây khi gọi window.print() -->
-  </div>
+  <!-- ================= VÙNG IN HÓA ĐƠN NHIỆT (CHUẨN 80MM) ================= -->
+  <div id="printableReceipt" class="hidden"></div>
 
-  <!-- ================= JAVASCRIPT: LOGIC CỐT LÕI TINH GỌN ================= -->
+  <!-- ================= JAVASCRIPT: LOGIC 5 NÚT ĐÈN SÁNG ================= -->
   <script>
-    // 1. DỮ LIỆU BÀN (16 BÀN + 1 MANG VỀ)
+    // 1. DỮ LIỆU BÀN (16 BÀN + 1 MANG VỀ) KÈM BIẾN TIẾN ĐỘ 5 BƯỚC
     const DEFAULT_TABLES = [
-      { id: "takeaway", name: "Mang Về", status: "empty", cart: [], openTime: null },
+      { id: "takeaway", name: "Mang Về", status: "empty", cart: [], openTime: null, kitchenSent: false, isCheckingOut: false },
       ...Array.from({ length: 16 }, (_, i) => ({
         id: "tbl_" + (i + 1),
         name: "Bàn " + (i + 1),
         status: "empty",
         cart: [],
-        openTime: null
+        openTime: null,
+        kitchenSent: false,
+        isCheckingOut: false
       }))
     ];
 
-    let tables = JSON.parse(localStorage.getItem('dp_clean_tables')) || DEFAULT_TABLES;
+    let tables = JSON.parse(localStorage.getItem('dp_speed_tables_v2')) || DEFAULT_TABLES;
 
     // 2. THỰC ĐƠN MÓN ĂN & ĐỒ UỐNG
     const products = [
@@ -244,11 +296,20 @@
     let currentTableId = "tbl_1";
     let currentCategory = "all";
     let searchQuery = "";
-    let todayRevenue = parseInt(localStorage.getItem('dp_clean_rev') || '0');
+    let todayRevenue = parseInt(localStorage.getItem('dp_speed_rev_v2') || '0');
 
     function saveState() {
-      localStorage.setItem('dp_clean_tables', JSON.stringify(tables));
-      localStorage.setItem('dp_clean_rev', todayRevenue.toString());
+      localStorage.setItem('dp_speed_tables_v2', JSON.stringify(tables));
+      localStorage.setItem('dp_speed_rev_v2', todayRevenue.toString());
+    }
+
+    // Tính toán xem bàn đang ở BƯỚC NÀO (1..5) ĐỂ SÁNG ĐÈN
+    function getTableCurrentStep(t) {
+      const hasItems = t.cart && t.cart.length > 0;
+      if (!hasItems) return 1; // 1. Bàn trống sẵn sàng
+      if (t.isCheckingOut) return 4; // 4. Đang mở VietQR thanh toán
+      if (t.kitchenSent) return 3; // 3. Đã báo bếp, bếp đang nấu
+      return 2; // 2. Đang chọn món trong Menu
     }
 
     // Âm thanh chuông báo
@@ -270,33 +331,74 @@
       setTimeout(() => playBeep(980, 0.25), 150);
     }
 
-    // 1. RENDER SƠ ĐỒ BÀN (Trắng = Trống, Xanh = Có khách)
+    // 1. RENDER SƠ ĐỒ BÀN: MỖI BÀN ĐỀU CÓ 5 NÚT TIẾN ĐỘ VÀ SÁNG ĐÈN
     function renderTables() {
       const container = document.getElementById('tablesContainer');
+      const occupiedCount = tables.filter(t => t.id !== 'takeaway' && t.cart && t.cart.length > 0).length;
+      document.getElementById('tableStatsText').textContent = `16 bàn • ${occupiedCount} có khách`;
+
       container.innerHTML = tables.map(t => {
         const isActive = t.id === currentTableId;
         const isOcc = t.status === 'occupied' && t.cart && t.cart.length > 0;
         const total = (t.cart || []).reduce((s, x) => s + x.price * x.qty, 0);
         const count = (t.cart || []).reduce((s, x) => s + x.qty, 0);
+        const step = getTableCurrentStep(t);
 
         return `
-          <div onclick="selectTable('${t.id}')" class="p-2 sm:p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between ${isActive ? 'ring-3 ring-blue-600 border-blue-600 scale-[1.02] shadow-md z-10' : ''} ${isOcc ? 'bg-emerald-50 border-emerald-500 shadow-2xs' : 'bg-white border-slate-200 hover:border-slate-300'}">
+          <div onclick="selectTable('${t.id}')" class="p-2 sm:p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between ${isActive ? 'ring-3 ring-blue-600 border-blue-600 scale-[1.01] shadow-md z-10 bg-blue-50/40' : (isOcc ? 'bg-white border-slate-300 shadow-2xs' : 'bg-white border-slate-200 hover:border-slate-300')}">
             
-            <div class="flex items-center justify-between">
+            <!-- Đỉnh ô bàn: Tên Bàn + Giờ vào / Trạng thái -->
+            <div class="flex items-center justify-between pb-1 border-b border-slate-100">
               <div class="flex items-center gap-1.5 min-w-0">
-                <span class="w-6 h-6 rounded-lg ${isOcc ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'} flex items-center justify-center text-[10px] font-black shrink-0">
+                <span class="w-6 h-6 rounded-lg ${isOcc ? 'bg-blue-700 text-white' : 'bg-slate-100 text-slate-600'} flex items-center justify-center text-[10px] font-black shrink-0">
                   <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'}"></i>
                 </span>
-                <span class="font-black text-xs ${isOcc ? 'text-emerald-950 font-extrabold' : 'text-slate-800'} truncate">${t.name}</span>
+                <span class="font-black text-xs ${isActive ? 'text-blue-900 font-extrabold' : 'text-slate-800'} truncate">${t.name}</span>
               </div>
-              <span class="text-[9px] px-1.5 py-0.2 rounded-full font-bold ${isOcc ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-500'} shrink-0">
+              <span class="text-[9px] px-1.5 py-0.2 rounded-full font-bold ${isOcc ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-500'} shrink-0 font-mono">
                 ${isOcc ? count + ' món' : 'Trống'}
               </span>
             </div>
 
-            <div class="mt-2.5 pt-1 border-t border-slate-100/80 flex items-center justify-between text-right">
+            <!-- DÃY 5 NÚT TIẾN ĐỘ ĐÈN SÁNG TRÊN TỪNG BÀN (THEO ĐÚNG HÌNH BẠN GỬI) -->
+            <div class="grid grid-cols-5 gap-1 my-1.5 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
+              
+              <!-- NÚT 1: SƠ ĐỒ BÀN -->
+              <button onclick="event.stopPropagation(); selectTable('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${step === 1 ? 'led-blue-lit' : (step > 1 ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-white text-slate-600 border border-slate-200')}" title="Bước 1: Sơ đồ bàn (Bàn sẵn sàng)">
+                <i class="fa-solid fa-chair text-[10px]"></i>
+                <span class="scale-90 font-black">1.Bàn</span>
+              </button>
+
+              <!-- NÚT 2: MENU GỌI MÓN -->
+              <button onclick="event.stopPropagation(); selectTable('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${step === 2 ? 'led-blue-lit' : (step > 2 ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 2: Menu gọi món (Đang chọn món)">
+                <i class="fa-solid fa-utensils text-[10px]"></i>
+                <span class="scale-90 font-black">2.Menu</span>
+              </button>
+
+              <!-- NÚT 3: BÁO BẾP 🔔 (SÁNG ĐÈN VÀNG RỰC RỠ) -->
+              <button onclick="event.stopPropagation(); quickTableKitchen('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${step === 3 ? 'led-amber-lit' : (step > 3 ? 'bg-amber-100 text-amber-800 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 3: Báo bếp (Bấm để gửi bếp)">
+                <i class="fa-solid fa-bell text-[10px]"></i>
+                <span class="scale-90 font-black">3.Bếp🔔</span>
+              </button>
+
+              <!-- NÚT 4: VIETQR 💳 (SÁNG ĐÈN ĐỎ RỰC RỠ) -->
+              <button onclick="event.stopPropagation(); quickTableCheckout('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${step === 4 ? 'led-red-lit' : (step > 4 ? 'bg-red-100 text-red-800 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 4: VietQR (Bấm để mở mã QR thanh toán)">
+                <i class="fa-solid fa-qrcode text-[10px]"></i>
+                <span class="scale-90 font-black">4.QR💳</span>
+              </button>
+
+              <!-- NÚT 5: IN BILL 🖨️ (SÁNG ĐÈN XANH LÁ) -->
+              <button onclick="event.stopPropagation(); quickTablePrint('${t.id}')" class="py-1 px-0.5 rounded-lg text-[9px] flex flex-col items-center justify-center transition cursor-pointer ${step === 5 ? 'led-green-lit' : (isOcc ? 'bg-emerald-100 text-emerald-800 font-bold' : 'bg-white text-slate-400 opacity-60')}" title="Bước 5: In bill (Bấm để in phiếu)">
+                <i class="fa-solid fa-print text-[10px]"></i>
+                <span class="scale-90 font-black">5.Bill🖨️</span>
+              </button>
+
+            </div>
+
+            <!-- Chân ô bàn: Giờ & Tạm tính -->
+            <div class="pt-1 border-t border-slate-100 flex items-center justify-between text-right">
               <span class="text-[9px] text-slate-400 font-medium">${isOcc ? (t.openTime || '') : 'Sẵn sàng'}</span>
-              <span class="font-mono text-xs font-black ${isOcc ? 'text-emerald-700 font-bold' : 'text-slate-400'}">
+              <span class="font-mono text-xs font-black ${isOcc ? 'text-red-600 font-bold' : 'text-slate-400'}">
                 ${total > 0 ? total.toLocaleString('vi-VN') + ' đ' : '0 đ'}
               </span>
             </div>
@@ -306,7 +408,7 @@
       }).join('');
     }
 
-    // 2. RENDER THỰC ĐƠN MÓN ĂN
+    // 2. RENDER MENU MÓN ĂN
     function renderProducts() {
       const container = document.getElementById('productsContainer');
       let filtered = currentCategory === 'all' ? products : products.filter(p => p.cat === currentCategory);
@@ -331,9 +433,11 @@
       `).join('');
     }
 
-    // 3. THAO TÁC ORDER
+    // 3. THAO TÁC BÀN & GIỎ HÀNG
     function selectTable(id) {
       currentTableId = id;
+      const t = tables.find(x => x.id === currentTableId);
+      if (t) t.isCheckingOut = false;
       renderTables();
       renderCart();
       playBeep(650, 0.03);
@@ -354,6 +458,7 @@
         t.openTime = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
       }
       t.status = 'occupied';
+      t.isCheckingOut = false;
 
       playBeep(850, 0.04);
       saveState();
@@ -373,6 +478,8 @@
       if (t.cart.length === 0) {
         t.status = 'empty';
         t.openTime = null;
+        t.kitchenSent = false;
+        t.isCheckingOut = false;
       }
 
       saveState();
@@ -387,6 +494,8 @@
         t.cart = [];
         t.status = 'empty';
         t.openTime = null;
+        t.kitchenSent = false;
+        t.isCheckingOut = false;
         saveState();
         renderTables();
         renderCart();
@@ -398,10 +507,21 @@
       document.getElementById('orderTableName').textContent = t.name.toUpperCase();
       document.getElementById('orderTableTime').textContent = t.openTime ? "Giờ vào: " + t.openTime : "Bàn đang trống";
 
+      // Render 5 đèn tiến độ trên thanh đầu hóa đơn
+      const step = getTableCurrentStep(t);
+      const ledBar = document.getElementById('billProgressLedBar');
+      ledBar.innerHTML = `
+        <div class="py-1 rounded-lg text-[9px] font-black ${step === 1 ? 'led-blue-lit' : 'bg-slate-200 text-slate-600'}">1.Bàn</div>
+        <div class="py-1 rounded-lg text-[9px] font-black ${step === 2 ? 'led-blue-lit' : 'bg-slate-200 text-slate-600'}">2.Menu</div>
+        <div class="py-1 rounded-lg text-[9px] font-black ${step === 3 ? 'led-amber-lit' : 'bg-slate-200 text-slate-600'}">3.Bếp🔔</div>
+        <div class="py-1 rounded-lg text-[9px] font-black ${step === 4 ? 'led-red-lit' : 'bg-slate-200 text-slate-600'}">4.QR💳</div>
+        <div class="py-1 rounded-lg text-[9px] font-black ${step === 5 ? 'led-green-lit' : 'bg-slate-200 text-slate-600'}">5.Bill🖨️</div>
+      `;
+
       const list = document.getElementById('orderItemsList');
       if (t.cart.length === 0) {
         list.innerHTML = `
-          <div class="text-center py-16 text-slate-400 text-xs italic">
+          <div class="text-center py-14 text-slate-400 text-xs italic">
             <i class="fa-solid fa-mug-saucer text-3xl mb-2 text-slate-300 block"></i>
             Chưa có món nào • Bấm vào món bên thực đơn để chọn
           </div>
@@ -429,20 +549,36 @@
       document.getElementById('orderTotalText').textContent = total.toLocaleString('vi-VN') + ' đ';
     }
 
-    // 4. BÁO BẾP (Phát chuông Ding-Dong)
+    // 4. BÁO BẾP: BẤM NÚT SÁNG ĐÈN VÀNG RỰC RỠ (BƯỚC 3)
     function actionSendKitchen() {
       const t = tables.find(x => x.id === currentTableId);
       if (t.cart.length === 0) return alert("Bàn chưa có món nào để báo bếp!");
 
+      t.kitchenSent = true;
+      t.isCheckingOut = false;
+      saveState();
+      renderTables();
+      renderCart();
       playKitchenChime();
-      alert("🔔 ĐÃ BÁO BẾP THÀNH CÔNG!\nBàn: " + t.name + "\nSố món: " + t.cart.reduce((s, x) => s + x.qty, 0) + " món\nBếp đang chuẩn bị...");
+      alert("🔔 ĐÃ BÁO BẾP THÀNH CÔNG!\nBàn: " + t.name + "\nĐèn [3. Bếp 🔔] đã BẬT SÁNG VÀNG RỰC RỠ!\nBếp đang chuẩn bị...");
     }
 
-    // 5. VIETQR ĐỘNG (Napas 247)
+    // Thao tác nhanh Báo bếp trực tiếp từ nút trên ô bàn
+    function quickTableKitchen(tableId) {
+      selectTable(tableId);
+      actionSendKitchen();
+    }
+
+    // 5. VIETQR: BẤM NÚT SÁNG ĐÈN ĐỎ RỰC RỠ (BƯỚC 4)
     function actionOpenCheckout() {
       const t = tables.find(x => x.id === currentTableId);
       const total = t.cart.reduce((s, x) => s + x.price * x.qty, 0);
       if (total <= 0) return alert("Bàn chưa có món để thanh toán!");
+
+      t.isCheckingOut = true;
+      saveState();
+      renderTables();
+      renderCart();
 
       document.getElementById('qrModalTableName').textContent = "THANH TOÁN " + t.name.toUpperCase();
       document.getElementById('qrModalAmount').textContent = total.toLocaleString('vi-VN') + " đ";
@@ -455,11 +591,22 @@
       playBeep(850, 0.05);
     }
 
+    // Thao tác nhanh VietQR trực tiếp từ nút trên ô bàn
+    function quickTableCheckout(tableId) {
+      selectTable(tableId);
+      actionOpenCheckout();
+    }
+
     function closeCheckoutModal() {
+      const t = tables.find(x => x.id === currentTableId);
+      if (t) t.isCheckingOut = false;
+      saveState();
+      renderTables();
+      renderCart();
       document.getElementById('checkoutModal').classList.add('hidden');
     }
 
-    // 6. IN HÓA ĐƠN NHIỆT (IN BILL)
+    // 6. IN BILL: BẤM NÚT SÁNG ĐÈN XANH LÁ (BƯỚC 5)
     function actionPrintBill(isOfficialReceipt = true) {
       const t = tables.find(x => x.id === currentTableId);
       if (t.cart.length === 0) return alert("Bàn chưa có món để in bill!");
@@ -517,12 +664,16 @@
 
       const printArea = document.getElementById('printableReceipt');
       printArea.innerHTML = receiptHtml;
-
-      // Gọi lệnh in chuẩn của trình duyệt (In nhiệt 80mm / Bluetooth / LAN)
       window.print();
     }
 
-    // 7. XÁC NHẬN THANH TOÁN & ĐÓNG BÀN
+    // Thao tác nhanh In bill trực tiếp từ nút trên ô bàn
+    function quickTablePrint(tableId) {
+      selectTable(tableId);
+      actionPrintBill(false);
+    }
+
+    // 7. XÁC NHẬN THANH TOÁN: IN BILL XONG QUAY VỀ BÀN TRỐNG (BƯỚC 1)
     function confirmPaymentAndPrint() {
       const t = tables.find(x => x.id === currentTableId);
       const total = t.cart.reduce((s, x) => s + x.price * x.qty, 0);
@@ -533,10 +684,12 @@
       // In hóa đơn chính thức
       actionPrintBill(true);
 
-      // Đóng bàn và chuyển về trạng thái Trống
+      // Đóng bàn và chuyển về trạng thái Trống (Bước 1 sáng đèn)
       t.cart = [];
       t.status = 'empty';
       t.openTime = null;
+      t.kitchenSent = false;
+      t.isCheckingOut = false;
 
       saveState();
       closeCheckoutModal();
