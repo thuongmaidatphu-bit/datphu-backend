@@ -1963,44 +1963,73 @@
       const badgeEl = document.getElementById('tblDetailStatusBadge');
       const metaEl = document.getElementById('tblDetailMeta');
       const listEl = document.getElementById('tblDetailItemsList');
+      const subTotalEl = document.getElementById('tblDetailSubTotal');
+      const discountEl = document.getElementById('tblDetailDiscountText');
       const totalQtyEl = document.getElementById('tblDetailTotalQty');
       const totalAmountEl = document.getElementById('tblDetailTotalAmount');
 
       const isOcc = t.status === 'occupied' && t.cart && t.cart.length > 0;
       const tTotal = (t.cart || []).reduce((s, x) => s + x.price * x.qty, 0);
+      const discount = t.discount || 0;
+      const finalAmount = Math.max(0, tTotal - discount);
       const totalQty = (t.cart || []).reduce((s, x) => s + x.qty, 0);
       const zoneName = t.zone === 'tret' ? 'Tầng trệt' : (t.zone === 'ngoaitroi' ? 'Sân vườn' : (t.zone === 'takeaway' ? 'Mang đi' : 'Lầu 1'));
 
       if (titleEl) titleEl.textContent = t.name.toUpperCase();
       if (badgeEl) {
         badgeEl.textContent = isOcc ? 'Có khách' : 'Trống';
-        badgeEl.className = isOcc ? 'px-2 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white animate-pulse' : 'px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-200 text-slate-600';
+        badgeEl.className = isOcc ? 'px-2.5 py-0.5 rounded-full text-[10px] font-black bg-red-600 text-white animate-pulse' : 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-600';
       }
       if (metaEl) {
         metaEl.textContent = `Khu vực: ${zoneName} ${t.openTime ? '• Giờ vào: ' + t.openTime : ''}`;
       }
+      if (subTotalEl) subTotalEl.textContent = `${tTotal.toLocaleString('vi-VN')} đ`;
+      if (discountEl) discountEl.textContent = `- ${discount.toLocaleString('vi-VN')} đ`;
       if (totalQtyEl) totalQtyEl.textContent = `${totalQty} món`;
-      if (totalAmountEl) totalAmountEl.textContent = `${tTotal.toLocaleString('vi-VN')} đ`;
+      if (totalAmountEl) totalAmountEl.textContent = `${finalAmount.toLocaleString('vi-VN')} đ`;
 
       if (listEl) {
         if (!isOcc || t.cart.length === 0) {
-          listEl.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs">Bàn hiện đang trống, chưa có món nào</div>`;
+          listEl.innerHTML = `
+            <div class="text-center py-10 text-slate-400 bg-slate-50 rounded-2xl border border-slate-200">
+              <i class="fa-solid fa-mug-saucer text-2xl mb-2 text-slate-300 block"></i>
+              Bàn hiện đang trống, chưa có món nào
+            </div>
+          `;
         } else {
-          listEl.innerHTML = t.cart.map(item => `
-            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-200">
-              <div class="flex items-center space-x-2">
-                <span class="w-6 h-6 rounded-lg bg-blue-100 text-blue-700 font-black text-xs flex items-center justify-center">${item.qty}</span>
-                <div>
-                  <h5 class="font-bold text-xs text-slate-800">${item.name}</h5>
-                  <span class="text-[10px] text-slate-400 font-mono">${item.price.toLocaleString('vi-VN')} đ / phần</span>
+          listEl.innerHTML = t.cart.map((item, idx) => `
+            <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2 shadow-2xs hover:bg-blue-50/30 transition">
+              <!-- Cột trái: Số lượng & Tên món & Ghi chú -->
+              <div class="flex items-center space-x-2.5 min-w-0 flex-1">
+                <span class="w-7 h-7 rounded-xl bg-blue-100 text-blue-700 font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">${item.qty}</span>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-1.5">
+                    <h5 class="font-black text-xs text-slate-900 truncate">${item.name}</h5>
+                    ${item.note ? `<span class="text-[9px] px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 font-bold">${item.note}</span>` : ''}
+                  </div>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="text-[10px] text-slate-400 font-mono">${item.price.toLocaleString('vi-VN')} đ/phần</span>
+                    <button onclick="promptItemNote(${item.id})" class="text-[10px] text-blue-600 hover:underline flex items-center gap-0.5 font-bold">
+                      <i class="fa-solid fa-pen text-[8px]"></i> Ghi chú
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div class="flex items-center space-x-2">
-                <span class="font-black font-mono text-xs text-red-600">${(item.price * item.qty).toLocaleString('vi-VN')} đ</span>
-                <div class="flex items-center space-x-1">
-                  <button onclick="updateCartQty(${item.id}, -1); openTableDetailModal('${t.id}');" class="w-5 h-5 rounded bg-white hover:bg-red-50 hover:text-red-600 text-slate-600 font-bold border border-slate-200 flex items-center justify-center text-xs cursor-pointer">-</button>
-                  <button onclick="updateCartQty(${item.id}, 1); openTableDetailModal('${t.id}');" class="w-5 h-5 rounded bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center justify-center text-xs cursor-pointer">+</button>
+
+              <!-- Cột phải: Thành tiền & Cụm nút Stepper & Xóa -->
+              <div class="flex items-center space-x-2 shrink-0">
+                <span class="font-black font-mono text-xs text-red-600 w-20 text-right">${(item.price * item.qty).toLocaleString('vi-VN')} đ</span>
+                
+                <div class="flex items-center bg-white rounded-lg border border-slate-300 p-0.5 shadow-2xs">
+                  <button onclick="updateCartQty(${item.id}, -1); openTableDetailModal('${t.id}');" class="w-6 h-6 rounded bg-slate-100 hover:bg-red-50 hover:text-red-600 text-slate-700 font-bold flex items-center justify-center text-xs transition cursor-pointer">-</button>
+                  <span class="w-6 text-center font-black text-xs text-blue-700 font-mono">${item.qty}</span>
+                  <button onclick="updateCartQty(${item.id}, 1); openTableDetailModal('${t.id}');" class="w-6 h-6 rounded bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center justify-center text-xs transition cursor-pointer">+</button>
                 </div>
+
+                <!-- Nút Xóa Hẳn Món -->
+                <button onclick="removeItemFromTableCart(${item.id}, '${t.id}')" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-red-100 text-slate-400 hover:text-red-600 flex items-center justify-center transition cursor-pointer text-xs" title="Xóa món này khỏi đơn">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
               </div>
             </div>
           `).join('');
@@ -2009,6 +2038,76 @@
 
       document.getElementById('tableDetailModal').classList.remove('hidden');
       playBeep(650, 0.03);
+    }
+
+    // Xóa món khỏi đơn bàn
+    function removeItemFromTableCart(productId, tableId) {
+      const t = tables.find(x => x.id === tableId) || getCurrentTable();
+      t.cart = (t.cart || []).filter(x => x.id !== productId);
+      cart = [...t.cart];
+      if (t.cart.length === 0) {
+        t.status = 'empty';
+        t.openTime = null;
+      }
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+      updateCartUI();
+      renderProducts();
+      renderFullFloorMap();
+      openTableDetailModal(t.id);
+      showToast('Đã xóa món khỏi đơn bàn!');
+    }
+
+    // Ghi chú khẩu vị món (Ít đá, không hành...)
+    function promptItemNote(productId) {
+      const curTbl = getCurrentTable();
+      const item = (curTbl.cart || []).find(x => x.id === productId);
+      if (!item) return;
+      const note = prompt(`Nhập ghi chú cho món "${item.name}" (vd: Ít đá, không đường, cay nhiều):`, item.note || '');
+      if (note !== null) {
+        item.note = note.trim();
+        cart = [...curTbl.cart];
+        localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+        openTableDetailModal(curTbl.id);
+      }
+    }
+
+    // Giảm giá cho bàn
+    function promptTableDiscount() {
+      const curTbl = getCurrentTable();
+      const val = prompt('Nhập số tiền giảm giá cho bàn (VNĐ):', curTbl.discount || '0');
+      if (val !== null) {
+        curTbl.discount = Math.max(0, parseInt(val) || 0);
+        localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+        openTableDetailModal(curTbl.id);
+        showToast(`Đã áp dụng giảm giá ${curTbl.discount.toLocaleString('vi-VN')} đ!`);
+      }
+    }
+
+    // Dọn bàn đưa về trạng thái trống
+    function clearCurrentTable() {
+      const curTbl = getCurrentTable();
+      if (!confirm(`Xác nhận dọn dẹp và trả bàn "${curTbl.name}" về trạng thái trống?`)) return;
+      curTbl.cart = [];
+      curTbl.status = 'empty';
+      curTbl.openTime = null;
+      curTbl.discount = 0;
+      cart = [];
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+      updateCartUI();
+      renderProducts();
+      renderFullFloorMap();
+      closeModal('tableDetailModal');
+      playBeep(800, 0.05);
+      showToast(`Đã dọn sạch ${curTbl.name}. Bàn đã sẵn sàng đón khách mới!`);
+    }
+
+    // Focus vào ô tìm kiếm món
+    function focusProductSearch() {
+      const input = document.getElementById('searchInput');
+      if (input) {
+        input.focus();
+        input.select();
+      }
     }
 
     // In Phiếu Tạm Tính Cho Bàn
@@ -4424,6 +4523,139 @@
       }
     });
   </script>
+
+  <!-- ================= MODAL: HƯỚNG DẪN CÀI ĐẶT TRÊN IPHONE (IOS NỀN TRẮNG) ================= -->
+  <div id="iosInstallModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center p-3">
+    <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-sm p-5 space-y-4 shadow-2xl text-slate-800 animate-in slide-in-from-bottom duration-200">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+        <div class="flex items-center space-x-2">
+          <img src="/icons/icon-192.png" alt="Logo" class="w-7 h-7 rounded-lg">
+          <span class="font-black text-xs text-blue-700 uppercase">Cài Đặt Trên iPhone (iOS)</span>
+        </div>
+        <button onclick="closeModal('iosInstallModal')" class="text-slate-400 hover:text-slate-700 cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-600">
+        <p class="leading-relaxed">Để dùng Mini POS toàn màn hình mượt mà như ứng dụng tải từ App Store:</p>
+        
+        <div class="flex items-start gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold shrink-0">1</div>
+          <div>
+            <div class="font-bold text-slate-800">Bấm nút Chia sẻ (Share)</div>
+            <div class="text-[10px] text-slate-400">Biểu tượng <i class="fa-solid fa-arrow-up-from-bracket text-blue-600"></i> ở thanh dưới cùng Safari.</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <div class="w-7 h-7 rounded-lg bg-red-100 text-red-600 flex items-center justify-center font-bold shrink-0">2</div>
+          <div>
+            <div class="font-bold text-slate-800">Chọn "Thêm vào MH chính"</div>
+            <div class="text-[10px] text-slate-400">Cuộn xuống và bấm <strong>"Thêm vào MH chính" (Add to Home Screen)</strong>.</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold shrink-0">3</div>
+          <div>
+            <div class="font-bold text-slate-800">Bấm "Thêm" ở góc trên</div>
+            <div class="text-[10px] text-slate-400">Biểu tượng Đất Phú POS sẽ xuất hiện ngay trên màn hình chính!</div>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="closeModal('iosInstallModal')" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow active:scale-95 transition cursor-pointer">
+        Đã Hiểu
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: CHI TIẾT CÁC MỤC BÀN & THAO TÁC (TABLE DETAIL MODAL) ================= -->
+  <div id="tableDetailModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-lg p-4 sm:p-5 space-y-3.5 shadow-2xl animate-in zoom-in-95 text-xs text-slate-800 flex flex-col max-h-[92vh]">
+      
+      <!-- 1. Header Chi Tiết Bàn & Trạng Thái -->
+      <div class="flex justify-between items-center border-b border-slate-100 pb-3 shrink-0">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-base font-bold shadow-xs">
+            <i class="fa-solid fa-chair" id="tblDetailIcon"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-black text-base text-slate-900 tracking-tight" id="tblDetailTitle">BÀN 4</h3>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-red-600 text-white animate-pulse" id="tblDetailStatusBadge">Có khách</span>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-0.5" id="tblDetailMeta">Khu vực: Tầng trệt • Vào lúc: 08:30 • Đã ngồi: 25 phút</p>
+          </div>
+        </div>
+        <button onclick="closeModal('tableDetailModal')" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center cursor-pointer transition">✕</button>
+      </div>
+
+      <!-- 2. Danh Sách Các Mục Món Đã Gọi Của Bàn (Cuộn Mượt) -->
+      <div class="flex-1 overflow-y-auto no-scrollbar space-y-2 pr-0.5" id="tblDetailItemsList">
+        <!-- Render Javascript chi tiết từng món -->
+      </div>
+
+      <!-- Nút Thêm Món Nhanh Vào Bàn Này -->
+      <div class="shrink-0 flex items-center justify-between bg-slate-50 p-2 rounded-xl border border-slate-200">
+        <span class="text-[11px] text-slate-500 font-bold">Khách muốn gọi thêm món?</span>
+        <button onclick="closeModal('tableDetailModal'); focusProductSearch();" class="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-black flex items-center gap-1 cursor-pointer transition shadow-2xs">
+          <i class="fa-solid fa-plus text-[9px]"></i> Thêm Món
+        </button>
+      </div>
+
+      <!-- 3. Bảng Kê Tài Chính & Giảm Giá -->
+      <div class="pt-2 border-t border-slate-200 shrink-0 space-y-1.5 bg-white">
+        <div class="flex justify-between items-center text-slate-600 text-xs">
+          <span>Tiền món (<span id="tblDetailTotalQty">0 món</span>):</span>
+          <span class="font-bold font-mono text-slate-800" id="tblDetailSubTotal">0 đ</span>
+        </div>
+        <div class="flex justify-between items-center text-slate-600 text-xs">
+          <div class="flex items-center gap-1.5">
+            <span>Giảm giá:</span>
+            <button onclick="promptTableDiscount()" class="text-[10px] text-blue-600 hover:underline font-bold">[Đổi]</button>
+          </div>
+          <span class="font-bold font-mono text-emerald-600" id="tblDetailDiscountText">- 0 đ</span>
+        </div>
+        <div class="flex justify-between items-center text-sm pt-1 border-t border-slate-100">
+          <span class="font-black text-slate-900 uppercase">TỔNG TẠM TÍNH:</span>
+          <span class="font-black font-mono text-lg text-red-600" id="tblDetailTotalAmount">0 đ</span>
+        </div>
+      </div>
+
+      <!-- 4. Cụm Nút Nghiệp Vụ Vận Hành Bàn -->
+      <div class="pt-2 border-t border-slate-100 grid grid-cols-4 gap-1.5 shrink-0">
+        <button onclick="dispatchKitchenOrder(); closeModal('tableDetailModal');" class="py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-[11px] shadow-2xs flex flex-col items-center justify-center gap-0.5 cursor-pointer transition" title="Bắn lệnh in xuống quầy bếp/pha chế">
+          <i class="fa-solid fa-bell-concierge text-xs"></i>
+          <span>Báo Bếp</span>
+        </button>
+        <button onclick="printPreBill();" class="py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] border border-slate-200 shadow-2xs flex flex-col items-center justify-center gap-0.5 cursor-pointer transition" title="In phiếu tạm tính cho khách">
+          <i class="fa-solid fa-print text-xs text-slate-600"></i>
+          <span>Tạm Tính</span>
+        </button>
+        <button onclick="openTransferTableModal(); closeModal('tableDetailModal');" class="py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-[11px] border border-blue-200 shadow-2xs flex flex-col items-center justify-center gap-0.5 cursor-pointer transition" title="Chuyển sang bàn khác">
+          <i class="fa-solid fa-arrow-right-arrow-left text-xs text-blue-600"></i>
+          <span>Đổi Bàn</span>
+        </button>
+        <button onclick="clearCurrentTable();" class="py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 font-bold text-[11px] border border-red-200 shadow-2xs flex flex-col items-center justify-center gap-0.5 cursor-pointer transition" title="Dọn sạch bàn và đưa về trạng thái trống">
+          <i class="fa-solid fa-broom text-xs text-red-600"></i>
+          <span>Dọn Bàn</span>
+        </button>
+      </div>
+
+      <!-- 5. Hai Nút Thanh Toán To Rõ -->
+      <div class="grid grid-cols-2 gap-2 shrink-0 pt-1">
+        <button onclick="openCashModal(); closeModal('tableDetailModal');" class="py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer transition active:scale-98">
+          <i class="fa-solid fa-money-bill-wave text-sm"></i>
+          <span>TIỀN MẶT</span>
+        </button>
+        <button onclick="openQrModal(); closeModal('tableDetailModal');" class="py-3 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer transition active:scale-98">
+          <i class="fa-solid fa-qrcode text-sm"></i>
+          <span>VIETQR (TỰ ĐỘNG)</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
 
   <!-- ================= MODAL: HƯỚNG DẪN CÀI ĐẶT TRÊN IPHONE (IOS NỀN TRẮNG) ================= -->
   <div id="iosInstallModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center p-3">
