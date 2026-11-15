@@ -70,10 +70,11 @@
     }
 
     .active-table-card {
-      outline: 3px solid #2563eb !important;
-      outline-offset: 2px !important;
-      animation: activeTablePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, activeTablePulse 2.5s infinite ease-in-out !important;
-      z-index: 10 !important;
+      outline: 4.5px solid #2563eb !important;
+      outline-offset: 3px !important;
+      box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.35), 0 12px 28px -4px rgba(37, 99, 235, 0.45) !important;
+      animation: activeTablePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, activeTablePulse 2.2s infinite ease-in-out !important;
+      z-index: 20 !important;
     }
   </style>
 </head>
@@ -1896,84 +1897,84 @@
       }
 
       switch (stage) {
-        case 'cooking': // 🟡 GIAI ĐOẠN 3: BẾP ĐANG NẤU (VÀNG CAM HỔ PHÁCH)
+        case 'cooking': // 🟡 GIAI ĐOẠN 3: BẾP ĐANG NẤU (VIỀN VÀNG ĐẬM DÀY 2.5PX)
           return {
             stage: 'cooking',
             name: 'Bếp Đang Nấu',
             badgeBg: 'bg-amber-500 text-white shadow-2xs animate-pulse',
             badgeIcon: 'fa-fire-burner',
             cardBg: 'bg-gradient-to-b from-amber-50/95 via-amber-50/70 to-white hover:bg-amber-100/50',
-            border: 'border-amber-400 hover:border-amber-500 shadow-xs',
+            border: 'border-2 sm:border-[2.5px] border-amber-500 hover:border-amber-600 shadow-sm',
             stripe: 'bg-amber-500',
             iconBg: 'bg-amber-500 text-white shadow-xs',
             titleColor: 'text-amber-950 font-black',
-            infoBarBg: 'bg-amber-100/80 border-amber-300/80 text-amber-950',
-            previewBg: 'bg-white/95 border-amber-200/90 text-slate-800',
+            infoBarBg: 'bg-amber-100/90 border-amber-300 text-amber-950',
+            previewBg: 'bg-white/95 border border-amber-200 text-slate-800',
             totalColor: 'text-amber-700 font-black',
             statusDot: 'bg-amber-500'
           };
-        case 'served': // 🟢 GIAI ĐOẠN 4: ĐÃ ĐỦ MÓN (XANH LÁ NGỌC)
+        case 'served': // 🟢 GIAI ĐOẠN 4: ĐÃ ĐỦ MÓN (VIỀN XANH LÁ DÀY 2.5PX)
           return {
             stage: 'served',
             name: 'Đã Đủ Món',
             badgeBg: 'bg-emerald-600 text-white shadow-2xs',
             badgeIcon: 'fa-check',
             cardBg: 'bg-gradient-to-b from-emerald-50/95 via-emerald-50/70 to-white hover:bg-emerald-100/50',
-            border: 'border-emerald-400 hover:border-emerald-500 shadow-xs',
+            border: 'border-2 sm:border-[2.5px] border-emerald-500 hover:border-emerald-600 shadow-sm',
             stripe: 'bg-emerald-500',
             iconBg: 'bg-emerald-600 text-white shadow-xs',
             titleColor: 'text-emerald-950 font-black',
-            infoBarBg: 'bg-emerald-100/80 border-emerald-300/80 text-emerald-950',
-            previewBg: 'bg-white/95 border-emerald-200/90 text-slate-800',
+            infoBarBg: 'bg-emerald-100/90 border-emerald-300 text-emerald-950',
+            previewBg: 'bg-white/95 border border-emerald-200 text-slate-800',
             totalColor: 'text-emerald-700 font-black',
             statusDot: 'bg-emerald-500'
           };
-        case 'checkout': // 🔴 GIAI ĐOẠN 5: CHỜ TÍNH TIỀN (ĐỎ RUBY)
+        case 'checkout': // 🔴 GIAI ĐOẠN 5: CHỜ TÍNH TIỀN (VIỀN ĐỎ DÀY 2.5PX)
           return {
             stage: 'checkout',
             name: 'Chờ Tính Tiền',
             badgeBg: 'bg-red-600 text-white shadow-2xs animate-bounce',
             badgeIcon: 'fa-receipt',
             cardBg: 'bg-gradient-to-b from-rose-50/95 via-red-50/70 to-white hover:bg-rose-100/60',
-            border: 'border-red-500 hover:border-red-600 ring-1 ring-red-400/50 shadow-xs',
+            border: 'border-2 sm:border-[2.5px] border-red-500 hover:border-red-600 ring-1 ring-red-400/40 shadow-sm',
             stripe: 'bg-red-600',
             iconBg: 'bg-red-600 text-white shadow-xs animate-pulse',
             titleColor: 'text-red-950 font-black',
             infoBarBg: 'bg-red-100/90 border-red-300 text-red-950',
-            previewBg: 'bg-white/95 border-red-200/90 text-slate-800',
+            previewBg: 'bg-white/95 border border-red-200 text-slate-800',
             totalColor: 'text-red-600 font-black',
             statusDot: 'bg-red-600 animate-ping'
           };
-        case 'ordering': // 🔵 GIAI ĐOẠN 2: ĐANG CHỌN MÓN (XANH DƯƠNG)
+        case 'ordering': // 🔵 GIAI ĐOẠN 2: ĐANG CHỌN MÓN (VIỀN XANH DƯƠNG DÀY 2.5PX)
           return {
             stage: 'ordering',
             name: 'Đang Chọn',
             badgeBg: 'bg-blue-600 text-white shadow-2xs',
             badgeIcon: 'fa-hand-pointer',
             cardBg: 'bg-gradient-to-b from-blue-50/95 via-blue-50/60 to-white hover:bg-blue-100/50',
-            border: 'border-blue-400 hover:border-blue-500 shadow-xs',
+            border: 'border-2 sm:border-[2.5px] border-blue-500 hover:border-blue-600 shadow-sm',
             stripe: 'bg-blue-600',
             iconBg: 'bg-blue-600 text-white shadow-xs',
             titleColor: 'text-blue-950 font-black',
-            infoBarBg: 'bg-blue-100/80 border-blue-300 text-blue-950',
-            previewBg: 'bg-white/95 border-blue-200/90 text-slate-800',
+            infoBarBg: 'bg-blue-100/90 border-blue-300 text-blue-950',
+            previewBg: 'bg-white/95 border border-blue-200 text-slate-800',
             totalColor: 'text-blue-700 font-black',
             statusDot: 'bg-blue-600 animate-ping'
           };
-        case 'empty': // ⚪ GIAI ĐOẠN 1: BÀN TRỐNG (TRẮNG / XÁM NHẠT)
+        case 'empty': // ⚪ GIAI ĐOẠN 1: BÀN TRỐNG (VIỀN XÁM ĐẬM DÀY 2PX)
         default:
           return {
             stage: 'empty',
             name: 'Trống',
-            badgeBg: 'bg-slate-100 text-slate-500 border border-slate-200',
+            badgeBg: 'bg-slate-100 text-slate-600 border border-slate-300',
             badgeIcon: 'fa-circle-dot',
             cardBg: 'bg-white hover:bg-slate-50/80',
-            border: 'border-slate-200 hover:border-slate-300 shadow-2xs',
+            border: 'border-2 border-slate-300 hover:border-slate-400 shadow-2xs',
             stripe: 'bg-slate-300',
-            iconBg: 'bg-slate-100 text-slate-500',
+            iconBg: 'bg-slate-200 text-slate-600',
             titleColor: 'text-slate-800 font-black',
-            infoBarBg: 'bg-slate-100/70 border-slate-200/60 text-slate-500',
-            previewBg: 'bg-slate-50/70 border-dashed border-slate-200 text-slate-400',
+            infoBarBg: 'bg-slate-100/80 border-slate-200 text-slate-600',
+            previewBg: 'bg-slate-50/70 border border-dashed border-slate-200 text-slate-400',
             totalColor: 'text-slate-400',
             statusDot: 'bg-slate-300'
           };
@@ -2046,41 +2047,40 @@
         const th = getTableStageTheme(t, isActive, isOcc);
 
         return `
-          <div onclick="switchTable('${t.id}')" class="p-2.5 rounded-2xl border transition-all duration-300 cursor-pointer relative flex flex-col justify-between select-none ${th.cardBg} ${th.border} ${isActive ? 'active-table-card' : ''}">
+          <div onclick="switchTable('${t.id}')" class="p-2.5 sm:p-3 rounded-2xl transition-all duration-200 cursor-pointer relative flex flex-col justify-between select-none ${th.cardBg} ${th.border} ${isActive ? 'active-table-card' : ''}">
             
             <!-- Đỉnh ô bàn: Dải Màu Nhấn Giai Đoạn + Tên Bàn + Nhãn Dán Trạng Thái -->
             <div>
               <!-- Dải màu nhấn giai đoạn (Accent Top Stripe) -->
               <div class="h-1 w-full rounded-full ${th.stripe} mb-1.5 opacity-90"></div>
 
-              <!-- Dòng 1: Icon + Tên Bàn To Rõ + Nhãn Dán Trạng Thái Đồng Bộ Màu -->
-              <div class="flex items-center justify-between mb-1 gap-1">
+              <!-- Dòng 1: TÊN BÀN TO RÕ (TÁCH RIÊNG ĐỘC LẬP - KHÔNG BAO GIỜ BỊ ĐÈ MẤT) -->
+              <div class="flex items-center justify-between mb-1.5 gap-1.5">
                 <div class="flex items-center gap-1.5 min-w-0 flex-1">
-                  <div class="w-6 h-6 rounded-lg ${th.iconBg} flex items-center justify-center text-[11px] font-black shadow-2xs shrink-0">
+                  <div class="w-7 h-7 rounded-lg ${th.iconBg} flex items-center justify-center text-xs font-black shadow-xs shrink-0">
                     <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'}"></i>
                   </div>
-                  <div class="min-w-0">
-                    <h4 class="font-black text-xs sm:text-[13px] ${th.titleColor} truncate leading-tight">${t.name}</h4>
-                    <span class="text-[9px] text-slate-400 font-medium block leading-tight truncate">${zoneName} ${t.openTime ? '• ' + t.openTime : ''}</span>
+                  <div class="min-w-0 flex-1">
+                    <h4 class="font-black text-sm sm:text-[15px] ${th.titleColor} truncate leading-tight uppercase tracking-tight">${t.name}</h4>
+                    <span class="text-[9px] text-slate-400 font-semibold block leading-tight truncate">${zoneName} ${t.openTime ? '• ' + t.openTime : ''}</span>
                   </div>
                 </div>
 
-                <!-- Cụm Nhãn Dán Trạng Thái (Bên Phải) -->
+                <!-- Cụm Tag Bàn & Số Món Đang Gọi -->
                 <div class="shrink-0 flex items-center gap-1">
-                  ${tag ? `<span class="text-[8px] px-1 py-0.2 rounded font-black uppercase ${tag === 'VIP' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-purple-100 text-purple-700 border border-purple-200'}">${tag}</span>` : ''}
-                  ${getTableStatusSticker(t, isActive, isOcc)}
-                  ${isOcc ? `<span class="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-white/90 text-slate-700 border border-slate-200/80 font-mono shrink-0 shadow-2xs">${totalItemsCount} món</span>` : ''}
+                  ${tag ? `<span class="text-[8px] px-1.5 py-0.5 rounded font-black uppercase ${tag === 'VIP' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-purple-100 text-purple-700 border border-purple-200'}">${tag}</span>` : ''}
+                  ${isOcc ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-white text-slate-800 border border-slate-300 font-mono shrink-0 shadow-2xs">${totalItemsCount} món</span>` : ''}
                 </div>
               </div>
 
-              <!-- Thanh Nhãn Bàn: Theo Dõi Lượt Khách & Số Khách Hiện Tại (Màu Đồng Bộ Giai Đoạn) -->
-              <div class="flex items-center justify-between px-1.5 py-0.5 ${th.infoBarBg} rounded-md text-[9px] font-bold mb-1 border">
-                <span class="flex items-center gap-1" title="Tổng lượt phục vụ bàn này trong ngày">
-                  <i class="fa-solid fa-arrows-rotate text-[8px]"></i> ${turns} lượt/ngày
-                </span>
-                <span class="flex items-center gap-1" title="Số khách đợt này">
-                  <i class="fa-solid fa-users text-[8px]"></i> ${isOcc ? guests + ' khách' : 'Chưa có khách'}
-                </span>
+              <!-- Dòng 2: NHÃN GIAI ĐOẠN ĐỒNG BỘ MÀU + LƯỢT KHÁCH & SỐ KHÁCH -->
+              <div class="flex items-center justify-between px-2 py-1 ${th.infoBarBg} rounded-lg text-[10px] font-bold mb-1.5 border">
+                <div>${getTableStatusSticker(t, isActive, isOcc)}</div>
+                <div class="flex items-center gap-1.5 text-[9px] font-semibold text-slate-600">
+                  <span title="Tổng lượt phục vụ bàn này trong ngày"><i class="fa-solid fa-arrows-rotate text-[8px]"></i> ${turns} lượt</span>
+                  <span>•</span>
+                  <span title="Số khách hiện tại"><i class="fa-solid fa-users text-[8px]"></i> ${isOcc ? guests + 'K' : 'Trống'}</span>
+                </div>
               </div>
 
               <!-- Chi tiết các mục món trong bàn (Nền Sáng Sắc Nét) -->
