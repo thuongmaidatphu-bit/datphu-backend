@@ -133,10 +133,11 @@
 
       <!-- ================= TABS CHỌN CHẾ ĐỘ BÁN (NỀN TRẮNG - XANH DƯƠNG) ================= -->
       <!-- ================= THANH ĐIỀU HƯỚNG 5 MÀN HÌNH CHUYÊN NGHIỆP (5-SCREEN POS DOCK) ================= -->
-      <nav class="bg-white border-b border-slate-200 px-2 py-2 flex items-center justify-between text-xs font-bold flex-shrink-0 shadow-xs gap-1 sm:gap-2">
+      <nav id="posDockNav" class="bg-white border-b border-slate-200 px-2 py-2 flex items-center justify-between text-xs font-bold flex-shrink-0 shadow-xs gap-1 sm:gap-2">
         
         <!-- 1. MÀN HÌNH PHỤC VỤ (Waiter View) -->
-        <button onclick="switchMode('menu')" id="tabBtn-menu" class="mode-tab active flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-blue-600 text-white shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 border border-transparent">
+        <button draggable="true" data-mode="menu" onclick="switchMode('menu')" id="tabBtn-menu" class="dock-btn mode-tab active flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-blue-600 text-white shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 border border-transparent select-none relative group" title="Kéo thả để đổi thứ tự nút">
+          <i class="fa-solid fa-grip-vertical text-[9px] text-blue-300 group-hover:text-white mr-0.5 hidden lg:inline-block cursor-grab"></i>
           <div class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
             <i class="fa-solid fa-mug-saucer text-xs"></i>
           </div>
@@ -147,7 +148,8 @@
         </button>
 
         <!-- 2. MÀN HÌNH THU NGÂN (Cashier View) -->
-        <button onclick="switchMode('cashier')" id="tabBtn-cashier" class="mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95">
+        <button draggable="true" data-mode="cashier" onclick="switchMode('cashier')" id="tabBtn-cashier" class="dock-btn mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả để đổi thứ tự nút">
+          <i class="fa-solid fa-grip-vertical text-[9px] text-slate-300 group-hover:text-blue-600 mr-0.5 hidden lg:inline-block cursor-grab"></i>
           <div class="w-6 h-6 rounded-lg bg-blue-100/60 text-blue-600 flex items-center justify-center shrink-0">
             <i class="fa-solid fa-cash-register text-xs"></i>
           </div>
@@ -158,7 +160,8 @@
         </button>
 
         <!-- 3. MÀN HÌNH BẾP & BAR (Kitchen KDS View) -->
-        <button onclick="switchMode('kds')" id="tabBtn-kds" class="mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 relative">
+        <button draggable="true" data-mode="kds" onclick="switchMode('kds')" id="tabBtn-kds" class="dock-btn mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả để đổi thứ tự nút">
+          <i class="fa-solid fa-grip-vertical text-[9px] text-slate-300 group-hover:text-orange-600 mr-0.5 hidden lg:inline-block cursor-grab"></i>
           <div class="w-6 h-6 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center shrink-0">
             <i class="fa-solid fa-fire-burner text-xs"></i>
           </div>
@@ -172,7 +175,8 @@
         </button>
 
         <!-- 4. MÀN HÌNH KHO & ĐỊNH MỨC (Inventory BOM View) -->
-        <button onclick="switchMode('inventory')" id="tabBtn-inventory" class="mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 relative">
+        <button draggable="true" data-mode="inventory" onclick="switchMode('inventory')" id="tabBtn-inventory" class="dock-btn mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả để đổi thứ tự nút">
+          <i class="fa-solid fa-grip-vertical text-[9px] text-slate-300 group-hover:text-emerald-600 mr-0.5 hidden lg:inline-block cursor-grab"></i>
           <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
             <i class="fa-solid fa-boxes-stacked text-xs"></i>
           </div>
@@ -186,7 +190,8 @@
         </button>
 
         <!-- 5. MÀN HÌNH CHỐT CA & TÀI CHÍNH (Finance EOD View) -->
-        <button onclick="switchMode('finance')" id="tabBtn-finance" class="mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95">
+        <button draggable="true" data-mode="finance" onclick="switchMode('finance')" id="tabBtn-finance" class="dock-btn mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 select-none relative group" title="Kéo thả để đổi thứ tự nút">
+          <i class="fa-solid fa-grip-vertical text-[9px] text-slate-300 group-hover:text-purple-600 mr-0.5 hidden lg:inline-block cursor-grab"></i>
           <div class="w-6 h-6 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
             <i class="fa-solid fa-chart-pie text-xs"></i>
           </div>
@@ -200,6 +205,11 @@
         </button>
 
       </nav>
+
+      <!-- ================= KHAY TÁC VỤ NHANH CHUYÊN BIỆT ĐỘNG (CONTEXTUAL QUICK-ACTION SUB-DOCK) ================= -->
+      <div id="dockSubActionsContainer" class="bg-slate-100/90 border-b border-slate-200 px-2 py-1.5 flex items-center justify-between text-xs shrink-0 overflow-x-auto no-scrollbar gap-1.5 transition-all">
+        <!-- Javascript render tự động theo từng màn hình đang chọn -->
+      </div>
 
   <!-- ================= VÙNG NỘI DUNG CHÍNH (NỀN TRẮNG SÁNG) ================= -->
   <main class="flex-1 overflow-hidden relative bg-slate-50">
@@ -1684,6 +1694,8 @@
       renderHistory();
       renderInventoryUI();
       renderKdsUI();
+      initDraggableDock();
+      renderSubDock('menu');
       applyShopConfig();
       updateClock();
       setInterval(updateClock, 10000);
@@ -2035,6 +2047,247 @@
       drawer.classList.toggle('hidden');
     }
 
+
+    // ========================================================================
+    // ENGINE KÉO THẢ SẮP XẾP 5-SCREEN POS DOCK & KHAY TÁC VỤ CON CHUYÊN BIỆT
+    // ========================================================================
+    let currentActiveMode = 'menu';
+
+    function initDraggableDock() {
+      const nav = document.getElementById('posDockNav');
+      if (!nav) return;
+
+      // 1. Phục hồi thứ tự đã lưu từ localStorage
+      const savedOrder = JSON.parse(localStorage.getItem('dp_pos_dock_order'));
+      if (Array.isArray(savedOrder) && savedOrder.length === 5) {
+        savedOrder.forEach(mode => {
+          const btn = nav.querySelector(`[data-mode="${mode}"]`);
+          if (btn) nav.appendChild(btn);
+        });
+      }
+
+      // 2. Thiết lập Drag & Drop API trên Desktop
+      let draggedBtn = null;
+
+      nav.querySelectorAll('.dock-btn').forEach(btn => {
+        btn.addEventListener('dragstart', (e) => {
+          draggedBtn = btn;
+          btn.classList.add('opacity-40', 'scale-105', 'border-blue-400', 'border-dashed');
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', btn.getAttribute('data-mode'));
+        });
+
+        btn.addEventListener('dragend', () => {
+          btn.classList.remove('opacity-40', 'scale-105', 'border-blue-400', 'border-dashed');
+          draggedBtn = null;
+          saveDockOrder();
+        });
+
+        btn.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          if (draggedBtn && draggedBtn !== btn) {
+            const rect = btn.getBoundingClientRect();
+            const midpoint = rect.left + rect.width / 2;
+            if (e.clientX < midpoint) {
+              nav.insertBefore(draggedBtn, btn);
+            } else {
+              nav.insertBefore(draggedBtn, btn.nextSibling);
+            }
+          }
+        });
+      });
+
+      // 3. Hỗ trợ Touch Drag trên Mobile (Chạm giữ 350ms)
+      let touchStartX = 0;
+      let touchedBtn = null;
+      let longPressTimer = null;
+
+      nav.querySelectorAll('.dock-btn').forEach(btn => {
+        btn.addEventListener('touchstart', (e) => {
+          touchedBtn = btn;
+          touchStartX = e.touches[0].clientX;
+          longPressTimer = setTimeout(() => {
+            btn.classList.add('ring-2', 'ring-blue-500', 'scale-105');
+            playBeep(600, 0.05);
+          }, 350);
+        }, { passive: true });
+
+        btn.addEventListener('touchmove', (e) => {
+          if (!longPressTimer) return;
+          const currentX = e.touches[0].clientX;
+          const deltaX = currentX - touchStartX;
+          if (Math.abs(deltaX) > 40) {
+            clearTimeout(longPressTimer);
+            if (deltaX > 0 && btn.nextElementSibling) {
+              nav.insertBefore(btn.nextElementSibling, btn);
+              saveDockOrder();
+              playBeep(700, 0.03);
+            } else if (deltaX < 0 && btn.previousElementSibling) {
+              nav.insertBefore(btn, btn.previousElementSibling);
+              saveDockOrder();
+              playBeep(700, 0.03);
+            }
+            touchStartX = currentX;
+          }
+        }, { passive: true });
+
+        btn.addEventListener('touchend', () => {
+          clearTimeout(longPressTimer);
+          btn.classList.remove('ring-2', 'ring-blue-500', 'scale-105');
+        });
+      });
+    }
+
+    function saveDockOrder() {
+      const nav = document.getElementById('posDockNav');
+      if (!nav) return;
+      const order = Array.from(nav.querySelectorAll('.dock-btn')).map(b => b.getAttribute('data-mode'));
+      localStorage.setItem('dp_pos_dock_order', JSON.stringify(order));
+      showToast("Đã lưu vị trí 5 nút theo thói quen của bạn!");
+    }
+
+    function resetDockOrder() {
+      const defaultOrder = ['menu', 'cashier', 'kds', 'inventory', 'finance'];
+      localStorage.setItem('dp_pos_dock_order', JSON.stringify(defaultOrder));
+      const nav = document.getElementById('posDockNav');
+      if (nav) {
+        defaultOrder.forEach(mode => {
+          const btn = nav.querySelector(`[data-mode="${mode}"]`);
+          if (btn) nav.appendChild(btn);
+        });
+      }
+      showToast("Đã khôi phục thứ tự thanh 5 nút về mặc định!");
+    }
+
+    // Render khay tác vụ nhanh chuyên biệt (Contextual Sub-Dock)
+    function renderSubDock(mode) {
+      currentActiveMode = mode;
+      const container = document.getElementById('dockSubActionsContainer');
+      if (!container) return;
+
+      if (mode === 'menu') {
+        container.innerHTML = `
+          <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar flex-1">
+            <span class="text-[10px] font-black uppercase text-blue-700 bg-blue-50 px-2 py-1 rounded-md border border-blue-200 shrink-0">
+              <i class="fa-solid fa-bolt mr-1"></i>Tác Vụ Phục Vụ
+            </span>
+            <button onclick="openTableMapModal()" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-chair text-blue-600 text-[10px]"></i> Sơ Đồ Bàn
+            </button>
+            <button onclick="openTransferTableModal()" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-arrow-right-arrow-left text-blue-600 text-[10px]"></i> Đổi / Gộp Bàn
+            </button>
+            <button onclick="printKitchenOrderTicket()" class="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-black text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-bell-concierge text-blue-600 text-[10px]"></i> Báo Bếp (F7)
+            </button>
+            <button onclick="toggleProductDisplayMode()" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-images text-blue-600 text-[10px]"></i> Ảnh Thật / Gọn
+            </button>
+          </div>
+          <div class="flex items-center space-x-1 shrink-0">
+            <button onclick="resetDockOrder()" class="px-2 py-1 text-[10px] text-slate-400 hover:text-slate-600 font-medium cursor-pointer" title="Khôi phục vị trí mặc định">
+              <i class="fa-solid fa-rotate-left mr-0.5"></i> Reset Dock
+            </button>
+          </div>
+        `;
+      } else if (mode === 'cashier') {
+        container.innerHTML = `
+          <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar flex-1">
+            <span class="text-[10px] font-black uppercase text-blue-700 bg-blue-50 px-2 py-1 rounded-md border border-blue-200 shrink-0">
+              <i class="fa-solid fa-bolt mr-1"></i>Tác Vụ Thu Ngân
+            </span>
+            <button onclick="openCashModal()" class="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-black text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-money-bill-wave text-[10px]"></i> Tiền Mặt (F8)
+            </button>
+            <button onclick="openQrModal()" class="px-2.5 py-1 rounded-lg bg-red-600 hover:bg-red-700 text-white font-black text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-qrcode text-[10px]"></i> Quét VietQR (F9)
+            </button>
+            <button onclick="openShopSettings()" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-building-columns text-blue-600 text-[10px]"></i> Cài VietQR Quán
+            </button>
+            <button onclick="toggleCartDrawer()" class="lg:hidden px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-receipt text-blue-600 text-[10px]"></i> Xem Hóa Đơn
+            </button>
+          </div>
+          <div class="flex items-center space-x-1 shrink-0">
+            <button onclick="resetDockOrder()" class="px-2 py-1 text-[10px] text-slate-400 hover:text-slate-600 font-medium cursor-pointer" title="Khôi phục vị trí mặc định">
+              <i class="fa-solid fa-rotate-left mr-0.5"></i> Reset Dock
+            </button>
+          </div>
+        `;
+      } else if (mode === 'kds') {
+        container.innerHTML = `
+          <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar flex-1">
+            <span class="text-[10px] font-black uppercase text-orange-700 bg-orange-50 px-2 py-1 rounded-md border border-orange-200 shrink-0">
+              <i class="fa-solid fa-bolt mr-1"></i>Tác Vụ Bếp / Bar
+            </span>
+            <button onclick="filterKdsStation('all')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              Tất Cả Món
+            </button>
+            <button onclick="filterKdsStation('bar')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-amber-700 border border-slate-300 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-mug-saucer text-[10px]"></i> Quầy Bar
+            </button>
+            <button onclick="filterKdsStation('kitchen')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-red-700 border border-slate-300 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-bowl-food text-[10px]"></i> Bếp Nấu
+            </button>
+            <button onclick="testKitchenBell()" class="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-bell text-[10px]"></i> Thử Chuông
+            </button>
+            <button onclick="clearCompletedKdsOrders()" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-600 border border-slate-300 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-broom text-[10px]"></i> Dọn Đơn Xong
+            </button>
+          </div>
+          <div class="flex items-center space-x-1 shrink-0">
+            <button onclick="resetDockOrder()" class="px-2 py-1 text-[10px] text-slate-400 hover:text-slate-600 font-medium cursor-pointer" title="Khôi phục vị trí mặc định">
+              <i class="fa-solid fa-rotate-left mr-0.5"></i> Reset Dock
+            </button>
+          </div>
+        `;
+      } else if (mode === 'inventory') {
+        container.innerHTML = `
+          <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar flex-1">
+            <span class="text-[10px] font-black uppercase text-emerald-700 bg-emerald-50 px-2 py-1 rounded-md border border-emerald-200 shrink-0">
+              <i class="fa-solid fa-bolt mr-1"></i>Tác Vụ Kho BOM
+            </span>
+            <button onclick="openRecipeModal()" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-sliders text-blue-600 text-[10px]"></i> Cài Định Mức (25g/20ml)
+            </button>
+            <button onclick="openRestockModal()" class="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-black text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-plus-circle text-[10px]"></i> Nhập Kho Nguyên Liệu
+            </button>
+          </div>
+          <div class="flex items-center space-x-1 shrink-0">
+            <button onclick="resetDockOrder()" class="px-2 py-1 text-[10px] text-slate-400 hover:text-slate-600 font-medium cursor-pointer" title="Khôi phục vị trí mặc định">
+              <i class="fa-solid fa-rotate-left mr-0.5"></i> Reset Dock
+            </button>
+          </div>
+        `;
+      } else if (mode === 'finance') {
+        container.innerHTML = `
+          <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar flex-1">
+            <span class="text-[10px] font-black uppercase text-purple-700 bg-purple-50 px-2 py-1 rounded-md border border-purple-200 shrink-0">
+              <i class="fa-solid fa-bolt mr-1"></i>Tác Vụ Chốt Ca
+            </span>
+            <button onclick="openExpenseModal()" class="px-2.5 py-1 rounded-lg bg-yellow-50 hover:bg-yellow-100 text-yellow-800 border border-yellow-200 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-cart-arrow-down text-[10px]"></i> + Ghi Chi Đi Chợ
+            </button>
+            <button onclick="openEodModal()" class="px-2.5 py-1 rounded-lg bg-red-600 hover:bg-red-700 text-white font-black text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-chart-pie text-[10px]"></i> Chốt Sổ Cuối Ca
+            </button>
+            <button onclick="clearHistoryConfirm()" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-red-600 border border-slate-300 font-bold text-[11px] shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer transition active:scale-95">
+              <i class="fa-solid fa-trash-can text-[10px]"></i> Xóa Lịch Sử
+            </button>
+          </div>
+          <div class="flex items-center space-x-1 shrink-0">
+            <button onclick="resetDockOrder()" class="px-2 py-1 text-[10px] text-slate-400 hover:text-slate-600 font-medium cursor-pointer" title="Khôi phục vị trí mặc định">
+              <i class="fa-solid fa-rotate-left mr-0.5"></i> Reset Dock
+            </button>
+          </div>
+        `;
+      }
+    }
+
     // 7. CHUYỂN 5 MÀN HÌNH CHUYÊN NGHIỆP
     function switchMode(mode) {
       // Hỗ trợ alias cũ
@@ -2063,6 +2316,8 @@
       const currentView = document.getElementById(`viewMode-${mode}`);
       if (currentView) currentView.classList.remove('hidden');
       playBeep(550, 0.04);
+
+      renderSubDock(mode);
 
       if (mode === 'inventory') {
         renderInventoryUI();
