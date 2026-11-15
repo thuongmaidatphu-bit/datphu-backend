@@ -51,43 +51,57 @@
     }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased select-none h-screen flex flex-col justify-between max-w-md mx-auto shadow-2xl overflow-hidden border-x border-slate-300">
+<body class="bg-slate-100 text-slate-800 antialiased select-none h-screen flex flex-col w-full overflow-hidden">
 
-  <!-- ================= TOP APP BAR: XANH HOÀNG GIA CHỦ ĐẠO ================= -->
-  <header class="h-14 px-3.5 bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-900 text-white flex items-center justify-between flex-shrink-0 z-30 shadow-md">
+  <!-- ================= TOP APP BAR: XANH HOÀNG GIA CHỦ ĐẠO (DESKTOP FULL WIDTH) ================= -->
+  <header class="h-14 px-3 sm:px-4 bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-900 text-white flex items-center justify-between flex-shrink-0 z-30 shadow-md">
     <div class="flex items-center space-x-2.5 min-w-0">
       <button onclick="openTenantModal()" class="w-8 h-8 rounded-xl bg-white text-blue-700 flex items-center justify-center font-black text-xs shadow-md shrink-0 cursor-pointer active:scale-95 transition" title="Quản lý quán & Phân quyền gói thuê">
         <i class="fa-solid fa-store text-xs"></i>
       </button>
       <div class="min-w-0">
         <div class="flex items-center space-x-1.5 min-w-0">
-          <span class="font-black text-xs tracking-wide text-white uppercase truncate cursor-pointer hover:text-blue-200" onclick="openTenantModal()" id="shopNameDisplay">Cà Phê & Điểm Tâm Đất Phú</span>
+          <span class="font-black text-xs sm:text-sm tracking-wide text-white uppercase truncate cursor-pointer hover:text-blue-200" onclick="openTenantModal()" id="shopNameDisplay">Cà Phê & Điểm Tâm Đất Phú</span>
           <button onclick="openShopSettings()" class="text-[10px] text-blue-200 hover:text-white p-0.5 shrink-0" title="Cài đặt VietQR">
             <i class="fa-solid fa-pen-to-square"></i>
           </button>
         </div>
-        <div class="flex items-center space-x-1.5 text-[9px] text-blue-100 truncate">
+        <div class="flex items-center space-x-1.5 text-[9px] sm:text-[10px] text-blue-100 truncate">
           <button onclick="openTenantModal()" id="tenantPlanBadge" class="px-1.5 py-0.2 rounded-md bg-white/20 text-white border border-white/30 font-bold shrink-0">
             Gói 120k • In Bill
           </button>
           <span>•</span>
           <span class="text-white font-bold shrink-0" id="headerOrderCount">0 đơn</span>
+          <span class="hidden md:inline">•</span>
+          <span class="hidden md:inline-flex items-center gap-1 px-1.5 py-0.2 rounded bg-emerald-500/30 text-emerald-200 font-bold border border-emerald-400/30 text-[9px]"><i class="fa-solid fa-circle text-[6px] text-emerald-400"></i>PC POS Tràn Màn Hình</span>
         </div>
       </div>
     </div>
 
-    <!-- Nút Thao Tác Nhanh: Đổi Quán, Chi & Chốt Ca (ĐỎ CHỦ ĐẠO) -->
+    <!-- Giữa Header: Đồng hồ thời gian thực cho Thu ngân PC -->
+    <div class="hidden sm:flex items-center space-x-2 bg-blue-950/60 border border-blue-500/30 px-3 py-1 rounded-xl text-white">
+      <i class="fa-regular fa-clock text-blue-300 text-xs"></i>
+      <span id="posTimeDisplay" class="font-mono font-black text-sm tracking-wider text-amber-300">--:--</span>
+      <span class="text-blue-400 text-xs">•</span>
+      <span id="posDateDisplay" class="text-xs text-blue-100 font-medium">--/--</span>
+    </div>
+
+    <!-- Nút Thao Tác Nhanh: Toàn Màn Hình F11, Đổi Quán, Chi & Chốt Ca (ĐỎ CHỦ ĐẠO) -->
     <div class="flex items-center space-x-1.5 shrink-0">
+      <button onclick="toggleFullScreen()" class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-blue-900/60 hover:bg-blue-900 text-blue-100 hover:text-white border border-blue-500/40 text-xs font-bold transition cursor-pointer flex items-center gap-1.5" title="Toàn Màn Hình Máy Tính (F11)">
+        <i class="fa-solid fa-expand text-[11px]"></i>
+        <span class="hidden md:inline text-[11px]">Toàn Màn Hình</span>
+      </button>
       <button onclick="openTenantModal()" class="p-1.5 rounded-xl bg-blue-900/60 hover:bg-blue-900 text-blue-100 hover:text-white border border-blue-500/40 text-xs font-bold transition cursor-pointer" title="Đăng nhập / Đổi tài khoản quán">
         <i class="fa-solid fa-users-gear text-[11px]"></i>
       </button>
       <button onclick="openExpenseModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-900/60 hover:bg-blue-900 text-yellow-300 border border-blue-500/40 text-xs font-bold flex items-center gap-1 shadow-sm transition cursor-pointer" title="Ghi chi đầu vào đi chợ">
         <i class="fa-solid fa-cart-arrow-down text-[10px]"></i>
-        <span>Chi</span>
+        <span class="text-[11px]">Chi</span>
       </button>
       <button onclick="openEodModal()" class="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-black shadow-md flex items-center gap-1 transition cursor-pointer active:scale-95">
         <i class="fa-solid fa-chart-pie text-[10px]"></i>
-        <span>Chốt</span>
+        <span class="text-[11px]">Chốt</span>
       </button>
     </div>
   </header>
@@ -111,8 +125,14 @@
     </div>
   </div>
 
-  <!-- ================= TABS CHỌN CHẾ ĐỘ BÁN (NỀN TRẮNG - XANH DƯƠNG) ================= -->
-  <nav class="bg-white border-b border-slate-200 px-1.5 py-1.5 flex items-center justify-around text-xs font-bold flex-shrink-0 shadow-xs gap-1">
+  <!-- ================= VÙNG LÀM VIỆC CHÍNH (DESKTOP TRÀN MÀN HÌNH & MOBILE TIỆN LỢI) ================= -->
+  <div class="flex-1 flex overflow-hidden w-full relative">
+
+    <!-- CỘT TRÁI: MENU MÓN, BÀN PHÍM, KHO, LỊCH SỬ (CHIẾM TOÀN BỘ MOBILE HOẶC 65-70% DESKTOP) -->
+    <div class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 min-w-0">
+
+      <!-- ================= TABS CHỌN CHẾ ĐỘ BÁN (NỀN TRẮNG - XANH DƯƠNG) ================= -->
+      <nav class="bg-white border-b border-slate-200 px-1.5 py-1.5 flex items-center justify-around text-xs font-bold flex-shrink-0 shadow-xs gap-1">
     <button onclick="switchMode('menu')" id="tabBtn-menu" class="mode-tab active flex-1 py-1.5 text-center rounded-xl bg-blue-600 text-white shadow transition cursor-pointer text-[11px]">
       <i class="fa-solid fa-mug-saucer mr-0.5"></i> Món
     </button>
@@ -194,13 +214,13 @@
       </div>
 
       <!-- Lưới danh sách món ăn / đồ uống (NỀN TRẮNG - CHỮ RÕ NÉT - GIÁ ĐỎ) -->
-      <div class="flex-1 p-2.5 overflow-y-auto no-scrollbar grid grid-cols-2 gap-2" id="productsGrid">
+      <div class="flex-1 p-2.5 sm:p-3 overflow-y-auto no-scrollbar grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 sm:gap-3" id="productsGrid">
         <!-- Render Javascript -->
       </div>
     </div>
 
     <!-- 2. CHẾ ĐỘ 2: BÀN PHÍM CASIO NHẬP TIỀN NHANH (NỀN TRẮNG SÁNG) -->
-    <div id="viewMode-numpad" class="hidden h-full flex flex-col justify-between p-3 bg-white">
+    <div id="viewMode-numpad" class="hidden h-full flex flex-col justify-between p-3 sm:p-6 bg-white max-w-lg mx-auto w-full">
       <!-- Màn hình hiển thị số tiền & phép tính -->
       <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-right shadow-inner relative">
         <div class="flex items-center justify-between text-xs text-slate-500 uppercase font-bold mb-1">
@@ -263,7 +283,7 @@
           <i class="fa-solid fa-trash-can"></i> Xóa dữ liệu
         </button>
       </div>
-      <div id="historyListContainer" class="space-y-2">
+      <div id="historyListContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
         <!-- Render Javascript -->
       </div>
     </div>
@@ -293,15 +313,15 @@
       </div>
 
       <!-- Danh Sách Thẻ Nguyên Liệu Trực Quan -->
-      <div id="rawMaterialsList" class="space-y-2">
+      <div id="rawMaterialsList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
         <!-- Render Javascript -->
       </div>
     </div>
 
   </main>
 
-  <!-- ================= THANH TỔNG KẾT DƯỚI ĐÁY: NỀN TRẮNG - 2 NÚT XANH & ĐỎ ================= -->
-  <footer class="p-2.5 bg-white border-t border-slate-200 shadow-2xl flex-shrink-0 z-20">
+  <!-- ================= THANH TỔNG KẾT DƯỚI ĐÁY: NỀN TRẮNG - 2 NÚT XANH & ĐỎ (ẨN TRÊN DESKTOP: lg:hidden) ================= -->
+  <footer class="lg:hidden p-2.5 bg-white border-t border-slate-200 shadow-2xl flex-shrink-0 z-20">
     <div class="flex items-center justify-between mb-2 px-1">
       <div class="flex items-center space-x-2">
         <button onclick="toggleCartDrawer()" class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 font-black text-sm flex items-center justify-center relative border border-blue-200 shadow-xs active:scale-95 transition cursor-pointer">
@@ -335,9 +355,93 @@
       </button>
     </div>
   </footer>
+    </div>
+    <!-- HẾT CỘT TRÁI -->
+
+    <!-- ================= CỘT PHẢI: BẢNG HÓA ĐƠN TRỰC TIẾP TRÊN MÁY TÍNH (DESKTOP LIVE CHECKOUT PANEL) ================= -->
+    <aside class="hidden lg:flex w-80 xl:w-96 2xl:w-[420px] flex-col h-full bg-white border-l border-slate-200 shadow-xl flex-shrink-0 z-20">
+      <!-- Header Hóa Đơn Trực Tiếp -->
+      <div class="p-3.5 bg-gradient-to-r from-slate-900 to-blue-950 text-white flex items-center justify-between shrink-0 shadow-xs">
+        <div class="flex items-center space-x-2 min-w-0">
+          <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-sm shrink-0">
+            <i class="fa-solid fa-receipt"></i>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center space-x-2">
+              <span class="font-black text-xs uppercase tracking-wide">Hóa Đơn Thu Ngân</span>
+              <span id="desktopTableBadge" class="px-2 py-0.5 rounded-full bg-amber-400 text-slate-900 font-black text-[10px] shadow-xs">Mang Về</span>
+            </div>
+            <div class="text-[10px] text-blue-200 flex items-center gap-1.5">
+              <span id="desktopItemCountBadge">0 món</span>
+              <span>•</span>
+              <span id="desktopTableTime">Mới</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-1 shrink-0">
+          <button onclick="openTransferTableModal()" class="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold transition cursor-pointer" title="Chuyển hoặc gộp bàn">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+          </button>
+          <button onclick="clearCart()" class="p-1.5 rounded-lg bg-red-600/80 hover:bg-red-600 text-white text-[11px] font-bold transition cursor-pointer" title="Xóa toàn bộ món đang chọn">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Danh Sách Món Đang Chọn (Cuộn Mượt) -->
+      <div class="flex-1 overflow-y-auto no-scrollbar p-3 space-y-2 bg-slate-50/70" id="desktopCartList">
+        <!-- Render bằng Javascript -->
+      </div>
+
+      <!-- Khối F&B Tác Vụ: Báo Bếp / In Tạm & Lưu Bàn -->
+      <div class="p-2.5 bg-slate-100 border-t border-slate-200 grid grid-cols-2 gap-2 shrink-0">
+        <button onclick="saveCurrentTableAndSwitchNext()" class="py-2 px-2 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer border border-slate-300 shadow-2xs active:scale-95">
+          <i class="fa-solid fa-bookmark text-blue-600 text-xs"></i>
+          <span>Lưu Bàn</span>
+        </button>
+        <button onclick="printKitchenOrderTicket()" class="py-2 px-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer border border-blue-200 shadow-2xs active:scale-95">
+          <i class="fa-solid fa-bell-concierge text-blue-600 text-xs"></i>
+          <span>Báo Bếp (F7)</span>
+        </button>
+      </div>
+
+      <!-- Khối Tổng Tiền & Nút Thanh Toán Máy Tính -->
+      <div class="p-4 bg-white border-t border-slate-200 space-y-3 shrink-0 shadow-lg">
+        <div class="space-y-1.5 text-xs text-slate-600">
+          <div class="flex justify-between">
+            <span>Tạm tính (<span id="desktopSubtotalCount">0</span> món):</span>
+            <span class="font-bold text-slate-800 font-mono" id="desktopSubtotalText">0 đ</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Bàn phục vụ:</span>
+            <span class="font-bold text-blue-700" id="desktopTableNameText">Mang Về</span>
+          </div>
+          <div class="border-t border-dashed border-slate-200 pt-2 flex justify-between items-baseline">
+            <span class="text-xs font-black uppercase text-slate-800 tracking-wider">TỔNG CỘNG:</span>
+            <span class="text-2xl xl:text-3xl font-black text-red-600 font-mono tracking-tight" id="desktopTotalText">0 đ</span>
+          </div>
+        </div>
+
+        <!-- 2 Nút Thanh Toán Lớn: Xanh Dương (Tiền Mặt) & Đỏ Ruby (VietQR) -->
+        <div class="grid grid-cols-2 gap-2.5 pt-1">
+          <button onclick="openCashModal()" class="py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs xl:text-sm shadow-md transition flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-money-bill-wave text-base"></i>
+            <span>TIỀN MẶT (F8)</span>
+          </button>
+          <button onclick="openQrModal()" class="py-3.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black text-xs xl:text-sm shadow-md transition flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-qrcode text-base"></i>
+            <span>QUÉT VIETQR (F9)</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+  <!-- ================= HẾT VÙNG LÀM VIỆC CHÍNH ================= -->
 
   <!-- ================= MODAL: GIỎ HÀNG CHI TIẾT (DRAWER NỀN TRẮNG) ================= -->
-  <div id="cartDrawer" class="hidden fixed inset-0 bg-black/50 backdrop-blur-xs z-40 flex flex-col justify-end">
+  <div id="cartDrawer" class="lg:hidden hidden fixed inset-0 bg-black/50 backdrop-blur-xs z-40 flex flex-col justify-end">
     <div class="bg-white border-t border-slate-200 rounded-t-3xl max-h-[80vh] flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-200 shadow-2xl">
       <div class="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
         <div class="flex items-center space-x-2">
@@ -1389,8 +1493,15 @@
 
     function updateClock() {
       const now = new Date();
-      document.getElementById('posTimeDisplay').textContent = 
-        String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+      const timeEl = document.getElementById('posTimeDisplay');
+      if (timeEl) {
+        timeEl.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+      }
+      const dateEl = document.getElementById('posDateDisplay');
+      if (dateEl) {
+        const days = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+        dateEl.textContent = `${days[now.getDay()]}, ${now.getDate()}/${now.getMonth()+1}`;
+      }
     }
 
     function applyShopConfig() {
@@ -1454,7 +1565,7 @@
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="col-span-2 text-center py-12 text-slate-400 text-xs">
+          <div class="col-span-full text-center py-12 text-slate-400 text-xs">
             <i class="fa-solid fa-mug-saucer text-2xl mb-2 block text-slate-300"></i>
             Không tìm thấy món nào phù hợp
           </div>
@@ -1592,10 +1703,16 @@
     }
 
     function clearCart() {
-      cart = [];
-      updateCartUI();
-      renderProducts();
-      toggleCartDrawer();
+      if (cart.length === 0) return;
+      if (confirm("Bạn có chắc chắn muốn xóa tất cả món đang chọn?")) {
+        cart = [];
+        updateCartUI();
+        renderProducts();
+        const drawer = document.getElementById('cartDrawer');
+        if (drawer && !drawer.classList.contains('hidden')) {
+          drawer.classList.add('hidden');
+        }
+      }
     }
 
     function getCartTotal() {
@@ -1624,32 +1741,92 @@
       }
       localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
 
-      document.getElementById('cartBadge').textContent = count;
-      document.getElementById('cartTotalText').textContent = total.toLocaleString('vi-VN') + ' đ';
-      document.getElementById('cartSummaryText').textContent = `${curTbl.name} • ${count > 0 ? count + ' món' : 'Chưa có món'}`;
-      document.getElementById('drawerItemCount').textContent = `${count} món`;
+      // 1. Mobile Drawer & Bottom Bar Elements
+      const cartBadge = document.getElementById('cartBadge');
+      if (cartBadge) cartBadge.textContent = count;
+      const cartTotal = document.getElementById('cartTotalText');
+      if (cartTotal) cartTotal.textContent = total.toLocaleString('vi-VN') + ' đ';
+      const cartSummary = document.getElementById('cartSummaryText');
+      if (cartSummary) cartSummary.textContent = `${curTbl.name} • ${count > 0 ? count + ' món' : 'Chưa có món'}`;
+      const drawerCount = document.getElementById('drawerItemCount');
+      if (drawerCount) drawerCount.textContent = `${count} món`;
       const tblBadge = document.getElementById('drawerTableBadge');
       if (tblBadge) tblBadge.textContent = curTbl.name;
-      document.getElementById('drawerTotalText').textContent = total.toLocaleString('vi-VN') + ' đ';
+      const drawerTotal = document.getElementById('drawerTotalText');
+      if (drawerTotal) drawerTotal.textContent = total.toLocaleString('vi-VN') + ' đ';
 
-      // Render Drawer List
+      // 2. Desktop Aside Checkout Elements
+      const dtBadge = document.getElementById('desktopTableBadge');
+      if (dtBadge) dtBadge.textContent = curTbl.name;
+      const dtCount = document.getElementById('desktopItemCountBadge');
+      if (dtCount) dtCount.textContent = `${count} món`;
+      const dtSubCount = document.getElementById('desktopSubtotalCount');
+      if (dtSubCount) dtSubCount.textContent = count;
+      const dtSubtotal = document.getElementById('desktopSubtotalText');
+      if (dtSubtotal) dtSubtotal.textContent = total.toLocaleString('vi-VN') + ' đ';
+      const dtName = document.getElementById('desktopTableNameText');
+      if (dtName) dtName.textContent = curTbl.name;
+      const dtTotal = document.getElementById('desktopTotalText');
+      if (dtTotal) dtTotal.textContent = total.toLocaleString('vi-VN') + ' đ';
+      const dtTime = document.getElementById('desktopTableTime');
+      if (dtTime) dtTime.textContent = curTbl.openTime ? `Vào: ${curTbl.openTime}` : 'Mới mở';
+
+      // Render Mobile Drawer List
       const list = document.getElementById('drawerCartList');
-      if (cart.length === 0) {
-        list.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs">Chưa có món nào cho ${curTbl.name}</div>`;
-      } else {
-        list.innerHTML = cart.map(item => `
-          <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex items-center justify-between shadow-xs">
-            <div class="flex-1 pr-2">
-              <div class="font-bold text-xs text-slate-900 line-clamp-1">${item.name}</div>
-              <div class="text-[11px] text-red-600 font-mono font-bold">${item.price.toLocaleString('vi-VN')} đ</div>
+      if (list) {
+        if (cart.length === 0) {
+          list.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs">Chưa có món nào cho ${curTbl.name}</div>`;
+        } else {
+          list.innerHTML = cart.map(item => `
+            <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex items-center justify-between shadow-xs">
+              <div class="flex-1 pr-2">
+                <div class="font-bold text-xs text-slate-900 line-clamp-1">${item.name}</div>
+                <div class="text-[11px] text-red-600 font-mono font-bold">${item.price.toLocaleString('vi-VN')} đ</div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="updateCartQty(${item.id}, -1)" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center cursor-pointer">-</button>
+                <span class="w-5 text-center font-bold text-xs text-slate-900">${item.qty}</span>
+                <button onclick="updateCartQty(${item.id}, 1)" class="w-7 h-7 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center justify-center cursor-pointer">+</button>
+              </div>
             </div>
-            <div class="flex items-center space-x-2">
-              <button onclick="updateCartQty(${item.id}, -1)" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center cursor-pointer">-</button>
-              <span class="w-5 text-center font-bold text-xs text-slate-900">${item.qty}</span>
-              <button onclick="updateCartQty(${item.id}, 1)" class="w-7 h-7 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center justify-center cursor-pointer">+</button>
+          `).join('');
+        }
+      }
+
+      // Render Desktop Aside Cart List
+      const desktopList = document.getElementById('desktopCartList');
+      if (desktopList) {
+        if (cart.length === 0) {
+          desktopList.innerHTML = `
+            <div class="h-full flex flex-col items-center justify-center py-16 text-slate-400 space-y-2">
+              <div class="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-300 text-2xl">
+                <i class="fa-solid fa-mug-hot"></i>
+              </div>
+              <div class="text-xs font-bold text-slate-600">Chưa có món nào trong đơn</div>
+              <div class="text-[10px] text-slate-400 text-center max-w-[200px]">Chọn món từ thực đơn bên trái hoặc bấm số tiền nhanh</div>
+            </div>`;
+        } else {
+          desktopList.innerHTML = cart.map(item => `
+            <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex items-center justify-between shadow-2xs hover:border-blue-300 transition group">
+              <div class="flex-1 pr-2 min-w-0">
+                <div class="font-bold text-xs text-slate-900 truncate">${item.name}</div>
+                <div class="flex items-center space-x-1.5 text-[11px] mt-0.5">
+                  <span class="text-red-600 font-mono font-black">${item.price.toLocaleString('vi-VN')} đ</span>
+                  <span class="text-slate-400">x${item.qty} =</span>
+                  <span class="text-slate-800 font-mono font-bold">${(item.price * item.qty).toLocaleString('vi-VN')} đ</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-1 shrink-0">
+                <button onclick="updateCartQty(${item.id}, -1)" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center cursor-pointer transition active:scale-95" title="Giảm 1">-</button>
+                <span class="w-5 text-center font-black text-xs text-slate-900 font-mono">${item.qty}</span>
+                <button onclick="updateCartQty(${item.id}, 1)" class="w-7 h-7 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center justify-center cursor-pointer transition active:scale-95" title="Tăng 1">+</button>
+                <button onclick="updateCartQty(${item.id}, -${item.qty})" class="w-7 h-7 rounded-lg hover:bg-red-50 text-slate-300 hover:text-red-600 font-bold flex items-center justify-center cursor-pointer transition ml-0.5" title="Xóa món khỏi đơn">
+                  <i class="fa-solid fa-xmark text-[11px]"></i>
+                </button>
+              </div>
             </div>
-          </div>
-        `).join('');
+          `).join('');
+        }
       }
 
       renderQuickTableBar();
@@ -3036,6 +3213,52 @@
       if (!currentTenant || !currentTenant.features) return true;
       return !!currentTenant.features[feature];
     }
+
+    
+    // ========================================================================
+    // CHẾ ĐỘ MÁY TÍNH: TOÀN MÀN HÌNH (FULLSCREEN F11) & PHÍM TẮT THU NGÂN
+    // ========================================================================
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(err => {
+            console.warn('Lỗi bật toàn màn hình:', err);
+          });
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Phím tắt bàn phím tiện lợi cho thu ngân PC
+    window.addEventListener('keydown', (e) => {
+      // F7: Báo bếp / In tạm
+      if (e.key === 'F7') {
+        e.preventDefault();
+        printKitchenOrderTicket();
+      }
+      // F8: Thanh toán tiền mặt
+      else if (e.key === 'F8') {
+        e.preventDefault();
+        openCashModal();
+      }
+      // F9: Thanh toán quét VietQR
+      else if (e.key === 'F9') {
+        e.preventDefault();
+        openQrModal();
+      }
+      // Escape: Đóng các modal đang mở
+      else if (e.key === 'Escape') {
+        ['cashModal', 'qrModal', 'tableMapModal', 'transferTableModal', 'recipeModal', 'restockModal', 'tenantModal', 'shopSettingsModal'].forEach(id => {
+          const m = document.getElementById(id);
+          if (m && !m.classList.contains('hidden')) {
+            m.classList.add('hidden');
+          }
+        });
+      }
+    });
 
     // 17. SERVICE WORKER & PWA INSTALL PROMPT
     let deferredPrompt = null;
