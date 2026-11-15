@@ -132,23 +132,74 @@
     <div class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 min-w-0">
 
       <!-- ================= TABS CHỌN CHẾ ĐỘ BÁN (NỀN TRẮNG - XANH DƯƠNG) ================= -->
-      <nav class="bg-white border-b border-slate-200 px-1.5 py-1.5 flex items-center justify-around text-xs font-bold flex-shrink-0 shadow-xs gap-1">
-    <button onclick="switchMode('menu')" id="tabBtn-menu" class="mode-tab active flex-1 py-1.5 text-center rounded-xl bg-blue-600 text-white shadow transition cursor-pointer text-[11px]">
-      <i class="fa-solid fa-mug-saucer mr-0.5"></i> Món
-    </button>
-    <button onclick="switchMode('kds')" id="tabBtn-kds" class="mode-tab flex-1 py-1.5 text-center rounded-xl text-slate-600 hover:text-blue-700 transition cursor-pointer text-[11px] relative">
-      <i class="fa-solid fa-fire-burner mr-0.5"></i> Bếp (<span id="kdsTabBadge" class="text-orange-600 font-black">0</span>)
-    </button>
-    <button onclick="switchMode('numpad')" id="tabBtn-numpad" class="mode-tab flex-1 py-1.5 text-center rounded-xl text-slate-600 hover:text-blue-700 transition cursor-pointer text-[11px]">
-      <i class="fa-solid fa-calculator mr-0.5"></i> Bấm
-    </button>
-    <button onclick="switchMode('inventory')" id="tabBtn-inventory" class="mode-tab flex-1 py-1.5 text-center rounded-xl text-slate-600 hover:text-blue-700 transition cursor-pointer text-[11px] relative">
-      <i class="fa-solid fa-boxes-stacked mr-0.5"></i> Kho (<span id="inventoryAlertCount" class="text-emerald-600 font-black">0</span>)
-    </button>
-    <button onclick="switchMode('history')" id="tabBtn-history" class="mode-tab flex-1 py-1.5 text-center rounded-xl text-slate-600 hover:text-blue-700 transition cursor-pointer text-[11px]">
-      <i class="fa-solid fa-clock-rotate-left mr-0.5"></i> Đã Bán (<span id="historyCount">0</span>)
-    </button>
-  </nav>
+      <!-- ================= THANH ĐIỀU HƯỚNG 5 MÀN HÌNH CHUYÊN NGHIỆP (5-SCREEN POS DOCK) ================= -->
+      <nav class="bg-white border-b border-slate-200 px-2 py-2 flex items-center justify-between text-xs font-bold flex-shrink-0 shadow-xs gap-1 sm:gap-2">
+        
+        <!-- 1. MÀN HÌNH PHỤC VỤ (Waiter View) -->
+        <button onclick="switchMode('menu')" id="tabBtn-menu" class="mode-tab active flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-blue-600 text-white shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 border border-transparent">
+          <div class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-mug-saucer text-xs"></i>
+          </div>
+          <div class="text-center sm:text-left min-w-0">
+            <span class="block text-[10px] sm:text-xs font-black leading-tight truncate">1. Phục Vụ</span>
+            <span class="hidden md:block text-[9px] text-blue-100 font-normal leading-none truncate">Menu & Bàn</span>
+          </div>
+        </button>
+
+        <!-- 2. MÀN HÌNH THU NGÂN (Cashier View) -->
+        <button onclick="switchMode('cashier')" id="tabBtn-cashier" class="mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95">
+          <div class="w-6 h-6 rounded-lg bg-blue-100/60 text-blue-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-cash-register text-xs"></i>
+          </div>
+          <div class="text-center sm:text-left min-w-0">
+            <span class="block text-[10px] sm:text-xs font-black leading-tight truncate">2. Thu Ngân</span>
+            <span class="hidden md:block text-[9px] text-slate-400 font-normal leading-none truncate">Bấm tiền & Bill</span>
+          </div>
+        </button>
+
+        <!-- 3. MÀN HÌNH BẾP & BAR (Kitchen KDS View) -->
+        <button onclick="switchMode('kds')" id="tabBtn-kds" class="mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 relative">
+          <div class="w-6 h-6 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-fire-burner text-xs"></i>
+          </div>
+          <div class="text-center sm:text-left min-w-0">
+            <div class="flex items-center justify-center sm:justify-start gap-1">
+              <span class="text-[10px] sm:text-xs font-black leading-tight truncate">3. Bếp / Bar</span>
+              <span id="kdsTabBadge" class="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[9px] font-black shadow-xs shrink-0">0</span>
+            </div>
+            <span class="hidden md:block text-[9px] text-slate-400 font-normal leading-none truncate">Thẻ món KDS</span>
+          </div>
+        </button>
+
+        <!-- 4. MÀN HÌNH KHO & ĐỊNH MỨC (Inventory BOM View) -->
+        <button onclick="switchMode('inventory')" id="tabBtn-inventory" class="mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95 relative">
+          <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-boxes-stacked text-xs"></i>
+          </div>
+          <div class="text-center sm:text-left min-w-0">
+            <div class="flex items-center justify-center sm:justify-start gap-1">
+              <span class="text-[10px] sm:text-xs font-black leading-tight truncate">4. Kho BOM</span>
+              <span id="inventoryAlertCount" class="px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-black border border-emerald-200 shrink-0">Đủ</span>
+            </div>
+            <span class="hidden md:block text-[9px] text-slate-400 font-normal leading-none truncate">Định mức & Tồn</span>
+          </div>
+        </button>
+
+        <!-- 5. MÀN HÌNH CHỐT CA & TÀI CHÍNH (Finance EOD View) -->
+        <button onclick="switchMode('finance')" id="tabBtn-finance" class="mode-tab flex-1 py-1.5 px-1 sm:px-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 cursor-pointer transition-all duration-150 active:scale-95">
+          <div class="w-6 h-6 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-chart-pie text-xs"></i>
+          </div>
+          <div class="text-center sm:text-left min-w-0">
+            <div class="flex items-center justify-center sm:justify-start gap-1">
+              <span class="text-[10px] sm:text-xs font-black leading-tight truncate">5. Chốt Ca</span>
+              <span id="financeOrderBadge" class="px-1.5 py-0.2 rounded-full bg-blue-100 text-blue-700 text-[9px] font-black shrink-0">0</span>
+            </div>
+            <span class="hidden md:block text-[9px] text-slate-400 font-normal leading-none truncate">Thu - Chi & Lời lỗ</span>
+          </div>
+        </button>
+
+      </nav>
 
   <!-- ================= VÙNG NỘI DUNG CHÍNH (NỀN TRẮNG SÁNG) ================= -->
   <main class="flex-1 overflow-hidden relative bg-slate-50">
@@ -223,7 +274,34 @@
     </div>
 
     <!-- 2. CHẾ ĐỘ 2: BÀN PHÍM CASIO NHẬP TIỀN NHANH (NỀN TRẮNG SÁNG) -->
-    <div id="viewMode-numpad" class="hidden h-full flex flex-col justify-between p-3 sm:p-6 bg-white max-w-lg mx-auto w-full">
+    <div id="viewMode-cashier" class="hidden h-full flex flex-col justify-between p-3 sm:p-5 bg-white max-w-xl mx-auto w-full space-y-3">
+      <!-- Thanh Tác Vụ Thu Ngân Nhanh (Top Cashier Bar) -->
+      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between shrink-0 shadow-2xs">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs font-bold shadow-xs">
+            <i class="fa-solid fa-cash-register"></i>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-400 uppercase font-bold">Quầy Thu Ngân</div>
+            <div class="text-xs font-black text-slate-800 flex items-center gap-1.5">
+              <span id="cashierCurrentTableText" class="text-blue-700">Mang Về</span>
+              <span>•</span>
+              <span id="cashierCurrentCartTotalText" class="text-red-600 font-mono font-bold">0 đ</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-1.5">
+          <button onclick="openCashModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1 shadow-xs cursor-pointer active:scale-95 transition">
+            <i class="fa-solid fa-money-bill-wave text-[10px]"></i>
+            <span>Tiền Mặt (F8)</span>
+          </button>
+          <button onclick="openQrModal()" class="px-2.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold flex items-center gap-1 shadow-xs cursor-pointer active:scale-95 transition">
+            <i class="fa-solid fa-qrcode text-[10px]"></i>
+            <span>VietQR (F9)</span>
+          </button>
+        </div>
+      </div>
       <!-- Màn hình hiển thị số tiền & phép tính -->
       <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-right shadow-inner relative">
         <div class="flex items-center justify-between text-xs text-slate-500 uppercase font-bold mb-1">
@@ -276,16 +354,59 @@
     </div>
 
     <!-- 3. CHẾ ĐỘ 3: LỊCH SỬ ĐƠN HÀNG HÔM NAY (NỀN TRẮNG SÁNG) -->
-    <div id="viewMode-history" class="hidden h-full flex flex-col p-3 overflow-y-auto no-scrollbar space-y-2.5 bg-slate-50">
-      <div class="flex items-center justify-between text-xs font-bold text-slate-600 mb-0.5">
-        <span class="flex items-center gap-1.5 text-slate-800">
-          <i class="fa-solid fa-list-check text-blue-600"></i>
-          <span>CÁC ĐƠN ĐÃ BÁN HÔM NAY</span>
+    <div id="viewMode-finance" class="hidden h-full flex flex-col p-3 overflow-y-auto no-scrollbar space-y-3 bg-slate-50">
+      <!-- 3 Thẻ Tóm Tắt Tài Chính Cực Kỳ Trực Quan (Finance Dashboard) -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+        <!-- Thẻ 1: Tổng Doanh Thu Trong Ca -->
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-500 text-[10px] uppercase font-bold">
+            <span class="flex items-center gap-1"><i class="fa-solid fa-coins text-blue-600"></i> Tổng Doanh Thu</span>
+            <span class="px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 font-black text-[9px]" id="finOrderCountText">0 đơn</span>
+          </div>
+          <div class="text-xl font-black text-blue-700 font-mono tracking-tight mt-1" id="finTotalRevText">0 đ</div>
+          <div class="flex items-center justify-between text-[10px] text-slate-400 mt-1 pt-1.5 border-t border-slate-100">
+            <span>Tiền mặt: <strong class="text-slate-700 font-mono" id="finCashRevText">0đ</strong></span>
+            <span>VietQR: <strong class="text-red-600 font-mono" id="finQrRevText">0đ</strong></span>
+          </div>
+        </div>
+
+        <!-- Thẻ 2: Chi Đi Chợ Trong Ca -->
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-500 text-[10px] uppercase font-bold">
+            <span class="flex items-center gap-1"><i class="fa-solid fa-cart-arrow-down text-yellow-600"></i> Chi Đi Chợ</span>
+            <button onclick="openExpenseModal()" class="px-2 py-0.5 rounded-lg bg-yellow-50 hover:bg-yellow-100 text-yellow-800 text-[10px] font-bold border border-yellow-200 cursor-pointer">+ Ghi Chi</button>
+          </div>
+          <div class="text-xl font-black text-yellow-600 font-mono tracking-tight mt-1" id="finTotalExpText">0 đ</div>
+          <div class="text-[10px] text-slate-400 mt-1 pt-1.5 border-t border-slate-100" id="finExpCountText">
+            0 khoản chi phát sinh
+          </div>
+        </div>
+
+        <!-- Thẻ 3: Tiền Mặt Két & Chốt Sổ -->
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-500 text-[10px] uppercase font-bold">
+            <span class="flex items-center gap-1"><i class="fa-solid fa-vault text-emerald-600"></i> Tiền Két Thực Tế</span>
+            <button onclick="openEodModal()" class="px-2.5 py-0.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-[10px] font-black shadow-xs cursor-pointer active:scale-95 transition">Chốt Ca</button>
+          </div>
+          <div class="text-xl font-black text-emerald-600 font-mono tracking-tight mt-1" id="finCashInDrawerText">0 đ</div>
+          <div class="text-[10px] text-slate-400 mt-1 pt-1.5 border-t border-slate-100">
+            Tiền mặt cần bàn giao cuối ca
+          </div>
+        </div>
+      </div>
+
+      <!-- Tiêu Đề Danh Sách Các Đơn Đã Bán Trong Ca -->
+      <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <span class="font-black text-xs text-slate-800 flex items-center gap-1.5 uppercase">
+          <i class="fa-solid fa-clock-rotate-left text-blue-600"></i>
+          <span>Lịch Sử Đơn Bán Trong Ngày</span>
         </span>
         <button onclick="clearHistoryConfirm()" class="text-red-600 text-[10px] hover:underline flex items-center gap-1 cursor-pointer">
           <i class="fa-solid fa-trash-can"></i> Xóa dữ liệu
         </button>
       </div>
+
+      <!-- Lưới Danh Sách Đơn Hàng Đã Bán -->
       <div id="historyListContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
         <!-- Render Javascript -->
       </div>
@@ -1540,6 +1661,7 @@
       applyTenantInfo();
       updateDisplayModeButton();
       renderQuickTableBar();
+      if (typeof updateCashierQuickStatus === "function") updateCashierQuickStatus();
       renderProducts();
       updateCartUI();
       renderHistory();
@@ -1896,29 +2018,53 @@
       drawer.classList.toggle('hidden');
     }
 
-    // 7. CHUYỂN TAB CHẾ ĐỘ
+    // 7. CHUYỂN 5 MÀN HÌNH CHUYÊN NGHIỆP
     function switchMode(mode) {
-      document.querySelectorAll('.mode-tab').forEach(t => {
-        t.classList.remove('active', 'bg-blue-600', 'text-white');
-        t.classList.add('text-slate-600');
-      });
-      document.getElementById(`tabBtn-${mode}`).classList.add('active', 'bg-blue-600', 'text-white');
-      document.getElementById(`tabBtn-${mode}`).classList.remove('text-slate-600');
+      // Hỗ trợ alias cũ
+      if (mode === 'numpad') mode = 'cashier';
+      if (mode === 'history') mode = 'finance';
 
-      document.getElementById('viewMode-menu').classList.add('hidden');
-      document.getElementById('viewMode-numpad').classList.add('hidden');
-      document.getElementById('viewMode-inventory').classList.add('hidden');
-      document.getElementById('viewMode-history').classList.add('hidden');
-      const kdsView = document.getElementById('viewMode-kds');
-      if (kdsView) kdsView.classList.add('hidden');
-      document.getElementById(`viewMode-${mode}`).classList.remove('hidden');
+      document.querySelectorAll('.mode-tab').forEach(t => {
+        t.classList.remove('active', 'bg-blue-600', 'text-white', 'shadow-sm', 'border-transparent');
+        t.classList.add('bg-slate-50', 'text-slate-700', 'border-slate-200/80');
+      });
+
+      const activeBtn = document.getElementById(`tabBtn-${mode}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-sm', 'border-transparent');
+        activeBtn.classList.remove('bg-slate-50', 'text-slate-700', 'border-slate-200/80');
+      }
+
+      // Ẩn tất cả 5 màn hình
+      const screenIds = ['viewMode-menu', 'viewMode-cashier', 'viewMode-kds', 'viewMode-inventory', 'viewMode-finance'];
+      screenIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+
+      // Hiện màn hình được chọn
+      const currentView = document.getElementById(`viewMode-${mode}`);
+      if (currentView) currentView.classList.remove('hidden');
       playBeep(550, 0.04);
 
       if (mode === 'inventory') {
         renderInventoryUI();
       } else if (mode === 'kds') {
         renderKdsUI();
+      } else if (mode === 'finance') {
+        renderHistory();
+      } else if (mode === 'cashier') {
+        updateCashierQuickStatus();
       }
+    }
+
+    function updateCashierQuickStatus() {
+      const curTbl = getCurrentTable();
+      const total = getCartTotal();
+      const tblEl = document.getElementById('cashierCurrentTableText');
+      if (tblEl) tblEl.textContent = curTbl.name;
+      const totEl = document.getElementById('cashierCurrentCartTotalText');
+      if (totEl) totEl.textContent = total.toLocaleString('vi-VN') + ' đ';
     }
 
     // 8. BÀN PHÍM CASIO NHẬP TIỀN NHANH (NUMPAD)
@@ -2428,14 +2574,42 @@
       showToast(`Đã truyền đơn ${curTbl.name} xuống Bếp & Quầy Bar (KDS) thành công!`);
     }
 
-    // 12. RENDER LỊCH SỬ ĐƠN
+    // 12. RENDER LỊCH SỬ ĐƠN & TÀI CHÍNH CHỐT CA
     function renderHistory() {
-      document.getElementById('historyCount').textContent = ordersHistory.length;
-      document.getElementById('headerOrderCount').textContent = `${ordersHistory.length} đơn`;
+      const totalCount = ordersHistory.length;
+      const historyEl = document.getElementById('historyCount');
+      if (historyEl) historyEl.textContent = totalCount;
+      const headerEl = document.getElementById('headerOrderCount');
+      if (headerEl) headerEl.textContent = `${totalCount} đơn`;
+      const finBadge = document.getElementById('financeOrderBadge');
+      if (finBadge) finBadge.textContent = totalCount;
+      const finOrderCount = document.getElementById('finOrderCountText');
+      if (finOrderCount) finOrderCount.textContent = `${totalCount} đơn`;
+
+      // Tính toán số liệu tài chính trong ca
+      const totalRev = ordersHistory.reduce((s, o) => s + (o.total || 0), 0);
+      const cashRev = ordersHistory.filter(o => o.method !== 'VietQR').reduce((s, o) => s + (o.total || 0), 0);
+      const qrRev = ordersHistory.filter(o => o.method === 'VietQR').reduce((s, o) => s + (o.total || 0), 0);
+      const totalExp = expensesHistory.reduce((s, e) => s + (e.amount || 0), 0);
+      const cashInDrawer = Math.max(0, cashRev - totalExp);
+
+      const finTotalRev = document.getElementById('finTotalRevText');
+      if (finTotalRev) finTotalRev.textContent = totalRev.toLocaleString('vi-VN') + ' đ';
+      const finCashRev = document.getElementById('finCashRevText');
+      if (finCashRev) finCashRev.textContent = cashRev.toLocaleString('vi-VN') + 'đ';
+      const finQrRev = document.getElementById('finQrRevText');
+      if (finQrRev) finQrRev.textContent = qrRev.toLocaleString('vi-VN') + 'đ';
+      const finTotalExp = document.getElementById('finTotalExpText');
+      if (finTotalExp) finTotalExp.textContent = totalExp.toLocaleString('vi-VN') + ' đ';
+      const finExpCount = document.getElementById('finExpCountText');
+      if (finExpCount) finExpCount.textContent = `${expensesHistory.length} khoản chi phát sinh`;
+      const finDrawer = document.getElementById('finCashInDrawerText');
+      if (finDrawer) finDrawer.textContent = cashInDrawer.toLocaleString('vi-VN') + ' đ';
 
       const c = document.getElementById('historyListContainer');
+      if (!c) return;
       if (ordersHistory.length === 0) {
-        c.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs">Chưa có đơn nào hôm nay</div>`;
+        c.innerHTML = `<div class="col-span-full text-center py-10 text-slate-400 text-xs">Chưa có đơn nào hôm nay</div>`;
         return;
       }
       c.innerHTML = ordersHistory.map(o => `
