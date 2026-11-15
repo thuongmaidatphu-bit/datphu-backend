@@ -207,10 +207,17 @@
             <span class="hidden sm:inline">Đổi Bàn</span>
           </button>
           <!-- Nút mở Sơ đồ bàn toàn cảnh -->
-          <button onclick="openTableMapModal()" class="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-black shadow-2xs flex items-center gap-1.5 cursor-pointer transition active:scale-95" title="Xem sơ đồ bàn toàn cảnh">
-            <i class="fa-solid fa-chair text-[10px]"></i>
-            <span id="occupiedTableCountBadge">0/8 bàn</span>
-          </button>
+          <div class="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-300">
+            <button onclick="setServiceSubView('menu')" id="btnSubViewMenu" class="px-2 py-0.5 rounded font-black text-[11px] bg-blue-600 text-white shadow-2xs flex items-center gap-1 cursor-pointer transition" title="Chế độ chọn món">
+              <i class="fa-solid fa-utensils text-[10px]"></i>
+              <span class="hidden lg:inline">Thực Đơn</span>
+            </button>
+            <button onclick="setServiceSubView('tablemap')" id="btnSubViewTableMap" class="px-2 py-0.5 rounded font-bold text-[11px] text-slate-700 hover:text-blue-700 flex items-center gap-1 cursor-pointer transition" title="Chế độ sơ đồ bàn toàn cảnh">
+              <i class="fa-solid fa-chair text-[10px]"></i>
+              <span class="hidden lg:inline">Sơ Đồ Bàn</span>
+              <span id="occupiedTableCountBadge" class="ml-0.5 text-[9px] px-1 py-0.2 rounded-full bg-blue-100 text-blue-700 font-black">0/16</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -242,9 +249,32 @@
         </div>
       </div>
 
-      <!-- Lưới danh sách món ăn / đồ uống (NỀN TRẮNG - CHỮ RÕ NÉT - GIÁ ĐỎ) -->
+      <!-- 1. VÙNG THỰC ĐƠN MÓN ĂN / ĐỒ UỐNG -->
       <div class="flex-1 p-2.5 sm:p-3 overflow-y-auto no-scrollbar grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 sm:gap-3" id="productsGrid">
         <!-- Render Javascript -->
+      </div>
+
+      <!-- 2. VÙNG SƠ ĐỒ BÀN TOÀN CẢNH TRỰC QUAN (FULL FLOOR MAP) -->
+      <div id="tableMapFullContainer" class="hidden flex-1 p-3 sm:p-4 overflow-y-auto no-scrollbar flex-col bg-slate-50 space-y-3">
+        <!-- Thanh bộ lọc khu vực & chú thích sơ đồ bàn -->
+        <div class="bg-white p-2.5 rounded-2xl border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-2 shrink-0">
+          <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar" id="fullMapZoneChips">
+            <button onclick="filterFullMapZone('all')" id="fullMapChip-all" class="px-2.5 py-1 rounded-lg text-xs font-black bg-blue-600 text-white shadow-2xs cursor-pointer">Tất Cả (17)</button>
+            <button onclick="filterFullMapZone('tret')" id="fullMapChip-tret" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 cursor-pointer">Tầng Trệt (8 bàn)</button>
+            <button onclick="filterFullMapZone('ngoaitroi')" id="fullMapChip-ngoaitroi" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 cursor-pointer">Sân Vườn / Vỉa Hè (8 bàn)</button>
+            <button onclick="filterFullMapZone('takeaway')" id="fullMapChip-takeaway" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 cursor-pointer">Mang Về</button>
+          </div>
+          <div class="flex items-center gap-3 text-[11px] font-bold text-slate-500">
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-200 border border-slate-300"></span> Trống</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> Đang phục vụ</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span> Có khách</span>
+          </div>
+        </div>
+
+        <!-- Lưới Ma Trận Sơ Đồ Bàn Rộng Rãi -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-3" id="fullFloorMapGrid">
+          <!-- Render Javascript -->
+        </div>
       </div>
     </div>
 
@@ -1500,15 +1530,31 @@
       { id: "tbl_2", name: "Bàn 2", zone: "tret", status: "empty", cart: [], openTime: null },
       { id: "tbl_3", name: "Bàn 3", zone: "tret", status: "empty", cart: [], openTime: null },
       { id: "tbl_4", name: "Bàn 4", zone: "tret", status: "empty", cart: [], openTime: null },
-      { id: "tbl_5", name: "Bàn 5", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
-      { id: "tbl_6", name: "Bàn 6", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
-      { id: "tbl_7", name: "Bàn 7", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
-      { id: "tbl_8", name: "Bàn 8", zone: "lau1", status: "empty", cart: [], openTime: null }
+      { id: "tbl_5", name: "Bàn 5", zone: "tret", status: "empty", cart: [], openTime: null },
+      { id: "tbl_6", name: "Bàn 6", zone: "tret", status: "empty", cart: [], openTime: null },
+      { id: "tbl_7", name: "Bàn 7", zone: "tret", status: "empty", cart: [], openTime: null },
+      { id: "tbl_8", name: "Bàn 8", zone: "tret", status: "empty", cart: [], openTime: null },
+      { id: "tbl_9", name: "Bàn 9", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
+      { id: "tbl_10", name: "Bàn 10", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
+      { id: "tbl_11", name: "Bàn 11", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
+      { id: "tbl_12", name: "Bàn 12", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
+      { id: "tbl_13", name: "Bàn 13", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
+      { id: "tbl_14", name: "Bàn 14", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
+      { id: "tbl_15", name: "Bàn 15", zone: "ngoaitroi", status: "empty", cart: [], openTime: null },
+      { id: "tbl_16", name: "Bàn 16", zone: "ngoaitroi", status: "empty", cart: [], openTime: null }
     ];
 
     let tables = JSON.parse(localStorage.getItem('dp_pos_tables')) || DEFAULT_TABLES;
+    if (tables.length < DEFAULT_TABLES.length) {
+      DEFAULT_TABLES.forEach(dt => {
+        if (!tables.some(t => t.id === dt.id)) tables.push(dt);
+      });
+      localStorage.setItem('dp_pos_tables', JSON.stringify(tables));
+    }
+
     let currentTableId = localStorage.getItem('dp_current_table_id') || 'takeaway';
     let currentTableZoneFilter = 'all';
+    let serviceSubView = 'menu'; // 'menu' hoặc 'tablemap'
 
     function getCurrentTable() {
       let t = tables.find(x => x.id === currentTableId);
@@ -1712,6 +1758,135 @@
         btn.className = "px-2 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold flex items-center gap-1 shrink-0 cursor-pointer transition";
         btn.innerHTML = `<i class="fa-solid fa-list text-slate-500"></i><span class="text-[10px] hidden sm:inline">Gọn</span>`;
       }
+    }
+
+    
+    // ========================================================================
+    // CHẾ ĐỘ XEM SƠ ĐỒ BÀN TOÀN CẢNH (FULL FLOOR MAP)
+    // ========================================================================
+    let fullMapZoneFilter = 'all';
+
+    function setServiceSubView(view) {
+      serviceSubView = view;
+      const btnMenu = document.getElementById('btnSubViewMenu');
+      const btnMap = document.getElementById('btnSubViewTableMap');
+      const pGrid = document.getElementById('productsGrid');
+      const mMap = document.getElementById('tableMapFullContainer');
+      const catRow = document.getElementById('categoryChipsContainer') ? document.getElementById('categoryChipsContainer').parentElement : null;
+
+      if (view === 'tablemap') {
+        if (btnMenu) btnMenu.className = "px-2 py-0.5 rounded font-bold text-[11px] text-slate-700 hover:text-blue-700 flex items-center gap-1 cursor-pointer transition";
+        if (btnMap) btnMap.className = "px-2 py-0.5 rounded font-black text-[11px] bg-blue-600 text-white shadow-2xs flex items-center gap-1 cursor-pointer transition";
+        if (pGrid) pGrid.classList.add('hidden');
+        if (catRow) catRow.classList.add('hidden');
+        if (mMap) {
+          mMap.classList.remove('hidden');
+          mMap.classList.add('flex');
+        }
+        renderFullFloorMap();
+        playBeep(700, 0.03);
+      } else {
+        if (btnMenu) btnMenu.className = "px-2 py-0.5 rounded font-black text-[11px] bg-blue-600 text-white shadow-2xs flex items-center gap-1 cursor-pointer transition";
+        if (btnMap) btnMap.className = "px-2 py-0.5 rounded font-bold text-[11px] text-slate-700 hover:text-blue-700 flex items-center gap-1 cursor-pointer transition";
+        if (pGrid) pGrid.classList.remove('hidden');
+        if (catRow) catRow.classList.remove('hidden');
+        if (mMap) {
+          mMap.classList.add('hidden');
+          mMap.classList.remove('flex');
+        }
+        renderProducts();
+        playBeep(650, 0.03);
+      }
+    }
+
+    function filterFullMapZone(zone) {
+      fullMapZoneFilter = zone;
+      ['all', 'tret', 'ngoaitroi', 'takeaway'].forEach(z => {
+        const chip = document.getElementById('fullMapChip-' + z);
+        if (chip) {
+          if (z === zone) {
+            chip.className = "px-2.5 py-1 rounded-lg text-xs font-black bg-blue-600 text-white shadow-2xs cursor-pointer";
+          } else {
+            chip.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 cursor-pointer";
+          }
+        }
+      });
+      renderFullFloorMap();
+    }
+
+    function renderFullFloorMap() {
+      const container = document.getElementById('fullFloorMapGrid');
+      if (!container) return;
+
+      let filtered = tables;
+      if (fullMapZoneFilter !== 'all') {
+        filtered = tables.filter(t => t.zone === fullMapZoneFilter);
+      }
+
+      container.innerHTML = filtered.map(t => {
+        const isActive = t.id === currentTableId;
+        const isOcc = t.status === 'occupied' && t.cart && t.cart.length > 0;
+        const tTotal = (t.cart || []).reduce((s, x) => s + x.price * x.qty, 0);
+        const totalItemsCount = (t.cart || []).reduce((s, x) => s + x.qty, 0);
+        const zoneName = t.zone === 'tret' ? 'Trong nhà' : (t.zone === 'ngoaitroi' ? 'Sân vườn/Hẻm' : (t.zone === 'takeaway' ? 'Mang đi' : 'Lầu 1'));
+
+        let itemsSummary = '';
+        if (isOcc) {
+          itemsSummary = t.cart.map(i => `${i.qty}x ${i.name}`).slice(0, 3).join('<br>');
+          if (t.cart.length > 3) itemsSummary += `<br><span class="text-blue-600 font-bold">+ ${t.cart.length - 3} món khác...</span>`;
+        }
+
+        return `
+          <div onclick="switchTable('${t.id}'); setServiceSubView('menu');" class="bg-white p-3.5 rounded-2xl border ${isActive ? 'border-blue-500 ring-2 ring-blue-500/50 bg-blue-50/20' : (isOcc ? 'border-red-300 bg-red-50/20 shadow-xs' : 'border-slate-200 hover:border-blue-400')} hover:shadow-md transition cursor-pointer relative flex flex-col justify-between group">
+            
+            <!-- Đỉnh ô bàn: Tên bàn & Trạng thái -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-1.5">
+                  <div class="w-7 h-7 rounded-lg ${isOcc ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-700'} flex items-center justify-center text-xs font-black shadow-2xs">
+                    <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'}"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-black text-xs text-slate-900">${t.name}</h4>
+                    <span class="text-[9px] text-slate-400 font-medium">${zoneName}</span>
+                  </div>
+                </div>
+
+                <!-- Badge trạng thái -->
+                ${isOcc ? `
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-red-600 text-white animate-pulse shadow-2xs flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span> Có khách
+                  </span>
+                ` : `
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+                    Trống
+                  </span>
+                `}
+              </div>
+
+              <!-- Nội dung đơn hàng của bàn -->
+              <div class="my-2 min-h-[44px] text-[11px] leading-tight ${isOcc ? 'text-slate-700' : 'text-slate-400 italic flex items-center justify-center'} bg-slate-50 p-2 rounded-xl border border-slate-100">
+                ${isOcc ? itemsSummary : 'Bàn trống • Sẵn sàng đón khách'}
+              </div>
+            </div>
+
+            <!-- Chân ô bàn: Tổng tiền & Nút bấm vào bàn -->
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+              <div>
+                <span class="text-[9px] text-slate-400 block font-medium">${isOcc ? totalItemsCount + ' món' : 'Tạm tính'}</span>
+                <span class="font-black font-mono text-xs ${isOcc ? 'text-red-600 font-bold' : 'text-slate-400'}">
+                  ${tTotal > 0 ? tTotal.toLocaleString('vi-VN') + ' đ' : '0 đ'}
+                </span>
+              </div>
+              
+              <button class="px-2.5 py-1 rounded-lg ${isOcc ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700 group-hover:bg-blue-600 group-hover:text-white'} text-[10px] font-black transition flex items-center gap-1 shadow-2xs">
+                <span>${isOcc ? 'Xem Đơn' : '+ Vào Bàn'}</span>
+                <i class="fa-solid fa-arrow-right text-[8px]"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function renderProducts() {
@@ -2559,6 +2734,9 @@
 
 
     function renderQuickTableBar() {
+      if (typeof serviceSubView !== 'undefined' && serviceSubView === 'tablemap') {
+        renderFullFloorMap();
+      }
       const container = document.getElementById('quickTableChipsContainer');
       if (!container) return;
 
