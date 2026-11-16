@@ -755,11 +755,9 @@
       }
     }
 
-    // Chọn bàn từ Sơ đồ bàn -> Cập nhật ngay Phiếu thu ngân bên phải
+    // Chọn bàn từ Sơ đồ bàn -> Cập nhật ngay Phiếu thu ngân bên phải (Giữ nguyên trạng thái bàn!)
     function selectTable(id) {
       currentTableId = id;
-      const t = tables.find(x => x.id === currentTableId);
-      if (t) t.isCheckingOut = false;
       renderTables();
       renderCart();
       playBeep(650, 0.03);
@@ -893,7 +891,18 @@
         }
 
         const isSelected = t.id === currentTableId;
-        const selectedRing = isSelected ? "ring-4 ring-blue-600 shadow-xl scale-[1.02] border-blue-600" : "shadow-xs";
+        let selectedRing = "shadow-xs";
+        if (isSelected) {
+          if (step === 4) {
+            selectedRing = "ring-4 ring-rose-400 shadow-2xl scale-[1.03] border-rose-600 animate-pulse";
+          } else if (step === 3) {
+            selectedRing = "ring-4 ring-amber-400 shadow-xl scale-[1.02] border-amber-500";
+          } else if (step === 2) {
+            selectedRing = "ring-4 ring-blue-500 shadow-xl scale-[1.02] border-blue-600";
+          } else {
+            selectedRing = "ring-4 ring-slate-400 shadow-lg scale-[1.02] border-slate-600";
+          }
+        }
 
         return `
           <div onclick="selectTable('${t.id}')" ondblclick="openMenuModal()" 
@@ -1481,10 +1490,7 @@
     }
 
     function closeCheckoutModal() {
-      const t = tables.find(x => x.id === currentTableId);
-      if (t) t.isCheckingOut = false;
-      saveState();
-      renderCart();
+      // Đóng modal nhưng GIỮ NGUYÊN trạng thái bàn đang Chờ VietQR (không bị reset về xanh)
       document.getElementById('checkoutModal').classList.add('hidden');
     }
 
