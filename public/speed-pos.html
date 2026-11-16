@@ -946,18 +946,33 @@
               </div>
             </div>
 
-            <!-- 3. CHÂN THẺ: TỔNG TIỀN HOẶC GỢI Ý CHẠM GỌI MÓN -->
-            <div class="px-3.5 py-2 flex items-center justify-between ${footerBg}">
+            <!-- 3. CHÂN THẺ: TỔNG TIỀN & 3 NÚT HÀNH ĐỘNG TRỰC TIẾP (GỌI MÓN - BÁO BẾP - THANH TOÁN) -->
+            <div class="px-2.5 py-2 flex flex-col gap-1.5 ${footerBg}">
               ${isOcc ? `
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tạm tính:</span>
-                <span class="font-mono text-base font-black text-red-600">
-                  ${total.toLocaleString('vi-VN')} đ
-                </span>
+                <div class="flex items-center justify-between px-1">
+                  <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Tạm tính:</span>
+                  <span class="font-mono text-sm sm:text-base font-black text-rose-600">
+                    ${total.toLocaleString('vi-VN')} đ
+                  </span>
+                </div>
+                <!-- 3 Nút Hành Động Trực Tiếp Ngay Tại Bàn -->
+                <div class="grid grid-cols-3 gap-1 pt-1 border-t border-slate-200/60" onclick="event.stopPropagation();">
+                  <button onclick="selectTable('${t.id}'); openMenuModal();" class="py-1.5 px-1 rounded-lg text-[10px] font-black bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 transition flex items-center justify-center gap-0.5 shadow-2xs cursor-pointer" title="Gọi thêm món">
+                    <i class="fa-solid fa-utensils text-[9px]"></i> Gọi Món
+                  </button>
+                  <button onclick="selectTable('${t.id}'); sendKitchen();" class="py-1.5 px-1 rounded-lg text-[10px] font-black ${t.kitchenSent ? 'bg-slate-100 text-slate-500 border border-slate-200' : 'bg-amber-500 text-slate-950 hover:bg-amber-400 border border-amber-600 animate-pulse'} transition flex items-center justify-center gap-0.5 shadow-2xs cursor-pointer" title="Báo bếp KDS">
+                    <i class="fa-solid fa-bell text-[9px]"></i> ${t.kitchenSent ? 'Đã Báo' : 'Báo Bếp'}
+                  </button>
+                  <button onclick="selectTable('${t.id}'); openCheckoutModal('vietqr');" class="py-1.5 px-1 rounded-lg text-[10px] font-black bg-rose-600 text-white hover:bg-rose-700 shadow-2xs transition flex items-center justify-center gap-0.5 cursor-pointer" title="Thanh toán VietQR">
+                    <i class="fa-solid fa-qrcode text-[9px]"></i> Thu Tiền
+                  </button>
+                </div>
               ` : `
-                <span class="text-[11px] font-bold text-blue-600 flex items-center gap-1 cursor-pointer hover:underline" onclick="event.stopPropagation(); selectTable('${t.id}'); openMenuModal();">
-                  <i class="fa-solid fa-plus-circle text-xs"></i> Mở bàn & Thêm món
-                </span>
-                <span class="text-[10px] font-medium text-slate-400">Trống</span>
+                <div class="py-0.5 flex items-center justify-center" onclick="event.stopPropagation();">
+                  <button onclick="selectTable('${t.id}'); openMenuModal();" class="w-full text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center justify-center gap-1.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 transition cursor-pointer">
+                    <i class="fa-solid fa-plus-circle text-xs"></i> + Mở Bàn & Gọi Món
+                  </button>
+                </div>
               `}
             </div>
 
@@ -978,33 +993,56 @@
         filtered = filtered.filter(p => p.name.toLowerCase().includes(q));
       }
 
+      const productImgs = {
+        1: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=350&auto=format&fit=crop&q=80",
+        2: "https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?w=350&auto=format&fit=crop&q=80",
+        3: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=350&auto=format&fit=crop&q=80",
+        4: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=350&auto=format&fit=crop&q=80",
+        5: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=350&auto=format&fit=crop&q=80",
+        6: "https://images.unsplash.com/photo-1547496502-affa22d38842?w=350&auto=format&fit=crop&q=80",
+        7: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=350&auto=format&fit=crop&q=80",
+        8: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=350&auto=format&fit=crop&q=80",
+        9: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=350&auto=format&fit=crop&q=80",
+        10: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=350&auto=format&fit=crop&q=80",
+        11: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=350&auto=format&fit=crop&q=80",
+        12: "https://images.unsplash.com/photo-1546173159-315724a31696?w=350&auto=format&fit=crop&q=80"
+      };
+
       container.innerHTML = filtered.map(p => {
         const inCartItem = currentTable ? currentTable.cart.find(x => x.id === p.id) : null;
         const inCartQty = inCartItem ? inCartItem.qty : 0;
+        const imgUrl = productImgs[p.id] || "https://images.unsplash.com/photo-1546173159-315724a31696?w=350&auto=format&fit=crop&q=80";
 
         return `
           <button onclick="addToCart(${p.id})" 
-                  class="relative p-4 bg-white rounded-2xl border-2 border-slate-200 hover:border-blue-500 hover:shadow-md shadow-xs flex flex-col justify-between text-left active:scale-[0.98] transition cursor-pointer min-h-[105px] group">
+                  class="relative p-2.5 bg-slate-900 rounded-2xl border-2 ${inCartQty > 0 ? 'border-emerald-500 bg-slate-900 shadow-md ring-2 ring-emerald-500/30' : 'border-slate-800 hover:border-emerald-500'} flex flex-col justify-between text-left active:scale-[0.98] transition cursor-pointer min-h-[145px] group overflow-hidden">
             
+            <!-- Ảnh Món Ăn Sắc Nét -->
+            <div class="relative h-20 w-full rounded-xl overflow-hidden bg-slate-950 mb-2">
+              <img src="${imgUrl}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              <span class="absolute top-1.5 left-1.5 bg-black/75 backdrop-blur text-slate-300 text-[9px] font-bold px-1.5 py-0.2 rounded">
+                ${p.cat === 'bun' ? 'Món ăn' : (p.cat === 'coffee' ? 'Cà phê' : 'Nước')}
+              </span>
+            </div>
+
             <!-- Tên món đầy đủ, rõ ràng -->
-            <div class="font-black text-sm sm:text-base text-slate-800 leading-snug group-hover:text-blue-600 transition">
+            <div class="font-black text-xs sm:text-sm text-white leading-snug group-hover:text-emerald-400 transition truncate">
               ${p.name}
             </div>
 
-            <!-- Phân loại & Giá tiền to bự -->
-            <div class="flex items-center justify-between mt-3 pt-2 border-t border-slate-100">
-              <span class="text-xs text-slate-400 font-bold flex items-center gap-1.5">
-                <i class="fa-solid ${p.icon} text-slate-400 group-hover:text-blue-500"></i>
-                <span>${p.cat === 'bun' ? 'Món ăn' : (p.cat === 'coffee' ? 'Cà phê' : 'Nước')}</span>
+            <!-- Giá tiền màu Xanh Lá Neon nổi bật -->
+            <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-800/80">
+              <span class="text-[10px] text-slate-400 font-bold flex items-center gap-1">
+                <i class="fa-solid ${p.icon} text-slate-500"></i>
               </span>
-              <span class="font-mono text-sm sm:text-base font-black text-blue-700">
+              <span class="font-mono text-xs sm:text-sm font-black text-emerald-400">
                 ${p.price.toLocaleString('vi-VN')} đ
               </span>
             </div>
 
             <!-- Badge số lượng đang gọi -->
             ${inCartQty > 0 ? `
-              <div class="absolute -top-2 -right-2 bg-blue-600 text-white font-mono font-black text-xs w-6 h-6 rounded-full flex items-center justify-center shadow-md">
+              <div class="absolute top-1.5 right-1.5 bg-emerald-500 text-black font-mono font-black text-xs w-6 h-6 rounded-full flex items-center justify-center shadow-lg border border-black animate-bounce">
                 ${inCartQty}
               </div>
             ` : ''}
