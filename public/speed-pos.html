@@ -158,6 +158,9 @@
             <button onclick="setTableFilter('kitchen')" id="filterBtn-kitchen" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-100 text-amber-700 hover:bg-amber-50 cursor-pointer transition">
               Đang Nấu 🔔 (<span id="countKitchen">0</span>)
             </button>
+            <button onclick="setTableFilter('ready')" id="filterBtn-ready" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-100 text-emerald-700 hover:bg-emerald-50 cursor-pointer transition">
+              Ra Món 🍽️ (<span id="countReady">0</span>)
+            </button>
             <button onclick="setTableFilter('checkout')" id="filterBtn-checkout" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-100 text-rose-700 hover:bg-rose-50 cursor-pointer transition">
               Chờ QR 💳 (<span id="countCheckout">0</span>)
             </button>
@@ -797,6 +800,7 @@
       if (!t) return 1;
       if (t.isReserved) return 5; // Đặt hẹn trước
       if (t.cart.length === 0) return 1; // Bàn trống
+      if (t.foodReady) return 6; // ĐÃ NẤU XONG - CẦN RA MÓN!
       if (t.isCheckingOut) return 4; // Chờ QR
       if (t.kitchenSent) return 3; // Bếp nấu
       return 2; // Đang phục vụ / Chọn món
@@ -886,7 +890,7 @@
 
     function setTableFilter(filter) {
       currentTableFilter = filter;
-      const filterBtns = ['all', 'empty', 'occupied', 'kitchen', 'checkout', 'reserved'];
+      const filterBtns = ['all', 'empty', 'occupied', 'kitchen', 'ready', 'checkout', 'reserved'];
       filterBtns.forEach(f => {
         const btn = document.getElementById('filterBtn-' + f);
         if (btn) {
@@ -913,7 +917,8 @@
     function renderTables() {
       const container = document.getElementById('fullTablesGrid');
       
-      const occupiedTables = tables.filter(t => t.cart.length > 0 && !t.kitchenSent && !t.isCheckingOut);
+      const occupiedTables = tables.filter(t => t.cart.length > 0 && !t.kitchenSent && !t.isCheckingOut && !t.foodReady);
+      const readyTables = tables.filter(t => t.foodReady);
       const kitchenTables = tables.filter(t => t.kitchenSent);
       const checkoutTables = tables.filter(t => t.isCheckingOut);
       const reservedTables = tables.filter(t => t.isReserved);
@@ -934,6 +939,8 @@
       if (elCountOcc) elCountOcc.textContent = occupiedTables.length.toString();
       const elCountKitchen = document.getElementById('countKitchen');
       if (elCountKitchen) elCountKitchen.textContent = kitchenTables.length.toString();
+      const elCountReady = document.getElementById('countReady');
+      if (elCountReady) elCountReady.textContent = readyTables.length.toString();
       const elCountCheckout = document.getElementById('countCheckout');
       if (elCountCheckout) elCountCheckout.textContent = checkoutTables.length.toString();
       const elCountReserved = document.getElementById('countReserved');
@@ -947,6 +954,7 @@
       if (currentTableFilter === 'empty') displayedTables = displayedTables.filter(t => t.cart.length === 0 && !t.isReserved);
       else if (currentTableFilter === 'occupied') displayedTables = displayedTables.filter(t => t.cart.length > 0 && !t.kitchenSent && !t.isCheckingOut);
       else if (currentTableFilter === 'kitchen') displayedTables = displayedTables.filter(t => t.kitchenSent);
+      else if (currentTableFilter === 'ready') displayedTables = displayedTables.filter(t => t.foodReady);
       else if (currentTableFilter === 'checkout') displayedTables = displayedTables.filter(t => t.isCheckingOut);
       else if (currentTableFilter === 'reserved') displayedTables = displayedTables.filter(t => t.isReserved);
 
@@ -1009,6 +1017,14 @@
           codeBoxStyle = "bg-amber-500 text-white border border-amber-600 shadow-xs";
           subtextColor = "text-amber-800 font-bold";
           footerBg = "bg-amber-50/70 border-t border-amber-100";
+        } else if (step === 6) { // Bếp đã nấu xong - Cần ra món!
+          cardBorder = "border-emerald-500 bg-emerald-50/50 hover:border-emerald-600 shadow-xl ring-2 ring-emerald-400";
+          bannerBg = "bg-emerald-600 text-white border-b border-emerald-700 animate-pulse";
+          badgeBg = "bg-white text-emerald-900 font-black";
+          statusText = "🍽️ RA MÓN NGAY";
+          codeBoxStyle = "bg-emerald-600 text-white border border-emerald-700 shadow-md";
+          subtextColor = "text-emerald-800 font-bold";
+          footerBg = "bg-emerald-100/70 border-t border-emerald-200";
         } else if (step === 4) { // Chờ VietQR
           cardBorder = "border-rose-500 bg-rose-50/40 hover:border-rose-600 shadow-md";
           bannerBg = "bg-rose-600 text-white border-b border-rose-700";
@@ -1022,7 +1038,9 @@
         const isSelected = t.id === currentTableId;
         let selectedRing = "shadow-xs";
         if (isSelected) {
-          if (step === 4) {
+          if (step === 6) {
+            selectedRing = "ring-4 ring-emerald-400 shadow-2xl scale-[1.03] border-emerald-600 animate-pulse";
+          } else if (step === 4) {
             selectedRing = "ring-4 ring-rose-400 shadow-2xl scale-[1.03] border-rose-600 animate-pulse";
           } else if (step === 3) {
             selectedRing = "ring-4 ring-amber-400 shadow-xl scale-[1.02] border-amber-500";
@@ -1074,7 +1092,22 @@
 
             <!-- 3. CHÂN THẺ: TỔNG TIỀN & CÁC NÚT HÀNH ĐỘNG TRỰC TIẾP -->
             <div class="px-2.5 py-2 flex flex-col gap-1.5 ${footerBg}">
-              ${step === 5 ? `
+              ${step === 6 ? `
+                <div class="px-1 py-0.5 flex flex-col gap-1.5" onclick="event.stopPropagation();">
+                  <div class="flex items-center justify-between text-xs font-black text-emerald-900">
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-bell-concierge text-emerald-700"></i> Bếp xong: ${t.foodReadyTime || 'Mới xong'}</span>
+                    <span class="text-rose-600 font-mono">${total.toLocaleString('vi-VN')} đ</span>
+                  </div>
+                  <div class="grid grid-cols-2 gap-1">
+                    <button onclick="actionServedFood('${t.id}')" class="py-2 px-1 rounded-xl text-[11px] font-black bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition flex items-center justify-center gap-1 cursor-pointer active:scale-95">
+                      <i class="fa-solid fa-check"></i> Đã Bưng Lên
+                    </button>
+                    <button onclick="selectTable('${t.id}'); actionOpenCheckout();" class="py-2 px-1 rounded-xl text-[11px] font-black bg-rose-600 hover:bg-rose-700 text-white shadow-xs transition flex items-center justify-center gap-1 cursor-pointer">
+                      <i class="fa-solid fa-qrcode"></i> Thu Tiền
+                    </button>
+                  </div>
+                </div>
+              ` : step === 5 ? `
                 <div class="grid grid-cols-2 gap-1" onclick="event.stopPropagation();">
                   <button onclick="checkInBooking('${t.id}')" class="py-1.5 px-1 rounded-lg text-[10px] font-black bg-purple-600 text-white hover:bg-purple-700 transition flex items-center justify-center gap-0.5 shadow-2xs cursor-pointer">
                     <i class="fa-solid fa-check text-[9px]"></i> Khách Đến
@@ -1468,6 +1501,18 @@
     }
 
     // ================= 7. BÁO BẾP (BƯỚC 3) =================
+    
+    // ================= 7.2. XÁC NHẬN TIẾP THỰC ĐÃ BƯNG MÓN LÊN BÀN =================
+    function actionServedFood(tableId) {
+      const t = tables.find(x => x.id === (tableId || currentTableId));
+      if (!t) return;
+      t.foodReady = false;
+      saveState();
+      renderTables();
+      renderCart();
+      playBeep(920, 0.05);
+    }
+
     function actionSendKitchen() {
       const t = tables.find(x => x.id === currentTableId);
       if (t.cart.length === 0) return alert("Bàn chưa có món nào để báo bếp!");
@@ -1624,13 +1669,14 @@
       if (!t) return;
 
       t.kitchenSent = false;
-      t.isCheckingOut = true; // Chuyển sang Bước 4: Sẵn sàng quét VietQR & In Bill
+      t.foodReady = true; // Đã nấu xong, cần tiếp thực bưng ra bàn!
+      t.foodReadyTime = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
       t.kitchenTime = null;
       saveState();
 
       playKitchenChime();
 
-      triggerN8nWebhook('kitchen_completed', {
+      triggerN8nWebhook('kitchen_ready_to_serve', {
         tableName: t.name,
         tableId: t.id,
         itemsCount: t.cart.reduce((s, x) => s + x.qty, 0),

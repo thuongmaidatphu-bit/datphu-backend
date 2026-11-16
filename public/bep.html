@@ -192,8 +192,8 @@
             <div class="p-4 bg-slate-950/90 border-t border-slate-800">
               <button onclick="finishKitchenTicket('${t.id}')" 
                       class="w-full py-4 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl font-black text-sm sm:text-base shadow-xl flex items-center justify-center gap-2 active:scale-95 transition cursor-pointer">
-                <i class="fa-solid fa-circle-check text-lg"></i>
-                <span>HOÀN THÀNH ➔ CHUYỂN SANG QR</span>
+                <i class="fa-solid fa-bell-concierge text-lg"></i>
+                <span>🍜 NẤU XONG ➔ BÁO TIẾP THỰC RA MÓN</span>
               </button>
             </div>
 
@@ -208,15 +208,16 @@
       if (!t) return;
 
       t.kitchenSent = false;
-      t.isCheckingOut = true; // Chuyển sang Bước 4: Sẵn sàng VietQR
+      t.foodReady = true; // Món đã nấu xong, cần nhân viên bưng lên bàn!
+      t.foodReadyTime = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
       t.kitchenTime = null;
       saveState();
 
       playKitchenChime();
       renderTickets();
 
-      // Thông báo trực quan không chặn thao tác của bếp
-      showKitchenToast(`✓ ĐÃ HOÀN THÀNH MÓN CHO ${t.name.toUpperCase()}!\nĐã chuyển sang Màn hình Thu Ngân: Nút QR hiện sáng và sẵn sàng In Bill.`);
+      // Thông báo trực quan cho bếp
+      showKitchenToast(`✓ ĐÃ NẤU XONG CHO ${t.name.toUpperCase()}!\nĐã báo chuông cho nhân viên tiếp thực bưng ra bàn cho khách.`);
     }
 
     function showKitchenToast(msg) {
