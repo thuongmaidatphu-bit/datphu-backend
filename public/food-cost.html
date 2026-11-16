@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đất Phú • Quản Lý Food Cost & Khóa Định Lượng Menu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @media print {
+      body * { visibility: hidden; }
+      #printableRecipeCard, #printableRecipeCard * { visibility: visible; }
+      #printableRecipeCard { position: absolute; left: 0; top: 0; width: 100%; display: block !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 flex flex-col h-screen overflow-hidden select-none">
+
+  <!-- ================= HEADER CHÍNH ================= -->
+  <header class="bg-slate-950/90 border-b border-slate-800 px-4 py-3 flex items-center justify-between shrink-0 shadow-xl backdrop-blur-md z-20">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-black text-lg shadow-lg shadow-emerald-500/20">
+        <i class="fa-solid fa-calculator"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-black text-sm sm:text-base tracking-wider uppercase text-white">ĐẤT PHÚ FOOD COST & ĐỊNH LƯỢNG MENU</h1>
+          <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            NGƯỠNG VÀNG 30% - 35%
+          </span>
+        </div>
+        <p class="text-xs text-slate-400">Khóa công thức chuẩn từng gram/ml • Giữ vững biên lợi nhuận gộp 65% – 70%</p>
+      </div>
+    </div>
+
+    <!-- Tab chuyển đổi chức năng chính -->
+    <div class="flex items-center bg-slate-900 p-1 rounded-2xl border border-slate-800 shadow-inner">
+      <button onclick="switchTab('recipes')" id="tabBtn-recipes" class="px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-2 transition cursor-pointer bg-blue-600 text-white shadow-xs">
+        <i class="fa-solid fa-utensils"></i>
+        <span>1. ĐỊNH LƯỢNG & KHÓA MÓN</span>
+      </button>
+      <button onclick="switchTab('planner')" id="tabBtn-planner" class="px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition cursor-pointer text-slate-400 hover:text-white">
+        <i class="fa-solid fa-cart-shopping text-amber-400"></i>
+        <span>2. DỰ TOÁN NGUYÊN LIỆU ĐI CHỢ</span>
+      </button>
+    </div>
+
+    <!-- Nút điều hướng nhanh -->
+    <div class="flex items-center space-x-2 text-xs font-bold">
+      <a href="speed-pos.html" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-cash-register text-blue-400"></i>
+        <span class="hidden sm:inline">Speed POS</span>
+      </a>
+      <a href="bep.html" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-bell text-amber-400"></i>
+        <span class="hidden sm:inline">Bếp KDS</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= NỘI DUNG 1: ĐỊNH LƯỢNG & KHÓA CÔNG THỨC ================= -->
+  <main id="viewRecipes" class="flex-1 flex overflow-hidden">
+    
+    <!-- CỘT TRÁI (38%): DANH SÁCH 12 MÓN TRONG MENU -->
+    <section class="w-[38%] xl:w-[35%] bg-slate-950/50 border-r border-slate-800 flex flex-col overflow-hidden">
+      
+      <!-- Thanh lọc danh mục & Tìm kiếm -->
+      <div class="p-3 bg-slate-900 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+          <button onclick="setMenuCategory('all')" id="catBtn-all" class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white cursor-pointer transition">
+            Tất cả (12)
+          </button>
+          <button onclick="setMenuCategory('bun')" id="catBtn-bun" class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition">
+            Bún Cá (6)
+          </button>
+          <button onclick="setMenuCategory('drink')" id="catBtn-drink" class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition">
+            Đồ Uống (6)
+          </button>
+        </div>
+
+        <div class="text-[11px] text-slate-400 font-bold">
+          Mục tiêu: <span class="text-emerald-400 font-mono">30% - 35%</span>
+        </div>
+      </div>
+
+      <!-- Danh sách món có thanh đo Cost % -->
+      <div class="flex-1 p-3 overflow-y-auto space-y-2.5" id="dishListContainer">
+        <!-- Render danh sách món bằng JavaScript -->
+      </div>
+
+      <!-- Footer tóm tắt trung bình toàn menu -->
+      <div class="p-3 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between text-xs font-bold">
+        <span class="text-slate-400">Food Cost Trung Bình:</span>
+        <span id="avgCostPercent" class="text-emerald-400 font-mono font-black text-sm">31.8%</span>
+      </div>
+    </section>
+
+    <!-- CỘT PHẢI (62%): CHI TIẾT BẢNG BOM ĐỊNH LƯỢNG & KHÓA CÔNG THỨC -->
+    <section class="flex-1 bg-slate-900 flex flex-col overflow-hidden">
+      
+      <!-- Header Món đang chọn & Trạng thái Khóa -->
+      <div class="p-4 bg-slate-800/80 border-b border-slate-700 flex flex-wrap items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-slate-700 text-white flex items-center justify-center text-xl font-black shadow-md" id="activeDishIconBox">
+            <i class="fa-solid fa-bowl-food" id="activeDishIcon"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="font-black text-base sm:text-lg text-white uppercase" id="activeDishName">BÚN CÁ SỨA TƯƠI</h2>
+              <span id="activeDishLockBadge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center gap-1">
+                <i class="fa-solid fa-lock"></i> ĐÃ KHÓA CHUẨN
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Giá bán niêm yết: <span id="activeDishPrice" class="font-mono font-black text-white text-sm">40.000 đ</span></p>
+          </div>
+        </div>
+
+        <!-- 3 Chỉ số tài chính tức thì -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <div class="bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-700 text-center">
+            <span class="text-[10px] text-slate-400 block font-bold">GIÁ VỐN (COST)</span>
+            <span id="statCostAmount" class="text-xs sm:text-sm font-black font-mono text-amber-400">13.440 đ</span>
+          </div>
+          <div class="bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-700 text-center" id="statCostPercentBox">
+            <span class="text-[10px] text-slate-400 block font-bold">TỶ LỆ FOOD COST</span>
+            <span id="statCostPercent" class="text-xs sm:text-sm font-black font-mono text-emerald-400">33.6%</span>
+          </div>
+          <div class="bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-700 text-center">
+            <span class="text-[10px] text-slate-400 block font-bold">LỢI NHUẬN GỘP</span>
+            <span id="statGrossProfit" class="text-xs sm:text-sm font-black font-mono text-emerald-400">26.560 đ</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thân phân rã thành phần nguyên liệu (BOM) -->
+      <div class="flex-1 p-4 sm:p-5 overflow-y-auto space-y-4">
+        
+        <!-- Bảng nguyên liệu chi tiết từng gram/ml -->
+        <div class="bg-slate-950/60 rounded-2xl border border-slate-800 overflow-hidden shadow-inner">
+          <div class="p-3 bg-slate-800/60 border-b border-slate-700/80 flex items-center justify-between text-xs font-black uppercase text-slate-300">
+            <span>BẢNG PHÂN RÃ THÀNH PHẦN (BOM)</span>
+            <span class="text-[11px] text-slate-400 font-normal">Sai số cân chuẩn cho phép: &plusmn; 2g</span>
+          </div>
+
+          <table class="w-full text-xs text-left">
+            <thead class="bg-slate-900/90 text-slate-400 border-b border-slate-800">
+              <tr>
+                <th class="p-3">Nguyên Liệu</th>
+                <th class="p-3 text-center">Định Lượng Khóa</th>
+                <th class="p-3 text-right">Đơn Giá Nhập</th>
+                <th class="p-3 text-right">Chi Phí (VND)</th>
+                <th class="p-3 text-center">Tỷ Trọng</th>
+              </tr>
+            </thead>
+            <tbody id="bomTableBody" class="divide-y divide-slate-800 font-medium">
+              <!-- Render từng dòng thành phần bằng JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Công Cụ Thử Nghiệm Giá & Mô Phỏng Lợi Nhuận -->
+        <div class="bg-slate-800/40 p-4 rounded-2xl border border-slate-700/80 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="font-black text-xs uppercase text-slate-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-sliders text-indigo-400"></i>
+              MÔ PHỎNG ĐIỀU CHỈNH GIÁ BÁN & QUAN SÁT FOOD COST
+            </h3>
+            <span class="text-[11px] text-slate-400 font-bold" id="simulationStatus">Trạng thái: An toàn</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+            <div>
+              <label class="text-[11px] text-slate-400 block mb-1">Thử nghiệm thay đổi Giá bán:</label>
+              <div class="flex items-center gap-2">
+                <input type="range" id="priceSlider" min="20000" max="60000" step="1000" value="40000" oninput="handleSimulatePrice(this.value)" class="flex-1 accent-emerald-500 cursor-pointer">
+                <span id="sliderPriceDisplay" class="font-mono font-black text-sm text-white w-24 text-right">40.000 đ</span>
+              </div>
+            </div>
+
+            <!-- Thanh cảnh báo ngưỡng 30% - 35% -->
+            <div>
+              <div class="flex justify-between text-[11px] font-bold mb-1">
+                <span class="text-slate-400">Tỷ lệ Cost mô phỏng:</span>
+                <span id="simulatedCostPercent" class="font-mono font-black text-emerald-400">33.6%</span>
+              </div>
+              <div class="w-full h-3 bg-slate-700 rounded-full overflow-hidden relative">
+                <!-- Vùng an toàn 30% - 35% -->
+                <div class="absolute left-[30%] w-[5%] h-full bg-emerald-500/30"></div>
+                <!-- Thanh tiến độ -->
+                <div id="simulatedCostBar" class="h-full bg-emerald-500 transition-all duration-150" style="width: 33.6%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Điều Khiển & In Phiếu Cho Bếp -->
+      <div class="p-3 sm:p-4 bg-slate-950 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-2 text-xs">
+          <button onclick="toggleLockActiveDish()" id="btnToggleLock" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center gap-2 border border-slate-700 cursor-pointer transition">
+            <i class="fa-solid fa-lock text-emerald-400" id="lockIcon"></i>
+            <span id="lockButtonText">Mở Khóa Để Sửa</span>
+          </button>
+          <button onclick="resetDefaultActiveDish()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white font-bold cursor-pointer transition" title="Khôi phục định lượng gốc">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="printRecipeCard()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs shadow-md flex items-center gap-2 active:scale-95 transition cursor-pointer">
+            <i class="fa-solid fa-print"></i>
+            <span>IN PHIẾU CÔNG THỨC CHO BẾP</span>
+          </button>
+          <button onclick="saveActiveDishRecipe()" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md flex items-center gap-2 active:scale-95 transition cursor-pointer">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>LƯU CÔNG THỨC</span>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= NỘI DUNG 2: DỰ TOÁN NGUYÊN LIỆU ĐI CHỢ HÔM NAY ================= -->
+  <main id="viewPlanner" class="hidden flex-1 flex flex-col p-4 sm:p-6 overflow-hidden">
+    <div class="max-w-6xl w-full mx-auto flex-1 flex flex-col overflow-hidden bg-slate-950/70 rounded-3xl border border-slate-800 shadow-2xl">
+      
+      <!-- Tiêu đề & Nhập số lượng tô dự kiến -->
+      <div class="p-5 border-b border-slate-800 flex flex-wrap items-center justify-between gap-4 shrink-0 bg-slate-900/60">
+        <div>
+          <h2 class="font-black text-base sm:text-lg uppercase text-white flex items-center gap-2">
+            <i class="fa-solid fa-cart-flatbed text-amber-400"></i>
+            LẬP KẾ HOẠCH NGUYÊN LIỆU ĐI CHỢ THEO CA BÁN
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">Nhập số lượng tô/ly dự kiến bán trong ngày ➔ Hệ thống tính toán chính xác số kg nguyên liệu cần nhập!</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="calculateMarketList()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md flex items-center gap-2 cursor-pointer transition active:scale-95">
+            <i class="fa-solid fa-calculator"></i>
+            <span>TÍNH TOÁN DANH SÁCH MUA</span>
+          </button>
+          <button onclick="window.print()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 flex items-center gap-2 cursor-pointer transition">
+            <i class="fa-solid fa-print"></i>
+            <span>In Phiếu Đi Chợ</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hai Cột: Nhập số lượng món & Kết quả danh sách nguyên vật liệu -->
+      <div class="flex-1 flex overflow-hidden">
+        
+        <!-- Nhập số lượng dự kiến bán (40%) -->
+        <div class="w-[45%] border-r border-slate-800 p-4 overflow-y-auto space-y-3">
+          <span class="font-black text-xs uppercase text-slate-400 block mb-2">1. Nhập Số Lượng Dự Kiến Bán (Tô / Ly):</span>
+          <div id="plannerInputList" class="space-y-2">
+            <!-- Render các ô nhập số lượng -->
+          </div>
+        </div>
+
+        <!-- Bảng nguyên liệu cần mua & Tổng tiền vốn (55%) -->
+        <div class="flex-1 p-4 overflow-y-auto flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-black text-xs uppercase text-slate-400">2. Khối Lượng Cần Mua & Chuẩn Bị:</span>
+              <span id="plannerTotalBowlsBadge" class="text-xs font-bold text-blue-400">Tổng: 0 phần</span>
+            </div>
+
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-inner">
+              <table class="w-full text-xs text-left">
+                <thead class="bg-slate-800/80 text-slate-400">
+                  <tr>
+                    <th class="p-2.5">Nguyên Liệu</th>
+                    <th class="p-2.5 text-center">Khối Lượng Cần</th>
+                    <th class="p-2.5 text-right">Đơn Giá Tham Khảo</th>
+                    <th class="p-2.5 text-right">Tiền Vốn Cần Mua</th>
+                  </tr>
+                </thead>
+                <tbody id="marketListBody" class="divide-y divide-slate-800 font-medium">
+                  <!-- Render danh mục đi chợ -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Hộp tổng kết tài chính dự toán -->
+          <div class="mt-4 p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-slate-700 flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-400 block">DỰ TOÁN DOANH THU:</span>
+              <span id="plannerEstRevenue" class="text-xl font-black font-mono text-emerald-400">0 đ</span>
+            </div>
+            <div>
+              <span class="text-xs text-slate-400 block">TỔNG TIỀN NGUYÊN LIỆU:</span>
+              <span id="plannerEstCost" class="text-xl font-black font-mono text-amber-400">0 đ</span>
+            </div>
+            <div>
+              <span class="text-xs text-slate-400 block">LỢI NHUẬN GỘP DỰ KIẾN:</span>
+              <span id="plannerEstProfit" class="text-xl font-black font-mono text-white">0 đ</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= PHIẾU CÔNG THỨC CHUẨN IN CHO BẾP (ẨN KHI XEM, HIỆN KHI IN) ================= -->
+  <div id="printableRecipeCard" class="hidden p-8 bg-white text-black font-sans">
+    <div style="border: 2px solid #000; padding: 20px; border-radius: 12px; max-width: 600px; margin: 0 auto;">
+      <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 12px; margin-bottom: 12px;">
+        <h1 style="font-size: 20px; font-weight: 900; margin: 0;">QUÁN ĂN & BÚN CÁ ĐẤT PHÚ</h1>
+        <p style="font-size: 12px; margin: 4px 0;">BẢNG CÔNG THỨC ĐỊNH LƯỢNG CHUẨN DÁN TẠI BẾP</p>
+        <h2 id="printDishTitle" style="font-size: 24px; font-weight: 900; color: #b91c1c; margin: 10px 0 0 0; text-transform: uppercase;"></h2>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <thead>
+            <tr style="background-color: #f3f4f6; border-bottom: 1px solid #000;">
+              <th style="padding: 6px; text-align: left;">Thành Phần</th>
+              <th style="padding: 6px; text-align: center;">Định Lượng Khóa</th>
+              <th style="padding: 6px; text-align: left;">Ghi Chú Ra Món</th>
+            </tr>
+          </thead>
+          <tbody id="printTableBody">
+            <!-- Render công thức in -->
+          </tbody>
+        </table>
+      </div>
+
+      <div style="border-top: 1px dashed #000; padding-top: 10px; font-size: 12px; line-height: 1.5;">
+        <p><strong>LƯU Ý BẮT BUỘC CHO ĐẦU BẾP:</strong></p>
+        <p>1. Cân đúng định lượng, không bốc áng chừng bằng mắt làm thiếu hoặc thừa đồ ăn.</p>
+        <p>2. Dùng muôi chuẩn 450ml gạt bằng miệng cho 1 tô bún nước.</p>
+        <p>3. Tuyệt đối không ra món khi không có phiếu trên màn hình KDS Bếp.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT ENGINE QUẢN LÝ FOOD COST & BOM ================= -->
+  <script>
+    
+    // DỮ LIỆU CÔNG THỨC GỐC 12 MÓN CHUẨN CỦA QUÁN ĂN ĐẤT PHÚ
+    const DEFAULT_RECIPES = [
+      {
+        id: 1,
+        name: "Bún Cá Dằm Đặc Biệt",
+        price: 35000,
+        cat: "bun",
+        icon: "fa-bowl-food",
+        isLocked: true,
+        ingredients: [
+          { name: "Bún tươi sợi nhỏ", amount: 170, unit: "g", unitPrice: 12, note: "Trụng ráo nước" },
+          { name: "Cá ngừ/cá thu dằm hấp", amount: 45, unit: "g", unitPrice: 140, note: "Róc sạch xương răm" },
+          { name: "Chả cá chiên Phú Yên", amount: 20, unit: "g", unitPrice: 120, note: "Khoảng 2 lát mỏng" },
+          { name: "Nước dùng hầm xương cá", amount: 450, unit: "ml", unitPrice: 7, note: "Nước sôi 90°C" },
+          { name: "Cà chua bi & dứa xào", amount: 30, unit: "g", unitPrice: 20, note: "Tạo vị chua thanh" },
+          { name: "Hành lá, ngò, hành phi, tiêu", amount: 1, unit: "phần", unitPrice: 500, note: "Nêm mặt tô" },
+          { name: "Rau sống & chanh ớt bàn", amount: 1, unit: "phần", unitPrice: 1500, note: "Xà lách, bắp chuối" }
+        ]
+      },
+      {
+        id: 2,
+        name: "Bún Cá Sứa Tươi",
+        price: 40000,
+        cat: "bun",
+        icon: "fa-fish-fins",
+        isLocked: true,
+        ingredients: [
+          { name: "Bún tươi sợi nhỏ", amount: 170, unit: "g", unitPrice: 12, note: "Trụng ráo" },
+          { name: "Sứa biển tươi ngâm lạnh", amount: 55, unit: "g", unitPrice: 90, note: "Giữ độ giòn dai" },
+          { name: "Chả cá hấp", amount: 25, unit: "g", unitPrice: 120, note: "Khoảng 2 lát" },
+          { name: "Cá dằm", amount: 20, unit: "g", unitPrice: 140, note: "Thịt cá mềm ngọt" },
+          { name: "Nước dùng hầm xương cá", amount: 450, unit: "ml", unitPrice: 7, note: "Nước trong thanh" },
+          { name: "Hành ngò, tiêu, hành phi", amount: 1, unit: "phần", unitPrice: 500, note: "Trang trí" },
+          { name: "Rau sống & gia vị bàn", amount: 1, unit: "phần", unitPrice: 1500, note: "Rau tươi ráo" }
+        ]
+      },
+      {
+        id: 3,
+        name: "Bún Chả Cá Hấp Chiên",
+        price: 30000,
+        cat: "bun",
+        icon: "fa-fire",
+        isLocked: true,
+        ingredients: [
+          { name: "Bún tươi sợi nhỏ", amount: 160, unit: "g", unitPrice: 12, note: "Trụng nhanh" },
+          { name: "Chả cá chiên", amount: 30, unit: "g", unitPrice: 120, note: "3 lát chiên vàng" },
+          { name: "Chả cá hấp", amount: 25, unit: "g", unitPrice: 120, note: "2 lát hấp ngọt" },
+          { name: "Nước dùng hầm xương cá", amount: 450, unit: "ml", unitPrice: 7, note: "Nóng sốt" },
+          { name: "Hành ngò gai, hành phi", amount: 1, unit: "phần", unitPrice: 500, note: "Thơm nức" },
+          { name: "Rau sống & gia vị", amount: 1, unit: "phần", unitPrice: 1500, note: "Kèm dĩa rau" }
+        ]
+      },
+      {
+        id: 4,
+        name: "Tô Bún Thập Cẩm Lớn",
+        price: 45000,
+        cat: "bun",
+        icon: "fa-bowl-rice",
+        isLocked: true,
+        ingredients: [
+          { name: "Bún tươi sợi nhỏ", amount: 180, unit: "g", unitPrice: 12, note: "Tô bún lớn" },
+          { name: "Chả cá chiên & hấp", amount: 40, unit: "g", unitPrice: 120, note: "4-5 lát chả" },
+          { name: "Cá dằm đặc biệt", amount: 30, unit: "g", unitPrice: 140, note: "Thịt cá đầy đặn" },
+          { name: "Sứa biển tươi", amount: 35, unit: "g", unitPrice: 90, note: "Giòn sần sật" },
+          { name: "Nước dùng hầm xương cá", amount: 500, unit: "ml", unitPrice: 7, note: "Tràn đầy tô" },
+          { name: "Hành ngò, tiêu, hành phi", amount: 1, unit: "phần", unitPrice: 600, note: "Nêm đầy đủ" },
+          { name: "Dĩa rau sống VIP", amount: 1, unit: "phần", unitPrice: 1800, note: "Đầy ắp rau tươi" }
+        ]
+      },
+      {
+        id: 5,
+        name: "Đĩa Chả Cá Thêm",
+        price: 15000,
+        cat: "bun",
+        icon: "fa-layer-group",
+        isLocked: true,
+        ingredients: [
+          { name: "Chả cá chiên", amount: 35, unit: "g", unitPrice: 120, note: "Xắt lát vừa ăn" },
+          { name: "Chả cá hấp", amount: 30, unit: "g", unitPrice: 120, note: "Hấp thơm mềm" },
+          { name: "Tương ớt xào Phú Yên & tiêu", amount: 1, unit: "phần", unitPrice: 500, note: "Chén chấm riêng" },
+          { name: "Dưa leo xắt kèm", amount: 30, unit: "g", unitPrice: 10, note: "Chống ngấy" }
+        ]
+      },
+      {
+        id: 6,
+        name: "Đầu Cá Thu Hầm Nước Dùng",
+        price: 25000,
+        cat: "bun",
+        icon: "fa-water",
+        isLocked: true,
+        ingredients: [
+          { name: "Đầu cá thu tươi", amount: 150, unit: "g", unitPrice: 60, note: "Hầm nhừ béo ngọt" },
+          { name: "Nước súp hầm đậm đà", amount: 350, unit: "ml", unitPrice: 7, note: "Súp cá nóng hổi" },
+          { name: "Ớt xiêm xanh & hành chẻ", amount: 1, unit: "phần", unitPrice: 500, note: "Khử mùi tanh" }
+        ]
+      },
+      {
+        id: 7,
+        name: "Cà Phê Đen Đá Pha Phin",
+        price: 14000,
+        cat: "drink",
+        icon: "fa-mug-hot",
+        isLocked: true,
+        ingredients: [
+          { name: "Bột Cà phê Robusta mộc", amount: 25, unit: "g", unitPrice: 100, note: "Pha phin truyền thống" },
+          { name: "Đường cát tinh luyện", amount: 15, unit: "g", unitPrice: 20, note: "Độ ngọt vừa" },
+          { name: "Đá bi sạch + Ly mang đi/ly thủy tinh", amount: 1, unit: "phần", unitPrice: 400, note: "Đá viên mát lạnh" }
+        ]
+      },
+      {
+        id: 8,
+        name: "Cà Phê Sữa Đá Sài Gòn",
+        price: 17000,
+        cat: "drink",
+        icon: "fa-mug-saucer",
+        isLocked: true,
+        ingredients: [
+          { name: "Bột Cà phê Robusta mộc", amount: 25, unit: "g", unitPrice: 100, note: "Cốt cà phê đậm" },
+          { name: "Sữa đặc Ông Thọ", amount: 30, unit: "ml", unitPrice: 55, note: "Béo ngậy thơm ngọt" },
+          { name: "Đá bi + Ly nắp cầu", amount: 1, unit: "phần", unitPrice: 450, note: "Phục vụ chuẩn đẹp" }
+        ]
+      },
+      {
+        id: 9,
+        name: "Bạc Xỉu Đá 3 Tầng",
+        price: 20000,
+        cat: "drink",
+        icon: "fa-glass-water-droplet",
+        isLocked: true,
+        ingredients: [
+          { name: "Sữa đặc Ông Thọ", amount: 40, unit: "ml", unitPrice: 55, note: "Tầng 1 dưới đáy" },
+          { name: "Sữa tươi không đường", amount: 50, unit: "ml", unitPrice: 35, note: "Tầng 2 ở giữa" },
+          { name: "Cốt Cà phê đánh bọt", amount: 15, unit: "ml", unitPrice: 100, note: "Tầng 3 trên cùng" },
+          { name: "Đá bi + Ly cao", amount: 1, unit: "phần", unitPrice: 500, note: "Tạo 3 tầng rõ nét" }
+        ]
+      },
+      {
+        id: 10,
+        name: "Trà Chanh Mật Ong Đào",
+        price: 15000,
+        cat: "drink",
+        icon: "fa-lemon",
+        isLocked: true,
+        ingredients: [
+          { name: "Cốt trà lài ủ lạnh", amount: 120, unit: "ml", unitPrice: 10, note: "Thơm mát thanh" },
+          { name: "Chanh tươi vắt nước", amount: 1, unit: "quả", unitPrice: 1200, note: "Chanh không hạt" },
+          { name: "Mật ong hoa rừng", amount: 15, unit: "ml", unitPrice: 60, note: "Ngọt dịu tự nhiên" },
+          { name: "Đá bi + Ly + Ống hút", amount: 1, unit: "phần", unitPrice: 400, note: "Trang trí lát chanh" }
+        ]
+      },
+      {
+        id: 11,
+        name: "Trà Tắc Xí Muội Đường Phèn",
+        price: 15000,
+        cat: "drink",
+        icon: "fa-wine-glass",
+        isLocked: true,
+        ingredients: [
+          { name: "Cốt trà lài ủ lạnh", amount: 120, unit: "ml", unitPrice: 10, note: "Hương hoa lài" },
+          { name: "Tắc tươi (Quất)", amount: 3, unit: "quả", unitPrice: 400, note: "Vắt lấy nước cốt" },
+          { name: "Viên xí muội mặn ngọt", amount: 1, unit: "viên", unitPrice: 1200, note: "Dầm nhẹ tạo vị" },
+          { name: "Nước đường phèn", amount: 20, unit: "ml", unitPrice: 20, note: "Ngọt thanh họng" },
+          { name: "Đá bi + Ly phục vụ", amount: 1, unit: "phần", unitPrice: 400, note: "Uống giải nhiệt" }
+        ]
+      },
+      {
+        id: 12,
+        name: "Nước Mía Tươi Ép Tắc",
+        price: 10000,
+        cat: "drink",
+        icon: "fa-seedling",
+        isLocked: true,
+        ingredients: [
+          { name: "Mía cây tươi róc vỏ", amount: 2, unit: "khúc", unitPrice: 800, note: "Mía ngọt lịm" },
+          { name: "Tắc ép chung", amount: 1, unit: "quả", unitPrice: 400, note: "Tạo mùi thơm mát" },
+          { name: "Đá bi + Ly mang đi", amount: 1, unit: "phần", unitPrice: 400, note: "Ép tại chỗ" }
+        ]
+      }
+    ];
+
+    let recipes = JSON.parse(localStorage.getItem('dp_food_cost_recipes')) || DEFAULT_RECIPES;
+    let activeDishId = 2; // Mặc định mở Bún Cá Sứa Tươi
+    let currentCategory = "all";
+
+    // Tính toán tổng giá vốn 1 món
+    function calculateDishCost(dish) {
+      return dish.ingredients.reduce((total, ing) => total + (ing.amount * ing.unitPrice), 0);
+    }
+
+    // Render danh sách món ở Cột Trái
+    function renderDishList() {
+      const container = document.getElementById('dishListContainer');
+      const filtered = recipes.filter(r => currentCategory === 'all' || r.cat === currentCategory);
+
+      let totalCostPctSum = 0;
+
+      container.innerHTML = filtered.map(dish => {
+        const cost = calculateDishCost(dish);
+        const costPct = (cost / dish.price * 100).toFixed(1);
+        const profit = dish.price - cost;
+        totalCostPctSum += parseFloat(costPct);
+
+        const isSelected = dish.id === activeDishId;
+        const selectedClass = isSelected ? "border-emerald-500 bg-slate-800 shadow-lg ring-2 ring-emerald-500/50" : "border-slate-800 bg-slate-900/60 hover:border-slate-700";
+
+        // Màu cảnh báo Food Cost
+        let pctColor = "text-emerald-400";
+        let barColor = "bg-emerald-500";
+        if (costPct > 35) {
+          pctColor = "text-rose-400";
+          barColor = "bg-rose-500";
+        } else if (costPct < 30 && dish.cat === 'bun') {
+          pctColor = "text-amber-400";
+          barColor = "bg-amber-400";
+        }
+
+        return `
+          <div onclick="selectDish(${dish.id})" class="p-3 rounded-2xl border transition-all cursor-pointer ${selectedClass}">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid ${dish.icon} text-slate-400 text-xs"></i>
+                <span class="font-black text-xs text-white uppercase">${dish.name}</span>
+              </div>
+              <span class="font-mono text-xs font-black text-slate-300">${dish.price.toLocaleString('vi-VN')} đ</span>
+            </div>
+
+            <!-- Thanh đo phần trăm Food Cost -->
+            <div class="space-y-1">
+              <div class="flex justify-between text-[10px] font-bold">
+                <span class="text-slate-400">Vốn: <strong class="font-mono text-slate-300">${cost.toLocaleString('vi-VN')} đ</strong></span>
+                <span class="${pctColor} font-mono font-black">${costPct}% Cost</span>
+              </div>
+              <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full ${barColor}" style="width: ${Math.min(costPct, 100)}%;"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Cập nhật Cost trung bình
+      const avg = (totalCostPctSum / filtered.length).toFixed(1);
+      document.getElementById('avgCostPercent').textContent = `${avg}%`;
+    }
+
+    // Chọn món để xem & chỉnh sửa công thức ở Cột Phải
+    function selectDish(id) {
+      activeDishId = id;
+      const dish = recipes.find(r => r.id === id);
+      if (!dish) return;
+
+      document.getElementById('activeDishName').textContent = dish.name;
+      document.getElementById('activeDishPrice').textContent = dish.price.toLocaleString('vi-VN') + " đ";
+      document.getElementById('activeDishIcon').className = `fa-solid ${dish.icon}`;
+      
+      const lockBadge = document.getElementById('activeDishLockBadge');
+      const lockBtnText = document.getElementById('lockButtonText');
+      const lockIcon = document.getElementById('lockIcon');
+
+      if (dish.isLocked) {
+        lockBadge.innerHTML = `<i class="fa-solid fa-lock"></i> ĐÃ KHÓA CHUẨN`;
+        lockBadge.className = "text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center gap-1";
+        lockBtnText.textContent = "Mở Khóa Để Sửa";
+        lockIcon.className = "fa-solid fa-lock-open text-amber-400";
+      } else {
+        lockBadge.innerHTML = `<i class="fa-solid fa-pen"></i> ĐANG CHỈNH SỬA`;
+        lockBadge.className = "text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center gap-1";
+        lockBtnText.textContent = "Khóa Công Thức";
+        lockIcon.className = "fa-solid fa-lock text-emerald-400";
+      }
+
+      // Slider mô phỏng giá
+      document.getElementById('priceSlider').value = dish.price;
+      document.getElementById('sliderPriceDisplay').textContent = dish.price.toLocaleString('vi-VN') + " đ";
+
+      renderBOMTable(dish);
+      updateDishStats(dish, dish.price);
+      renderDishList();
+    }
+
+    // Cập nhật 3 khối chỉ số tài chính
+    function updateDishStats(dish, currentPrice) {
+      const cost = calculateDishCost(dish);
+      const costPct = (cost / currentPrice * 100).toFixed(1);
+      const profit = currentPrice - cost;
+
+      document.getElementById('statCostAmount').textContent = cost.toLocaleString('vi-VN') + " đ";
+      document.getElementById('statCostPercent').textContent = `${costPct}%`;
+      document.getElementById('statGrossProfit').textContent = profit.toLocaleString('vi-VN') + " đ";
+
+      // Cập nhật mô phỏng
+      document.getElementById('simulatedCostPercent').textContent = `${costPct}%`;
+      const simBar = document.getElementById('simulatedCostBar');
+      simBar.style.width = `${Math.min(costPct, 100)}%`;
+
+      const simStatus = document.getElementById('simulationStatus');
+      if (costPct > 35) {
+        simBar.className = "h-full bg-rose-500 transition-all duration-150";
+        simStatus.textContent = "⚠️ CẢNH BÁO: Vượt ngưỡng an toàn 35%!";
+        simStatus.className = "text-[11px] text-rose-400 font-black animate-pulse";
+      } else if (costPct >= 30 && costPct <= 35) {
+        simBar.className = "h-full bg-emerald-500 transition-all duration-150";
+        simStatus.textContent = "✓ Tuyệt vời: Trong ngưỡng vàng 30% - 35%";
+        simStatus.className = "text-[11px] text-emerald-400 font-bold";
+      } else {
+        simBar.className = "h-full bg-blue-500 transition-all duration-150";
+        simStatus.textContent = "Biên lợi nhuận rất cao (< 30%)";
+        simStatus.className = "text-[11px] text-blue-400 font-bold";
+      }
+    }
+
+    // Render bảng BOM chi tiết nguyên liệu
+    function renderBOMTable(dish) {
+      const tbody = document.getElementById('bomTableBody');
+      const totalCost = calculateDishCost(dish);
+
+      tbody.innerHTML = dish.ingredients.map((ing, idx) => {
+        const itemCost = ing.amount * ing.unitPrice;
+        const itemPct = totalCost > 0 ? (itemCost / totalCost * 100).toFixed(1) : 0;
+        const disabledAttr = dish.isLocked ? "disabled" : "";
+
+        return `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="p-3 text-slate-200">
+              <span class="font-bold block">${ing.name}</span>
+              <span class="text-[10px] text-slate-500">${ing.note}</span>
+            </td>
+            <td class="p-3 text-center">
+              <div class="inline-flex items-center bg-slate-900 border border-slate-700 rounded-xl px-2 py-1">
+                <input type="number" value="${ing.amount}" ${disabledAttr} onchange="updateIngredientAmount(${idx}, this.value)" class="w-14 bg-transparent text-center font-mono font-black text-amber-300 focus:outline-none">
+                <span class="text-[11px] text-slate-400 font-bold ml-1">${ing.unit}</span>
+              </div>
+            </td>
+            <td class="p-3 text-right font-mono text-slate-400">
+              ${ing.unitPrice.toLocaleString('vi-VN')} đ
+            </td>
+            <td class="p-3 text-right font-mono font-black text-slate-200">
+              ${itemCost.toLocaleString('vi-VN')} đ
+            </td>
+            <td class="p-3 text-center">
+              <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                ${itemPct}%
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Sửa khối lượng 1 nguyên liệu
+    function updateIngredientAmount(idx, newAmount) {
+      const dish = recipes.find(r => r.id === activeDishId);
+      if (!dish || dish.isLocked) return;
+      dish.ingredients[idx].amount = Math.max(0, parseFloat(newAmount) || 0);
+      renderBOMTable(dish);
+      updateDishStats(dish, dish.price);
+      renderDishList();
+    }
+
+    // Khóa / Mở khóa công thức
+    function toggleLockActiveDish() {
+      const dish = recipes.find(r => r.id === activeDishId);
+      if (!dish) return;
+      dish.isLocked = !dish.isLocked;
+      selectDish(dish.id);
+    }
+
+    // Mô phỏng trượt giá bán
+    function handleSimulatePrice(val) {
+      const price = parseInt(val);
+      document.getElementById('sliderPriceDisplay').textContent = price.toLocaleString('vi-VN') + " đ";
+      const dish = recipes.find(r => r.id === activeDishId);
+      if (dish) updateDishStats(dish, price);
+    }
+
+    // Lưu công thức vào bộ nhớ
+    function saveActiveDishRecipe() {
+      const dish = recipes.find(r => r.id === activeDishId);
+      if (dish) dish.isLocked = true;
+      localStorage.setItem('dp_food_cost_recipes', JSON.stringify(recipes));
+      alert(`✓ ĐÃ KHÓA & LƯU CÔNG THỨC CHUẨN: ${dish.name.toUpperCase()}!\nĐịnh lượng đã được đồng bộ an toàn.`);
+      selectDish(activeDishId);
+    }
+
+    // Khôi phục định lượng mặc định
+    function resetDefaultActiveDish() {
+      if (!confirm("Bạn có chắc muốn khôi phục lại công thức gốc ban đầu cho món này?")) return;
+      const original = DEFAULT_RECIPES.find(r => r.id === activeDishId);
+      const curIdx = recipes.findIndex(r => r.id === activeDishId);
+      if (original && curIdx !== -1) {
+        recipes[curIdx] = JSON.parse(JSON.stringify(original));
+        saveActiveDishRecipe();
+      }
+    }
+
+    // Chuyển danh mục món
+    function setMenuCategory(cat) {
+      currentCategory = cat;
+      ['all', 'bun', 'drink'].forEach(c => {
+        const btn = document.getElementById('catBtn-' + c);
+        if (btn) {
+          btn.className = c === cat ? "px-3 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white cursor-pointer transition" : "px-3 py-1 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition";
+        }
+      });
+      renderDishList();
+    }
+
+    // In Phiếu Công Thức Cho Bếp
+    function printRecipeCard() {
+      const dish = recipes.find(r => r.id === activeDishId);
+      if (!dish) return;
+
+      document.getElementById('printDishTitle').textContent = dish.name;
+      const tbody = document.getElementById('printTableBody');
+      tbody.innerHTML = dish.ingredients.map(ing => `
+        <tr style="border-bottom: 1px solid #e5e7eb;">
+          <td style="padding: 6px; font-weight: bold;">${ing.name}</td>
+          <td style="padding: 6px; text-align: center; font-weight: 900; font-size: 14px;">${ing.amount} ${ing.unit}</td>
+          <td style="padding: 6px; color: #4b5563;">${ing.note}</td>
+        </tr>
+      `).join('');
+
+      window.print();
+    }
+
+    // ================= TAB 2: LẬP KẾ HOẠCH NGUYÊN LIỆU ĐI CHỢ =================
+    function switchTab(tab) {
+      const vRecipes = document.getElementById('viewRecipes');
+      const vPlanner = document.getElementById('viewPlanner');
+      const btnRecipes = document.getElementById('tabBtn-recipes');
+      const btnPlanner = document.getElementById('tabBtn-planner');
+
+      if (tab === 'recipes') {
+        vRecipes.classList.remove('hidden');
+        vPlanner.classList.add('hidden');
+        btnRecipes.className = "px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-2 transition cursor-pointer bg-blue-600 text-white shadow-xs";
+        btnPlanner.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition cursor-pointer text-slate-400 hover:text-white";
+      } else {
+        vRecipes.classList.add('hidden');
+        vPlanner.classList.remove('hidden');
+        btnPlanner.className = "px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-2 transition cursor-pointer bg-amber-500 text-slate-950 shadow-xs";
+        btnRecipes.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition cursor-pointer text-slate-400 hover:text-white";
+        renderPlannerInputs();
+        calculateMarketList();
+      }
+    }
+
+    // Giá trị dự kiến mặc định 1 ca sáng (150 tô bún, 80 ly nước)
+    let plannerEstimates = {
+      1: 40, // Bún cá dằm
+      2: 50, // Bún sứa
+      3: 35, // Bún chả cá
+      4: 25, // Tô thập cẩm lớn
+      5: 15, // Đĩa chả thêm
+      6: 10, // Đầu cá thu
+      7: 20, // Cà phê đen
+      8: 30, // Cà phê sữa
+      9: 15, // Bạc xỉu
+      10: 25, // Trà chanh
+      11: 20, // Trà tắc
+      12: 15  // Nước mía
+    };
+
+    function renderPlannerInputs() {
+      const container = document.getElementById('plannerInputList');
+      container.innerHTML = recipes.map(r => `
+        <div class="flex items-center justify-between p-2 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+          <span class="font-bold text-slate-300 truncate w-48">${r.name}</span>
+          <div class="flex items-center gap-1.5">
+            <input type="number" min="0" value="${plannerEstimates[r.id] || 0}" onchange="plannerEstimates[${r.id}] = parseInt(this.value) || 0; calculateMarketList();" class="w-16 bg-slate-800 border border-slate-700 rounded-lg p-1 text-center font-mono font-black text-amber-300">
+            <span class="text-slate-400">${r.cat === 'bun' ? 'tô' : 'ly'}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function calculateMarketList() {
+      let marketMap = {};
+      let totalRevenue = 0;
+      let totalBowls = 0;
+
+      recipes.forEach(r => {
+        const qty = plannerEstimates[r.id] || 0;
+        if (qty > 0) {
+          totalBowls += qty;
+          totalRevenue += r.price * qty;
+
+          r.ingredients.forEach(ing => {
+            if (!marketMap[ing.name]) {
+              marketMap[ing.name] = { totalAmount: 0, unit: ing.unit, unitPrice: ing.unitPrice };
+            }
+            marketMap[ing.name].totalAmount += ing.amount * qty;
+          });
+        }
+      });
+
+      let totalCost = 0;
+      const tbody = document.getElementById('marketListBody');
+      tbody.innerHTML = Object.keys(marketMap).map(name => {
+        const item = marketMap[name];
+        const cost = item.totalAmount * item.unitPrice;
+        totalCost += cost;
+
+        let displayAmount = item.totalAmount;
+        let displayUnit = item.unit;
+
+        // Chuyển đổi gram sang kg hoặc ml sang lít cho đầu bếp dễ đi chợ
+        if (item.unit === 'g' && item.totalAmount >= 1000) {
+          displayAmount = (item.totalAmount / 1000).toFixed(2);
+          displayUnit = "kg";
+        } else if (item.unit === 'ml' && item.totalAmount >= 1000) {
+          displayAmount = (item.totalAmount / 1000).toFixed(1);
+          displayUnit = "lít";
+        }
+
+        return `
+          <tr class="hover:bg-slate-800/40">
+            <td class="p-2.5 font-bold text-slate-200">${name}</td>
+            <td class="p-2.5 text-center font-mono font-black text-amber-300">${displayAmount} ${displayUnit}</td>
+            <td class="p-2.5 text-right font-mono text-slate-400">${item.unitPrice.toLocaleString('vi-VN')} đ/${item.unit}</td>
+            <td class="p-2.5 text-right font-mono font-black text-emerald-400">${cost.toLocaleString('vi-VN')} đ</td>
+          </tr>
+        `;
+      }).join('');
+
+      document.getElementById('plannerTotalBowlsBadge').textContent = `Tổng: ${totalBowls} phần ăn/uống`;
+      document.getElementById('plannerEstRevenue').textContent = totalRevenue.toLocaleString('vi-VN') + " đ";
+      document.getElementById('plannerEstCost').textContent = totalCost.toLocaleString('vi-VN') + " đ";
+      document.getElementById('plannerEstProfit').textContent = (totalRevenue - totalCost).toLocaleString('vi-VN') + " đ";
+    }
+
+    // Khởi tạo chạy ứng dụng
+    renderDishList();
+    selectDish(activeDishId);
+  </script>
+</body>
+</html>
