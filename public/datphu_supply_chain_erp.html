@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đất Phú Supply Chain ERP • 5 Khâu Khép Kín (Mua Hàng ➔ Lưu Kho ➔ Định Lượng ➔ POS ➔ Thuế)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #070B14; color: #F1F5F9; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0b1120; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    .glow-green { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
+    .glow-red { box-shadow: 0 0 20px rgba(239, 68, 68, 0.2); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col overflow-x-hidden">
+
+  <!-- ================= TOP BAR ĐIỀU HÀNH 5 KHÂU KHÉP KÍN ================= -->
+  <header class="bg-[#0D1527] border-b border-slate-800 px-4 py-3 sticky top-0 z-40 shadow-xl">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Logo & Tiêu đề -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-600 to-blue-600 flex items-center justify-center font-black text-white text-base shadow-lg shadow-emerald-900/30">
+          ĐP
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-black tracking-wide text-white">ĐẤT PHÚ <span class="text-emerald-400">SUPPLY CHAIN ERP</span></h1>
+            <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">CHU KỲ 5 KHÂU</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Từ Mua Hàng ➔ Lưu Kho ➔ Định Lượng BOM ➔ Bán Hàng POS ➔ Thuế & Dòng Tiền</p>
+        </div>
+      </div>
+
+      <!-- Chỉ số thực ca trực: 2 Túi Tiền Thực -->
+      <div class="flex items-center gap-2 sm:gap-3 text-xs">
+        <div class="bg-[#070B14] border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-2">
+          <i class="fa-solid fa-money-bill-wave text-emerald-400"></i>
+          <div>
+            <span class="text-[9px] text-slate-400 block font-bold">KÉT TIỀN MẶT:</span>
+            <span class="mono font-black text-emerald-400 text-xs sm:text-sm" id="statCash">1.450.000 đ</span>
+          </div>
+        </div>
+        <div class="bg-[#070B14] border border-slate-800 px-3 py-1.5 rounded-xl flex items-center gap-2">
+          <i class="fa-solid fa-qrcode text-rose-400"></i>
+          <div>
+            <span class="text-[9px] text-slate-400 block font-bold">TK MBBANK (QR):</span>
+            <span class="mono font-black text-rose-400 text-xs sm:text-sm" id="statQR">5.280.000 đ</span>
+          </div>
+        </div>
+        <a href="speed-pos.html" class="px-3 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-xs shadow-md transition flex items-center gap-1.5">
+          <i class="fa-solid fa-cash-register"></i>
+          <span class="hidden sm:inline">Mở Speed POS</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= THANH ĐIỀU HƯỚNG 5 BƯỚC KHÉP KÍN (THE 5 STEPPER TABS) ================= -->
+  <nav class="bg-[#0A101F] border-b border-slate-800/80 px-4 py-2 sticky top-[65px] z-30 shadow-md">
+    <div class="max-w-7xl mx-auto flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar">
+      
+      <!-- TAB 1: MUA HÀNG -->
+      <button onclick="switchTab(1)" id="tabBtn-1" class="tab-btn px-3 sm:px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 shrink-0 bg-blue-600 text-white shadow-md">
+        <span class="w-5 h-5 rounded-lg bg-white/20 text-white flex items-center justify-center text-[10px] font-black">1</span>
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>MUA HÀNG (PO)</span>
+      </button>
+
+      <!-- Mũi tên kết nối -->
+      <i class="fa-solid fa-arrow-right text-slate-600 text-xs shrink-0"></i>
+
+      <!-- TAB 2: LƯU KHO -->
+      <button onclick="switchTab(2)" id="tabBtn-2" class="tab-btn px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shrink-0 text-slate-400 hover:text-white hover:bg-slate-800">
+        <span class="w-5 h-5 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center text-[10px] font-black">2</span>
+        <i class="fa-solid fa-warehouse"></i>
+        <span>LƯU KHO (WMS)</span>
+      </button>
+
+      <i class="fa-solid fa-arrow-right text-slate-600 text-xs shrink-0"></i>
+
+      <!-- TAB 3: ĐỊNH LƯỢNG -->
+      <button onclick="switchTab(3)" id="tabBtn-3" class="tab-btn px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shrink-0 text-slate-400 hover:text-white hover:bg-slate-800">
+        <span class="w-5 h-5 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center text-[10px] font-black">3</span>
+        <i class="fa-solid fa-calculator text-amber-400"></i>
+        <span>ĐỊNH LƯỢNG (BOM)</span>
+      </button>
+
+      <i class="fa-solid fa-arrow-right text-slate-600 text-xs shrink-0"></i>
+
+      <!-- TAB 4: BÁN HÀNG POS -->
+      <button onclick="switchTab(4)" id="tabBtn-4" class="tab-btn px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shrink-0 text-slate-400 hover:text-white hover:bg-slate-800">
+        <span class="w-5 h-5 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center text-[10px] font-black">4</span>
+        <i class="fa-solid fa-cash-register text-emerald-400"></i>
+        <span>BÁN HÀNG (POS)</span>
+      </button>
+
+      <i class="fa-solid fa-arrow-right text-slate-600 text-xs shrink-0"></i>
+
+      <!-- TAB 5: THUẾ & DÒNG TIỀN -->
+      <button onclick="switchTab(5)" id="tabBtn-5" class="tab-btn px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shrink-0 text-slate-400 hover:text-white hover:bg-slate-800">
+        <span class="w-5 h-5 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center text-[10px] font-black">5</span>
+        <i class="fa-solid fa-scale-balanced text-rose-400"></i>
+        <span>THUẾ & DÒNG TIỀN</span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- ================= NỘI DUNG 5 GIAO DIỆN (CONTAINER CHÍNH) ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6">
+
+    <!-- ======================================================== -->
+    <!-- GIAO DIỆN PHẦN 1: MUA HÀNG (PROCUREMENT & NHÀ CUNG CẤP)   -->
+    <!-- ======================================================== -->
+    <section id="module-1" class="module-pane space-y-5">
+      
+      <!-- Header Module 1 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 p-4 bg-[#0D1527] rounded-2xl border border-slate-800">
+        <div>
+          <span class="text-xs font-bold text-blue-400 uppercase tracking-wider block">KHÂU 1: NHẬP HÀNG & NGUỒN CUNG</span>
+          <h2 class="text-xl font-black text-white">Quản Lý Đơn Mua Hàng (PO) & Hóa Đơn Đầu Vào</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Kiểm soát giá chợ, theo dõi công nợ nhà cung cấp cá thu, sứa tươi, bún tươi Tuy Hòa</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="openNewPOModal()" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-plus"></i> + Lập Đơn Nhập Mới
+          </button>
+        </div>
+      </div>
+
+      <!-- Chỉ số thị trường giá nguyên liệu Phú Yên -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="p-3.5 bg-[#0D1527] rounded-2xl border border-slate-800">
+          <span class="text-[11px] font-bold text-slate-400 block">Cá Thu Tươi (Cảng Dân Phước):</span>
+          <span class="mono font-black text-white text-lg">120.000 đ/kg</span>
+          <span class="text-[10px] text-emerald-400 font-bold block mt-1">✓ Giá ổn định (7 ngày)</span>
+        </div>
+        <div class="p-3.5 bg-[#0D1527] rounded-2xl border border-slate-800">
+          <span class="text-[11px] font-bold text-slate-400 block">Sứa Biển Tươi (An Hải):</span>
+          <span class="mono font-black text-amber-400 text-lg">35.000 đ/kg</span>
+          <span class="text-[10px] text-amber-400 font-bold block mt-1">▲ Tăng 5% (Mùa động)</span>
+        </div>
+        <div class="p-3.5 bg-[#0D1527] rounded-2xl border border-slate-800">
+          <span class="text-[11px] font-bold text-slate-400 block">Chả Cá Hấp Chiên (Tuy Hòa):</span>
+          <span class="mono font-black text-white text-lg">90.000 đ/kg</span>
+          <span class="text-[10px] text-slate-400 font-bold block mt-1">• Hợp đồng cố định tháng</span>
+        </div>
+        <div class="p-3.5 bg-[#0D1527] rounded-2xl border border-slate-800">
+          <span class="text-[11px] font-bold text-slate-400 block">Bún Tươi (Lò An Thổ):</span>
+          <span class="mono font-black text-white text-lg">12.000 đ/kg</span>
+          <span class="text-[10px] text-emerald-400 font-bold block mt-1">✓ Giao tươi mỗi sáng 5h</span>
+        </div>
+      </div>
+
+      <!-- Danh sách đơn mua hàng gần nhất -->
+      <div class="bg-[#0D1527] rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+          <h3 class="font-black text-sm uppercase text-slate-200">Đơn Mua Hàng Nhập Kho (Phiếu PO)</h3>
+          <span class="text-xs text-slate-400 font-semibold">Tự động đẩy dữ liệu sang Khâu 2 (Lưu Kho)</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-slate-900/80 text-slate-400 border-b border-slate-800 text-[11px] uppercase tracking-wider font-bold">
+              <tr>
+                <th class="p-3.5">Mã PO</th>
+                <th class="p-3.5">Nhà Cung Cấp</th>
+                <th class="p-3.5">Mặt Hàng Nhập</th>
+                <th class="p-3.5 text-center">Số Lượng</th>
+                <th class="p-3.5 text-right">Tổng Tiền</th>
+                <th class="p-3.5 text-center">Trạng Thái</th>
+                <th class="p-3.5 text-right">Thao Tác</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 font-medium" id="poTableBody">
+              <!-- Render PO records -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- GIAO DIỆN PHẦN 2: LƯU KHO (WMS & THẺ KHO FIFO)            -->
+    <!-- ======================================================== -->
+    <section id="module-2" class="module-pane hidden space-y-5">
+      
+      <!-- Header Module 2 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 p-4 bg-[#0D1527] rounded-2xl border border-slate-800">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-wider block">KHÂU 2: BẢO QUẢN & THẺ KHO THỜI GIAN THỰC</span>
+          <h2 class="text-xl font-black text-white">Quản Trị Tồn Kho WMS (Kho Lạnh • Kho Mát • Kho Khô)</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Trừ kho tức thời khi POS bán 1 tô • Cảnh báo cạn kho tự động</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="auditInventory()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-clipboard-check text-emerald-400"></i> Kiểm Kê Hao Hụt
+          </button>
+        </div>
+      </div>
+
+      <!-- 3 Phân khu kho chuẩn F&B -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        
+        <!-- Kho Lạnh -->
+        <div class="p-4 bg-[#0D1527] rounded-2xl border-2 border-cyan-500/30 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-sm text-cyan-400 flex items-center gap-2">
+              <i class="fa-solid fa-snowflake"></i> 1. KHO LẠNH (-18°C)
+            </span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300">Đạt chuẩn</span>
+          </div>
+          <p class="text-xs text-slate-400">Cá thu cắt khúc, sứa tươi ướp lạnh, chả cá đông</p>
+          <div class="pt-2 border-t border-slate-800 flex justify-between text-xs">
+            <span class="text-slate-400">Tồn giá trị:</span>
+            <span class="mono font-bold text-white">3.650.000 đ</span>
+          </div>
+        </div>
+
+        <!-- Kho Mát -->
+        <div class="p-4 bg-[#0D1527] rounded-2xl border-2 border-emerald-500/30 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-sm text-emerald-400 flex items-center gap-2">
+              <i class="fa-solid fa-temperature-arrow-down"></i> 2. KHO MÁT (4°C)
+            </span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">Tươi mỗi ngày</span>
+          </div>
+          <p class="text-xs text-slate-400">Rau sống, chanh, ớt hiểm, nước cốt ninh cá</p>
+          <div class="pt-2 border-t border-slate-800 flex justify-between text-xs">
+            <span class="text-slate-400">Tồn giá trị:</span>
+            <span class="mono font-bold text-white">820.000 đ</span>
+          </div>
+        </div>
+
+        <!-- Kho Khô -->
+        <div class="p-4 bg-[#0D1527] rounded-2xl border-2 border-amber-500/30 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-sm text-amber-400 flex items-center gap-2">
+              <i class="fa-solid fa-box-open"></i> 3. KHO KHÔ (25°C)
+            </span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300">Khô ráo</span>
+          </div>
+          <p class="text-xs text-slate-400">Bún tươi An Thổ, tiêu đen Đắk Lắk, đường, gia vị, hộp mang về</p>
+          <div class="pt-2 border-t border-slate-800 flex justify-between text-xs">
+            <span class="text-slate-400">Tồn giá trị:</span>
+            <span class="mono font-bold text-white">1.940.000 đ</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bảng thẻ kho thời gian thực chi tiết -->
+      <div class="bg-[#0D1527] rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+          <h3 class="font-black text-sm uppercase text-slate-200">Thẻ Kho Vật Tư & Mức Độ An Toàn</h3>
+          <span class="text-xs text-emerald-400 font-bold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Đồng bộ tự động với POS
+          </span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-slate-900/80 text-slate-400 border-b border-slate-800 text-[11px] uppercase tracking-wider font-bold">
+              <tr>
+                <th class="p-3.5">Nguyên Vật Liệu</th>
+                <th class="p-3.5">Phân Kho</th>
+                <th class="p-3.5 text-center">Tồn Đầu</th>
+                <th class="p-3.5 text-center">Nhập Hôm Nay</th>
+                <th class="p-3.5 text-center text-rose-400">POS Đã Xuất Bán</th>
+                <th class="p-3.5 text-center font-black text-white">Tồn Hiện Tại</th>
+                <th class="p-3.5 text-center">Đánh Giá Tồn</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 font-medium" id="inventoryTableBody">
+              <!-- Render Thẻ kho -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- GIAO DIỆN PHẦN 3: ĐỊNH LƯỢNG (BOM & RECIPE FOOD COST)     -->
+    <!-- ======================================================== -->
+    <section id="module-3" class="module-pane hidden space-y-5">
+      
+      <!-- Header Module 3 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 p-4 bg-[#0D1527] rounded-2xl border border-slate-800">
+        <div>
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-wider block">KHÂU 3: KHÓA CÔNG THỨC CHUẨN & FOOD COST %</span>
+          <h2 class="text-xl font-black text-white">Bảng Định Lượng Chuẩn (BOM - Bill of Materials)</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Xác định chính xác giá vốn từng tô bún • Cảnh báo biên lãi gộp</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="food-cost.html" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition flex items-center gap-1.5">
+            <i class="fa-solid fa-calculator"></i> Mở Trình Quản Lý Food Cost Độc Lập
+          </a>
+        </div>
+      </div>
+
+      <!-- Khối phân tích chi tiết món chủ lực: BÚN CÁ DẰM ĐẶC BIỆT -->
+      <div class="bg-[#0D1527] rounded-2xl border-2 border-amber-500/50 p-5 space-y-4 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-black text-lg border border-amber-500/30">
+              <i class="fa-solid fa-bowl-food"></i>
+            </span>
+            <div>
+              <h3 class="font-black text-base text-white">BÚN CÁ DẰM ĐẶC BIỆT TUY HÒA</h3>
+              <span class="text-xs text-slate-400">Mã SKU: BC-01 • Giá niêm yết bán ra: <strong class="text-emerald-400 font-mono text-sm">35.000 đ</strong></span>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <span class="text-[10px] text-slate-400 block font-bold">GIÁ VỐN (FOOD COST):</span>
+              <span class="mono font-black text-rose-400 text-base">14.650 đ (41.8%)</span>
+            </div>
+            <div class="text-right pl-3 border-l border-slate-800">
+              <span class="text-[10px] text-slate-400 block font-bold">LÃI GỘP / TÔ:</span>
+              <span class="mono font-black text-emerald-400 text-base">20.350 đ (58.2%)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bảng chi tiết thành phần định lượng cho 1 tô -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-slate-900/90 text-slate-400 text-[11px] uppercase font-bold">
+              <tr>
+                <th class="p-2.5">Thành Phần Nguyên Liệu</th>
+                <th class="p-2.5 text-center">Định Lượng / Tô</th>
+                <th class="p-2.5 text-right">Đơn Giá Nhập (PO)</th>
+                <th class="p-2.5 text-right">Chi Phí Thành Phần</th>
+                <th class="p-2.5 text-center">Tỷ Trọng Vốn</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 font-medium">
+              <tr>
+                <td class="p-2.5 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-cyan-400"></span> Cá thu dằm hấp xé miếng
+                </td>
+                <td class="p-2.5 text-center font-mono">0.06 kg (60g)</td>
+                <td class="p-2.5 text-right font-mono text-slate-400">120.000 đ/kg</td>
+                <td class="p-2.5 text-right font-mono font-bold text-white">7.200 đ</td>
+                <td class="p-2.5 text-center text-cyan-400 font-bold">49.1%</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-cyan-400"></span> Chả cá chiên hấp thái lát
+                </td>
+                <td class="p-2.5 text-center font-mono">0.04 kg (40g)</td>
+                <td class="p-2.5 text-right font-mono text-slate-400">90.000 đ/kg</td>
+                <td class="p-2.5 text-right font-mono font-bold text-white">3.600 đ</td>
+                <td class="p-2.5 text-center text-cyan-400 font-bold">24.5%</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-amber-400"></span> Bún tươi An Thổ sợi vừa
+                </td>
+                <td class="p-2.5 text-center font-mono">0.18 kg (180g)</td>
+                <td class="p-2.5 text-right font-mono text-slate-400">12.000 đ/kg</td>
+                <td class="p-2.5 text-right font-mono font-bold text-white">2.160 đ</td>
+                <td class="p-2.5 text-center text-amber-400 font-bold">14.7%</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Nước dùng hầm xương cá + gia vị
+                </td>
+                <td class="p-2.5 text-center font-mono">350 ml (1 vá)</td>
+                <td class="p-2.5 text-right font-mono text-slate-400">2.500 đ/vá</td>
+                <td class="p-2.5 text-right font-mono font-bold text-white">890 đ</td>
+                <td class="p-2.5 text-center text-emerald-400 font-bold">6.1%</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Rau sống, chanh ớt, mắm nhĩ
+                </td>
+                <td class="p-2.5 text-center font-mono">1 dĩa phụ</td>
+                <td class="p-2.5 text-right font-mono text-slate-400">800 đ/phần</td>
+                <td class="p-2.5 text-right font-mono font-bold text-white">800 đ</td>
+                <td class="p-2.5 text-center text-emerald-400 font-bold">5.6%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- GIAO DIỆN PHẦN 4: BÁN HÀNG POS (SPEED POS & SƠ ĐỒ BÀN)    -->
+    <!-- ======================================================== -->
+    <section id="module-4" class="module-pane hidden space-y-5">
+      
+      <!-- Header Module 4 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 p-4 bg-[#0D1527] rounded-2xl border border-slate-800">
+        <div>
+          <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">KHÂU 4: ĐIỀU PHỐI BÁN HÀNG SIÊU TỐC</span>
+          <h2 class="text-xl font-black text-white">Màn Hình Thu Ngân POS (2/3 Bàn + 1/3 Phiếu)</h2>
+          <p class="text-xs text-slate-400 mt-0.5">3 nút hành động tại bàn: Gọi Món • Báo Bếp KDS • Thu Tiền (VietQR & Tiền Mặt)</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="speed-pos.html" target="_blank" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md transition flex items-center gap-2">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Mở Speed POS Toàn Màn Hình
+          </a>
+        </div>
+      </div>
+
+      <!-- Giả lập trực quan sơ đồ bàn Speed POS ngay trong module -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- Bàn 01: Bếp đang nấu -->
+        <div class="p-4 rounded-2xl bg-[#0D1527] border-2 border-amber-500/80 shadow-lg space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center font-mono">01</span>
+              <div>
+                <h4 class="font-black text-sm text-white">BÀN 01</h4>
+                <span class="text-[10px] text-slate-400">Sảnh • 4 ghế</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] animate-pulse">🔔 Bếp Nấu</span>
+          </div>
+          <div class="text-xs text-slate-300 space-y-1">
+            <div class="flex justify-between"><span>2x Bún Cá Dằm</span><span class="font-mono font-bold">70.000 đ</span></div>
+            <div class="flex justify-between"><span>1x Trà Tắc Xí Muội</span><span class="font-mono font-bold">15.000 đ</span></div>
+          </div>
+          <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs text-slate-400">Tạm tính:</span>
+            <span class="font-mono font-black text-rose-500 text-base">85.000 đ</span>
+          </div>
+        </div>
+
+        <!-- Bàn 02: Bếp vừa nấu xong - Cần ra món -->
+        <div class="p-4 rounded-2xl bg-[#0D1527] border-2 border-emerald-500 shadow-xl ring-2 ring-emerald-400/40 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center font-mono">02</span>
+              <div>
+                <h4 class="font-black text-sm text-white">BÀN 02</h4>
+                <span class="text-[10px] text-slate-400">Sân Vườn • 6 ghế</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-black text-[10px] animate-bounce">🍽️ Ra Món Ngay</span>
+          </div>
+          <div class="text-xs text-slate-300 space-y-1">
+            <div class="flex justify-between"><span>3x Bún Cá Sứa Tươi</span><span class="font-mono font-bold">120.000 đ</span></div>
+            <div class="flex justify-between"><span>1x Đĩa Chả Thêm</span><span class="font-mono font-bold">15.000 đ</span></div>
+          </div>
+          <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs text-slate-400">Tạm tính:</span>
+            <span class="font-mono font-black text-rose-500 text-base">135.000 đ</span>
+          </div>
+        </div>
+
+        <!-- Bàn 03: Chờ VietQR thanh toán -->
+        <div class="p-4 rounded-2xl bg-[#0D1527] border-2 border-rose-500/80 shadow-lg space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-rose-600 text-white font-black text-sm flex items-center justify-center font-mono">03</span>
+              <div>
+                <h4 class="font-black text-sm text-white">BÀN 03</h4>
+                <span class="text-[10px] text-slate-400">Phòng VIP • 8 ghế</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-full bg-rose-600 text-white font-black text-[10px]">💳 Chờ QR</span>
+          </div>
+          <div class="text-xs text-slate-300 space-y-1">
+            <div class="flex justify-between"><span>4x Tô Thập Cẩm Lớn</span><span class="font-mono font-bold">180.000 đ</span></div>
+            <div class="flex justify-between"><span>4x Nước Mía Ép Tắc</span><span class="font-mono font-bold">40.000 đ</span></div>
+          </div>
+          <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs text-slate-400">Tổng cộng:</span>
+            <span class="font-mono font-black text-red-500 text-base">220.000 đ</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- GIAO DIỆN PHẦN 5: THUẾ & DÒNG TIỀN (P&L & E-INVOICE)      -->
+    <!-- ======================================================== -->
+    <section id="module-5" class="module-pane hidden space-y-5">
+      
+      <!-- Header Module 5 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 p-4 bg-[#0D1527] rounded-2xl border border-slate-800">
+        <div>
+          <span class="text-xs font-bold text-rose-400 uppercase tracking-wider block">KHÂU 5: MINH BẠCH TÀI CHÍNH & TUÂN THỦ THUẾ</span>
+          <h2 class="text-xl font-black text-white">Báo Cáo Thuế & Dòng Tiền Thực (P&L Thời Gian Thực)</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Tách bạch 2 túi tiền • Hóa đơn điện tử khởi tạo từ máy tính tiền (Nghị định 123/TT78)</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="exportTaxReport()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-file-excel text-emerald-400"></i> Xuất File Thuế XML/Excel
+          </button>
+        </div>
+      </div>
+
+      <!-- Thẻ chỉ số P&L dòng tiền ca bán -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="p-4 bg-[#0D1527] rounded-2xl border border-slate-800">
+          <span class="text-[11px] font-bold text-slate-400 block">TỔNG DOANH THU:</span>
+          <span class="mono font-black text-emerald-400 text-xl sm:text-2xl">6.730.000 đ</span>
+          <span class="text-[10px] text-slate-500 block mt-1">Gồm: 28 đơn QR + 14 đơn tiền mặt</span>
+        </div>
+        <div class="p-4 bg-[#0D1527] rounded-2xl border border-slate-800">
+          <span class="text-[11px] font-bold text-slate-400 block">GIÁ VỐN NGUYÊN LIỆU (BOM):</span>
+          <span class="mono font-black text-rose-400 text-xl sm:text-2xl">2.810.000 đ</span>
+          <span class="text-[10px] text-slate-500 block mt-1">Tỷ lệ Food Cost: 41.7% (Rất chuẩn)</span>
+        </div>
+        <div class="p-4 bg-[#0D1527] rounded-2xl border border-slate-800">
+          <span class="text-[11px] font-bold text-slate-400 block">CHI PHÍ VẬN HÀNH / NGÀY:</span>
+          <span class="mono font-black text-amber-400 text-xl sm:text-2xl">1.200.000 đ</span>
+          <span class="text-[10px] text-slate-500 block mt-1">Điện, nước, nhân công, mặt bằng</span>
+        </div>
+        <div class="p-4 bg-[#0D1527] rounded-2xl border border-slate-800 glow-green">
+          <span class="text-[11px] font-bold text-emerald-300 block">LỢI NHUẬN RÒNG (NET PROFIT):</span>
+          <span class="mono font-black text-emerald-400 text-xl sm:text-2xl">+2.720.000 đ</span>
+          <span class="text-[10px] text-emerald-400 font-bold block mt-1">Biên lợi nhuận ròng: 40.4%</span>
+        </div>
+      </div>
+
+      <!-- Bảng đối soát tuân thủ thuế & Hóa đơn điện tử -->
+      <div class="bg-[#0D1527] rounded-2xl border border-slate-800 p-5 space-y-4">
+        <h3 class="font-black text-sm uppercase text-slate-200 flex items-center gap-2">
+          <i class="fa-solid fa-stamp text-blue-400"></i> Hóa Đơn Điện Tử Khởi Tạo Từ Máy Tính Tiền & Nghĩa Vụ Thuế
+        </h3>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          
+          <div class="p-4 bg-[#070B14] rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-slate-300 block text-xs uppercase text-blue-400">Mô hình Hộ Kinh Doanh Cá Thể:</span>
+            <ul class="text-slate-400 space-y-1 list-disc list-inside">
+              <li>Doanh thu kê khai: <strong>6.730.000 đ</strong></li>
+              <li>Thuế GTGT (3% ngành F&B): <strong class="text-white">201.900 đ</strong></li>
+              <li>Thuế TNCN (1.5% cá nhân): <strong class="text-white">100.950 đ</strong></li>
+              <li>Tổng thuế phải nộp (4.5%): <strong class="text-rose-400 font-mono">302.850 đ</strong></li>
+            </ul>
+            <span class="text-[10px] text-emerald-400 block pt-1 border-t border-slate-800">✓ An toàn 100%, không bị phạt truy thu do khớp mã VietQR.</span>
+          </div>
+
+          <div class="p-4 bg-[#070B14] rounded-xl border border-slate-800 space-y-2">
+            <span class="font-bold text-slate-300 block text-xs uppercase text-emerald-400">Mô hình Công Ty TNHH / Cổ Phần:</span>
+            <ul class="text-slate-400 space-y-1 list-disc list-inside">
+              <li>Thuế GTGT đầu ra (8% F&B): <strong class="text-white">538.400 đ</strong></li>
+              <li>Khấu trừ GTGT đầu vào từ phiếu Mua Hàng: <strong class="text-emerald-400">-224.800 đ</strong></li>
+              <li>Thuế GTGT thực nộp: <strong class="text-amber-400 font-mono">313.600 đ</strong></li>
+              <li>Tự động đẩy hóa đơn sang cơ quan thuế qua máy in POS.</li>
+            </ul>
+            <span class="text-[10px] text-blue-400 block pt-1 border-t border-slate-800">✓ Sẵn sàng kết nối Viettel Invoice / VNPT Invoice.</span>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= MODAL LẬP ĐƠN NHẬP MỚI (PO MODAL) ================= -->
+  <div id="newPOModal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-[#0D1527] rounded-3xl w-full max-w-lg p-5 shadow-2xl flex flex-col gap-4 border border-slate-700 animate-in fade-in zoom-in duration-150 text-white">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="font-black text-sm uppercase text-white flex items-center gap-2">
+          <i class="fa-solid fa-cart-plus text-blue-400"></i> Lập Phiếu Mua Hàng Nhập Kho (PO)
+        </h3>
+        <button onclick="closeNewPOModal()" class="w-7 h-7 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="font-bold text-slate-300 block mb-1">Nhà Cung Cấp:</label>
+          <select id="poSupplier" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl font-bold">
+            <option value="Cảng Dân Phước">Vựa Hải Sản Cảng Dân Phước (Cá thu tươi)</option>
+            <option value="Chả Cá Tuy Hòa">Cơ Sở Chả Cá Tuy Hòa (Chả chiên/hấp)</option>
+            <option value="Lò Bún An Thổ">Lò Bún Tươi An Thổ Tuy An</option>
+            <option value="Rau Sạch Bình Kiến">HTX Rau Sạch Bình Kiến (Rau sống, chanh ớt)</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-300 block mb-1">Mặt hàng:</label>
+            <input type="text" id="poItemName" placeholder="vd: Cá thu tươi 10kg" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl font-bold">
+          </div>
+          <div>
+            <label class="font-bold text-slate-300 block mb-1">Tổng tiền thanh toán (đ):</label>
+            <input type="number" id="poItemAmount" placeholder="1200000" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl font-mono font-bold text-emerald-400">
+          </div>
+        </div>
+        <div>
+          <label class="font-bold text-slate-300 block mb-1">Kho tiếp nhận:</label>
+          <select id="poTargetWarehouse" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl font-bold">
+            <option value="Kho Lạnh (-18°C)">Kho Lạnh (-18°C)</option>
+            <option value="Kho Mát (4°C)">Kho Mát (4°C)</option>
+            <option value="Kho Khô (25°C)">Kho Khô (25°C)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
+        <button onclick="closeNewPOModal()" class="px-3 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs">Đóng</button>
+        <button onclick="saveNewPO()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-xs shadow-md">✓ Nhập Kho Ngay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT ĐIỀU HÀNH 5 MODULE ================= -->
+  <script>
+    // Dữ liệu mẫu ban đầu
+    let poList = [
+      { id: "PO-202611-01", supplier: "Vựa Cá Cảng Dân Phước", item: "Cá thu tươi nguyên con", qty: "15 kg", total: 1800000, status: "Đã nhập kho" },
+      { id: "PO-202611-02", supplier: "Cơ Sở Chả Cá Tuy Hòa", item: "Chả cá chiên hấp thái lát", qty: "20 kg", total: 1800000, status: "Đã nhập kho" },
+      { id: "PO-202611-03", supplier: "Lò Bún An Thổ", item: "Bún tươi sợi vừa giao sáng", qty: "45 kg", total: 540000, status: "Đã nhập kho" },
+      { id: "PO-202611-04", supplier: "HTX Rau Sạch Bình Kiến", item: "Rau xà lách, hành ngò, chanh ớt", qty: "10 phần", total: 350000, status: "Đã nhập kho" }
+    ];
+
+    let inventoryItems = [
+      { name: "Cá thu tươi cắt lát", warehouse: "Kho Lạnh (-18°C)", start: "5.0 kg", inToday: "15.0 kg", sold: "6.2 kg", cur: "13.8 kg", status: "An toàn", color: "text-emerald-400" },
+      { name: "Chả cá hấp chiên", warehouse: "Kho Lạnh (-18°C)", start: "8.0 kg", inToday: "20.0 kg", sold: "7.5 kg", cur: "20.5 kg", status: "Dồi dào", color: "text-emerald-400" },
+      { name: "Sứa biển tươi ngâm", warehouse: "Kho Lạnh (-18°C)", start: "3.5 kg", inToday: "10.0 kg", sold: "5.0 kg", cur: "8.5 kg", status: "An toàn", color: "text-emerald-400" },
+      { name: "Bún tươi An Thổ", warehouse: "Kho Khô (25°C)", start: "0 kg", inToday: "45.0 kg", sold: "22.5 kg", cur: "22.5 kg", status: "Bán chạy", color: "text-amber-400" },
+      { name: "Rau sống & hành ngò", warehouse: "Kho Mát (4°C)", start: "2.0 kg", inToday: "10.0 kg", sold: "6.0 kg", cur: "6.0 kg", status: "Tươi ngon", color: "text-emerald-400" }
+    ];
+
+    // Chuyển Tab giữa 5 Module
+    function switchTab(stepIndex) {
+      for (let i = 1; i <= 5; i++) {
+        const pane = document.getElementById('module-' + i);
+        const btn = document.getElementById('tabBtn-' + i);
+        
+        if (i === stepIndex) {
+          pane.classList.remove('hidden');
+          btn.className = "tab-btn px-3 sm:px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 shrink-0 bg-blue-600 text-white shadow-md";
+        } else {
+          pane.classList.add('hidden');
+          btn.className = "tab-btn px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shrink-0 text-slate-400 hover:text-white hover:bg-slate-800";
+        }
+      }
+    }
+
+    // Render Bảng PO (Khâu 1)
+    function renderPOTable() {
+      const tbody = document.getElementById('poTableBody');
+      tbody.innerHTML = poList.map(po => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="p-3.5 font-mono font-bold text-blue-400">${po.id}</td>
+          <td class="p-3.5 font-bold text-white">${po.supplier}</td>
+          <td class="p-3.5 text-slate-300">${po.item}</td>
+          <td class="p-3.5 text-center font-mono">${po.qty}</td>
+          <td class="p-3.5 text-right font-mono font-bold text-emerald-400">${po.total.toLocaleString('vi-VN')} đ</td>
+          <td class="p-3.5 text-center">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              ${po.status}
+            </span>
+          </td>
+          <td class="p-3.5 text-right">
+            <button onclick="alert('Đã đồng bộ PO sang Kho & Hóa đơn đầu vào!')" class="text-blue-400 hover:text-blue-300 font-bold hover:underline cursor-pointer">
+              Xem chi tiết
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Render Bảng Thẻ Kho (Khâu 2)
+    function renderInventoryTable() {
+      const tbody = document.getElementById('inventoryTableBody');
+      tbody.innerHTML = inventoryItems.map(item => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="p-3.5 font-bold text-white">${item.name}</td>
+          <td class="p-3.5 text-slate-400">${item.warehouse}</td>
+          <td class="p-3.5 text-center font-mono text-slate-400">${item.start}</td>
+          <td class="p-3.5 text-center font-mono text-emerald-400 font-bold">+${item.inToday}</td>
+          <td class="p-3.5 text-center font-mono text-rose-400 font-bold">-${item.sold}</td>
+          <td class="p-3.5 text-center font-mono font-black text-white text-sm">${item.cur}</td>
+          <td class="p-3.5 text-center">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-slate-800 border border-slate-700 ${item.color}">
+              ${item.status}
+            </span>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function openNewPOModal() {
+      document.getElementById('newPOModal').classList.remove('hidden');
+    }
+
+    function closeNewPOModal() {
+      document.getElementById('newPOModal').classList.add('hidden');
+    }
+
+    function saveNewPO() {
+      const supplier = document.getElementById('poSupplier').value;
+      const item = (document.getElementById('poItemName').value || "").trim();
+      const amount = parseInt(document.getElementById('poItemAmount').value) || 0;
+      const targetW = document.getElementById('poTargetWarehouse').value;
+
+      if (!item || amount <= 0) return alert("Vui lòng nhập tên mặt hàng và số tiền hợp lệ!");
+
+      const newId = "PO-202611-0" + (poList.length + 1);
+      poList.unshift({
+        id: newId,
+        supplier: supplier,
+        item: item,
+        qty: "Theo phiếu",
+        total: amount,
+        status: "Đã nhập kho"
+      });
+
+      renderPOTable();
+      closeNewPOModal();
+      alert(`✓ Đã tạo đơn ${newId} và nhập hàng vào ${targetW}! Kho đã tự động cập nhật số dư.`);
+    }
+
+    function auditInventory() {
+      alert("✓ KIỂM KÊ HAO HỤT THÀNH CÔNG:\nTỷ lệ hao hụt sơ chế hôm nay: 2.3% (Dưới ngưỡng cho phép 5%). Toàn bộ số liệu kho hoàn toàn khớp với hóa đơn POS!");
+    }
+
+    function exportTaxReport() {
+      alert("✓ ĐÃ XUẤT BÁO CÁO THUẾ ĐỊNH DẠNG XML/EXCEL CHUẨN NGHỊ ĐỊNH 123:\n- Tổng doanh thu kê khai: 6.730.000 đ\n- Thuế GTGT + TNCN: 302.850 đ\nSẵn sàng nộp cổng Thuế Điện Tử (thuedientu.gdt.gov.vn)!");
+    }
+
+    // Khởi tạo
+    renderPOTable();
+    renderInventoryTable();
+  </script>
+</body>
+</html>
