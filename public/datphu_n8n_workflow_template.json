@@ -1,0 +1,218 @@
+{
+  "name": "Đất Phú Speed POS - Tự Động Hóa Toàn Diện (Telegram / Zalo / Google Sheets)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "datphu-pos",
+        "responseMode": "onReceived",
+        "responseData": "{\"status\":\"ok\",\"message\":\"Đất Phú POS Webhook nhận thành công\"}",
+        "options": {}
+      },
+      "id": "11111111-2222-3333-4444-555555555551",
+      "name": "1. Webhook Tiếp Nhận Từ POS",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        220,
+        340
+      ],
+      "webhookId": "datphu-pos"
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.body.event }}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "order_completed",
+              "output": 0
+            },
+            {
+              "value2": "kitchen_order",
+              "output": 1
+            },
+            {
+              "value2": "kitchen_ready_to_serve",
+              "output": 2
+            },
+            {
+              "value2": "shift_closed",
+              "output": 3
+            }
+          ]
+        }
+      },
+      "id": "11111111-2222-3333-4444-555555555552",
+      "name": "2. Phân Loại Sự Kiện POS",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        480,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_quanly",
+        "text": "=💰 <b>[THANH TOÁN THÀNH CÔNG] {{ $json.body.data.tableName.toUpperCase() }}</b>\n━━━━━━━━━━━━━━━━━━━━\n💵 Số tiền: <b>{{ $json.body.data.totalAmount.toLocaleString('vi-VN') }} đ</b>\n💳 Hình thức: <b>{{ $json.body.data.paymentMethod }}</b>\n⏰ Giờ ra: {{ $json.body.data.closeTime }}\n🍜 Món: {{ $json.body.data.items.map(x => x.name + ' (x' + x.qty + ')').join(', ') }}\n━━━━━━━━━━━━━━━━━━━━\n✅ Tiền đã vào tài khoản / két thành công!",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "11111111-2222-3333-4444-555555555553",
+      "name": "3A. Báo Doanh Thu Về Telegram Chủ Quán",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        780,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1A2B3C_DATPHU_SO_DOANH_THU_GOOGLE_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "DoanhThuHangNgay",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ThoiGian": "={{ $json.body.timestamp }}",
+            "Ban": "={{ $json.body.data.tableName }}",
+            "SoTien": "={{ $json.body.data.totalAmount }}",
+            "HinhThuc": "={{ $json.body.data.paymentMethod }}",
+            "ChiTietMon": "={{ $json.body.data.items.map(x => x.name + ' x' + x.qty).join(', ') }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "11111111-2222-3333-4444-555555555554",
+      "name": "3B. Lưu Hóa Đơn Vào Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1040,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_bep_kds",
+        "text": "=🔔 <b>[ĐƠN MỚI CẦN NẤU] {{ $json.body.data.tableName.toUpperCase() }}</b>\n━━━━━━━━━━━━━━━━━━━━\n⏰ Giờ gọi: <b>{{ $json.body.data.kitchenTime }}</b>\n👨‍🍳 Số lượng: {{ $json.body.data.itemsCount }} phần\n\n<b>CHI TIẾT MÓN:</b>\n{{ $json.body.data.items.map((x, i) => (i + 1) + '. ' + x.name + ' ➔ x<b>' + x.qty + '</b>').join('\\n') }}\n━━━━━━━━━━━━━━━━━━━━\n👉 Đầu bếp nhận đơn nấu ngay!",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "11111111-2222-3333-4444-555555555555",
+      "name": "4. Báo Đơn Cần Nấu Tới Nhóm Bếp",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        780,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_tiep_thuc",
+        "text": "=🍽️ <b>[MÓN ĐÃ NẤU XONG] {{ $json.body.data.tableName.toUpperCase() }}</b>\n━━━━━━━━━━━━━━━━━━━━\n⏰ Xong lúc: <b>{{ $json.body.data.readyTime }}</b>\n🍜 Đã có: {{ $json.body.data.items.map(x => x.name + ' (x' + x.qty + ')').join(', ') }}\n━━━━━━━━━━━━━━━━━━━━\n🏃 Tiếp thực lại quầy bếp bưng lên bàn cho khách ngay!",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "11111111-2222-3333-4444-555555555556",
+      "name": "5. Báo Tiếp Thực Ra Món Cho Khách",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        780,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_ban_giam_doc",
+        "text": "=📊 <b>[BÁO CÁO CHỐT CA NGÀY] ĐẤT PHÚ SPEED POS</b>\n━━━━━━━━━━━━━━━━━━━━\n📅 Ngày: {{ new Date().toLocaleDateString('vi-VN') }}\n💰 TỔNG DOANH THU: <b>{{ $json.body.data.totalRevenue.toLocaleString('vi-VN') }} đ</b>\n💵 Két Tiền Mặt: <b>{{ $json.body.data.cashRevenue.toLocaleString('vi-VN') }} đ</b>\n💳 MBBank VietQR: <b>{{ $json.body.data.qrRevenue.toLocaleString('vi-VN') }} đ</b>\n🧾 Tổng số đơn: {{ $json.body.data.ordersCount }} bàn\n━━━━━━━━━━━━━━━━━━━━\n✅ Ca trực đã hoàn tất kiểm đếm!",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "11111111-2222-3333-4444-555555555557",
+      "name": "6. Báo Cáo Chốt Ca Cuối Ngày",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        780,
+        660
+      ]
+    }
+  ],
+  "connections": {
+    "1. Webhook Tiếp Nhận Từ POS": {
+      "main": [
+        [
+          {
+            "node": "2. Phân Loại Sự Kiện POS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Phân Loại Sự Kiện POS": {
+      "main": [
+        [
+          {
+            "node": "3A. Báo Doanh Thu Về Telegram Chủ Quán",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "4. Báo Đơn Cần Nấu Tới Nhóm Bếp",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "5. Báo Tiếp Thực Ra Món Cho Khách",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "6. Báo Cáo Chốt Ca Cuối Ngày",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3A. Báo Doanh Thu Về Telegram Chủ Quán": {
+      "main": [
+        [
+          {
+            "node": "3B. Lưu Hóa Đơn Vào Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

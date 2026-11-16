@@ -484,54 +484,102 @@
   </div>
 
   <!-- ================= MODAL CẤU HÌNH n8n WEBHOOK ================= -->
-  <div id="n8nModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl w-full max-w-md p-5 shadow-2xl flex flex-col">
+  <div id="n8nModal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-3 sm:p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-3xl w-full max-w-xl max-h-[92vh] shadow-2xl flex flex-col overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-150">
       
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-black shadow-xs">
+      <!-- Modal Header -->
+      <div class="p-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-lg font-black shadow-inner">
             <i class="fa-solid fa-network-wired"></i>
           </div>
           <div>
-            <h3 class="font-black text-sm text-slate-800">CẤU HÌNH TỰ ĐỘNG HÓA n8n</h3>
-            <span class="text-[10px] text-slate-500">Tự động bắn đơn sang Zalo, Telegram, Google Sheets</span>
+            <h3 class="font-black text-sm sm:text-base uppercase tracking-wide flex items-center gap-2">
+              KẾT NỐI TỰ ĐỘNG HÓA n8n
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Auto Sync</span>
+            </h3>
+            <p class="text-[11px] text-slate-300">Tự động bắn đơn sang Telegram, Zalo OA và lưu sổ Google Sheets</p>
           </div>
         </div>
-        <button onclick="closeN8nModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs cursor-pointer">✕</button>
+        <button onclick="closeN8nModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-sm cursor-pointer transition">✕</button>
       </div>
 
-      <div class="py-3 space-y-3 text-xs">
-        <div>
-          <label class="font-bold text-slate-700 block mb-1">Đường dẫn n8n Webhook URL:</label>
-          <input type="url" id="n8nWebhookInput" placeholder="https://n8n.your-domain.com/webhook/datphu-pos" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono font-bold focus:bg-white focus:outline-indigo-500">
-          <span class="text-[10px] text-slate-400 block mt-1">Dán link Webhook từ n8n (hoặc webhook.site để test).</span>
+      <!-- Modal Body (Cuộn mượt) -->
+      <div class="p-4 sm:p-5 overflow-y-auto space-y-4 text-xs text-slate-700">
+        
+        <!-- Khối 1: Kịch bản n8n mẫu hoàn chỉnh (One-Click Import) -->
+        <div class="p-3.5 bg-gradient-to-r from-indigo-50 via-blue-50 to-indigo-50/60 rounded-2xl border-2 border-indigo-200/80 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-xs text-indigo-950 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i> KỊCH BẢN n8n MẪU ĐẤT PHÚ
+            </span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-600 text-white">Chuẩn 100%</span>
+          </div>
+          <p class="text-xs text-slate-600">
+            Kịch bản đã cấu hình sẵn 4 luồng: <strong>Webhook tiếp nhận ➔ Báo doanh thu Telegram ➔ Báo Bếp KDS ➔ Ghi Google Sheets</strong>.
+          </p>
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <a href="datphu_n8n_workflow_template.json" download="datphu_n8n_workflow_template.json" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5">
+              <i class="fa-solid fa-download"></i> Tải File .json Kịch Bản
+            </a>
+            <button onclick="copyN8nTemplateJson()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-indigo-50 text-indigo-700 border border-indigo-300 font-bold text-xs shadow-2xs transition flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-copy"></i> Sao Chép (Ctrl + V vào n8n)
+            </button>
+          </div>
         </div>
 
+        <!-- Khối 2: 3 Bước Kết Nối Dễ Hiểu -->
         <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
-          <span class="font-bold text-slate-700 block text-[11px]">Các sự kiện tự động kích hoạt:</span>
-          <label class="flex items-center gap-2 cursor-pointer">
+          <span class="font-black text-[11px] text-slate-800 uppercase block tracking-wider">3 Bước Kết Nối Siêu Tốc:</span>
+          <ol class="space-y-1.5 text-[11px] text-slate-600 list-decimal list-inside font-medium">
+            <li>Mở trình soạn thảo <strong>n8n</strong> của bạn, nhấn phím <strong>Ctrl + V</strong> để dán kịch bản mẫu vào.</li>
+            <li>Nhấn đúp vào node <strong>"1. Webhook Tiếp Nhận Từ POS"</strong>, sao chép đường dẫn <strong>Production Webhook URL</strong>.</li>
+            <li>Dán đường link vào ô bên dưới, chọn các sự kiện cần gửi và bấm <strong>"Lưu Cấu Hình"</strong>.</li>
+          </ol>
+        </div>
+
+        <!-- Khối 3: Cấu hình Webhook URL -->
+        <div class="space-y-2">
+          <label class="font-bold text-slate-800 block text-xs">
+            Đường dẫn n8n Webhook URL:
+          </label>
+          <div class="flex gap-2">
+            <input type="url" id="n8nWebhookInput" placeholder="https://n8n.your-domain.com/webhook/datphu-pos" class="flex-1 px-3 py-2 bg-slate-50 border-2 border-slate-300 rounded-xl text-xs font-mono font-bold focus:bg-white focus:outline-indigo-500">
+            <button onclick="fillDemoWebhook()" class="px-2.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] border border-slate-300 shrink-0 cursor-pointer" title="Điền webhook mẫu thử nghiệm">
+              Link mẫu
+            </button>
+          </div>
+          <span class="text-[10px] text-slate-400 block">Ví dụ: https://n8n.datphu.vn/webhook/datphu-pos (hoặc dùng webhook.site để test thử).</span>
+        </div>
+
+        <!-- Khối 4: Chọn các sự kiện tự động bắn -->
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+          <span class="font-bold text-slate-800 block text-[11px] uppercase tracking-wide">Các sự kiện tự động bắn qua n8n:</span>
+          <label class="flex items-center gap-2 cursor-pointer hover:text-indigo-900">
             <input type="checkbox" id="n8nEvtOrder" checked class="rounded text-indigo-600 focus:ring-0">
-            <span><strong>Thanh toán xong</strong> (Bắn hóa đơn lưu Google Sheets & báo doanh thu)</span>
+            <span><strong>Thanh toán xong (order_completed)</strong> ➔ Bắn tin báo doanh thu & lưu Google Sheets</span>
           </label>
-          <label class="flex items-center gap-2 cursor-pointer">
+          <label class="flex items-center gap-2 cursor-pointer hover:text-indigo-900">
             <input type="checkbox" id="n8nEvtKitchen" checked class="rounded text-indigo-600 focus:ring-0">
-            <span><strong>Báo Bếp</strong> (Bắn đơn món xuống bếp từ xa)</span>
+            <span><strong>Báo Bếp (kitchen_order)</strong> ➔ Bắn chi tiết món xuống nhóm Bếp</span>
           </label>
-          <label class="flex items-center gap-2 cursor-pointer">
+          <label class="flex items-center gap-2 cursor-pointer hover:text-indigo-900">
             <input type="checkbox" id="n8nEvtShift" checked class="rounded text-indigo-600 focus:ring-0">
-            <span><strong>Chốt Ca cuối ngày</strong> (Bắn báo cáo doanh thu về Zalo / Telegram)</span>
+            <span><strong>Chốt Ca (shift_closed)</strong> ➔ Bắn báo cáo tổng kết doanh thu ngày về Giám đốc</span>
           </label>
         </div>
 
-        <div id="n8nTestStatus" class="hidden p-2 rounded-xl text-[11px] font-bold"></div>
+        <div id="n8nTestStatus" class="hidden p-2.5 rounded-xl text-xs font-bold"></div>
+
       </div>
 
-      <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-        <button onclick="testN8nWebhook()" class="px-3 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold text-xs flex items-center gap-1 cursor-pointer transition">
-          <i class="fa-solid fa-flask"></i> 🧪 Bắn Thử Nghiệm
+      <!-- Modal Footer -->
+      <div class="p-3 sm:p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
+        <button onclick="testN8nWebhook()" class="px-3.5 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold text-xs flex items-center gap-1.5 cursor-pointer transition">
+          <i class="fa-solid fa-flask"></i> 🧪 Bắn Thử Nghiệm Ngay
         </button>
         <div class="flex items-center gap-2">
-          <button onclick="closeN8nModal()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer">Đóng</button>
+          <button onclick="closeN8nModal()" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs cursor-pointer">Đóng</button>
           <button onclick="saveN8nConfig()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs shadow-md cursor-pointer transition">Lưu Cấu Hình</button>
         </div>
       </div>
@@ -678,6 +726,23 @@
       evtKitchen: true,
       evtShift: true
     };
+
+    
+    async function copyN8nTemplateJson() {
+      try {
+        const res = await fetch('datphu_n8n_workflow_template.json');
+        const jsonText = await res.text();
+        await navigator.clipboard.writeText(jsonText);
+        alert("✓ ĐÃ SAO CHÉP KỊCH BẢN n8n VÀO BỘ NHỚ TẠM!\nHãy mở n8n của bạn và nhấn phím Ctrl + V để dán kịch bản vào.");
+      } catch (e) {
+        alert("Không thể tự động sao chép: Hãy bấm nút 'Tải File .json' để import vào n8n!");
+      }
+    }
+
+    function fillDemoWebhook() {
+      document.getElementById('n8nWebhookInput').value = "https://webhook.site/datphu-pos-demo";
+      alert("Đã điền link webhook mẫu! Hãy thay bằng đường link webhook n8n thật của bạn.");
+    }
 
     function updateN8nStatusIndicator() {
       const dot = document.getElementById('n8nStatusDot');
