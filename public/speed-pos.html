@@ -960,10 +960,10 @@
                   <button onclick="selectTable('${t.id}'); openMenuModal();" class="py-1.5 px-1 rounded-lg text-[10px] font-black bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 transition flex items-center justify-center gap-0.5 shadow-2xs cursor-pointer" title="Gọi thêm món">
                     <i class="fa-solid fa-utensils text-[9px]"></i> Gọi Món
                   </button>
-                  <button onclick="selectTable('${t.id}'); sendKitchen();" class="py-1.5 px-1 rounded-lg text-[10px] font-black ${t.kitchenSent ? 'bg-slate-100 text-slate-500 border border-slate-200' : 'bg-amber-500 text-slate-950 hover:bg-amber-400 border border-amber-600 animate-pulse'} transition flex items-center justify-center gap-0.5 shadow-2xs cursor-pointer" title="Báo bếp KDS">
+                  <button onclick="selectTable('${t.id}'); actionSendKitchen();" class="py-1.5 px-1 rounded-lg text-[10px] font-black ${t.kitchenSent ? 'bg-slate-100 text-slate-500 border border-slate-200' : 'bg-amber-500 text-slate-950 hover:bg-amber-400 border border-amber-600 animate-pulse'} transition flex items-center justify-center gap-0.5 shadow-2xs cursor-pointer" title="Báo bếp KDS">
                     <i class="fa-solid fa-bell text-[9px]"></i> ${t.kitchenSent ? 'Đã Báo' : 'Báo Bếp'}
                   </button>
-                  <button onclick="selectTable('${t.id}'); openCheckoutModal('vietqr');" class="py-1.5 px-1 rounded-lg text-[10px] font-black bg-rose-600 text-white hover:bg-rose-700 shadow-2xs transition flex items-center justify-center gap-0.5 cursor-pointer" title="Thanh toán VietQR">
+                  <button onclick="selectTable('${t.id}'); actionOpenCheckout();" class="py-1.5 px-1 rounded-lg text-[10px] font-black bg-rose-600 text-white hover:bg-rose-700 shadow-2xs transition flex items-center justify-center gap-0.5 cursor-pointer" title="Thanh toán VietQR">
                     <i class="fa-solid fa-qrcode text-[9px]"></i> Thu Tiền
                   </button>
                 </div>
