@@ -230,6 +230,16 @@
         <label class="font-bold text-slate-400 block mb-1">Tên ngân hàng (Mã BIN Napas):</label>
         <input type="text" id="cfgBankBin" value="970422" placeholder="970422 (MBBank)" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-mono font-bold">
       </div>
+      <div class="p-2.5 bg-slate-950 rounded-xl border border-indigo-900/40 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <label class="font-black text-indigo-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-network-wired text-xs"></i> n8n Tự Động Hóa Chạy Ngầm
+          </label>
+          <span id="n8nMiniDot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+        </div>
+        <input type="url" id="cfgN8nWebhook" placeholder="http://localhost:5678/webhook/datphu-pos" class="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded-lg font-mono text-[11px] text-slate-200">
+        <span class="text-[9px] text-slate-500 block">Tự động bắn ngầm sự kiện thu tiền sang Telegram / Google Sheets / Kế toán.</span>
+      </div>
       <div class="pt-2 border-t border-slate-800 flex justify-end gap-2">
         <button onclick="closeSettingsModal()" class="px-3 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Đóng</button>
         <button onclick="saveSettings()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-black">Lưu Thông Tin</button>
@@ -490,20 +500,64 @@
       }
     }
 
+    // Cấu hình n8n Webhook Chạy Ngầm (chia sẻ chung với Speed POS nếu có)
+    let n8nWebhookUrl = localStorage.getItem('dp_mini_n8n_url') || "";
+    if (!n8nWebhookUrl) {
+      try {
+        const shared = JSON.parse(localStorage.getItem('dp_n8n_config') || "{}");
+        if (shared.url) n8nWebhookUrl = shared.url;
+      } catch (e) {}
+    }
+    if (!n8nWebhookUrl) n8nWebhookUrl = "http://localhost:5678/webhook/datphu-pos";
+
+    function updateN8nIndicator() {
+      const dot = document.getElementById('n8nMiniDot');
+      if (dot) {
+        dot.className = n8nWebhookUrl ? "w-2 h-2 rounded-full bg-emerald-400" : "w-2 h-2 rounded-full bg-slate-500";
+      }
+    }
+
+    // Bắn sự kiện ngầm sang n8n (Không chặn giao diện, không báo lỗi nếu n8n tắt)
+    function triggerN8nBackground(orderData) {
+      if (!n8nWebhookUrl) return;
+      const payload = {
+        store: "QUÁN ĂN ĐẤT PHÚ",
+        event: "order_completed",
+        source: "mini_pos",
+        timestamp: new Date().toISOString(),
+        data: orderData
+      };
+
+      // Chạy ngầm hoàn toàn qua fetch fire-and-forget
+      fetch(n8nWebhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        mode: "no-cors",
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    }
+
     function finishOrder(method) {
       const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
       todayRevenue += total;
       localStorage.setItem('dp_mini_revenue', todayRevenue.toString());
       document.getElementById('todayRevenueText').textContent = todayRevenue.toLocaleString('vi-VN') + " đ";
 
-      orderHistory.unshift({
+      const orderData = {
+        id: "MINI-" + Date.now().toString().slice(-6),
         time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
-        table: currentTableName,
-        total: total,
-        method: method,
-        items: [...cart]
-      });
+        tableName: currentTableName,
+        totalAmount: total,
+        paymentMethod: method === 'qr' ? 'VIETQR (MBBANK)' : 'TIỀN MẶT',
+        items: [...cart],
+        device: "Mini POS Bỏ Túi"
+      };
+
+      orderHistory.unshift(orderData);
       localStorage.setItem('dp_mini_history', JSON.stringify(orderHistory.slice(0, 50)));
+
+      // BẮN SỰ KIỆN CHẠY NGẦM SANG N8N
+      triggerN8nBackground(orderData);
 
       playBeep(1200, 0.1);
       closeCheckoutModal();
@@ -512,7 +566,7 @@
       document.getElementById('currentTableText').textContent = currentTableName;
       updateCartUI();
 
-      alert(`✓ ĐÃ THU ${total.toLocaleString('vi-VN')} đ (${method})!\nĐơn hàng đã hoàn tất.`);
+      alert(`✓ ĐÃ THU ${total.toLocaleString('vi-VN')} đ (${method})!\nĐơn hàng đã hoàn tất & tự động đồng bộ ngầm sang n8n.`);
     }
 
     // Modal Lịch sử
@@ -527,10 +581,10 @@
         list.innerHTML = orderHistory.map((o, idx) => `
           <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
             <div>
-              <span class="font-bold text-white block">${o.table}</span>
-              <span class="text-[10px] text-slate-400">${o.time} • ${o.method} • ${o.items.length} món</span>
+              <span class="font-bold text-white block">${o.tableName || o.table}</span>
+              <span class="text-[10px] text-slate-400">${o.time} • ${o.paymentMethod || o.method} • ${o.items.length} món</span>
             </div>
-            <span class="mono font-black text-emerald-400">${o.total.toLocaleString('vi-VN')} đ</span>
+            <span class="mono font-black text-emerald-400">${(o.totalAmount || o.total).toLocaleString('vi-VN')} đ</span>
           </div>
         `).join('');
       }
@@ -544,6 +598,8 @@
 
     // Cài đặt
     function openSettingsModal() {
+      document.getElementById('cfgN8nWebhook').value = n8nWebhookUrl;
+      updateN8nIndicator();
       document.getElementById('settingsModal').classList.remove('hidden');
     }
 
@@ -556,12 +612,16 @@
       if (name) {
         document.getElementById('shopTitle').textContent = name;
       }
+      n8nWebhookUrl = document.getElementById('cfgN8nWebhook').value.trim();
+      localStorage.setItem('dp_mini_n8n_url', n8nWebhookUrl);
+      updateN8nIndicator();
       closeSettingsModal();
-      alert("✓ Đã lưu thông tin quán!");
+      alert("✓ Đã lưu thông tin quán & cấu hình n8n chạy ngầm!");
     }
 
     // Khởi tạo
     document.getElementById('todayRevenueText').textContent = todayRevenue.toLocaleString('vi-VN') + " đ";
+    updateN8nIndicator();
     renderMenu();
     updateCartUI();
   </script>
