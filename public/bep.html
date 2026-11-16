@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đất Phú KDS - Màn Hình Bếp Điều Phối Siêu Tốc</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { user-select: none; -webkit-user-select: none; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
+      50% { box-shadow: 0 0 30px rgba(245, 158, 11, 0.9); }
+    }
+    .ticket-urgent {
+      animation: pulseGlow 1.5s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-white h-screen flex flex-col overflow-hidden font-sans">
+
+  <!-- ================= HEADER BẾP (KDS TOP BAR) ================= -->
+  <header class="h-16 bg-slate-900 border-b border-slate-800 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-lg z-10">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-xl shadow-md">
+        <i class="fa-solid fa-fire-burner"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-black text-base sm:text-lg uppercase tracking-wider text-white">ĐẤT PHÚ KDS • MÀN HÌNH BẾP</h1>
+          <span id="headerTicketsCount" class="text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950">
+            0 ĐƠN CHỜ
+          </span>
+        </div>
+        <p class="text-xs text-slate-400">Tự động nhận đơn từ Thu Ngân • Nấu xong bấm chuyển sang VietQR</p>
+      </div>
+    </div>
+
+    <!-- Công cụ Bếp -->
+    <div class="flex items-center space-x-3 text-xs font-bold">
+      <!-- Đồng hồ thời gian thực -->
+      <div class="flex items-center gap-2 bg-slate-800 px-3.5 py-2 rounded-xl text-slate-300 border border-slate-700">
+        <i class="fa-solid fa-clock text-amber-400"></i>
+        <span id="kdsClock" class="font-mono text-sm">--:--:--</span>
+      </div>
+
+      <!-- Bật/Tắt Âm Thanh Chuông Báo -->
+      <button onclick="toggleAudio()" id="audioBtn" class="px-3.5 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 flex items-center gap-2 transition cursor-pointer">
+        <i class="fa-solid fa-volume-high text-sm"></i>
+        <span>Chuông: BẬT</span>
+      </button>
+
+      <!-- Nút mở POS thu ngân -->
+      <a href="speed-pos.html" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-cash-register"></i>
+        <span class="hidden sm:inline">Màn Hình Thu Ngân</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= LƯỚI PHIẾU GỌI MÓN (CARDS TO RÕ, ĐẦU BẾP ĐỨNG XA 3M VẪN THẤY) ================= -->
+  <main class="flex-1 p-4 sm:p-6 overflow-y-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="ticketsGrid">
+      <!-- Render bằng JavaScript -->
+    </div>
+  </main>
+
+  <script>
+    // Dữ liệu bảng bàn đồng bộ từ localStorage
+    let tables = JSON.parse(localStorage.getItem('dp_speed_tables_v2')) || [];
+    let audioEnabled = true;
+    let lastTicketsCount = 0;
+
+    // Bộ phát âm thanh Web Audio Chime Bếp
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playKitchenChime() {
+      if (!audioEnabled) return;
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.2, now + i * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.12 + 0.35);
+          osc.start(now + i * 0.12);
+          osc.stop(now + i * 0.12 + 0.35);
+        });
+      } catch (e) {}
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const btn = document.getElementById('audioBtn');
+      if (audioEnabled) {
+        btn.className = "px-3.5 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 flex items-center gap-2 transition cursor-pointer";
+        btn.innerHTML = '<i class="fa-solid fa-volume-high text-sm"></i><span>Chuông: BẬT</span>';
+        playKitchenChime();
+      } else {
+        btn.className = "px-3.5 py-2 rounded-xl bg-slate-800 text-slate-500 border border-slate-700 hover:bg-slate-700 flex items-center gap-2 transition cursor-pointer";
+        btn.innerHTML = '<i class="fa-solid fa-volume-xmark text-sm"></i><span>Chuông: TẮT</span>';
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem('dp_speed_tables_v2', JSON.stringify(tables));
+    }
+
+    // Render danh sách phiếu đơn hàng bếp đang nấu
+    function renderTickets() {
+      const container = document.getElementById('ticketsGrid');
+      const activeTickets = tables.filter(t => t.kitchenSent && t.cart && t.cart.length > 0);
+      const countEl = document.getElementById('headerTicketsCount');
+
+      countEl.textContent = `${activeTickets.length} ĐƠN CHỜ`;
+
+      // Nếu có đơn mới bay đến, phát chuông reng
+      if (activeTickets.length > lastTicketsCount) {
+        playKitchenChime();
+      }
+      lastTicketsCount = activeTickets.length;
+
+      if (activeTickets.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-36 text-center text-slate-500">
+            <i class="fa-solid fa-mug-saucer text-6xl mb-4 text-slate-700 block"></i>
+            <h2 class="text-xl font-black text-slate-300">Bếp Hiện Đang Trống</h2>
+            <p class="text-sm text-slate-500 mt-1">Khi Thu Ngân bấm [3. Báo Bếp], đơn hàng sẽ lập tức hiện tại đây kèm chuông reng!</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = activeTickets.map((t, idx) => {
+        const totalItems = t.cart.reduce((s, x) => s + x.qty, 0);
+
+        return `
+          <div class="bg-slate-900 rounded-3xl border-2 border-amber-500/80 overflow-hidden shadow-2xl flex flex-col justify-between transition-all ticket-urgent">
+            
+            <!-- Header Phiếu Bếp -->
+            <div class="p-4 bg-gradient-to-r from-amber-600 to-amber-700 text-white flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-2xl bg-white text-amber-700 flex items-center justify-center font-black text-base shadow">
+                  <i class="fa-solid fa-utensils"></i>
+                </span>
+                <div>
+                  <h3 class="font-black text-xl uppercase tracking-wider leading-none">${t.name}</h3>
+                  <span class="text-xs text-amber-100 font-medium block mt-1">
+                    Báo lúc: <strong>${t.kitchenTime || t.openTime || '--'}</strong>
+                  </span>
+                </div>
+              </div>
+              <span class="text-xs font-black px-3 py-1 rounded-xl bg-slate-950/70 text-amber-300 font-mono">
+                ${totalItems} phần
+              </span>
+            </div>
+
+            <!-- Thân Phiếu: Danh sách món cần nấu (Font to, rõ ràng) -->
+            <div class="p-4 flex-1 space-y-3 overflow-y-auto max-h-[300px]">
+              ${t.cart.map((item, itemIdx) => `
+                <div class="p-3.5 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-between group hover:border-amber-500/50 transition">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <span class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 text-xs flex items-center justify-center font-black shrink-0">
+                      ${itemIdx + 1}
+                    </span>
+                    <span class="font-black text-base sm:text-lg text-white leading-snug truncate">
+                      ${item.name}
+                    </span>
+                  </div>
+                  <span class="font-black font-mono text-lg sm:text-xl text-amber-400 bg-amber-500/10 px-3 py-1 rounded-xl border border-amber-500/30 shrink-0">
+                    x${item.qty}
+                  </span>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Chân Phiếu: Nút Bếp Hoàn Thành Món -> Chuyển Sang VietQR -->
+            <div class="p-4 bg-slate-950/90 border-t border-slate-800">
+              <button onclick="finishKitchenTicket('${t.id}')" 
+                      class="w-full py-4 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl font-black text-sm sm:text-base shadow-xl flex items-center justify-center gap-2 active:scale-95 transition cursor-pointer">
+                <i class="fa-solid fa-circle-check text-lg"></i>
+                <span>HOÀN THÀNH ➔ CHUYỂN SANG QR</span>
+              </button>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Đầu bếp bấm hoàn thành món
+    function finishKitchenTicket(tableId) {
+      const t = tables.find(x => x.id === tableId);
+      if (!t) return;
+
+      t.kitchenSent = false;
+      t.isCheckingOut = true; // Chuyển sang Bước 4: Sẵn sàng VietQR
+      t.kitchenTime = null;
+      saveState();
+
+      playKitchenChime();
+      renderTickets();
+
+      alert(`✓ ĐÃ HOÀN THÀNH MÓN CHO ${t.name.toUpperCase()}!\nBàn đã tự động chuyển sang [Bước 4: Chờ VietQR] trên màn hình Thu Ngân.`);
+    }
+
+    // Lắng nghe sự kiện đồng bộ thời gian thực từ tab Thu Ngân (Speed POS)
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'dp_speed_tables_v2') {
+        try {
+          tables = JSON.parse(e.newValue);
+          renderTickets();
+        } catch (err) {}
+      }
+    });
+
+    // Khởi tạo chạy ứng dụng
+    renderTickets();
+    setInterval(() => {
+      document.getElementById('kdsClock').textContent = new Date().toLocaleTimeString('vi-VN');
+    }, 1000);
+  </script>
+</body>
+</html>

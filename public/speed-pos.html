@@ -48,17 +48,23 @@
       </div>
     </div>
 
-    <!-- 2 TAB CHUYỂN MÀN HÌNH CHÍNH (LOẠI BỎ CHIA 3 MÀN HÌNH CHẬT CHỘI) -->
+    <!-- 3 TAB CHUYỂN MÀN HÌNH CHUYÊN NGHIỆP: SƠ ĐỒ BÀN | GỌI MÓN | BẾP KDS -->
     <div class="flex items-center bg-slate-800 p-1 rounded-2xl border border-slate-700 shadow-inner">
-      <button onclick="switchView('tables')" id="navTabTables" class="px-4 py-1.5 rounded-xl text-xs font-black flex items-center gap-2 transition cursor-pointer bg-blue-600 text-white shadow-xs">
+      <button onclick="switchView('tables')" id="navTabTables" class="px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition cursor-pointer bg-blue-600 text-white shadow-xs">
         <i class="fa-solid fa-table-cells-large"></i>
         <span>1. SƠ ĐỒ BÀN</span>
         <span id="navTablesBadge" class="bg-blue-800 text-white text-[10px] px-1.5 py-0.2 rounded-full font-mono">0</span>
       </button>
 
-      <button onclick="switchView('order')" id="navTabOrder" class="px-4 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition cursor-pointer text-slate-400 hover:text-white">
+      <button onclick="switchView('order')" id="navTabOrder" class="px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer text-slate-400 hover:text-white">
         <i class="fa-solid fa-utensils"></i>
         <span id="navOrderTabTitle">2. GỌI MÓN (BÀN 1)</span>
+      </button>
+
+      <button onclick="switchView('kitchen')" id="navTabKitchen" class="px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer text-slate-400 hover:text-white">
+        <i class="fa-solid fa-bell text-amber-400"></i>
+        <span>3. BẾP KDS</span>
+        <span id="navKitchenBadge" class="hidden bg-amber-500 text-slate-900 text-[10px] font-black px-1.5 py-0.2 rounded-full font-mono animate-pulse">0</span>
       </button>
     </div>
 
@@ -253,6 +259,45 @@
       </div>
 
     </section>
+
+  </main>
+
+  <!-- ================= MÀN HÌNH 3: BẾP NHẬN TIN BÁO MÓN & ĐIỀU PHỐI (KDS) ================= -->
+  <main id="viewKitchen" class="hidden flex-1 flex flex-col bg-slate-900 text-white overflow-hidden">
+    
+    <!-- Thanh điều khiển Bếp -->
+    <div class="p-3.5 bg-slate-800/90 border-b border-slate-700 flex flex-wrap items-center justify-between gap-3 shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-base shadow-sm">
+          <i class="fa-solid fa-fire-burner"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="font-black text-sm uppercase tracking-wider text-white">MÀN HÌNH BẾP ĐIỀU PHỐI (KDS)</h2>
+            <span id="kdsTicketsCount" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">0 đơn đang chờ</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Khi nấu xong, bấm "HOÀN THÀNH" để tự động chuyển sang VietQR thanh toán</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="playKitchenChime()" class="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer">
+          <i class="fa-solid fa-volume-high text-amber-400"></i>
+          <span>Thử Chuông Bếp</span>
+        </button>
+        <a href="bep.html" target="_blank" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+          <i class="fa-solid fa-tablet-screen-button"></i>
+          <span>Mở Màn Hình Bếp Riêng</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Lưới Phiếu Chế Biến Cho Bếp (To Rõ, Đọc Từ Xa) -->
+    <div class="flex-1 p-4 sm:p-6 overflow-y-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4" id="kitchenTicketsGrid">
+        <!-- Render danh sách phiếu bếp bằng JS -->
+      </div>
+    </div>
 
   </main>
 
@@ -525,29 +570,38 @@
       return 2;
     }
 
-    // ================= 3. CHUYỂN ĐỔI GIỮA 2 MÀN HÌNH CHUYÊN BIỆT =================
+    // ================= 3. CHUYỂN ĐỔI GIỮA CÁC MÀN HÌNH CHUYÊN BIỆT =================
     function switchView(viewName) {
       currentView = viewName;
       const vTables = document.getElementById('viewTables');
       const vOrder = document.getElementById('viewOrder');
+      const vKitchen = document.getElementById('viewKitchen');
+
       const tabTables = document.getElementById('navTabTables');
       const tabOrder = document.getElementById('navTabOrder');
+      const tabKitchen = document.getElementById('navTabKitchen');
+
+      vTables.classList.add('hidden');
+      vOrder.classList.add('hidden');
+      vKitchen.classList.add('hidden');
+
+      tabTables.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer text-slate-400 hover:text-white";
+      tabOrder.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer text-slate-400 hover:text-white";
+      tabKitchen.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer text-slate-400 hover:text-white";
 
       if (viewName === 'tables') {
         vTables.classList.remove('hidden');
-        vOrder.classList.add('hidden');
-
-        tabTables.className = "px-4 py-1.5 rounded-xl text-xs font-black flex items-center gap-2 transition cursor-pointer bg-blue-600 text-white shadow-xs";
-        tabOrder.className = "px-4 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition cursor-pointer text-slate-400 hover:text-white";
+        tabTables.className = "px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition cursor-pointer bg-blue-600 text-white shadow-xs";
         renderTables();
-      } else {
-        vTables.classList.add('hidden');
+      } else if (viewName === 'order') {
         vOrder.classList.remove('hidden');
-
-        tabTables.className = "px-4 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition cursor-pointer text-slate-400 hover:text-white";
-        tabOrder.className = "px-4 py-1.5 rounded-xl text-xs font-black flex items-center gap-2 transition cursor-pointer bg-blue-600 text-white shadow-xs";
+        tabOrder.className = "px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition cursor-pointer bg-blue-600 text-white shadow-xs";
         renderCart();
         renderProducts();
+      } else if (viewName === 'kitchen') {
+        vKitchen.classList.remove('hidden');
+        tabKitchen.className = "px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition cursor-pointer bg-amber-500 text-slate-950 shadow-xs";
+        renderKitchen();
       }
     }
 
@@ -919,18 +973,140 @@
 
       t.kitchenSent = true;
       t.isCheckingOut = false;
+      if (!t.kitchenTime) {
+        t.kitchenTime = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+      }
       saveState();
       
       triggerN8nWebhook('kitchen_order', {
         tableName: t.name,
         tableId: t.id,
         itemsCount: t.cart.reduce((s, x) => s + x.qty, 0),
-        items: t.cart
+        items: t.cart,
+        kitchenTime: t.kitchenTime
       });
 
       renderCart();
+      renderTables();
+      renderKitchen();
       playKitchenChime();
-      alert("🔔 ĐÃ BÁO BẾP THÀNH CÔNG!\nBàn: " + t.name + "\nBếp đang chuẩn bị món ăn...");
+
+      alert("🔔 ĐÃ BÁO BẾP THÀNH CÔNG!\nBàn: " + t.name + "\nĐơn đã chuyển xuống màn hình bếp!");
+    }
+
+    // ================= 7.1. MÀN HÌNH BẾP (KDS) & HOÀN THÀNH CHUYỂN SANG QR =================
+    function renderKitchen() {
+      const container = document.getElementById('kitchenTicketsGrid');
+      const kitchenTickets = tables.filter(t => t.kitchenSent && t.cart.length > 0);
+      const badge = document.getElementById('navKitchenBadge');
+      const countEl = document.getElementById('kdsTicketsCount');
+
+      if (countEl) countEl.textContent = `${kitchenTickets.length} đơn đang chờ nấu`;
+
+      if (badge) {
+        if (kitchenTickets.length > 0) {
+          badge.textContent = kitchenTickets.length.toString();
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+
+      if (!container) return;
+
+      if (kitchenTickets.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-28 text-center text-slate-500">
+            <i class="fa-solid fa-bell-slash text-5xl mb-3 text-slate-700 block"></i>
+            <span class="text-base font-bold text-slate-300">Hiện tại bếp trống</span><br>
+            <span class="text-xs text-slate-500 mt-1 block">Chưa có đơn món nào cần chế biến</span>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = kitchenTickets.map(t => {
+        const totalItems = t.cart.reduce((s, x) => s + x.qty, 0);
+
+        return `
+          <div class="bg-slate-800 rounded-3xl border-2 border-amber-500/80 overflow-hidden shadow-2xl flex flex-col justify-between transition-all hover:border-amber-400">
+            
+            <!-- Header Phiếu Bếp -->
+            <div class="p-4 bg-gradient-to-r from-amber-600 to-amber-700 text-white flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-9 h-9 rounded-xl bg-white text-amber-700 flex items-center justify-center font-black text-sm shadow">
+                  <i class="fa-solid fa-fire-burner"></i>
+                </span>
+                <div>
+                  <h3 class="font-black text-lg uppercase tracking-wide leading-none">${t.name}</h3>
+                  <span class="text-[11px] text-amber-100 font-medium block mt-1">Báo lúc: ${t.kitchenTime || t.openTime || '--'}</span>
+                </div>
+              </div>
+              <span class="text-xs font-black px-2.5 py-1 rounded-xl bg-slate-900/60 text-amber-300 font-mono">
+                ${totalItems} phần
+              </span>
+            </div>
+
+            <!-- Danh Sách Món Bếp Cần Nấu (To Rõ, Đọc Từ Xa) -->
+            <div class="p-4 flex-1 space-y-2.5 overflow-y-auto max-h-[260px]">
+              ${t.cart.map((item, idx) => `
+                <div class="p-3 bg-slate-900/90 rounded-2xl border border-slate-700 flex items-center justify-between">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-5 h-5 rounded-md bg-slate-800 border border-slate-600 text-slate-400 text-xs flex items-center justify-center font-bold">
+                      ${idx + 1}
+                    </span>
+                    <span class="font-bold text-sm sm:text-base text-slate-100 truncate">${item.name}</span>
+                  </div>
+                  <span class="font-black font-mono text-base text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/30 shrink-0">
+                    x${item.qty}
+                  </span>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Chân Phiếu: Nút Hoàn Thành Chuyển Sang VietQR -->
+            <div class="p-4 bg-slate-800/90 border-t border-slate-700">
+              <button onclick="completeKitchenOrder('${t.id}')" 
+                      class="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl font-black text-xs sm:text-sm shadow-lg flex items-center justify-center gap-2 active:scale-95 transition cursor-pointer">
+                <i class="fa-solid fa-circle-check text-base"></i>
+                <span>HOÀN THÀNH ➔ CHUYỂN SANG QR</span>
+              </button>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Bếp bấm hoàn thành món -> Tự động chuyển sang VietQR thanh toán (Bước 4)
+    function completeKitchenOrder(tableId) {
+      const t = tables.find(x => x.id === tableId);
+      if (!t) return;
+
+      t.kitchenSent = false;
+      t.isCheckingOut = true; // Chuyển sang Bước 4: Sẵn sàng quét VietQR
+      t.kitchenTime = null;
+      saveState();
+
+      playKitchenChime();
+
+      triggerN8nWebhook('kitchen_completed', {
+        tableName: t.name,
+        tableId: t.id,
+        itemsCount: t.cart.reduce((s, x) => s + x.qty, 0),
+        items: t.cart,
+        completedAt: new Date().toLocaleTimeString('vi-VN')
+      });
+
+      renderTables();
+      renderCart();
+      renderKitchen();
+
+      // Nếu đang mở bàn này thì gợi ý mở mã VietQR ngay
+      if (confirm(`✓ Bếp đã HOÀN THÀNH món cho ${t.name}!\nBàn đã chuyển sang [Bước 4: Sẵn sàng quét VietQR thanh toán].\n\nBạn có muốn mở ngay mã VietQR cho bàn này không?`)) {
+        currentTableId = t.id;
+        actionOpenCheckout();
+      }
     }
 
     // ================= 8. VIETQR ĐỘNG (BƯỚC 4) =================
@@ -1081,6 +1257,23 @@
     document.getElementById('topRevenue').textContent = todayRevenue.toLocaleString('vi-VN') + " đ";
     updateN8nStatusIndicator();
     switchView('tables'); // Mặc định mở Sơ đồ bàn toàn cảnh
+    renderKitchen();
+
+    // Đồng bộ tức thì thời gian thực giữa Màn hình Thu Ngân và Màn hình Bếp
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'dp_speed_tables_v2') {
+        try {
+          tables = JSON.parse(e.newValue);
+          renderTables();
+          renderCart();
+          renderKitchen();
+        } catch (err) {}
+      }
+      if (e.key === 'dp_speed_revenue') {
+        todayRevenue = parseInt(e.newValue) || 0;
+        document.getElementById('topRevenue').textContent = todayRevenue.toLocaleString('vi-VN') + " đ";
+      }
+    });
 
     setInterval(() => {
       document.getElementById('topClock').textContent = new Date().toLocaleTimeString('vi-VN');
