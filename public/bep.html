@@ -196,7 +196,7 @@
       }).join('');
     }
 
-    // Đầu bếp bấm hoàn thành món
+    // Đầu bếp bấm hoàn thành món -> Chuyển sang VietQR trên Màn hình Thu Ngân
     function finishKitchenTicket(tableId) {
       const t = tables.find(x => x.id === tableId);
       if (!t) return;
@@ -209,7 +209,23 @@
       playKitchenChime();
       renderTickets();
 
-      alert(`✓ ĐÃ HOÀN THÀNH MÓN CHO ${t.name.toUpperCase()}!\nBàn đã tự động chuyển sang [Bước 4: Chờ VietQR] trên màn hình Thu Ngân.`);
+      // Thông báo trực quan không chặn thao tác của bếp
+      showKitchenToast(`✓ ĐÃ HOÀN THÀNH MÓN CHO ${t.name.toUpperCase()}!\nĐã chuyển sang Màn hình Thu Ngân: Nút QR hiện sáng và sẵn sàng In Bill.`);
+    }
+
+    function showKitchenToast(msg) {
+      let toast = document.getElementById('bepToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'bepToast';
+        toast.className = 'fixed bottom-6 right-6 z-50 bg-emerald-600 text-white px-5 py-3.5 rounded-2xl shadow-2xl font-black text-sm flex items-center gap-3 border border-emerald-400 animate-in slide-in-from-bottom-4 duration-150';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `<i class="fa-solid fa-circle-check text-xl"></i><span>${msg.replace(/\n/g, '<br>')}</span>`;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        if (toast) toast.classList.add('hidden');
+      }, 4000);
     }
 
     // Lắng nghe sự kiện đồng bộ thời gian thực từ tab Thu Ngân (Speed POS)
