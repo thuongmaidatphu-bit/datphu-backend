@@ -70,6 +70,12 @@
         <span id="topClock">--:--:--</span>
       </div>
 
+      <!-- Hướng dẫn Quy Trình SOP -->
+      <button onclick="openSopModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 flex items-center gap-1.5 transition cursor-pointer font-bold" title="Xem Quy Trình Vận Hành Chuẩn SOP">
+        <i class="fa-solid fa-book-open text-amber-400"></i>
+        <span class="hidden md:inline">Quy Trình SOP</span>
+      </button>
+
       <!-- n8n tự động hóa -->
       <button onclick="openN8nModal()" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition cursor-pointer" title="Cài đặt n8n Webhook">
         <i class="fa-solid fa-network-wired text-indigo-400"></i>
@@ -404,6 +410,132 @@
     </div>
   </div>
 
+  <!-- ================= MODAL QUY TRÌNH VẬN HÀNH CHUẨN (SOP) ================= -->
+  <div id="sopModal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-3 sm:p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-3xl w-full max-w-2xl max-h-[92vh] shadow-2xl flex flex-col overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-150">
+      
+      <!-- Modal Header -->
+      <div class="p-4 sm:p-5 bg-gradient-to-r from-slate-900 via-slate-800 to-blue-950 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center text-lg font-black shadow-inner">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-base uppercase tracking-wide flex items-center gap-2">
+              QUY TRÌNH VẬN HÀNH CHUẨN (SOP)
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-300 border border-emerald-500/40">5 BƯỚC</span>
+            </h3>
+            <p class="text-xs text-slate-300">Quán Ăn Đất Phú • Chuẩn Hóa Vận Hành Thu Ngân & Bếp KDS</p>
+          </div>
+        </div>
+        <button onclick="closeSopModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-sm cursor-pointer transition">✕</button>
+      </div>
+
+      <!-- Modal Body (Cuộn mượt) -->
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-5 text-slate-700 text-xs sm:text-sm">
+        
+        <!-- 5 Bước Vận Hành Chuẩn -->
+        <div>
+          <h4 class="font-black text-xs uppercase tracking-wider text-slate-900 mb-3 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-blue-600"></span> 5 BƯỚC VẬN HÀNH THAO TÁC HÀNG NGÀY
+          </h4>
+          <div class="space-y-2.5">
+            
+            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+              <span class="w-7 h-7 rounded-xl bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0">1</span>
+              <div>
+                <p class="font-black text-slate-900">BƯỚC 1: Chọn Bàn & Nhận Khách</p>
+                <p class="text-xs text-slate-600 mt-0.5">Nhìn sơ đồ 2/3 màn hình bên trái. Bấm chọn thẻ bàn khách ngồi (ví dụ: Bàn 01 hoặc Mang Về). Thẻ bàn đổi viền xanh dương nổi bật.</p>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+              <span class="w-7 h-7 rounded-xl bg-indigo-600 text-white font-black text-xs flex items-center justify-center shrink-0">2</span>
+              <div>
+                <p class="font-black text-slate-900">BƯỚC 2: Bấm "+ THÊM MÓN VÀO BÀN" & Chọn Món</p>
+                <p class="text-xs text-slate-600 mt-0.5">Bấm nút gradient xanh ở đầu phiếu thu ngân. Popup thực đơn hiện lên, bấm chọn món, chỉnh số lượng (+ / -), nhập ghi chú (cay, ít đá...) rồi đóng modal.</p>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-3">
+              <span class="w-7 h-7 rounded-xl bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">3</span>
+              <div>
+                <p class="font-black text-amber-950">BƯỚC 3: Báo Bếp (Bắn Đơn Xuống KDS Bếp)</p>
+                <p class="text-xs text-amber-900 mt-0.5">Bấm nút vàng <strong>"🔔 BÁO BẾP KDS"</strong>. Thẻ bàn lập tức đổi sang màu <strong>Cam Nấu (🔔 Bếp nấu)</strong>. Màn hình bếp (<code class="bg-amber-100 px-1 py-0.5 rounded text-amber-900 font-mono">bep.html</code>) tự động reng chuông ting ting!</p>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-rose-50 border border-rose-200 flex items-start gap-3">
+              <span class="w-7 h-7 rounded-xl bg-rose-600 text-white font-black text-xs flex items-center justify-center shrink-0">4</span>
+              <div>
+                <p class="font-black text-rose-950">BƯỚC 4: Bếp Báo Xong ➔ Chuyển Sang VietQR</p>
+                <p class="text-xs text-rose-900 mt-0.5">Khi đầu bếp nấu xong, nhấn <em>"HOÀN THÀNH ➔ CHUYỂN QR"</em> trên KDS hoặc Thu ngân bấm nút <strong>"💳 VIETQR"</strong> trên phiếu. QR động Napas MBBank hiện đúng số tiền và nội dung bàn.</p>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-start gap-3">
+              <span class="w-7 h-7 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shrink-0">5</span>
+              <div>
+                <p class="font-black text-emerald-950">BƯỚC 5: Đã Thu Tiền & In Hóa Đơn</p>
+                <p class="text-xs text-emerald-900 mt-0.5">Khách chuyển khoản xong (hoặc trả tiền mặt), Thu ngân bấm <strong>"✓ ĐÃ THU & IN BILL"</strong>. Doanh thu nhảy tức thì, đơn được lưu lịch sử và bàn tự động trở về trạng thái <strong>Trống (Sẵn sàng)</strong>.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Bảng Phân Định Trách Nhiệm -->
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <h4 class="font-black text-xs uppercase tracking-wider text-slate-900 mb-2.5 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-600"></span> PHÂN ĐỊNH TRÁCH NHIỆM VẬN HÀNH
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-white p-3 rounded-xl border border-slate-200">
+              <span class="font-black text-xs text-blue-700 uppercase block mb-1">👤 NHÂN VIÊN THU NGÂN</span>
+              <ul class="text-xs text-slate-600 space-y-1 list-disc list-inside">
+                <li>Quan sát sơ đồ 2/3 bàn để xếp chỗ khách.</li>
+                <li>Lên đúng món và ghi chú khẩu vị của khách.</li>
+                <li>Chỉ in bill và xé vé khi tài khoản đã báo có.</li>
+                <li>Kiểm tra tổng doanh thu ca trực trước khi giao ca.</li>
+              </ul>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-slate-200">
+              <span class="font-black text-xs text-amber-700 uppercase block mb-1">👨‍🍳 ĐẦU BẾP / PHA CHẾ</span>
+              <ul class="text-xs text-slate-600 space-y-1 list-disc list-inside">
+                <li>Đặt màn hình tablet/điện thoại ở trang <code class="text-blue-600 font-bold">bep.html</code>.</li>
+                <li>Nghe chuông ting ting báo món mới lập tức nấu.</li>
+                <li>Ra món xong bấm ngay "Hoàn thành ➔ Chuyển QR".</li>
+                <li>Không nấu nếu không thấy phiếu hiển thị trên KDS.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Nguyên Tắc Vàng Chống Thất Thoát -->
+        <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-950">
+          <h4 class="font-black text-xs uppercase tracking-wider text-amber-900 mb-1.5 flex items-center gap-1.5">
+            <i class="fa-solid fa-shield-halved text-amber-600"></i> 3 NGUYÊN TẮC VÀNG CHỐNG THẤT THOÁT
+          </h4>
+          <ol class="text-xs text-amber-900 space-y-1 list-decimal list-inside font-medium">
+            <li><strong>Không có đơn trên POS/KDS = Tuyệt đối Bếp không ra món</strong> (tránh quên tính tiền).</li>
+            <li><strong>Khách chuyển khoản = Bắt buộc quét mã VietQR động trên màn hình</strong> (tránh sai số tiền hoặc chuyển nhầm STK).</li>
+            <li><strong>Tuyệt đối không thu hộ tài khoản cá nhân</strong> (mọi giao dịch nộp thẳng về tài khoản Quán Ăn Đất Phú).</li>
+          </ol>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3 sm:p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
+        <span class="text-xs text-slate-500 font-medium">Ấn ESC hoặc nút đóng để tiếp tục bán hàng</span>
+        <button onclick="closeSopModal()" class="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-xs cursor-pointer shadow-md transition">
+          ĐÃ HIỂU VÀ ÁP DỤNG
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <div id="printableReceipt" class="hidden"></div>
 
   <!-- ================= JAVASCRIPT LOGIC MODE SWITCHING ================= -->
@@ -633,6 +765,20 @@
       document.getElementById('menuModal').classList.add('hidden');
       renderCart();
       renderTables();
+    }
+
+    // ================= MỞ / ĐÓNG MODAL QUY TRÌNH SOP =================
+    function openSopModal() {
+      const modal = document.getElementById('sopModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        playBeep(600, 0.05);
+      }
+    }
+
+    function closeSopModal() {
+      const modal = document.getElementById('sopModal');
+      if (modal) modal.classList.add('hidden');
     }
 
     // ================= 4. RENDER MÀN HÌNH SƠ ĐỒ BÀN TOÀN CẢNH (CHUẨN iPOS PRO) =================
@@ -1352,6 +1498,16 @@
       if (e.key === 'dp_speed_revenue') {
         todayRevenue = parseInt(e.newValue) || 0;
         document.getElementById('topRevenue').textContent = todayRevenue.toLocaleString('vi-VN') + " đ";
+      }
+    });
+
+    // Đóng các modal khi bấm phím Escape
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeSopModal();
+        closeMenuModal();
+        closeCheckoutModal();
+        closeN8nModal();
       }
     });
 
