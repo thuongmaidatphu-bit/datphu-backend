@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Đất Phú Mini POS • Máy Tính Tiền Bỏ Túi Siêu Đơn Giản</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0B1120; color: #F1F5F9; user-select: none; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    button:active { transform: scale(0.97); }
+  </style>
+</head>
+<body class="h-screen flex flex-col max-w-lg mx-auto bg-slate-900 border-x border-slate-800 shadow-2xl overflow-hidden relative">
+
+  <!-- ================= HEADER: ĐƠN GIẢN NHẤT CÓ THỂ ================= -->
+  <header class="h-14 bg-slate-950 px-4 flex items-center justify-between border-b border-slate-800 shrink-0">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-sm">
+        ĐP
+      </div>
+      <div>
+        <h1 class="font-black text-xs sm:text-sm text-white uppercase tracking-wide flex items-center gap-1.5 cursor-pointer" onclick="openSettingsModal()" title="Bấm để đổi tên quán & số tài khoản QR">
+          <span id="shopTitle">QUÁN ĂN ĐẤT PHÚ</span>
+          <i class="fa-solid fa-pen text-[10px] text-slate-500 hover:text-emerald-400"></i>
+        </h1>
+        <span class="text-[10px] text-slate-400">Mini POS • Bỏ Túi 1 Chạm</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-1.5">
+      <!-- Nút chuyển sang bản đầy đủ -->
+      <a href="speed-pos.html" class="hidden xs:flex items-center gap-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 px-2 py-1.5 rounded-xl text-[11px] font-bold text-slate-300 cursor-pointer transition" title="Chuyển sang Speed POS đầy đủ (Sơ đồ 17 bàn & Bếp)">
+        <i class="fa-solid fa-table-cells text-blue-400"></i>
+        <span>Sơ đồ bàn</span>
+      </a>
+
+      <!-- Doanh thu ca hôm nay -->
+      <button onclick="openHistoryModal()" class="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-xl text-xs font-bold text-slate-200 cursor-pointer transition" title="Xem lịch sử đơn hôm nay">
+        <i class="fa-solid fa-wallet text-emerald-400 text-xs"></i>
+        <span class="mono font-black text-emerald-400" id="todayRevenueText">0 đ</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= PHẦN 1: HÓA ĐƠN ĐANG CHỌN (TỔNG TIỀN KHỔNG LỒ) ================= -->
+  <section class="p-3 bg-slate-950/80 border-b border-slate-800 shrink-0 space-y-2">
+    
+    <!-- Dòng hiển thị tổng tiền to tướng & Nút xóa đơn -->
+    <div class="flex items-baseline justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-black text-slate-400 uppercase tracking-wider">TỔNG TIỀN:</span>
+        <button id="btnTableTag" onclick="promptTableName()" class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-300 border border-slate-700 cursor-pointer">
+          <i class="fa-solid fa-chair text-[9px]"></i> <span id="currentTableText">Khách lẻ / Mang về</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span id="totalAmountText" class="mono font-black text-3xl sm:text-4xl text-rose-500">0 đ</span>
+        <button onclick="clearCart()" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-rose-950 hover:text-rose-400 text-slate-400 flex items-center justify-center text-xs transition cursor-pointer" title="Xóa toàn bộ đơn">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Danh sách các món trong đơn (Cuộn ngang nhỏ gọn, có nút + -) -->
+    <div class="h-16 overflow-x-auto overflow-y-hidden flex items-center gap-2 no-scrollbar py-1" id="cartChipsContainer">
+      <div class="text-xs text-slate-500 italic py-2">Chưa có món nào. Bấm món bên dưới để thêm!</div>
+    </div>
+
+  </section>
+
+  <!-- ================= 2 TAB: 1. MÓN ĂN QUÁN | 2. BÀN PHÍM TỰ NHẬP TIỀN ================= -->
+  <div class="grid grid-cols-2 bg-slate-950 p-1 border-b border-slate-800 shrink-0 text-xs font-bold">
+    <button onclick="switchTab('menu')" id="tabBtnMenu" class="py-2 rounded-xl bg-slate-800 text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer transition">
+      <i class="fa-solid fa-utensils text-emerald-400"></i>
+      <span>1. Món Trong Menu</span>
+    </button>
+    <button onclick="switchTab('numpad')" id="tabBtnNumpad" class="py-2 rounded-xl text-slate-400 hover:text-white flex items-center justify-center gap-1.5 cursor-pointer transition">
+      <i class="fa-solid fa-calculator text-amber-400"></i>
+      <span>2. Bàn Phím Tự Gõ Tiền</span>
+    </button>
+  </div>
+
+  <!-- ================= VÙNG NỘI DUNG CHỌN MÓN ================= -->
+  <main class="flex-1 overflow-y-auto p-3">
+    
+    <!-- TAB 1: DANH SÁCH MÓN ĂN 1 CHẠM (NÚT TO, GIÁ RÕ) -->
+    <div id="viewMenu" class="grid grid-cols-2 gap-2.5">
+      <!-- Render các món bằng JavaScript -->
+    </div>
+
+    <!-- TAB 2: BÀN PHÍM TÍNH TIỀN TỰ DO (CASIO NUMPAD) -->
+    <div id="viewNumpad" class="hidden flex flex-col justify-between h-full max-w-sm mx-auto space-y-3 pt-2">
+      <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-right">
+        <span class="text-[10px] text-slate-400 block font-bold">Số tiền nhập tự do:</span>
+        <span id="numpadDisplay" class="mono font-black text-3xl text-emerald-400">0 đ</span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 flex-1">
+        <button onclick="pressNum('1')" class="py-3.5 bg-slate-800 hover:bg-slate-700 rounded-2xl font-mono font-black text-xl text-white">1</button>
+        <button onclick="pressNum('2')" class="py-3.5 bg-slate-800 hover:bg-slate-700 rounded-2xl font-mono font-black text-xl text-white">2</button>
+        <button onclick="pressNum('3')" class="py-3.5 bg-slate-800 hover:bg-slate-700 rounded-2xl font-mono font-black text-xl text-white">3</button>
+
+        <button onclick="pressNum('4')" class="py-3.5 bg-slate-800 hover:bg-slate-700 rounded-2xl font-mono font-black text-xl text-white">4</button>
+        <button onclick="pressNum('5')" class="py-3.5 bg-slate-800 hover:bg-slate-700 rounded-2xl font-mono font-black text-xl text-white">5</button>
+        <button onclick="pressNum('6')" class="py-3.5 bg-slate-800 hover:bg-slate-700 rounded-2xl font-mono font-black text-xl text-white">6</button>
+
+        <button onclick="pressNum('7')" class="py-3.5 bg-slate-800 hover:bg-slate-700 rounded-2xl font-mono font-black text-xl text-white">7</button>
+        <button onclick="pressNum('8')" class="py-3.5 bg-slate-800 hover:bg-slate-700 rounded-2xl font-mono font-black text-xl text-white">8</button>
+        <button onclick="pressNum('9')" class="py-3.5 bg-slate-800 hover:bg-slate-700 rounded-2xl font-mono font-black text-xl text-white">9</button>
+
+        <button onclick="pressNum('000')" class="py-3.5 bg-slate-800 hover:bg-slate-700 rounded-2xl font-mono font-black text-base text-amber-400">.000</button>
+        <button onclick="pressNum('0')" class="py-3.5 bg-slate-800 hover:bg-slate-700 rounded-2xl font-mono font-black text-xl text-white">0</button>
+        <button onclick="pressNum('C')" class="py-3.5 bg-rose-900/60 hover:bg-rose-900 text-rose-300 rounded-2xl font-mono font-black text-lg">C</button>
+      </div>
+
+      <button onclick="addCustomAmountToCart()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+        <i class="fa-solid fa-plus-circle"></i> + Thêm Số Tiền Vào Đơn
+      </button>
+    </div>
+
+  </main>
+
+  <!-- ================= NÚT THU TIỀN KHỔNG LỒ Ở ĐÁY MÀN HÌNH (1 CHẠM LÀ XONG) ================= -->
+  <footer class="p-3 bg-slate-950 border-t border-slate-800 shrink-0">
+    <button id="btnCheckout" onclick="openCheckoutModal()" class="w-full py-4 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl font-black text-base shadow-xl flex items-center justify-center gap-2 active:scale-95 transition cursor-pointer">
+      <i class="fa-solid fa-money-check-dollar text-xl"></i>
+      <span>THU TIỀN: <span id="btnTotalText" class="mono">0 đ</span></span>
+    </button>
+  </footer>
+
+  <!-- ================= MODAL THANH TOÁN SIÊU TỐC: VIETQR & TIỀN MẶT ================= -->
+  <div id="checkoutModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-slate-900 text-white rounded-3xl w-full max-w-sm p-5 border border-slate-700 shadow-2xl flex flex-col gap-3.5 animate-in fade-in zoom-in duration-150">
+      
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <div>
+          <h3 class="font-black text-sm uppercase text-white">THANH TOÁN ĐƠN HÀNG</h3>
+          <span class="text-[10px] text-slate-400" id="modalTableSubtitle">Khách lẻ / Mang về</span>
+        </div>
+        <button onclick="closeCheckoutModal()" class="w-7 h-7 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 flex items-center justify-center font-bold text-xs cursor-pointer">✕</button>
+      </div>
+
+      <!-- 2 Tab Chuyển đổi: QR hay Tiền Mặt -->
+      <div class="grid grid-cols-2 gap-1.5 p-1 bg-slate-950 rounded-2xl">
+        <button id="tabPayQR" onclick="switchPayMethod('qr')" class="py-2 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5 bg-rose-600 text-white shadow-xs cursor-pointer">
+          <i class="fa-solid fa-qrcode"></i> 1. Quét VietQR
+        </button>
+        <button id="tabPayCash" onclick="switchPayMethod('cash')" class="py-2 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-white cursor-pointer">
+          <i class="fa-solid fa-money-bill-wave"></i> 2. Tiền Mặt
+        </button>
+      </div>
+
+      <div class="text-center bg-slate-950 p-2.5 rounded-2xl border border-slate-800">
+        <span class="text-[10px] text-slate-400 block font-bold uppercase">Số tiền cần thu:</span>
+        <span id="modalAmount" class="mono font-black text-3xl text-rose-400">0 đ</span>
+      </div>
+
+      <!-- Nội dung 1: VietQR -->
+      <div id="payContentQR" class="space-y-3">
+        <div class="bg-white p-3 rounded-2xl text-center">
+          <img id="qrImage" src="" alt="Mã VietQR" class="w-44 h-44 object-contain mx-auto rounded-xl">
+          <span class="text-[10px] text-slate-600 font-bold block mt-1" id="qrBankText">MBBank • 0905.123.456</span>
+        </div>
+        <button onclick="finishOrder('VietQR')" class="w-full py-3.5 bg-rose-600 hover:bg-rose-500 text-white rounded-2xl font-black text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition">
+          <i class="fa-solid fa-check-circle text-lg"></i>
+          <span>✓ ĐÃ NHẬN CHUYỂN KHOẢN XONG</span>
+        </button>
+      </div>
+
+      <!-- Nội dung 2: Tiền Mặt -->
+      <div id="payContentCash" class="hidden space-y-3">
+        <div>
+          <span class="text-[10px] font-bold text-slate-400 block mb-1">Khách đưa nhanh:</span>
+          <div class="grid grid-cols-4 gap-1.5" id="cashShortcuts"></div>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 block mb-1">Số tiền khách đưa (đ):</label>
+          <input type="number" id="cashInput" oninput="calcChange()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-mono font-black text-xl text-emerald-400 text-right">
+        </div>
+        <div class="p-2.5 bg-slate-950 rounded-2xl border border-slate-800 text-center">
+          <span class="text-[10px] font-bold text-slate-400 block uppercase">Tiền thối lại cho khách:</span>
+          <span id="cashChange" class="mono font-black text-2xl text-emerald-400">0 đ</span>
+        </div>
+        <button onclick="finishOrder('Tiền Mặt')" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition">
+          <i class="fa-solid fa-circle-check text-lg"></i>
+          <span>✓ XÁC NHẬN ĐÃ THU TIỀN MẶT</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL LỊCH SỬ ĐƠN HÔM NAY ================= -->
+  <div id="historyModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+    <div class="bg-slate-900 text-white rounded-3xl w-full max-w-sm max-h-[85vh] p-5 border border-slate-700 shadow-2xl flex flex-col gap-3">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <h3 class="font-black text-sm uppercase">LỊCH SỬ ĐƠN HÔM NAY</h3>
+        <button onclick="closeHistoryModal()" class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center text-xs">✕</button>
+      </div>
+      <div class="flex-1 overflow-y-auto space-y-2" id="historyList"></div>
+      <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-xs font-bold">
+        <span>Tổng cộng hôm nay:</span>
+        <span class="mono font-black text-emerald-400 text-base" id="historyTotal">0 đ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL CÀI ĐẶT QUÁN & VIETQR ================= -->
+  <div id="settingsModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+    <div class="bg-slate-900 text-white rounded-3xl w-full max-w-sm p-5 border border-slate-700 shadow-2xl flex flex-col gap-3 text-xs">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <h3 class="font-black text-sm uppercase">CÀI ĐẶT THÔNG TIN QUÁN</h3>
+        <button onclick="closeSettingsModal()" class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center text-xs">✕</button>
+      </div>
+      <div>
+        <label class="font-bold text-slate-400 block mb-1">Tên quán ăn / Điểm tâm:</label>
+        <input type="text" id="cfgShopName" value="QUÁN ĂN ĐẤT PHÚ" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-bold">
+      </div>
+      <div>
+        <label class="font-bold text-slate-400 block mb-1">Số tài khoản nhận tiền:</label>
+        <input type="text" id="cfgBankNumber" value="0905123456" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-mono font-bold">
+      </div>
+      <div>
+        <label class="font-bold text-slate-400 block mb-1">Tên ngân hàng (Mã BIN Napas):</label>
+        <input type="text" id="cfgBankBin" value="970422" placeholder="970422 (MBBank)" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-mono font-bold">
+      </div>
+      <div class="pt-2 border-t border-slate-800 flex justify-end gap-2">
+        <button onclick="closeSettingsModal()" class="px-3 py-2 rounded-xl bg-slate-800 text-slate-300 font-bold">Đóng</button>
+        <button onclick="saveSettings()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-black">Lưu Thông Tin</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= LOGIC JAVASCRIPT SIÊU TINH GỌN (DƯỚI 200 DÒNG) ================= -->
+  <script>
+    // Dữ liệu thực đơn mẫu Phú Yên
+    const DEFAULT_PRODUCTS = [
+      { id: 1, name: "Bún Cá Dằm Đặc Biệt", price: 35000, icon: "fa-bowl-food" },
+      { id: 2, name: "Bún Cá Sứa Tươi", price: 40000, icon: "fa-fish-fins" },
+      { id: 3, name: "Bún Chả Cá Hấp Chiên", price: 30000, icon: "fa-fire" },
+      { id: 4, name: "Tô Thập Cẩm Lớn", price: 45000, icon: "fa-bowl-rice" },
+      { id: 5, name: "Đĩa Chả Cá Thêm", price: 15000, icon: "fa-layer-group" },
+      { id: 6, name: "Đầu Cá Thu Hầm Nước", price: 25000, icon: "fa-water" },
+      { id: 7, name: "Cà Phê Đen Đá Phin", price: 14000, icon: "fa-mug-hot" },
+      { id: 8, name: "Cà Phê Sữa Đá", price: 17000, icon: "fa-mug-saucer" },
+      { id: 9, name: "Bạc Xỉu Đá 3 Tầng", price: 20000, icon: "fa-glass-water-droplet" },
+      { id: 10, name: "Trà Tắc Xí Muội", price: 15000, icon: "fa-lemon" },
+      { id: 11, name: "Nước Mía Tươi Ép Tắc", price: 10000, icon: "fa-seedling" },
+      { id: 12, name: "Khăn Lạnh & Trà Đá", price: 3000, icon: "fa-hand-sparkles" }
+    ];
+
+    let cart = [];
+    let customAmount = 0;
+    let currentTableName = "Khách lẻ / Mang về";
+    let todayRevenue = parseInt(localStorage.getItem('dp_mini_revenue')) || 0;
+    let orderHistory = JSON.parse(localStorage.getItem('dp_mini_history')) || [];
+    let currentMethod = 'qr';
+
+    // Âm thanh Beep Web Audio
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq = 880, duration = 0.06) {
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function renderMenu() {
+      const container = document.getElementById('viewMenu');
+      container.innerHTML = DEFAULT_PRODUCTS.map(p => {
+        const inCart = cart.find(x => x.id === p.id);
+        const qty = inCart ? inCart.qty : 0;
+        return `
+          <button onclick="addItem(${p.id})" class="p-3 bg-slate-950 rounded-2xl border-2 ${qty > 0 ? 'border-emerald-500 bg-emerald-950/20' : 'border-slate-800 hover:border-slate-700'} flex flex-col justify-between text-left transition relative cursor-pointer min-h-[90px]">
+            ${qty > 0 ? `<span class="absolute top-2 right-2 w-6 h-6 rounded-full bg-emerald-500 text-slate-950 font-black text-xs flex items-center justify-center font-mono shadow">${qty}</span>` : ''}
+            <div>
+              <i class="fa-solid ${p.icon} text-slate-500 text-xs mb-1"></i>
+              <div class="font-bold text-xs text-white leading-tight line-clamp-2">${p.name}</div>
+            </div>
+            <div class="mono font-black text-sm text-emerald-400 mt-2">
+              ${p.price.toLocaleString('vi-VN')} đ
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function addItem(id) {
+      const p = DEFAULT_PRODUCTS.find(x => x.id === id);
+      if (!p) return;
+      const exist = cart.find(x => x.id === id);
+      if (exist) {
+        exist.qty += 1;
+      } else {
+        cart.push({ id: p.id, name: p.name, price: p.price, qty: 1 });
+      }
+      playBeep(880, 0.04);
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const container = document.getElementById('cartChipsContainer');
+      const totalAmountEl = document.getElementById('totalAmountText');
+      const btnTotalText = document.getElementById('btnTotalText');
+
+      const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
+      totalAmountEl.textContent = total.toLocaleString('vi-VN') + " đ";
+      btnTotalText.textContent = total.toLocaleString('vi-VN') + " đ";
+
+      if (cart.length === 0) {
+        container.innerHTML = `<div class="text-xs text-slate-500 italic py-2">Chưa có món nào. Bấm món bên dưới để thêm!</div>`;
+      } else {
+        container.innerHTML = cart.map(item => `
+          <div class="px-2.5 py-1 rounded-xl bg-slate-800 border border-slate-700 flex items-center gap-2 shrink-0">
+            <div>
+              <span class="text-xs font-bold text-white block truncate max-w-[120px]">${item.name}</span>
+              <span class="text-[10px] text-emerald-400 font-mono font-bold">${(item.price * item.qty).toLocaleString('vi-VN')} đ</span>
+            </div>
+            <div class="flex items-center gap-1 ml-1">
+              <button onclick="changeQty(${item.id}, -1)" class="w-5 h-5 rounded bg-slate-700 text-white flex items-center justify-center font-bold text-[10px]">-</button>
+              <span class="mono font-black text-xs text-white px-0.5">${item.qty}</span>
+              <button onclick="changeQty(${item.id}, 1)" class="w-5 h-5 rounded bg-slate-700 text-white flex items-center justify-center font-bold text-[10px]">+</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      renderMenu();
+    }
+
+    function changeQty(id, delta) {
+      const idx = cart.findIndex(x => x.id === id);
+      if (idx === -1) return;
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) {
+        cart.splice(idx, 1);
+      }
+      playBeep(750, 0.03);
+      updateCartUI();
+    }
+
+    function clearCart() {
+      if (cart.length === 0) return;
+      cart = [];
+      updateCartUI();
+      playBeep(450, 0.08);
+    }
+
+    function switchTab(tab) {
+      const vMenu = document.getElementById('viewMenu');
+      const vNumpad = document.getElementById('viewNumpad');
+      const tMenu = document.getElementById('tabBtnMenu');
+      const tNumpad = document.getElementById('tabBtnNumpad');
+
+      if (tab === 'menu') {
+        vMenu.classList.remove('hidden');
+        vNumpad.classList.add('hidden');
+        tMenu.className = "py-2 rounded-xl bg-slate-800 text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer transition";
+        tNumpad.className = "py-2 rounded-xl text-slate-400 hover:text-white flex items-center justify-center gap-1.5 cursor-pointer transition";
+      } else {
+        vMenu.classList.add('hidden');
+        vNumpad.classList.remove('hidden');
+        tNumpad.className = "py-2 rounded-xl bg-slate-800 text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer transition";
+        tMenu.className = "py-2 rounded-xl text-slate-400 hover:text-white flex items-center justify-center gap-1.5 cursor-pointer transition";
+      }
+    }
+
+    // Numpad logic
+    function pressNum(val) {
+      if (val === 'C') {
+        customAmount = 0;
+      } else if (val === '000') {
+        customAmount = customAmount * 1000;
+      } else {
+        customAmount = parseInt("" + customAmount + val) || 0;
+      }
+      if (customAmount > 10000000) customAmount = 10000000;
+      document.getElementById('numpadDisplay').textContent = customAmount.toLocaleString('vi-VN') + " đ";
+      playBeep(800, 0.02);
+    }
+
+    function addCustomAmountToCart() {
+      if (customAmount <= 0) return alert("Vui lòng gõ số tiền lớn hơn 0!");
+      cart.push({
+        id: Date.now(),
+        name: "Món ngoài (" + customAmount.toLocaleString('vi-VN') + "đ)",
+        price: customAmount,
+        qty: 1
+      });
+      customAmount = 0;
+      document.getElementById('numpadDisplay').textContent = "0 đ";
+      updateCartUI();
+      switchTab('menu');
+      playBeep(1000, 0.05);
+    }
+
+    function promptTableName() {
+      const name = prompt("Nhập tên bàn hoặc khách hàng:", currentTableName);
+      if (name && name.trim()) {
+        currentTableName = name.trim();
+        document.getElementById('currentTableText').textContent = currentTableName;
+      }
+    }
+
+    // Modal Thanh Toán
+    function openCheckoutModal() {
+      const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
+      if (total <= 0) return alert("Đơn hàng chưa có món nào để thanh toán!");
+
+      document.getElementById('modalTableSubtitle').textContent = currentTableName;
+      document.getElementById('modalAmount').textContent = total.toLocaleString('vi-VN') + " đ";
+
+      // Tạo mã VietQR động Napas
+      const qrUrl = `https://img.vietqr.io/image/970422-0905123456-compact2.png?amount=${total}&addInfo=Don%20MiniPOS&accountName=QUAN%20AN%20DAT%20PHU`;
+      document.getElementById('qrImage').src = qrUrl;
+
+      // Chuẩn bị phím tắt tiền mặt
+      const shortcuts = [total];
+      [50000, 100000, 200000, 500000].forEach(v => {
+        if (v > total && !shortcuts.includes(v)) shortcuts.push(v);
+      });
+      document.getElementById('cashShortcuts').innerHTML = shortcuts.slice(0, 4).map(v => `
+        <button onclick="setCashInput(${v})" class="py-1 px-1 bg-slate-800 hover:bg-emerald-900 text-slate-200 hover:text-white rounded-lg font-mono font-bold text-xs border border-slate-700">
+          ${v === total ? 'Đủ tiền' : (v >= 1000 ? (v / 1000) + 'k' : v)}
+        </button>
+      `).join('');
+
+      document.getElementById('cashInput').value = total;
+      calcChange();
+
+      switchPayMethod('qr');
+      document.getElementById('checkoutModal').classList.remove('hidden');
+      playBeep(900, 0.05);
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModal').classList.add('hidden');
+    }
+
+    function switchPayMethod(method) {
+      currentMethod = method;
+      const tQR = document.getElementById('tabPayQR');
+      const tCash = document.getElementById('tabPayCash');
+      const cQR = document.getElementById('payContentQR');
+      const cCash = document.getElementById('payContentCash');
+
+      if (method === 'qr') {
+        tQR.className = "py-2 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5 bg-rose-600 text-white shadow-xs cursor-pointer";
+        tCash.className = "py-2 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-white cursor-pointer";
+        cQR.classList.remove('hidden');
+        cCash.classList.add('hidden');
+      } else {
+        tCash.className = "py-2 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5 bg-emerald-600 text-white shadow-xs cursor-pointer";
+        tQR.className = "py-2 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-white cursor-pointer";
+        cCash.classList.remove('hidden');
+        cQR.classList.add('hidden');
+      }
+    }
+
+    function setCashInput(amount) {
+      document.getElementById('cashInput').value = amount;
+      calcChange();
+    }
+
+    function calcChange() {
+      const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
+      const given = parseInt(document.getElementById('cashInput').value) || 0;
+      const change = given - total;
+      const changeEl = document.getElementById('cashChange');
+      if (change < 0) {
+        changeEl.textContent = "Thiếu " + Math.abs(change).toLocaleString('vi-VN') + " đ";
+        changeEl.className = "mono font-black text-2xl text-rose-500";
+      } else {
+        changeEl.textContent = change.toLocaleString('vi-VN') + " đ";
+        changeEl.className = "mono font-black text-2xl text-emerald-400";
+      }
+    }
+
+    function finishOrder(method) {
+      const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
+      todayRevenue += total;
+      localStorage.setItem('dp_mini_revenue', todayRevenue.toString());
+      document.getElementById('todayRevenueText').textContent = todayRevenue.toLocaleString('vi-VN') + " đ";
+
+      orderHistory.unshift({
+        time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
+        table: currentTableName,
+        total: total,
+        method: method,
+        items: [...cart]
+      });
+      localStorage.setItem('dp_mini_history', JSON.stringify(orderHistory.slice(0, 50)));
+
+      playBeep(1200, 0.1);
+      closeCheckoutModal();
+      cart = [];
+      currentTableName = "Khách lẻ / Mang về";
+      document.getElementById('currentTableText').textContent = currentTableName;
+      updateCartUI();
+
+      alert(`✓ ĐÃ THU ${total.toLocaleString('vi-VN')} đ (${method})!\nĐơn hàng đã hoàn tất.`);
+    }
+
+    // Modal Lịch sử
+    function openHistoryModal() {
+      const list = document.getElementById('historyList');
+      const totalEl = document.getElementById('historyTotal');
+      totalEl.textContent = todayRevenue.toLocaleString('vi-VN') + " đ";
+
+      if (orderHistory.length === 0) {
+        list.innerHTML = `<div class="text-xs text-slate-500 text-center py-6">Chưa có đơn nào hôm nay.</div>`;
+      } else {
+        list.innerHTML = orderHistory.map((o, idx) => `
+          <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
+            <div>
+              <span class="font-bold text-white block">${o.table}</span>
+              <span class="text-[10px] text-slate-400">${o.time} • ${o.method} • ${o.items.length} món</span>
+            </div>
+            <span class="mono font-black text-emerald-400">${o.total.toLocaleString('vi-VN')} đ</span>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('historyModal').classList.remove('hidden');
+    }
+
+    function closeHistoryModal() {
+      document.getElementById('historyModal').classList.add('hidden');
+    }
+
+    // Cài đặt
+    function openSettingsModal() {
+      document.getElementById('settingsModal').classList.remove('hidden');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    }
+
+    function saveSettings() {
+      const name = document.getElementById('cfgShopName').value.trim();
+      if (name) {
+        document.getElementById('shopTitle').textContent = name;
+      }
+      closeSettingsModal();
+      alert("✓ Đã lưu thông tin quán!");
+    }
+
+    // Khởi tạo
+    document.getElementById('todayRevenueText').textContent = todayRevenue.toLocaleString('vi-VN') + " đ";
+    renderMenu();
+    updateCartUI();
+  </script>
+</body>
+</html>
