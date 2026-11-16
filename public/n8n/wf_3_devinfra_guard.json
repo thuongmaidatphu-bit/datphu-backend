@@ -1,0 +1,124 @@
+{
+  "name": "3. Đất Phú - Hệ Thống Cảnh Báo Sự Cố & Giám Sát Hệ Thống (DevInfra Guard)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "node-guard-cron",
+      "name": "1. Cron Định Kỳ (Mỗi 5 Phút)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://datphu-backend.vercel.app/speed-pos.html",
+        "options": {
+          "timeout": 8000
+        }
+      },
+      "id": "node-guard-ping-pos",
+      "name": "2. Ping Kiểm Tra Đất Phú POS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Đánh giá trạng thái phản hồi của hệ thống\nconst resp = $json;\nconst checkTime = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });\n\nlet isAlive = true;\nlet errorReason = '';\n\nif (resp.error) {\n  isAlive = false;\n  errorReason = resp.error.message || 'Mất kết nối hoặc timeout quá 8 giây';\n} else if (resp.statusCode && resp.statusCode >= 400) {\n  isAlive = false;\n  errorReason = 'Mã phản hồi HTTP lỗi: ' + resp.statusCode;\n}\n\nreturn [{\n  json: {\n    isAlive: isAlive,\n    service: 'Đất Phú Speed POS & API Gateway',\n    url: 'https://datphu-backend.vercel.app/speed-pos.html',\n    checkTime: checkTime,\n    errorReason: errorReason\n  }\n}];"
+      },
+      "id": "node-guard-analyzer",
+      "name": "3. Đánh Giá Tình Trạng",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.isAlive }}",
+              "value2": false
+            }
+          ]
+        }
+      },
+      "id": "node-guard-is-error",
+      "name": "4. Có Sự Cố Không?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [920, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_devinfra",
+        "text": "=🚨🚨 <b>[CẢNH BÁO KHẨN CẤP: HỆ THỐNG SẬP / MẤT MẠNG]</b> 🚨🚨\n━━━━━━━━━━━━━━━━━━━━\n❌ Dịch vụ gặp sự cố: <b>{{ $json.service }}</b>\n🌐 Địa chỉ: <code>{{ $json.url }}</code>\n⚠️ Nguyên nhân: <b>{{ $json.errorReason }}</b>\n⏰ Lúc phát hiện: {{ $json.checkTime }}\n━━━━━━━━━━━━━━━━━━━━\n👉 <i>Hành động khẩn cấp: Kiểm tra lại đường truyền Starlink/Cáp quang hoặc liên hệ kỹ thuật xử lý ngay!</i>",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "node-guard-tele-alert",
+      "name": "5. Bắn Cảnh Báo Khẩn Telegram Quản Trị",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1160, 240]
+    }
+  ],
+  "connections": {
+    "1. Cron Định Kỳ (Mỗi 5 Phút)": {
+      "main": [
+        [
+          {
+            "node": "2. Ping Kiểm Tra Đất Phú POS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Ping Kiểm Tra Đất Phú POS": {
+      "main": [
+        [
+          {
+            "node": "3. Đánh Giá Tình Trạng",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Đánh Giá Tình Trạng": {
+      "main": [
+        [
+          {
+            "node": "4. Có Sự Cố Không?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4. Có Sự Cố Không?": {
+      "main": [
+        [
+          {
+            "node": "5. Bắn Cảnh Báo Khẩn Telegram Quản Trị",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đất Phú • n8n Automation Hub • 5 Kịch Bản Thực Chiến</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0B1120; color: #F1F5F9; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 6px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header class="h-16 bg-slate-900 border-b border-slate-800 px-4 sm:px-6 flex items-center justify-between shrink-0 sticky top-0 z-40 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-rose-500 text-white flex items-center justify-center font-black text-lg shadow-lg shadow-indigo-500/20">
+        <i class="fa-solid fa-network-wired"></i>
+      </div>
+      <div>
+        <h1 class="font-black text-sm sm:text-base text-white uppercase tracking-wider flex items-center gap-2">
+          ĐẤT PHÚ n8n AUTOMATION HUB
+          <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">ASSET-LIGHT</span>
+        </h1>
+        <p class="text-[11px] text-slate-400">Trung Tâm Tự Động Hóa 5 Kịch Bản Thực Chiến • Vận Hành Hậu Trường</p>
+      </div>
+    </div>
+
+    <!-- Nút điều hướng nhanh -->
+    <div class="flex items-center gap-2 text-xs font-bold">
+      <a href="mini-pos.html" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-mobile-screen text-rose-400"></i>
+        <span class="hidden md:inline">Mini POS</span>
+      </a>
+      <a href="speed-pos.html" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-cash-register text-blue-400"></i>
+        <span class="hidden md:inline">Speed POS</span>
+      </a>
+      <a href="http://localhost:5678" target="_blank" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-1.5 transition shadow-md shadow-indigo-600/30">
+        <i class="fa-solid fa-up-right-from-square"></i>
+        <span>Mở n8n Local</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= BANNER TRẠNG THÁI & HƯỚNG DẪN ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
+    
+    <!-- Hero Status Card -->
+    <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-900/40 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="space-y-1.5">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            DAEMON: PORT 5678 SẴN SÀNG
+          </span>
+          <span class="text-xs text-slate-400">• Triết lý Asset-Light: Giao diện POS 1 chạm, n8n gánh toàn bộ nghiệp vụ xã hội</span>
+        </div>
+        <h2 class="text-lg sm:text-xl font-black text-white">
+          5 Trạm Tự Động Hóa Thực Tế Thay Thế Hàng Trăm Giờ Nhập Liệu Thủ Công
+        </h2>
+        <p class="text-xs text-slate-300 max-w-3xl leading-relaxed">
+          Tất cả kịch bản đã được đóng gói thành các tệp JSON chuẩn n8n v2/v3, tích hợp bảo vệ lỗi, không chặn UI bán hàng và sẵn sàng nhập vào n8n chỉ trong 1 cú click chuột.
+        </p>
+      </div>
+
+      <!-- Action Button Tải Toàn Bộ Master Pack -->
+      <div class="flex flex-col sm:flex-row gap-2 shrink-0">
+        <a href="n8n/datphu_n8n_master_pack.json" download class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition cursor-pointer">
+          <i class="fa-solid fa-download"></i> Tải Trọn Bộ Master Pack (.json)
+        </a>
+      </div>
+    </div>
+
+    <!-- ================= 5 CARDS KỊCH BẢN THỰC CHIẾN ================= -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <!-- KỊCH BẢN 1: Real-time VietQR Bot -->
+      <div class="bg-slate-900/90 rounded-3xl border border-slate-800 hover:border-indigo-500/50 transition p-5 flex flex-col justify-between shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-28 h-28 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/20 transition"></div>
+        <div class="space-y-3 relative z-10">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-rose-500/20 text-rose-400 border border-rose-500/30 flex items-center justify-center text-lg font-black">
+              <i class="fa-solid fa-qrcode"></i>
+            </div>
+            <span class="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Kịch Bản #1</span>
+          </div>
+
+          <div>
+            <h3 class="font-black text-sm text-white uppercase tracking-wide">
+              1. Trợ Lý Xác Nhận Thanh Toán VietQR
+            </h3>
+            <p class="text-[11px] text-rose-300 font-bold mt-0.5">Real-time Payment Bot (Napas247)</p>
+          </div>
+
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <strong>Vấn đề:</strong> Khách quét QR xong thu ngân phải chờ xem app ngân hàng, gây tắc bàn.<br>
+            <strong>n8n Xử lý:</strong> Hứng webhook biến động số dư, tự động bóc tách nội dung khớp số bàn (<code class="text-rose-400 font-mono">BAN 1</code>, <code class="text-rose-400 font-mono">MINI-123</code>), đổi trạng thái bàn sang Đã thanh toán, lệnh in bill và rung chuông báo.
+          </p>
+
+          <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 text-[11px] font-mono text-slate-400">
+            <span class="text-indigo-400 font-bold">Webhook:</span> /webhook/vietqr-bank-webhook
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between gap-2 relative z-10">
+          <a href="n8n/wf_1_realtime_vietqr_bot.json" download class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center gap-1.5">
+            <i class="fa-solid fa-file-arrow-down text-indigo-400"></i> Tải JSON
+          </a>
+          <button onclick="simulateTest(1)" class="px-3 py-1.5 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-flask"></i> Bắn Thử Ngay
+          </button>
+        </div>
+      </div>
+
+      <!-- KỊCH BẢN 2: Fiscal & Tax Gateway -->
+      <div class="bg-slate-900/90 rounded-3xl border border-slate-800 hover:border-indigo-500/50 transition p-5 flex flex-col justify-between shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-28 h-28 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition"></div>
+        <div class="space-y-3 relative z-10">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg font-black">
+              <i class="fa-solid fa-file-invoice-dollar"></i>
+            </div>
+            <span class="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Kịch Bản #2</span>
+          </div>
+
+          <div>
+            <h3 class="font-black text-sm text-white uppercase tracking-wide">
+              2. Trạm Hóa Đơn Điện Tử & Kế Toán
+            </h3>
+            <p class="text-[11px] text-emerald-300 font-bold mt-0.5">Fiscal & Tax Gateway (Thông tư 78)</p>
+          </div>
+
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <strong>Vấn đề:</strong> Nhập tay hóa đơn điện tử cho khách công ty/khách lẻ cuối ngày mất hàng giờ.<br>
+            <strong>n8n Xử lý:</strong> Nhận danh sách món và MST từ POS, tự động format chuẩn TT78 gửi qua API sang M-Invoice/Easy/VNPT, lưu PDF vào Cloudflare R2 và gửi link tra cứu cho khách.
+          </p>
+
+          <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 text-[11px] font-mono text-slate-400">
+            <span class="text-indigo-400 font-bold">Webhook:</span> /webhook/fiscal-invoice-issue
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between gap-2 relative z-10">
+          <a href="n8n/wf_2_fiscal_tax_gateway.json" download class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center gap-1.5">
+            <i class="fa-solid fa-file-arrow-down text-indigo-400"></i> Tải JSON
+          </a>
+          <button onclick="simulateTest(2)" class="px-3 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-flask"></i> Bắn Thử Ngay
+          </button>
+        </div>
+      </div>
+
+      <!-- KỊCH BẢN 3: DevInfra Guard -->
+      <div class="bg-slate-900/90 rounded-3xl border border-slate-800 hover:border-indigo-500/50 transition p-5 flex flex-col justify-between shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-28 h-28 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition"></div>
+        <div class="space-y-3 relative z-10">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center text-lg font-black">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <span class="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Kịch Bản #3</span>
+          </div>
+
+          <div>
+            <h3 class="font-black text-sm text-white uppercase tracking-wide">
+              3. Giám Sát Hạ Tầng & Cảnh Báo Sự Cố
+            </h3>
+            <p class="text-[11px] text-amber-300 font-bold mt-0.5">DevInfra Guard (Ping & Alert 24/7)</p>
+          </div>
+
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <strong>Vấn đề:</strong> POS sập, rớt mạng Starlink/Cáp quang hoặc lỗi DB mà không biết trước khi khách phàn nàn.<br>
+            <strong>n8n Xử lý:</strong> Cron 5 phút ping URL POS và Database. Nếu phát hiện HTTP 500, timeout > 8s lập tức bắn Telegram khẩn cấp cho Quản trị viên xử lý ngay.
+          </p>
+
+          <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 text-[11px] font-mono text-slate-400">
+            <span class="text-indigo-400 font-bold">Trigger:</span> Schedule Cron (Mỗi 5 phút)
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between gap-2 relative z-10">
+          <a href="n8n/wf_3_devinfra_guard.json" download class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center gap-1.5">
+            <i class="fa-solid fa-file-arrow-down text-indigo-400"></i> Tải JSON
+          </a>
+          <button onclick="simulateTest(3)" class="px-3 py-1.5 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-flask"></i> Bắn Thử Ngay
+          </button>
+        </div>
+      </div>
+
+      <!-- KỊCH BẢN 4: AI Support Swarm -->
+      <div class="bg-slate-900/90 rounded-3xl border border-slate-800 hover:border-indigo-500/50 transition p-5 flex flex-col justify-between shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-28 h-28 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition"></div>
+        <div class="space-y-3 relative z-10">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-purple-500/20 text-purple-400 border border-purple-500/30 flex items-center justify-center text-lg font-black">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <span class="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Kịch Bản #4</span>
+          </div>
+
+          <div>
+            <h3 class="font-black text-sm text-white uppercase tracking-wide">
+              4. Trợ Lý AI Chăm Sóc Khách & Đẩy Lead
+            </h3>
+            <p class="text-[11px] text-purple-300 font-bold mt-0.5">AI Support Swarm (Zalo OA / Web)</p>
+          </div>
+
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <strong>Vấn đề:</strong> Khách hỏi giá, hỏi món, dịch vụ chữ ký số lặp đi lặp lại ngoài giờ trực.<br>
+            <strong>n8n Xử lý:</strong> AI Agent tra cứu bảng giá và SOP Đất Phú, tự động trả lời 24/7. Nếu khách có nhu cầu mua/đặt bàn, tự tạo Lead đẩy vào nhóm Kinh Doanh ngay.
+          </p>
+
+          <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 text-[11px] font-mono text-slate-400">
+            <span class="text-indigo-400 font-bold">Webhook:</span> /webhook/ai-support-chat
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between gap-2 relative z-10">
+          <a href="n8n/wf_4_ai_support_swarm.json" download class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center gap-1.5">
+            <i class="fa-solid fa-file-arrow-down text-indigo-400"></i> Tải JSON
+          </a>
+          <button onclick="simulateTest(4)" class="px-3 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-flask"></i> Bắn Thử Ngay
+          </button>
+        </div>
+      </div>
+
+      <!-- KỊCH BẢN 5: Automated Backup & Compliance -->
+      <div class="bg-slate-900/90 rounded-3xl border border-slate-800 hover:border-indigo-500/50 transition p-5 flex flex-col justify-between shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-28 h-28 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition"></div>
+        <div class="space-y-3 relative z-10">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-lg font-black">
+              <i class="fa-solid fa-database"></i>
+            </div>
+            <span class="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Kịch Bản #5</span>
+          </div>
+
+          <div>
+            <h3 class="font-black text-sm text-white uppercase tracking-wide">
+              5. Sao Lưu Tự Động & Tuân Thủ Dữ Liệu
+            </h3>
+            <p class="text-[11px] text-blue-300 font-bold mt-0.5">Automated Backup & Cold Storage</p>
+          </div>
+
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <strong>Vấn đề:</strong> Rủi ro mất mát dữ liệu doanh thu, đơn hàng khi ổ cứng hoặc thiết bị hỏng hóc.<br>
+            <strong>n8n Xử lý:</strong> 02:00 sáng mỗi ngày tự động dump database, nén tệp `.sql.gz`, tải lên Cloudflare R2 độc lập, tính mã băm SHA256 và báo cáo về Telegram.
+          </p>
+
+          <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 text-[11px] font-mono text-slate-400">
+            <span class="text-indigo-400 font-bold">Trigger:</span> Schedule Cron (02:00 Hàng ngày)
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between gap-2 relative z-10">
+          <a href="n8n/wf_5_automated_backup_compliance.json" download class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center gap-1.5">
+            <i class="fa-solid fa-file-arrow-down text-indigo-400"></i> Tải JSON
+          </a>
+          <button onclick="simulateTest(5)" class="px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-flask"></i> Bắn Thử Ngay
+          </button>
+        </div>
+      </div>
+
+      <!-- KHO TÀI NGUYÊN & TIỆN ÍCH -->
+      <div class="bg-gradient-to-br from-slate-900 to-indigo-950/60 rounded-3xl border border-indigo-800/40 p-5 flex flex-col justify-between shadow-lg">
+        <div class="space-y-3">
+          <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-lg font-black">
+            <i class="fa-solid fa-terminal"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-white uppercase tracking-wide">
+              Lệnh Khởi Động n8n Chạy Ngầm
+            </h3>
+            <p class="text-[11px] text-indigo-300 font-bold mt-0.5">Vận Hành Tại Máy Tính Thu Ngân</p>
+          </div>
+          <div class="space-y-2 text-xs text-slate-300">
+            <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 font-mono text-[11px]">
+              <span class="text-slate-500"># Bấm đúp chạy ngầm:</span><br>
+              <span class="text-emerald-400">scripts/start_n8n_background.vbs</span>
+            </div>
+            <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 font-mono text-[11px]">
+              <span class="text-slate-500"># Dừng tiến trình n8n:</span><br>
+              <span class="text-rose-400">scripts/stop_n8n.bat</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/80 mt-4">
+          <a href="https://docs.n8n.io" target="_blank" class="w-full py-2 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 text-xs font-bold transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-book"></i> Xem Tài Liệu Chính Thức n8n
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= BỘ GIẢ LẬP TEST WEBHOOK TRỰC TIẾP (LIVE SIMULATOR) ================= -->
+    <section class="bg-slate-900/80 rounded-3xl border border-slate-800 p-5 sm:p-6 space-y-4 shadow-xl">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center text-sm font-black">
+            <i class="fa-solid fa-vial"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-white uppercase tracking-wider">Bộ Giả Lập Bắn Thử Nghiệm Webhook (Live Simulator)</h3>
+            <p class="text-[11px] text-slate-400">Kiểm tra kết nối tức thì giữa POS/Web và n8n đang chạy ngầm</p>
+          </div>
+        </div>
+        <button onclick="clearLogs()" class="px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 text-xs font-bold transition">
+          Xóa Nhật Ký
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <!-- Input Test Config -->
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="font-bold text-slate-400 block mb-1">Mục Tiêu n8n Webhook URL:</label>
+            <input type="url" id="targetWebhookUrl" value="http://localhost:5678/webhook/vietqr-bank-webhook" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl font-mono font-bold text-slate-200 focus:outline-indigo-500">
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-400 block mb-1">Gói Tin JSON Gửi Đi (Payload):</label>
+            <textarea id="testPayload" rows="7" class="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl font-mono text-[11px] text-emerald-400 focus:outline-indigo-500">{
+  "description": "THANH TOAN BAN 02 DAT PHU",
+  "amount": 285000,
+  "transactionId": "FT2632009812",
+  "bankAccount": "970422-MBBank",
+  "source": "SIMULATOR_TEST"
+}</textarea>
+          </div>
+
+          <div class="flex gap-2">
+            <button onclick="dispatchSimulator()" class="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs transition shadow-md shadow-indigo-600/30 flex items-center justify-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-paper-plane"></i> GỬI GÓI TIN SANG n8n NGAY
+            </button>
+          </div>
+        </div>
+
+        <!-- Terminal Output Response -->
+        <div class="flex flex-col bg-slate-950 rounded-2xl border border-slate-800 p-4 font-mono text-xs">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-800 text-slate-500 text-[11px]">
+            <span>TERMINAL LOGS:</span>
+            <span id="logStatus" class="font-bold text-slate-400">SẴN SÀNG</span>
+          </div>
+          <div id="terminalLog" class="flex-1 overflow-y-auto space-y-1.5 py-3 text-[11px] text-slate-300 max-h-60">
+            <div class="text-slate-600">[Hệ Thống] Đã kết nối với bộ điều khiển Đất Phú n8n Hub.</div>
+            <div class="text-slate-600">[Gợi Ý] Chọn 1 kịch bản phía trên hoặc bấm 'GỬI GÓI TIN' để kiểm tra n8n ngầm.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= JAVASCRIPT ĐIỀU HÀNH ================= -->
+  <script>
+    const TEST_PAYLOADS = {
+      1: {
+        url: "http://localhost:5678/webhook/vietqr-bank-webhook",
+        payload: {
+          description: "THANH TOAN BAN 01 DAT PHU",
+          amount: 185000,
+          transactionId: "FT26" + Date.now().toString().slice(-6),
+          bankAccount: "970422-MBBank",
+          source: "VietQR_Simulator"
+        }
+      },
+      2: {
+        url: "http://localhost:5678/webhook/fiscal-invoice-issue",
+        payload: {
+          customer: {
+            name: "Công ty TNHH Thủy Sản Đất Phú",
+            taxCode: "4401099888",
+            address: "Tuy Hòa, Phú Yên",
+            email: "ketoan@datphu.vn"
+          },
+          totalAmount: 540000,
+          taxRate: 8,
+          items: [
+            { name: "Mắt Cá Ngừ Hầm Tiêu Xanh", qty: 2, price: 75000, unit: "Thố" },
+            { name: "Lẩu Cá Bớp Đặc Biệt", qty: 1, price: 29000, unit: "Nồi" },
+            { name: "Gỏi Cá Mai Tuy Hòa", qty: 1, price: 100000, unit: "Đĩa" }
+          ]
+        }
+      },
+      3: {
+        url: "http://localhost:5678/webhook/devinfra-ping",
+        payload: {
+          event: "devinfra_ping",
+          service: "Đất Phú Speed POS",
+          checkUrl: "https://datphu-backend.vercel.app/speed-pos.html",
+          timestamp: new Date().toISOString()
+        }
+      },
+      4: {
+        url: "http://localhost:5678/webhook/ai-support-chat",
+        payload: {
+          senderName: "Anh Tuấn (Tuy Hòa)",
+          phone: "0905888999",
+          message: "Cho mình hỏi bên bạn có hỗ trợ tích hợp chữ ký số và hóa đơn điện tử cho quán ăn không, giá bao nhiêu?",
+          channel: "Zalo OA"
+        }
+      },
+      5: {
+        url: "http://localhost:5678/webhook/datphu-master-gateway",
+        payload: {
+          event: "backup_night",
+          service: "PostgreSQL Supabase",
+          timestamp: new Date().toISOString()
+        }
+      }
+    };
+
+    function simulateTest(num) {
+      const data = TEST_PAYLOADS[num];
+      if (!data) return;
+      document.getElementById('targetWebhookUrl').value = data.url;
+      document.getElementById('testPayload').value = JSON.stringify(data.payload, null, 2);
+      logTerminal(`Đã nạp gói tin mẫu kịch bản #${num}. Bấm 'GỬI GÓI TIN' để bắn thử!`, 'indigo');
+    }
+
+    async function dispatchSimulator() {
+      const url = document.getElementById('targetWebhookUrl').value.trim();
+      const payloadStr = document.getElementById('testPayload').value.trim();
+      const statusEl = document.getElementById('logStatus');
+
+      if (!url) {
+        alert("Vui lòng nhập đường dẫn n8n Webhook URL!");
+        return;
+      }
+
+      let payloadObj = {};
+      try {
+        payloadObj = JSON.parse(payloadStr);
+      } catch (e) {
+        alert("Gói tin JSON không hợp lệ! Vui lòng kiểm tra lại cú pháp.");
+        return;
+      }
+
+      logTerminal(`🚀 Đang bắn gói tin sang: ${url}...`, 'amber');
+      statusEl.textContent = "ĐANG GỬI...";
+      statusEl.className = "font-bold text-amber-400";
+
+      try {
+        const start = performance.now();
+        await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          mode: "no-cors",
+          body: JSON.stringify(payloadObj)
+        });
+        const duration = Math.round(performance.now() - start);
+
+        logTerminal(`✓ ĐÃ GỬI THÀNH CÔNG! (Thời gian phản hồi: ${duration}ms)`, 'emerald');
+        logTerminal(`Gói tin: ${JSON.stringify(payloadObj).slice(0, 100)}...`, 'slate');
+        statusEl.textContent = "THÀNH CÔNG";
+        statusEl.className = "font-bold text-emerald-400";
+      } catch (err) {
+        logTerminal(`⚠️ Lưu ý: Khi gọi n8n localhost từ trình duyệt, nếu n8n chưa mở bạn cần chạy 'scripts/start_n8n_background.vbs'`, 'rose');
+        statusEl.textContent = "CHỜ N8N";
+        statusEl.className = "font-bold text-rose-400";
+      }
+    }
+
+    function logTerminal(msg, color = 'slate') {
+      const term = document.getElementById('terminalLog');
+      const time = new Date().toLocaleTimeString('vi-VN');
+      const colorMap = {
+        slate: 'text-slate-300',
+        emerald: 'text-emerald-400 font-bold',
+        amber: 'text-amber-400 font-bold',
+        rose: 'text-rose-400 font-bold',
+        indigo: 'text-indigo-400 font-bold'
+      };
+      const row = document.createElement('div');
+      row.className = colorMap[color] || 'text-slate-300';
+      row.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
+      term.appendChild(row);
+      term.scrollTop = term.scrollHeight;
+    }
+
+    function clearLogs() {
+      document.getElementById('terminalLog').innerHTML = `
+        <div class="text-slate-600">[Hệ Thống] Nhật ký đã được làm sạch.</div>
+      `;
+      document.getElementById('logStatus').textContent = "SẴN SÀNG";
+      document.getElementById('logStatus').className = "font-bold text-slate-400";
+    }
+  </script>
+</body>
+</html>

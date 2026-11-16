@@ -1,0 +1,117 @@
+{
+  "name": "1. Đất Phú - Trợ Lý Thông Báo & Xác Nhận Thanh Toán VietQR (Real-time Payment Bot)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "vietqr-bank-webhook",
+        "responseMode": "onReceived",
+        "responseData": "{\"status\":\"success\",\"message\":\"Đất Phú Payment Bot đã nhận biến động số dư\"}",
+        "options": {}
+      },
+      "id": "node-vqr-webhook",
+      "name": "1. Webhook Biến Động Số Dư (Bank/Casso/SePay)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300],
+      "webhookId": "vietqr-bank-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Phân tích nội dung chuyển khoản để trích xuất Mã Đơn Hàng hoặc Bàn\n// Format phổ biến: 'THANH TOAN BAN 01', 'DP-B01', 'MINI-123456', 'BAN 2'\nconst raw = $json.body || $json;\nconst content = (raw.description || raw.content || raw.transactionContent || '').toUpperCase();\nconst amount = raw.amount || raw.transferAmount || 0;\nconst bankAccount = raw.bankAccount || raw.accountNumber || '970422-MBBank';\nconst transId = raw.transactionId || raw.referenceNumber || Date.now().toString();\n\nlet matchedCode = 'KHÁCH LẺ';\nconst tableMatch = content.match(/BAN\\s*(\\d+|MANG\\s*VE|VIP\\d*)/i) || content.match(/DP-B(\\d+)/i);\nconst miniMatch = content.match(/MINI-(\\d+)/i);\n\nif (tableMatch) {\n  matchedCode = 'BÀN ' + tableMatch[1];\n} else if (miniMatch) {\n  matchedCode = 'ĐƠN ' + miniMatch[0];\n}\n\nreturn [{\n  json: {\n    transId: transId,\n    amount: Number(amount),\n    content: content,\n    bankAccount: bankAccount,\n    matchedCode: matchedCode,\n    paidAt: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),\n    isMatched: matchedCode !== 'KHÁCH LẺ'\n  }\n}];"
+      },
+      "id": "node-vqr-parser",
+      "name": "2. Phân Tích Khớp Mã Đơn / Bàn",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.isMatched }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "node-vqr-switch",
+      "name": "3. Đã Khớp Đúng Bàn?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_thungan",
+        "text": "=🔔 <b>[TING TING! TIỀN ĐÃ VỀ TÀI KHOẢN]</b>\n━━━━━━━━━━━━━━━━━━━━\n🏦 Số tiền: <b>+{{ $json.amount.toLocaleString('vi-VN') }} đ</b>\n🏷 Khớp đơn: <b>{{ $json.matchedCode }}</b>\n📝 Nội dung CK: <i>{{ $json.content }}</i>\n⏰ Giờ giao dịch: {{ $json.paidAt }}\n🆔 Mã GD ngân hàng: <code>{{ $json.transId }}</code>\n━━━━━━━━━━━━━━━━━━━━\n✅ Hệ thống POS tự động đổi trạng thái sang 'ĐÃ THANH TOÁN' & Cho phép in bill!",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "node-vqr-tele-matched",
+      "name": "4A. Báo Telegram Thu Ngân (Khớp Đơn)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [920, 200]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_quanly",
+        "text": "=⚠️ <b>[CẢNH BÁO TIỀN VỀ CHƯA RÕ ĐƠN]</b>\n━━━━━━━━━━━━━━━━━━━━\n💵 Số tiền: <b>+{{ $json.amount.toLocaleString('vi-VN') }} đ</b>\n📝 Nội dung CK: <i>{{ $json.content }}</i>\n⏰ Thời gian: {{ $json.paidAt }}\n❓ Chưa tự động tìm thấy số bàn tương ứng. Vui lòng thu ngân kiểm tra lại hóa đơn khách vừa thanh toán!",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "node-vqr-tele-manual",
+      "name": "4B. Cảnh Báo Cần Khớp Tay",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [920, 420]
+    }
+  ],
+  "connections": {
+    "1. Webhook Biến Động Số Dư (Bank/Casso/SePay)": {
+      "main": [
+        [
+          {
+            "node": "2. Phân Tích Khớp Mã Đơn / Bàn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Phân Tích Khớp Mã Đơn / Bàn": {
+      "main": [
+        [
+          {
+            "node": "3. Đã Khớp Đúng Bàn?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Đã Khớp Đúng Bàn?": {
+      "main": [
+        [
+          {
+            "node": "4A. Báo Telegram Thu Ngân (Khớp Đơn)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "4B. Cảnh Báo Cần Khớp Tay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

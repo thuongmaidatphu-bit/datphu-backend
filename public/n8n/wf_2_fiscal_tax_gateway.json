@@ -1,0 +1,113 @@
+{
+  "name": "2. Đất Phú - Trạm Đồng Bộ Hóa Đơn Điện Tử & Kế Toán Tự Động (Fiscal & Tax Gateway)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "fiscal-invoice-issue",
+        "responseMode": "onReceived",
+        "responseData": "{\"status\":\"success\",\"message\":\"Trạm hóa đơn Đất Phú đã tiếp nhận yêu cầu xuất HĐĐT\"}",
+        "options": {}
+      },
+      "id": "node-tax-webhook",
+      "name": "1. Webhook Yêu Cầu Xuất HĐĐT",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300],
+      "webhookId": "fiscal-invoice-issue"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Chuẩn hóa dữ liệu theo cấu trúc HĐĐT Thông tư 78 / Nghị định 123\nconst payload = $json.body || $json;\nconst customer = payload.customer || {};\nconst items = payload.items || [];\nconst totalAmount = payload.totalAmount || 0;\nconst taxRate = payload.taxRate || 8; // Thuế suất 8% cho ẩm thực theo quy định\n\nconst vatAmount = Math.round(totalAmount * taxRate / (100 + taxRate));\nconst preTaxAmount = totalAmount - vatAmount;\n\nconst invoicePayload = {\n  invoiceSeries: \"1C26TDP\", // Ký hiệu hóa đơn Đất Phú 2026\n  buyerName: customer.name || \"Khách hàng lẻ không lấy hóa đơn\",\n  buyerTaxCode: customer.taxCode || \"\",\n  buyerAddress: customer.address || \"Tuy Hòa, Phú Yên\",\n  buyerEmail: customer.email || \"\",\n  buyerPhone: customer.phone || \"\",\n  totalAmount: totalAmount,\n  preTaxAmount: preTaxAmount,\n  vatAmount: vatAmount,\n  taxRate: taxRate,\n  issueDate: new Date().toISOString(),\n  items: items.map((it, idx) => ({\n    lineNumber: idx + 1,\n    itemName: it.name,\n    unit: it.unit || \"Đĩa/Tô\",\n    quantity: it.qty || 1,\n    unitPrice: it.price || 0,\n    amount: (it.price || 0) * (it.qty || 1)\n  }))\n};\n\nreturn [{ json: invoicePayload }];"
+      },
+      "id": "node-tax-formatter",
+      "name": "2. Chuẩn Hóa Payload HĐĐT (TT78)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api-sandbox.invoice-gateway.vn/v1/invoices/issue",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer DATPHU_TAX_API_KEY_SECRET"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "invoiceData",
+              "value": "={{ JSON.stringify($json) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-tax-api-call",
+      "name": "3. Đẩy Qua API Nhà Cung Cấp HĐĐT (M-Invoice / Easy / VNPT)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_ketoan",
+        "text": "=🧾 <b>[ĐÃ PHÁT HÀNH HÓA ĐƠN ĐIỆN TỬ]</b>\n━━━━━━━━━━━━━━━━━━━━\n🏢 Khách: <b>{{ $node['2. Chuẩn Hóa Payload HĐĐT (TT78)'].json.buyerName }}</b>\n🏷 Mã số thuế: <code>{{ $node['2. Chuẩn Hóa Payload HĐĐT (TT78)'].json.buyerTaxCode || 'Khách lẻ' }}</code>\n💵 Tổng thanh toán: <b>{{ $node['2. Chuẩn Hóa Payload HĐĐT (TT78)'].json.totalAmount.toLocaleString('vi-VN') }} đ</b> (Đã gồm {{ $node['2. Chuẩn Hóa Payload HĐĐT (TT78)'].json.taxRate }}% VAT)\n🔗 Link tra cứu HĐ: <a href=\"https://tracuu.datphu.vn/hd/{{ $json.invoiceNo || 'INV-2026-001' }}\">Xem bản thể hiện PDF / XML</a>\n━━━━━━━━━━━━━━━━━━━━\n✅ Dữ liệu đã lưu kho tự động & sẵn sàng kết xuất sổ sách kế toán!",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "node-tax-tele-confirm",
+      "name": "4. Báo Kế Toán & Gửi Link Tra Cứu",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [920, 300]
+    }
+  ],
+  "connections": {
+    "1. Webhook Yêu Cầu Xuất HĐĐT": {
+      "main": [
+        [
+          {
+            "node": "2. Chuẩn Hóa Payload HĐĐT (TT78)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Chuẩn Hóa Payload HĐĐT (TT78)": {
+      "main": [
+        [
+          {
+            "node": "3. Đẩy Qua API Nhà Cung Cấp HĐĐT (M-Invoice / Easy / VNPT)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Đẩy Qua API Nhà Cung Cấp HĐĐT (M-Invoice / Easy / VNPT)": {
+      "main": [
+        [
+          {
+            "node": "4. Báo Kế Toán & Gửi Link Tra Cứu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

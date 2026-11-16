@@ -1,0 +1,120 @@
+{
+  "name": "Đất Phú Master Automation Suite - 5 Kịch Bản Tự Động Hóa Thực Tế",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "datphu-master-gateway",
+        "responseMode": "onReceived",
+        "responseData": "{\"status\":\"ok\",\"service\":\"Đất Phú Master Suite\"}",
+        "options": {}
+      },
+      "id": "master-webhook",
+      "name": "0. Cổng Tiếp Nhận Tổng Hợp",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [160, 400],
+      "webhookId": "datphu-master-gateway"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 1 }, "conditions": [{ "leftValue": "={{ $json.body.event || $json.body.type }}", "rightValue": "vietqr_payment", "operator": { "type": "string", "operation": "equals" } }], "combinator": "and" } },
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 1 }, "conditions": [{ "leftValue": "={{ $json.body.event || $json.body.type }}", "rightValue": "tax_invoice", "operator": { "type": "string", "operation": "equals" } }], "combinator": "and" } },
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 1 }, "conditions": [{ "leftValue": "={{ $json.body.event || $json.body.type }}", "rightValue": "devinfra_ping", "operator": { "type": "string", "operation": "equals" } }], "combinator": "and" } },
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 1 }, "conditions": [{ "leftValue": "={{ $json.body.event || $json.body.type }}", "rightValue": "ai_chat", "operator": { "type": "string", "operation": "equals" } }], "combinator": "and" } },
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 1 }, "conditions": [{ "leftValue": "={{ $json.body.event || $json.body.type }}", "rightValue": "backup_night", "operator": { "type": "string", "operation": "equals" } }], "combinator": "and" } }
+          ]
+        }
+      },
+      "id": "master-switch",
+      "name": "Điều Phối 5 Kịch Bản Tự Động Hóa",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [420, 400]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_thungan",
+        "text": "=🔔 [1. VIETQR] Đã xác nhận tiền về: {{ $json.body.amount.toLocaleString('vi-VN') }} đ (Bàn: {{ $json.body.table }})",
+        "additionalFields": { "parse_mode": "HTML" }
+      },
+      "id": "m-out-1",
+      "name": "1. Xử Lý VietQR Bot",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [720, 150]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_ketoan",
+        "text": "=🧾 [2. HÓA ĐƠN THUẾ] Đã phát hành HĐĐT TT78 cho: {{ $json.body.customerName || 'Khách lẻ' }} - Tổng: {{ $json.body.total.toLocaleString('vi-VN') }} đ",
+        "additionalFields": { "parse_mode": "HTML" }
+      },
+      "id": "m-out-2",
+      "name": "2. Xử Lý Thuế & HĐĐT",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [720, 280]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_devinfra",
+        "text": "=🚨 [3. DEVINFRA GUARD] Cảnh báo lỗi hệ thống: {{ $json.body.reason }}",
+        "additionalFields": { "parse_mode": "HTML" }
+      },
+      "id": "m-out-3",
+      "name": "3. Cảnh Báo Hạ Tầng",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [720, 410]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_sales",
+        "text": "=🎯 [4. AI CSKH] Khách tiềm năng mới: {{ $json.body.senderName }} - Câu hỏi: {{ $json.body.question }}",
+        "additionalFields": { "parse_mode": "HTML" }
+      },
+      "id": "m-out-4",
+      "name": "4. Trợ Lý AI Chăm Sóc Khách",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [720, 540]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_backup_monitor",
+        "text": "=🛡️ [5. BACKUP TỰ ĐỘNG] Đã sao lưu DB thành công vào Cloudflare R2 lúc 02:00 sáng",
+        "additionalFields": { "parse_mode": "HTML" }
+      },
+      "id": "m-out-5",
+      "name": "5. Sao Lưu Tự Động",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [720, 670]
+    }
+  ],
+  "connections": {
+    "0. Cổng Tiếp Nhận Tổng Hợp": {
+      "main": [
+        [
+          {
+            "node": "Điều Phối 5 Kịch Bản Tự Động Hóa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Điều Phối 5 Kịch Bản Tự Động Hóa": {
+      "main": [
+        [{ "node": "1. Xử Lý VietQR Bot", "type": "main", "index": 0 }],
+        [{ "node": "2. Xử Lý Thuế & HĐĐT", "type": "main", "index": 0 }],
+        [{ "node": "3. Cảnh Báo Hạ Tầng", "type": "main", "index": 0 }],
+        [{ "node": "4. Trợ Lý AI Chăm Sóc Khách", "type": "main", "index": 0 }],
+        [{ "node": "5. Sao Lưu Tự Động", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}

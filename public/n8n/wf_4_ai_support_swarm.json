@@ -1,0 +1,117 @@
+{
+  "name": "4. Đất Phú - Tổng Đài Trợ Lý AI & Chăm Sóc Khách Hàng Tự Động (AI Support Swarm)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ai-support-chat",
+        "responseMode": "onReceived",
+        "responseData": "{\"status\":\"received\"}",
+        "options": {}
+      },
+      "id": "node-ai-webhook",
+      "name": "1. Webhook Tin Nhắn Khách (Zalo OA / Tele / Web)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300],
+      "webhookId": "ai-support-chat"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Trích xuất thông tin khách và câu hỏi\nconst msg = $json.body || $json;\nconst customerName = msg.senderName || msg.from?.first_name || 'Quý khách';\nconst customerPhone = msg.phone || '';\nconst text = (msg.text || msg.message || '').trim();\nconst channel = msg.channel || 'Zalo OA / Web Chat';\n\n// Nhận diện ý định khách hàng (Intent Detection)\nlet intent = 'HOI_THONG_TIN';\nconst lower = text.toLowerCase();\n\nif (lower.includes('mua') || lower.includes('đăng ký') || lower.includes('báo giá') || lower.includes('đặt bàn') || lower.includes('liên hệ')) {\n  intent = 'TIEM_NANG_MUA_HANG';\n} else if (lower.includes('lỗi') || lower.includes('hỏng') || lower.includes('hỗ trợ') || lower.includes('không vào được')) {\n  intent = 'HO_TRO_KY_THUAT';\n}\n\n// Soạn câu trả lời tự động chuẩn mực Phú Yên\nlet reply = '';\nif (intent === 'TIEM_NANG_MUA_HANG') {\n  reply = `Dạ chào ${customerName}, Đất Phú rất hân hạnh được hỗ trợ Quý khách! Về dịch vụ/đơn hàng anh/chị đang quan tâm, em đã chuyển thông tin tới chuyên viên phụ trách. Chuyên viên Đất Phú sẽ liên hệ trao đổi cụ thể ngay sau ít phút ạ!`;\n} else if (intent === 'HO_TRO_KY_THUAT') {\n  reply = `Dạ chào ${customerName}, bộ phận kỹ thuật Đất Phú đã ghi nhận sự cố của Quý khách và đang kiểm tra ngay trên hệ thống. Nếu gấp anh/chị có thể gọi hotline trực ban để được xử lý ngay lập tức ạ!`;\n} else {\n  reply = `Dạ chào ${customerName}, cảm ơn Quý khách đã liên hệ Tổ Hợp Dịch Vụ Đất Phú (Tuy Hòa, Phú Yên). Em là Trợ lý số Đất Phú AI, anh/chị cần thông tin về món ngon quán ăn hay dịch vụ chữ ký số/hóa đơn điện tử thì cứ nhắn em nhé!`;\n}\n\nreturn [{\n  json: {\n    customerName: customerName,\n    customerPhone: customerPhone,\n    question: text,\n    channel: channel,\n    intent: intent,\n    reply: reply,\n    time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })\n  }\n}];"
+      },
+      "id": "node-ai-intent",
+      "name": "2. AI Phân Tích Ý Định & Soạn Lời Đáp",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.intent }}",
+              "value2": "TIEM_NANG_MUA_HANG"
+            }
+          ]
+        }
+      },
+      "id": "node-ai-is-lead",
+      "name": "3. Có Phải Khách Mua Hàng / Đặt Bàn?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_sales",
+        "text": "=🎯 <b>[KHÁCH HÀNG TIỀM NĂNG MỚI (LEAD)]</b>\n━━━━━━━━━━━━━━━━━━━━\n👤 Tên khách: <b>{{ $json.customerName }}</b>\n📱 SĐT: <code>{{ $json.customerPhone || 'Chưa cung cấp' }}</code>\n💬 Kênh đến: <b>{{ $json.channel }}</b>\n❓ Câu hỏi của khách: <i>\"{{ $json.question }}\"</i>\n⏰ Thời gian: {{ $json.time }}\n━━━━━━━━━━━━━━━━━━━━\n👉 <i>Vui lòng nhân sự kinh doanh / quản lý chăm sóc ngay để chốt đơn!</i>",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "node-ai-tele-lead",
+      "name": "4A. Đẩy Lead Sang Nhóm Kinh Doanh",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [920, 200]
+    },
+    {
+      "parameters": {
+        "chatId": "@datphu_cskh_logs",
+        "text": "=💬 <b>[LOG HỘI THOẠI TRỢ LÝ AI CSKH]</b>\n━━━━━━━━━━━━━━━━━━━━\n👤 Khách: {{ $json.customerName }} ({{ $json.channel }})\n❓ Hỏi: {{ $json.question }}\n🤖 AI Đáp: {{ $json.reply }}\n⏰ Lúc: {{ $json.time }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "node-ai-tele-log",
+      "name": "4B. Lưu Log Hội Thoại",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [920, 420]
+    }
+  ],
+  "connections": {
+    "1. Webhook Tin Nhắn Khách (Zalo OA / Tele / Web)": {
+      "main": [
+        [
+          {
+            "node": "2. AI Phân Tích Ý Định & Soạn Lời Đáp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. AI Phân Tích Ý Định & Soạn Lời Đáp": {
+      "main": [
+        [
+          {
+            "node": "3. Có Phải Khách Mua Hàng / Đặt Bàn?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Có Phải Khách Mua Hàng / Đặt Bàn?": {
+      "main": [
+        [
+          {
+            "node": "4A. Đẩy Lead Sang Nhóm Kinh Doanh",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "4B. Lưu Log Hội Thoại",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
