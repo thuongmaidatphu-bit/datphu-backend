@@ -38,13 +38,13 @@
   <header class="h-14 bg-slate-900 text-white px-3 sm:px-5 flex items-center justify-between shrink-0 shadow-md border-b border-slate-800 z-20">
     
     <!-- Logo & Tên quán -->
-    <div class="flex items-center space-x-3">
-      <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-base shadow-sm">
+    <div class="flex items-center space-x-2.5 shrink-0">
+      <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-base shadow-sm shrink-0">
         <i class="fa-solid fa-bowl-food"></i>
       </div>
-      <div>
-        <h1 class="font-black text-sm sm:text-base uppercase tracking-wider text-white leading-tight">ĐẤT PHÚ SPEED POS</h1>
-        <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Quy trình 5 bước tinh gọn chuẩn công nghiệp</p>
+      <div class="shrink-0">
+        <h1 class="font-black text-sm uppercase tracking-wider text-white leading-tight">ĐẤT PHÚ SPEED POS</h1>
+        <p class="text-[10px] text-slate-400 font-medium hidden md:block">Quy trình tinh gọn chuẩn công nghiệp</p>
       </div>
     </div>
 
@@ -271,32 +271,39 @@
         </div>
 
         <!-- 3 Nút Hành Động Chuẩn iPOS: 3. Báo Bếp -> 4. VietQR -> 5. In Bill -->
-        <div class="grid grid-cols-4 gap-1.5 sm:gap-2">
-          
-          <!-- 3. BÁO BẾP (VÀNG ẤM) -->
-          <button id="btnActionKitchen" onclick="actionSendKitchen()" class="py-2.5 sm:py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-black text-[11px] sm:text-xs shadow-sm flex flex-col items-center justify-center gap-1 active:scale-95 transition cursor-pointer" title="Gửi đơn xuống bếp và phát chuông báo">
-            <i class="fa-solid fa-bell text-sm sm:text-base"></i>
-            <span>3. BÁO BẾP</span>
-          </button>
+        <div class="space-y-2">
+          <!-- Hàng 1: Bếp & Ra Món -->
+          <div class="grid grid-cols-2 gap-2">
+            <button id="btnActionKitchen" onclick="actionSendKitchen()" class="py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-black text-xs shadow-sm flex items-center justify-center gap-1.5 active:scale-95 transition cursor-pointer" title="Gửi đơn xuống bếp và phát chuông báo">
+              <i class="fa-solid fa-bell text-sm"></i>
+              <span>3. BÁO BẾP</span>
+            </button>
+            <button id="btnActionServed" onclick="actionServedFood()" class="py-2.5 bg-slate-100 hover:bg-emerald-100 text-slate-500 hover:text-emerald-800 rounded-2xl font-black text-xs shadow-2xs flex items-center justify-center gap-1.5 active:scale-95 transition cursor-pointer" title="Xác nhận đã bưng món lên bàn">
+              <i class="fa-solid fa-bell-concierge text-sm"></i>
+              <span>ĐÃ RA MÓN</span>
+            </button>
+          </div>
 
-          <!-- 4. VIETQR (ĐỎ CHUẨN NAPAS) -->
-          <button id="btnActionQR" onclick="actionOpenCheckout('qr')" class="py-2.5 sm:py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl font-black text-[11px] sm:text-xs shadow-md flex flex-col items-center justify-center gap-1 active:scale-95 transition cursor-pointer" title="Hiện mã VietQR động thanh toán">
-            <i class="fa-solid fa-qrcode text-sm sm:text-base"></i>
-            <span>4. VIETQR</span>
-          </button>
+          <!-- Hàng 2: Thanh Toán (VietQR & Tiền Mặt & In Bill) -->
+          <div class="grid grid-cols-3 gap-2">
+            <!-- 4. VIETQR -->
+            <button id="btnActionQR" onclick="actionOpenCheckout('qr')" class="py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl font-black text-xs shadow-md flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="Hiện mã VietQR động thanh toán">
+              <i class="fa-solid fa-qrcode text-base"></i>
+              <span>4. VIETQR</span>
+            </button>
 
-          <!-- 4.1. TIỀN MẶT (XANH NGỌC BÍCH - TÍNH TIỀN THỐI) -->
-          <button id="btnActionCash" onclick="actionOpenCheckout('cash')" class="py-2.5 sm:py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-[11px] sm:text-xs shadow-md flex flex-col items-center justify-center gap-1 active:scale-95 transition cursor-pointer" title="Thu tiền mặt & tính tiền thối thừa cho khách">
-            <i class="fa-solid fa-money-bill-wave text-sm sm:text-base"></i>
-            <span>TIỀN MẶT</span>
-          </button>
+            <!-- 4.1. TIỀN MẶT -->
+            <button id="btnActionCash" onclick="actionOpenCheckout('cash')" class="py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-xs shadow-md flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="Thu tiền mặt & tính tiền thối thừa">
+              <i class="fa-solid fa-money-bill-wave text-base"></i>
+              <span>TIỀN MẶT</span>
+            </button>
 
-          <!-- 5. IN BILL (XANH DƯƠNG ĐẬM) -->
-          <button id="btnActionPrint" onclick="actionPrintBill(false)" class="py-2.5 sm:py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-2xl font-black text-[11px] sm:text-xs shadow-sm flex flex-col items-center justify-center gap-1 active:scale-95 transition cursor-pointer" title="In phiếu tạm tính / hóa đơn thanh toán">
-            <i class="fa-solid fa-print text-sm sm:text-base"></i>
-            <span>5. IN BILL</span>
-          </button>
-
+            <!-- 5. IN BILL -->
+            <button id="btnActionPrint" onclick="actionPrintBill(false)" class="py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-2xl font-black text-xs shadow-sm flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="In phiếu tạm tính / hóa đơn">
+              <i class="fa-solid fa-print text-base"></i>
+              <span>5. IN BILL</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -1112,34 +1119,36 @@
           <div onclick="selectTable('${t.id}')" ondblclick="openMenuModal()" 
                class="rounded-3xl border-2 transition-all duration-200 cursor-pointer flex flex-col justify-between overflow-hidden hover:-translate-y-1 hover:shadow-xl active:scale-[0.98] min-h-[160px] ${cardBorder} ${selectedRing}">
             
-            <!-- 1. DẢI BANNER MÀU NHẬN DIỆN TỪ XA -->
-            <div class="px-3.5 py-2 flex items-center justify-between ${bannerBg}">
-              <div class="flex items-center gap-1.5 font-black text-xs uppercase tracking-wide">
-                <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'} text-xs"></i>
-                <span>${t.name}</span>
-                <span class="text-[9px] font-normal opacity-80 lowercase">(${getZoneName(t.zone)} ${t.seats ? '• ' + t.seats + 'g' : ''})</span>
+            <!-- 1. DẢI BANNER MÀU NHẬN DIỆN TỪ XA (KHÔNG BỊ GÃY CHỮ) -->
+            <div class="px-3 py-2 flex items-center justify-between ${bannerBg} gap-1.5">
+              <div class="flex items-center gap-1.5 font-black text-xs uppercase tracking-wide truncate">
+                <i class="fa-solid ${t.id === 'takeaway' ? 'fa-bag-shopping' : 'fa-chair'} text-xs shrink-0"></i>
+                <span class="truncate">${t.name}</span>
               </div>
-              <span class="text-[10px] font-black px-2 py-0.5 rounded-full shadow-2xs ${badgeBg}">
+              <span class="text-[10px] font-black px-2 py-0.5 rounded-full shadow-2xs whitespace-nowrap shrink-0 ${badgeBg}">
                 ${statusText}
               </span>
             </div>
 
-            <!-- 2. THÂN THẺ: SỐ BÀN TO ĐẬM HIỆN ĐẠI (01, 02... MV) & THỜI GIAN -->
-            <div class="p-3.5 flex items-center justify-between flex-1">
-              <div class="flex items-center gap-3">
+            <!-- 2. THÂN THẺ: SỐ BÀN TO ĐẬM (01, 02... MV) & KHU VỰC -->
+            <div class="p-3 sm:p-3.5 flex items-center justify-between flex-1">
+              <div class="flex items-center gap-3 min-w-0">
                 <!-- Khối Số Bàn To Bự Nổi Bật -->
-                <div class="w-13 h-13 rounded-2xl flex items-center justify-center font-black font-mono text-2xl tracking-tight shrink-0 ${codeBoxStyle}">
+                <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl flex items-center justify-center font-black font-mono text-2xl tracking-tight shrink-0 ${codeBoxStyle}">
                   ${tableCode}
                 </div>
 
                 <!-- Thông tin chi tiết bàn -->
-                <div class="min-w-0">
-                  <div class="text-xs font-bold text-slate-800 truncate">
+                <div class="min-w-0 flex-1">
+                  <div class="text-xs font-black text-slate-800 truncate">
                     ${step === 5 ? (t.reserveInfo?.name || 'Khách đặt hẹn') : (isOcc ? `${count} món trong đơn` : 'Bàn trống')}
+                  </div>
+                  <div class="text-[10px] text-slate-400 font-bold truncate">
+                    ${getZoneName(t.zone)} ${t.seats ? '• ' + t.seats + ' ghế' : ''}
                   </div>
                   <div class="text-[11px] font-medium text-slate-500 mt-0.5 flex items-center gap-1 truncate">
                     <i class="fa-regular fa-clock text-[10px] text-slate-400"></i>
-                    <span>${step === 5 ? ('SĐT: ' + (t.reserveInfo?.phone || '--')) : (t.openTime ? 'Vào: ' + t.openTime : 'Sẵn sàng phục vụ')}</span>
+                    <span>${step === 5 ? ('SĐT: ' + (t.reserveInfo?.phone || '--')) : (t.openTime ? 'Vào: ' + t.openTime : 'Sẵn sàng')}</span>
                   </div>
                 </div>
               </div>
@@ -1500,57 +1509,47 @@
         }
       }
 
+      const btnCash = document.getElementById('btnActionCash');
+      const btnServed = document.getElementById('btnActionServed');
+
       if (btnKitchen && btnQR && btnPrint) {
         if (t.cart.length === 0) {
-          // Bàn trống: làm mờ các nút
-          btnKitchen.className = "py-3 bg-slate-100 text-slate-400 rounded-2xl font-bold text-xs flex flex-col items-center justify-center gap-1 cursor-not-allowed opacity-50";
-          btnKitchen.innerHTML = `<i class="fa-solid fa-bell text-base"></i><span>3. BÁO BẾP</span>`;
-
-          btnQR.className = "py-3 bg-slate-100 text-slate-400 rounded-2xl font-bold text-xs flex flex-col items-center justify-center gap-1 cursor-not-allowed opacity-50";
-          btnQR.innerHTML = `<i class="fa-solid fa-qrcode text-base"></i><span>4. VIETQR</span>`;
-
-          btnPrint.className = "py-3 bg-slate-100 text-slate-400 rounded-2xl font-bold text-xs flex flex-col items-center justify-center gap-1 cursor-not-allowed opacity-50";
-          btnPrint.innerHTML = `<i class="fa-solid fa-print text-base"></i><span>5. IN BILL</span>`;
+          // Bàn trống: làm mờ tất cả các nút hành động
+          btnKitchen.className = "py-2.5 bg-slate-100 text-slate-400 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 cursor-not-allowed opacity-40 pointer-events-none";
+          if (btnServed) btnServed.className = "py-2.5 bg-slate-100 text-slate-400 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 cursor-not-allowed opacity-40 pointer-events-none";
+          btnQR.className = "py-3 bg-slate-100 text-slate-400 rounded-2xl font-bold text-xs flex flex-col items-center justify-center gap-0.5 cursor-not-allowed opacity-40 pointer-events-none";
+          if (btnCash) btnCash.className = "py-3 bg-slate-100 text-slate-400 rounded-2xl font-bold text-xs flex flex-col items-center justify-center gap-0.5 cursor-not-allowed opacity-40 pointer-events-none";
+          btnPrint.className = "py-3 bg-slate-100 text-slate-400 rounded-2xl font-bold text-xs flex flex-col items-center justify-center gap-0.5 cursor-not-allowed opacity-40 pointer-events-none";
+        } else if (t.foodReady) {
+          // Bếp đã nấu xong - Cần ra món!
+          btnKitchen.className = "py-2.5 bg-slate-100 text-slate-500 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer";
+          if (btnServed) btnServed.className = "py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-xs shadow-md ring-2 ring-emerald-400 animate-bounce flex items-center justify-center gap-1.5 cursor-pointer";
+          btnQR.className = "py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl font-black text-xs shadow-md flex flex-col items-center justify-center gap-0.5 cursor-pointer active:scale-95 transition";
+          if (btnCash) btnCash.className = "py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-xs shadow-md flex flex-col items-center justify-center gap-0.5 cursor-pointer active:scale-95 transition";
+          btnPrint.className = "py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-2xl font-black text-xs shadow-sm flex flex-col items-center justify-center gap-0.5 cursor-pointer";
         } else if (t.isCheckingOut) {
-          // ================= TRƯỜNG HỢP BẾP ĐÃ NẤU XONG: NÚT QR VÀ IN BILL HIỆN SÁNG RỰC RỠ =================
-          btnKitchen.className = "py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-xs flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-slate-200 transition";
-          btnKitchen.innerHTML = `<i class="fa-solid fa-check-double text-emerald-600 text-base"></i><span>BẾP XONG ✓</span>`;
-
-          // NÚT QR HIỆN SÁNG RỰC RỠ, NHẤP NHÁY HÚT MẮT
-          btnQR.className = "py-3 bg-gradient-to-r from-rose-600 via-red-600 to-rose-700 hover:from-rose-500 hover:to-red-500 text-white rounded-2xl font-black text-xs shadow-xl ring-4 ring-rose-400 ring-offset-2 animate-pulse flex flex-col items-center justify-center gap-1 cursor-pointer scale-105 active:scale-95 transition z-10";
-          btnQR.innerHTML = `
-            <div class="flex items-center gap-1">
-              <i class="fa-solid fa-qrcode text-lg"></i>
-              <span class="w-2 h-2 rounded-full bg-yellow-300 animate-ping"></span>
-            </div>
-            <span class="tracking-wide">4. QUÉT QR ✨</span>
-          `;
-
-          // NÚT IN BILL SÁNG ĐÈN SẴN SÀNG IN
-          btnPrint.className = "py-3 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-white rounded-2xl font-black text-xs shadow-lg ring-2 ring-blue-300 ring-offset-1 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition";
-          btnPrint.innerHTML = `<i class="fa-solid fa-print text-base"></i><span>5. IN BILL 🖨️</span>`;
-
+          // Bàn đang tính tiền
+          btnKitchen.className = "py-2.5 bg-slate-100 text-slate-500 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer";
+          if (btnServed) btnServed.className = "py-2.5 bg-slate-100 text-slate-400 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer";
+          btnQR.className = "py-3 bg-gradient-to-r from-rose-600 to-red-600 text-white rounded-2xl font-black text-xs shadow-xl ring-4 ring-rose-400 animate-pulse flex flex-col items-center justify-center gap-0.5 cursor-pointer scale-105 active:scale-95 transition z-10";
+          if (btnCash) btnCash.className = "py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-xs shadow-md flex flex-col items-center justify-center gap-0.5 cursor-pointer active:scale-95 transition";
+          btnPrint.className = "py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-2xl font-black text-xs shadow-sm flex flex-col items-center justify-center gap-0.5 cursor-pointer";
         } else if (t.kitchenSent) {
           // Bếp đang nấu
-          btnKitchen.className = "py-3 bg-amber-500 text-slate-950 rounded-2xl font-black text-xs shadow-md ring-2 ring-amber-300 animate-pulse flex flex-col items-center justify-center gap-1 cursor-pointer";
-          btnKitchen.innerHTML = `<i class="fa-solid fa-fire text-base text-amber-900"></i><span>🔔 ĐANG NẤU</span>`;
-
-          btnQR.className = "py-3 bg-rose-600/80 hover:bg-rose-600 text-white rounded-2xl font-bold text-xs shadow-sm flex flex-col items-center justify-center gap-1 cursor-pointer transition";
-          btnQR.innerHTML = `<i class="fa-solid fa-qrcode text-base"></i><span>4. VIETQR</span>`;
-
-          btnPrint.className = "py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold text-xs shadow-sm flex flex-col items-center justify-center gap-1 cursor-pointer transition";
-          btnPrint.innerHTML = `<i class="fa-solid fa-print text-base"></i><span>5. TẠM TÍNH</span>`;
-
+          btnKitchen.className = "py-2.5 bg-amber-500 text-slate-950 rounded-2xl font-black text-xs shadow-md ring-2 ring-amber-300 animate-pulse flex items-center justify-center gap-1.5 cursor-pointer";
+          btnKitchen.innerHTML = `<i class="fa-solid fa-fire text-amber-900"></i><span>🔔 ĐANG NẤU</span>`;
+          if (btnServed) btnServed.className = "py-2.5 bg-slate-100 text-slate-400 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer";
+          btnQR.className = "py-3 bg-rose-600/80 hover:bg-rose-600 text-white rounded-2xl font-bold text-xs shadow-sm flex flex-col items-center justify-center gap-0.5 cursor-pointer transition";
+          if (btnCash) btnCash.className = "py-3 bg-emerald-600/80 hover:bg-emerald-600 text-white rounded-2xl font-bold text-xs shadow-sm flex flex-col items-center justify-center gap-0.5 cursor-pointer transition";
+          btnPrint.className = "py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold text-xs shadow-sm flex flex-col items-center justify-center gap-0.5 cursor-pointer transition";
         } else {
-          // Đang chọn món (Chưa báo bếp)
-          btnKitchen.className = "py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-black text-xs shadow-md ring-2 ring-amber-400/50 flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition";
-          btnKitchen.innerHTML = `<i class="fa-solid fa-bell text-base"></i><span>3. BÁO BẾP</span>`;
-
-          btnQR.className = "py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl font-black text-xs shadow-sm flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition";
-          btnQR.innerHTML = `<i class="fa-solid fa-qrcode text-base"></i><span>4. VIETQR</span>`;
-
-          btnPrint.className = "py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-2xl font-black text-xs shadow-sm flex flex-col items-center justify-center gap-1 cursor-pointer active:scale-95 transition";
-          btnPrint.innerHTML = `<i class="fa-solid fa-print text-base"></i><span>5. IN BILL</span>`;
+          // Đang chọn món (sẵn sàng báo bếp hoặc thanh toán)
+          btnKitchen.className = "py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-black text-xs shadow-md ring-2 ring-amber-400/50 flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition";
+          btnKitchen.innerHTML = `<i class="fa-solid fa-bell"></i><span>3. BÁO BẾP</span>`;
+          if (btnServed) btnServed.className = "py-2.5 bg-slate-100 text-slate-400 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer";
+          btnQR.className = "py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl font-black text-xs shadow-sm flex flex-col items-center justify-center gap-0.5 cursor-pointer active:scale-95 transition";
+          if (btnCash) btnCash.className = "py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-xs shadow-sm flex flex-col items-center justify-center gap-0.5 cursor-pointer active:scale-95 transition";
+          btnPrint.className = "py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-2xl font-black text-xs shadow-sm flex flex-col items-center justify-center gap-0.5 cursor-pointer active:scale-95 transition";
         }
       }
     }
