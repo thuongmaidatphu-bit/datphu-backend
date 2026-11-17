@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đất Phú • Hạ Tầng Tốc Độ & Tự Động Hóa Vận Hành (Speed & Automation Engine)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #050814;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    
+    /* Hiệu ứng tia sáng lưới */
+    .bg-grid-pattern {
+      background-image: radial-gradient(rgba(59, 130, 246, 0.12) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* Hiệu ứng phát sáng */
+    .glow-cyan {
+      box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.4);
+    }
+    .glow-blue {
+      box-shadow: 0 0 35px -5px rgba(59, 130, 246, 0.35);
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0b1120; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+  </style>
+</head>
+<body class="bg-grid-pattern min-h-screen flex flex-col">
+
+  <!-- ================= TOP NAVIGATION ================= -->
+  <header class="h-16 bg-slate-900/90 border-b border-slate-800/80 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-50 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <a href="/" class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 text-white flex items-center justify-center font-black text-lg shadow-lg shadow-blue-500/25 hover:scale-105 transition">
+        <i class="fa-solid fa-bolt-lightning"></i>
+      </a>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-black text-sm sm:text-base text-white uppercase tracking-wider">
+            SPEED & AUTOMATION ENGINE
+          </h1>
+          <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 font-mono">CORE V4.2</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Hạ Tầng Tốc Độ & Tự Động Hóa Vận Hành • Hệ Sinh Thái Đất Phú</p>
+      </div>
+    </div>
+
+    <!-- Quick Actions Launch Pad -->
+    <div class="flex items-center gap-2">
+      <a href="speed-pos.html" class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-blue-600/30 transition hover:scale-102">
+        <i class="fa-solid fa-cash-register"></i>
+        <span>Vào Speed POS</span>
+      </a>
+      <a href="mini-pos.html" class="hidden sm:flex px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs items-center gap-1.5 border border-slate-700 transition">
+        <i class="fa-solid fa-mobile-screen-button text-rose-400"></i>
+        <span>Mini POS</span>
+      </a>
+      <a href="/" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-xs transition border border-slate-700" title="Trở về Trang Chủ">
+        <i class="fa-solid fa-house"></i>
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+
+    <!-- HERO INTRO BANNER -->
+    <div class="relative rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900/90 to-blue-950/40 border border-blue-500/30 p-6 sm:p-8 shadow-2xl overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div class="space-y-3 max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-mono font-bold">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+            HỆ THẦN KINH SỐ CHO F&B & CHUỖI BÁN LẺ
+          </div>
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
+            Tối Giản Ở Quầy Bán, Tự Động Hóa Toàn Diện Ở Hậu Trường
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Đất Phú không bán thêm phần mềm để nhân viên phải ngồi nhập liệu. Chúng tôi trang bị <strong class="text-cyan-400">Hạ tầng kết nối n8n/VPS</strong> biến POS quầy, bếp KDS, kho KiotViet, thanh toán VietQR và Hóa đơn điện tử máy tính tiền thành một cỗ máy vận hành ăn khớp, <span class="text-white font-semibold">hoàn toàn không cần con người làm cầu nối thủ công</span>.
+          </p>
+        </div>
+
+        <!-- Telemetry Widget -->
+        <div class="grid grid-cols-2 gap-3 w-full lg:w-auto shrink-0 mono">
+          <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-center">
+            <div class="text-[11px] text-slate-400 uppercase">Tốc Độ Xử Lý</div>
+            <div class="text-xl font-black text-cyan-400 mt-0.5">~180ms</div>
+            <div class="text-[10px] text-emerald-400 flex items-center justify-center gap-1 mt-0.5">
+              <i class="fa-solid fa-circle-check text-[8px]"></i> Zero-Lag
+            </div>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-center">
+            <div class="text-[11px] text-slate-400 uppercase">Tự Động Hóa</div>
+            <div class="text-xl font-black text-emerald-400 mt-0.5">99.2%</div>
+            <div class="text-[10px] text-slate-400">Không Lỗi Nhập Liệu</div>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-center">
+            <div class="text-[11px] text-slate-400 uppercase">RAM Tiêu Thụ</div>
+            <div class="text-xl font-black text-indigo-400 mt-0.5">420 MB</div>
+            <div class="text-[10px] text-cyan-400">Asset-Light VPS</div>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-center">
+            <div class="text-[11px] text-slate-400 uppercase">Chuẩn Pháp Lý</div>
+            <div class="text-xl font-black text-amber-400 mt-0.5">NĐ 123</div>
+            <div class="text-[10px] text-amber-300/80">HĐĐT Máy Tính Tiền</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= INTERACTIVE SIMULATOR (TRÌNH MÔ PHỎNG LUỒNG THỜI GIAN THỰC) ================= -->
+    <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-5 sm:p-7 shadow-xl space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-sm font-bold">
+              <i class="fa-solid fa-play"></i>
+            </div>
+            <h3 class="text-base sm:text-lg font-black text-white uppercase tracking-wider">
+              Mô Phỏng Trực Tiếp: 1 Vòng Đời Đơn Hàng (Zero Human Intervention)
+            </h3>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Bấm nút bên dưới để quan sát luồng tín hiệu truyền qua 5 trạm tự động trong chưa đầy 1 giây</p>
+        </div>
+
+        <button onclick="runSimulation()" id="btnSimulate" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-xs flex items-center gap-2.5 shadow-lg shadow-cyan-500/20 transition cursor-pointer hover:scale-102">
+          <i class="fa-solid fa-play text-sm"></i>
+          <span>CHẠY MÔ PHỎNG 1 ĐƠN (25.000 đ)</span>
+        </button>
+      </div>
+
+      <!-- 5 STEPS VISUAL PIPELINE -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+        
+        <!-- STEP 1: POS Quầy -->
+        <div id="simNode1" class="p-4 rounded-2xl bg-slate-950 border border-slate-800 transition duration-300 relative">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400">TRẠM 1</span>
+            <span id="badge1" class="text-[10px] mono text-slate-500 font-bold">READY</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-lg mb-2">
+            <i class="fa-solid fa-cash-register"></i>
+          </div>
+          <div class="font-black text-xs text-white">1. POS & VietQR</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Khách chạm ly sữa & quét mã QR động Napas247</div>
+        </div>
+
+        <!-- STEP 2: Hệ Thần Kinh n8n -->
+        <div id="simNode2" class="p-4 rounded-2xl bg-slate-950 border border-slate-800 transition duration-300 relative">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400">TRẠM 2</span>
+            <span id="badge2" class="text-[10px] mono text-slate-500 font-bold">READY</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg mb-2">
+            <i class="fa-solid fa-network-wired"></i>
+          </div>
+          <div class="font-black text-xs text-white">2. n8n Engine</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Bắt Webhook, phân luồng lệnh ngầm trong 50ms</div>
+        </div>
+
+        <!-- STEP 3: Màn Hình Bếp KDS -->
+        <div id="simNode3" class="p-4 rounded-2xl bg-slate-950 border border-slate-800 transition duration-300 relative">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400">TRẠM 3</span>
+            <span id="badge3" class="text-[10px] mono text-slate-500 font-bold">READY</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg mb-2">
+            <i class="fa-solid fa-bell-concierge"></i>
+          </div>
+          <div class="font-black text-xs text-white">3. Bếp / Pha Chế</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Máy in nhả vé & KDS hiện order tức thì</div>
+        </div>
+
+        <!-- STEP 4: KiotViet Kho BOM -->
+        <div id="simNode4" class="p-4 rounded-2xl bg-slate-950 border border-slate-800 transition duration-300 relative">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">TRẠM 4</span>
+            <span id="badge4" class="text-[10px] mono text-slate-500 font-bold">READY</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg mb-2">
+            <i class="fa-solid fa-boxes-stacked"></i>
+          </div>
+          <div class="font-black text-xs text-white">4. Trừ Kho KiotViet</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Trừ 200ml sữa, 1 ly, 1 nắp. Cảnh báo tồn kho</div>
+        </div>
+
+        <!-- STEP 5: Thuế & Zalo Chốt Ca -->
+        <div id="simNode5" class="p-4 rounded-2xl bg-slate-950 border border-slate-800 transition duration-300 relative">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400">TRẠM 5</span>
+            <span id="badge5" class="text-[10px] mono text-slate-500 font-bold">READY</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg mb-2">
+            <i class="fa-solid fa-receipt"></i>
+          </div>
+          <div class="font-black text-xs text-white">5. HĐĐT & Báo Cáo</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Tạo mã HĐĐT máy tính tiền & nổ Zalo cho chủ</div>
+        </div>
+
+      </div>
+
+      <!-- SIMULATION CONSOLE LOG -->
+      <div class="bg-black/80 rounded-2xl p-4 border border-slate-800/80 mono text-xs space-y-1.5 overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 text-[10px] border-b border-slate-800 pb-1 mb-2">
+          <span>HỆ THỐNG GIÁM SÁT SỰ KIỆN N8N (EVENT BUS TELEMETRY)</span>
+          <span id="simTime">STATUS: SẴN SÀNG</span>
+        </div>
+        <div id="simLogs" class="space-y-1 text-slate-400 h-24 overflow-y-auto">
+          <div class="text-slate-500">Nhấn nút [CHẠY MÔ PHỎNG 1 ĐƠN] phía trên để kích hoạt luồng tự động...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 4 TRỤ CỘT CHUYÊN BIỆT CỦA HỆ THỐNG ================= -->
+    <div class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-black text-white uppercase tracking-wider">
+            4 Năng Lực Cốt Lõi Tối Ưu Tốc Độ & Vận Hành
+          </h3>
+          <p class="text-xs text-slate-400">Thiết kế theo triết lý "Làm ít lại nhưng làm thật sâu và chuẩn từng centimet"</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <!-- CỘT 1 -->
+        <div class="p-6 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-blue-500/40 transition space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-xl font-black">
+            <i class="fa-solid fa-gauge-high"></i>
+          </div>
+          <h4 class="font-black text-base text-white">1. Giao Diện Bán Hàng POS Siêu Tốc (Anti-Clutter)</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Loại bỏ 100% nút bấm thừa thãi làm che khuất tên món. Tên món hiển thị 100% trọn vẹn, nút tăng giảm đặt riêng biệt. Thao tác gọi món, chọn bàn và quét mã VietQR diễn ra chỉ trong 3 giây, giải phóng hoàn toàn tình trạng nghẽn khách giờ cao điểm.
+          </p>
+          <div class="pt-2 flex items-center gap-2">
+            <a href="speed-pos.html" class="text-xs text-blue-400 font-bold hover:underline flex items-center gap-1">
+              Mở Speed POS <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- CỘT 2 -->
+        <div class="p-6 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 transition space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-cyan-600/20 text-cyan-400 flex items-center justify-center text-xl font-black">
+            <i class="fa-solid fa-arrows-split-up-and-left"></i>
+          </div>
+          <h4 class="font-black text-base text-white">2. Hệ Thần Kinh n8n Điều Phối Ngầm (Headless Orchestrator)</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Chạy trên máy chủ ảo VPS tối ưu cực nhẹ (RAM < 500MB). n8n đóng vai trò "cây cầu vạn năng" kết nối KiotViet, ngân hàng, máy in bếp, kênh Zalo thông báo. Dữ liệu chạy thẳng không cần nhân viên kế toán ngồi nhập lại từng dòng.
+          </p>
+          <div class="pt-2 flex items-center gap-2">
+            <a href="datphu_n8n_hub.html" class="text-xs text-cyan-400 font-bold hover:underline flex items-center gap-1">
+              Xem 5 Kịch Bản n8n <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- CỘT 3 -->
+        <div class="p-6 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-emerald-500/40 transition space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center text-xl font-black">
+            <i class="fa-solid fa-truck-ramp-box"></i>
+          </div>
+          <h4 class="font-black text-base text-white">3. Quản Lý Chuỗi Đa Điểm & Cân Bằng Kho BOM (Supply Chain)</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Dành cho chuỗi 5-10 cửa hàng (như mô hình Sữa Năm Tiền). Mỗi ly nước bán ra tự động trừ định lượng nguyên liệu thô (sữa hạt, đường, ly, ống hút). Khi một cửa hàng chạm mức tồn kho tối thiểu, hệ thống lập tức báo động xe tải trung tâm điều phối.
+          </p>
+          <div class="pt-2 flex items-center gap-2">
+            <a href="datphu_supply_chain_erp.html" class="text-xs text-emerald-400 font-bold hover:underline flex items-center gap-1">
+              Xem Chu Kỳ 5 Khâu Supply Chain <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- CỘT 4 -->
+        <div class="p-6 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-amber-500/40 transition space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-amber-600/20 text-amber-400 flex items-center justify-center text-xl font-black">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h4 class="font-black text-base text-white">4. Tuân Thủ Thuế Tự Động (Automated Tax Compliance)</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Kết nối API với các nhà cung cấp HĐĐT được Tổng cục Thuế cấp phép (VNPT, MISA). Xuất hóa đơn máy tính tiền tức thì không cần USB token và không cần thông tin người mua. Xóa tan nỗi lo trốn thuế hay thanh tra truy thu.
+          </p>
+          <div class="pt-2 flex items-center gap-2">
+            <span class="text-xs text-amber-400 font-bold flex items-center gap-1">
+              Chuẩn Nghị Định 123 &amp; TT 78 <i class="fa-solid fa-check text-[10px]"></i>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-950 border-t border-slate-800 py-6 px-4 text-center text-xs text-slate-500 space-y-1">
+    <p class="font-bold text-slate-400">ĐẤT PHÚ SPEED & AUTOMATION ENGINE • BẢN QUYỀN HỆ THỐNG 2026</p>
+    <p class="text-[11px]">Kiến trúc Tự Động Hóa Dòng Tiền & Vận Hành F&B Chuẩn Công Nghiệp</p>
+  </footer>
+
+  <!-- SCRIPT SIMULATOR -->
+  <script>
+    let isRunning = false;
+
+    function log(msg, color = 'text-slate-300') {
+      const container = document.getElementById('simLogs');
+      const time = new Date().toLocaleTimeString('vi-VN');
+      const div = document.createElement('div');
+      div.className = `${color} leading-relaxed`;
+      div.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function resetNodes() {
+      for (let i = 1; i <= 5; i++) {
+        const node = document.getElementById(`simNode${i}`);
+        const badge = document.getElementById(`badge${i}`);
+        node.className = "p-4 rounded-2xl bg-slate-950 border border-slate-800 transition duration-300 relative";
+        badge.innerText = "READY";
+        badge.className = "text-[10px] mono text-slate-500 font-bold";
+      }
+    }
+
+    function activateNode(i, colorClass, borderClass, text) {
+      const node = document.getElementById(`simNode${i}`);
+      const badge = document.getElementById(`badge${i}`);
+      node.className = `p-4 rounded-2xl bg-slate-900 border-2 ${borderClass} shadow-lg transition duration-300 relative scale-102`;
+      badge.innerText = text;
+      badge.className = `text-[10px] mono ${colorClass} font-bold animate-pulse`;
+    }
+
+    function completeNode(i, text) {
+      const node = document.getElementById(`simNode${i}`);
+      const badge = document.getElementById(`badge${i}`);
+      node.className = "p-4 rounded-2xl bg-slate-950 border border-emerald-500/50 transition duration-300 relative";
+      badge.innerText = text || "SUCCESS";
+      badge.className = "text-[10px] mono text-emerald-400 font-bold";
+    }
+
+    async function runSimulation() {
+      if (isRunning) return;
+      isRunning = true;
+      const btn = document.getElementById('btnSimulate');
+      btn.disabled = true;
+      btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+      const logs = document.getElementById('simLogs');
+      logs.innerHTML = '';
+      resetNodes();
+
+      log("⚡ [EVENT BUS]: Khách gọi 1 Ly Sữa Nóng (25.000 đ) tại Bàn 3...", "text-blue-400");
+      activateNode(1, "text-blue-400", "border-blue-500", "ORDERING");
+      await new Promise(r => setTimeout(r, 400));
+
+      log("💳 [VIETQR NAPAS]: Sinh mã QR động Napas247 chứa mã đơn #DP-8921...", "text-cyan-400");
+      completeNode(1, "PAID 25K");
+      await new Promise(r => setTimeout(r, 200));
+
+      activateNode(2, "text-cyan-400", "border-cyan-500", "DISPATCHING");
+      log("🔄 [N8N ENGINE]: Webhook nhận diện thanh toán thành công (Latency: 18ms)", "text-cyan-300");
+      await new Promise(r => setTimeout(r, 350));
+      completeNode(2, "DISPATCHED");
+
+      activateNode(3, "text-amber-400", "border-amber-500", "COOKING");
+      log("🍳 [KITCHEN KDS]: Máy in nhiệt nhả bill bếp • Màn hình Bếp nhảy đơn Bàn 3", "text-amber-300");
+      await new Promise(r => setTimeout(r, 400));
+      completeNode(3, "READY");
+
+      activateNode(4, "text-emerald-400", "border-emerald-500", "DEDUCTING");
+      log("📦 [KIOTVIET BOM]: Trừ tự động 200ml Sữa tươi, 1 Ly 500ml, 1 Ống hút. Tồn kho: 48.2L (An toàn)", "text-emerald-300");
+      await new Promise(r => setTimeout(r, 350));
+      completeNode(4, "SYNCED");
+
+      activateNode(5, "text-indigo-400", "border-indigo-500", "COMPLYING");
+      log("📑 [TAX / NĐ 123]: Tạo mã HĐĐT máy tính tiền #DP-HD-20261117-03. Lưu trữ đối soát tự động.", "text-indigo-300");
+      log("📲 [TELEGRAM BOT]: Bắn tin nhắn chốt đơn về điện thoại Chủ chuỗi: +25.000 đ", "text-emerald-400 font-bold");
+      await new Promise(r => setTimeout(r, 300));
+      completeNode(5, "FINISHED");
+
+      log("🎉 [HOÀN TẤT VÒNG ĐỜI]: Toàn bộ chu trình thực thi trong 0.82 giây không cần 1 thao tác nhập tay!", "text-cyan-400 font-black");
+
+      isRunning = false;
+      btn.disabled = false;
+      btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+  </script>
+</body>
+</html>
