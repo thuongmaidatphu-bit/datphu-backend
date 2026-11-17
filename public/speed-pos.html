@@ -142,6 +142,10 @@
             <span class="text-xs font-bold px-2.5 py-1 rounded-xl bg-blue-50 text-blue-700 border border-blue-200" id="tableStatsBanner">
               17 bàn • 0 có khách
             </span>
+            <button onclick="resetAllTablesToEmpty()" class="px-2.5 py-1 rounded-xl text-xs font-black bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 flex items-center gap-1 cursor-pointer transition mr-1.5" title="Làm sạch toàn bộ 17 bàn về trạng thái trống (Xóa hết dữ liệu giả lập dở dang)">
+              <i class="fa-solid fa-arrows-rotate text-rose-600"></i>
+              <span class="hidden sm:inline">Làm Sạch Bàn</span>
+            </button>
             <button onclick="openTableConfigModal()" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 flex items-center gap-1 cursor-pointer transition" title="Tùy chỉnh thêm/sửa/xóa bàn và khu vực">
               <i class="fa-solid fa-gear text-slate-500"></i>
               <span class="hidden sm:inline">Cài Đặt Sơ Đồ</span>
@@ -252,7 +256,7 @@
       </div>
 
       <!-- 5. CHÂN PHIẾU THU NGÂN: TỔNG TIỀN & 3 NÚT HÀNH ĐỘNG -->
-      <div class="p-4 bg-slate-50 border-t border-slate-200 shrink-0 space-y-3 shadow-2xs pb-6">
+      <div class="p-2.5 sm:p-3 bg-slate-50 border-t border-slate-200 shrink-0 space-y-2 shadow-2xs pb-2 sm:pb-3">
         
         <div class="bg-white p-3 rounded-2xl border border-slate-200/80 space-y-1 shadow-2xs">
           <div class="flex items-center justify-between text-xs text-slate-500 font-semibold">
@@ -2332,6 +2336,28 @@
         renderTables();
         renderCart();
         renderConfigTableList();
+      }
+    }
+
+    
+    function resetAllTablesToEmpty() {
+      if (confirm("Làm sạch toàn bộ 17 bàn về trạng thái trống? (Xóa mọi dữ liệu giả lập dở dang để bắt đầu ca mới)")) {
+        tables = DEFAULT_TABLES.map(t => ({
+          ...t,
+          status: "empty",
+          cart: [],
+          openTime: null,
+          kitchenSent: false,
+          isCheckingOut: false,
+          isReserved: false,
+          reserveInfo: null
+        }));
+        todayRevenue = 0;
+        currentTableId = "tbl_1";
+        saveState();
+        renderTables();
+        renderCart();
+        alert("✓ Đã làm sạch toàn bộ sơ đồ 17 bàn về trạng thái TRỐNG hoàn toàn!");
       }
     }
 
