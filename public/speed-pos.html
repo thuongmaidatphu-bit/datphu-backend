@@ -242,11 +242,11 @@
         </div>
       </div>
 
-      <!-- 3. NÚT THÊM MÓN VÀO BÀN NÀY (TO RÕ, BẤM LÀ MỞ MENU) -->
-      <div class="p-3 bg-white border-b border-slate-100 shrink-0">
-        <button onclick="openMenuModal()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 active:scale-95 transition cursor-pointer">
-          <i class="fa-solid fa-utensils text-base"></i>
-          <span>+ THÊM MÓN VÀO BÀN NÀY</span>
+      <!-- 3. NÚT THÊM MÓN (TINH GỌN TIẾT KIỆM KHÔNG GIAN) -->
+      <div class="px-3 py-1.5 bg-white border-b border-slate-100 shrink-0">
+        <button onclick="openMenuModal()" class="w-full py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-black text-xs shadow-xs flex items-center justify-center gap-1.5 active:scale-95 transition cursor-pointer">
+          <i class="fa-solid fa-plus-circle text-xs"></i>
+          <span>+ THÊM MÓN VÀO BÀN</span>
         </button>
       </div>
 
@@ -255,63 +255,61 @@
         <!-- Render danh sách món trong giỏ bằng JS -->
       </div>
 
-      <!-- 5. CHÂN PHIẾU THU NGÂN: TỔNG TIỀN & 3 NÚT HÀNH ĐỘNG -->
-      <div class="p-2.5 sm:p-3 bg-slate-50 border-t border-slate-200 shrink-0 space-y-2 shadow-2xs pb-2 sm:pb-3">
+      <!-- 5. CHÂN PHIẾU THU NGÂN: TỔNG TIỀN GỌN & NÚT BẤM VỪA VẶN -->
+      <div class="p-2 bg-slate-50 border-t border-slate-200 shrink-0 space-y-1.5 shadow-2xs">
         
-        <div class="bg-white p-3 rounded-2xl border border-slate-200/80 space-y-1 shadow-2xs">
-          <div class="flex items-center justify-between text-xs text-slate-500 font-semibold">
-            <span>Số lượng món:</span>
-            <span id="orderItemsCountSummary" class="font-mono font-bold text-slate-700">0 phần</span>
+        <!-- Khối Tổng Tiền Gọn 1 Dòng (Không chiếm chỗ danh sách món) -->
+        <div class="bg-white px-2.5 py-1.5 rounded-xl border border-slate-200/90 flex items-center justify-between shadow-2xs">
+          <div class="flex items-center gap-1 text-[11px] text-slate-500 font-bold">
+            <span>Tổng:</span>
+            <span id="orderItemsCountSummary" class="font-mono text-slate-800 font-black">0 phần</span>
           </div>
-          <div class="flex items-baseline justify-between pt-1 border-t border-slate-100">
-            <span class="text-xs font-black text-slate-600 uppercase tracking-wide">TỔNG CỘNG:</span>
-            <span id="orderTotalText" class="text-2xl sm:text-3xl font-black font-mono text-red-600">0 đ</span>
+          <div class="flex items-baseline gap-1">
+            <span class="text-[10px] font-black text-slate-400 uppercase">TỔNG CỘNG:</span>
+            <span id="orderTotalText" class="text-base sm:text-lg font-black font-mono text-red-600">0 đ</span>
           </div>
         </div>
 
         <!-- Banner Bếp Nấu Xong Thông Báo Chuyển Sang QR & In Bill -->
-        <div id="kitchenReadyBanner" class="hidden mb-2.5 p-2.5 rounded-2xl bg-gradient-to-r from-rose-50 via-red-50 to-amber-50 border border-rose-300 flex items-center justify-between text-xs text-rose-900 font-bold shadow-xs animate-in fade-in">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-rose-600 animate-ping"></span>
-            <span id="kitchenReadyBannerText">🍳 Bếp đã nấu xong! Chờ thanh toán</span>
+        <div id="kitchenReadyBanner" class="hidden p-1.5 rounded-xl bg-gradient-to-r from-rose-50 to-amber-50 border border-rose-300 flex items-center justify-between text-[11px] text-rose-900 font-bold shadow-xs">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>
+            <span id="kitchenReadyBannerText">Bếp đã nấu xong!</span>
           </div>
-          <button onclick="actionOpenCheckout()" class="text-[10px] bg-rose-600 hover:bg-rose-700 text-white px-2.5 py-1 rounded-xl font-black cursor-pointer shadow-xs active:scale-95 transition">
+          <button onclick="actionOpenCheckout('qr')" class="text-[10px] bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded-lg font-black cursor-pointer shadow-xs active:scale-95 transition">
             MỞ QR ➔
           </button>
         </div>
 
-        <!-- 3 Nút Hành Động Chuẩn iPOS: 3. Báo Bếp -> 4. VietQR -> 5. In Bill -->
-        <div class="space-y-2">
+        <!-- Nút Hành Động Gọn Gàng Chuẩn iPOS -->
+        <div class="space-y-1">
           <!-- Hàng 1: Bếp & Ra Món -->
-          <div class="grid grid-cols-2 gap-2">
-            <button id="btnActionKitchen" onclick="actionSendKitchen()" class="py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-black text-xs shadow-sm flex items-center justify-center gap-1.5 active:scale-95 transition cursor-pointer" title="Gửi đơn xuống bếp và phát chuông báo">
-              <i class="fa-solid fa-bell text-sm"></i>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button id="btnActionKitchen" onclick="actionSendKitchen()" class="py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-black text-[11px] shadow-xs flex items-center justify-center gap-1 active:scale-95 transition cursor-pointer" title="Gửi đơn xuống bếp và phát chuông báo">
+              <i class="fa-solid fa-bell text-xs"></i>
               <span>3. BÁO BẾP</span>
             </button>
-            <button id="btnActionServed" onclick="actionServedFood()" class="py-2.5 bg-slate-100 hover:bg-emerald-100 text-slate-500 hover:text-emerald-800 rounded-2xl font-black text-xs shadow-2xs flex items-center justify-center gap-1.5 active:scale-95 transition cursor-pointer" title="Xác nhận đã bưng món lên bàn">
-              <i class="fa-solid fa-bell-concierge text-sm"></i>
+            <button id="btnActionServed" onclick="actionServedFood()" class="py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-500 hover:text-emerald-800 rounded-xl font-black text-[11px] shadow-2xs flex items-center justify-center gap-1 active:scale-95 transition cursor-pointer" title="Xác nhận đã bưng món lên bàn">
+              <i class="fa-solid fa-bell-concierge text-xs"></i>
               <span>ĐÃ RA MÓN</span>
             </button>
           </div>
 
           <!-- Hàng 2: Thanh Toán (VietQR & Tiền Mặt & In Bill) -->
-          <div class="grid grid-cols-3 gap-2">
-            <!-- 4. VIETQR -->
-            <button id="btnActionQR" onclick="actionOpenCheckout('qr')" class="py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl font-black text-xs shadow-md flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="Hiện mã VietQR động thanh toán">
-              <i class="fa-solid fa-qrcode text-base"></i>
-              <span>4. VIETQR</span>
+          <div class="grid grid-cols-3 gap-1.5">
+            <button id="btnActionQR" onclick="actionOpenCheckout('qr')" class="py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-black text-[11px] shadow-xs flex items-center justify-center gap-1 active:scale-95 transition cursor-pointer" title="Hiện mã VietQR động thanh toán">
+              <i class="fa-solid fa-qrcode text-xs"></i>
+              <span>VIETQR</span>
             </button>
 
-            <!-- 4.1. TIỀN MẶT -->
-            <button id="btnActionCash" onclick="actionOpenCheckout('cash')" class="py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-xs shadow-md flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="Thu tiền mặt & tính tiền thối thừa">
-              <i class="fa-solid fa-money-bill-wave text-base"></i>
+            <button id="btnActionCash" onclick="actionOpenCheckout('cash')" class="py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-[11px] shadow-xs flex items-center justify-center gap-1 active:scale-95 transition cursor-pointer" title="Thu tiền mặt">
+              <i class="fa-solid fa-money-bill-wave text-xs"></i>
               <span>TIỀN MẶT</span>
             </button>
 
-            <!-- 5. IN BILL -->
-            <button id="btnActionPrint" onclick="actionPrintBill(false)" class="py-3 bg-blue-700 hover:bg-blue-800 text-white rounded-2xl font-black text-xs shadow-sm flex flex-col items-center justify-center gap-0.5 active:scale-95 transition cursor-pointer" title="In phiếu tạm tính / hóa đơn">
-              <i class="fa-solid fa-print text-base"></i>
-              <span>5. IN BILL</span>
+            <button id="btnActionPrint" onclick="actionPrintBill(false)" class="py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-xl font-black text-[11px] shadow-xs flex items-center justify-center gap-1 active:scale-95 transition cursor-pointer" title="In bill">
+              <i class="fa-solid fa-print text-xs"></i>
+              <span>IN BILL</span>
             </button>
           </div>
         </div>
@@ -1530,7 +1528,7 @@
           `;
         } else {
           list.innerHTML = t.cart.map(item => `
-            <div class="p-2.5 bg-slate-50/80 hover:bg-blue-50/40 rounded-2xl border border-slate-200/90 hover:border-blue-300 transition mb-2 shadow-2xs group">
+            <div class="p-2 bg-slate-50/80 hover:bg-blue-50/40 rounded-xl border border-slate-200/90 hover:border-blue-300 transition mb-1.5 shadow-2xs group">
               <!-- Hàng 1: Tên món to rõ 100% không bị cắt, đơn giá và nút xóa -->
               <div class="flex items-start justify-between gap-1.5 mb-1.5">
                 <div class="flex-1 min-w-0">
